@@ -40,7 +40,7 @@
 # This variable should contain a space separated list of all
 # the directories containing buildable applications (usually
 # prefixed with the app_ prefix)
-BUILD_SUBDIRS = app_usb_aud_l2 app_usb_aud_l1 app_usb_aud_l2_ios app_usb_aud_l1_ios
+BUILD_SUBDIRS = app_usb_aud_l1 app_usb_aud_l1_ios app_usb_aud_l2 app_usb_aud_l2_ios
 
 # This variable should contain a space separated list of all
 # the directories containing buildable plugins (usually
