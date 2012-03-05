@@ -2,8 +2,7 @@
 # compiled for. It either refers to an XN file in the source directories
 # or a valid argument for the --target option when compiling.
 
-#TARGET = L1_AUDIO
-TARGET = ios_usb_audio
+TARGET = IOS_AUDIO
 
 # The flags passed to xcc when building the application
 BUILD_FLAGS     += -DAUDIO_2 -DFLASH_MAX_UPGRADE_SIZE=64*1024 -DLOCAL_IIC
