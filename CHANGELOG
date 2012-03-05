@@ -1,0 +1,16 @@
+XMOS USB Audio 2.0 Reference Designs Changelog
+==============================================
+
+Firmware release version: %%VERSION%% (build %%BUILDNUMBER%%)
+
+Firmware
+========
+
+6v00 (ALPHA):        
+    - ADDED:      Optional support for iOS devices (available to MFI licencees only)
+    - ADDED:      Design moved to new build system
+    - ADDED:      Early evaluation support for SU1 demonstration board
+    - ADDED:      Optional support for USB test modes
+    - RESOLVED:   (Minor) Fixed issue where buffering can lock up on sample frequency change if in overflow (#10897)
+
+(Note: USB Audio version numbers unified accross all products at this point)
