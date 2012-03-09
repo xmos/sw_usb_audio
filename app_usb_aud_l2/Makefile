@@ -20,9 +20,12 @@ USED_MODULES = module_usb_shared module_xud module_usb_aud_shared module_spdif_t
 
 MODULE_LIBRARIES = xud_l
 
-# The following part of the Makefile includes the common build infrastructure
-# for compiling XMOS applications. You should not need to edit this apart from
-# changing the version of module_xmos_common.
+XCC_FLAGS_nomidi = $(XCC_FLAGS)
+XCC_FLAGS_midi = $(XCC_FLAGS)
 
-XMOS_MAKE_PATH=../..
+#=============================================================================
+# The following part of the Makefile includes the common build infrastructure
+# for compiling XMOS applications. You should not need to edit below here.
+
+XMOS_MAKE_PATH ?= ../..
 include $(XMOS_MAKE_PATH)/xcommon/module_xcommon/build/Makefile.common
