@@ -43,10 +43,10 @@ on stdcore[0] : out port p_usb_rst                 = XS1_PORT_32A;
 
 #ifdef MIDI
 #ifdef BOARD_S1
-on stdcore[0] : out port p_midi_tx                = PORT_MIDI_OUT;
+on stdcore[0] : port p_midi_tx                = PORT_MIDI_OUT;
 on stdcore[0] : port p_midi_rx                    = PORT_MIDI_IN;
 #else
-on stdcore[0] : out port p_midi_tx                = XS1_PORT_1J;
+on stdcore[0] : port p_midi_tx                = XS1_PORT_1J;
 on stdcore[0] : port p_midi_rx                    = XS1_PORT_1K;
 #endif
 #endif
