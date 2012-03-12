@@ -171,7 +171,7 @@ int main()
 #ifdef MIDI
         {
             thread_speed();
-            usb_midi(p_midi_rx, p_midi_tx, clk_midi, c_midi, 0);
+            usb_midi(p_midi_rx, p_midi_tx, clk_midi, c_midi, 0, null, null, null, null);
         }
 #endif
     }
