@@ -5,17 +5,13 @@
 TARGET = IOS_AUDIO
 
 # The flags passed to xcc when building the application
-BUILD_FLAGS     += -DAUDIO_2 -DFLASH_MAX_UPGRADE_SIZE=64*1024 -DLOCAL_IIC
-XCC_FLAGS       = $(BUILD_FLAGS) -fcomment-asm -Xmapper --map -Xmapper MAPFILE -Wall -O3 -report -lflash -fsubword-select -save-temps -g -DUSB_CORE=0 -DARCH_L
+BUILD_FLAGS = -DAUDIO_2 -DFLASH_MAX_UPGRADE_SIZE=64*1024 -DLOCAL_IIC -fcomment-asm -Xmapper --map -Xmapper MAPFILE -Wall -O3 -report -lflash -fsubword-select -save-temps -g -DUSB_CORE=0 -DARCH_L
 #-fschedule
 
-# Default configuration
-CONFIG?=midi
-
-XCC_FLAGS_midi = $(XCC_FLAGS)
+XCC_FLAGS_midi = $(BUILD_FLAGS)
 INCLUDE_ONLY_IN_midi = src/midiconfig
 
-XCC_FLAGS_nomidi = $(XCC_FLAGS)
+XCC_FLAGS_nomidi = $(BUILD_FLAGS)
 INCLUDE_ONLY_IN_nomidi = src/nomidiconfig
 
 # The USED_MODULES variable lists other module used by the application. These

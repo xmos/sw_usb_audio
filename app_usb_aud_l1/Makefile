@@ -12,7 +12,7 @@ XCC_FLAGS       = $(BUILD_FLAGS) -fcomment-asm -Xmapper --map -Xmapper MAPFILE -
 #-fschedule
 
 #Default configuration
-CONFIG?=spdif
+#CONFIG?=spdif
 
 XCC_FLAGS_spdif = $(XCC_FLAGS)
 INCLUDE_FLAGS_ONLY_IN_spdif = src/config_spdif
