@@ -23,7 +23,7 @@ void audio(chanend c_mix_out, chanend?, chanend?) ;
 
 /* Audio I/O */
 on stdcore[0] : buffered out port:32 p_i2s_dac[1] = {PORT_I2S_DAC_DATA};
-on stdcore[0] : buffered in port:32 p_i2s_adc[1] = {PORT_I2S_ADC_DATA}; 
+on stdcore[0] : buffered in port:32 p_i2s_adc[1]  = {PORT_I2S_ADC_DATA}; 
 on stdcore[0] : buffered out port:32 p_lrclk      = PORT_I2S_LRCLK;
 on stdcore[0] : buffered out port:32 p_bclk       = PORT_I2S_BCLK;
 on stdcore[0] : port p_mclk                       = PORT_MCLK_IN;
@@ -32,49 +32,20 @@ on stdcore[0] : buffered out port:32 p_spdif_tx   = PORT_SPDIF_OUT;
 
 on stdcore[0] :in  port p_for_mclk_count          = XS1_PORT_4D;
 
-#ifdef BOARD_S1
-on stdcore[0] : out port p_gpio                    = XS1_PORT_32A;
-#define p_usb_rst   null
-#else 
 /* USB Reset port */
-on stdcore[0] : out port p_usb_rst                 = XS1_PORT_32A;
-#endif
+on stdcore[0] : out port p_usb_rst                = XS1_PORT_32A;
 
 #ifdef MIDI
-#ifdef BOARD_S1
-on stdcore[0] : port p_midi_tx                = PORT_MIDI_OUT;
-on stdcore[0] : port p_midi_rx                    = PORT_MIDI_IN;
-#else
-on stdcore[0] : port p_midi_tx                = XS1_PORT_1J;
+on stdcore[0] : port p_midi_tx                    = XS1_PORT_1J;
 on stdcore[0] : port p_midi_rx                    = XS1_PORT_1K;
 #endif
-#endif
-
-#ifdef BOARD_S1
-/* I2C ports for CODEC config on S1 board */
-on stdcore[0] : port p_i2c_sda                      = PORT_I2C_SDA;
-on stdcore[0] : port p_i2c_scl                      = PORT_I2C_SCL;
-#endif
-
 
 /* Clock blocks */
-#ifdef BOARD_S1
-on stdcore[0] : clock    clk_midi                 = XS1_CLKBLK_REF;
-#else
 on stdcore[0] : clock    clk_midi                 = XS1_CLKBLK_1;
-#endif
 on stdcore[0] : clock    clk_audio_mclk           = XS1_CLKBLK_2;     /* Master clock */
 on stdcore[0] : clock    clk_audio_bclk           = XS1_CLKBLK_3;     /* Bit clock */
-#ifndef BOARD_S1
 on stdcore[0] : clock    clk                      = XS1_CLKBLK_4;     /* USB clock */
-#else
-#define clk              null
-#endif
-#ifdef BOARD_S1
-on stdcore[0] : clock    clk_mst_spd              = XS1_CLKBLK_1;
-#else
 on stdcore[0] : clock    clk_mst_spd              = XS1_CLKBLK_5;
-#endif
 
 void decouple(chanend, chanend?, chanend?);
 
