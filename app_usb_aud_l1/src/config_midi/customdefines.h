@@ -36,10 +36,6 @@
 /* Disable MIDI */
 #define MIDI          1
 
-#ifdef BOARD_S1
-#define MIDI_SHIFT 7
-#endif
-
 /* Number of IS2 chans to DAC..*/
 #define I2S_CHANS_DAC     (2)
 
@@ -47,11 +43,7 @@
 #define I2S_CHANS_ADC     (2)
 
 /* Master clock defines (in Hz) */
-#ifdef BOARD_S1
-#define MCLK_441          (512*44100)   /* 44.1, 88.2 etc */
-#else
 #define MCLK_441          (256*44100)   /* 44.1, 88.2 etc */
-#endif
 #define MCLK_48           (512*48000)   /* 48, 96 etc */
 
 /* Maximum frequency device runs at */
