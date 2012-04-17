@@ -128,7 +128,7 @@ XUD_EpType epTypeTableIn[NUM_EP_IN] = { XUD_EPTYPE_CTL | XUD_STATUS_ENABLE,
 #define CORE_0_FAST_MODE set_thread_fast_mode_on();
 #endif
 
-on stdcore[1] : timer anothertimer;
+timer anothertimer;
 
 int main()
 {
