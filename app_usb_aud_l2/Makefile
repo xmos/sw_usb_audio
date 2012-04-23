@@ -16,7 +16,7 @@ XCC_FLAGS       = $(BUILD_FLAGS) -fcomment-asm -Xmapper --map -Xmapper MAPFILE -
 # Modules are expected to be in the directory above the BASE_DIR directory.
 
 
-USED_MODULES = module_usb_shared module_xud module_usb_aud_shared module_spdif_tx module_spdif_rx module_usb_midi module_dfu module_usb_audio_adat module_usb_aud_l2
+USED_MODULES = module_usb_shared module_xud module_usb_aud_shared module_spdif_tx module_spdif_rx module_usb_midi sc_usb_audio/module_dfu module_usb_audio_adat module_usb_aud_l2
 
 MODULE_LIBRARIES = xud_l
 
