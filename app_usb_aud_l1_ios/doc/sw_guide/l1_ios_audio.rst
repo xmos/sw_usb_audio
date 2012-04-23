@@ -1,15 +1,15 @@
 .. _usb_audio_interface_sg_sw:
 
-The USB Audio 2.0 Application (XS1-L1)
---------------------------------------
+The USB Audio 2.0 Application 
+-----------------------------
 
 The USB Audio 2.0 Application is an application of the USB audio
 framework specifically for the hardware described in Section
-:ref:`sec_l1_ios_audio_hw` and is implemented on the XS1-L1 single core
+:ref:`usb_audio_interface_sg_hw` and is implemented on the XS1-L1 single core
 device (500MIPS).
-The software design supports two channels of audio at sample frequencies up to
+The software design supports two channels of audio (input and output) at sample frequencies up to
 192kHz. It supports iOS devices by identifying and authenticating over USB. It
-automatically selects between PC and iOS host when an iOS device is attached.
+automatically selects between PC and iOS host based on the the presense of an iOS device.
 
 It uses the following components:
 
