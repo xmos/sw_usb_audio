@@ -29,11 +29,11 @@ System Feature Configuration
 Device Configuration Options
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Before submitting ATS Certification Assistant results to Apple, or sending a product to one of Apple's test labs, the following customisations must be made.  Thesechanges should be made in the ``customdefines.h`` file.  These customisation steps should be considered mandatory:
+Before submitting ATS Certification Assistant results to Apple, or sending a product to one of Apple's test labs, the following customisations must be made.  These changes should be made in the ``customdefines.h`` file.  These customisation steps should be considered mandatory:
 
   * Change the USB Vendor ID & Device ID to use the licensee's USB Vendor ID & Device ID. See ``VENDOR_ID`` and ``PID_AUDIO_2`` defines.
 
-  * Change the Vendor string (``VENDOR_STR`` define) to accurately reflect the vendor of the product (This should relate to the ``VENDOR_ID`` value from the USB IF).  Note this string will also be used to in strings describing interfaces etc.
+  * Change the Vendor string (``VENDOR_STR`` define) to accurately reflect the vendor of the product (This should relate to the ``VENDOR_ID`` value from the USB IF).  Note: This string will also be used to customise strings describing interfaces etc.
 
   * Change the ``ACCESSORY_FIRMWARE_VERSION`` define to accurately reflect the version number of the firmware (if different from XMOS default).
 
@@ -41,7 +41,7 @@ Before submitting ATS Certification Assistant results to Apple, or sending a pro
   
   * Change the ``ACCESSORY_MODEL_NUMBER`` define to accurately reflect the model number of the accessory.
 
-Note: the USB device and configuration descriptors will automatically be configured to match the various configuration defines set (channel count etc).
+Note: The USB device and configuration descriptors will automatically be configured to match the various configuration defines set (channel count etc).
 
 .. list-table::
    :header-rows: 1
@@ -59,7 +59,7 @@ Note: the USB device and configuration descriptors will automatically be configu
      - Vendor ID of the product
      - "0x20B1"
 
-  * - ``PID_AUDIO_1`` 
+  *  - ``PID_AUDIO_1`` 
      -  Product ID of the product used in Audio Class 2.0 mode
      - "0x0002"
 
