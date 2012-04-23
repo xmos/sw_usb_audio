@@ -59,7 +59,7 @@ Note: The USB device and configuration descriptors will automatically be configu
      - Vendor ID of the product
      - "0x20B1"
 
-  *  - ``PID_AUDIO_1`` 
+   * - ``PID_AUDIO_1`` 
      -  Product ID of the product used in Audio Class 2.0 mode
      - "0x0002"
 
