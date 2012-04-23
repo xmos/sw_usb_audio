@@ -11,8 +11,8 @@ BUILD_FLAGS     = -DAUDIO_2 -DFLASH_MAX_UPGRADE_SIZE=64*1024 -fcomment-asm -Xmap
 XCC_FLAGS_spdif = $(BUILD_FLAGS)
 INCLUDE_FLAGS_ONLY_IN_spdif = src/config_spdif
 
-#XCC_FLAGS_midi = $(BUILD_FLAGS)
-#INCLUDE_FLAGS_ONLY_IN_midi = src/config_midi
+XCC_FLAGS_midi = $(BUILD_FLAGS)
+INCLUDE_FLAGS_ONLY_IN_midi = src/config_midi
 
 # The USED_MODULES variable lists other module used by the application. These
 # modules will extend the SOURCE_DIRS, INCLUDE_DIRS and LIB_DIRS variables. 

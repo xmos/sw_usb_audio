@@ -24,6 +24,8 @@
 #define NUM_USB_CHAN_IN   (2)         /* Device to Host */
 #define NUM_USB_CHAN_OUT  (2)         /* Host to Device */
 
+#define HID_CONTROLS 1
+
 /* Enable S/PDIF output */
 #define SPDIF         0
 

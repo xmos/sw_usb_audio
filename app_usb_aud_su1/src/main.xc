@@ -30,7 +30,7 @@ on stdcore[0] : port p_mclk                       = PORT_MCLK_IN;
 
 on stdcore[0] : buffered out port:32 p_spdif_tx   = PORT_SPDIF_OUT;
 
-on stdcore[0] :in  port p_for_mclk_count          = XS1_PORT_4D;
+on stdcore[0] :in  port p_for_mclk_count          = XS1_PORT_16B;
 
 on stdcore[0] : out port p_gpio                    = XS1_PORT_32A;
 #define p_usb_rst   null
@@ -43,6 +43,9 @@ on stdcore[0] : port p_midi_rx                    = PORT_MIDI_IN;
 /* I2C ports for CODEC config on S1 board */
 on stdcore[0] : port p_i2c_sda                      = PORT_I2C_SDA;
 on stdcore[0] : port p_i2c_scl                      = PORT_I2C_SCL;
+
+/* Buttons */
+on stdcore[0] : in port p_but                       = XS1_PORT_4D;
 
 /* Clock blocks */
 on stdcore[0] : clock    clk_midi                 = XS1_CLKBLK_REF;
@@ -59,15 +62,23 @@ void spdif_transmitter(buffered out port:32 p, chanend c_in);
 
 /* Endpoint type tables for XUD */
 XUD_EpType epTypeTableOut[NUM_EP_OUT] = { XUD_EPTYPE_CTL | XUD_STATUS_ENABLE, 
-                                            XUD_EPTYPE_ISO, 
-                                            XUD_EPTYPE_BUL,
-                                            XUD_EPTYPE_DIS};
+                                            XUD_EPTYPE_ISO,     /* Audio */
+#ifdef MIDI
+                                            XUD_EPTYPE_BUL     /* MIDI */
+#endif
+                                    };    
 
 XUD_EpType epTypeTableIn[NUM_EP_IN] = { XUD_EPTYPE_CTL | XUD_STATUS_ENABLE,
                                             XUD_EPTYPE_ISO, 
                                             XUD_EPTYPE_ISO,
                                             XUD_EPTYPE_BUL,
-                                            XUD_EPTYPE_BUL};
+#ifdef MIDI
+                                            XUD_EPTYPE_BUL,
+#endif
+#ifdef HID_CONTROLS
+                                            XUD_EPTYPE_BUL,
+#endif
+                                    };
 #define FAST_MODE 0
 
 void thread_speed()
@@ -122,8 +133,16 @@ int main()
         {
             thread_speed();
             buffer(c_xud_out[1], c_xud_in[2], c_xud_in[1],
-                c_xud_out[2], c_xud_in[3], c_xud_in[4],
-                c_sof, c_aud_ctl, p_for_mclk_count);
+#ifdef MIDI
+                c_xud_out[2], 
+                c_xud_in[EP_NUM_IN_MIDI], 
+#endif
+                c_xud_in[3],
+                c_sof, c_aud_ctl, p_for_mclk_count
+#ifdef HID_CONTROLS
+                ,c_xud_in[EP_NUM_IN_HID]
+#endif
+                );
         }
 
         {
