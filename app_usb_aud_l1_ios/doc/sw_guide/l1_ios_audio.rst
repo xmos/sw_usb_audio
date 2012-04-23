@@ -23,7 +23,7 @@ It uses the following components:
  * iOS
 
 The following diagrams show the software layout of the code
-running on the XS1-L1 chip. Most units run in a single
+running on the XS1-L1 device. Most units run in a single
 thread concurrently with the others units. The lines show the
 communication between each functional unit. Due to the MIPS
 requirement of the USB driver, only six threads can be
@@ -67,7 +67,7 @@ Port 32A IO expander
 
 Port 32A on the XS1-L1 is a 32-bit wide port. 4 pins of this are used to control a pair of shift registers for IO expansion.
 
-Please see `Shift Register Expansion of XS1 Devices <http://www.xmos.com/published/shift-register-expansion-xs1-devices>`_ for an explanation of the hardware.
+Please see seperate document `Shift Register Expansion of XS1 Devices <http://www.xmos.com/published/shift-register-expansion-xs1-devices>`_ for an explanation of the hardware.
 
 The XUAI development kit provides higher level access to port32A via ``port32A_set``, ``port32A_unset`` and ``port32A_mask_and_set`` functions. These may be accessed safely by multiple threads as a lock is used to protect access. If all access to these signals is via these then it will remain possible to select between using the shift register and port32A directly using the IO_EXPANSION macro. 
 
@@ -112,7 +112,7 @@ The following tables show the signals connected to the input and output shift re
 Power
 +++++
 
-The XUAI development kit must be self powered rather than bus powered.
+The XR-IOS-USB-AUDIO development kit must be self powered rather than bus powered.
 
 Validated Build Options
 +++++++++++++++++++++++
