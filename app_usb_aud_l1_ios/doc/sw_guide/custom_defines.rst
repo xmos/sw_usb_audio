@@ -26,7 +26,7 @@ System Feature Configuration
      - Define to enable use of IO expansion interface on port32A rather than port32A directly.
      - defined 
 
-Device Configuration Options
+Mandatory Device Configuration Options
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Before submitting ATS Certification Assistant results to Apple, or sending a product to one of Apple's test labs, the following customisations must be made.  These changes should be made in the ``customdefines.h`` file.  These customisation steps should be considered mandatory:
