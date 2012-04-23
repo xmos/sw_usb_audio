@@ -29,7 +29,7 @@ System Feature Configuration
 Mandatory Device Configuration Options
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Before submitting ATS Certification Assistant results to Apple, or sending a product to one of Apple's test labs, the following customisations must be made.  These changes should be made in the ``customdefines.h`` file.  These customisation steps should be considered mandatory:
+Before submitting ATS Certification Assistant results to Apple, or sending a product to one of Apple's test labs, the following mandatory customisations must be made.  These changes should be made in the ``customdefines.h`` file:
 
   * Change the USB Vendor ID & Device ID to use the licensee's USB Vendor ID & Device ID. See ``VENDOR_ID`` and ``PID_AUDIO_2`` defines.
 
