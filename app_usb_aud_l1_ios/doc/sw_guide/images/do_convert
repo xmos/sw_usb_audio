@@ -1,0 +1,7 @@
+for x in *.pdf
+do
+    echo $x
+    convert -density 600x600 -resize 600x400 $x `echo $x|cut -f1 -d'.'`.png
+done
+
+
