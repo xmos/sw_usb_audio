@@ -43,7 +43,7 @@ Before submitting ATS Certification Assistant results to Apple, or sending a pro
 
 Note: The USB device and configuration descriptors will automatically be configured to match the various configuration defines set (channel count etc).
 
-.. list-table::
+.. list-table:: Required customisation defines and default values.
    :header-rows: 1
    :widths: 35 53 12
 
