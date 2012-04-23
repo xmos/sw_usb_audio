@@ -1,10 +1,9 @@
 .. _usb_audio_interface_sg_hw:
 
-XMOS USB Audio Interface Hardware Development Kit (XS1-L1)
-----------------------------------------------------------
+XMOS XR-IOS-USB-AUDIO Development Kit Hardware 
+----------------------------------------------
 
-The following diagram shows the block layout of the XMOS USB Audio
-Interface Development Kit. The main purpose of the XS1-L1 is to
+The following diagram shows the block layout of the XMOS XR-IOS-USB-AUDIO Development Kit. The main purpose of the XS1-L1 is to
 provide a USB audio interface to the USB PHY and route the audio to
 the audio CODEC. 
 
@@ -16,7 +15,7 @@ the audio CODEC.
 The board has an associated firmware application that uses the USB audio 2.0 software reference
 platform. Details of this application can be found in :ref:`sec_l1_ios_audio_sw`.
 
-This platform is based on the L1 USB Audio reference design with a number of changes:
+This platform is based on the L1 USB Audio Reference Design (XR-USB-AUDIO-2.0) with a number of changes:
 
    * Reduced BOM
 
