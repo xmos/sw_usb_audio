@@ -1,11 +1,12 @@
 #include <platform.h>
 #include <assert.h>
+#include <print.h>
 #include "iic.h"
 #define DEV_ADR      (0x9C  >>1) 
 
 #include "iicports.h"
 
-int readReg(unsigned devAdr, unsigned reg, chanend c)
+int readReg(unsigned devAdr, unsigned reg, chanend ?c)
 {
     unsigned char data[1] = {0};
     iic_readC(devAdr, reg, data, 1, c, p_i2c_scl, p_i2c_sda);
@@ -27,7 +28,7 @@ void PllInit(chanend ?c)
     PLL_REGWR(0x17, 0x00); // 0x10 Always gen clock even when unlocked
 
   	/* Check */
-	assert(PLL_REGRD(0x03) == 0x07);
+    assert(PLL_REGRD(0x03) == 0x07);
     assert(PLL_REGRD(0x05) == 0x01);
     assert(PLL_REGRD(0x16) == 0x10);
     assert(PLL_REGRD(0x17) == 0x00);

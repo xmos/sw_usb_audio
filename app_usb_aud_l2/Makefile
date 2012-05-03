@@ -7,9 +7,10 @@ APP_NAME=usb_audio
 
 # The flags passed to xcc when building the application
 BUILD_FLAGS     += -DAUDIO_2 
-XCC_FLAGS       = $(BUILD_FLAGS) -fcomment-asm -Xmapper --map -Xmapper MAPFILE -Wall -O3 -report -lflash -fsubword-select -save-temps -g 
+XCC_FLAGS       = $(BUILD_FLAGS) -fcomment-asm -Xmapper --map -Xmapper MAPFILE -Wall -O3 -report -lflash -fsubword-select -save-temps -g
 #-fschedule
 
+#EXTRA_XC_FLAGS = -fstrawberry
 
 # The USED_MODULES variable lists other module used by the application. These
 # modules will extend the SOURCE_DIRS, INCLUDE_DIRS and LIB_DIRS variables. 
