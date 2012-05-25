@@ -1,4 +1,4 @@
-/**
+:/**
  * @file    main.xc
  * @brief   XMOS L2 USB 2.0 Audio 2.0 Reference Design.  Top level.
  * @author  Ross Owen, XMOS Semiconductor Ltd 
