@@ -19,6 +19,8 @@
 #include "port32A.h"
 #include "usb_midi.h"
 
+#undef IAP
+
 void audio(chanend c_mix_out, chanend?, chanend?) ;
 
 /* Audio I/O */
@@ -54,12 +56,12 @@ void mixer(chanend, chanend, chanend );
 void spdif_transmitter(buffered out port:32 p, chanend c_in);
 
 /* Endpoint type tables for XUD */
-XUD_EpType epTypeTableOut[NUM_EP_OUT] = { XUD_EPTYPE_CTL | XUD_STATUS_ENABLE, 
+XUD_EpType epTypeTableOut[NUM_EP_OUT] = { XUD_EPTYPE_CTL, 
                                             XUD_EPTYPE_ISO, 
                                             XUD_EPTYPE_BUL,
                                             XUD_EPTYPE_DIS};
 
-XUD_EpType epTypeTableIn[NUM_EP_IN] = { XUD_EPTYPE_CTL | XUD_STATUS_ENABLE,
+XUD_EpType epTypeTableIn[NUM_EP_IN] = { XUD_EPTYPE_CTL,
                                             XUD_EPTYPE_ISO, 
                                             XUD_EPTYPE_ISO,
                                             XUD_EPTYPE_BUL,
@@ -100,17 +102,20 @@ int main()
         /* USB Interface */
 #if (AUDIO_CLASS==2) 
         XUD_Manager(c_xud_out, NUM_EP_OUT, c_xud_in, NUM_EP_IN, 
-                  c_sof, epTypeTableOut, epTypeTableIn, p_usb_rst, 
+                  null, epTypeTableOut, epTypeTableIn, p_usb_rst, 
                   clk, 1, XUD_SPEED_HS, c_usb_test);  
 #else
         XUD_Manager(c_xud_out, NUM_EP_OUT, c_xud_in, NUM_EP_IN, 
-                  c_sof, epTypeTableOut, epTypeTableIn, p_usb_rst, 
+                  null, epTypeTableOut, epTypeTableIn, p_usb_rst, 
                   clk, 1, XUD_SPEED_FS, c_usb_test);  
 #endif
         
         /* Endpoint 0 */
         {
             thread_speed();
+
+    set_thread_fast_mode_on();
+
             Endpoint0( c_xud_out[0], c_xud_in[0], c_aud_ctl, null,null, c_usb_test);
         }
 

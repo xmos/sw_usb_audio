@@ -133,14 +133,14 @@ int main()
         {
             thread_speed();
             buffer(c_xud_out[1], c_xud_in[2], c_xud_in[1],
-#ifdef MIDI
+//#ifdef MIDI
                 c_xud_out[2], 
-                c_xud_in[EP_NUM_IN_MIDI], 
-#endif
-                c_xud_in[3],
+                //c_xud_in[EP_NUM_IN_MIDI], 
+//#endif
+                c_xud_in[3],c_xud_in[4],
                 c_sof, c_aud_ctl, p_for_mclk_count
 #ifdef HID_CONTROLS
-                ,c_xud_in[EP_NUM_IN_HID]
+                //,c_xud_in[EP_NUM_IN_HID]
 #endif
                 );
         }

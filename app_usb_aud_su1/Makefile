@@ -3,6 +3,7 @@
 # or a valid argument for the --target option when compiling.
 
 TARGET = S1_AUDIO
+APP_NAME = 
 
 # The flags passed to xcc when building the application
 BUILD_FLAGS     = -DAUDIO_2 -DFLASH_MAX_UPGRADE_SIZE=64*1024 -fcomment-asm -Xmapper --map -Xmapper MAPFILE -Wall -O3 -report -lflash -fsubword-select -save-temps -g -DUSB_CORE=0 -DARCH_L -DARCH_S -DBOARD_S1 -D TEST_MODE_SUPPORT 
@@ -11,8 +12,8 @@ BUILD_FLAGS     = -DAUDIO_2 -DFLASH_MAX_UPGRADE_SIZE=64*1024 -fcomment-asm -Xmap
 XCC_FLAGS_spdif = $(BUILD_FLAGS)
 INCLUDE_FLAGS_ONLY_IN_spdif = src/config_spdif
 
-XCC_FLAGS_midi = $(BUILD_FLAGS)
-INCLUDE_FLAGS_ONLY_IN_midi = src/config_midi
+#XCC_FLAGS_midi = $(BUILD_FLAGS)
+#INCLUDE_FLAGS_ONLY_IN_midi = src/config_midi
 
 # The USED_MODULES variable lists other module used by the application. These
 # modules will extend the SOURCE_DIRS, INCLUDE_DIRS and LIB_DIRS variables. 
@@ -29,3 +30,6 @@ MODULE_LIBRARIES = xud_s
 
 XMOS_MAKE_PATH ?= ../..
 include $(XMOS_MAKE_PATH)/xcommon/module_xcommon/build/Makefile.common
+
+
+
