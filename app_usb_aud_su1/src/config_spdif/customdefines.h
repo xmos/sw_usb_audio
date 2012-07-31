@@ -25,20 +25,20 @@
 #define NUM_USB_CHAN_OUT  (2)         /* Host to Device */
 
 /* Enable S/PDIF output */
-#define SPDIF         1
+#define SPDIF           1
 
 /* Run the CODEC as slave, Xcore as master */
-#define CODEC_SLAVE   1
+#define CODEC_SLAVE     1
 
-//#define HID_CONTROLS 1
+#define HID_CONTROLS    1
 
 /* Enable DFU interface, Note, requires a driver for Windows */
-#define DFU           1
+#define DFU             1
 
 /* Disable MIDI */
-#define MIDI          0
+#define MIDI            0
 
-#define MIDI_SHIFT 7
+#define MIDI_SHIFT_TX   7
 
 /* Number of IS2 chans to DAC..*/
 #define I2S_CHANS_DAC     (2)
