@@ -1,6 +1,6 @@
 /**
  * @file    main.xc
- * @brief   XMOS L2 USB 2.0 Audio 2.0 Reference Design.  Top level.
+ * @brief   Top level for XMOS L1/SU1 based USB 2.0 Audio 2.0 Reference Designs.
  * @author  Ross Owen, XMOS Semiconductor Ltd 
  */                               
 
@@ -16,6 +16,7 @@
 #include "devicedefines.h"      /* Device specific defines */  
 #include "endpoint0.h"
 #include "usb_buffer.h"
+#include "decouple.h"
 #include "port32A.h"
 #include "usb_midi.h"
 
@@ -53,8 +54,6 @@ on stdcore[0] : clock    clk_audio_mclk           = XS1_CLKBLK_2;     /* Master 
 on stdcore[0] : clock    clk_audio_bclk           = XS1_CLKBLK_3;     /* Bit clock */
 #define clk              null
 on stdcore[0] : clock    clk_mst_spd              = XS1_CLKBLK_1;
-
-void decouple(chanend, chanend?, chanend?);
 
 void mixer(chanend, chanend, chanend );
 
@@ -129,29 +128,35 @@ int main()
             Endpoint0( c_xud_out[0], c_xud_in[0], c_aud_ctl, null,null, c_usb_test);
         }
 
-        /* Buffer / EP Man */
         {
             thread_speed();
-            buffer(c_xud_out[1], c_xud_in[2], c_xud_in[1],
-//#ifdef MIDI
-                c_xud_out[2], 
-                //c_xud_in[EP_NUM_IN_MIDI], 
-//#endif
-                c_xud_in[3],c_xud_in[4],
+
+            buffer(c_xud_out[EP_NUM_OUT_AUD],   /* Audio Out*/
+                c_xud_in[EP_NUM_IN_AUD],     /* Audio In */
+                c_xud_in[EP_NUM_IN_FB],      /* Audio FB */
+#ifdef MIDI 
+                c_xud_out[EP_NUM_OUT_MIDI],  /* MIDI Out */ // 2
+                c_xud_in[EP_NUM_IN_MIDI],    /* MIDI In */  // 4
+                c_midi,
+#endif
+                c_xud_in[EP_NUM_IN_AUD_INT], /* Int */
                 c_sof, c_aud_ctl, p_for_mclk_count
 #ifdef HID_CONTROLS
-                //,c_xud_in[EP_NUM_IN_HID]
+                ,c_xud_in[EP_NUM_IN_HID]
 #endif
                 );
+
         }
+
+
 
         {
             thread_speed();
             decouple(c_mix_out,
 #ifdef MIDI
-               c_midi,
+               //c_midi,
 #else
-               null,
+               //null,
 #endif
                null);
         }
@@ -168,7 +173,6 @@ int main()
         }
 #endif
     }
-
     return 0;
 }
 
