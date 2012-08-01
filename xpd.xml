@@ -5,29 +5,30 @@
         <uri>git://git/apps/sc_ios</uri>
     </dependency>
     <dependency repo = "sc_usb">
-        <githash>3ff42aa6693403b4a6916bf4d92906ef149525c1</githash>
+        <githash>5220804a60755692802b6e71f064f3dd0ff4b8e1</githash>
         <uri>git://git/apps/sc_usb</uri>
     </dependency>
     <dependency repo = "sc_spdif">
-        <githash>426366efccc5c48472c917f1009a213b49bab8ee</githash>
+        <githash>04eca3570488bf062d1aa9db2e1175cc08a6142f</githash>
         <uri>git://github.com/xcore/sc_spdif</uri>
+        <version>1.3.0rc2</version>
     </dependency>
     <dependency repo = "sc_usb_audio">
-        <githash>ac0fa94bc7aeefc9b98ced1ebe9b0e78534fb1f0</githash>
+        <githash>9f8893aae1eeeac55bc2bc16ce8e6e46479e287f</githash>
         <uri>git://git/apps/sc_usb_audio</uri>
     </dependency>
     <dependency repo = "xcommon">
-        <githash>f035daf04c248b398925a9ac74a60719d9f194c3</githash>
+        <githash>29eb6d6ab9a128fe2cd5eb8060735258a89a81ac</githash>
         <uri>git://github.com/xcore/xcommon</uri>
     </dependency>
     <dependency repo = "sc_xud">
-        <githash>b7d903ce359df8e689019da419ca0f09ca9c6cd0</githash>
+        <githash>9e5328106602b9cd13a1e52949da3a018290adc8</githash>
         <uri>git://git/apps/sc_xud</uri>
     </dependency>
     <description>USB Audio</description>
     <location>git://git/apps/sw_usb_audio</location>
     <name>sw_usb_audio</name>
     <maintainer>Ross</maintainer>
-    <release parenthash = "b2a76343f69bcc2dd10ded9f53c84bb76c63f7ff" version = "6.0.0alpha0"></release>
+    <release parenthash = "b2a76343f69bcc2dd10ded9f53c84bb76c63f7ff" version = "6.0.0alpha0" githash = "6d3ad975a906402f2cce649fc61e3caf4ab73d77"></release>
     <xpd_version>1.0</xpd_version>
 </xpd>
