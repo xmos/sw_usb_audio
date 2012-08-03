@@ -9,8 +9,8 @@ APP_NAME =
 BUILD_FLAGS     = -DAUDIO_2 -DFLASH_MAX_UPGRADE_SIZE=64*1024 -fcomment-asm -Xmapper --map -Xmapper MAPFILE -Wall -O3 -report -lflash -fsubword-select -save-temps -g -DUSB_CORE=0 -DARCH_L -D TEST_MODE_SUPPORT -DARCH_S
 #-fschedule
 
-XCC_FLAGS_spdif = $(BUILD_FLAGS)
-INCLUDE_ONLY_IN_spdif = src/config_spdif
+#XCC_FLAGS_spdif = $(BUILD_FLAGS)
+#INCLUDE_ONLY_IN_spdif = src/config_spdif
 
 #XCC_FLAGS_midi = $(BUILD_FLAGS)
 #INCLUDE_ONLY_IN_midi = src/config_midi
@@ -23,7 +23,9 @@ USED_MODULES = module_usb_aud_l1 module_usb_shared module_xud module_usb_aud_sha
 
 MODULE_LIBRARIES = xud_s
 
-XCC_FLAGS = $(XCC_FLAGS_spdif)
+#XCC_FLAGS = $(XCC_FLAGS_spdif)
+XCC_FLAGS = $(BUILD_FLAGS)
+
 
 #=============================================================================
 # The following part of the Makefile includes the common build infrastructure

@@ -30,8 +30,6 @@
 /* Run the CODEC as slave, Xcore as master */
 #define CODEC_SLAVE     1
 
-#define HID_CONTROLS    1
-
 /* Enable DFU interface, Note, requires a driver for Windows */
 #define DFU             1
 
