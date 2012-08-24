@@ -2,11 +2,11 @@
 # compiled for. It either refers to an XN file in the source directories
 # or a valid argument for the --target option when compiling.
 
-TARGET = L1_AUDIO
+TARGET = xr-usb-audio-2.0
 APP_NAME =
 
 # The flags passed to xcc when building the application
-BUILD_FLAGS     = -DAUDIO_2 -DFLASH_MAX_UPGRADE_SIZE=64*1024 -fcomment-asm -Xmapper --map -Xmapper MAPFILE -Wall -O3 -report -lflash -fsubword-select -save-temps -g -DUSB_CORE=0 -DARCH_L -D TEST_MODE_SUPPORT
+BUILD_FLAGS     = -DAUDIO_2 -DFLASH_MAX_UPGRADE_SIZE=64*1024 -fcomment-asm -Xmapper --map -Xmapper MAPFILE -Wall -O3 -report -lflash -fsubword-select -save-temps -g -DUSB_CORE=0 -DARCH_L -D TEST_MODE_SUPPORT 
 #-fschedule
 
 XCC_FLAGS_spdif = $(BUILD_FLAGS)
@@ -18,12 +18,9 @@ INCLUDE_ONLY_IN_midi = src/config_midi
 # The USED_MODULES variable lists other module used by the application. These
 # modules will extend the SOURCE_DIRS, INCLUDE_DIRS and LIB_DIRS variables. 
 # Modules are expected to be in the directory above the BASE_DIR directory.
-
-USED_MODULES = module_usb_aud_l1 module_usb_shared module_xud module_usb_aud_shared module_spdif_tx module_spdif_rx module_usb_midi sc_usb_audio/module_dfu
+USED_MODULES = module_usb_shared module_xud module_usb_aud_shared module_spdif_tx module_spdif_rx module_usb_midi sc_usb_audio/module_dfu
 
 MODULE_LIBRARIES = xud_l
-
-XCC_FLAGS = $(XCC_FLAGS_midi)
 
 #=============================================================================
 # The following part of the Makefile includes the common build infrastructure
