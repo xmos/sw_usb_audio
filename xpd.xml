@@ -5,7 +5,7 @@
         <uri>git://git/apps/sc_ios</uri>
     </dependency>
     <dependency repo = "sc_usb">
-        <githash>5220804a60755692802b6e71f064f3dd0ff4b8e1</githash>
+        <githash>89948f8e690ebef77ac5c3124a8555d3cc0745a9</githash>
         <uri>git://git/apps/sc_usb</uri>
     </dependency>
     <dependency repo = "sc_spdif">
@@ -14,21 +14,27 @@
         <version>1.3.0rc2</version>
     </dependency>
     <dependency repo = "sc_usb_audio">
-        <githash>9f8893aae1eeeac55bc2bc16ce8e6e46479e287f</githash>
+        <githash>af648bf3d20ac904634db628a2099090c4af10af</githash>
         <uri>git://git/apps/sc_usb_audio</uri>
     </dependency>
     <dependency repo = "xcommon">
-        <githash>29eb6d6ab9a128fe2cd5eb8060735258a89a81ac</githash>
+        <githash>cdcfc87c8c6047bf8d21f13222cbe9e84c6c5e01</githash>
         <uri>git://github.com/xcore/xcommon</uri>
     </dependency>
     <dependency repo = "sc_xud">
-        <githash>9e5328106602b9cd13a1e52949da3a018290adc8</githash>
+        <githash>23caa2f04480bba01b064dabfb8eac36c1a16b79</githash>
         <uri>git://git/apps/sc_xud</uri>
+    </dependency>
+    <dependency repo = "sc_i2c">
+        <githash>35a77a7dfd5cb5a4c39f35fef721fcd1ea42a45b</githash>
+        <uri>git@github.com:xross/sc_i2c.git</uri>
     </dependency>
     <description>USB Audio</description>
     <location>git://git/apps/sw_usb_audio</location>
     <name>sw_usb_audio</name>
     <maintainer>Ross</maintainer>
     <release parenthash = "b2a76343f69bcc2dd10ded9f53c84bb76c63f7ff" version = "6.0.0alpha0" githash = "6d3ad975a906402f2cce649fc61e3caf4ab73d77"></release>
+    <scope>Reference Design</scope>
+    <vendor>XMOS</vendor>
     <xpd_version>1.0</xpd_version>
 </xpd>
