@@ -8,7 +8,7 @@ Each application contains a "core" folder, this folder contains items that are r
 application framework.  Mandatory files per application include: 
 
 - An XN file describing the board (ports map etc). The filename referenced in the application makefile.
-- customdefines.h header file containing configuration items such as channel count etc.
+- customdefines.h header file containing configuration items such as channel count, strings etc.
 - ports.h header file containing other ports that the application uses in addition to the required ports.
 
 Each application also contains an "extensions" folder which includes board specific extensions such as CODEC 
