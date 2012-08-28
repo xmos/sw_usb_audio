@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Network xmlns="http://www.xmos.com"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.xmos.com http://www.xmos.com">
+<Type>Board</Type>
+    <Name>L1 USB Audio Reference Design Board</Name>
+
+    <Declarations>
+        <Declaration>core stdcore[1]</Declaration>
+    </Declarations>
+
+            <Nodes>
+                <Node Id="0" Type="XS1-L1A" Oscillator="13MHz" SystemFrequency="500MHz">
+                    <Boot>
+                        <Source Location="SPI:bootFlash"/>
+                    </Boot>
+                    <Core Number="0" Reference="stdcore[0]">
+                        <Port Location="XS1_PORT_1A" Name="PORT_SPI_MISO"/>
+                        <Port Location="XS1_PORT_1B" Name="PORT_SPI_SS"/>
+                        <Port Location="XS1_PORT_1C" Name="PORT_SPI_CLK"/>
+                        <Port Location="XS1_PORT_1D" Name="PORT_SPI_MOSI"/>
+                        
+                    </Core>
+                </Node>
+            </Nodes>
+    <ExternalDevices>
+        <Device NodeId="0" Core="0" Class="SPIFlash" Name="bootFlash" Type="AT25FS010">
+            <Attribute Name="PORT_SPI_MISO" Value="PORT_SPI_MISO"/>
+            <Attribute Name="PORT_SPI_SS"   Value="PORT_SPI_SS"/>
+            <Attribute Name="PORT_SPI_CLK"  Value="PORT_SPI_CLK"/>
+            <Attribute Name="PORT_SPI_MOSI" Value="PORT_SPI_MOSI"/>
+        </Device>
+    </ExternalDevices>
+
+    <JTAGChain>
+        <JTAGDevice NodeId="0"/>
+    </JTAGChain>
+</Network>
+
+
+
