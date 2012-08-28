@@ -24,10 +24,8 @@
 #define NUM_USB_CHAN_IN   (2)         /* Device to Host */
 #define NUM_USB_CHAN_OUT  (2)         /* Host to Device */
 
-//#define HID_CONTROLS 1
-
 /* Enable S/PDIF output */
-#define SPDIF         0
+//#define SPDIF         0  // In makefile
 
 /* Run the CODEC as slave, Xcore as master */
 #define CODEC_SLAVE   1
@@ -36,7 +34,7 @@
 #define DFU           1
 
 /* Disable MIDI */
-#define MIDI          1
+//#define MIDI          1  // In makefile
 
 /* Number of IS2 chans to DAC..*/
 #define I2S_CHANS_DAC     (2)
