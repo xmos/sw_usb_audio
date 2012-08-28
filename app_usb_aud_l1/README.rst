@@ -47,11 +47,7 @@ Known Issues
 
 -  Buttons A and B currently have no functionality attached to them
 
--  Windows XP volume control very sensitive.  The Audio 1.0 driver built into Windows XP (usbaudio.sys) does not properly support master volume AND channel volume controls, leading to a very sensitive control.  Descriptors can be easily modified to disable master volume control if required (one byte - bmaControls(0) in Feature Unit descriptors)
-
--  88.2kHz and 176.4kHz sample frequencies are not exposed in Windows control panels.  This is due to known OS restrictions
-
--  CODEC (CS4270) auto-mute/soft-ramp feature can cause volume ramp at start of playback.  These features cannot be disabled on the reference board since CODEC is used in Hardware Mode
+-  CODEC (CS4270) auto-mute/soft-ramp feature can cause volume ramp at start of playback.  These features cannot be disabled on the reference board since CODEC is used in Hardware Mode (i.e. not configured using I2C)
 
 
 Host System Requirements
