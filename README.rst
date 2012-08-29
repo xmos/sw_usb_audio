@@ -3,10 +3,10 @@ XMOS USB Audio 2.0 Reference Designs (sw_usb_audio)
 
 Release Version: %%VERSION%% (build %%BUILDNUMBER%%)
 
-Please note this is an non-general ALPHA release.  This release has had *no formal testing*.  Further limitations are 
-as follows:
+Please note this is an non-generally available ALPHA release.  This release has had *no formal testing*.  
+Further limitations are as follows:
 
-- The following applications have been found to build and run. All others may fail to build.
+- The following listed applications have been found to build and run. All others may fail to build.
     - app_usb_aud_l1
     - app_usb_aud_su1
     - app_usb_aud_skc_su1
