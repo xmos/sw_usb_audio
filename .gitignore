@@ -1,4 +1,5 @@
 */.build_*/*
+*/.build*/*
 */bin/*
 *.o
 *.xe
@@ -9,3 +10,7 @@
 *.a
 *.swp
 *.*~
+*.xmt
+*.swo
+*~
+*.DS_Store
