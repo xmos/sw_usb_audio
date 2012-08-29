@@ -37,4 +37,5 @@
     <scope>Reference Design</scope>
     <vendor>XMOS</vendor>
     <xpd_version>1.0</xpd_version>
+    <exclude_dir>app_usb_aud_l2</exclude_dir>
 </xpd>
