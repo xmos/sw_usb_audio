@@ -19,7 +19,7 @@ INCLUDE_ONLY_IN_midi =
 # modules will extend the SOURCE_DIRS, INCLUDE_DIRS and LIB_DIRS variables. 
 # Modules are expected to be in the directory above the BASE_DIR directory.
 
-USED_MODULES = module_usb_shared module_xud module_usb_aud_shared module_spdif_tx module_spdif_rx module_usb_midi sc_usb_audio/module_dfu
+USED_MODULES = module_usb_shared module_xud module_usb_aud_shared module_spdif_tx module_spdif_rx module_usb_midi sc_usb_audio/module_dfu module_i2c_simple 
 
 MODULE_LIBRARIES = xud_s
 

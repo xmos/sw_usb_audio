@@ -24,12 +24,12 @@
             <Port Location="XS1_PORT_1D"  Name="PORT_SPI_MOSI"/>
             <!-- Standard USB Audio Ports -->
             <Port Location="XS1_PORT_1A"  Name="PORT_I2S_BCLK"/>
-            <Port Location="XS1_PORT_1B"  Name="PORT_SPDIF_OUT"/>
             <Port Location="XS1_PORT_1C"  Name="PORT_I2S_LRCLK"/>
             <Port Location="XS1_PORT_1D"  Name="PORT_I2S_DAC0"/>
             <Port Location="XS1_PORT_1E"  Name="PORT_MCLK_IN"/>
             <Port Location="XS1_PORT_1F"  Name="PORT_MIDI_IN"/>
             <Port Location="XS1_PORT_1I"  Name="PORT_I2S_ADC0"/>
+            <Port Location="XS1_PORT_1L"  Name="PORT_SPDIF_OUT"/>
             <Port Location="XS1_PORT_8D"  Name="PORT_MIDI_OUT"/>
             <Port Location="XS1_PORT_16B"  Name="PORT_MCLK_COUNT"/>
             <!-- Additional Ports -->

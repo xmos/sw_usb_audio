@@ -22,8 +22,6 @@ USED_MODULES = module_usb_shared module_xud module_usb_aud_shared module_spdif_t
 
 MODULE_LIBRARIES = xud_l
 
-XCC_FLAGS = $(XCC_FLAGS_midi)
-
 
 #=============================================================================
 # The following part of the Makefile includes the common build infrastructure

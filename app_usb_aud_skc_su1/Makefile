@@ -10,20 +10,17 @@ BUILD_FLAGS     = -DAUDIO_2 -DFLASH_MAX_UPGRADE_SIZE=64*1024 -fcomment-asm -Xmap
 #-fschedule
 
 XCC_FLAGS_spdif = $(BUILD_FLAGS) -DSPDIF=1
-#INCLUDE_ONLY_IN_spdif = src/config_spdif
+INCLUDE_ONLY_IN_spdif = 
 
 XCC_FLAGS_midi = $(BUILD_FLAGS) -DMIDI=1
-#INCLUDE_ONLY_IN_spdif = src/config_midi
+INCLUDE_ONLY_IN_spdif = 
 
 # The USED_MODULES variable lists other module used by the application. These
 # modules will extend the SOURCE_DIRS, INCLUDE_DIRS and LIB_DIRS variables. 
 # Modules are expected to be in the directory above the BASE_DIR directory.
-
 USED_MODULES = module_usb_shared module_xud module_usb_aud_shared module_spdif_tx module_spdif_rx module_usb_midi sc_usb_audio/module_dfu module_i2c_single_port
 
 MODULE_LIBRARIES = xud_s
-
-XCC_FLAGS = $(XCC_FLAGS_midi)
 
 #=============================================================================
 # The following part of the Makefile includes the common build infrastructure

@@ -24,8 +24,8 @@
 #define NUM_USB_CHAN_IN   (2)         /* Device to Host */
 #define NUM_USB_CHAN_OUT  (2)         /* Host to Device */
 
-/* Enable S/PDIF output */
-#define SPDIF           1
+/* Enable S/PDIF output - In makefile */
+//#define SPDIF           1
 
 /* Run the CODEC as slave, Xcore as master */
 #define CODEC_SLAVE     1
@@ -33,8 +33,8 @@
 /* Enable DFU interface, Note, requires a driver for Windows */
 #define DFU             1
 
-/* Disable MIDI */
-#define MIDI            0
+/* Disable MIDI - In makefile*/
+//#define MIDI            0
 
 #define MIDI_SHIFT_TX   7
 
