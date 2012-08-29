@@ -22,6 +22,7 @@ USED_MODULES = module_usb_shared module_xud module_usb_aud_shared module_spdif_t
 
 MODULE_LIBRARIES = xud_s
 
+
 #=============================================================================
 # The following part of the Makefile includes the common build infrastructure
 # for compiling XMOS applications. You should not need to edit below here.
