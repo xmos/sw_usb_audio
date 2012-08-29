@@ -6,7 +6,7 @@ Release version: %%VERSION%% (build %%BUILDNUMBER%%)
 Firmware
 ========
 
-6v00 (ALPHA):    
+6v00:    
     - ADDED:      Support for SU1 (Via SU1 Core Board and Audio Slice) - see app_usb_aud_skc_su1
     - ADDED:      Design moved to new build system
     - ADDED:      Optional support for USB test modes

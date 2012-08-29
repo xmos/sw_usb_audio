@@ -1,15 +1,38 @@
 XMOS USB Audio 2.0 Reference Designs (sw_usb_audio)
 ...................................................
 
+Release Version: %%VERSION%% (build %%BUILDNUMBER%%)
+
+Please note this is an non-general ALPHA release.  This release has had *no formal testing*.  Further limitations are 
+as follows:
+
+- The following applications have been found to build and run. All others may fail to build.
+    - app_usb_aud_l1
+    - app_usb_aud_su1
+    - app_usb_aud_skc_su1
+- Documentation still do be updated
+- Build warnings may be present
+- iOS support does not build
+
 This repo contains applications (or instances) of the XMOS USB Audio Reference Design framework.  These applications
-typically relate to a specific board.
+typically relate to a specific board.  This repo contains the following:
+
+    App Name         |     Relevant Board(s)    |                Description
+----------------------------------------------------------------------------------------------------------
+app_usb_aud_l1       | xr-usb-audio-2.0         | XMOS XS1-L1 USB Audio Reference Design
+app_usb_aud_l1_ios   | xr-ios-usb-audio         | XMOS XS1-L1 USB Audio Interface for iOS
+app_usb_aud_l2       | xr-usb-audio-2.0-mc      | XMOS XS1-L2 USB Audio Multi-channel Reference Design
+app_usb_aud_skc_su1  | xp-skc-su1 + xa-sk-audio | XMOS SU1 USB Audio Kit
+app_usb_aud_su1      | xr-usb-audio-s1          | XMOS SU1 USB Audio Reference Design (prototype only)
+
+Please refer to individual README files in these apps for more detailed information.
 
 Each application contains a "core" folder, this folder contains items that are required to use and run the USB audio 
 application framework.  Mandatory files per application include: 
 
-- An XN file describing the board (ports map etc). The filename referenced in the application makefile.
+- An XN file describing the board including required port defines. The XN file is referenced in the application makefile.
 - customdefines.h header file containing configuration items such as channel count, strings etc.
-- ports.h header file containing other ports that the application uses in addition to the required ports.
+- ports.h header file containing delcarations of ports that the application uses in addition to the ports in the XN file.
 
 Each application also contains an "extensions" folder which includes board specific extensions such as CODEC 
 configuration etc.
