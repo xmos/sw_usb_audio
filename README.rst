@@ -2,7 +2,7 @@ XMOS USB Audio 2.0 Reference Designs (sw_usb_audio)
 ...................................................
 
 :Latest release: 6.0.0alpha6
-:Maintainer: Ross
+:Maintainer: Ross Owen
 :Description: USB Audio
 
 Release Version: %%VERSION%% (build %%BUILDNUMBER%%)
@@ -14,7 +14,7 @@ Further limitations are as follows:
     - app_usb_aud_l1
     - app_usb_aud_su1
     - app_usb_aud_skc_su1
-- Documentation still do be updated
+- Documentation still to be updated
 - Build warnings may be present
 - iOS support does not build
 
@@ -41,7 +41,8 @@ application framework.  Mandatory files per application include:
 Each application also contains an "extensions" folder which includes board specific extensions such as CODEC 
 configuration etc.
 
-Additionally some options are contained in Makefiles for building multiple configurations of an application.
+Additionally some options are contained in Makefiles for building multiple configurations of an application. For example 
+app_usb_aud_l1 builds a MIDI and a S/PDIF configuration.
 
 Key Framework Features
 ======================

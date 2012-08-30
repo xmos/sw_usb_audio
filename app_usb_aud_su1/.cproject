@@ -1,0 +1,1747 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<?fileVersion 4.0.0?>
+<cproject storage_type_id="org.eclipse.cdt.core.XmlProjectDescriptionStorage">
+    <storageModule moduleId="org.eclipse.cdt.core.settings">
+              
+        <cconfiguration id="com.xmos.cdt.toolchain.37459629">
+            <storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="com.xmos.cdt.toolchain.37459629" moduleId="org.eclipse.cdt.core.settings" name="Default">
+                <externalSettings />
+                <extensions>
+                    <extension id="com.xmos.cdt.core.XEBinaryParser" point="org.eclipse.cdt.core.BinaryParser" />
+                    <extension id="com.xmos.cdt.core.XdeErrorParser" point="org.eclipse.cdt.core.ErrorParser" />
+                    <extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser" />
+                </extensions>
+            </storageModule>
+            <storageModule moduleId="org.eclipse.cdt.make.core.buildtargets">
+                <buildTargets>
+                    <target name="all" path=""
+targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+                        <buildCommand>xmake</buildCommand>
+                        <buildArguments></buildArguments>
+                        <buildTarget>all</buildTarget>
+                        <stopOnError>true</stopOnError>
+                        <useDefaultCommand>true</useDefaultCommand>
+                        <runAllBuilders>true</runAllBuilders>
+                    </target>
+                    <target name="clean" path=""
+targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+                        <buildCommand>xmake</buildCommand>
+                        <buildArguments></buildArguments>
+                        <buildTarget>clean</buildTarget>
+                        <stopOnError>true</stopOnError>
+                        <useDefaultCommand>true</useDefaultCommand>
+                        <runAllBuilders>true</runAllBuilders>
+                    </target>
+                </buildTargets>
+            </storageModule>
+            <storageModule moduleId="cdtBuildSystem" version="4.0.0">
+                <configuration buildProperties="" description="" id="com.xmos.cdt.toolchain.37459629" name="Default" parent="org.eclipse.cdt.build.core.emptycfg">
+                    <folderInfo id="com.xmos.cdt.toolchain.37459629.1127281840" name="/" resourcePath="">
+                        <toolChain id = "com.xmos.cdt.toolchain.87110580" name="com.xmos.cdt.toolchain" superClass="com.xmos.cdt.toolchain">
+                            <targetPlatform archList="all" binaryParser="com.xmos.cdt.core.XEBinaryParser" id = "com.xmos.cdt.core.platform.26109867" isAbstract="false" osList="linux,win32,macosx" superClass="com.xmos.cdt.core.platform" />
+                            <builder arguments="" id = "com.xmos.cdt.builder.base.67381582" keepEnvironmentInBuildfile="false" managedBuildOn="false" superClass="com.xmos.cdt.builder.base">
+                                <outputEntries>
+                                    <entry flags="VALUE_WORKSPACE_PATH" kind="outputPath" name="bin" />
+                                </outputEntries>
+                            </builder>
+                            <tool id = "com.xmos.cdt.xc.compiler.93823057" name="com.xmos.cdt.xc.compiler" superClass="com.xmos.cdt.xc.compiler">
+                                <option id = "com.xmos.c.compiler.option.include.paths.26500066" name="com.xmos.c.compiler.option.include.paths" superClass="com.xmos.c.compiler.option.include.paths" valueType="includePath">
+                                    <listOptionValue builtIn="false" value='&quot;${XMOS_DOC_PATH}/../target/include&quot;' />
+                                    <listOptionValue builtIn="false" value='&quot;${XMOS_DOC_PATH}/../target/include/gcc&quot;' />
+                                    <listOptionValue builtIn="false" value='&quot;${XMOS_DOC_PATH}/../target/include/c++/4.2.1&quot;' />
+                                    <listOptionValue builtIn="false" value='&quot;${XMOS_DOC_PATH}/../target/include/c++/4.2.1/xcore-xmos-elf&quot;' />
+                                    <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/endpoint0}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_midi/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/endpoint0}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/flashlib_user}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/flashlib_user}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/codec}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/include}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/codec}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi/src}&quot;' />
+
+                                </option>
+                                <inputType id = "com.xmos.cdt.xc.compiler.input.10983197" name="XC Sources" superClass="com.xmos.cdt.xc.compiler.input" />
+                                <option id = "gnu.c.compiler.option.include.paths.42654109" valueType="includePath" superClass="gnu.c.compiler.option.include.paths">
+                                    <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/endpoint0}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_midi/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/endpoint0}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/flashlib_user}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/flashlib_user}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/codec}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/include}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/codec}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi/src}&quot;' />
+
+                                </option>
+                            </tool>
+                            <tool id = "com.xmos.cdt.xc.compiler.base.99897954" name="com.xmos.cdt.xc.compiler.base" superClass="com.xmos.cdt.xc.compiler.base">
+                                <option id = "gnu.c.compiler.option.include.paths.93980765" valueType="includePath" superClass="gnu.c.compiler.option.include.paths">
+                                    <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/endpoint0}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_midi/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/endpoint0}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/flashlib_user}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/flashlib_user}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/codec}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/include}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/codec}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi/src}&quot;' />
+
+                                </option>
+                                <option id = "com.xmos.c.compiler.option.include.paths.18403549" valueType="includePath" superClass="com.xmos.c.compiler.option.include.paths">
+                                    <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/endpoint0}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_midi/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/endpoint0}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/flashlib_user}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/flashlib_user}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/codec}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/include}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/codec}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi/src}&quot;' />
+
+                                </option>
+                            </tool>
+                            <tool id = "com.xmos.cdt.c.compiler.base.83822346" name="com.xmos.cdt.c.compiler.base" superClass="com.xmos.cdt.c.compiler.base">
+                                <option id = "gnu.c.compiler.option.include.paths.79654724" valueType="includePath" superClass="gnu.c.compiler.option.include.paths">
+                                    <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/endpoint0}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_midi/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/endpoint0}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/flashlib_user}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/flashlib_user}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/codec}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/include}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/codec}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi/src}&quot;' />
+
+                                </option>
+                                <option id = "com.xmos.c.compiler.option.include.paths.60561051" valueType="includePath" superClass="com.xmos.c.compiler.option.include.paths">
+                                    <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/endpoint0}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_midi/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/endpoint0}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/flashlib_user}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/flashlib_user}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/codec}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/include}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/codec}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi/src}&quot;' />
+
+                                </option>
+                            </tool>
+                            <tool id = "com.xmos.cdt.cpp.compiler.base.88500995" name="com.xmos.cdt.cpp.compiler.base" superClass="com.xmos.cdt.cpp.compiler.base">
+                                <option id = "gnu.c.compiler.option.include.paths.2597691" valueType="includePath" superClass="gnu.c.compiler.option.include.paths">
+                                    <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/endpoint0}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_midi/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/endpoint0}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/flashlib_user}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/flashlib_user}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/codec}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/include}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/codec}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi/src}&quot;' />
+
+                                </option>
+                                <option id = "com.xmos.c.compiler.option.include.paths.28063360" valueType="includePath" superClass="com.xmos.c.compiler.option.include.paths">
+                                    <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/endpoint0}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_midi/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/endpoint0}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/flashlib_user}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/flashlib_user}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/codec}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/include}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/codec}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi/src}&quot;' />
+
+                                </option>
+                            </tool>
+                            <tool id = "com.xmos.cdt.core.assembler.base.37917210" name="com.xmos.cdt.core.assembler.base" superClass="com.xmos.cdt.core.assembler.base">
+                                <option id = "gnu.c.compiler.option.include.paths.52568939" valueType="includePath" superClass="gnu.c.compiler.option.include.paths">
+                                    <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/endpoint0}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_midi/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/endpoint0}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/flashlib_user}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/flashlib_user}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/codec}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/include}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/codec}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi/src}&quot;' />
+
+                                </option>
+                                <option id = "com.xmos.c.compiler.option.include.paths.57185791" valueType="includePath" superClass="com.xmos.c.compiler.option.include.paths">
+                                    <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/endpoint0}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_midi/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/endpoint0}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/flashlib_user}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/flashlib_user}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/codec}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/include}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/codec}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi/src}&quot;' />
+
+                                </option>
+                            </tool>
+
+                        </toolChain>
+                    </folderInfo>
+                </configuration>
+            </storageModule>
+            <storageModule moduleId="scannerConfiguration">
+                <autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="" />
+                <profile id="org.eclipse.cdt.make.core.GCCStandardMakePerProjectProfile">
+                    <buildOutputProvider>
+                        <openAction enabled="true" filePath="" />
+                        <parser enabled="true" />
+                    </buildOutputProvider>
+                    <scannerInfoProvider id="specsFile">
+                        <runAction arguments="-E -P -v -dD ${plugin_state_location}/${specs_file}" command="gcc" useDefault="true" />
+                        <parser enabled="true" />
+                    </scannerInfoProvider>
+                </profile>
+                <profile id="org.eclipse.cdt.make.core.GCCStandardMakePerFileProfile">
+                    <buildOutputProvider>
+                        <openAction enabled="true" filePath="" />
+                        <parser enabled="true" />
+                    </buildOutputProvider>
+                    <scannerInfoProvider id="makefileGenerator">
+                        <runAction arguments="-E -P -v -dD" command="" useDefault="true" />
+                        <parser enabled="true" />
+                    </scannerInfoProvider>
+                </profile>
+                <profile id="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfile">
+                    <buildOutputProvider>
+                        <openAction enabled="true" filePath="" />
+                        <parser enabled="true" />
+                    </buildOutputProvider>
+                    <scannerInfoProvider id="specsFile">
+                        <runAction arguments="-E -P -v -dD ${plugin_state_location}/${specs_file}" command="gcc" useDefault="true" />
+                        <parser enabled="true" />
+                    </scannerInfoProvider>
+                </profile>
+                <profile id="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileCPP">
+                    <buildOutputProvider>
+                        <openAction enabled="true" filePath="" />
+                        <parser enabled="true" />
+                    </buildOutputProvider>
+                    <scannerInfoProvider id="specsFile">
+                        <runAction arguments="-E -P -v -dD ${plugin_state_location}/specs.cpp" command="g++" useDefault="true" />
+                        <parser enabled="true" />
+                    </scannerInfoProvider>
+                </profile>
+                <profile id="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileC">
+                    <buildOutputProvider>
+                        <openAction enabled="true" filePath="" />
+                        <parser enabled="true" />
+                    </buildOutputProvider>
+                    <scannerInfoProvider id="specsFile">
+                        <runAction arguments="-E -P -v -dD ${plugin_state_location}/specs.c" command="gcc" useDefault="true" />
+                        <parser enabled="true" />
+                    </scannerInfoProvider>
+                </profile>
+                <profile id="org.eclipse.cdt.managedbuilder.core.GCCWinManagedMakePerProjectProfile">
+                    <buildOutputProvider>
+                        <openAction enabled="true" filePath="" />
+                        <parser enabled="true" />
+                    </buildOutputProvider>
+                    <scannerInfoProvider id="specsFile">
+                        <runAction arguments='-c &apos;gcc -E -P -v -dD &quot;${plugin_state_location}/${specs_file}&quot;&apos;' command="sh" useDefault="true" />
+                        <parser enabled="true" />
+                    </scannerInfoProvider>
+                </profile>
+                <profile id="org.eclipse.cdt.managedbuilder.core.GCCWinManagedMakePerProjectProfileCPP">
+                    <buildOutputProvider>
+                        <openAction enabled="true" filePath="" />
+                        <parser enabled="true" />
+                    </buildOutputProvider>
+                    <scannerInfoProvider id="specsFile">
+                        <runAction arguments='-c &apos;g++ -E -P -v -dD &quot;${plugin_state_location}/specs.cpp&quot;&apos;' command="sh" useDefault="true" />
+                        <parser enabled="true" />
+                    </scannerInfoProvider>
+                </profile>
+                <profile id="org.eclipse.cdt.managedbuilder.core.GCCWinManagedMakePerProjectProfileC">
+                    <buildOutputProvider>
+                        <openAction enabled="true" filePath="" />
+                        <parser enabled="true" />
+                    </buildOutputProvider>
+                    <scannerInfoProvider id="specsFile">
+                        <runAction arguments='-c &apos;gcc -E -P -v -dD &quot;${plugin_state_location}/specs.c&quot;&apos;' command="sh" useDefault="true" />
+                        <parser enabled="true" />
+                    </scannerInfoProvider>
+                </profile>
+            </storageModule>
+            <storageModule moduleId="org.eclipse.cdt.core.externalSettings" />
+            <storageModule moduleId="org.eclipse.cdt.core.language.mapping" />
+            <storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings" />
+        </cconfiguration>
+
+        <cconfiguration id="com.xmos.cdt.toolchain.60695315">
+            <storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="com.xmos.cdt.toolchain.60695315" moduleId="org.eclipse.cdt.core.settings" name="spdif">
+                <externalSettings />
+                <extensions>
+                    <extension id="com.xmos.cdt.core.XEBinaryParser" point="org.eclipse.cdt.core.BinaryParser" />
+                    <extension id="com.xmos.cdt.core.XdeErrorParser" point="org.eclipse.cdt.core.ErrorParser" />
+                    <extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser" />
+                </extensions>
+            </storageModule>
+            <storageModule moduleId="org.eclipse.cdt.make.core.buildtargets">
+                <buildTargets>
+                    <target name="all" path=""
+targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+                        <buildCommand>xmake</buildCommand>
+                        <buildArguments>CONFIG=spdif</buildArguments>
+                        <buildTarget>all</buildTarget>
+                        <stopOnError>true</stopOnError>
+                        <useDefaultCommand>true</useDefaultCommand>
+                        <runAllBuilders>true</runAllBuilders>
+                    </target>
+                    <target name="clean" path=""
+targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+                        <buildCommand>xmake</buildCommand>
+                        <buildArguments>CONFIG=spdif</buildArguments>
+                        <buildTarget>clean</buildTarget>
+                        <stopOnError>true</stopOnError>
+                        <useDefaultCommand>true</useDefaultCommand>
+                        <runAllBuilders>true</runAllBuilders>
+                    </target>
+                </buildTargets>
+            </storageModule>
+            <storageModule moduleId="cdtBuildSystem" version="4.0.0">
+                <configuration buildProperties="" description="" id="com.xmos.cdt.toolchain.60695315" name="spdif" parent="org.eclipse.cdt.build.core.emptycfg">
+                    <folderInfo id="com.xmos.cdt.toolchain.60695315.1127281840" name="/" resourcePath="">
+                        <toolChain id = "com.xmos.cdt.toolchain.15268435" name="com.xmos.cdt.toolchain" superClass="com.xmos.cdt.toolchain">
+                            <targetPlatform archList="all" binaryParser="com.xmos.cdt.core.XEBinaryParser" id = "com.xmos.cdt.core.platform.45982695" isAbstract="false" osList="linux,win32,macosx" superClass="com.xmos.cdt.core.platform" />
+                            <builder arguments="CONFIG=spdif" id = "com.xmos.cdt.builder.base.44480984" keepEnvironmentInBuildfile="false" managedBuildOn="false" superClass="com.xmos.cdt.builder.base">
+                                <outputEntries>
+                                    <entry flags="VALUE_WORKSPACE_PATH" kind="outputPath" name="bin/spdif" />
+                                </outputEntries>
+                            </builder>
+                            <tool id = "com.xmos.cdt.xc.compiler.33005673" name="com.xmos.cdt.xc.compiler" superClass="com.xmos.cdt.xc.compiler">
+                                <option id = "com.xmos.c.compiler.option.include.paths.58177310" name="com.xmos.c.compiler.option.include.paths" superClass="com.xmos.c.compiler.option.include.paths" valueType="includePath">
+                                    <listOptionValue builtIn="false" value='&quot;${XMOS_DOC_PATH}/../target/include&quot;' />
+                                    <listOptionValue builtIn="false" value='&quot;${XMOS_DOC_PATH}/../target/include/gcc&quot;' />
+                                    <listOptionValue builtIn="false" value='&quot;${XMOS_DOC_PATH}/../target/include/c++/4.2.1&quot;' />
+                                    <listOptionValue builtIn="false" value='&quot;${XMOS_DOC_PATH}/../target/include/c++/4.2.1/xcore-xmos-elf&quot;' />
+                                    <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/endpoint0}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_midi/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/endpoint0}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/flashlib_user}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/flashlib_user}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/codec}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/include}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/codec}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi/src}&quot;' />
+
+                                </option>
+                                <inputType id = "com.xmos.cdt.xc.compiler.input.13046777" name="XC Sources" superClass="com.xmos.cdt.xc.compiler.input" />
+                                <option id = "gnu.c.compiler.option.include.paths.8164312" valueType="includePath" superClass="gnu.c.compiler.option.include.paths">
+                                    <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/endpoint0}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_midi/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/endpoint0}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/flashlib_user}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/flashlib_user}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/codec}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/include}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/codec}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi/src}&quot;' />
+
+                                </option>
+                            </tool>
+                            <tool id = "com.xmos.cdt.xc.compiler.base.78559963" name="com.xmos.cdt.xc.compiler.base" superClass="com.xmos.cdt.xc.compiler.base">
+                                <option id = "gnu.c.compiler.option.include.paths.87814962" valueType="includePath" superClass="gnu.c.compiler.option.include.paths">
+                                    <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/endpoint0}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_midi/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/endpoint0}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/flashlib_user}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/flashlib_user}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/codec}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/include}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/codec}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi/src}&quot;' />
+
+                                </option>
+                                <option id = "com.xmos.c.compiler.option.include.paths.14593435" valueType="includePath" superClass="com.xmos.c.compiler.option.include.paths">
+                                    <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/endpoint0}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_midi/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/endpoint0}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/flashlib_user}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/flashlib_user}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/codec}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/include}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/codec}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi/src}&quot;' />
+
+                                </option>
+                            </tool>
+                            <tool id = "com.xmos.cdt.c.compiler.base.59682654" name="com.xmos.cdt.c.compiler.base" superClass="com.xmos.cdt.c.compiler.base">
+                                <option id = "gnu.c.compiler.option.include.paths.49148628" valueType="includePath" superClass="gnu.c.compiler.option.include.paths">
+                                    <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/endpoint0}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_midi/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/endpoint0}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/flashlib_user}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/flashlib_user}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/codec}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/include}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/codec}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi/src}&quot;' />
+
+                                </option>
+                                <option id = "com.xmos.c.compiler.option.include.paths.72603054" valueType="includePath" superClass="com.xmos.c.compiler.option.include.paths">
+                                    <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/endpoint0}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_midi/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/endpoint0}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/flashlib_user}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/flashlib_user}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/codec}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/include}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/codec}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi/src}&quot;' />
+
+                                </option>
+                            </tool>
+                            <tool id = "com.xmos.cdt.cpp.compiler.base.93285243" name="com.xmos.cdt.cpp.compiler.base" superClass="com.xmos.cdt.cpp.compiler.base">
+                                <option id = "gnu.c.compiler.option.include.paths.79779810" valueType="includePath" superClass="gnu.c.compiler.option.include.paths">
+                                    <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/endpoint0}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_midi/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/endpoint0}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/flashlib_user}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/flashlib_user}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/codec}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/include}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/codec}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi/src}&quot;' />
+
+                                </option>
+                                <option id = "com.xmos.c.compiler.option.include.paths.50927103" valueType="includePath" superClass="com.xmos.c.compiler.option.include.paths">
+                                    <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/endpoint0}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_midi/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/endpoint0}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/flashlib_user}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/flashlib_user}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/codec}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/include}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/codec}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi/src}&quot;' />
+
+                                </option>
+                            </tool>
+                            <tool id = "com.xmos.cdt.core.assembler.base.79563573" name="com.xmos.cdt.core.assembler.base" superClass="com.xmos.cdt.core.assembler.base">
+                                <option id = "gnu.c.compiler.option.include.paths.81248830" valueType="includePath" superClass="gnu.c.compiler.option.include.paths">
+                                    <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/endpoint0}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_midi/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/endpoint0}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/flashlib_user}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/flashlib_user}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/codec}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/include}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/codec}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi/src}&quot;' />
+
+                                </option>
+                                <option id = "com.xmos.c.compiler.option.include.paths.19310140" valueType="includePath" superClass="com.xmos.c.compiler.option.include.paths">
+                                    <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/endpoint0}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_midi/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/endpoint0}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/flashlib_user}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/flashlib_user}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/codec}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/include}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/codec}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi/src}&quot;' />
+
+                                </option>
+                            </tool>
+
+                        </toolChain>
+                    </folderInfo>
+                </configuration>
+            </storageModule>
+            <storageModule moduleId="scannerConfiguration">
+                <autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="" />
+                <profile id="org.eclipse.cdt.make.core.GCCStandardMakePerProjectProfile">
+                    <buildOutputProvider>
+                        <openAction enabled="true" filePath="" />
+                        <parser enabled="true" />
+                    </buildOutputProvider>
+                    <scannerInfoProvider id="specsFile">
+                        <runAction arguments="-E -P -v -dD ${plugin_state_location}/${specs_file}" command="gcc" useDefault="true" />
+                        <parser enabled="true" />
+                    </scannerInfoProvider>
+                </profile>
+                <profile id="org.eclipse.cdt.make.core.GCCStandardMakePerFileProfile">
+                    <buildOutputProvider>
+                        <openAction enabled="true" filePath="" />
+                        <parser enabled="true" />
+                    </buildOutputProvider>
+                    <scannerInfoProvider id="makefileGenerator">
+                        <runAction arguments="-E -P -v -dD" command="" useDefault="true" />
+                        <parser enabled="true" />
+                    </scannerInfoProvider>
+                </profile>
+                <profile id="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfile">
+                    <buildOutputProvider>
+                        <openAction enabled="true" filePath="" />
+                        <parser enabled="true" />
+                    </buildOutputProvider>
+                    <scannerInfoProvider id="specsFile">
+                        <runAction arguments="-E -P -v -dD ${plugin_state_location}/${specs_file}" command="gcc" useDefault="true" />
+                        <parser enabled="true" />
+                    </scannerInfoProvider>
+                </profile>
+                <profile id="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileCPP">
+                    <buildOutputProvider>
+                        <openAction enabled="true" filePath="" />
+                        <parser enabled="true" />
+                    </buildOutputProvider>
+                    <scannerInfoProvider id="specsFile">
+                        <runAction arguments="-E -P -v -dD ${plugin_state_location}/specs.cpp" command="g++" useDefault="true" />
+                        <parser enabled="true" />
+                    </scannerInfoProvider>
+                </profile>
+                <profile id="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileC">
+                    <buildOutputProvider>
+                        <openAction enabled="true" filePath="" />
+                        <parser enabled="true" />
+                    </buildOutputProvider>
+                    <scannerInfoProvider id="specsFile">
+                        <runAction arguments="-E -P -v -dD ${plugin_state_location}/specs.c" command="gcc" useDefault="true" />
+                        <parser enabled="true" />
+                    </scannerInfoProvider>
+                </profile>
+                <profile id="org.eclipse.cdt.managedbuilder.core.GCCWinManagedMakePerProjectProfile">
+                    <buildOutputProvider>
+                        <openAction enabled="true" filePath="" />
+                        <parser enabled="true" />
+                    </buildOutputProvider>
+                    <scannerInfoProvider id="specsFile">
+                        <runAction arguments='-c &apos;gcc -E -P -v -dD &quot;${plugin_state_location}/${specs_file}&quot;&apos;' command="sh" useDefault="true" />
+                        <parser enabled="true" />
+                    </scannerInfoProvider>
+                </profile>
+                <profile id="org.eclipse.cdt.managedbuilder.core.GCCWinManagedMakePerProjectProfileCPP">
+                    <buildOutputProvider>
+                        <openAction enabled="true" filePath="" />
+                        <parser enabled="true" />
+                    </buildOutputProvider>
+                    <scannerInfoProvider id="specsFile">
+                        <runAction arguments='-c &apos;g++ -E -P -v -dD &quot;${plugin_state_location}/specs.cpp&quot;&apos;' command="sh" useDefault="true" />
+                        <parser enabled="true" />
+                    </scannerInfoProvider>
+                </profile>
+                <profile id="org.eclipse.cdt.managedbuilder.core.GCCWinManagedMakePerProjectProfileC">
+                    <buildOutputProvider>
+                        <openAction enabled="true" filePath="" />
+                        <parser enabled="true" />
+                    </buildOutputProvider>
+                    <scannerInfoProvider id="specsFile">
+                        <runAction arguments='-c &apos;gcc -E -P -v -dD &quot;${plugin_state_location}/specs.c&quot;&apos;' command="sh" useDefault="true" />
+                        <parser enabled="true" />
+                    </scannerInfoProvider>
+                </profile>
+            </storageModule>
+            <storageModule moduleId="org.eclipse.cdt.core.externalSettings" />
+            <storageModule moduleId="org.eclipse.cdt.core.language.mapping" />
+            <storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings" />
+        </cconfiguration>
+
+        <cconfiguration id="com.xmos.cdt.toolchain.87490211">
+            <storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="com.xmos.cdt.toolchain.87490211" moduleId="org.eclipse.cdt.core.settings" name="midi">
+                <externalSettings />
+                <extensions>
+                    <extension id="com.xmos.cdt.core.XEBinaryParser" point="org.eclipse.cdt.core.BinaryParser" />
+                    <extension id="com.xmos.cdt.core.XdeErrorParser" point="org.eclipse.cdt.core.ErrorParser" />
+                    <extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser" />
+                </extensions>
+            </storageModule>
+            <storageModule moduleId="org.eclipse.cdt.make.core.buildtargets">
+                <buildTargets>
+                    <target name="all" path=""
+targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+                        <buildCommand>xmake</buildCommand>
+                        <buildArguments>CONFIG=midi</buildArguments>
+                        <buildTarget>all</buildTarget>
+                        <stopOnError>true</stopOnError>
+                        <useDefaultCommand>true</useDefaultCommand>
+                        <runAllBuilders>true</runAllBuilders>
+                    </target>
+                    <target name="clean" path=""
+targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+                        <buildCommand>xmake</buildCommand>
+                        <buildArguments>CONFIG=midi</buildArguments>
+                        <buildTarget>clean</buildTarget>
+                        <stopOnError>true</stopOnError>
+                        <useDefaultCommand>true</useDefaultCommand>
+                        <runAllBuilders>true</runAllBuilders>
+                    </target>
+                </buildTargets>
+            </storageModule>
+            <storageModule moduleId="cdtBuildSystem" version="4.0.0">
+                <configuration buildProperties="" description="" id="com.xmos.cdt.toolchain.87490211" name="midi" parent="org.eclipse.cdt.build.core.emptycfg">
+                    <folderInfo id="com.xmos.cdt.toolchain.87490211.1127281840" name="/" resourcePath="">
+                        <toolChain id = "com.xmos.cdt.toolchain.89202706" name="com.xmos.cdt.toolchain" superClass="com.xmos.cdt.toolchain">
+                            <targetPlatform archList="all" binaryParser="com.xmos.cdt.core.XEBinaryParser" id = "com.xmos.cdt.core.platform.83721888" isAbstract="false" osList="linux,win32,macosx" superClass="com.xmos.cdt.core.platform" />
+                            <builder arguments="CONFIG=midi" id = "com.xmos.cdt.builder.base.87265573" keepEnvironmentInBuildfile="false" managedBuildOn="false" superClass="com.xmos.cdt.builder.base">
+                                <outputEntries>
+                                    <entry flags="VALUE_WORKSPACE_PATH" kind="outputPath" name="bin/midi" />
+                                </outputEntries>
+                            </builder>
+                            <tool id = "com.xmos.cdt.xc.compiler.53976646" name="com.xmos.cdt.xc.compiler" superClass="com.xmos.cdt.xc.compiler">
+                                <option id = "com.xmos.c.compiler.option.include.paths.31150186" name="com.xmos.c.compiler.option.include.paths" superClass="com.xmos.c.compiler.option.include.paths" valueType="includePath">
+                                    <listOptionValue builtIn="false" value='&quot;${XMOS_DOC_PATH}/../target/include&quot;' />
+                                    <listOptionValue builtIn="false" value='&quot;${XMOS_DOC_PATH}/../target/include/gcc&quot;' />
+                                    <listOptionValue builtIn="false" value='&quot;${XMOS_DOC_PATH}/../target/include/c++/4.2.1&quot;' />
+                                    <listOptionValue builtIn="false" value='&quot;${XMOS_DOC_PATH}/../target/include/c++/4.2.1/xcore-xmos-elf&quot;' />
+                                    <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/endpoint0}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_midi/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/endpoint0}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/flashlib_user}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/flashlib_user}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/codec}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/include}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/codec}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi/src}&quot;' />
+
+                                </option>
+                                <inputType id = "com.xmos.cdt.xc.compiler.input.90744141" name="XC Sources" superClass="com.xmos.cdt.xc.compiler.input" />
+                                <option id = "gnu.c.compiler.option.include.paths.27537379" valueType="includePath" superClass="gnu.c.compiler.option.include.paths">
+                                    <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/endpoint0}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_midi/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/endpoint0}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/flashlib_user}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/flashlib_user}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/codec}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/include}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/codec}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi/src}&quot;' />
+
+                                </option>
+                            </tool>
+                            <tool id = "com.xmos.cdt.xc.compiler.base.54947405" name="com.xmos.cdt.xc.compiler.base" superClass="com.xmos.cdt.xc.compiler.base">
+                                <option id = "gnu.c.compiler.option.include.paths.7691201" valueType="includePath" superClass="gnu.c.compiler.option.include.paths">
+                                    <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/endpoint0}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_midi/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/endpoint0}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/flashlib_user}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/flashlib_user}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/codec}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/include}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/codec}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi/src}&quot;' />
+
+                                </option>
+                                <option id = "com.xmos.c.compiler.option.include.paths.5776205" valueType="includePath" superClass="com.xmos.c.compiler.option.include.paths">
+                                    <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/endpoint0}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_midi/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/endpoint0}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/flashlib_user}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/flashlib_user}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/codec}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/include}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/codec}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi/src}&quot;' />
+
+                                </option>
+                            </tool>
+                            <tool id = "com.xmos.cdt.c.compiler.base.91671210" name="com.xmos.cdt.c.compiler.base" superClass="com.xmos.cdt.c.compiler.base">
+                                <option id = "gnu.c.compiler.option.include.paths.79854396" valueType="includePath" superClass="gnu.c.compiler.option.include.paths">
+                                    <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/endpoint0}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_midi/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/endpoint0}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/flashlib_user}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/flashlib_user}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/codec}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/include}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/codec}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi/src}&quot;' />
+
+                                </option>
+                                <option id = "com.xmos.c.compiler.option.include.paths.61170334" valueType="includePath" superClass="com.xmos.c.compiler.option.include.paths">
+                                    <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/endpoint0}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_midi/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/endpoint0}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/flashlib_user}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/flashlib_user}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/codec}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/include}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/codec}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi/src}&quot;' />
+
+                                </option>
+                            </tool>
+                            <tool id = "com.xmos.cdt.cpp.compiler.base.43197675" name="com.xmos.cdt.cpp.compiler.base" superClass="com.xmos.cdt.cpp.compiler.base">
+                                <option id = "gnu.c.compiler.option.include.paths.39654656" valueType="includePath" superClass="gnu.c.compiler.option.include.paths">
+                                    <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/endpoint0}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_midi/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/endpoint0}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/flashlib_user}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/flashlib_user}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/codec}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/include}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/codec}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi/src}&quot;' />
+
+                                </option>
+                                <option id = "com.xmos.c.compiler.option.include.paths.80335924" valueType="includePath" superClass="com.xmos.c.compiler.option.include.paths">
+                                    <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/endpoint0}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_midi/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/endpoint0}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/flashlib_user}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/flashlib_user}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/codec}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/include}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/codec}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi/src}&quot;' />
+
+                                </option>
+                            </tool>
+                            <tool id = "com.xmos.cdt.core.assembler.base.35691602" name="com.xmos.cdt.core.assembler.base" superClass="com.xmos.cdt.core.assembler.base">
+                                <option id = "gnu.c.compiler.option.include.paths.79875938" valueType="includePath" superClass="gnu.c.compiler.option.include.paths">
+                                    <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/endpoint0}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_midi/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/endpoint0}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/flashlib_user}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/flashlib_user}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/codec}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/include}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/codec}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi/src}&quot;' />
+
+                                </option>
+                                <option id = "com.xmos.c.compiler.option.include.paths.42125695" valueType="includePath" superClass="com.xmos.c.compiler.option.include.paths">
+                                    <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/endpoint0}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_midi/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/endpoint0}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/flashlib_user}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/flashlib_user}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/codec}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/include}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/Users/ross/sb_xud_refact/sc_usb_audio/module_usb_aud_shared/codec}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_aud_shared/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi/src}&quot;' />
+
+                                </option>
+                            </tool>
+
+                        </toolChain>
+                    </folderInfo>
+                </configuration>
+            </storageModule>
+            <storageModule moduleId="scannerConfiguration">
+                <autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="" />
+                <profile id="org.eclipse.cdt.make.core.GCCStandardMakePerProjectProfile">
+                    <buildOutputProvider>
+                        <openAction enabled="true" filePath="" />
+                        <parser enabled="true" />
+                    </buildOutputProvider>
+                    <scannerInfoProvider id="specsFile">
+                        <runAction arguments="-E -P -v -dD ${plugin_state_location}/${specs_file}" command="gcc" useDefault="true" />
+                        <parser enabled="true" />
+                    </scannerInfoProvider>
+                </profile>
+                <profile id="org.eclipse.cdt.make.core.GCCStandardMakePerFileProfile">
+                    <buildOutputProvider>
+                        <openAction enabled="true" filePath="" />
+                        <parser enabled="true" />
+                    </buildOutputProvider>
+                    <scannerInfoProvider id="makefileGenerator">
+                        <runAction arguments="-E -P -v -dD" command="" useDefault="true" />
+                        <parser enabled="true" />
+                    </scannerInfoProvider>
+                </profile>
+                <profile id="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfile">
+                    <buildOutputProvider>
+                        <openAction enabled="true" filePath="" />
+                        <parser enabled="true" />
+                    </buildOutputProvider>
+                    <scannerInfoProvider id="specsFile">
+                        <runAction arguments="-E -P -v -dD ${plugin_state_location}/${specs_file}" command="gcc" useDefault="true" />
+                        <parser enabled="true" />
+                    </scannerInfoProvider>
+                </profile>
+                <profile id="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileCPP">
+                    <buildOutputProvider>
+                        <openAction enabled="true" filePath="" />
+                        <parser enabled="true" />
+                    </buildOutputProvider>
+                    <scannerInfoProvider id="specsFile">
+                        <runAction arguments="-E -P -v -dD ${plugin_state_location}/specs.cpp" command="g++" useDefault="true" />
+                        <parser enabled="true" />
+                    </scannerInfoProvider>
+                </profile>
+                <profile id="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileC">
+                    <buildOutputProvider>
+                        <openAction enabled="true" filePath="" />
+                        <parser enabled="true" />
+                    </buildOutputProvider>
+                    <scannerInfoProvider id="specsFile">
+                        <runAction arguments="-E -P -v -dD ${plugin_state_location}/specs.c" command="gcc" useDefault="true" />
+                        <parser enabled="true" />
+                    </scannerInfoProvider>
+                </profile>
+                <profile id="org.eclipse.cdt.managedbuilder.core.GCCWinManagedMakePerProjectProfile">
+                    <buildOutputProvider>
+                        <openAction enabled="true" filePath="" />
+                        <parser enabled="true" />
+                    </buildOutputProvider>
+                    <scannerInfoProvider id="specsFile">
+                        <runAction arguments='-c &apos;gcc -E -P -v -dD &quot;${plugin_state_location}/${specs_file}&quot;&apos;' command="sh" useDefault="true" />
+                        <parser enabled="true" />
+                    </scannerInfoProvider>
+                </profile>
+                <profile id="org.eclipse.cdt.managedbuilder.core.GCCWinManagedMakePerProjectProfileCPP">
+                    <buildOutputProvider>
+                        <openAction enabled="true" filePath="" />
+                        <parser enabled="true" />
+                    </buildOutputProvider>
+                    <scannerInfoProvider id="specsFile">
+                        <runAction arguments='-c &apos;g++ -E -P -v -dD &quot;${plugin_state_location}/specs.cpp&quot;&apos;' command="sh" useDefault="true" />
+                        <parser enabled="true" />
+                    </scannerInfoProvider>
+                </profile>
+                <profile id="org.eclipse.cdt.managedbuilder.core.GCCWinManagedMakePerProjectProfileC">
+                    <buildOutputProvider>
+                        <openAction enabled="true" filePath="" />
+                        <parser enabled="true" />
+                    </buildOutputProvider>
+                    <scannerInfoProvider id="specsFile">
+                        <runAction arguments='-c &apos;gcc -E -P -v -dD &quot;${plugin_state_location}/specs.c&quot;&apos;' command="sh" useDefault="true" />
+                        <parser enabled="true" />
+                    </scannerInfoProvider>
+                </profile>
+            </storageModule>
+            <storageModule moduleId="org.eclipse.cdt.core.externalSettings" />
+            <storageModule moduleId="org.eclipse.cdt.core.language.mapping" />
+            <storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings" />
+        </cconfiguration>
+
+    </storageModule>
+    <storageModule moduleId="cdtBuildSystem" version="4.0.0">
+        <project id = "app_usb_aud_su1.null.42405617" name="app_usb_aud_su1" />
+    </storageModule>
+</cproject>

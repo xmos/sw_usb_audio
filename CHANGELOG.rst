@@ -15,6 +15,7 @@ Firmware
     - CHANGE:     MIDI buffering simplified (using new XUD API) - no longer goes through decouple thread
     - CHANGE:     Now uses sc_i2c from www.github.com/xcore/sc_i2c 
     - RESOLVED:   (Minor) Fixed issue where buffering can lock up on sample frequency change if in overflow (#10897)
+    - RESOLVED:   (Minor) XN files updated to avoid deprecation warnings from tools
 
 (Note: USB Audio version numbers unified accross all products at this point)
 

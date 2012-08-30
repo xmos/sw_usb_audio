@@ -8,17 +8,20 @@ xsi:schemaLocation="http://www.xmos.com http://www.xmos.com">
     <Declarations>
         <Declaration>core stdcore[1]</Declaration>
     </Declarations>
-
+    <Packages>
+        <Package Id="P1" Type="XS1-L1A-TQ128">
             <Nodes>
-                <Node Id="0" Type="XS1-L1A" Oscillator="13MHz" SystemFrequency="500MHz">
+                <Node Id="0" Type="XS1-L1A" InPackageId="0" Oscillator="13MHz" SystemFrequency="500MHz">
                     <Boot>
                         <Source Location="SPI:bootFlash"/>
                     </Boot>
                     <Core Number="0" Reference="stdcore[0]">
+                        <!-- SPI Ports -->
                         <Port Location="XS1_PORT_1A" Name="PORT_SPI_MISO"/>
                         <Port Location="XS1_PORT_1B" Name="PORT_SPI_SS"/>
                         <Port Location="XS1_PORT_1C" Name="PORT_SPI_CLK"/>
                         <Port Location="XS1_PORT_1D" Name="PORT_SPI_MOSI"/>
+                        <!-- Standard USB Audio Ports -->
                         <Port Location="XS1_PORT_1A" Name="PORT_I2S_BCLK"/>
                         <Port Location="XS1_PORT_1C" Name="PORT_I2S_LRCLK"/>
                         <Port Location="XS1_PORT_1D" Name="PORT_I2S_DAC0"/>
@@ -32,6 +35,9 @@ xsi:schemaLocation="http://www.xmos.com http://www.xmos.com">
                     </Core>
                 </Node>
             </Nodes>
+        </Package>
+    </Packages>
+    
     <ExternalDevices>
         <Device NodeId="0" Core="0" Class="SPIFlash" Name="bootFlash" Type="AT25FS010">
             <Attribute Name="PORT_SPI_MISO" Value="PORT_SPI_MISO"/>
