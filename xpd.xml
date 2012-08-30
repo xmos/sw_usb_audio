@@ -39,7 +39,8 @@
     <release parenthash = "bfc454b8e28e7a5a86b55df58586e9bf57a10f55" version = "6.0.0alpha2" githash = "02d73ec64b9f522e46e75110cd29fd56cc7a0507"></release>
     <release parenthash = "fd95bde336e9daa09f083749eaccc3955112a106" version = "6.0.0alpha3" githash = "a7822000f4c811fa25d559f128651b64c56d1958"></release>
     <release parenthash = "d473675093ef86d9a204c930ad51fdd4273e2b39" version = "6.0.0alpha4" githash = "dc439b1bd9cb8bbfbcfac9b5fae8b19bed6282de"></release>
-    <release parenthash = "59b0b9b3ab80d2e22b37ecf496ac3ec29681573f" version = "6.0.0alpha5"></release>
+    <release parenthash = "59b0b9b3ab80d2e22b37ecf496ac3ec29681573f" version = "6.0.0alpha5" githash = "5d78256098cc4bb0c89b61a795a603408fc6b4e6"></release>
+    <release parenthash = "5d78256098cc4bb0c89b61a795a603408fc6b4e6" version = "6.0.0alpha6"></release>
     <scope>Reference Design</scope>
     <vendor>XMOS</vendor>
     <xpd_version>1.0</xpd_version>

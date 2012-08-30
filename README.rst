@@ -1,6 +1,10 @@
 XMOS USB Audio 2.0 Reference Designs (sw_usb_audio)
 ...................................................
 
+:Latest release: 6.0.0alpha6
+:Maintainer: Ross
+:Description: USB Audio
+
 Release Version: %%VERSION%% (build %%BUILDNUMBER%%)
 
 Please note this is an non-generally available ALPHA release.  This release has had *no formal testing*.  
@@ -39,7 +43,6 @@ configuration etc.
 
 Additionally some options are contained in Makefiles for building multiple configurations of an application.
 
-
 Key Framework Features
 ======================
 
@@ -68,7 +71,6 @@ specific feature set.
 
 Note, not all features may be supported at all sample frequencies, chips etc.
 
-
 Known Issues
 ============
 
@@ -78,7 +80,6 @@ General known issues are as follows.  For board/application specific known issue
 
 -  88.2kHz and 176.4kHz sample frequencies are not exposed in Windows control panels.  This is due to known OS restrictions.
 
-
 Host System Requirements
 ========================
 
@@ -86,14 +87,24 @@ Host System Requirements
 
 - Windows XP, Vista or 7 with Thesycon Audio Class 2.0 driver for Windows (contact XMOS for details)
 
-
 In Field Firmware Upgrade
 =========================
 
 The firmware provides a DFU interface compliant to the USB DFU Device Class.  An example host application is provided for OSX.  See README in example application for usage.  The Thesycon USB Audio Class 2.0 driver for Windows provides DFU functionality and includes an example application.
 
-
 Support
 =======
 
 For all support issues please visit http://www.xmos.com/support
+
+Required software (dependencies)
+================================
+
+  * sc_ios (git://git/apps/sc_ios)
+  * sc_usb (git://git/apps/sc_usb)
+  * sc_spdif (git://github.com/xcore/sc_spdif)
+  * sc_usb_audio (git://git/apps/sc_usb_audio)
+  * xcommon (if using development tools earlier than 11.11.0)
+  * sc_xud (git://git/apps/sc_xud)
+  * sc_i2c (git@github.com:xross/sc_i2c.git)
+
