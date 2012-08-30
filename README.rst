@@ -1,7 +1,7 @@
 XMOS USB Audio 2.0 Reference Designs (sw_usb_audio)
 ...................................................
 
-:Latest release: 6.0.0alpha7
+:Latest release: 6.0.0alpha8
 :Maintainer: Ross
 :Description: USB Audio
 
