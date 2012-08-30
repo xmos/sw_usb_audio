@@ -1,9 +1,9 @@
 XMOS USB Audio 2.0 Reference Design Readme
 ..........................................
 
-:Latest release: 6.0.0alpha8
-:Maintainer: Ross Owen
-:Description: USB Audio Reference Design
+:Latest release: 6.0.0alpha9
+:Maintainer: Ross
+:Description: USB Audio
 
 
 Release Version: %%VERSION%% (build %%BUILDNUMBER%%)
