@@ -3,10 +3,10 @@
 
 void ClockingInit(chanend ?c)
 {
-    /* For L1 reference */
+    /* Do nothing */
 }
 
 void ClockingConfig(unsigned mClkFreq, chanend ?c)
 {
-    /* For L1 reference  */
+    /* Do nothing */
 }
