@@ -1,7 +1,9 @@
-XMOS USB Audio 2.0 Reference Design Changelog
-=============================================
+XMOS USB Audio 2.0 Reference Design Change Log
+..............................................
 
-Release version: %%VERSION%% (build %%BUILDNUMBER%%)
+:Latest release: 6.0.0alpha0
+:Maintainer: Ross Owen
+:Description: USB Audio Reference Design
 
 Firmware
 ========
@@ -10,14 +12,14 @@ Firmware
     - ADDED:      Support for SU1 (Via SU1 Core Board and Audio Slice) - see app_usb_aud_skc_su1
     - ADDED:      Design moved to new build system
     - ADDED:      Optional support for USB test modes
-    - ADDED:      Optional support for iOS devices (available to MFI licencees only)
+    - ADDED:      Optional support for iOS devices (available to MFI licensees only)
     - CHANGE:     Now uses latest XUD API
     - CHANGE:     MIDI buffering simplified (using new XUD API) - no longer goes through decouple thread
     - CHANGE:     Now uses sc_i2c from www.github.com/xcore/sc_i2c 
     - RESOLVED:   (Minor) Fixed issue where buffering can lock up on sample frequency change if in overflow (#10897)
     - RESOLVED:   (Minor) XN files updated to avoid deprecation warnings from tools
 
-(Note: USB Audio version numbers unified accross all products at this point)
+(Note: USB Audio version numbers unified across all products at this point)
 
 Previous L1 Firmware Releases
 =============================
@@ -62,7 +64,7 @@ Previous L1 Firmware Releases
                   SELF_POWERED define)
     - RESOLVED:   (Minor) Added code to deal with malformed audio packets from a misbehaving driver.
                   Previously this could result in the device audio buffering raising an exception.
-    - RESOLVED:   (Minor) First packet of audio IN stream now correct to current samplerate.  
+    - RESOLVED:   (Minor) First packet of audio IN stream now correct to current sample-rate.  
                   Previously first packet was of length relating to previous sample rate.
     - RESOLVED:   (Minor) MIDI OUT buffering code simplified.  Now a single buffer used instead 
                   of previous circular buffer.
@@ -82,7 +84,7 @@ Previous L1 Firmware Releases
     - ADDED:      Optional "Host Active" function calls 
     - RESOLVED:   Single sample delay between ADC L/R channels resolved (#8783)
     - RESOLVED:   Use of MIDI cable numbers now compliant to specification (#8892)
-    - RESOLVED:   Improved USB interoperabilty and device performance when connected through chained hubs 
+    - RESOLVED:   Improved USB interoperability and device performance when connected through chained hubs 
     - RESOLVED:   S/PDIF Tx channel status bits (32-41) added for improved compliance
     - RESOLVED:   Increased robustness of high-speed reset recovery
 
@@ -210,7 +212,7 @@ Previous L2 Firmware Releases
     - RESOLVED:   Single sample delay between ADC L/R channels resolved (#8783)
     - RESOLVED:   Issue where external PLL could sometimes be unlocked due to cable unplug (#9179) 
     - RESOLVED:   Use of MIDI cable numbers now compliant to specification (#8892)
-    - RESOLVED:   Improved USB interoperabilty and device performance when connected through chained hubs 
+    - RESOLVED:   Improved USB interoperability and device performance when connected through chained hubs 
     - RESOLVED:   S/PDIF Tx channel status bits (32-41) added for improved compliance
     - RESOLVED:   Various performance optimisations added to mixer code
     - RESOLVED:   Increased robustness of high-speed reset recovery
