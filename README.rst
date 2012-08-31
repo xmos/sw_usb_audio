@@ -5,8 +5,7 @@ XMOS USB Audio 2.0 Reference Design Readme
 :Maintainer: Ross Owen
 :Description: USB Audio Applications
 
-Please note this is an non-generally available ALPHA release.  This release has had *no formal testing* and is
-supplied without support.
+Please note this is an non-generally available ALPHA release.  This release has had *no formal testing* and as should not be used in a production environment without additional testing.
 
 Further limitations are as follows:
 
