@@ -1,8 +1,15 @@
 XMOS XS1-L1 USB Audio 2.0 Reference Design (app_usb_aud_l1)
 ...........................................................
 
+:Latest release: 6.0.0alpha10
+:Maintainer: Ross Owen
+
 Key Features
 ============
+
+The app_usb_aud_l1 application is designed to run on the XMOS USB Audio 2.0 references design board
+(part number xr-usb-audio-2.0).  This application used the XMOS USB Audio framework. Key features 
+of this application are as follows: 
 
 - USB Audio Class 2.0 Compliant  
 

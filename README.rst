@@ -2,11 +2,12 @@ XMOS USB Audio 2.0 Reference Design Readme
 ..........................................
 
 :Latest release: 6.0.0alpha10
-:Maintainer: Ross
-:Description: USB Audio
+:Maintainer: Ross Owen
+:Description: USB Audio Applications
 
+Please note this is an non-generally available ALPHA release.  This release has had *no formal testing* and is
+supplied without support.
 
-Please note this is an non-generally available ALPHA release.  This release has had *no formal testing*.  
 Further limitations are as follows:
 
 - The following listed applications have been found to build and run. All others may fail to build.
@@ -16,7 +17,7 @@ Further limitations are as follows:
 - Documentation still to be updated
 - Build warnings may be present
 - iOS support does not build
-
+ 
 This repo contains applications (or instances) of the XMOS USB Audio Reference Design framework.  These applications
 typically relate to a specific board.  This repo contains the following:
 
