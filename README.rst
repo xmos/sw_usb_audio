@@ -15,6 +15,7 @@ Further limitations are as follows:
     - app_usb_aud_skc_su1
 - Documentation still to be updated
 - Build warnings may be present
+- DFU not tested
 - iOS support does not build
  
 This repo contains applications (or instances) of the XMOS USB Audio Reference Design framework.  These applications
