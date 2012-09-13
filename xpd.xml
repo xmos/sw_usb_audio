@@ -2,7 +2,7 @@
 <xpd>
     <components></components>
     <dependency repo = "sc_ios">
-        <githash>574c58720ff62b349a970eb6b506ee5f9512e368</githash>
+        <githash>29f033c261cbf5537bc4c3e230373b3c2a806173</githash>
         <uri>git://git/apps/sc_ios</uri>
     </dependency>
     <dependency repo = "sc_usb">
@@ -48,7 +48,8 @@
     <release parenthash = "45a32862980f49dcf50e144f6157c64501d3332a" version = "6.0.0alpha10" githash = "21f8caee22e05d9b29c362b39059e5c6b63528de"></release>
     <release parenthash = "57b9825b95f6dc2df4be7794e3dd25bc863c1b45" version = "6.0.0alpha11" githash = "3f6cf1b6d3e1508a321a13731a7c1dbaede20ac5"></release>
     <release parenthash = "3f6cf1b6d3e1508a321a13731a7c1dbaede20ac5" version = "6.0.0alpha12" githash = "8af8f6c14c90990b4751cfe5cbfaf12fcb6b71b4"></release>
-    <release parenthash = "8af8f6c14c90990b4751cfe5cbfaf12fcb6b71b4" version = "6.0.0alpha13"></release>
+    <release parenthash = "8af8f6c14c90990b4751cfe5cbfaf12fcb6b71b4" version = "6.0.0alpha13" githash = "d1797061e6b6867ccf2c888314a7653e9b2182ba"></release>
+    <release parenthash = "d1797061e6b6867ccf2c888314a7653e9b2182ba" version = "6.0.0alpha14"></release>
     <vendor>XMOS</vendor>
     <xpd_version>1.0</xpd_version>
     <scope>Reference Design</scope>
