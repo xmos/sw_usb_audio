@@ -15,7 +15,7 @@
         <version>1.3.0rc2</version>
     </dependency>
     <dependency repo = "sc_usb_audio">
-        <githash>e769059a81aef5c75f8e938b5824435a085039c2</githash>
+        <githash>e18e9f060f14252e0e8cddeb33f8c3008ed48aa4</githash>
         <uri>git://git/apps/sc_usb_audio</uri>
     </dependency>
     <dependency repo = "xcommon">
@@ -23,7 +23,7 @@
         <uri>git://github.com/xcore/xcommon</uri>
     </dependency>
     <dependency repo = "sc_xud">
-        <githash>29051eecf2057513802f4964475c27b362c62cb2</githash>
+        <githash>a1dc73723e04c5b92d9b55f604f507dd0cc1d233</githash>
         <uri>git://git/apps/sc_xud</uri>
     </dependency>
     <dependency repo = "sc_i2c">
@@ -50,7 +50,8 @@
     <release parenthash = "3f6cf1b6d3e1508a321a13731a7c1dbaede20ac5" version = "6.0.0alpha12" githash = "8af8f6c14c90990b4751cfe5cbfaf12fcb6b71b4"></release>
     <release parenthash = "8af8f6c14c90990b4751cfe5cbfaf12fcb6b71b4" version = "6.0.0alpha13" githash = "d1797061e6b6867ccf2c888314a7653e9b2182ba"></release>
     <release parenthash = "d1797061e6b6867ccf2c888314a7653e9b2182ba" version = "6.0.0alpha14" githash = "c76ddc79d9b47d87404ea6beed91a6e601ad0395"></release>
-    <release parenthash = "c76ddc79d9b47d87404ea6beed91a6e601ad0395" version = "6.0.0alpha15"></release>
+    <release parenthash = "c76ddc79d9b47d87404ea6beed91a6e601ad0395" version = "6.0.0alpha15" githash = "cfb32552b3dfeb959ebeec82fedaad6af48372af"></release>
+    <release parenthash = "0bdd22547025ebbabce9ceb48f5f0a01147147c9" version = "6.0.0alpha16"></release>
     <vendor>XMOS</vendor>
     <xpd_version>1.0</xpd_version>
     <scope>Reference Design</scope>
