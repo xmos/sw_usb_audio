@@ -29,7 +29,12 @@ void CodecInit(chanend ?c_codec)
 #define CODEC_DACA_VOL_ADDR         0x07
 #define CODEC_DACB_VOL_ADDR         0x08
 
-#define IIC_REGWRITE(reg, val) {data[0] = val; i2c_master_write_reg(CODEC1_I2C_DEVICE_ADDR, reg, data, 1, p_i2c);data[0] = val; i2c_master_write_reg(CODEC2_I2C_DEVICE_ADDR, reg, data, 1, p_i2c);} 
+#define IIC_REGWRITE_1(reg, val) {data[0] = val; i2c_master_write_reg(CODEC1_I2C_DEVICE_ADDR, reg, data, 1, p_i2c);} 
+#define IIC_REGWRITE_2(reg, val) {data[0] = val; i2c_master_write_reg(CODEC2_I2C_DEVICE_ADDR, reg, data, 1, p_i2c);} 
+
+/* Write to both CODECs */
+#define IIC_REGWRITE(reg, val) {IIC_REGWRITE_1(reg, val);IIC_REGWRITE_2(reg,val);}
+
 #define IIC_REGREAD(reg, val)  {i2c_master_read_reg(CODEC1_I2C_DEVICE_ADDR, reg, val, 1, p_i2c);}
 
 //:codec_config
@@ -84,13 +89,54 @@ void CodecConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec)
     }
     
     /* Now set all registers as we want them :    
-    Mode Control Reg:
+    Mode Control Reg: */
+#ifndef CODEC_MASTER
+    /*
     Set FM[1:0] as 11. This sets Slave mode.
     Set MCLK_FREQ[2:0] as 010. This sets MCLK to 512Fs in Single, 256Fs in Double and 128Fs in Quad Speed Modes.
     This means 24.576MHz for 48k and 22.5792MHz for 44.1k.
     Set Popguard Transient Control.
     So, write 0x35. */
     IIC_REGWRITE(CODEC_MODE_CTRL_ADDR,    0x35);
+#else
+    
+    /* In master mode (i.e. Xcore is I2S slave) to avoid contention configure one CODEC as master one 
+     * the other as slave */
+    
+    /*
+    Set FM[1:0] as 11. This sets Slave mode.
+    Set MCLK_FREQ[2:0] as 010. This sets MCLK to 512Fs in Single, 256Fs in Double and 128Fs in Quad Speed Modes.
+    This means 24.576MHz for 48k and 22.5792MHz for 44.1k.
+    Set Popguard Transient Control.
+    So, write 0x35. */
+    IIC_REGWRITE_1(CODEC_MODE_CTRL_ADDR,    0x35);
+
+    /* Set FM[1:0] Based on Single/Double/Quad mode
+    Set MCLK_FREQ[2:0] as 010. This sets MCLK to 512Fs in Single, 256Fs in Double and 128Fs in Quad Speed Modes.
+    This means 24.576MHz for 48k and 22.5792MHz for 44.1k.
+    Set Popguard Transient Control.*/
+
+    {
+        unsigned char val = 0b0101;
+   
+        if(samFreq < 54000)
+        {
+            // | with 0..
+        }
+        else if(samFreq < 108000) 
+        {
+            val |= 0b00100000;
+        }
+        else
+        {
+            val |= 0b00100000;
+        }
+        IIC_REGWRITE_2(CODEC_MODE_CTRL_ADDR, val);
+    }
+        
+
+#endif
+   
     
     /* ADC & DAC Control Reg:
        Leave HPF for ADC inputs continuously running.
