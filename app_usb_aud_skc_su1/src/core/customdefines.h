@@ -7,8 +7,12 @@
 #ifndef _CUSTOMDEFINES_H_
 #define _CUSTOMDEFINES_H_
 
-/***** Device configuration option defines.  Build can be customised but changing these defines  *****/
+/***** Device configuration option defines.  Build can be customised but changing and adding defines here *****/
 
+/* Please note that SPDIF and MIDI defines reside in the makefiles since two configurations are built by default.
+ * One for MIDI and one for S/PDIF
+ */
+ 
 /* Audio Class Version.  Note we run in FS when in Audio Class 1.0 mode */
 //:Functionality
 /* Enable Fall-back to audio class 1.0 a FS */
@@ -24,17 +28,13 @@
 #define NUM_USB_CHAN_IN   (4)         /* Device to Host */
 #define NUM_USB_CHAN_OUT  (4)         /* Host to Device */
 
-/* Enable S/PDIF output - in Makefile */
-//#define SPDIF           1
-
-/* Run the CODEC as slave, Xcore as master */
-#define CODEC_SLAVE     1
+/* Run the CODEC as slave, Xcore as master 
+ * Changing this define will cause CODECs to setup appropriately and XCore to be I2S slave
+ */
+#define CODEC_MASTER      0
 
 /* Enable DFU interface, Note, requires a driver for Windows */
 #define DFU             1
-
-/* Disable MIDI - in Makefile */
-//#define MIDI            0
 
 #define MIDI_SHIFT_TX   7
 
