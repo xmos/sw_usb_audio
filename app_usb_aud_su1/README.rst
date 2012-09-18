@@ -5,7 +5,7 @@ XMOS SU1 USB Audio
 :Maintainer: Ross Owen
 :scope: Example
 :description: USB Audio application for XR-USB-AUDIO-S1
-:keywords: USB 
+:keywords: USB, Audio, I2S, S/PDIF, SU1 
 :boards: XP-SKC-SU1, XA-SK-AUDIO (1v0)
 
 

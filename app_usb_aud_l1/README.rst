@@ -50,6 +50,7 @@ Known Issues
 
 -  CODEC (CS4270) auto-mute/soft-ramp feature can cause volume ramp at start of playback.  These features cannot be disabled on the reference board since CODEC is used in Hardware Mode (i.e. not configured using I2C)
 
+- No XMOS Link for XScope available on the board
 
 Support
 =======
