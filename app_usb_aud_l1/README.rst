@@ -52,6 +52,16 @@ Known Issues
 
 - No XMOS Link for XScope available on the board
 
+Please also note:  
+
+The L1 Reference Design board has a 11.289MHz master clock source (oscillator) for 44.1kHz family of sample frequencies. S/PDIF Tx operation at 172.4kHz is therefore not supported due to the 2 x MCLK requirement. 
+
+In addition the CODEC is configured in hardware mode.  The scheme used uses a single pin (MDIV2) to indicate 256 or 512fs.  This same line is used on the board to control master-clock selection.  In 256fs mode with a 22.578 master-clock 44.1 cannot be achieved by the CODEC (88.2kHz and 176.4kHz should operate as expected).
+
+A modification could be made in order to add full functionality. i.e. MDIV2 high (to always indicate 512fs). In addition the line from this to clock-selection input must be broken in order for the clock-selection to still operate.
+
+The master-clock frequency defines should also be suitably modified.
+
 Support
 =======
 
