@@ -10,4 +10,9 @@
  * 
  * since the compiler would issue an error.  We'll use some assembly magic to work around this.
  */
+#ifndef MIDI
+/* MIDI shared with button pins */
+on stdcore[0] : in port p_but_a = XS1_PORT_1J;
+on stdcore[0] : in port p_but_b = XS1_PORT_1K;
+#endif
 #endif 
