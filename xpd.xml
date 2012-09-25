@@ -59,4 +59,5 @@
     <vendor>XMOS</vendor>
     <xpd_version>1.0</xpd_version>
     <scope>Reference Design</scope>
+    <include_binaries>True</include_binaries>
 </xpd>
