@@ -7,6 +7,8 @@
 #ifndef _CUSTOMDEFINES_H_
 #define _CUSTOMDEFINES_H_
 
+#define HID_CONTROLS 1
+
 /***** Device configuration option defines.  Build can be customised but changing these defines  *****/
 
 /* Audio Class Version.  Note we run in FS when in Audio Class 1.0 mode */
