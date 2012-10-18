@@ -6,11 +6,16 @@
 #include "p_gpio_defines.h"
 
 extern port p_i2c;
+extern out port p_gpio;
 
 //:codec_init
 void CodecInit(chanend ?c_codec) 
 {
     i2c_master_init(p_i2c);
+
+    // Enable SPDIF output (disables SPI flash)
+    p_gpio <: 1;
+    
     return;
 }
 //:
