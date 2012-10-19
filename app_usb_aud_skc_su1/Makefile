@@ -9,11 +9,32 @@ APP_NAME =
 BUILD_FLAGS     = -DAUDIO_2 -DFLASH_MAX_UPGRADE_SIZE=64*1024 -fcomment-asm -Xmapper --map -Xmapper MAPFILE -Wall -O3 -report -lflash -fsubword-select -save-temps -g -DUSB_CORE=0 -D TEST_MODE_SUPPORT -DARCH_S -fxscope -DXSCOPE -DSDA_HIGH=2 -DSCL_HIGH=1
 #-fschedule
 
-XCC_FLAGS_spdif = $(BUILD_FLAGS) -DSPDIF=1
-INCLUDE_ONLY_IN_spdif = 
 
-XCC_FLAGS_midi = $(BUILD_FLAGS) -DMIDI=1
-INCLUDE_ONLY_IN_spdif = 
+# Test build configs (Note these make use of the defaults in customdefines.h)
+
+# Audio Class 2, Input, Output, No MIDI, SPDIF
+XCC_FLAGS_2ioxs = $(BUILD_FLAGS) 
+INCLUDE_ONLY_IN_2ioxs = 
+
+# Audio Class 2, No Input, Output, No MIDI, SPDIF
+XCC_FLAGS_2xoxs = $(BUILD_FLAGS) -DNUM_USB_CHAN_IN=0 -DI2S_CHANS_ADC=0
+INCLUDE_ONLY_IN_2xoxs = 
+
+#Audio Class 2, Input, Output, MIDI, No SPDIF
+XCC_FLAGS_2iomx = $(BUILD_FLAGS) -DMIDI=1 -DSPDIF=0
+INCLUDE_ONLY_IN_2iomx = 
+
+#Audio Class 2, Input, no Output, no MIDI, NO SPDIF
+XCC_FLAGS_2ixxx = $(BUILD_FLAGS) -DNUM_USB_CHAN_OUT=0 -DI2S_CHANS_DAC=0
+INCLUDE_ONLY_IN_2ixxx = 
+
+# Audio Class 1, Input, Output, No MIDI, SPDIF
+XCC_FLAGS_1ioxs = $(BUILD_FLAGS) -DNUM_USB_CHAN_IN=2 -DNUM_USB_CHAN_OUT=2 -DAUDIO_CLASS=1
+INCLUDE_ONLY_IN_1ioxs = 
+
+# Audio Class 1, No Input, Output, No MIDI, SPDIF
+XCC_FLAGS_1xoxs = $(BUILD_FLAGS) -DNUM_USB_CHAN_IN=0 -DNUM_USB_CHAN_OUT=2 -DAUDIO_CLASS=1
+INCLUDE_ONLY_IN_1xoxs = 
 
 # The USED_MODULES variable lists other module used by the application. These
 # modules will extend the SOURCE_DIRS, INCLUDE_DIRS and LIB_DIRS variables. 

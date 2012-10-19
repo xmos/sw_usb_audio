@@ -7,26 +7,51 @@
 #ifndef _CUSTOMDEFINES_H_
 #define _CUSTOMDEFINES_H_
 
-/***** Device configuration option defines.  Build can be customised but changing and adding defines here *****/
-
-/* Please note that SPDIF and MIDI defines reside in the makefiles since two configurations are built by default.
- * One for MIDI and one for S/PDIF
+/*
+ * Device configuration option defines.  Build can be customised but changing and adding defines here 
+ *
+ * Note, we check if they are already defined in Makefile 
  */
- 
-/* Audio Class Version.  Note we run in FS when in Audio Class 1.0 mode */
-//:Functionality
-/* Enable Fall-back to audio class 1.0 a FS */
-#define AUDIO_CLASS (2)
 
-/* Enable Fall-back to audio class 1.0 when connected to FS hub */
-#define AUDIO_CLASS_FALLBACK 1
-//:
+/* Enable/Disable MIDI - Default is MIDI off */
+#ifndef MIDI
+#define MIDI 		0			
+#endif
+
+/* Enable/Disable SPDIF output - Default is S/PDIF on */
+#ifndef SPDIF
+#define SPDIF		1			
+#endif
+
+/* Audio class version to run in - Default is 2.0 */
+#ifndef AUDIO_CLASS
+#define AUDIO_CLASS (2)			
+#endif
+
+/* Enable/disable fall back to Audio Class 1.0 when connected to FS hub. */
+#ifndef AUDIO_CLASS_FALLBACK
+#define AUDIO_CLASS_FALLBACK 1 
+#endif
 
 /* Defines relating to channel count and channel arrangement (Set to 0 for disable) */ 
 //:audio_defs
-/* Number of USB streaming channels */
+/* Number of USB streaming channels - Default is 4 in 4 out */
+#ifndef NUM_USB_CHAN_IN
 #define NUM_USB_CHAN_IN   (4)         /* Device to Host */
+#endif
+#ifndef NUM_USB_CHAN_OUT
 #define NUM_USB_CHAN_OUT  (4)         /* Host to Device */
+#endif
+
+/* Number of IS2 chans to DAC..*/
+#ifndef I2S_CHANS_DAC
+#define I2S_CHANS_DAC     (4)
+#endif
+
+/* Number of I2S chans from ADC */
+#ifndef I2S_CHANS_ADC
+#define I2S_CHANS_ADC     (4)
+#endif
 
 /* Run the CODEC as slave, Xcore as master 
  * Changing this define will cause CODECs to setup appropriately and XCore to be I2S slave
@@ -38,11 +63,6 @@
 
 #define MIDI_SHIFT_TX   7
 
-/* Number of IS2 chans to DAC..*/
-#define I2S_CHANS_DAC     (4)
-
-/* Number of I2S chans from ADC */
-#define I2S_CHANS_ADC     (4)
 
 /* Master clock defines (in Hz) */
 #define MCLK_441          (512*44100)   /* 44.1, 88.2 etc */
