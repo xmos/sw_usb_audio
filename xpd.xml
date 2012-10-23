@@ -1,37 +1,6 @@
 <?xml version="1.0" ?>
 <xpd>
-    <components>
-        <component description = "USB Audio application for XP-SKC-SU1 and XA-SK-AUDIO (1v0)" type = "demoCode" scope = "Example" path = "app_usb_aud_skc_su1" local = "false" id = "app_usb_aud_skc_su1" name = "XMOS SU1 USB Audio">
-            <board>XP-SKC-SU1</board>
-            <board>XA-SK-AUDIO (1v0)</board>
-            <componentDependency>module_dfu</componentDependency>
-            <componentDependency>module_usb_shared</componentDependency>
-            <componentDependency>module_i2c_single_port</componentDependency>
-            <componentDependency>module_spdif_rx</componentDependency>
-            <componentDependency>module_usb_midi</componentDependency>
-            <componentDependency>module_xud</componentDependency>
-            <componentDependency>module_usb_audio</componentDependency>
-            <componentDependency>module_spdif_tx</componentDependency>
-            <keyword>USB</keyword>
-        </component>
-        <component description = "USB Audio application for XR-USB-AUDIO-S1" type = "demoCode" scope = "Example" path = "app_usb_aud_su1" local = "false" id = "app_usb_aud_su1" name = "XMOS SU1 USB Audio">
-            <board>XP-SKC-SU1</board>
-            <board>XA-SK-AUDIO (1v0)</board>
-            <componentDependency>module_dfu</componentDependency>
-            <componentDependency>module_usb_shared</componentDependency>
-            <componentDependency>module_spdif_rx</componentDependency>
-            <componentDependency>module_i2c_simple</componentDependency>
-            <componentDependency>module_usb_midi</componentDependency>
-            <componentDependency>module_xud</componentDependency>
-            <componentDependency>module_usb_audio</componentDependency>
-            <componentDependency>module_spdif_tx</componentDependency>
-            <keyword>USB</keyword>
-            <keyword>Audio</keyword>
-            <keyword>I2S</keyword>
-            <keyword>S/PDIF</keyword>
-            <keyword>SU1</keyword>
-        </component>
-    </components>
+    <components></components>
     <dependency repo = "sc_ios">
         <githash>c3220a3f673d0256ee11f720b8d35413c523fa1a</githash>
         <uri>git://git/apps/sc_ios</uri>
@@ -95,5 +64,8 @@
     <release parenthash = "bd83769594750cf37ba300e6457256c4dcfc2a8e" version = "6.0.0alpha24" githash = "11d4b663f956ae30303ffb6cfd8464f481137c67"></release>
     <vendor>XMOS</vendor>
     <xpd_version>1.0</xpd_version>
+    <xsoftip_exclude>app_usb_aud_skc_su1</xsoftip_exclude>
+    <xsoftip_exclude>app_usb_aud_su1</xsoftip_exclude>
+    <xsoftip_exclude>app_usb_aud_l1</xsoftip_exclude>
     <scope>Reference Design</scope>
 </xpd>
