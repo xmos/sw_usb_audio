@@ -13,7 +13,9 @@ void CodecInit(chanend ?c_codec)
 {
     i2c_master_init(p_i2c);
 
-    // Enable SPDIF output (disables SPI flash)
+    /* Enable SPDIF output (disables SPI flash) 
+     * (For DFU we will reboot and back to default of SPI enabled.
+     */
     p_gpio <: 1;
     
     return;
