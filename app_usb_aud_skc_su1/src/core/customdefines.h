@@ -94,7 +94,7 @@
  * Device is M25P40 */
 #define DFU_FLASH_DEVICE \
 {    \
-    0, \
+    1, \
     256,                    /* page size */\
     1024,                   /* num pages */\
     3,                      /* address size */\
