@@ -15,7 +15,7 @@
         <version>1.3.0rc2</version>
     </dependency>
     <dependency repo = "sc_usb_audio">
-        <githash>3b5605dd0252d0676791b452299720cb9010d55f</githash>
+        <githash>47b56dec602724624c6497e81a80255161ac65ec</githash>
         <uri>git://git/apps/sc_usb_audio</uri>
     </dependency>
     <dependency repo = "xcommon">
@@ -65,7 +65,8 @@
     <release parenthash = "d5f5a90b354022b71aeb2a8c9d8a4c3d14530b78" version = "6.0.0beta0" githash = "a2c58143073007e075e6bbc572d331095f19ff96"></release>
     <release parenthash = "a2c58143073007e075e6bbc572d331095f19ff96" version = "6.0.0beta1" githash = "9af409f2634b704d67c6660685f64db8a4368b33"></release>
     <release parenthash = "9af409f2634b704d67c6660685f64db8a4368b33" version = "6.0.0beta2" githash = "067685e08828d1b4aec177278ead0a0dc798c253"></release>
-    <release parenthash = "067685e08828d1b4aec177278ead0a0dc798c253" version = "6.0.0beta3"></release>
+    <release parenthash = "067685e08828d1b4aec177278ead0a0dc798c253" version = "6.0.0beta3" githash = "f1b5f3ab858e1115a8fe8c39c93e8ed45aa4c97c"></release>
+    <release parenthash = "f1b5f3ab858e1115a8fe8c39c93e8ed45aa4c97c" version = "6.0.0beta4"></release>
     <vendor>XMOS</vendor>
     <xpd_version>1.0</xpd_version>
     <xsoftip_exclude>app_usb_aud_skc_su1</xsoftip_exclude>
