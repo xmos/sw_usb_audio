@@ -18,6 +18,7 @@ Firmware
     - CHANGE:     Now uses sc_i2c from www.github.com/xcore/sc_i2c 
     - CHANGE:     Previous default serial string of "0000" removed. No serial string now reported.
     - CHANGE:     Master volume update optimised slightly (updateMasteVol in audiorequests.xc)
+    - CHANGE:     Master volume control disabled in Audio Class 1.0 mode to solve various issues in Windows
     - RESOLVED:   (Minor) Fixed issue where buffering can lock up on sample frequency change if in overflow (#10897)
     - RESOLVED:   (Minor) XN files updated to avoid deprecation warnings from tools
 

@@ -90,42 +90,33 @@
 #define HOST_ACTIVE_CALL 1
 
 
-/* Define to Enable use of custom flash device for DFU interface */
-#if defined(DFU_CUSTOM_FLASH_DEVICE) && (DFU_CUSTOM_FLASH_DEVICE==0)
-#undef DFU_CUSTOM_FLASH_DEVICE
-#else
-// Disabled by default
-//#define DFU_CUSTOM_FLASH_DEVICE
-#endif
-
-/* Example custom flash device */
-#ifdef DFU_CUSTOM_FLASH_DEVICE
+/* Define to use custom flash part not in tools by default 
+ * Device is M25P40 */
 #define DFU_FLASH_DEVICE \
-  { \
-    ATMEL_AT25FS010, \
-    256,                    /* page size */ \
-    512,                    /* num pages */ \
-    3,                      /* address size */ \
-    8,                      /* log2 clock divider */ \
-    0x9F,                   /* SPI_RDID */ \
-    0,                      /* id dummy bytes */ \
+{    \
+    1, \
+    256,                    /* page size */\
+    1024,                   /* num pages */\
+    3,                      /* address size */\
+    8,                      /* log2 clock divider */\
+    0x9f,                   /* SPI_RDID */\
+    0,                      /* id dummy bytes */\
     3,                      /* id size in bytes */ \
-    0x1f6601,               /* device id */ \
-    0xD8,                   /* SPI_SE */ \
-    0,                      /* erase is full sector */ \
-    0x06,                   /* SPI_WREN */ \
-    0x04,                   /* SPI_WRDI */ \
-    PROT_TYPE_SR,           /* no protection */ \
-    {{0x0c,0x02},{0,0}},    /* SR values for protection */ \
-    0x02,                   /* SPI_PP */ \
-    0x0B,                   /* SPI_READ_FAST */ \
-    1,                      /* 1 read dummy byte*/ \
-    SECTOR_LAYOUT_REGULAR,  /* sane sectors */ \
-    {32768,{0,{0}}},        /* regular sector sizes */ \
-    0x05,                   /* SPI_RDSR */ \
-    0x01,                   /* SPI_WRSR */ \
-    0x01,                   /* SPI_WIP_BIT_MASK */ \
-  }
-#endif
+    0x202013,               /* device id */\
+    0xD8,                   /* SPI_SE */\
+    0,                      /* full sector erase */\
+    0x06,                   /* SPI_WREN */\
+    0x04,                   /* SPI_WRDI */\
+    PROT_TYPE_SR,           /* SR protection */\
+    {{0x0c,0x0},{0,0}},     /* no values */\
+    0x02,                   /* SPI_PP */\
+    0x0b,                   /* SPI_READFAST */\
+    1,                      /* 1 read dummy byte */\
+    SECTOR_LAYOUT_REGULAR,  /* sane sectors */\
+    {32768,{0,{0}}},        /* regular sector size */\
+    0x05,                   /* SPI_RDSR */\
+    0x01,                   /* no SPI_WRSR */\
+    0x01,                   /* SPI_WIP_BIT_MASK */\
+}
 
 #endif
