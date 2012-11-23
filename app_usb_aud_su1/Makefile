@@ -9,11 +9,19 @@ APP_NAME =
 BUILD_FLAGS     = -DAUDIO_2 -DFLASH_MAX_UPGRADE_SIZE=64*1024 -fcomment-asm -Xmapper --map -Xmapper MAPFILE -Wall -O3 -report -lflash -fsubword-select -save-temps -g -DUSB_CORE=0 -DTEST_MODE_SUPPORT -DARCH_S -fxscope
 #-fschedule
 
-XCC_FLAGS_spdif = $(BUILD_FLAGS) -DSPDIF=1
-INCLUDE_ONLY_IN_spdif = 
+#Test build configs (Note these make use of the defaults in customdefines.h)
 
-XCC_FLAGS_midi = $(BUILD_FLAGS) -DMIDI=1
-INCLUDE_ONLY_IN_midi = 
+# Audio Class 2, Input, Output, No MIDI, SPDIF
+XCC_FLAGS_2ioxs = $(BUILD_FLAGS) 
+INCLUDE_ONLY_IN_2ioxs = 
+
+#Audio Class 2, Input, Output, MIDI, No SPDIF
+XCC_FLAGS_2iomx = $(BUILD_FLAGS) -DMIDI=1 -DSPDIF=0
+INCLUDE_ONLY_IN_2iomx = 
+
+# Audio Class 1, Input, Output, No MIDI, SPDIF
+XCC_FLAGS_1ioxs = $(BUILD_FLAGS) -DAUDIO_CLASS=1
+INCLUDE_ONLY_IN_1ioxs = 
 
 # The USED_MODULES variable lists other module used by the application. These
 # modules will extend the SOURCE_DIRS, INCLUDE_DIRS and LIB_DIRS variables. 

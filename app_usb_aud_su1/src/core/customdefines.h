@@ -9,50 +9,67 @@
 
 /***** Device configuration option defines.  Build can be customised but changing these defines  *****/
 
+/* Enable/Disable MIDI - Default is MIDI off */
+#ifndef MIDI
+#define MIDI               (0)
+#endif
+
+/* Enable/Disable SPDIF output - Default is SPDIF on */
+#ifndef SPDIF
+#define SPDIF              (1)
+#endif
+
 /* Audio Class Version.  Note we run in FS when in Audio Class 1.0 mode */
 //:Functionality
-/* Enable Fall-back to audio class 1.0 a FS */
-#define AUDIO_CLASS (2)
+#ifndef AUDIO_CLASS
+#define AUDIO_CLASS        (2)
+#endif
 
 /* Enable Fall-back to audio class 1.0 when connected to FS hub */
-#define AUDIO_CLASS_FALLBACK 1
+#ifndef AUDIO_CLASS_FALLBACK
+#define AUDIO_CLASS_FALLBACK (1)
+#endif
 //:
 
 /* Defines relating to channel count and channel arrangement (Set to 0 for disable) */ 
 //:audio_defs
-/* Number of USB streaming channels */
-#define NUM_USB_CHAN_IN   (2)         /* Device to Host */
-#define NUM_USB_CHAN_OUT  (2)         /* Host to Device */
-
-/* Enable S/PDIF output - In makefile */
-//#define SPDIF           1
-
-/* Run the CODEC as slave, Xcore as master */
-#define CODEC_SLAVE     1
-
-/* Enable DFU interface, Note, requires a driver for Windows */
-#define DFU             1
-
-/* Disable MIDI - In makefile*/
-//#define MIDI            0
-
-#define MIDI_SHIFT_TX   7
+/* Number of USB streaming channels - default is 2in/2out */
+#ifndef NUM_USB_CHAN_IN
+#define NUM_USB_CHAN_IN    (2)         /* Device to Host */
+#endif
+#ifndef NUM_USB_CHAN_OUT
+#define NUM_USB_CHAN_OUT   (2)         /* Host to Device */
+#endif
 
 /* Number of IS2 chans to DAC..*/
-#define I2S_CHANS_DAC     (2)
+#ifndef I2S_CHANS_DAC
+#define I2S_CHANS_DAC      (2)
+#endif
 
 /* Number of I2S chans from ADC */
-#define I2S_CHANS_ADC     (2)
+#ifndef I2S_CHANS_ADC
+#define I2S_CHANS_ADC      (2)
+#endif
+
+/* Run the CODEC as slave, Xcore as master */
+#define CODEC_MASTER       (0)
+
+/* Enable DFU interface, Note, requires a driver for Windows */
+#define DFU                (1)
+
+#define MIDI_SHIFT_TX      (7)
 
 /* Master clock defines (in Hz) */
-#define MCLK_441          (512*44100)   /* 44.1, 88.2 etc */
-#define MCLK_48           (512*48000)   /* 48, 96 etc */
+#define MCLK_441           (512*44100)   /* 44.1, 88.2 etc */
+#define MCLK_48            (512*48000)   /* 48, 96 etc */
 
 /* Maximum frequency device runs at */
-#define MAX_FREQ                    (192000)       
+#define MAX_FREQ           (192000)       
 
 /* Index of SPDIF TX channel (duplicated DAC channels 1/2) */
 #define SPDIF_TX_INDEX              (0)
+
+#define HID_CONTROLS       (1)
 
 /* Default frequency device reports as running at */
 /* Audio Class 1.0 friendly freq */       
