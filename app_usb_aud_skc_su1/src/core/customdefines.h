@@ -7,6 +7,7 @@
 #ifndef _CUSTOMDEFINES_H_
 #define _CUSTOMDEFINES_H_
 
+
 /*
  * Device configuration option defines.  Build can be customised but changing and adding defines here 
  *
@@ -87,7 +88,12 @@
                               * JJ: Major, M: Minor, N: Sub-minor */
 //:
 
+/* Enable hostactive() calls */
 #define HOST_ACTIVE_CALL 1
+
+/* Enable example ADC/HID code */
+#define HID_CONTROLS    0
+#define SU1_ADC_ENABLE  0
 
 
 /* Define to use custom flash part not in tools by default 
