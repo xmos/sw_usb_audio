@@ -147,7 +147,7 @@ void set_PG2_trim (core c)
 
 void trimcode()
 {
-  set_PG2_trim(xs1_su);
+    set_PG2_trim(xs1_su);
 }
 
 
