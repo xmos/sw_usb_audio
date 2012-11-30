@@ -82,6 +82,8 @@ General known issues are as follows.  For board/application specific known issue
 
 -  88.2kHz and 176.4kHz sample frequencies are not exposed in Windows control panels.  This is due to known OS restrictions.
 
+-  MIDI SysEx messages dropping when used with Mac OSX. Tested using Mac OS X 10.8.2.
+
 Host System Requirements
 ========================
 
