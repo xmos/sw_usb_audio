@@ -8,6 +8,9 @@ XMOS USB Audio 2.0 Reference Design Change Log
 Firmware
 ========
 
+6v01:
+    - CHANGE:     Removed support for early evaluation SU1 silicon
+
 6v00:    
     - ADDED:      Support for SU1 (Via SU1 Core Board and Audio Slice) - see app_usb_aud_skc_su1
     - ADDED:      Design moved to new build system
