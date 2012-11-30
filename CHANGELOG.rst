@@ -12,13 +12,16 @@ Firmware
     - ADDED:      Support for SU1 (Via SU1 Core Board and Audio Slice) - see app_usb_aud_skc_su1
     - ADDED:      Design moved to new build system
     - ADDED:      Optional support for USB test modes
-    - ADDED:      Optional support for iOS devices (available to MFI licensees only)
+    - ADDED:      Optional HID endpoint for audio controls and example usages
+    - ADDED:      Multiple build confiurations for supported device configurations
     - CHANGE:     Now uses latest XUD API
     - CHANGE:     MIDI buffering simplified (using new XUD API) - no longer goes through decouple thread
     - CHANGE:     Now uses sc_i2c from www.github.com/xcore/sc_i2c 
     - CHANGE:     Previous default serial string of "0000" removed. No serial string now reported.
     - CHANGE:     Master volume update optimised slightly (updateMasteVol in audiorequests.xc)
     - CHANGE:     Master volume control disabled in Audio Class 1.0 mode to solve various issues in Windows
+    - CHANGE:     Audio Class 2.0 Status/Interrupt endpoint disabled by default (enabled when SPDIF/ADAT receive enabled)
+    - CHANGE:     DFU/Flash code simplified
     - RESOLVED:   (Minor) Fixed issue where buffering can lock up on sample frequency change if in overflow (#10897)
     - RESOLVED:   (Minor) XN files updated to avoid deprecation warnings from tools
 
