@@ -8,6 +8,9 @@ XMOS USB Audio 2.0 Reference Design Change Log
 Firmware
 ========
 
+6v10:
+    - FIXED:      Resolved issue with DFU caused by SU1 ADC usage causing issues with soft reboot
+
 6v01:
     - CHANGE:     Removed support for early evaluation SU1 silicon
 

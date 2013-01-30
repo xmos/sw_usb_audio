@@ -89,11 +89,13 @@
 //:
 
 /* Enable hostactive() calls */
-#define HOST_ACTIVE_CALL 1
+#define HOST_ACTIVE_CALL   1
 
-/* Enable example ADC/HID code */
-#define HID_CONTROLS    0
-#define SU1_ADC_ENABLE  0
+/* Enable/Disable example HID code */
+#define HID_CONTROLS       0
+
+/* Enable/Disable SU1 ADC and example code */
+#define SU1_ADC_ENABLE     0
 
 
 /* Define to use custom flash part not in tools by default 
