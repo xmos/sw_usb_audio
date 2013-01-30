@@ -71,7 +71,8 @@
     <release parenthash = "75f7ad9cffa09451ddcf6fee9f4e1d20109ced42" version = "6.0.0beta6" githash = "bc4815ec7a5b88cefc5adff73149aa1d28198d04"></release>
     <release parenthash = "7b40e3a5f9e0c3834699f448b7b0acaee3f4b42b" version = "6.0.0beta7" githash = "2b73295d02b22c25705a9065267e139e83f2d758"></release>
     <release parenthash = "3e99af046243de571c5c307b228cad920c92e42e" version = "6.0.0rc0" githash = "0ffa32b4be11213f56e99c2c72a3361b0f5363fa"></release>
-    <release parenthash = "46d83759ac66a776cd74fadfb55f9de6d6e4d85d" version = "6.0.1rc0"></release>
+    <release parenthash = "46d83759ac66a776cd74fadfb55f9de6d6e4d85d" version = "6.0.1rc0" githash = "67e9859730ec95a01089c4e0bf7fb4a493d660c8"></release>
+    <release parenthash = "8d1d353dafd24db88c171aeb006c60b148ae9bdc" version = "6.0.0beta8"></release>
     <vendor>XMOS</vendor>
     <xpd_version>1.0</xpd_version>
     <xsoftip_exclude>app_usb_aud_skc_su1</xsoftip_exclude>
