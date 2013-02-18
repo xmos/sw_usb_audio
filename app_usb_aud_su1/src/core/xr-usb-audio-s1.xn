@@ -18,7 +18,7 @@
           </Boot>
           <Core Number="0" Reference="stdcore[0]">
             <!-- SPI Ports -->
-            <Port Location="X1_PORT_1A"  Name="PORT_SPI_MISO"/>
+            <Port Location="XS1_PORT_1A"  Name="PORT_SPI_MISO"/>
             <Port Location="XS1_PORT_1B"  Name="PORT_SPI_SS"/>
             <Port Location="XS1_PORT_1C"  Name="PORT_SPI_CLK"/>
             <Port Location="XS1_PORT_1D"  Name="PORT_SPI_MOSI"/>

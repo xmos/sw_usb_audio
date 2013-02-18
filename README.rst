@@ -1,31 +1,16 @@
 XMOS USB Audio 2.0 Reference Design Readme
 ..........................................
 
-:Latest release: 6.0.0beta2
+:Latest release: 6.1.0rc0
 :Maintainer: Ross Owen
 :Description: USB Audio Applications
 
-
-Please note this is an non-generally available ALPHA release.  This release has had *no formal testing* and as should not be used in a production environment without additional testing.
-
-Further limitations are as follows:
-
-- The following listed applications have been found to build and run. All others may fail to build.
-    - app_usb_aud_l1
-    - app_usb_aud_su1
-    - app_usb_aud_skc_su1
-- Documentation still to be updated
-- Build warnings may be present
-- DFU not tested
-- iOS support does not build
- 
-This repo contains applications (or instances) of the XMOS USB Audio Reference Design framework.  These applications
-typically relate to a specific board.  This repo contains the following:
+This repository contains applications (or instances) of the XMOS USB Audio Reference Design framework.  These applications
+typically relate to a specific board.  This repository contains the following:
 
     App Name         |     Relevant Board(s)    |                Description
 ----------------------------------------------------------------------------------------------------------
 app_usb_aud_l1       | xr-usb-audio-2.0         | XMOS XS1-L1 USB Audio Reference Design
-app_usb_aud_l1_ios   | xr-ios-usb-audio         | XMOS XS1-L1 USB Audio Interface for iOS
 app_usb_aud_l2       | xr-usb-audio-2.0-mc      | XMOS XS1-L2 USB Audio Multi-channel Reference Design
 app_usb_aud_skc_su1  | xp-skc-su1 + xa-sk-audio | XMOS SU1 USB Audio Kit
 app_usb_aud_su1      | xr-usb-audio-s1          | XMOS SU1 USB Audio Reference Design (prototype only)
@@ -48,7 +33,7 @@ app_usb_aud_l1 builds a MIDI and a S/PDIF configuration.
 Key Framework Features
 ======================
 
-Key features of the various applications in this repo as as follow.  Refer to the application README for application 
+Key features of the various applications in this repositiry are as follow.  Refer to the application README for application 
 specific feature set.
 
 - USB Audio Class 1.0/2.0 Compliant 

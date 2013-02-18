@@ -7,6 +7,7 @@
 #ifndef _CUSTOMDEFINES_H_
 #define _CUSTOMDEFINES_H_
 
+
 /*
  * Device configuration option defines.  Build can be customised but changing and adding defines here 
  *
@@ -83,11 +84,18 @@
 #define VENDOR_ID   (0x20B1) /* XMOS VID */
 #define PID_AUDIO_2 (0x0008) /* SKC_SU1 USB Audio Reference Design PID */
 #define PID_AUDIO_1 (0x0009) /* SKC_SU1 Audio Reference Design PID */
-#define BCD_DEVICE  (0x0600) /* Device release number in BCD: 0xJJMN
+#define BCD_DEVICE  (0x0610) /* Device release number in BCD: 0xJJMN
                               * JJ: Major, M: Minor, N: Sub-minor */
 //:
 
-#define HOST_ACTIVE_CALL 1
+/* Enable hostactive() calls */
+#define HOST_ACTIVE_CALL   1
+
+/* Enable/Disable example HID code */
+#define HID_CONTROLS       0
+
+/* Enable/Disable SU1 ADC and example code */
+#define SU1_ADC_ENABLE     0
 
 
 /* Define to use custom flash part not in tools by default 
