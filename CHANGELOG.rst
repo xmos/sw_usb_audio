@@ -10,6 +10,8 @@ Firmware
 
 6v10:
     - FIXED:      Resolved issue with DFU caused by SU1 ADC usage causing issues with soft reboot
+    - ADDED:      Added ability for channel count changes UAC1 vs UAC2
+    - ADDED:      Support for iOS authentication (MFI licencees only - please contact XMOS)
 
 6v01:
     - CHANGE:     Removed support for early evaluation SU1 silicon
