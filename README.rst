@@ -1,26 +1,12 @@
 XMOS USB Audio 2.0 Reference Design Readme
 ..........................................
 
-:Latest release: 6.1.0alpha0
+:Latest release: 6.1.0rc0
 :Maintainer: Ross Owen
 :Description: USB Audio Applications
 
-
-Please note this is an non-generally available ALPHA release.  This release has had *no formal testing* and as should not be used in a production environment without additional testing.
-
-Further limitations are as follows:
-
-- The following listed applications have been found to build and run. All others may fail to build.
-    - app_usb_aud_l1
-    - app_usb_aud_su1
-    - app_usb_aud_skc_su1
-- Documentation still to be updated
-- Build warnings may be present
-- DFU not tested
-- iOS support does not build
- 
-This repo contains applications (or instances) of the XMOS USB Audio Reference Design framework.  These applications
-typically relate to a specific board.  This repo contains the following:
+This repository contains applications (or instances) of the XMOS USB Audio Reference Design framework.  These applications
+typically relate to a specific board.  This repository contains the following:
 
     App Name         |     Relevant Board(s)    |                Description
 ----------------------------------------------------------------------------------------------------------
@@ -48,7 +34,7 @@ app_usb_aud_l1 builds a MIDI and a S/PDIF configuration.
 Key Framework Features
 ======================
 
-Key features of the various applications in this repo as as follow.  Refer to the application README for application 
+Key features of the various applications in this repositiry are as follow.  Refer to the application README for application 
 specific feature set.
 
 - USB Audio Class 1.0/2.0 Compliant 
@@ -81,8 +67,6 @@ General known issues are as follows.  For board/application specific known issue
 -  Windows XP volume control very sensitive.  The Audio 1.0 driver built into Windows XP (usbaudio.sys) does not properly support master volume AND channel volume controls, leading to a very sensitive control.  Descriptors can be easily modified to disable master volume control if required (one byte - bmaControls(0) in Feature Unit descriptors)
 
 -  88.2kHz and 176.4kHz sample frequencies are not exposed in Windows control panels.  This is due to known OS restrictions.
-
--  MIDI SysEx messages dropping when used with Mac OSX (behaviour observed on Mac OSX 10.8.2).
 
 Host System Requirements
 ========================
