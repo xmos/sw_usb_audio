@@ -11,7 +11,6 @@ typically relate to a specific board.  This repository contains the following:
     App Name         |     Relevant Board(s)    |                Description
 ----------------------------------------------------------------------------------------------------------
 app_usb_aud_l1       | xr-usb-audio-2.0         | XMOS XS1-L1 USB Audio Reference Design
-app_usb_aud_l1_ios   | xr-ios-usb-audio         | XMOS XS1-L1 USB Audio Interface for iOS
 app_usb_aud_l2       | xr-usb-audio-2.0-mc      | XMOS XS1-L2 USB Audio Multi-channel Reference Design
 app_usb_aud_skc_su1  | xp-skc-su1 + xa-sk-audio | XMOS SU1 USB Audio Kit
 app_usb_aud_su1      | xr-usb-audio-s1          | XMOS SU1 USB Audio Reference Design (prototype only)
