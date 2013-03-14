@@ -48,7 +48,7 @@
       
 
 
-        <!--XCCOPE -->
+        <!--XSCOPE -->
         <Link Encoding="2wire" Delays="4,4" Flags="SOD">
         <LinkEndpoint NodeId="0" Link="X0LD"/>
         <LinkEndpoint RoutingId="0x8000" Chanend="1"/>
