@@ -2,11 +2,11 @@
 # compiled for. It either refers to an XN file in the source directories
 # or a valid argument for the --target option when compiling.
 
-TARGET = xr_usb-audio-20-mc.xn
+TARGET = xr_usb_audio_20_mc
 APP_NAME =
 
 # The flags passed to xcc when building the application
-BUILD_FLAGS     = -DFLASH_MAX_UPGRADE_SIZE=64*1024 -fcomment-asm -Xmapper --map -Xmapper MAPFILE -Wall -O3 -report -lflash -fsubword-select -save-temps -g -DUSB_CORE=0 -D TEST_MODE_SUPPORT -DARCH_S -fxscope -DXSCOPE -DSDA_HIGH=2 -DSCL_HIGH=1
+BUILD_FLAGS     = -DFLASH_MAX_UPGRADE_SIZE=64*1024 -fcomment-asm -Xmapper --map -Xmapper MAPFILE -Wall -O3 -report -lflash -fsubword-select -save-temps -g -DUSB_CORE=0 -D TEST_MODE_SUPPORT -DARCH_L -fxscope -DXSCOPE -DSDA_HIGH=2 -DSCL_HIGH=1 -DAUDIO_IO_CORE=1
 #-fschedule
 
 XCC_FLAGS = $(BUILD_FLAGS)
