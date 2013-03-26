@@ -60,7 +60,7 @@ The master-clock frequency defines should also be suitably modified.
 For general issues please see the readme in sw_usb_audio.
 
 Support
-=======
+.......
 
 For all support issues please visit http://www.xmos.com/support
 
