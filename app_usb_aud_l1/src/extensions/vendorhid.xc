@@ -2,6 +2,8 @@
 extern in port p_but_a;
 extern in port p_but_b;
 
+#ifdef HID_CONTROLS
+
 /* Write HID Report Data into hidData array
  *
  * Bits are as follows:
@@ -12,7 +14,6 @@ extern in port p_but_b;
  * 4: Volime Down
  * 5: Mute
  */
-
 void Vendor_ReadHIDButtons(unsigned char hidData[])
 {
 #ifndef MIDI
@@ -28,3 +29,4 @@ void Vendor_ReadHIDButtons(unsigned char hidData[])
     hidData[0] = (a << 3) | (b << 4);
 #endif
 }
+#endif // HID_CONTROLS

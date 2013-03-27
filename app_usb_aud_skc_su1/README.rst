@@ -11,7 +11,7 @@ XMOS SU1 USB Audio
 Key Features
 ............
 
-The app_usb_aud_skc_su1 application is designed to run on the SU1 Slice Kit Core Board (XP-SKC-SU1) in conjunction with an Audio Slice (XA-SK_AUDIO).  It uses the XMOS USB Audio framework to implement a USB Audio device with the following key features:
+The app_usb_aud_skc_su1 application is designed to run on the SU1 Slice Kit Core Board (XP-SKC-SU1) in conjunction with an Audio Slice (XA-SK-AUDIO).  It uses the XMOS USB Audio framework to implement a USB Audio device with the following key features:
 
 - USB Audio Class 2.0 Compliant
 

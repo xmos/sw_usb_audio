@@ -38,7 +38,7 @@ Each application also contains an "extensions" folder which includes board speci
 configuration etc.
 
 Additionally some options are contained in Makefiles for building multiple configurations of an application. For example 
-app_usb_aud_l1 builds a MIDI and a S/PDIF configuration.
+app_usb_aud_l1 builds a MIDI and a S/PDIF configuration.  See the USB Audio Software Design Guide for full details.
 
 Key Framework Features
 ======================
