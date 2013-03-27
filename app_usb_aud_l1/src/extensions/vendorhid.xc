@@ -1,4 +1,4 @@
-#include "customdefines.h"
+#include "devicedefines.h"
 
 extern in port p_but_a;
 extern in port p_but_b;
