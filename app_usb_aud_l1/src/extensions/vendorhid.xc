@@ -1,9 +1,9 @@
+#include "customdefines.h"
 
 extern in port p_but_a;
 extern in port p_but_b;
 
 #ifdef HID_CONTROLS
-
 /* Write HID Report Data into hidData array
  *
  * Bits are as follows:
