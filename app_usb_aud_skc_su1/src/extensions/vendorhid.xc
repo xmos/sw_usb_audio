@@ -1,4 +1,3 @@
-
 #include <xclib.h>
 #include "devicedefines.h"
 
