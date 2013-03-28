@@ -1,6 +1,5 @@
 
 #include <xclib.h>
-#include <print.h>
 #include "devicedefines.h"
 
 extern unsigned g_adcVal;
@@ -28,17 +27,16 @@ void Vendor_ReadHIDButtons(unsigned char hidData[])
 
 #if defined(ADC_VOL_CONTROL) && (ADC_VOL_CONTROL == 1)
     adcVal = g_adcVal >> 20; 
-    printintln(adcVal);
     
     if(adcVal < (ADC_MIN + THRESH))
     {
-        /* Volume up */
-        hidData[0] = 0x8;
+        /* Volume down */
+        hidData[0] = 0x10;
     }
     else if (adcVal > (ADC_MAX - THRESH))
     {
-        /* Volume down */
-        hidData[0] = 0x10;
+        /* Volume up */
+        hidData[0] = 0x18;
     }
 #endif
 }
