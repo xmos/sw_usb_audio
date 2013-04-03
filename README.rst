@@ -5,7 +5,6 @@ XMOS USB Audio 2.0 Reference Design Readme
 :Maintainer: Ross Owen
 :Description: USB Audio Applications
 
-
 Welcome to version 6 of the XMOS USB Audio software framework.  
 
 The main feature of version 6 of the XMOS USB Audio software framework and associated applications is to add support 
@@ -14,6 +13,8 @@ need to update to this version unless a specific issues is solved by this releas
 change listing.
 
 For full software documentation please see the USB Audio Software Design Guide document available from xmos.com.
+
+This release is built and tested using version 12 of the XMOS toolset.
 
 This repository contains applications (or instances) of the XMOS USB Audio Reference Design framework.  These applications
 typically relate to a specific board.  This repository contains the following:
