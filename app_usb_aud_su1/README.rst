@@ -1,11 +1,11 @@
-XMOS SU1 USB Audio
-==================
+XMOS XS1-U8 USB Audio
+=====================
 
 :Latest release: 6.0.0alpha10
 :Maintainer: Ross Owen
 :scope: Example
 :description: USB Audio application for XR-USB-AUDIO-S1
-:keywords: USB, Audio, I2S, S/PDIF, SU1 
+:keywords: USB, Audio, I2S, S/PDIF, U6, U8
 :boards: XP-SKC-SU1, XA-SK-AUDIO (1v0)
 
 Please note, this application is provided as legacy support for the early prototype board XR-USB-AUDIO-S1.  This has now been superseded by the combination of boards XP-SKC-SU1 and XA-SK-AUDIO (Termed the XMOS USB Audio DJ Kit) and the application app_usb_aud_skc_su1.  It is advised that any evaluation and development ismoved away from this platform.   

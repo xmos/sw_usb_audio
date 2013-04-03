@@ -9,7 +9,7 @@ XMOS USB Audio 2.0 Reference Design Readme
 Welcome to version 6 of the XMOS USB Audio software framework.  
 
 The main feature of version 6 of the XMOS USB Audio software framework and associated applications is to add support 
-for the latest SU devices now available from XMOS.  This release supports the previous L devices, however, there is no
+for the latest U series of devices now available from XMOS.  This release supports the previous L devices, however, there is no
 need to update to this version unless a specific issues is solved by this release.  Please see CHANGELOG.rst for detailed
 change listing.
 
@@ -21,9 +21,9 @@ typically relate to a specific board.  This repository contains the following:
 +---------------------+--------------------------+-------------------------------------------------------+
 |    App Name         |     Relevant Board(s)    | Description                                           |
 +---------------------+--------------------------+-------------------------------------------------------+
-|app_usb_aud_l1       | xr-usb-audio-2.0         | XMOS XS1-L1 USB Audio Reference Design                |
-|app_usb_aud_skc_su1  | xp-skc-su1 + xa-sk-audio | XMOS SU1 USB Audio Kit                                |
-|app_usb_aud_su1      | xr-usb-audio-s1          | XMOS SU1 USB Audio Reference Design (prototype only)  |
+|app_usb_aud_l1       | xr-usb-audio-2.0         | XMOS XS1-L8 USB Audio Reference Design                |
+|app_usb_aud_skc_su1  | xp-skc-su1 + xa-sk-audio | XMOS XS1-U8 USB Audio Kit                                |
+|app_usb_aud_su1      | xr-usb-audio-s1          | XMOS XS1-U8 USB Audio Reference Design (prototype only)  |
 +---------------------+--------------------------+-------------------------------------------------------+
 
 Please refer to individual README files in these apps for more detailed information.

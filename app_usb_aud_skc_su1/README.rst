@@ -1,17 +1,17 @@
-XMOS SU1 USB Audio
-==================
+XMOS XS1-U8 USB Audio
+=====================
 
 :Latest release: 6.0.0alpha10
 :Maintainer: Ross Owen
 :scope: Example
 :description: USB Audio application for XP-SKC-SU1 and XA-SK-AUDIO (1v1)
-:keywords: USB 
+:keywords: USB,  
 :boards: XP-SKC-SU1, XA-SK-AUDIO (1v1)
 
 Key Features
 ............
 
-The app_usb_aud_skc_su1 application is designed to run on the SU1 Slice Kit Core Board (XP-SKC-SU1) in conjunction with an Audio Slice (XA-SK-AUDIO).  It uses the XMOS USB Audio framework to implement a USB Audio device with the following key features:
+The app_usb_aud_skc_su1 application is designed to run on the U8 Slice Kit Core Board (XP-SKC-SU1) in conjunction with an Audio Slice (XA-SK-AUDIO).  It uses the XMOS USB Audio framework to implement a USB Audio device with the following key features:
 
 - USB Audio Class 2.0 Compliant
 

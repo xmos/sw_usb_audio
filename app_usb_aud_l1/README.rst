@@ -1,4 +1,4 @@
-XMOS XS1-L1 USB Audio 2.0 Reference Design (app_usb_aud_l1)
+XMOS XS1-L8 USB Audio 2.0 Reference Design (app_usb_aud_l1)
 ===========================================================
 
 :Latest release: 6.0.0alpha10
@@ -50,7 +50,7 @@ Known Issues
 
 Please also note:  
 
-The L1 Reference Design board has a 11.289MHz master clock source (oscillator) for 44.1kHz family of sample frequencies. S/PDIF Tx operation at 176.4kHz is therefore not supported due to the 2 x MCLK requirement. 
+The L8 Reference Design board has a 11.289MHz master clock source (oscillator) for 44.1kHz family of sample frequencies. S/PDIF Tx operation at 176.4kHz is therefore not supported due to the 2 x MCLK requirement. 
 
 In addition the CODEC is configured in hardware mode.  The scheme used uses a single pin (MDIV2) to indicate 256 or 512fs.  This same line is used on the board to control master-clock selection.  In 256fs mode with a 22.578 master-clock 44.1 cannot be achieved by the CODEC (88.2kHz and 176.4kHz should operate as expected).
 
