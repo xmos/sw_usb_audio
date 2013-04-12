@@ -32,6 +32,8 @@ Firmware
     - CHANGE:     DFU/Flash code simplified
     - RESOLVED:   (Minor) Fixed issue where buffering can lock up on sample frequency change if in overflow (#10897)
     - RESOLVED:   (Minor) XN files updated to avoid deprecation warnings from tools
+    - RESOLVED:   (Major) Fixed issue where installation of the first upgrade image is successful but subsequent 
+                  upgrades fail (Design Advisory X2035A)
 
 (Note: USB Audio version numbers unified across all products at this point)
 
