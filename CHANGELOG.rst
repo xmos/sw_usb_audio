@@ -8,6 +8,9 @@ XMOS USB Audio 2.0 Reference Design Change Log
 Firmware
 ========
 
+6v20:
+    - ADDED:      Added application for XK-USB-AUDIO-U8-2C board
+
 6v10:
     - FIXED:      Resolved issue with DFU caused by SU1 ADC usage causing issues with soft reboot
     - ADDED:      Added ability for channel count changes UAC1 vs UAC2
@@ -32,6 +35,7 @@ Firmware
     - CHANGE:     DFU/Flash code simplified
     - RESOLVED:   (Minor) Fixed issue where buffering can lock up on sample frequency change if in overflow (#10897)
     - RESOLVED:   (Minor) XN files updated to avoid deprecation warnings from tools
+    - RESOLVED:   (Major) Fixed issue where installation of the first upgrade image, but subsequent upgrades fail (Design Advisory X2035A)
 
 (Note: USB Audio version numbers unified across all products at this point)
 
