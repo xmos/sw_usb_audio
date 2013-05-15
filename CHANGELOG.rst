@@ -13,7 +13,7 @@ Firmware
 
 6v10:
     - FIXED:      Resolved issue with DFU caused by SU1 ADC usage causing issues with soft reboot
-    - ADDED:      Added ability for channel count changes UAC1 vs UAC2
+    - ADDED:      Added ability for channel count changes between UAC1 and UAC2 modes
     - ADDED:      Support for iOS authentication (MFI licencees only - please contact XMOS)
 
 6v01:
@@ -35,7 +35,12 @@ Firmware
     - CHANGE:     DFU/Flash code simplified
     - RESOLVED:   (Minor) Fixed issue where buffering can lock up on sample frequency change if in overflow (#10897)
     - RESOLVED:   (Minor) XN files updated to avoid deprecation warnings from tools
+<<<<<<< HEAD
     - RESOLVED:   (Major) Fixed issue where installation of the first upgrade image, but subsequent upgrades fail (Design Advisory X2035A)
+=======
+    - RESOLVED:   (Major) Fixed issue where installation of the first upgrade image is successful but subsequent 
+                  upgrades fail (Design Advisory X2035A)
+>>>>>>> origin/master
 
 (Note: USB Audio version numbers unified across all products at this point)
 
@@ -152,8 +157,8 @@ Previous L1 Firmware Releases
     - Initial release
 
 
-Hardware
-========
+L1 Hardware
+===========
 
 1v2: 
     - Explicit power supply sequencing
@@ -270,8 +275,11 @@ Previous L2 Firmware Releases
     - Master/channel volume/mute controls
     
 
-Hardware
-========
+L2 Hardware
+===========
+
+1v2:
+    - Update for coax in, coax out cap & minor tidyup
 
 1v1:
     - Initial production

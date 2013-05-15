@@ -91,9 +91,11 @@
 /* Enable/Disable example HID code */
 #define HID_CONTROLS       0
 
-/* Enable/Disable SU1 ADC and example code */
+/* Enable/Disable SU1 ADC */
 #define SU1_ADC_ENABLE     0
 
+/* Enable ADC based *EXAMPLE* volume control */
+#define ADC_VOL_CONTROL    0
 
 /* Define to use custom flash part not in tools by default 
  * Device is M25P40 */

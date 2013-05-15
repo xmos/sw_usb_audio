@@ -1,18 +1,17 @@
-XMOS SU1 USB Audio
-==================
+XMOS XS1-U8 USB Audio
+=====================
 
 :Latest release: 6.0.0alpha10
 :Maintainer: Ross Owen
 :scope: Example
-:description: USB Audio application for XP-SKC-SU1 and XA-SK-AUDIO (1v0)
-:keywords: USB 
-:boards: XP-SKC-SU1, XA-SK-AUDIO (1v0)
-
+:description: USB Audio application for XP-SKC-SU1 and XA-SK-AUDIO (1v1)
+:keywords: USB,  
+:boards: XP-SKC-SU1, XA-SK-AUDIO (1v1)
 
 Key Features
 ............
 
-The app_usb_aud_skc_su1 application is designed to run on the SU1 Slice Kit Core Board (XP-SKC-SU1) in conjunction with an Audio Slice (XA-SK_AUDIO).  It uses the XMOS USB Audio framework to implement a USB Audio device with the following key features:
+The app_usb_aud_skc_su1 application is designed to run on the U8 Slice Kit Core Board (XP-SKC-SU1) in conjunction with an Audio Slice (XA-SK-AUDIO).  It uses the XMOS USB Audio framework to implement a USB Audio device with the following key features:
 
 - USB Audio Class 2.0 Compliant
 
@@ -29,12 +28,18 @@ The app_usb_aud_skc_su1 application is designed to run on the SU1 Slice Kit Core
 Overview
 ........
 
-The firmware provides a high-speed USB audio device designed to be compliant to version 2.0 of the USB Audio Class Specification.
-
+The firmware provides a high-speed USB Audio device designed to be compliant to version 2.0 of the USB Audio Class Specification.
 
 Known Issues
 ............
 
-See README in sw_usb_aud for general issues.
+Please note that this software is not compatible with version 1v0 of the Audio Slice board (XA-SK-AUDIO) due to a pin-out change between versions 1v0 and 1v1.
+
+See README in sw_usb_audio for general issues.
+
+Support
+.......
+
+For all support issues please visit http://www.xmos.com/support
 
 
