@@ -85,9 +85,6 @@
 /* Enables HID EP */
 #define HID_CONTROLS       (1)
 
-/* Enables calls to hostactive functions */
-#define HOST_ACTIVE_CALL   (1)
-
 /* Define to Enable use of custom flash device for DFU interface */
 #if defined(DFU_CUSTOM_FLASH_DEVICE) && (DFU_CUSTOM_FLASH_DEVICE==0)
 #undef DFU_CUSTOM_FLASH_DEVICE

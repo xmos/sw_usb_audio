@@ -3,12 +3,10 @@
 #include <xs1.h>
 #include "devicedefines.h"
 
-#ifdef HOST_ACTIVE_CALL
-
 #include "p_gpio.h"
 #include "p_gpio_defines.h"
 
-void VendorHostActive(int active)
+void UserHostActive(int active)
 {
     /* Kill the steam active LED on an unplug - important if we are self-powered */
     if(!active)
@@ -22,4 +20,3 @@ void VendorHostActive(int active)
 }
 
 
-#endif

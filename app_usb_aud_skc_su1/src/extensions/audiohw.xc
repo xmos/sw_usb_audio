@@ -9,7 +9,7 @@ extern port p_i2c;
 extern out port p_gpio;
 
 //:codec_init
-void CodecInit(chanend ?c_codec) 
+void AudioHwInit(chanend ?c_codec) 
 {
     i2c_master_init(p_i2c);
 
@@ -42,15 +42,23 @@ void CodecInit(chanend ?c_codec)
 
 #define IIC_REGREAD(reg, val)  {i2c_master_read_reg(CODEC1_I2C_DEVICE_ADDR, reg, val, 1, p_i2c);}
 
+#define PCM1795_ADDR (0b1001110)
+#define PCM1795_ADDR_WR (PCM1795_ADDR<<1)
+#define PCM1795_ADDR_RD ((PCM1795_ADDR<<1))
+
+#define IIC_REGREAD_PCM1795(reg, val)  {i2c_master_read_reg(PCM1795_ADDR_RD, reg, val, 2, p_i2c);}
+#define IIC_REGWRITE_PCM1795(reg, val)  {data[0] = val&0xff; data[1] = (val&0xff>>8);i2c_master_write_reg(PCM1795_ADDR_WR, reg, data, 2, p_i2c);}
+
+
 //:codec_config
 /* Called on a sample frequency change */
-void CodecConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec)
+void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, int dsdMode)
 {
     timer t;
     unsigned time;
     unsigned tmp;
     int codec_dev_id;
-    unsigned char data[1] = {0};
+    unsigned char data[] = {0, 0};
 
     /* See whats on the GP out port */
     tmp = p_gpio_peek();
@@ -82,16 +90,25 @@ void CodecConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec)
     
     /* Set power down bit in the CODEC over I2C */
     IIC_REGWRITE(CODEC_DEV_ID_ADDR, 0x01);
-    
-    /* Read CODEC device ID to make sure everything is OK */
-    IIC_REGREAD(CODEC_DEV_ID_ADDR, data);
-    
-    codec_dev_id = data[0];
-    if (((codec_dev_id & 0xF0) >> 4) != 0xC) {
-        printstr("Unexpected CODEC Device ID, expected 0xC, got ");
-        printhex(codec_dev_id);
-        //assert(0); // Throw an error
+
+    if(dsdMode) 
+    {
+        IIC_REGWRITE_PCM1795(20, 0b001010000100000);
     }
+    else
+    {
+        IIC_REGWRITE_PCM1795(20, 0b001010000000000);
+    }
+
+    /* Read CODEC device ID to make sure everything is OK */
+    //IIC_REGREAD(CODEC_DEV_ID_ADDR, data);
+    
+    //codec_dev_id = data[0];
+    //if (((codec_dev_id & 0xF0) >> 4) != 0xC) {
+        //printstr("Unexpected CODEC Device ID, expected 0xC, got ");
+        //printhex(codec_dev_id);
+        //assert(0); // Throw an error
+    //}
     
     /* Now set all registers as we want them :    
     Mode Control Reg: */

@@ -2,8 +2,7 @@
 #include "devicedefines.h"
 #include "port32A.h"
 
-#ifdef HOST_ACTIVE_CALL
-void VendorHostActive(int active)
+void UserHostActive(int active)
 {
     int x;
    
@@ -27,4 +26,3 @@ void VendorHostActive(int active)
         asm("out res[%0], %1"::"r"(XS1_PORT_32A),"r"(x)); 
     }  
 }
-#endif

@@ -16,14 +16,15 @@ The app_usb_aud_skc_su1 application is designed to run on the SU1 Slice Kit Core
 
 - USB Audio Class 2.0 Compliant
 
-- Fully Asynchorous operation
+- Fully Asynchronous operation
 
 - 4 channels analogue input and 4 channels analogue output (Via I2S to 2 x Stereo CODECs)
 
 - S/PDIF output (via COAX connector)
   
-- Supports for the following sample frequencies: 44.1, 48, 88.2, 176.4, 192kHz
+- Supports for the following sample frequencies: 44.1, 48, 88.2, 96, 176.4, 192kHz
 
+- MIDI input and output
 
 Overview
 ........

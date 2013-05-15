@@ -88,9 +88,6 @@
                               * JJ: Major, M: Minor, N: Sub-minor */
 //:
 
-/* Enable hostactive() calls */
-#define HOST_ACTIVE_CALL   1
-
 /* Enable/Disable example HID code */
 #define HID_CONTROLS       0
 

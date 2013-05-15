@@ -16,7 +16,7 @@
  * Since this port is shared with other functionality inline assembly
  * is used to access the port resource.
  */
-void AudioStreamStart(void) 
+void UserAudioStreamStart(void) 
 {
     int x;
     asm("peek %0, res[%1]":"=r"(x):"r"(XS1_PORT_32A)); 
@@ -29,7 +29,7 @@ void AudioStreamStart(void)
  * For L1 USB Audio Reference Design we extinguish LED B (connected
  * to port 32A)
  */
-void AudioStreamStop(void) 
+void UserAudioStreamStop(void) 
 {
     int x;
      asm("peek %0, res[%1]":"=r"(x):"r"(XS1_PORT_32A)); 

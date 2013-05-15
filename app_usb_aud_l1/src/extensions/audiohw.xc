@@ -7,7 +7,7 @@
 #define PORT32A_OUT(X)  {asm("out res[%0], %1"::"r"(XS1_PORT_32A),"r"(X));}
 
 //:codec_init
-void CodecInit(chanend ?c_codec) 
+void AudioHwInit(chanend ?c_codec) 
 {
     return;
 }
@@ -21,7 +21,7 @@ void CodecInit(chanend ?c_codec)
  * access via inline assembly. We also take care to retain the
  * state of the other bits.
  */
-void CodecConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec)
+void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, int dsdMode)
 {
     timer t;
     unsigned time;
