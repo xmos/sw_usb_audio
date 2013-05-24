@@ -14,12 +14,7 @@ extern in port p_but_b;
  * 4: Volime Down
  * 5: Mute
  */
-<<<<<<< HEAD
-
 void UserReadHIDButtons(unsigned char hidData[])
-=======
-void Vendor_ReadHIDButtons(unsigned char hidData[])
->>>>>>> origin/master
 {
 #ifndef MIDI
     unsigned a, b;
