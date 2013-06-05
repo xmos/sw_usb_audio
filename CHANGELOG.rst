@@ -10,6 +10,9 @@ Firmware
 
 6v20:
     - ADDED:      Added application for XK-USB-AUDIO-U8-2C board
+    - FIXED:      (Major) ADC port init for 384kHz
+    - FIXED:      (Major) Resolved a compatibilty issue with streaming on Intel USB 3.0 xHCI host controller
+    - FIXED:      (Minor) Input channel strings used for output in one instance
 
 6v10:
     - FIXED:      Resolved issue with DFU caused by SU1 ADC usage causing issues with soft reboot
@@ -17,7 +20,7 @@ Firmware
     - ADDED:      Support for iOS authentication (MFI licencees only - please contact XMOS)
 
 6v01:
-    - CHANGE:     Removed support for early evaluation SU1 silicon
+    - CHANGE:     Removed support for early engineering sample U-series devices
 
 6v00:    
     - ADDED:      Support for SU1 (Via SU1 Core Board and Audio Slice) - see app_usb_aud_skc_su1
