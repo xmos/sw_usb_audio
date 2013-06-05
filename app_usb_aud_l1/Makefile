@@ -6,13 +6,17 @@ TARGET = xr-usb-audio-2.0
 APP_NAME =
 
 # The flags passed to xcc when building the application
-BUILD_FLAGS     = -DAUDIO_2 -DFLASH_MAX_UPGRADE_SIZE=64*1024 -fcomment-asm -Xmapper --map -Xmapper MAPFILE -Wall -O3 -report -lflash -fsubword-select -save-temps -g -DUSB_CORE=0 -DARCH_L -D TEST_MODE_SUPPORT 
+BUILD_FLAGS     = -DAUDIO_2 -DFLASH_MAX_UPGRADE_SIZE=64*1024 -fcomment-asm -Xmapper --map -Xmapper MAPFILE -Wall -O3 -report -lflash -fsubword-select -save-temps -g -DUSB_CORE=0 -DARCH_L -D TEST_MODE_SUPPORT -DXUD_SERIES_SUPPORT=2
 #-fschedule
 
 #Test build configs (Note these make use of the defaults in customdefines.h)
 
 # Audio Class 2, Input, Output, No MIDI, SPDIF
 XCC_FLAGS_2ioxs = $(BUILD_FLAGS) 
+INCLUDE_ONLY_IN_2ioxs = 
+
+# Audio Class 2, No Input, Output, No MIDI, SPDIF
+XCC_FLAGS_2xoxs = $(BUILD_FLAGS) -DNUM_USB_CHAN_IN=0 
 INCLUDE_ONLY_IN_2ioxs = 
 
 #Audio Class 2, Input, Output, MIDI, No SPDIF
@@ -22,6 +26,10 @@ INCLUDE_ONLY_IN_2iomx =
 # Audio Class 1, Input, Output, No MIDI, SPDIF
 XCC_FLAGS_1ioxs = $(BUILD_FLAGS) -DAUDIO_CLASS=1
 INCLUDE_ONLY_IN_1ioxs = 
+
+# Audio Class 1, No Input, Output, No MIDI, SPDIF
+XCC_FLAGS_1xoxs = $(BUILD_FLAGS) -DAUDIO_CLASS=1 -DNUM_USB_CHAN_IN=0
+INCLUDE_ONLY_IN_1xoxs = 
 
 # The USED_MODULES variable lists other module used by the application. These
 # modules will extend the SOURCE_DIRS, INCLUDE_DIRS and LIB_DIRS variables. 
