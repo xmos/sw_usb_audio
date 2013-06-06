@@ -176,7 +176,7 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, int dsdMod
      * 4:   Interperlolation Filter Select (0 fast or 1 slow roll-off)
      * 5:7: Reserved
      */
-    DAC_REGWRITE(DAC_REG_ADDR_MODE_CTRL2, 0b00000000);
+    DAC_REGWRITE(DAC_REG_ADDR_MODE_CTRL3, 0b00000000);
 
     if(dsdMode) 
     {
