@@ -134,7 +134,7 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, int dsdMod
     */
     if(dsdMode)
     {
-            DAC_REGWRITE(DAC_REG_ADDR_MODE_CTRL1, 0b00000011);
+            DAC_REGWRITE(DAC_REG_ADDR_MODE_CTRL1, 0b00100011);
     }
     else
     {
