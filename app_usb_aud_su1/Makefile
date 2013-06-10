@@ -6,7 +6,7 @@ TARGET = xr-usb-audio-s1
 APP_NAME =
 
 # The flags passed to xcc when building the application
-BUILD_FLAGS     = -DAUDIO_2 -DFLASH_MAX_UPGRADE_SIZE=64*1024 -fcomment-asm -Xmapper --map -Xmapper MAPFILE -Wall -O3 -report -lflash -fsubword-select -save-temps -g -DUSB_CORE=0 -DTEST_MODE_SUPPORT -DUD_SERIES_SUPPORT=1 -fxscope
+BUILD_FLAGS     = -DAUDIO_2 -DFLASH_MAX_UPGRADE_SIZE=64*1024 -fcomment-asm -Xmapper --map -Xmapper MAPFILE -Wall -O3 -report -lflash -fsubword-select -save-temps -g -DUSB_CORE=0 -DTEST_MODE_SUPPORT -DXUD_SERIES_SUPPORT=1 -fxscope
 
 #Test build configs (Note these make use of the defaults in customdefines.h)
 
