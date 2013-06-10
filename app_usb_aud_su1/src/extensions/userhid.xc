@@ -1,7 +1,7 @@
 
 extern in port p_but;
 
-void Vendor_ReadHIDButtons(unsigned char hidData[])
+void UserReadHIDButtons(unsigned char hidData[])
 {
     int tmp;
     p_but :> tmp;
