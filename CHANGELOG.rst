@@ -13,6 +13,7 @@ Firmware
     - FIXED:      (Major) ADC port init for 384kHz
     - FIXED:      (Major) Resolved a compatibilty issue with streaming on Intel USB 3.0 xHCI host controller
     - FIXED:      (Minor) Input channel strings used for output in one instance
+    - FIXED:      robustness to audio 1.0 bad packets.:
 
 6v10:
     - FIXED:      Resolved issue with DFU caused by SU1 ADC usage causing issues with soft reboot
