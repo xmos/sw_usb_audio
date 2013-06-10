@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-
 #include <xclib.h>
-=======
->>>>>>> origin/master
 #include "devicedefines.h"
 
 extern unsigned g_adcVal;
@@ -11,13 +7,11 @@ extern unsigned g_adcVal;
  * Simple *example* of how to potentially used ADC to control a volume (Via HID)
  *
  * Please note this is an *example* only.  An absolute ADC input does not really serve 
-<<<<<<< HEAD
  * as a good input to a relative HID volume control
  *
  * ADC in the range 0x0 to 7fff 
 =======
  * as a good input to a relative HID volume control!
->>>>>>> origin/master
  *
  * If ADC around halfway then no change to volume
  * If ADC above halfway then volume up
@@ -31,10 +25,7 @@ extern unsigned g_adcVal;
 void Vendor_ReadHIDButtons(unsigned char hidData[])
 {
     unsigned adcVal;
-<<<<<<< HEAD
     int diff;
-=======
->>>>>>> origin/master
 
     hidData[0] = 0;
 
