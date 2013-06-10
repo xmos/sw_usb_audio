@@ -4,8 +4,8 @@
          xsi:schemaLocation="http://www.xmos.com http://www.xmos.com">
 
   <Declarations>
-    <Declaration>core stdcore[1]</Declaration>
-    <Declaration>core xs1_su</Declaration>
+    <Declaration>tileref tile[1]</Declaration>
+    <Declaration>tileref xs1_su_periph</Declaration>
   </Declarations>
 
   <Packages>
@@ -16,30 +16,25 @@
           <Boot>
             <Source Location="SPI:bootFlash"/>
           </Boot>
-          <Core Number="0" Reference="stdcore[0]">
-            <!-- SPI Ports -->
+          <Core Number="0" Reference="tile[0]">
             <Port Location="XS1_PORT_1A"  Name="PORT_SPI_MISO"/>
             <Port Location="XS1_PORT_1B"  Name="PORT_SPI_SS"/>
             <Port Location="XS1_PORT_1C"  Name="PORT_SPI_CLK"/>
             <Port Location="XS1_PORT_1D"  Name="PORT_SPI_MOSI"/>
-            <!-- Standard USB Audio Ports -->
             <Port Location="XS1_PORT_1A"  Name="PORT_I2S_BCLK"/>
-            <Port Location="XS1_PORT_1C"  Name="PORT_I2S_LRCLK"/>
+            <Port Location="XS1_PORT_1B"  Name="PORT_SPDIF_OUT"/>
+            <Port Location="XS1_PORT_1C"  Name="PORT_I2S_DAC1"/>
             <Port Location="XS1_PORT_1D"  Name="PORT_I2S_DAC0"/>
             <Port Location="XS1_PORT_1E"  Name="PORT_MCLK_IN"/>
             <Port Location="XS1_PORT_1F"  Name="PORT_MIDI_IN"/>
-            <Port Location="XS1_PORT_1I"  Name="PORT_I2S_ADC0"/>
-            <Port Location="XS1_PORT_1L"  Name="PORT_SPDIF_OUT"/>
+            <Port Location="XS1_PORT_1G"  Name="PORT_I2S_ADC0"/>
+            <Port Location="XS1_PORT_1I"  Name="PORT_I2S_LRCLK"/>
+            <Port Location="XS1_PORT_1L"  Name="PORT_I2S_ADC1"/>
             <Port Location="XS1_PORT_8D"  Name="PORT_MIDI_OUT"/>
             <Port Location="XS1_PORT_16B"  Name="PORT_MCLK_COUNT"/>
-            <!-- Additional Ports -->
-            <Port Location="XS1_PORT_1G"  Name="PORT_I2C_SDA"/>
-            <Port Location="XS1_PORT_4C"  Name="PORT_I2C_SCL"/>
-            <Port Location="XS1_PORT_4D"  Name="PORT_BUT"/>
-            <Port Location="XS1_PORT_32A"  Name="PORT_GPIO"/>
           </Core>
         </Node>
-        <Node Id="1" InPackageId="1" Type="periph:XS1-SU" Reference="xs1_su" Oscillator="24MHz">
+        <Node Id="1" InPackageId="1" Type="periph:XS1-SU" Reference="xs1_su_periph" Oscillator="24MHz">
             <Service Proto="xs1_su_adc_service(chanend c_adc)">
                 <Chanend Identifier="c_adc" end="2" remote="5"/>
             </Service>
@@ -53,7 +48,7 @@
       
 
 
-        <!--XCCOPE -->
+        <!--XSCOPE -->
         <Link Encoding="2wire" Delays="4,4" Flags="SOD">
         <LinkEndpoint NodeId="0" Link="X0LD"/>
         <LinkEndpoint RoutingId="0x8000" Chanend="1"/>
