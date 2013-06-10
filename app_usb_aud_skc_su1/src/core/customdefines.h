@@ -84,8 +84,6 @@
 #define VENDOR_ID   (0x20B1) /* XMOS VID */
 #define PID_AUDIO_2 (0x0008) /* SKC_SU1 USB Audio Reference Design PID */
 #define PID_AUDIO_1 (0x0009) /* SKC_SU1 Audio Reference Design PID */
-#define BCD_DEVICE  (0x0610) /* Device release number in BCD: 0xJJMN
-                              * JJ: Major, M: Minor, N: Sub-minor */
 //:
 
 /* Enable/Disable example HID code */
