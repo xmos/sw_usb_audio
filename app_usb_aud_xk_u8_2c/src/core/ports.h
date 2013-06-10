@@ -17,4 +17,6 @@ on stdcore[0] : out port p_audrst = XS1_PORT_4C;
 
 /* I2C ports */
 on stdcore[0] : struct r_i2c i2cPorts = {XS1_PORT_1C, XS1_PORT_1G}; /* In a struct to use module_i2c_simple */
+
+
 #endif
