@@ -14,6 +14,10 @@
  * Note, we check if they are already defined in Makefile 
  */
 
+#define p_dsd_clk   p_lrclk
+#define p_dsd_left p_i2s_dac[0]
+#define p_dsd_right p_bclk
+
 /* Enable/Disable MIDI - Default is MIDI off */
 #ifndef MIDI
 #define MIDI 		0			
@@ -79,8 +83,6 @@
 #define VENDOR_ID          (0x20B1) /* XMOS VID */
 #define PID_AUDIO_2        (0x0008) /* XR-USB-AUDIO-U8-2C PID*/
 #define PID_AUDIO_1        (0x0009) 
-#define BCD_DEVICE         (0x0610) /* Device release number in BCD: 0xJJMN
-                                     * JJ: Major, M: Minor, N: Sub-minor */
 //:
 
 /* Enable/Disable example HID code */
