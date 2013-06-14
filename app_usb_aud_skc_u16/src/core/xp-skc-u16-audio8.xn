@@ -90,11 +90,11 @@ xsi:schemaLocation="http://www.xmos.com http://www.xmos.com">
       <LinkEndpoint NodeId="2" Link="XLC" Delays="1clk,1clk"/>
   </Link>
  
-     <!--link for xSCOPE -->
+     <!--link for xSCOPE 
     <Link Encoding="2wire" Delays="4,4" Flags="SOD">
         <LinkEndpoint NodeId="0" Link="X0LD"/>
         <LinkEndpoint RoutingId="0x8000" Chanend="1"/>
-    </Link>
+    </Link>-->
 
   </Links>
 
