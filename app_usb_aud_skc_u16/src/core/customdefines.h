@@ -7,6 +7,7 @@
 #ifndef _CUSTOMDEFINES_H_
 #define _CUSTOMDEFINES_H_
 
+#define AUDIO_IO_CORE 1
 
 /*
  * Device configuration option defines.  Build can be customised but changing and adding defines here 
