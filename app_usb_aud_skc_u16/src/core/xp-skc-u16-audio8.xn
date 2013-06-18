@@ -38,6 +38,7 @@ xsi:schemaLocation="http://www.xmos.com http://www.xmos.com">
 
             <!-- Audio Ports -->
             <Port Location="XS1_PORT_16B"  Name="PORT_MCLK_COUNT"/>
+            <Port Location="XS1_PORT_1E"  Name="PORT_MCLK_IN2"/>
           </Tile>
 
         </Node>

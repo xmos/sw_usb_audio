@@ -14,9 +14,10 @@
  * Note, we check if they are already defined in Makefile 
  */
 
-#define p_dsd_clk   p_lrclk
-#define p_dsd_left p_i2s_dac[0]
-#define p_dsd_right p_bclk
+//#define DSD_OUTPUT 1
+//#define p_dsd_clk   p_lrclk
+//#define p_dsd_left p_i2s_dac[0]
+//#define p_dsd_right p_bclk
 
 /* Enable/Disable MIDI - Default is MIDI off */
 #ifndef MIDI
@@ -69,7 +70,7 @@
 #define MCLK_48            (512*48000)   /* 48, 96 etc */
 
 /* Maximum frequency device runs at */
-#define MAX_FREQ           (192000*2)       
+#define MAX_FREQ           (192000)       
 
 /* Index of SPDIF TX channel (duplicated DAC channels 1/2) */
 #define SPDIF_TX_INDEX     (0)
@@ -86,7 +87,7 @@
 //:
 
 /* Enable/Disable example HID code */
-#define HID_CONTROLS       1
+#define HID_CONTROLS       0
 
 /* Enable/Disable SU1 ADC and example code */
 #define SU1_ADC_ENABLE     0

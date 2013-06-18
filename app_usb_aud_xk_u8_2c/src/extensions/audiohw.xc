@@ -1,8 +1,13 @@
 #include <xs1.h>
 #include <print.h>
+#include <platform.h>
+#include <xs1_su.h>
 #include "devicedefines.h"
 #include "i2c.h"
 #include "gpio_defines.h"
+#include "interrupt.h"
+
+extern in port p_sw;
 
 extern out port p_gpo;
 extern out port p_audrst;
@@ -21,11 +26,50 @@ unsigned p_gpo_peek()
     return x; 
 }
 
+#define XS1_SU_PERIPH_USB_ID 1
+
+#pragma select handler
+void handle_switch_request(in port p_sw)
+{
+    unsigned curSwVal;
+
+    asm("in %0, res[%1]":"=r"(curSwVal):"r"(p_sw));
+    asm("setd res[%0], %1"::"r"(p_sw),"r"(curSwVal));
+    
+    if((curSwVal & 0b1000) == 0b1000)
+    {
+        //unsigned data[] = {4};
+        //write_periph_32(xs1_su_periph, XS1_SU_PERIPH_USB_ID, XS1_SU_PER_UIFM_FUNC_CONTROL_NUM, 1, data);
+
+        /* Ideally we would reset SU1 here but then we loose power to the xcore and therefore the DFU flag */
+        /* Disable USB and issue reset to xcore only - not analogue chip */
+        //write_node_config_reg(xs1_su_periph, XS1_SU_CFG_RST_MISC_NUM,0b10);
+        write_node_config_reg(xs1_su_periph, XS1_SU_CFG_RST_MISC_NUM,1);
+    }
+
+}
+
 
 //:codec_init
 void AudioHwInit(chanend ?c_codec) 
 {
-    unsigned x;
+    unsigned x=1;
+    unsigned curSwVal;
+    timer t;
+    unsigned time;
+    int count = 0;
+
+    /* Give some time for button debounce */
+    t :> time;
+    t when timerafter(time+10000000):> void;
+
+    p_sw :> curSwVal;
+    
+    asm("setc res[%0], %1"::"r"(p_sw),"r"(XS1_SETC_COND_NEQ));
+    asm("setd res[%0], %1"::"r"(p_sw),"r"(curSwVal));
+
+    //set_interrupt_handler(handle_switch_request, 200, 1, p_sw, 0)
+
 
     asm("peek %0, res[%1]":"=r"(x):"r"(p_gpo));
 
@@ -105,6 +149,9 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, int dsdMod
     {
         tmp |= P_GPIO_MCLK_SEL;
     }
+ 
+    if(dsdMode)
+        printintln(10);
     
     /* Output to port */  
     p_gpo_out(tmp);
@@ -114,15 +161,18 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, int dsdMod
     time += 200000;
     t when timerafter(time) :> int _;
 
-    if(dsdMode)
+    //if(dsdMode)
+    //{
+     //   p_audrst <: 0b111;
+    //}
+    //else
     {
         p_audrst <: 0b011;
     }
-    else
-    {
-        p_audrst <: 0b111;
-    }
-
+    t :> time;
+    time += 20000;
+    t when timerafter(time) :> int _;
+   
     /* Set power down (PDN) bit and Control Port Enable bit in DAC */
     DAC_REGWRITE(DAC_REG_ADDR_MODE_CTRL2, DAC_REG_MODE_CTRL2_CPEN | DAC_REG_MODE_CTRL2_PDN);
  
@@ -176,16 +226,8 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, int dsdMod
      * 4:   Interperlolation Filter Select (0 fast or 1 slow roll-off)
      * 5:7: Reserved
      */
-    DAC_REGWRITE(DAC_REG_ADDR_MODE_CTRL2, 0b00000000);
+    DAC_REGWRITE(DAC_REG_ADDR_MODE_CTRL3, 0b00000000);
 
-    if(dsdMode) 
-    {
-     //   IIC_REGWRITE_PCM1795(20, 0b001010000100000);
-    }
-    else
-    {
-       // IIC_REGWRITE_PCM1795(20, 0b001010000000000);
-    }
 
 #ifdef CODEC_MASTER
 #error not currently implemented
