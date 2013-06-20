@@ -10,10 +10,10 @@
 #define P_GPIP_CPR_RST_N        0x080    /* Apple CoProcessor Reset */
 #define P_GPIO_ACC_DET_EN       0x100    
 #define P_GPIO_AUD_MUTE         0x200
+#define P_GPIO_RST_DAC          (1<<28)
+#define P_GPIO_RST_ADC          (1<<29)
+#define P_GPIO_DSD_EN           (1<<30)
 
-#define P_AUDRST_DAC            0x01
-#define P_AUDRST_ADC            0x02
-#define P_AUDRST_DSD            0x04
 
 #define P_GPI_DEVDET_SHIFT      0x0
 #define P_GPI_DEVDET_MASK       (1<<P_GPI_DEVDET_SHIFT)
