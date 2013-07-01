@@ -64,15 +64,15 @@ void AudioHwInit(chanend ?c_codec)
     }
     
      /* Give some time for button debounce */
-   // t :> time;
-   // t when timerafter(time+10000000):> void;
+    t :> time;
+    t when timerafter(time+10000000):> void;
 
-    //p_sw :> curSwVal;
+    p_sw :> curSwVal;
     
-   // asm("setc res[%0], %1"::"r"(p_sw),"r"(XS1_SETC_COND_NEQ));
-    //asm("setd res[%0], %1"::"r"(p_sw),"r"(curSwVal));
+    asm("setc res[%0], %1"::"r"(p_sw),"r"(XS1_SETC_COND_NEQ));
+    asm("setd res[%0], %1"::"r"(p_sw),"r"(curSwVal));
 
-    //set_interrupt_handler(handle_switch_request, 200, 1, p_sw, 0)
+    set_interrupt_handler(handle_switch_request, 200, 1, p_sw, 0)
     return;
 }
 //:
@@ -160,8 +160,14 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, int dsdMod
 
     if(dsdMode)
     {
-        // TODO Set DSD mux line high     
+        //Set DSD mux line high     
+        tmp |= (P_GPIO_DSD_EN);
     }
+    else
+    {
+        tmp &= (~P_GPIO_DSD_EN);
+    }
+
     tmp |= (P_GPIO_RST_DAC | P_GPIO_RST_ADC);
     
     PORT32A_OUT(tmp);
