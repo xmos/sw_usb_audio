@@ -1,6 +1,21 @@
 <?xml version="1.0" ?>
 <xpd>
-    <components></components>
+    <components>
+        <component description = "USB Audio for XK-USB-AUDIO-U8-2C board" type = "demoCode" scope = "Early Development" path = "app_usb_aud_xk_u8_2c" local = "false" id = "app_usb_aud_xk_u8_2c" name = "XK-USB-AUDIO-U8-2C">
+            <board>XK-USB-AUDIO-U8-2C</board>
+            <componentDependency>module_dfu</componentDependency>
+            <componentDependency>module_usb_shared</componentDependency>
+            <componentDependency>module_spdif_rx</componentDependency>
+            <componentDependency>module_i2c_simple</componentDependency>
+            <componentDependency>module_usb_device</componentDependency>
+            <componentDependency>module_usb_midi</componentDependency>
+            <componentDependency>module_xud</componentDependency>
+            <componentDependency>module_usb_audio</componentDependency>
+            <componentDependency>module_spdif_tx</componentDependency>
+            <keyword>usb</keyword>
+            <keyword>audio</keyword>
+        </component>
+    </components>
     <dependency repo = "sc_ios">
         <githash>bd7d0167bbca4963ce72c54009b7186fc7ea76e8</githash>
         <uri>git://git/apps/sc_ios</uri>
