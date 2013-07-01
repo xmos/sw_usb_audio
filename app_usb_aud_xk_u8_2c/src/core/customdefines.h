@@ -1,12 +1,10 @@
 /** 
  * @file       customdefines.h
  * @brief      Defines relating to device configuration and customisation.
- *             For L1 USB Audio Reference Design
  * @author     Ross Owen, XMOS Limited
  */
 #ifndef _CUSTOMDEFINES_H_
 #define _CUSTOMDEFINES_H_
-
 
 /*
  * Device configuration option defines.  Build can be customised but changing and adding defines here 
@@ -14,10 +12,9 @@
  * Note, we check if they are already defined in Makefile 
  */
 
-//#define DSD_OUTPUT 1
+#define DSD_OUTPUT      1
+#define DSD_CHANS_DAC   2
 //#define p_dsd_clk   p_lrclk
-//#define p_dsd_left p_i2s_dac[0]
-//#define p_dsd_right p_bclk
 
 /* Enable/Disable MIDI - Default is MIDI off */
 #ifndef MIDI

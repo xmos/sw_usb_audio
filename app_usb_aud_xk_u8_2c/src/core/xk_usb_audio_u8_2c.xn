@@ -29,6 +29,12 @@
             <Port Location="XS1_PORT_1L"  Name="PORT_I2S_ADC0"/>
             <Port Location="XS1_PORT_8D"  Name="PORT_MIDI_OUT"/>
             <Port Location="XS1_PORT_16B"  Name="PORT_MCLK_COUNT"/>
+
+            <!-- DSD Ports (note some are re-used I2S ports) -->
+            <Port Location="XS1_PORT_1D"  Name="PORT_DSD_DAC0"/>
+            <Port Location="XS1_PORT_1A"  Name="PORT_DSD_DAC1"/>
+            <Port Location="XS1_PORT_1I"  Name="PORT_DSD_CLK"/>
+
             <!-- XUD Ports -->
             <Port Location="XS1_PORT_1H"  Name="PORT_USB_TX_READYIN"/>
             <Port Location="XS1_PORT_1J"  Name="PORT_USB_CLK"/>
