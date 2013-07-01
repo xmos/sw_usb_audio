@@ -1,9 +1,8 @@
-<Add title here>
-================
+XK-USB-AUDIO-U8-2C
+==================
 
-:scope: <Put one of Roadmap, Example, Early Development or General Use>
-:description: <Add one line here>
-:keywords: <Add comma separated list of keywords>
-:boards: <Add comma separated list of supported boards>
+:scope: Early Development
+:description: USB Audio for XK-USB-AUDIO-U8-2C board
+:keywords: usb, audio
+:boards: XK-USB-AUDIO-U8-2C
 
-<Add description of software block>
