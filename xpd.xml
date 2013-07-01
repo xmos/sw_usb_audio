@@ -79,15 +79,12 @@
     <release parenthash = "46d83759ac66a776cd74fadfb55f9de6d6e4d85d" version = "6.0.1rc0" githash = "67e9859730ec95a01089c4e0bf7fb4a493d660c8"></release>
     <release parenthash = "eac7faad142e87b3969ba921fd941bc1ec867704" version = "6.1.0alpha0" githash = "b1878af42eedc3a4c59c53b49dcaa9a3e547c3fa"></release>
     <release parenthash = "da80270da6714cc472db94e2be4cbe6c64b0fbd6" version = "6.1.0rc0" githash = "1160d1f1e030f1d739295b3aa6309598d426d107"></release>
-<<<<<<< HEAD
     <release parenthash = "da80270da6714cc472db94e2be4cbe6c64b0fbd6" version = "6.1.0" githash = "1160d1f1e030f1d739295b3aa6309598d426d107"></release>
     <release parenthash = "da80270da6714cc472db94e2be4cbe6c64b0fbd6" version = "6.1.0" githash = "1160d1f1e030f1d739295b3aa6309598d426d107"></release>
-=======
     <release parenthash = "e78cd2d6c714883bf62db255ed1513e4db0ca080" version = "6.1.0rc1" githash = "cad7fe309becc2c1e97940e30c19239a09db23fb"></release>
     <release parenthash = "9c0ea40d8aff4583e78d0a7a23d31683f606ee01" version = "6.1.0rc2" githash = "f21bea0d46846f51a146bc255bfd67500d428ee5"></release>
     <release parenthash = "d0a31cec26ffa10dac1a94954a2b6589bde887e0" version = "6.1.0rc3"></release>
     <subpartnumber>XM-002775-SM</subpartnumber>
->>>>>>> origin/master
     <vendor>XMOS</vendor>
     <xpd_version>1.0</xpd_version>
     <xsoftip_exclude>app_usb_aud_skc_su1</xsoftip_exclude>
