@@ -1,9 +1,10 @@
 XMOS USB Audio 2.0 Reference Design Readme
 ..........................................
 
-:Latest release: 6.1.0rc3
+:Latest release: 6.2.0alpha0
 :Maintainer: Ross Owen
 :Description: USB Audio Applications
+
 
 This 6.0 based releases were  is made generally 
 
@@ -29,6 +30,7 @@ typically relate to a specific board.  This repository contains the following:
 <<<<<<< HEAD
 |app_usb_aud_l1       | xr-usb-audio-2.0         | XMOS XS1-L1 USB Audio Reference Design                |
 |app_usb_aud_skc_su1  | xp-skc-su1 + xa-sk-audio | XMOS SU1 USB Audio Kit                                |
+
 |app_usb_aud_su1      | xr-usb-audio-s1          | XMOS SU1 USB Audio Reference Design (prototype only)  |
 =======
 |app_usb_aud_l1       | xr-usb-audio-2.0         | XMOS XS1-L8 USB Audio Reference Design                |
@@ -116,4 +118,5 @@ Required software (dependencies)
   * xcommon (if using development tools earlier than 11.11.0)
   * sc_xud (git://git/apps/sc_xud)
   * sc_i2c (git@github.com:xross/sc_i2c.git)
+  * sc_usb_device (git://git/apps/sc_usb_device)
 
