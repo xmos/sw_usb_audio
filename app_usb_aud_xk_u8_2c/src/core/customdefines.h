@@ -12,9 +12,6 @@
  * Note, we check if they are already defined in Makefile 
  */
 
-#define DSD_OUTPUT      1
-#define DSD_CHANS_DAC   2
-//#define p_dsd_clk   p_lrclk
 
 /* Enable/Disable MIDI - Default is MIDI off */
 #ifndef MIDI
