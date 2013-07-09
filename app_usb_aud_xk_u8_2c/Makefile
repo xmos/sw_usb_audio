@@ -16,6 +16,10 @@ BUILD_FLAGS     = -DFLASH_MAX_UPGRADE_SIZE=64*1024 -fcomment-asm -Xmapper --map 
 XCC_FLAGS_2ioxs = $(BUILD_FLAGS) 
 INCLUDE_ONLY_IN_2ioxs = 
 
+# Audio Class 2, No Input, Output, No Midi, No SPDIF, DoP
+XCC_FLAGS_2xoxxd = $(BUILD_FLAGS) -DNUM_USB_CHAN_IN=0 -DI2S_CHANS_ADC=0 -DSPDIF=0 -DDSD_CHANS_DAC=2
+INCLUDE_ONLY_IN_2xoxxd = 
+
 # Audio Class 2, No Input, Output, No MIDI, SPDIF
 XCC_FLAGS_2xoxs = $(BUILD_FLAGS) -DNUM_USB_CHAN_IN=0 -DI2S_CHANS_ADC=0
 INCLUDE_ONLY_IN_2xoxs = 
