@@ -27,12 +27,12 @@ void handle_switch_request(in port p_sw)
     if((curSwVal & 0b1000) == 0b1000)
     {
         //unsigned data[] = {4};
-        //write_periph_32(xs1_su_periph, XS1_SU_PERIPH_USB_ID, XS1_SU_PER_UIFM_FUNC_CONTROL_NUM, 1, data);
+        //write_periph_32(usb_tile, XS1_SU_PERIPH_USB_ID, XS1_SU_PER_UIFM_FUNC_CONTROL_NUM, 1, data);
 
         /* Ideally we would reset SU1 here but then we loose power to the xcore and therefore the DFU flag */
         /* Disable USB and issue reset to xcore only - not analogue chip */
-        //write_node_config_reg(xs1_su_periph, XS1_SU_CFG_RST_MISC_NUM,0b10);
-        write_node_config_reg(xs1_su_periph, XS1_SU_CFG_RST_MISC_NUM,1);
+        //write_node_config_reg(usb_tile, XS1_SU_CFG_RST_MISC_NUM,0b10);
+        write_node_config_reg(usb_tile, XS1_SU_CFG_RST_MISC_NUM,1);
     }
 
 }
