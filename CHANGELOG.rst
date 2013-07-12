@@ -11,6 +11,7 @@ Firmware
 6v20:
     - ADDED:      Added application for XK-USB-AUDIO-U8-2C board
     - ADDED:      Added PRODUCT_STR define for Product Strings
+    - ADDED:      Added DSD64 via DSD over PCM (DoP)
     - FIXED:      (Major) ADC port init for 384kHz
     - FIXED:      (Major) Resolved a compatibilty issue with streaming on Intel USB 3.0 xHCI host controller
     - FIXED:      (Minor) Input channel strings used for output in one instance
