@@ -156,45 +156,43 @@
 								<option id = "com.xmos.xc.compiler.option.include.paths.10983197" name="com.xmos.xc.compiler.option.include.paths" superClass="com.xmos.xc.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/gcc&quot;"/>
-                                    <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc/included}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_device/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/mixer}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/endpoint0}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_device}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_su1/src/core}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/pll}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/locks}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/clocking}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/ports}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud}&quot;' />
+                                    <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_su1/src/core}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_su1/src/extensions}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_su1}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/lib/xs1b}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/usb_buffer}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/include}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/lib}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/audiostream}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_su1/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc/glx_support}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_su1}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/endpoint0}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/hostactive}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_device/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_device}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/include}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc/glx_support}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc/included}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud}&quot;' />
 
 								</option>
 								<inputType id = "com.xmos.cdt.xc.compiler.input.42654109" name="XC" superClass="com.xmos.cdt.xc.compiler.input"/>
@@ -306,45 +304,43 @@
 								<option id = "com.xmos.c.compiler.option.include.paths.18403549" name="com.xmos.c.compiler.option.include.paths" superClass="com.xmos.c.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/gcc&quot;"/>
-                                    <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc/included}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_device/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/mixer}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/endpoint0}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_device}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_su1/src/core}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/pll}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/locks}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/clocking}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/ports}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud}&quot;' />
+                                    <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_su1/src/core}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_su1/src/extensions}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_su1}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/lib/xs1b}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/usb_buffer}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/include}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/lib}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/audiostream}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_su1/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc/glx_support}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_su1}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/endpoint0}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/hostactive}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_device/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_device}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/include}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc/glx_support}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc/included}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud}&quot;' />
 
 								</option>
 								<inputType id = "com.xmos.cdt.c.compiler.input.c.83822346" name="C" superClass="com.xmos.cdt.c.compiler.input.c"/>
@@ -462,45 +458,43 @@
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/gcc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/c++/4.2.1&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/c++/4.2.1/xcore-xmos-elf&quot;"/>
-                                    <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc/included}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_device/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/mixer}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/endpoint0}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_device}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_su1/src/core}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/pll}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/locks}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/clocking}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/ports}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud}&quot;' />
+                                    <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_su1/src/core}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_su1/src/extensions}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_su1}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/lib/xs1b}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/usb_buffer}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/include}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/lib}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/audiostream}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_su1/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc/glx_support}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_su1}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/endpoint0}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/hostactive}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_device/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_device}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/include}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc/glx_support}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc/included}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud}&quot;' />
 
 								</option>
 								<inputType id = "com.xmos.cdt.cxx.compiler.input.cpp.2597691" name="C++" superClass="com.xmos.cdt.cxx.compiler.input.cpp"/>
@@ -754,45 +748,43 @@
 								<option id = "com.xmos.xc.compiler.option.include.paths.45982695" name="com.xmos.xc.compiler.option.include.paths" superClass="com.xmos.xc.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/gcc&quot;"/>
-                                    <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc/included}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_device/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/mixer}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/endpoint0}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_device}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_su1/src/core}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/pll}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/locks}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/clocking}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/ports}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud}&quot;' />
+                                    <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_su1/src/core}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_su1/src/extensions}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_su1}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/lib/xs1b}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/usb_buffer}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/include}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/lib}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/audiostream}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_su1/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc/glx_support}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_su1}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/endpoint0}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/hostactive}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_device/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_device}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/include}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc/glx_support}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc/included}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud}&quot;' />
 
 								</option>
 								<inputType id = "com.xmos.cdt.xc.compiler.input.44480984" name="XC" superClass="com.xmos.cdt.xc.compiler.input"/>
@@ -904,45 +896,43 @@
 								<option id = "com.xmos.c.compiler.option.include.paths.13046777" name="com.xmos.c.compiler.option.include.paths" superClass="com.xmos.c.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/gcc&quot;"/>
-                                    <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc/included}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_device/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/mixer}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/endpoint0}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_device}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_su1/src/core}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/pll}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/locks}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/clocking}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/ports}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud}&quot;' />
+                                    <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_su1/src/core}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_su1/src/extensions}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_su1}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/lib/xs1b}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/usb_buffer}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/include}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/lib}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/audiostream}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_su1/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc/glx_support}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_su1}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/endpoint0}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/hostactive}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_device/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_device}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/include}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc/glx_support}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc/included}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud}&quot;' />
 
 								</option>
 								<inputType id = "com.xmos.cdt.c.compiler.input.c.8164312" name="C" superClass="com.xmos.cdt.c.compiler.input.c"/>
@@ -1060,45 +1050,43 @@
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/gcc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/c++/4.2.1&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/c++/4.2.1/xcore-xmos-elf&quot;"/>
-                                    <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc/included}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_device/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/mixer}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/endpoint0}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_device}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_su1/src/core}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/pll}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/locks}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/clocking}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/ports}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud}&quot;' />
+                                    <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_su1/src/core}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_su1/src/extensions}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_su1}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/lib/xs1b}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/usb_buffer}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/include}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/lib}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/audiostream}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_su1/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc/glx_support}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_su1}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/endpoint0}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/hostactive}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_device/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_device}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/include}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc/glx_support}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc/included}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud}&quot;' />
 
 								</option>
 								<inputType id = "com.xmos.cdt.cxx.compiler.input.cpp.59682654" name="C++" superClass="com.xmos.cdt.cxx.compiler.input.cpp"/>
@@ -1352,45 +1340,43 @@
 								<option id = "com.xmos.xc.compiler.option.include.paths.81248830" name="com.xmos.xc.compiler.option.include.paths" superClass="com.xmos.xc.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/gcc&quot;"/>
-                                    <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc/included}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_device/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/mixer}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/endpoint0}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_device}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_su1/src/core}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/pll}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/locks}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/clocking}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/ports}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud}&quot;' />
+                                    <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_su1/src/core}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_su1/src/extensions}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_su1}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/lib/xs1b}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/usb_buffer}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/include}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/lib}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/audiostream}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_su1/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc/glx_support}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_su1}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/endpoint0}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/hostactive}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_device/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_device}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/include}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc/glx_support}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc/included}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud}&quot;' />
 
 								</option>
 								<inputType id = "com.xmos.cdt.xc.compiler.input.19310140" name="XC" superClass="com.xmos.cdt.xc.compiler.input"/>
@@ -1502,45 +1488,43 @@
 								<option id = "com.xmos.c.compiler.option.include.paths.83721888" name="com.xmos.c.compiler.option.include.paths" superClass="com.xmos.c.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/gcc&quot;"/>
-                                    <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc/included}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_device/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/mixer}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/endpoint0}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_device}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_su1/src/core}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/pll}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/locks}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/clocking}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/ports}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud}&quot;' />
+                                    <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_su1/src/core}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_su1/src/extensions}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_su1}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/lib/xs1b}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/usb_buffer}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/include}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/lib}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/audiostream}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_su1/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc/glx_support}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_su1}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/endpoint0}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/hostactive}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_device/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_device}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/include}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc/glx_support}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc/included}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud}&quot;' />
 
 								</option>
 								<inputType id = "com.xmos.cdt.c.compiler.input.c.87265573" name="C" superClass="com.xmos.cdt.c.compiler.input.c"/>
@@ -1658,45 +1642,43 @@
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/gcc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/c++/4.2.1&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/c++/4.2.1/xcore-xmos-elf&quot;"/>
-                                    <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc/included}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_device/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/mixer}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/endpoint0}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_device}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_su1/src/core}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/pll}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/locks}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/clocking}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/ports}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud}&quot;' />
+                                    <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_su1/src/core}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_su1/src/extensions}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_su1}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/lib/xs1b}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/usb_buffer}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/include}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/lib}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/audiostream}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_su1/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc/glx_support}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_su1}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/endpoint0}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/hostactive}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_device/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_device}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/include}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc/glx_support}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc/included}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud}&quot;' />
 
 								</option>
 								<inputType id = "com.xmos.cdt.cxx.compiler.input.cpp.27537379" name="C++" superClass="com.xmos.cdt.cxx.compiler.input.cpp"/>
@@ -1950,45 +1932,43 @@
 								<option id = "com.xmos.xc.compiler.option.include.paths.43197675" name="com.xmos.xc.compiler.option.include.paths" superClass="com.xmos.xc.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/gcc&quot;"/>
-                                    <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc/included}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_device/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/mixer}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/endpoint0}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_device}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_su1/src/core}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/pll}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/locks}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/clocking}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/ports}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud}&quot;' />
+                                    <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_su1/src/core}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_su1/src/extensions}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_su1}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/lib/xs1b}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/usb_buffer}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/include}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/lib}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/audiostream}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_su1/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc/glx_support}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_su1}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/endpoint0}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/hostactive}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_device/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_device}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/include}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc/glx_support}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc/included}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud}&quot;' />
 
 								</option>
 								<inputType id = "com.xmos.cdt.xc.compiler.input.39654656" name="XC" superClass="com.xmos.cdt.xc.compiler.input"/>
@@ -2100,45 +2080,43 @@
 								<option id = "com.xmos.c.compiler.option.include.paths.79875938" name="com.xmos.c.compiler.option.include.paths" superClass="com.xmos.c.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/gcc&quot;"/>
-                                    <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc/included}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_device/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/mixer}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/endpoint0}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_device}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_su1/src/core}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/pll}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/locks}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/clocking}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/ports}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud}&quot;' />
+                                    <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_su1/src/core}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_su1/src/extensions}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_su1}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/lib/xs1b}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/usb_buffer}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/include}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/lib}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/audiostream}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_su1/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc/glx_support}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_su1}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/endpoint0}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/hostactive}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_device/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_device}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/include}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc/glx_support}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc/included}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud}&quot;' />
 
 								</option>
 								<inputType id = "com.xmos.cdt.c.compiler.input.c.42125695" name="C" superClass="com.xmos.cdt.c.compiler.input.c"/>
@@ -2256,45 +2234,43 @@
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/gcc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/c++/4.2.1&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/c++/4.2.1/xcore-xmos-elf&quot;"/>
-                                    <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc/included}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_device/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/mixer}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/endpoint0}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_device}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_su1/src/core}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/pll}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/locks}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/clocking}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/ports}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud}&quot;' />
+                                    <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_su1/src/core}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_su1/src/extensions}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_su1}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/lib/xs1b}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/usb_buffer}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/include}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/lib}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/audiostream}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_su1/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc/glx_support}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_su1}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/endpoint0}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/hostactive}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_device/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_device}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/include}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc/glx_support}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc/included}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud}&quot;' />
 
 								</option>
 								<inputType id = "com.xmos.cdt.cxx.compiler.input.cpp.41810225" name="C++" superClass="com.xmos.cdt.cxx.compiler.input.cpp"/>
