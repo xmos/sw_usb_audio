@@ -9,15 +9,17 @@ Firmware
 ========
 
 6v20:
-    - ADDED:      Added application for XK-USB-AUDIO-U8-2C board
-    - ADDED:      Added PRODUCT_STR define for Product Strings
-    - FIXED:      (Major) ADC port init for 384kHz
-    - FIXED:      (Major) Resolved a compatibilty issue with streaming on Intel USB 3.0 xHCI host controller
-    - FIXED:      (Minor) Input channel strings used for output in one instance
-    - FIXED:      robustness to audio 1.0 bad packets.:
+    - ADDED:      Application for XK-USB-AUDIO-U8-2C board
+    - ADDED:      PRODUCT_STR define for Product Strings
+    - ADDED:      DSD64 support - via DSD over PCM (DoP)
+    - CHANGE:     Moved Endpoint0 code to use new module_usb_device       
+    - RESOLVED:   (Major) ADC port initialization did not operate as expected at 384kHz
+    - RESOLVED:   (Major) Resolved a compatibility issue with streaming on Intel USB 3.0 xHCI host controller
+    - RESOLVED:   (Minor) Input channel strings used for output in one instance
+    - RESOLVED:   (Major) Added defence against malformed Audio Class 1.0 packets as experienced on some Win8.0 hosts.
 
 6v10:
-    - FIXED:      Resolved issue with DFU caused by SU1 ADC usage causing issues with soft reboot
+    - RESOLVED:   Resolved issue with DFU caused by SU1 ADC usage causing issues with soft reboot
     - ADDED:      Added ability for channel count changes between UAC1 and UAC2 modes
     - ADDED:      Support for iOS authentication (MFI licencees only - please contact XMOS)
 
@@ -29,23 +31,18 @@ Firmware
     - ADDED:      Design moved to new build system
     - ADDED:      Optional support for USB test modes
     - ADDED:      Optional HID endpoint for audio controls and example usages
-    - ADDED:      Multiple build confiurations for supported device configurations
+    - ADDED:      Multiple build configurations for supported device configurations
     - CHANGE:     Now uses latest XUD API
     - CHANGE:     MIDI buffering simplified (using new XUD API) - no longer goes through decouple thread
     - CHANGE:     Now uses sc_i2c from www.github.com/xcore/sc_i2c 
     - CHANGE:     Previous default serial string of "0000" removed. No serial string now reported.
-    - CHANGE:     Master volume update optimised slightly (updateMasteVol in audiorequests.xc)
+    - CHANGE:     Master volume update optimised slightly (updateMasterVol in audiorequests.xc)
     - CHANGE:     Master volume control disabled in Audio Class 1.0 mode to solve various issues in Windows
     - CHANGE:     Audio Class 2.0 Status/Interrupt endpoint disabled by default (enabled when SPDIF/ADAT receive enabled)
     - CHANGE:     DFU/Flash code simplified
     - RESOLVED:   (Minor) Fixed issue where buffering can lock up on sample frequency change if in overflow (#10897)
     - RESOLVED:   (Minor) XN files updated to avoid deprecation warnings from tools
-<<<<<<< HEAD
-    - RESOLVED:   (Major) Fixed issue where installation of the first upgrade image, but subsequent upgrades fail (Design Advisory X2035A)
-=======
-    - RESOLVED:   (Major) Fixed issue where installation of the first upgrade image is successful but subsequent 
-                  upgrades fail (Design Advisory X2035A)
->>>>>>> origin/master
+    - RESOLVED:   (Major) Fixed issue where installation of the first upgrade image is successful but subsequent upgrades fail (Design Advisory X2035A)
 
 (Note: USB Audio version numbers unified across all products at this point)
 
