@@ -1,5 +1,4 @@
 #include <xs1.h>
-#include <print.h>
 #include <platform.h>
 #include <xs1_su.h>
 #include "devicedefines.h"
@@ -29,7 +28,8 @@ void handle_switch_request(in port p_sw)
     {
         /* Ideally we would reset SU1 here but then we loose power to the xcore and therefore the DFU flag */
         /* Disable USB and issue reset to xcore only - not analogue chip */
-        write_node_config_reg(xs1_su_periph, XS1_SU_CFG_RST_MISC_NUM,1);
+        //write_node_config_reg(usb_tile, XS1_SU_CFG_RST_MISC_NUM,0b10);
+        write_node_config_reg(usb_tile, XS1_SU_CFG_RST_MISC_NUM,1);
     }
 
 }

@@ -5,7 +5,7 @@
 
   <Declarations>
     <Declaration>tileref tile[1]</Declaration>
-    <Declaration>tileref xs1_su_periph</Declaration>
+    <Declaration>tileref usb_tile</Declaration>
   </Declarations>
 
   <Packages>
@@ -39,7 +39,7 @@
             <Port Location="XS1_PORT_32A"  Name="PORT_GPIO"/>
           </Core>
         </Node>
-        <Node Id="1" InPackageId="1" Type="periph:XS1-SU" Reference="xs1_su_periph" Oscillator="24MHz">
+        <Node Id="1" InPackageId="1" Type="periph:XS1-SU" Reference="usb_tile" Oscillator="24MHz">
             <Service Proto="xs1_su_adc_service(chanend c_adc)">
                 <Chanend Identifier="c_adc" end="2" remote="5"/>
             </Service>
