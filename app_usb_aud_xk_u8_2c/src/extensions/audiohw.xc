@@ -16,6 +16,7 @@ extern struct r_i2c i2cPorts;
 
 #define XS1_SU_PERIPH_USB_ID 1
 
+#ifdef SW_INT_HANDLER
 #pragma select handler
 void handle_switch_request(in port p_sw)
 {
@@ -24,19 +25,15 @@ void handle_switch_request(in port p_sw)
     asm("in %0, res[%1]":"=r"(curSwVal):"r"(p_sw));
     asm("setd res[%0], %1"::"r"(p_sw),"r"(curSwVal));
     
-    if((curSwVal & 0b1000) == 0b1000)
+    if((curSwVal & 3) != SWITCH_VAL)
     {
-        //unsigned data[] = {4};
-        //write_periph_32(xs1_su_periph, XS1_SU_PERIPH_USB_ID, XS1_SU_PER_UIFM_FUNC_CONTROL_NUM, 1, data);
-
         /* Ideally we would reset SU1 here but then we loose power to the xcore and therefore the DFU flag */
         /* Disable USB and issue reset to xcore only - not analogue chip */
-        //write_node_config_reg(xs1_su_periph, XS1_SU_CFG_RST_MISC_NUM,0b10);
         write_node_config_reg(xs1_su_periph, XS1_SU_CFG_RST_MISC_NUM,1);
     }
 
 }
-
+#endif
 
 #define PORT32A_PEEK(X) {asm volatile("peek %0, res[%1]":"=r"(X):"r"(XS1_PORT_32A));} 
 #define PORT32A_OUT(X)  {asm volatile("out res[%0], %1"::"r"(XS1_PORT_32A),"r"(X));}
@@ -63,6 +60,7 @@ void AudioHwInit(chanend ?c_codec)
             break;
     }
     
+#ifdef SW_INT_HANDLER
      /* Give some time for button debounce */
     t :> time;
     t when timerafter(time+10000000):> void;
@@ -73,6 +71,7 @@ void AudioHwInit(chanend ?c_codec)
     asm("setd res[%0], %1"::"r"(p_sw),"r"(curSwVal));
 
     set_interrupt_handler(handle_switch_request, 200, 1, p_sw, 0)
+#endif
     return;
 }
 //:
