@@ -17,7 +17,7 @@ XCC_FLAGS_2ioxs = $(BUILD_FLAGS)
 INCLUDE_ONLY_IN_2ioxs = 
 
 # Audio Class 2, No Input, Output, No Midi, No SPDIF, DoP
-XCC_FLAGS_2xoxxd = $(BUILD_FLAGS) -DNUM_USB_CHAN_IN=0 -DI2S_CHANS_ADC=0 -DSPDIF=0 -DDSD_CHANS_DAC=2
+XCC_FLAGS_2xoxxd = $(BUILD_FLAGS) -DNUM_USB_CHAN_IN=0 -DI2S_CHANS_ADC=0 -DSPDIF=0 -DDSD_CHANS_DAC=2 -DCHAN_BUFF_CTRL=1
 INCLUDE_ONLY_IN_2xoxxd = 
 
 # Audio Class 2, No Input, Output, No MIDI, SPDIF
@@ -53,7 +53,7 @@ INCLUDE_ONLY_IN_1xoxs =
 # Modules are expected to be in the directory above the BASE_DIR directory.
 USED_MODULES = module_usb_shared module_xud module_usb_audio module_spdif_tx module_spdif_rx module_usb_midi module_dfu module_i2c_simple module_usb_device
 
-MODULE_LIBRARIES = xud_s
+MODULE_LIBRARIES = xud_u
 
 
 #=============================================================================

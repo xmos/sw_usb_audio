@@ -17,7 +17,7 @@
         </component>
     </components>
     <dependency repo = "sc_usb">
-        <githash>a04385760343826cb48a7e1f653d91f8fb6089de</githash>
+        <githash>8173ce934228be901aeb7a2c80a40f82f5030a89</githash>
         <uri>git://git/apps/sc_usb</uri>
     </dependency>
     <dependency repo = "sc_spdif">
@@ -26,20 +26,22 @@
         <version>1.3.0rc3</version>
     </dependency>
     <dependency repo = "sc_usb_audio">
-        <githash>e2906b7eb29d3837faacab06d18f3e1d1c97a3f6</githash>
+        <githash>5dd1cc844f3144c0d99f1b8ca0b20276ca9ac8f3</githash>
         <uri>git://git/apps/sc_usb_audio</uri>
     </dependency>
     <dependency repo = "sc_xud">
-        <githash>8be96fee9b3e4a6a11aa912d94ea8bca9b26da5b</githash>
+        <githash>40a1a67f29d225612c355ceb9ba62d1ee9c75735</githash>
         <uri>git://git/apps/sc_xud</uri>
+        <version>1.0.0rc4</version>
     </dependency>
     <dependency repo = "sc_i2c">
         <githash>d266213a4d5c4956f3d5980ba42611e24d129a39</githash>
-        <uri>git@github.com:xross/sc_i2c.git</uri>
+        <uri>git://github.com/xcore/sc_i2c</uri>
     </dependency>
     <dependency repo = "sc_usb_device">
-        <githash>c5cac8ab98ae24741eb5c34334ed48e70b816be1</githash>
+        <githash>0dcc7585e700cf86fd1ca848b1ffbe3100b08974</githash>
         <uri>git://git/apps/sc_usb_device</uri>
+        <version>1.0.0beta3</version>
     </dependency>
     <description>USB Audio Applications</description>
     <exclude_dir>app_usb_aud_l2</exclude_dir>
@@ -96,7 +98,8 @@
     <release parenthash = "da80270da6714cc472db94e2be4cbe6c64b0fbd6" version = "6.1.0" githash = "1160d1f1e030f1d739295b3aa6309598d426d107"></release>
     <release parenthash = "da80270da6714cc472db94e2be4cbe6c64b0fbd6" version = "6.1.0" githash = "1160d1f1e030f1d739295b3aa6309598d426d107"></release>
     <release parenthash = "44cb597be34aca5bdb43cb157d3b6539124ceda6" version = "6.2.0alpha0" githash = "e2be33679a6d211ff4557144554c58a3569ac8b0"></release>
-    <release parenthash = "9f0b8139a867381b7d2da8913dfda0e217669f38" version = "6.2.0beta0"></release>
+    <release parenthash = "9f0b8139a867381b7d2da8913dfda0e217669f38" version = "6.2.0beta0" githash = "b4b45f31a3033e121dd799b7c07453bb6b7d8484"></release>
+    <release parenthash = "d67043ba80cb19d2201802063b8d61f8a59f11f1" version = "6.2.0beta1"></release>
     <subpartnumber>XM-002775-SM</subpartnumber>
     <vendor>XMOS</vendor>
     <xpd_version>1.0</xpd_version>

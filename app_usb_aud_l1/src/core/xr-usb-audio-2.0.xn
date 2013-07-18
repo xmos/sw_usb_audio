@@ -6,7 +6,7 @@ xsi:schemaLocation="http://www.xmos.com http://www.xmos.com">
     <Name>L1 USB Audio Reference Design Board</Name>
 
     <Declarations>
-        <Declaration>tileref tile[1]</Declaration>
+        <Declaration>core tile[1]</Declaration>
     </Declarations>
     <Packages>
         <Package Id="P1" Type="XS1-L1A-TQ128">

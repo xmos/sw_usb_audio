@@ -1,5 +1,4 @@
 #include <xs1.h>
-#include <print.h>
 #include <platform.h>
 #include <xs1_su.h>
 #include "devicedefines.h"
