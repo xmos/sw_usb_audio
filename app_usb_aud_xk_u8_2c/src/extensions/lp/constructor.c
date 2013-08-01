@@ -1,5 +1,5 @@
 #include <xs1.h>
-
+#if 0
 void do_volt_tweak();
 
 extern void user_init(void) __attribute__((weak));
@@ -13,4 +13,4 @@ static void user_init_constructor(void) {
         //do_volt_tweak();  
     }
 }
-
+#endif
