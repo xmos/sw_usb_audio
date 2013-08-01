@@ -9,24 +9,17 @@ Firmware
 ========
 
 6v20:
-<<<<<<< HEAD
-    - ADDED:      Added application for XK-USB-AUDIO-U8-2C board
-    - ADDED:      Added PRODUCT_STR define for Product Strings
-    - ADDED:      Added DSD64 via DSD over PCM (DoP)
-    - FIXED:      (Major) ADC port init for 384kHz
-    - FIXED:      (Major) Resolved a compatibilty issue with streaming on Intel USB 3.0 xHCI host controller
-    - FIXED:      (Minor) Input channel strings used for output in one instance
-    - FIXED:      robustness to audio 1.0 bad packets.:
-=======
     - ADDED:      Application for XK-USB-AUDIO-U8-2C board
     - ADDED:      PRODUCT_STR define for Product Strings
     - ADDED:      DSD64 support - via DSD over PCM (DoP)
-    - CHANGE:     Moved Endpoint0 code to use new module_usb_device       
+    - ADDED:      Added optional channel for audio buffing control, this can reduce power
+    - CHANGE:     Moved Endpoint0 code to use new module_usb_device 
+    - CHANGE:     Device reboot code (for DFU) made more generic for multi-tile systems 
+    - CHANGE:     DFU code now erases all upgrade images found, rather than just the first one     
     - RESOLVED:   (Major) ADC port initialization did not operate as expected at 384kHz
     - RESOLVED:   (Major) Resolved a compatibility issue with streaming on Intel USB 3.0 xHCI host controller
     - RESOLVED:   (Minor) Input channel strings used for output in one instance
     - RESOLVED:   (Major) Added defence against malformed Audio Class 1.0 packets as experienced on some Win8.0 hosts.
->>>>>>> b10f89ee0a6aedeadaccc828b37ee44a6d80ab6e
 
 6v10:
     - RESOLVED:   Resolved issue with DFU caused by SU1 ADC usage causing issues with soft reboot
