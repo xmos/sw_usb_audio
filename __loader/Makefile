@@ -13,11 +13,20 @@ XCC_FLAGS = $(BUILD_FLAGS)
 all:
 	xcc $(XCC_FLAGS) -c loader.xc -o loader.o
 
+erase:
+	xflash --erase-all --target-file=../app_usb_aud_xk_u8_2c/src/core/xk_usb_audio_u8_2c.xn
+
 flash:
-	xflash ../app_usb_aud_xk_u8_2c/bin/2ioxs/app_usb_aud_xk_u8_2c_2ioxs.xe --loader loader.o --upgrade 1 ~/sb_idock_mfa/sw_audio_dock/app_xuh_audio_dock/bin/app_xuh_audio_dock.xe 
+	xflash ../app_usb_aud_xk_u8_2c/bin/2ioxs/app_usb_aud_xk_u8_2c_2ioxs.xe --loader loader.o --upgrade 1 ../../sw_audio_dock/app_xuh_audio_dock/bin/xis/app_xuh_audio_dock_xis.xe
+
+flashwithup:
+	xflash ../app_usb_aud_xk_u8_2c/bin/2ioxs/app_usb_aud_xk_u8_2c_2ioxs.xe --loader loader.o --upgrade 1 ../app_usb_aud_xk_u8_2c/bin/2ioxs_up1/app_usb_aud_xk_u8_2c_2ioxs_up1.xe --upgrade 2 ../app_usb_aud_xk_u8_2c/bin/2ioxs_up2/app_usb_aud_xk_u8_2c_2ioxs_up2.xe 	
+
+create_upgrades:
+	xflash --upgrade 1 ../app_usb_aud_xk_u8_2c/bin/2ioxs_up1/app_usb_aud_xk_u8_2c_2ioxs_up1.xe 0x10000 -o usbaudup1.bin; xflash --upgrade 2 ../app_usb_aud_xk_u8_2c/bin/2ioxs_up2/app_usb_aud_xk_u8_2c_2ioxs_up2.xe 0x10000 -o usbaudup2.bin; tr "\000" "\000" < /dev/zero | dd ibs=1k count=64 of=usbaudup1_padded.bin; dd if=usbaudup1.bin of=usbaudup1_padded.bin conv=notrunc; cat usbaudup1_padded.bin usbaudup2.bin > usbaudupcat.bin; 
 
 clean: 
-	rm loader.o
+	rm loader.o 
 
 #=============================================================================
 # The following part of the Makefile includes the common build infrastructure
