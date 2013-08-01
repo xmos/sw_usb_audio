@@ -4,7 +4,7 @@
 #include <platform.h>
 
 
-#define VOLT_TWEAK 20 //mV reduction
+//#define VOLT_TWEAK 20 //mV reduction
 
 //Code to set the voltage (voltage is set to 10 * X + 600 mV):
 #ifdef VOLT_TWEAK
