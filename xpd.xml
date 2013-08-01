@@ -101,12 +101,13 @@
     <release parenthash = "9f0b8139a867381b7d2da8913dfda0e217669f38" version = "6.2.0beta0" githash = "b4b45f31a3033e121dd799b7c07453bb6b7d8484"></release>
     <release parenthash = "d67043ba80cb19d2201802063b8d61f8a59f11f1" version = "6.2.0beta1" githash = "b10f89ee0a6aedeadaccc828b37ee44a6d80ab6e"></release>
     <release parenthash = "b7da6d407122384480d1301a76b5bc8f5b41707a" version = "6.2.0beta2" githash = "5dff3470fb79d31fe0fa2f049ba20e648cacb3af"></release>
-    <release parenthash = "e87d01d17a5717c05d0cc787aea3e3b6f97dec09" version = "6.2.0beta3"></release>
+    <release parenthash = "e87d01d17a5717c05d0cc787aea3e3b6f97dec09" version = "6.2.0beta3" githash = "745a86204b37d023367aad98162ae03b332c5e37"></release>
+    <release parenthash = "745a86204b37d023367aad98162ae03b332c5e37" version = "6.2.0beta4"></release>
     <subpartnumber>XM-002775-SM</subpartnumber>
     <vendor>XMOS</vendor>
+    <version_defines></version_defines>
     <xpd_version>1.0</xpd_version>
     <xsoftip_exclude>app_usb_aud_skc_su1</xsoftip_exclude>
     <xsoftip_exclude>app_usb_aud_su1</xsoftip_exclude>
     <xsoftip_exclude>app_usb_aud_l1</xsoftip_exclude>
-    <version_defines></version_defines>
 </xpd>
