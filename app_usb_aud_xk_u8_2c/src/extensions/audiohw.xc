@@ -12,6 +12,8 @@ extern out port p_gpo;
 extern out port p_audrst;
 extern struct r_i2c i2cPorts; 
 
+#define SW_INT_HANDLER 1
+#define SWITCH_VAL 0b0000
 
 #define XS1_SU_PERIPH_USB_ID 1
 
@@ -24,7 +26,7 @@ void handle_switch_request(in port p_sw)
     asm("in %0, res[%1]":"=r"(curSwVal):"r"(p_sw));
     asm("setd res[%0], %1"::"r"(p_sw),"r"(curSwVal));
     
-    if((curSwVal & 3) != SWITCH_VAL)
+    if((curSwVal & 0b1000) != SWITCH_VAL)
     {
         /* Ideally we would reset SU1 here but then we loose power to the xcore and therefore the DFU flag */
         /* Disable USB and issue reset to xcore only - not analogue chip */
