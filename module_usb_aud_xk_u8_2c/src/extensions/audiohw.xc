@@ -16,6 +16,10 @@ extern struct r_i2c i2cPorts;
 
 #define XS1_SU_PERIPH_USB_ID 1
 
+#if defined(SW_INT_HANDLER) && defined(IAP)
+#error not currently supported
+#endif
+
 #ifdef SW_INT_HANDLER
 #pragma select handler
 void handle_switch_request(in port p_sw)
