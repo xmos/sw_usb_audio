@@ -13,16 +13,17 @@
  */
 #include <xs1.h>
 #include "gpio_defines.h"
+#include "gpio_access.h"
 
 void UserAudioStreamStart(void) 
 {
     unsigned x;
 
-    asm volatile ("peek %0, res[%1]":"=r"(x):"r"(XS1_PORT_32A)); 
+    port32A_peek(x);
         
     x |= P_GPIO_LEDB;
 
-    asm("out res[%0], %1"::"r"(XS1_PORT_32A),"r"(x)); 
+    port32A_out(x);
 }
 
 /* Any actions required on stream stop e.g. DAC mute - run every
@@ -36,9 +37,9 @@ void UserAudioStreamStop(void)
 {
     unsigned x;
     
-    asm volatile ("peek %0, res[%1]":"=r"(x):"r"(XS1_PORT_32A)); 
+    port32A_peek(x);
         
     x &= (~P_GPIO_LEDB);
     
-    asm("out res[%0], %1"::"r"(XS1_PORT_32A),"r"(x)); 
+    port32A_out(x);
 }
