@@ -2,7 +2,7 @@
 #ifndef _PORTS_H_
 #define _PORTS_H_
 
-#include "i2c.h"
+#include "i2c_shared.h"
 
 /* Additional ports used in this application instance */
 
