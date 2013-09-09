@@ -1,7 +1,7 @@
 XMOS USB Audio 2.0 Reference Design Readme
 ..........................................
 
-:Latest release: 6.2.0beta4
+:Latest release: 6.2.0beta5
 :Maintainer: Ross Owen
 :Description: USB Audio Applications
 
