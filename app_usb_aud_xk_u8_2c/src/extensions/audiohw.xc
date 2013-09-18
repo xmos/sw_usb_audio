@@ -5,12 +5,18 @@
 #include "i2c.h"
 #include "gpio_defines.h"
 #include "interrupt.h"
+/* Additional ports used in this application instance */
 
-extern in port p_sw;
+/* General Purpose Output port - various output lines such as DAC reset, LEDs etc */
+on stdcore[0] : out port p_gpo  = XS1_PORT_32A;
 
-extern out port p_gpo;
+/* Input port for buttons and switch */
+on stdcore[0] : in port p_sw    = XS1_PORT_4D;
+
+/* I2C ports */
+on stdcore[0] : struct r_i2c i2cPorts = {XS1_PORT_1C, XS1_PORT_1G}; /* In a struct to use module_i2c_simple */
+
 extern out port p_audrst;
-extern struct r_i2c i2cPorts; 
 
 #define SW_INT_HANDLER 1
 #define SWITCH_VAL 0b0000
