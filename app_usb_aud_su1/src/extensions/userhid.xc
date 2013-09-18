@@ -1,5 +1,8 @@
+#include <xs1.h>
+#include <platform.h>
 
-extern in port p_but;
+
+on stdcore[0] : in port p_but       = PORT_BUT;
 
 void UserReadHIDButtons(unsigned char hidData[])
 {

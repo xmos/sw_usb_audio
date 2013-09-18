@@ -1,8 +1,14 @@
 #include <xs1.h>
+#include <platform.h>
 #include <print.h>
 #include "port32A.h"
 #include "devicedefines.h"
 #include "i2c.h"
+
+/* Additional ports used in this application instance */
+on stdcore[0] : out port p_gpio     = PORT_GPIO;
+on stdcore[0] : struct r_i2c i2cPorts = {PORT_I2C_SCL, PORT_I2C_SDA}; /* In a struct to use module_i2c_simple */
+
 
 #define PORT32A_PEEK(X) {asm("peek %0, res[%1]":"=r"(X):"r"(XS1_PORT_32A));} 
 #define PORT32A_OUT(X)  {asm("out res[%0], %1"::"r"(XS1_PORT_32A),"r"(X));}
