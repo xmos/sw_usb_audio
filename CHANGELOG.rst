@@ -14,19 +14,25 @@ Firmware
     - ADDED:      Added DSD over PCM (DoP) mode
     - ADDED:      Added Native DSD (Driver support required)
     - ADDED:      Added optional channel for audio buffing control, this can reduce power consumption
+    - ADDED:      The device can run in Audio Class 2.0 when connected to a full-speed hub using the
+                  FULL_SPEED_AUDIO_2 define
     - CHANGE:     Endpoint0 code migrated to use new module_usb_device shared module 
     - CHANGE:     Device reboot code (for DFU) made more generic for multi-tile systems 
-    - CHANGE:     DFU code now erases all upgrade images found, rather than just the first one     
+    - CHANGE:     DFU code now erases all upgrade images found, rather than just the first one 
     - RESOLVED:   (Major) ADC port initialization did not operate as expected at 384kHz
     - RESOLVED:   (Major) Resolved a compatibility issue with streaming on Intel USB 3.0 xHCI host controller
-    - RESOLVED:   (Minor) Input channel strings used for output in one instance
     - RESOLVED:   (Major) Added defence against malformed Audio Class 1.0 packets as experienced on
                   some Win 8.0 hosts. Previously this would cause an exception (Issue fixed in Win 8.1)
+    - RESOLVED:   (Minor)  maxPacketSize now reported based on device's read bandwidth requirements.  This 
+                  allows the driver to reserve the proper bandwith amount (previously bandwidth would have been wasted)    
+    - RESOLVED:   (Minor) Input channel strings used for output in one instance
     - RESOLVED:   (Minor) Volume multiplication now compatible with 32bit samples. Previously assumed
                   24bit samples and would truncate bottom 3 bits
     - RESOLVED:   (Minor) Fixed issue with SE0_NAK test mode (as required for device receiver sensitivity
                   USB-IF compliance test
     - RESOLVED:   (Minor) Fixed issue with packet parameters compliance test
+    - RESOLVED:   (Minor) Added bounds checking to string requests. Previously an exception was raised
+                  if an invalid String was requested
 
 6v10:
     - RESOLVED:   Resolved issue with DFU caused by SU1 ADC usage causing issues with soft reboot
