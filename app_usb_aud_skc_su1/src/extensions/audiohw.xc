@@ -1,12 +1,14 @@
 #include <xs1.h>
-#include <print.h>
+#include <xs1.h>
+#include <platform.h>
+
 #include "devicedefines.h"
 #include "i2c.h"
 #include "p_gpio.h"
 #include "p_gpio_defines.h"
 
-extern port p_i2c;
-extern out port p_gpio;
+on stdcore[0] : out port p_gpio = XS1_PORT_4C;
+on stdcore[0] : port p_i2c      = XS1_PORT_4D;
 
 //:codec_init
 void AudioHwInit(chanend ?c_codec) 
@@ -39,15 +41,7 @@ void AudioHwInit(chanend ?c_codec)
 
 /* Write to both CODECs */
 #define IIC_REGWRITE(reg, val) {IIC_REGWRITE_1(reg, val);IIC_REGWRITE_2(reg,val);}
-
 #define IIC_REGREAD(reg, val)  {i2c_master_read_reg(CODEC1_I2C_DEVICE_ADDR, reg, val, 1, p_i2c);}
-
-#define PCM1795_ADDR (0b1001110)
-#define PCM1795_ADDR_WR (PCM1795_ADDR<<1)
-#define PCM1795_ADDR_RD ((PCM1795_ADDR<<1))
-
-#define IIC_REGREAD_PCM1795(reg, val)  {i2c_master_read_reg(PCM1795_ADDR_RD, reg, val, 2, p_i2c);}
-#define IIC_REGWRITE_PCM1795(reg, val)  {data[0] = val&0xff; data[1] = (val&0xff>>8);i2c_master_write_reg(PCM1795_ADDR_WR, reg, data, 2, p_i2c);}
 
 
 //:codec_config
@@ -90,15 +84,6 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, int dsdMod
     
     /* Set power down bit in the CODEC over I2C */
     IIC_REGWRITE(CODEC_DEV_ID_ADDR, 0x01);
-
-    if(dsdMode) 
-    {
-        IIC_REGWRITE_PCM1795(20, 0b001010000100000);
-    }
-    else
-    {
-        IIC_REGWRITE_PCM1795(20, 0b001010000000000);
-    }
 
     /* Read CODEC device ID to make sure everything is OK */
     //IIC_REGREAD(CODEC_DEV_ID_ADDR, data);
@@ -155,10 +140,8 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, int dsdMod
         }
         IIC_REGWRITE_2(CODEC_MODE_CTRL_ADDR, val);
     }
-        
 
 #endif
-   
     
     /* ADC & DAC Control Reg:
        Leave HPF for ADC inputs continuously running.
