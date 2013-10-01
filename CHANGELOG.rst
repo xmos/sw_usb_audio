@@ -19,6 +19,7 @@ Firmware
     - CHANGE:     Endpoint0 code migrated to use new module_usb_device shared module 
     - CHANGE:     Device reboot code (for DFU) made more generic for multi-tile systems 
     - CHANGE:     DFU code now erases all upgrade images found, rather than just the first one 
+    - CHANGE:     ports.h file no longer required.  Please declare custom ports in your own files
     - RESOLVED:   (Major) ADC port initialization did not operate as expected at 384kHz
     - RESOLVED:   (Major) Resolved a compatibility issue with streaming on Intel USB 3.0 xHCI host controller
     - RESOLVED:   (Major) Added defence against malformed Audio Class 1.0 packets as experienced on
