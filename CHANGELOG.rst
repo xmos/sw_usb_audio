@@ -1,9 +1,8 @@
 XMOS USB Audio 2.0 Reference Design Change Log
 ..............................................
 
-:Latest release: 6.0.0alpha0
 :Maintainer: Ross Owen
-:Description: USB Audio Reference Design
+:Description: USB Audio Reference Designs
 
 Firmware
 ========
