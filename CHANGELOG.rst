@@ -7,7 +7,7 @@ XMOS USB Audio 2.0 Reference Design Change Log
 Firmware
 ========
 
-6v20:
+6.2.0:
     - ADDED:      Application for XK-USB-AUDIO-U8-2C board
     - ADDED:      PRODUCT_STR define for Product Strings
     - ADDED:      Added DSD over PCM (DoP) mode
@@ -34,15 +34,15 @@ Firmware
     - RESOLVED:   (Minor) Added bounds checking to string requests. Previously an exception was raised
                   if an invalid String was requested
 
-6v10:
+6.1.0:
     - RESOLVED:   Resolved issue with DFU caused by SU1 ADC usage causing issues with soft reboot
     - ADDED:      Added ability for channel count changes between UAC1 and UAC2 modes
     - ADDED:      Support for iOS authentication (MFI licencees only - please contact XMOS)
 
-6v01:
+6.0.1:
     - CHANGE:     Removed support for early engineering sample U-series devices
 
-6v00:    
+6.0.0:    
     - ADDED:      Support for SU1 (Via SU1 Core Board and Audio Slice) - see app_usb_aud_skc_su1
     - ADDED:      Design moved to new build system
     - ADDED:      Optional support for USB test modes
