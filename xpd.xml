@@ -30,7 +30,7 @@
         <uri>git://git/apps/sc_usb_audio</uri>
     </dependency>
     <dependency repo = "sc_xud">
-        <githash>d89677df7c6688c77ef433095aa10e8a919e82ea</githash>
+        <githash>dc9104e96e0c227527c10d153cbf1e36ab7edfb4</githash>
         <uri>git://git/apps/sc_xud</uri>
     </dependency>
     <dependency repo = "sc_i2c">
@@ -103,7 +103,8 @@
     <release parenthash = "745a86204b37d023367aad98162ae03b332c5e37" version = "6.2.0beta4" githash = "3a7a5b3c4d81278ea74a535bc67d0571ad228d30"></release>
     <release parenthash = "50763f03ae430c358967ecc5f3ad832e93239156" version = "6.2.0beta5" githash = "91d74b1da0356ed6fa34ae0591751e54bd59320c"></release>
     <release parenthash = "cd64609194c96c6c500bb392702e09a8f53d4e2a" version = "6.2.0beta6" githash = "cf000bc0688b19ff79427fcc4aa4f3aaab767573"></release>
-    <release parenthash = "924c6ae55fdbb181fdc2ca3c8734c20773e5673b" version = "6.2.0beta7"></release>
+    <release parenthash = "924c6ae55fdbb181fdc2ca3c8734c20773e5673b" version = "6.2.0beta7" githash = "b10e1a6fe417fda8c810e1a16201fd17e98cea91"></release>
+    <release parenthash = "1d0954793ea542558da2997b2d5e98201f67cf84" version = "6.2.0beta8"></release>
     <subpartnumber>XM-002775-SM</subpartnumber>
     <vendor>XMOS</vendor>
     <version_defines></version_defines>
