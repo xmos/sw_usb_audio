@@ -196,7 +196,16 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, int dsdMod
     */
     if(dsdMode)
     {
-        DAC_REGWRITE(DAC_REG_ADDR_MODE_CTRL1, 0b00100011);
+        if(samFreq < 100000)
+        {
+            /* 64x oversampled DSD with 8 x DSD clock to mclk */
+            DAC_REGWRITE(DAC_REG_ADDR_MODE_CTRL1, 0b00100011); 
+        }   
+        else
+        {
+            /* 128x oversampled DSD with 4 x DSD clock to mclk */
+            DAC_REGWRITE(DAC_REG_ADDR_MODE_CTRL1, 0b01100011); 
+        }  
     }
     else
     {
