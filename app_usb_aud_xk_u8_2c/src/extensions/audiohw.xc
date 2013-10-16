@@ -1,10 +1,12 @@
 #include <xs1.h>
 #include <platform.h>
 #include <xs1_su.h>
+#include <print.h>
 #include "devicedefines.h"
 #include "i2c.h"
 #include "gpio_defines.h"
 #include "interrupt.h"
+#include "clockcmds.h"
 /* Additional ports used in this application instance */
 
 /* General Purpose Output port - various output lines such as DAC reset, LEDs etc */
@@ -194,7 +196,7 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, int dsdMod
      * 4:6: Digital Interface Formats
      * 7:   Auto-mute
     */
-    if(dsdMode)
+    if(dsdMode == DSD_MODE_NATIVE)
     {
         if(samFreq < 100000)
         {
@@ -205,7 +207,21 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, int dsdMod
         {
             /* 128x oversampled DSD with 4 x DSD clock to mclk */
             DAC_REGWRITE(DAC_REG_ADDR_MODE_CTRL1, 0b01100011); 
-        }  
+        } 
+    }
+    else if(dsdMode == DSD_MODE_DOP)
+    {
+       if(samFreq < 200000)
+        {
+            /* 64x oversampled DSD with 8 x DSD clock to mclk */
+            DAC_REGWRITE(DAC_REG_ADDR_MODE_CTRL1, 0b00100011); 
+        }   
+        else
+        {
+            /* 128x oversampled DSD with 4 x DSD clock to mclk */
+            DAC_REGWRITE(DAC_REG_ADDR_MODE_CTRL1, 0b01100011); 
+            printintln(1);
+        } 
     }
     else
     {
