@@ -21,14 +21,17 @@ This release is built and tested using version 12.2 of the XMOS tool set.  Build
 This repository contains applications (or instances) of the XMOS USB Audio Reference Design framework.  These applications
 typically relate to a specific board.  This repository contains the following:
 
-+---------------------+--------------------------+-----------------------------------------------------------+
-|    App Name         |     Relevant Board(s)    | Description                                               |
-+---------------------+--------------------------+-----------------------------------------------------------+
-|app_usb_aud_l1       | xr-usb-audio-2.0         | XMOS XS1-L8 USB Audio Reference Design                    |
-|app_usb_aud_skc_su1  | xp-skc-su1 + xa-sk-audio | XMOS XS1-U8 USB Audio Kit                                 |
-|app_usb_aud_su1      | xr-usb-audio-s1          | XMOS XS1-U8 USB Audio Reference Design (prototype only)   |
-|app_usb_aud_xl_u8_2c | xk-usb-audio-u8-2c       | XMOS XS1-U8 Multi-Function Audio Board                    |
-+---------------------+--------------------------+-----------------------------------------------------------+
++----------------------+--------------------------+------------------------------------------------------------+
+|    App Name          |     Relevant Board(s)    | Description                                                |
++======================+==========================+============================================================+
+| app_usb_aud_l1       | xr-usb-audio-2.0         | XMOS XS1-L8 USB Audio Reference Design                     |
++----------------------+--------------------------+------------------------------------------------------------+
+| app_usb_aud_skc_su1  | xp-skc-su1 & xa-sk-audio | XMOS XS1-U8 USB Audio Kit                                  |
++----------------------+--------------------------+------------------------------------------------------------+
+| app_usb_aud_su1      | xr-usb-audio-s1          | XMOS XS1-U8 USB Audio Reference Design (prototype only)    |
++----------------------+--------------------------+------------------------------------------------------------+
+| app_usb_aud_xl_u8_2c | xk-usb-audio-u8-2c       | XMOS XS1-U8 Multi-Function Audio Board                     |
++----------------------+--------------------------+------------------------------------------------------------+
 
 Please refer to individual README files in these apps for more detailed information.
 
