@@ -18,14 +18,8 @@ on stdcore[0] : in port p_sw    = XS1_PORT_4D;
 /* I2C ports */
 on stdcore[0] : struct r_i2c i2cPorts = {XS1_PORT_1C, XS1_PORT_1G}; /* In a struct to use module_i2c_simple */
 
-extern out port p_audrst;
-
-#define SW_INT_HANDLER 1
-#define SWITCH_VAL 0b0000
-
-#define XS1_SU_PERIPH_USB_ID 1
-
 #ifdef SW_INT_HANDLER
+#define SWITCH_VAL 0b0000
 #pragma select handler
 void handle_switch_request(in port p_sw)
 {
@@ -36,10 +30,8 @@ void handle_switch_request(in port p_sw)
     
     if((curSwVal & 0b1000) != SWITCH_VAL)
     {
-        /* Ideally we would reset SU1 here but then we loose power to the xcore and therefore the DFU flag */
-        /* Disable USB and issue reset to xcore only - not analogue chip */
-        //write_node_config_reg(usb_tile, XS1_SU_CFG_RST_MISC_NUM,0b10);
-        write_node_config_reg(usb_tile, XS1_SU_CFG_RST_MISC_NUM,1);
+        /* Reset U8 device */
+        write_node_config_reg(usb_tile, XS1_SU_CFG_RST_MISC_NUM, 1);
     }
 
 }
@@ -198,7 +190,7 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, int dsdMod
     */
     if(dsdMode == DSD_MODE_NATIVE)
     {
-        if(samFreq < 100000)
+        if(samFreq < 3000000) /* < 3MHz e.g. 2.2822400 MHz */
         {
             /* 64x oversampled DSD with 8 x DSD clock to mclk */
             DAC_REGWRITE(DAC_REG_ADDR_MODE_CTRL1, 0b00100011); 
@@ -211,8 +203,8 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, int dsdMod
     }
     else if(dsdMode == DSD_MODE_DOP)
     {
-       if(samFreq < 200000)
-        {
+       if(samFreq < 3000000) /* < 3MHz e.g. 2.22822400 MHz */
+       {
             /* 64x oversampled DSD with 8 x DSD clock to mclk */
             DAC_REGWRITE(DAC_REG_ADDR_MODE_CTRL1, 0b00100011); 
         }   
@@ -220,7 +212,6 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, int dsdMod
         {
             /* 128x oversampled DSD with 4 x DSD clock to mclk */
             DAC_REGWRITE(DAC_REG_ADDR_MODE_CTRL1, 0b01100011); 
-            printintln(1);
         } 
     }
     else
