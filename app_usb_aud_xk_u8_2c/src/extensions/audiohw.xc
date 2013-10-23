@@ -6,8 +6,7 @@
 #include "i2c.h"
 #include "gpio_defines.h"
 #include "interrupt.h"
-#include "clockcmds.h"
-/* Additional ports used in this application instance */
+#include "dsd.h"
 
 /* General Purpose Output port - various output lines such as DAC reset, LEDs etc */
 on stdcore[0] : out port p_gpo  = XS1_PORT_32A;
