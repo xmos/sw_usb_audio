@@ -123,7 +123,7 @@ unsigned readReg(unsigned devAddr, unsigned reg)
 /* Configure the CS4392 DAC
  * Note the CS5340 ADC doesn't require any config - it is set to Slave mode in hardware (M0 & M1 pins high)
  */
-void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, int dsdMode)
+void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, DsdMode dsdMode)
 {
     timer t;
     unsigned time;
@@ -262,6 +262,5 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, int dsdMod
     
     /* Clear power down bit in the DAC - keep control port enabled for now */
     DAC_REGWRITE(DAC_REG_ADDR_MODE_CTRL2, DAC_REG_MODE_CTRL2_CPEN);
- 
 }
 //:
