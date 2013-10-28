@@ -6,7 +6,7 @@
 #include "i2c.h"
 #include "gpio_defines.h"
 #include "interrupt.h"
-#include "dsd.h"
+#include "dsd_support.h"
 
 /* General Purpose Output port - various output lines such as DAC reset, LEDs etc */
 on stdcore[0] : out port p_gpo  = XS1_PORT_32A;
@@ -123,7 +123,7 @@ unsigned readReg(unsigned devAddr, unsigned reg)
 /* Configure the CS4392 DAC
  * Note the CS5340 ADC doesn't require any config - it is set to Slave mode in hardware (M0 & M1 pins high)
  */
-void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, DsdMode dsdMode)
+void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned dsdMode)
 {
     timer t;
     unsigned time;
