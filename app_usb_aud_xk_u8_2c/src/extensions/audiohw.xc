@@ -187,23 +187,10 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
      * 4:6: Digital Interface Formats
      * 7:   Auto-mute
     */
-    if(dsdMode == DSD_MODE_NATIVE)
+    if((dsdMode == DSD_MODE_NATIVE) || (dsdMode == DSD_MODE_DOP))
     {
         if(samFreq < 3000000) /* < 3MHz e.g. 2.2822400 MHz */
         {
-            /* 64x oversampled DSD with 8 x DSD clock to mclk */
-            DAC_REGWRITE(DAC_REG_ADDR_MODE_CTRL1, 0b00100011); 
-        }   
-        else
-        {
-            /* 128x oversampled DSD with 4 x DSD clock to mclk */
-            DAC_REGWRITE(DAC_REG_ADDR_MODE_CTRL1, 0b01100011); 
-        } 
-    }
-    else if(dsdMode == DSD_MODE_DOP)
-    {
-       if(samFreq < 3000000) /* < 3MHz e.g. 2.22822400 MHz */
-       {
             /* 64x oversampled DSD with 8 x DSD clock to mclk */
             DAC_REGWRITE(DAC_REG_ADDR_MODE_CTRL1, 0b00100011); 
         }   
