@@ -9,9 +9,9 @@
   </Declarations>
 
   <Packages>
-    <Package Id="P1" Type="XS1-SU01A-FB96">
+    <Package Id="P1" Type="XS1-UnA-64-FB96">
       <Nodes>
-        <Node Id="0" Type="XS1-L1A" InPackageId="0" Oscillator="24MHz" SystemFrequency="500MHz" ReferenceFrequency="100MHz">
+        <Node Id="0" Type="XS1-L8A-64" InPackageId="0" Oscillator="24MHz" SystemFrequency="500MHz" ReferenceFrequency="100MHz">
           <Boot>
             <Source Location="SPI:bootFlash"/>
           </Boot>

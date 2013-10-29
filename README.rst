@@ -1,55 +1,47 @@
-XMOS USB Audio 2.0 Reference Design Readme
+XMOS USB Audio 2.0 Reference Design README
 ..........................................
 
-:Latest release: 6.2.0beta4
+:Latest release: 6.2.0beta9
 :Maintainer: Ross Owen
 :Description: USB Audio Applications
 
 
-This 6.0 based releases were  is made generally 
-
-Please see the USB Audio Software Design Guide document for futher details.
-
 Welcome to version 6 of the XMOS USB Audio software framework.  
 
-The main feature of version 6 of the XMOS USB Audio software framework and associated applications is to add support 
-for the latest U series of devices now available from XMOS.  This release supports the previous L devices, however, there is no
-need to update to this version unless a specific issues is solved by this release.  Please see CHANGELOG.rst for detailed
-change listing.
+Please note, beta releases are made without warranty with limited testing.  Beta releases may not accurately reflect the final release. 
+
+The main feature of version over previous versions of the XMOS USB Audio software framework and associated applications is the added support for the latest U series of devices now available from XMOS.  This release supports the previous L devices, however, there is no need to update to this version unless a specific issues is solved by this release.  
+
+Please see CHANGELOG.rst for detailed change listing.
 
 For full software documentation please see the USB Audio Software Design Guide document available from xmos.com.
 
-This release is built and tested using version 12 of the XMOS toolset.
+This release is built and tested using version 12.2 of the XMOS tool set.  Build or functionality issues could be experienced with any other version.
 
 This repository contains applications (or instances) of the XMOS USB Audio Reference Design framework.  These applications
 typically relate to a specific board.  This repository contains the following:
 
-+---------------------+--------------------------+-------------------------------------------------------+
-|    App Name         |     Relevant Board(s)    | Description                                           |
-+---------------------+--------------------------+-------------------------------------------------------+
-<<<<<<< HEAD
-|app_usb_aud_l1       | xr-usb-audio-2.0         | XMOS XS1-L1 USB Audio Reference Design                |
-|app_usb_aud_skc_su1  | xp-skc-su1 + xa-sk-audio | XMOS SU1 USB Audio Kit                                |
-
-|app_usb_aud_su1      | xr-usb-audio-s1          | XMOS SU1 USB Audio Reference Design (prototype only)  |
-=======
-|app_usb_aud_l1       | xr-usb-audio-2.0         | XMOS XS1-L8 USB Audio Reference Design                |
-|app_usb_aud_skc_su1  | xp-skc-su1 + xa-sk-audio | XMOS XS1-U8 USB Audio Kit                                |
-|app_usb_aud_su1      | xr-usb-audio-s1          | XMOS XS1-U8 USB Audio Reference Design (prototype only)  |
->>>>>>> origin/master
-+---------------------+--------------------------+-------------------------------------------------------+
++----------------------+--------------------------+------------------------------------------------------------+
+|    App Name          |     Relevant Board(s)    | Description                                                |
++======================+==========================+============================================================+
+| app_usb_aud_l1       | xr-usb-audio-2.0         | XMOS XS1-L8 USB Audio Reference Design                     |
++----------------------+--------------------------+------------------------------------------------------------+
+| app_usb_aud_skc_su1  | xp-skc-su1 & xa-sk-audio | XMOS XS1-U8 USB Audio Kit                                  |
++----------------------+--------------------------+------------------------------------------------------------+
+| app_usb_aud_su1      | xr-usb-audio-s1          | XMOS XS1-U8 USB Audio Reference Design (prototype only)    |
++----------------------+--------------------------+------------------------------------------------------------+
+| app_usb_aud_xl_u8_2c | xk-usb-audio-u8-2c       | XMOS XS1-U8 Multi-Function Audio Board                     |
++----------------------+--------------------------+------------------------------------------------------------+
 
 Please refer to individual README files in these apps for more detailed information.
 
-Each application contains a "core" folder, this folder contains items that are required to use and run the USB Audio 
-application framework.  Mandatory files per application include: 
+Each application contains a "core" folder, this folder contains items that are required to use and run the USB Audio application framework.  
+Mandatory files per application include: 
 
 - An XN file describing the board including required port defines. The XN file is referenced in the application makefile.
 - customdefines.h header file containing configuration items such as channel count, strings etc.
-- ports.h header file containing declarations of ports that the application uses in addition to the ports in the XN file.
 
-Each application also contains an "extensions" folder which includes board specific extensions such as CODEC 
-configuration etc.
+Each application also contains an "extensions" folder which includes board specific extensions such as CODEC configuration etc.
 
 Additionally some options are contained in Makefiles for building multiple configurations of an application. For example 
 app_usb_aud_l1 builds a MIDI and a S/PDIF configuration.  See the USB Audio Software Design Guide for full details.
@@ -57,7 +49,7 @@ app_usb_aud_l1 builds a MIDI and a S/PDIF configuration.  See the USB Audio Soft
 Key Framework Features
 ======================
 
-Key features of the various applications in this repositiry are as follow.  Please refer to the application README for application 
+Key features of the various applications in this repository are as follow.  Please refer to the application README for application 
 specific feature set.
 
 - USB Audio Class 1.0/2.0 Compliant 
@@ -78,6 +70,8 @@ specific feature set.
 
 - MIDI input/output (Compliant to USB Class Specification for MIDI devices)
 
+- DSD output (Native and DoP mode)
+
 - Mixer with flexible routing
 
 Note, not all features may be supported at all sample frequencies, chips etc.
@@ -96,7 +90,7 @@ Host System Requirements
 
 - Mac OSX version 10.6 or later
 
-- Windows XP, Vista or 7 with Thesycon Audio Class 2.0 driver for Windows (contact XMOS for details)
+- Windows XP, Vista,  7 or 8, with Thesycon Audio Class 2.0 driver for Windows (contact XMOS for details)
 
 In Field Firmware Upgrade
 =========================

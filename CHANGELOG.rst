@@ -1,35 +1,42 @@
 XMOS USB Audio 2.0 Reference Design Change Log
 ..............................................
 
-:Latest release: 6.0.0alpha0
 :Maintainer: Ross Owen
-:Description: USB Audio Reference Design
+:Description: USB Audio Reference Designs
 
 Firmware
 ========
 
-6v20:
+6.2.0:
     - ADDED:      Application for XK-USB-AUDIO-U8-2C board
     - ADDED:      PRODUCT_STR define for Product Strings
-    - ADDED:      DSD64 support - via DSD over PCM (DoP)
-    - ADDED:      Added optional channel for audio buffing control, this can reduce power
-    - CHANGE:     Moved Endpoint0 code to use new module_usb_device 
+    - ADDED:      Added DSD over PCM (DoP) mode
+    - ADDED:      Added Native DSD (Driver support required)
+    - ADDED:      Added optional channel for audio buffing control, this can reduce power consumption
+    - ADDED:      The device can run in Audio Class 2.0 when connected to a full-speed hub using the FULL_SPEED_AUDIO_2 define
+    - CHANGE:     Endpoint0 code migrated to use new module_usb_device shared module 
     - CHANGE:     Device reboot code (for DFU) made more generic for multi-tile systems 
-    - CHANGE:     DFU code now erases all upgrade images found, rather than just the first one     
+    - CHANGE:     DFU code now erases all upgrade images found, rather than just the first one 
+    - CHANGE:     ports.h file no longer required.  Please declare custom ports in your own files
     - RESOLVED:   (Major) ADC port initialization did not operate as expected at 384kHz
     - RESOLVED:   (Major) Resolved a compatibility issue with streaming on Intel USB 3.0 xHCI host controller
+    - RESOLVED:   (Major) Added defence against malformed Audio Class 1.0 packets as experienced on some Win 8.0 hosts. Previously this would cause an exception (Issue fixed in Win 8.1)
+    - RESOLVED:   (Minor)  maxPacketSize now reported based on device's read bandwidth requirements.  This allows the driver to reserve the proper bandwith amount (previously bandwidth would have been wasted)    
     - RESOLVED:   (Minor) Input channel strings used for output in one instance
-    - RESOLVED:   (Major) Added defence against malformed Audio Class 1.0 packets as experienced on some Win8.0 hosts.
+    - RESOLVED:   (Minor) Volume multiplication now compatible with 32bit samples. Previously assumed 24bit samples and would truncate bottom 3 bits
+    - RESOLVED:   (Minor) Fixed issue with SE0_NAK test mode (as required for device receiver sensitivity USB-IF compliance test
+    - RESOLVED:   (Minor) Fixed issue with packet parameters compliance test
+    - RESOLVED:   (Minor) Added bounds checking to string requests. Previously an exception was raised if an invalid String was requested
 
-6v10:
+6.1.0:
     - RESOLVED:   Resolved issue with DFU caused by SU1 ADC usage causing issues with soft reboot
     - ADDED:      Added ability for channel count changes between UAC1 and UAC2 modes
     - ADDED:      Support for iOS authentication (MFI licencees only - please contact XMOS)
 
-6v01:
+6.0.1:
     - CHANGE:     Removed support for early engineering sample U-series devices
 
-6v00:    
+6.0.0:    
     - ADDED:      Support for SU1 (Via SU1 Core Board and Audio Slice) - see app_usb_aud_skc_su1
     - ADDED:      Design moved to new build system
     - ADDED:      Optional support for USB test modes

@@ -1,7 +1,13 @@
+#include <xs1.h>
+#include <platform.h>
+
 #include "devicedefines.h"
 
-extern in port p_but_a;
-extern in port p_but_b;
+#ifndef MIDI
+/* MIDI shared with button pins */
+on tile[0] : in port p_but_a = XS1_PORT_1J;
+on tile[0] : in port p_but_b = XS1_PORT_1K;
+#endif
 
 #ifdef HID_CONTROLS
 /* Write HID Report Data into hidData array

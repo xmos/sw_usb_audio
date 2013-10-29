@@ -1,26 +1,29 @@
 #include <xs1.h>
 #include <platform.h>
 #include <xs1_su.h>
+#include <print.h>
 #include "devicedefines.h"
 #include "i2c_shared.h"
 #include "gpio_defines.h"
 #include "gpio_access.h"
 #include "interrupt.h"
+#include "dsd_support.h"
 
-extern in port p_sw;
+/* General Purpose Output port - various output lines such as DAC reset, LEDs etc */
+on stdcore[0] : out port p_gpo  = XS1_PORT_32A;
 
-extern out port p_gpo;
-extern out port p_audrst;
-extern struct r_i2c i2cPorts; 
+/* Input port for buttons and switch */
+on stdcore[0] : in port p_sw    = XS1_PORT_4D;
 
-
-#define XS1_SU_PERIPH_USB_ID 1
+/* I2C ports */
+on stdcore[0] : struct r_i2c i2cPorts = {XS1_PORT_1C, XS1_PORT_1G}; /* In a struct to use module_i2c_simple */
 
 #if defined(SW_INT_HANDLER) && defined(IAP)
 #error not currently supported
 #endif
 
 #ifdef SW_INT_HANDLER
+#define SWITCH_VAL 0b0000
 #pragma select handler
 void handle_switch_request(in port p_sw)
 {
@@ -29,12 +32,10 @@ void handle_switch_request(in port p_sw)
     asm("in %0, res[%1]":"=r"(curSwVal):"r"(p_sw));
     asm("setd res[%0], %1"::"r"(p_sw),"r"(curSwVal));
     
-    if((curSwVal & 3) != SWITCH_VAL)
+    if((curSwVal & 0b1000) != SWITCH_VAL)
     {
-        /* Ideally we would reset SU1 here but then we loose power to the xcore and therefore the DFU flag */
-        /* Disable USB and issue reset to xcore only - not analogue chip */
-        //write_node_config_reg(usb_tile, XS1_SU_CFG_RST_MISC_NUM,0b10);
-        write_node_config_reg(usb_tile, XS1_SU_CFG_RST_MISC_NUM,1);
+        /* Reset U8 device */
+        write_node_config_reg(usb_tile, XS1_SU_CFG_RST_MISC_NUM, 1);
     }
 
 }
@@ -125,7 +126,7 @@ unsigned readReg(unsigned devAddr, unsigned reg)
 /* Configure the CS4392 DAC
  * Note the CS5340 ADC doesn't require any config - it is set to Slave mode in hardware (M0 & M1 pins high)
  */
-void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, int dsdMode)
+void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned dsdMode)
 {
     timer t;
     unsigned time;
@@ -189,9 +190,18 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, int dsdMod
      * 4:6: Digital Interface Formats
      * 7:   Auto-mute
     */
-    if(dsdMode)
+    if((dsdMode == DSD_MODE_NATIVE) || (dsdMode == DSD_MODE_DOP))
     {
-        DAC_REGWRITE(DAC_REG_ADDR_MODE_CTRL1, 0b00100011);
+        if(samFreq < 3000000) /* < 3MHz e.g. 2.2822400 MHz */
+        {
+            /* 64x oversampled DSD with 8 x DSD clock to mclk */
+            DAC_REGWRITE(DAC_REG_ADDR_MODE_CTRL1, 0b00100011); 
+        }   
+        else
+        {
+            /* 128x oversampled DSD with 4 x DSD clock to mclk */
+            DAC_REGWRITE(DAC_REG_ADDR_MODE_CTRL1, 0b01100011); 
+        } 
     }
     else
     {
@@ -242,6 +252,5 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, int dsdMod
     
     /* Clear power down bit in the DAC - keep control port enabled for now */
     DAC_REGWRITE(DAC_REG_ADDR_MODE_CTRL2, DAC_REG_MODE_CTRL2_CPEN);
- 
 }
 //:
