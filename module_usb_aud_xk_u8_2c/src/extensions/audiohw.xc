@@ -111,13 +111,6 @@ void AudioHwInit(chanend ?c_codec)
 #define DAC_REG_ADDR_MODE_CTRL3        0x06
 
 #define DAC_REGWRITE(reg, val) {data[0] = val; i2c_shared_master_write_reg(DAC_I2C_DEV_ADDR, reg, data, 1);}
-
-unsigned readReg(unsigned devAddr, unsigned reg)
-{
-    unsigned char data[1] = {0};
-    i2c_shared_master_read_reg(devAddr, reg, data, 1);
-    return data[0];
-}
  
 #define DAC_REGREAD(reg, val)  {i2c_shared_master_read_reg(DAC_I2C_DEV_ADDR, reg, val, 1);}
 
