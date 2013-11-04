@@ -80,7 +80,7 @@ Support Status
 The following table descibes key features/build options that have been tested (and are therefore supported) in this release.    Other features may not operate as expected or may even fail the build process and are to be used only at the risk of the developer.  In addition to this table please see "Known Issues".
 
 +----------------------+--------------------------------------+---------------------------------------------------------+----------------------------+
-|    Option            |     Description                      | Status        | Notes                                   | Example Binares            |
+|    Option            |     Description                      | Status        | Notes                                   | Example Binaries            |
 +======================+======================================+===============+=========================================+============================+
 | SPDIF                | S/PDIF output                        | Supported     |                                         | 2xoxs, 2ioxs, 1ioxs, 1xoxs |
 +----------------------+--------------------------------------+---------------+-----------------------------------------+----------------------------+
