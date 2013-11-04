@@ -2,10 +2,10 @@ XMOS XS1-U8 USB Audio
 =====================
 
 :Maintainer: Ross Owen
-:scope: Example
-:description: USB Audio application for XP-SKC-SU1 and XA-SK-AUDIO (1v1)
-:keywords: USB,  
-:boards: XP-SKC-SU1, XA-SK-AUDIO (1v1)
+:Scope: Reference Design
+:Description: USB Audio application for XP-SKC-SU1 and XA-SK-AUDIO (1v1)
+:Keywords: USB,  
+:Boards: XP-SKC-SU1, XA-SK-AUDIO (1v1)
 
 Overview
 ........
