@@ -79,7 +79,7 @@ Support Status
 
 The following tables descibe key features/build options that have been tested (and are therefore supported) with this release.
 
-The contrainsts table lists other features that may not operate as expected or may even fail the build process and are to be used only at the risk of the developer.  
+The contraints table lists other features that may not operate as expected or may even fail the build process and are to be used only at the risk of the developer.  
 
 In addition to these tables please see "Known Issues".
 
