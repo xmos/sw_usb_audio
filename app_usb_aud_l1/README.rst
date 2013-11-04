@@ -1,13 +1,16 @@
 XMOS XS1-L8 USB Audio 2.0 Reference Design (app_usb_aud_l1)
 ===========================================================
 
-:Latest release: 6.0.0alpha10
 :Maintainer: Ross Owen
+:scope: Example
+:description: USB Audio for L1 USB Audio
+:keywords: USB, Audio, MFA
+:boards: XR-USB-AUDIO-2.0
 
 Key Features
 ............
 
-The app_usb_aud_l1 application is designed to run on the XMOS USB Audio 2.0 references design board
+The app_usb_aud_l1 application is designed to run on the XMOS USB Audio 2.0 References Design board
 (part number xr-usb-audio-2.0).  This application used the XMOS USB Audio framework. Key features 
 of this application are as follows: 
 
@@ -44,24 +47,19 @@ input and output functionality.
 Known Issues
 ............
 
+See README in sw_usb_audio for general issues.
+
 -  CODEC (CS4270) auto-mute/soft-ramp feature can cause volume ramp at start of playback.  These features cannot be disabled on the reference board since CODEC is used in Hardware Mode (i.e. not configured using I2C)
 
 - No XMOS Link for XScope available on the board
 
+- The board has a 11.289MHz master clock source (oscillator) for 44.1kHz family of sample frequencies. S/PDIF Tx operation at 176.4kHz is therefore not supported due to the 2 x MCLK requirement. I2S functionality at this rate is unaffected.
+
 Please also note:  
 
-<<<<<<< HEAD
-The L1 Reference Design board has a 11.289MHz master clock source (oscillator) for 44.1kHz family of sample frequencies. S/PDIF Tx operation at 176.4kHz is therefore not supported due to the 2 x MCLK requirement. 
-=======
-The L8 Reference Design board has a 11.289MHz master clock source (oscillator) for 44.1kHz family of sample frequencies. S/PDIF Tx operation at 176.4kHz is therefore not supported due to the 2 x MCLK requirement. 
->>>>>>> origin/master
+Remedying the lack 176.4kHz S/PDIF support The CODEC is configured in hardware mode.  The scheme used uses a single pin (MDIV2) to indicate 256 or 512fs.  This same line is used on the board to control master-clock selection.  In 256fs mode with a 22.578 master-clock 44.1 cannot be achieved by the CODEC (88.2kHz and 176.4kHz should operate as expected).
 
-In addition the CODEC is configured in hardware mode.  The scheme used uses a single pin (MDIV2) to indicate 256 or 512fs.  This same line is used on the board to control master-clock selection.  In 256fs mode with a 22.578 master-clock 44.1 cannot be achieved by the CODEC (88.2kHz and 176.4kHz should operate as expected).
-
-A modification could be made in order to add full functionality. i.e. MDIV2 high (to always indicate 512fs). In addition the line from this to clock-selection input must be broken in order for the clock-selection to still operate.
-The master-clock frequency defines should also be suitably modified.
-
-For general issues please see the readme in sw_usb_audio.
+A modification could be made in order to add full functionality. i.e. MDIV2 high (to always indicate 512fs). In addition the line from this to clock-selection input must be broken in order for the clock-selection to still operate.  The master-clock frequency defines should also be suitably modified.
 
 Support
 .......
