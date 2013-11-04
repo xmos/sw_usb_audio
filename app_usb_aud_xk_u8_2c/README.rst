@@ -7,6 +7,11 @@ XMOS XK-USB-AUDIO-U8-2C USB Audio (app_usb_aud_xk_u8_2c)
 :keywords: USB, Audio, MFA
 :boards: XK-USB-AUDIO-U8-2C
 
+Overview
+........
+
+The firmware provides a high-speed USB Audio device designed to be compliant to version 2.0 of the USB Audio Class Specification.
+
 Key Features
 ............
 
@@ -34,19 +39,14 @@ The app_usb_aud_xk_u8_2c application is designed to run on the XMOS Mult-Functio
 
 Note, DSD required driver and/or player support.
 
-Overview
-........
-
-The firmware provides a high-speed USB Audio device designed to be compliant to version 2.0 of the USB Audio Class Specification.
-
 Known Issues
 ............
 
 See README in sw_usb_audio for general issues.
 
-- Switching to/from DSD mode results in pop noises on the analogue output, this is under investigation
+- (#14769) Switching to/from DSD mode results in pop noises on the analogue output, this is under investigation
 
-- DSD over PCM (DoP) 128 mode requires an effective PCM rate of 352.8kHz. Since the DAC is not rated to this speed in PCM mode this is not enabled by default.  It can be enabled by modifying the MAX_FREQ define.
+- (#14653) DSD over PCM (DoP) 128 mode requires an effective PCM rate of 352.8kHz. Since the DAC is not rated to this speed in PCM mode this is not enabled by default.  It can be enabled by modifying the MAX_FREQ define.
 
 Support
 .......

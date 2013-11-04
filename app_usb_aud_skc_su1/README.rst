@@ -7,6 +7,11 @@ XMOS XS1-U8 USB Audio
 :keywords: USB,  
 :boards: XP-SKC-SU1, XA-SK-AUDIO (1v1)
 
+Overview
+........
+
+The firmware provides a high-speed USB Audio device designed to be compliant to version 2.0 of the USB Audio Class Specification.
+
 Key Features
 ............
 
@@ -23,11 +28,6 @@ The app_usb_aud_skc_su1 application is designed to run on the U8 Slice Kit Core 
 - Supports for the following sample frequencies: 44.1, 48, 88.2, 96, 176.4, 192kHz
 
 - MIDI input and output
-
-Overview
-........
-
-The firmware provides a high-speed USB Audio device designed to be compliant to version 2.0 of the USB Audio Class Specification.
 
 Known Issues
 ............

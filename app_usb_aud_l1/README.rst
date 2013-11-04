@@ -7,6 +7,22 @@ XMOS XS1-L8 USB Audio 2.0 Reference Design (app_usb_aud_l1)
 :keywords: USB, Audio, MFA
 :boards: XR-USB-AUDIO-2.0
 
+Overview
+........
+
+The firmware provides a high-speed USB audio device designed to be compliant to version 2.0 of the USB Audio Class Specification.
+
+When connected via a full-speed hub the device falls back to operate at Audio 1.0 at full-speed.  A different PID is used to 
+avoid Windows driver caching issues.
+
+Additionally, build options are provided for Audio Class 1.0.  To remain compliant this causes the device to run at full-speed.
+
+When running at full-speed sample-frequency restrictions are enforced to ensure fitting within the band-width restrictions of 
+full-speed USB.
+
+The firmware provides stereo input and output via I2S and stereo output via S/PDIF.  Build options are provided to enable/disable 
+input and output functionality.
+
 Key Features
 ............
 
@@ -28,28 +44,12 @@ of this application are as follows:
 
 * S/PDIF Output at 176.4kHz not supported due to mclk requirements
 
-Overview
-........
-
-The firmware provides a high-speed USB audio device designed to be compliant to version 2.0 of the USB Audio Class Specification.
-
-When connected via a full-speed hub the device falls back to operate at Audio 1.0 at full-speed.  A different PID is used to 
-avoid Windows driver caching issues.
-
-Additionally, build options are provided for Audio Class 1.0.  To remain compliant this causes the device to run at full-speed.
-
-When running at full-speed sample-frequency restrictions are enforced to ensure fitting within the band-width restrictions of 
-full-speed USB.
-
-The firmware provides stereo input and output via I2S and stereo output via S/PDIF.  Build options are provided to enable/disable 
-input and output functionality.
-
-Known Issues
+  Known Issues
 ............
 
 See README in sw_usb_audio for general issues.
 
--  CODEC (CS4270) auto-mute/soft-ramp feature can cause volume ramp at start of playback.  These features cannot be disabled on the reference board since CODEC is used in Hardware Mode (i.e. not configured using I2C)
+- CODEC (CS4270) auto-mute/soft-ramp feature can cause volume ramp at start of playback.  These features cannot be disabled on the reference board since CODEC is used in Hardware Mode (i.e. not configured using I2C)
 
 - No XMOS Link for XScope available on the board
 

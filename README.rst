@@ -77,14 +77,34 @@ Note, not all features may be supported at all sample frequencies, chips etc.  S
 Support Status
 ==============
 
-The following table descibes key features/build options that have been tested (and are therefore supported) in this release.    Other features may not operate as expected or may even fail the build process and are to be used only at the risk of the developer.  In addition to this table please see "Known Issues".
+The following tables descibe key features/build options that have been tested (and are therefore supported) with this release.
+
+The contrainsts table lists other features that may not operate as expected or may even fail the build process and are to be used only at the risk of the developer.  
+
+In addition to these tables please see "Known Issues".
+
+Constraints
+-----------
+
++----------------------+--------------------------------------+---------------------------------------------------------+
+|    Option            |     Description                      | Status        | Notes                                   | 
++======================+======================================+===============+=========================================+
+| ADAT_RX              | ADAT input                           | Not supported | Must be set to 0                        |
++----------------------+--------------------------------------+---------------+-----------------------------------------+
+| ADAT_TX              | ADAT output                          | Not Supported | Must be set to 0                        |                            
++----------------------+--------------------------------------+---------------+-----------------------------------------+
+| MIXER                | Enable mixer                         | Not supported | Must be set to 0                        |
++----------------------+--------------------------------------+---------------+-----------------------------------------+
+| SPDIF_RX             | S/DIF input                          | Not supported | Must be set to 0                        |
++----------------------+--------------------------------------+---------------+-----------------------------------------+
+
+Supported Options
+-----------------
 
 +----------------------+--------------------------------------+---------------------------------------------------------+----------------------------+
-|    Option            |     Description                      | Status        | Notes                                   | Example Binaries            |
+|    Option            |     Description                      | Status        | Notes                                   | Example Binaries           |
 +======================+======================================+===============+=========================================+============================+
 | SPDIF                | S/PDIF output                        | Supported     |                                         | 2xoxs, 2ioxs, 1ioxs, 1xoxs |
-+----------------------+--------------------------------------+---------------+-----------------------------------------+----------------------------+
-| SPDIF_RX             | S/DIF input                          | Not supported |                                         |                            |
 +----------------------+--------------------------------------+---------------+-----------------------------------------+----------------------------+
 | NUM_USB_CHANS_IN     | Number of audio channels to host     | Supported     | Up to 4 channels                        | 2xoxs, 2ioxs, 1ioxs, 1xoxs |                                       
 +----------------------+--------------------------------------+---------------+-----------------------------------------+----------------------------+
@@ -94,17 +114,13 @@ The following table descibes key features/build options that have been tested (a
 +----------------------+--------------------------------------+---------------+--------------- -------------------------+----------------------------+
 | I2S_CHANS_ADC        | Number of I2S channels from ADC(s)   | Supported     | Up to 4 channels                        | 2ioxs, 2ixxx               |
 +----------------------+--------------------------------------+---------------+-----------------------------------------+----------------------------+
-| DSD_CHANS_DAC        | Enable DSD output                    | Supported     | 0 or 2                                  | 2xoxxd, 2xoxsd, 2ioxsd     |
+| DSD_CHANS_DAC        | Enable DSD output (DoP and Native)   | Supported     | 0 or 2                                  | 2xoxxd, 2xoxsd, 2ioxsd     |
 +----------------------+--------------------------------------+---------------+-----------------------------------------+----------------------------+
-| DFU                  | In field firmware upgrade            | Supported     | Thesycon DFU app or example OSX app     | all                        |
+| DFU                  | In field firmware upgrade            | Supported     | Thesycon DFU app or example OSX app     | All                        |
 +----------------------+--------------------------------------+---------------+-----------------------------------------+----------------------------+
 | MIDI                 | MIDI input/output                    | Supported     |                                         | 2iomx                      |
 +----------------------+--------------------------------------+---------------+-----------------------------------------+----------------------------+
-| ADAT_RX              | ADAT input                           | Not supported |                                         |                            |
-+----------------------+--------------------------------------+---------------+-----------------------------------------+----------------------------+
-| ADAT_TX              | ADAT output                          | Not Supported |                                         |                            |
-+----------------------+--------------------------------------+---------------+-----------------------------------------+----------------------------+
-| MIXER                | Enable mixer                         | Not supported |                                         |                            |
+| MAX_FREQ             | Maximum Sample Rate                  | Supported     | 192kHz                                  | All                        |
 +----------------------+--------------------------------------+---------------+-----------------------------------------+----------------------------+
 
 Known Issues
@@ -112,20 +128,19 @@ Known Issues
 
 General known issues with this release are listed below.  For board/application specific known issues please see README in relevant app directory.
 
-- When in DSD mode with S/PDIF output enabled DSD samples are transmitted over S/PDIF, this may or may not be desired
+- (#14762) When in DSD mode with S/PDIF output enabled DSD samples are transmitted over S/PDIF, this may or may not be desired
 
-- MIDI loop-back testing indicates an issue with events being dropped under heavy MIDI SysEx traffic when used with Thesycon drivers post 1.61 
+- (#14224) MIDI loop-back testing indicates an issue with events being dropped under heavy MIDI SysEx traffic when used with Thesycon drivers post 1.61 
 
-- I2S input is completely disabled when DSD output is active - the input stream to the host will contain 0 samples
+- (#14173) I2S input is completely disabled when DSD output is active - the input stream to the host will contain 0 samples
 
-- It has been reported that their may be some issues if the design modified to run at a sample rate of 8kHz
+- (#14780) It has been reported that their may be some issues if the design modified to run at a sample rate of 8kHz
 
-- 1024x Sample Rate master clocks are currently not supported (e.g. 49.152Mhz for Sample Rates below 96kHz)
+- (#13893) 1024x Sample Rate master clocks are currently not supported (e.g. 49.152Mhz for Sample Rates below 96kHz)
 
 -  Windows XP volume control very sensitive.  The Audio 1.0 driver built into Windows XP (usbaudio.sys) does not properly support master volume AND channel volume controls, leading to a very sensitive control.  Descriptors can be easily modified to disable master volume control if required (one byte - bmaControls(0) in Feature Unit descriptors)
 
 -  88.2kHz and 176.4kHz sample frequencies are not exposed in Windows control panels.  This is due to known OS restrictions.
-
 
 
 Host System Requirements
@@ -133,7 +148,9 @@ Host System Requirements
 
 - Mac OSX version 10.6 or later
 
-- Windows XP, Vista, 7 or 8, with Thesycon Audio Class 2.0 driver for Windows (contact XMOS for details) or built-in USB Audio Class 1.0 driver.
+- Windows XP, Vista, 7 or 8, with Thesycon Audio Class 2.0 driver for Windows (Tested against version 2.15). Please contact XMOS for details.
+ 
+- Windows XP, Vista, 7 or 8 with built-in USB Audio Class 1.0 driver.
 
 In Field Firmware Upgrade
 =========================
