@@ -1,7 +1,6 @@
 XMOS XS1-U8 USB Audio
 =====================
 
-:Latest release: 6.0.0alpha10
 :Maintainer: Ross Owen
 :scope: Example
 :description: USB Audio application for XP-SKC-SU1 and XA-SK-AUDIO (1v1)
