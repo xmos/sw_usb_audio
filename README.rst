@@ -5,16 +5,15 @@ XMOS USB Audio 2.0 Reference Design README
 :Maintainer: Ross Owen
 :Description: USB Audio Applications
 
+Please note, Beta releases may not accurately reflect the final release and documentation may not be complete. They are also made available with limited testing - please see Support Status.
 
 Welcome to version 6 of the XMOS USB Audio software framework.  
 
-Please note, beta releases are made without warranty with limited testing.  Beta releases may not accurately reflect the final release. 
-
-The main feature of version over previous versions of the XMOS USB Audio software framework and associated applications is the added support for the latest U series of devices now available from XMOS.  This release supports the previous L devices, however, there is no need to update to this version unless a specific issues is solved by this release.  
+The main feature of version 6 over previous versions of the XMOS USB Audio software framework and associated applications is the added support for the latest U series of devices now available from XMOS.  This release supports the previous L devices, however, there is no need to update to this version unless specific issues is solved by this release.  
 
 Please see CHANGELOG.rst for detailed change listing.
 
-For full software documentation please see the USB Audio Software Design Guide document available from xmos.com.
+For full software documentation please see the USB Audio Software Design Guide document available from www.xmos.com.
 
 This release is built and tested using version 12.2 of the XMOS tool set.  Build or functionality issues could be experienced with any other version.
 
@@ -49,8 +48,7 @@ app_usb_aud_l1 builds a MIDI and a S/PDIF configuration.  See the USB Audio Soft
 Key Framework Features
 ======================
 
-Key features of the various applications in this repository are as follow.  Please refer to the application README for application 
-specific feature set.
+Key features of the various applications in this repository are as follow.  Please refer to the application README for application specific feature set.
 
 - USB Audio Class 1.0/2.0 Compliant 
 
@@ -62,11 +60,11 @@ specific feature set.
 
 - Field firmware upgrade compliant to the USB Device Firmware Upgrade (DFU) Class Specification
 
-- S/PDIF Output
+- S/PDIF output
 
-- S/PDIF Input
+- S/PDIF input
 
-- ADAT Input
+- ADAT input
 
 - MIDI input/output (Compliant to USB Class Specification for MIDI devices)
 
@@ -74,28 +72,73 @@ specific feature set.
 
 - Mixer with flexible routing
 
-Note, not all features may be supported at all sample frequencies, chips etc.
+Note, not all features may be supported at all sample frequencies, chips etc.  Some features also require specific host driver support.
+
+Support Status
+==============
+
+The following table descibes key features/build options that have been tested (and are therefore supported) in this release.    Other features may not operate as expected or may even fail the build process and are to be used only at the risk of the developer.  In addition to this table please see "Known Issues".
+
++----------------------+--------------------------------------+---------------------------------------------------------+----------------------------+
+|    Option            |     Description                      | Status        | Notes                                   | Example Binares            |
++======================+======================================+===============+=========================================+============================+
+| SPDIF                | S/PDIF output                        | Supported     |                                         | 2xoxs, 2ioxs, 1ioxs, 1xoxs |
++----------------------+--------------------------------------+---------------+-----------------------------------------+----------------------------+
+| SPDIF_RX             | S/DIF input                          | Not supported |                                         |                            |
++----------------------+--------------------------------------+---------------+-----------------------------------------+----------------------------+
+| NUM_USB_CHANS_IN     | Number of audio channels to host     | Supported     | Up to 4 channels                        | 2xoxs, 2ioxs, 1ioxs, 1xoxs |                                       
++----------------------+--------------------------------------+---------------+-----------------------------------------+----------------------------+
+| NUM_USB_CHANS_OUT    | Number of audio channels from host   | Supported     | Up to 4 channels                        | 2ioxs, 2ixxx, 1ioxs        |
++----------------------+--------------------------------------+---------------+-----------------------------------------+----------------------------+
+| I2S_CHANS_DAC        | Number of I2S channels to DAC(s)     | Supported     | Up to 4 channels                        | 2xoxs, 2ioxs, 1ioxs, 2xoxx |
++----------------------+--------------------------------------+---------------+--------------- -------------------------+----------------------------+
+| I2S_CHANS_ADC        | Number of I2S channels from ADC(s)   | Supported     | Up to 4 channels                        | 2ioxs, 2ixxx               |
++----------------------+--------------------------------------+---------------+-----------------------------------------+----------------------------+
+| DSD_CHANS_DAC        | Enable DSD output                    | Supported     | 0 or 2                                  | 2xoxxd, 2xoxsd, 2ioxsd     |
++----------------------+--------------------------------------+---------------+-----------------------------------------+----------------------------+
+| DFU                  | In field firmware upgrade            | Supported     | Thesycon DFU app or example OSX app     | all                        |
++----------------------+--------------------------------------+---------------+-----------------------------------------+----------------------------+
+| MIDI                 | MIDI input/output                    | Supported     |                                         | 2iomx                      |
++----------------------+--------------------------------------+---------------+-----------------------------------------+----------------------------+
+| ADAT_RX              | ADAT input                           | Not supported |                                         |                            |
++----------------------+--------------------------------------+---------------+-----------------------------------------+----------------------------+
+| ADAT_TX              | ADAT output                          | Not Supported |                                         |                            |
++----------------------+--------------------------------------+---------------+-----------------------------------------+----------------------------+
+| MIXER                | Enable mixer                         | Not supported |                                         |                            |
++----------------------+--------------------------------------+---------------+-----------------------------------------+----------------------------+
 
 Known Issues
 ============
 
-General known issues are as follows.  For board/application specific known issues please see README in relevant app directory.
+General known issues with this release are listed below.  For board/application specific known issues please see README in relevant app directory.
+
+- When in DSD mode with S/PDIF output enabled DSD samples are transmitted over S/PDIF, this may or may not be desired
+
+- MIDI loop-back testing indicates an issue with events being dropped under heavy MIDI SysEx traffic when used with Thesycon drivers post 1.61 
+
+- I2S input is completely disabled when DSD output is active - the input stream to the host will contain 0 samples
+
+- It has been reported that their may be some issues if the design modified to run at a sample rate of 8kHz
+
+- 1024x Sample Rate master clocks are currently not supported (e.g. 49.152Mhz for Sample Rates below 96kHz)
 
 -  Windows XP volume control very sensitive.  The Audio 1.0 driver built into Windows XP (usbaudio.sys) does not properly support master volume AND channel volume controls, leading to a very sensitive control.  Descriptors can be easily modified to disable master volume control if required (one byte - bmaControls(0) in Feature Unit descriptors)
 
 -  88.2kHz and 176.4kHz sample frequencies are not exposed in Windows control panels.  This is due to known OS restrictions.
+
+
 
 Host System Requirements
 ========================
 
 - Mac OSX version 10.6 or later
 
-- Windows XP, Vista,  7 or 8, with Thesycon Audio Class 2.0 driver for Windows (contact XMOS for details)
+- Windows XP, Vista, 7 or 8, with Thesycon Audio Class 2.0 driver for Windows (contact XMOS for details) or built-in USB Audio Class 1.0 driver.
 
 In Field Firmware Upgrade
 =========================
 
-The firmware provides a DFU interface compliant to the USB DFU Device Class.  An example host application is provided for OSX.  See README in example application for usage.  The Thesycon USB Audio Class 2.0 driver for Windows provides DFU functionality and includes an example application.
+The firmware provides a Device Firmware Upgrade (DFU) interface compliant to the USB DFU Device Class.  An example host application is provided for OSX.  See README in example application for usage.  The Thesycon USB Audio Class 2.0 driver for Windows provides DFU functionality and includes an example application.
 
 Support
 =======
