@@ -77,9 +77,9 @@ Note, not all features may be supported at all sample frequencies, chips etc.  S
 Support Status
 ==============
 
-The following tables descibe key features/build options that have been tested (and are therefore supported) with this release.
+The following tables describe key features/build options that have been tested (and are therefore supported) with this release.
 
-The contraints table lists other features that may not operate as expected or may even fail the build process and are to be used only at the risk of the developer.  
+The constraints table lists other features that may not operate as expected or may even fail the build process and are to be used only at the risk of the developer.  
 
 In addition to these tables please see "Known Issues".
 
