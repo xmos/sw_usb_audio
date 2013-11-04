@@ -14,6 +14,7 @@ Firmware
     - ADDED:      Added Native DSD (Driver support required)
     - ADDED:      Added optional channel for audio buffing control, this can reduce power consumption
     - ADDED:      The device can run in Audio Class 2.0 when connected to a full-speed hub using the FULL_SPEED_AUDIO_2 define
+    - ADDED:      MIN_FREQ configuration define for setting minimum sample rate of device (previously assumed 44.1)
     - CHANGE:     Endpoint0 code migrated to use new module_usb_device shared module 
     - CHANGE:     Device reboot code (for DFU) made more generic for multi-tile systems 
     - CHANGE:     DFU code now erases all upgrade images found, rather than just the first one 
