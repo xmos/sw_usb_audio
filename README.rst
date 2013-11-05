@@ -13,7 +13,7 @@ The main feature of version 6 over previous versions of the XMOS USB Audio softw
 
 Please see CHANGELOG.rst for detailed change listing.
 
-For full software documentation please see the USB Audio Software Design Guide document available from www.xmos.com.
+For full software documentation is not yet available for this releaseplease see the USB Audio Software Design Guide document available from www.xmos.com.
 
 This release is built and tested using version 12.2 of the XMOS tool set.  Build or functionality issues could be experienced with any other version.
 
@@ -54,7 +54,7 @@ Key features of the various applications in this repository are as follow.  Plea
 
 - Fully Asynchronous operation
 
-- Support for the following sample frequencies: 44.1, 48, 88.2, 96, 176.4, 192kHz
+- Support for the following sample frequencies: 44.1, 48, 88.2, 96, 176.4, 192, 352.8, 384kHz
 
 - Input/output master/channel volume/mute controls supported
 
@@ -68,11 +68,13 @@ Key features of the various applications in this repository are as follow.  Plea
 
 - MIDI input/output (Compliant to USB Class Specification for MIDI devices)
 
-- DSD output (Native and DoP mode)
+- DSD output (Native and DoP mode) at DSD64 and DSD128 rates
 
 - Mixer with flexible routing
 
-Note, not all features may be supported at all sample frequencies, chips etc.  Some features also require specific host driver support.
+- Simple playback controls via Human Interface Device (HID)
+
+Note, not all features may be supported at all sample frequencies, simultaneously or on all devices.  Some features also require specific host driver support.
 
 Support Status
 ==============
@@ -120,7 +122,7 @@ Supported Options
 +----------------------+--------------------------------------+---------------+-----------------------------------------+----------------------------+--------------+
 | MIDI                 | MIDI input/output                    | Supported     |                                         | 2iomx                      | 14224        |
 +----------------------+--------------------------------------+---------------+-----------------------------------------+----------------------------+--------------+
-| MAX_FREQ             | Maximum Sample Rate                  | Supported     | 192kHz                                  | All                        |              |
+| MAX_FREQ             | Maximum Sample Rate                  | Supported     | 384kHz                                  | All                        |              |
 +----------------------+--------------------------------------+---------------+-----------------------------------------+----------------------------+--------------+
 
 Known Issues
@@ -134,13 +136,17 @@ General known issues with this release are listed below.  For board/application 
 
 - (#14173) I2S input is completely disabled when DSD output is active - the input stream to the host will contain 0 samples
 
-- (#14780) It has been reported that their may be some issues if the design modified to run at a sample rate of 8kHz
+- (#14780) Modifying the design to operate at a sample rate of 8kHz may expose a corner case relating to 0 length packet handling
 
 - (#13893) 1024x Sample Rate master clocks are currently not supported (e.g. 49.152Mhz for Sample Rates below 96kHz)
 
+- (#14883) Before DoP mode is detected a small number of DSD samples will be played out as PCM via I2S
+
+- (#14887) Volume control settings currently affect samples in both DSD and PCM modes. This results in invalid DSD output if volume control not set to 0.
+
 -  Windows XP volume control very sensitive.  The Audio 1.0 driver built into Windows XP (usbaudio.sys) does not properly support master volume AND channel volume controls, leading to a very sensitive control.  Descriptors can be easily modified to disable master volume control if required (one byte - bmaControls(0) in Feature Unit descriptors)
 
--  88.2kHz and 176.4kHz sample frequencies are not exposed in Windows control panels.  This is due to known OS restrictions.
+-  88.2kHz and 176.4kHz sample frequencies are not exposed in Windows control panels.  These are known OS restrictions.
 
 
 Host System Requirements
