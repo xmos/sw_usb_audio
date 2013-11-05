@@ -1,6 +1,9 @@
 */.build_*/*
 */.build*/*
 */bin/*
+*.bin
+*.zip
+*.log
 *.o
 *.xe
 *.vcd
