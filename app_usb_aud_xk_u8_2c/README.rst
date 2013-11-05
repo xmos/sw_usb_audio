@@ -15,13 +15,13 @@ The firmware provides a high-speed USB Audio device designed to be compliant to 
 Key Features
 ............
 
-The app_usb_aud_xk_u8_2c application is designed to run on the XMOS Mult-Function Audio (MFA) Board (XR-USB-AUDIO-U8-2C) version 1.1.  This should be used in conjunction with a valid USB Slice including valid USB Device functionality (e.g. a USB B connector).  The application uses the XMOS USB Audio framework to implement a USB Audio device with the following key features:
+The app_usb_aud_xk_u8_2c application is designed to run on the XMOS Multi-Function Audio (MFA) Board (XR-USB-AUDIO-U8-2C) version 1.1.  This should be used in conjunction with a valid USB Slice including valid USB Device functionality (e.g. a USB B connector).  The application uses the XMOS USB Audio framework to implement a USB Audio device with the following key features:
 
 - USB Audio Class 2.0 Compliant
 
 - Fully Asynchronous operation
 
-- 2 channels analogue input (Via I2S to 1 x stereo ADC)
+- 2 channels analogue input (Via I2S from 1 x stereo ADC)
 
 - 2 channels analogue output (Via I2S to 1 x stereo DAC), configured via I2C
 
@@ -37,7 +37,9 @@ The app_usb_aud_xk_u8_2c application is designed to run on the XMOS Mult-Functio
 
 - One two-position switch for software use
 
-Note, DSD required driver and/or player support.
+- Two LED's for software use
+
+Note, DSD requires driver and/or player support.
 
 Known Issues
 ............
