@@ -37,8 +37,9 @@
         <version>1.0.1beta0</version>
     </dependency>
     <dependency repo = "sc_i2c">
-        <githash>d266213a4d5c4956f3d5980ba42611e24d129a39</githash>
+        <githash>d8e7a39aa0671340d33cf7b40610e15b9bc7a8f0</githash>
         <uri>git://github.com/xcore/sc_i2c</uri>
+        <version>2.2.1rc0</version>
     </dependency>
     <dependency repo = "sc_usb_device">
         <githash>fcd414f6be9f9d4f2977a937ff5580535e7eef0c</githash>
@@ -109,6 +110,7 @@
     <release parenthash = "924c6ae55fdbb181fdc2ca3c8734c20773e5673b" version = "6.2.0beta7" githash = "b10e1a6fe417fda8c810e1a16201fd17e98cea91"></release>
     <release parenthash = "1d0954793ea542558da2997b2d5e98201f67cf84" version = "6.2.0beta8" githash = "23484fcf1fc05146844476fad5f6b1ddaed986ad"></release>
     <release parenthash = "23ffcdf0e22ab2bcac8342681c32c21c836f72cd" version = "6.2.0beta9" githash = "521eada17fa15868c5c2d2831e40da758eead62b"></release>
+    <release parenthash = "74056e00e01a6c4e56ba401660a8a6dd7a63b4eb" version = "6.2.0beta10"></release>
     <subpartnumber>XM-002775-SM</subpartnumber>
     <vendor>XMOS</vendor>
     <version_defines></version_defines>

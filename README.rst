@@ -1,9 +1,10 @@
 XMOS USB Audio 2.0 Reference Design README
 ..........................................
 
-:Latest release: 6.2.0beta9
+:Latest release: 6.2.0beta10
 :Maintainer: Ross Owen
 :Description: USB Audio Applications
+
 
 Please note, Beta releases may not accurately reflect the final release and documentation may not be complete. These releases are also made available with limited testing - please see Support Status.
 
@@ -147,7 +148,6 @@ General known issues with this release are listed below.  For board/application 
 -  Windows XP volume control very sensitive.  The Audio 1.0 driver built into Windows XP (usbaudio.sys) does not properly support master volume AND channel volume controls, leading to a very sensitive control.  Descriptors can be easily modified to disable master volume control if required (one byte - bmaControls(0) in Feature Unit descriptors)
 
 -  88.2kHz and 176.4kHz sample frequencies are not exposed in Windows control panels.  These are known OS restrictions.
-
 
 Host System Requirements
 ========================
