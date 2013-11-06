@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <xpd>
     <components>
-        <component description = "USB Audio for XK-USB-AUDIO-U8-2C board" type = "demoCode" scope = "Early Development" path = "app_usb_aud_xk_u8_2c" local = "false" id = "app_usb_aud_xk_u8_2c" name = "XK-USB-AUDIO-U8-2C">
+        <component description = "USB Audio for XK-USB-AUDIO-U8-2C board" type = "demoCode" scope = "General Use" path = "app_usb_aud_xk_u8_2c" local = "false" id = "app_usb_aud_xk_u8_2c" name = "XMOS XK-USB-AUDIO-U8-2C USB Audio (app_usb_aud_xk_u8_2c)">
             <board>XK-USB-AUDIO-U8-2C</board>
             <componentDependency>module_dfu</componentDependency>
             <componentDependency>module_usb_shared</componentDependency>
@@ -12,13 +12,15 @@
             <componentDependency>module_xud</componentDependency>
             <componentDependency>module_usb_audio</componentDependency>
             <componentDependency>module_spdif_tx</componentDependency>
-            <keyword>usb</keyword>
-            <keyword>audio</keyword>
+            <keyword>USB</keyword>
+            <keyword>Audio</keyword>
+            <keyword>MFA</keyword>
         </component>
     </components>
     <dependency repo = "sc_usb">
-        <githash>4c5fde94f374ed804950d1c540dc442e869b12dd</githash>
+        <githash>2fb1d2a5376129feb6d9d09f45a74db8603c742b</githash>
         <uri>git://git/apps/sc_usb</uri>
+        <version>1.0.1beta0</version>
     </dependency>
     <dependency repo = "sc_spdif">
         <githash>f5a6fa4cc03765797ba9eb39796077458e974196</githash>
@@ -26,7 +28,7 @@
         <version>1.3.0rc3</version>
     </dependency>
     <dependency repo = "sc_usb_audio">
-        <githash>0297eb1f5a4d3816b45e91e4b66599027ab9768f</githash>
+        <githash>d52b8ee7898e7e7adca7ef8d94e5a9cbc3c184fb</githash>
         <uri>git://git/apps/sc_usb_audio</uri>
     </dependency>
     <dependency repo = "sc_xud">

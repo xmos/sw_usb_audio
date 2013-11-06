@@ -1,11 +1,11 @@
 XMOS XK-USB-AUDIO-U8-2C USB Audio (app_usb_aud_xk_u8_2c)
 ========================================================
 
-:Maintainer: Ross Owen
-:Scope: General Use
-:Description: USB Audio for XK-USB-AUDIO-U8-2C board
-:Keywords: USB, Audio, MFA
-:Boards: XK-USB-AUDIO-U8-2C
+:maintainer: Ross Owen
+:scope: General Use
+:description: USB Audio for XK-USB-AUDIO-U8-2C board
+:keywords: USB, Audio, MFA
+:boards: XK-USB-AUDIO-U8-2C
 
 Overview
 ........
