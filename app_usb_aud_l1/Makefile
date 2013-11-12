@@ -7,13 +7,12 @@ APP_NAME =
 
 # The flags passed to xcc when building the application
 BUILD_FLAGS     = -DAUDIO_2 -DFLASH_MAX_UPGRADE_SIZE=64*1024 -fcomment-asm -Xmapper --map -Xmapper MAPFILE -Wall -O3 -report -lflash -fsubword-select -save-temps -g -DUSB_CORE=0 -DARCH_L -D TEST_MODE_SUPPORT -DXUD_SERIES_SUPPORT=2
-#-fschedule
 
 #Test build configs (Note these make use of the defaults in customdefines.h)
 
 # Audio Class 2, Input, Output, No MIDI, No SPDIF
-XCC_FLAGS_2ioxx = $(BUILD_FLAGS) 
-INCLUDE_ONLY_IN_2ioxx = -DSPDIF=0 
+XCC_FLAGS_2ioxx = $(BUILD_FLAGS) -DSPDIF=0
+INCLUDE_ONLY_IN_2ioxx = 
 
 # Audio Class 2, Input, Output, No MIDI, SPDIF
 XCC_FLAGS_2ioxs = $(BUILD_FLAGS) 
