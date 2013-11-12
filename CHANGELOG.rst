@@ -8,6 +8,7 @@ Firmware
 ========
 
 6.3.0 (alpha):
+    - ADDED:      Application for XP-SKC-U16 board with XA-SK-AUDIO slice
     - CHANGE:     Moved to XMOS toolchain version 13
 
 6.2.0:
