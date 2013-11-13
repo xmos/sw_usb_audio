@@ -47,7 +47,7 @@ xsi:schemaLocation="http://www.xmos.com http://www.xmos.com">
         </Boot>
             <Tile Number="0" Reference="tile[1]">
                 <Port Location="XS1_PORT_1A"  Name="PORT_I2S_BCLK"/>
-                <Port Location="XS1_PORT_1B"  Name="PORT_SPDIF_OUT"/>
+                <Port Location="XS1_PORT_1M"  Name="PORT_SPDIF_OUT"/>
                 <Port Location="XS1_PORT_1C"  Name="PORT_I2S_DAC1"/>
                 <Port Location="XS1_PORT_1D"  Name="PORT_I2S_DAC0"/>
                 <Port Location="XS1_PORT_1E"  Name="PORT_MCLK_IN"/>
