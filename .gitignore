@@ -1,3 +1,9 @@
+__loader/after*
+__loader/flash*
+bin.txt
+_build
+toplevel_doc
+log.txt
 */.build_*/*
 */.build*/*
 */bin/*

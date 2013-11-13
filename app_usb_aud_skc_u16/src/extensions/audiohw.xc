@@ -7,8 +7,8 @@
 #include "p_gpio.h"
 #include "p_gpio_defines.h"
 
-on stdcore[0] : out port p_gpio = XS1_PORT_4C;
-on stdcore[0] : port p_i2c      = XS1_PORT_4D;
+on stdcore[1] : out port p_gpio = XS1_PORT_32A;
+on stdcore[1] : port p_i2c      = XS1_PORT_4E;
 
 //:codec_init
 void AudioHwInit(chanend ?c_codec) 
@@ -23,7 +23,7 @@ void AudioHwInit(chanend ?c_codec)
 //:
 
 
-/* S1 Board uses I2C configured CODEC */
+/* Audio slice uses I2C configured CODECs*/
 #define CODEC1_I2C_DEVICE_ADDR       (0x90)
 #define CODEC2_I2C_DEVICE_ADDR       (0x92)
 
@@ -85,16 +85,6 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
     /* Set power down bit in the CODEC over I2C */
     IIC_REGWRITE(CODEC_DEV_ID_ADDR, 0x01);
 
-    /* Read CODEC device ID to make sure everything is OK */
-    //IIC_REGREAD(CODEC_DEV_ID_ADDR, data);
-    
-    //codec_dev_id = data[0];
-    //if (((codec_dev_id & 0xF0) >> 4) != 0xC) {
-        //printstr("Unexpected CODEC Device ID, expected 0xC, got ");
-        //printhex(codec_dev_id);
-        //assert(0); // Throw an error
-    //}
-    
     /* Now set all registers as we want them :    
     Mode Control Reg: */
 #ifndef CODEC_MASTER
