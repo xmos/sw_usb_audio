@@ -1,5 +1,5 @@
 XMOS XS1-U16 USB Audio
-=====================
+======================
 
 :maintainer: Ross Owen
 :scope: Example
