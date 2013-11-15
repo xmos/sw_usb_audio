@@ -13,7 +13,6 @@ log.txt
 *.o
 *.xe
 *.vcd
-*.s
 *.xi
 *.i
 *.a
