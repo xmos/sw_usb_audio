@@ -10,12 +10,18 @@ XMOS XS1-U16 USB Audio
 Overview
 ........
 
-The firmware provides a high-speed USB Audio device designed to be compliant to version 2.0 of the USB Audio Class Specification.
+The firmware provides a high-speed USB Audio device designed to be compliant to version 2.0 of the USB Audio Class Specification based on the XMOS U16 device.
+
+Please note, for correct operation the following jumper settings are required: 
+
+- J14 (DIA/ALT) should be set to ALT
+
+- J15 (D12 XOVER) should be set to ON 
 
 Key Features
 ............
 
-The app_usb_aud_skc_su1 application is designed to run on the U16 Slice Kit Core Board (XP-SKC-U16) in conjunction with an Audio Slice (XA-SK-AUDIO).  It uses the XMOS USB Audio framework to implement a USB Audio device with the following key features:
+The app_usb_aud_skc_u16 application is designed to run on the U16 Slice Kit Core Board (XP-SKC-U16) in conjunction with an Audio Slice (XA-SK-AUDIO).  It uses the XMOS USB Audio framework to implement a USB Audio device with the following key features:
 
 - USB Audio Class 2.0 Compliant
 
