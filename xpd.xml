@@ -3,15 +3,17 @@
     <components>
         <component description = "USB Audio for XK-USB-AUDIO-U8-2C board" type = "demoCode" scope = "General Use" path = "app_usb_aud_xk_u8_2c" local = "false" id = "app_usb_aud_xk_u8_2c" name = "XMOS XK-USB-AUDIO-U8-2C USB Audio (app_usb_aud_xk_u8_2c)">
             <board>XK-USB-AUDIO-U8-2C</board>
-            <componentDependency>module_dfu</componentDependency>
-            <componentDependency>module_usb_shared</componentDependency>
-            <componentDependency>module_spdif_rx</componentDependency>
-            <componentDependency>module_i2c_simple</componentDependency>
-            <componentDependency>module_usb_device</componentDependency>
-            <componentDependency>module_usb_midi</componentDependency>
-            <componentDependency>module_xud</componentDependency>
-            <componentDependency>module_usb_audio</componentDependency>
-            <componentDependency>module_spdif_tx</componentDependency>
+            <componentDependency repo = "git://github.com/22/xcore/sc_usb_audio.git">module_dfu</componentDependency>
+            <componentDependency repo = "git://git/apps/sc_usb_device" version = "1.0.1">module_usb_device</componentDependency>
+            <componentDependency repo = "git://github.com/xcore/sc_i2c" version = "2.2.1">module_i2c_simple</componentDependency>
+            <componentDependency repo = "git://github.com/22/xcore/sc_usb_audio.git">module_usb_midi</componentDependency>
+            <componentDependency repo = "git://github.com/22/xcore/sc_usb_audio.git">module_usb_audio</componentDependency>
+            <componentDependency repo = "git://github.com/xcore/sc_xud.git" version = "1.0.1">module_xud</componentDependency>
+            <componentDependency repo = "git://github.com/xcore/sc_xud.git" version = "1.0.1">module_xud</componentDependency>
+            <componentDependency repo = "git://github.com/xcore/sc_spdif" version = "1.3.0">module_spdif_tx</componentDependency>
+            <componentDependency repo = "git://git/apps/sc_usb" version = "1.0.1">module_usb_shared</componentDependency>
+            <componentDependency repo = "git://github.com/xcore/sc_spdif" version = "1.3.0">module_spdif_rx</componentDependency>
+            <componentDependency repo = "git://git/apps/sc_usb" version = "1.0.1">module_usb_shared</componentDependency>
             <keyword>USB</keyword>
             <keyword>Audio</keyword>
             <keyword>MFA</keyword>
@@ -23,18 +25,17 @@
         <version>1.0.1beta0</version>
     </dependency>
     <dependency repo = "sc_spdif">
-        <githash>f5a6fa4cc03765797ba9eb39796077458e974196</githash>
+        <githash>7042305acdb0df5351cf31e65ead4b35b07d6c5b</githash>
         <uri>git://github.com/xcore/sc_spdif</uri>
-        <version>1.3.0rc3</version>
+        <version>1.3.0rc4</version>
     </dependency>
     <dependency repo = "sc_usb_audio">
-        <githash>d52b8ee7898e7e7adca7ef8d94e5a9cbc3c184fb</githash>
+        <githash>d5f5bf21891e08f849ba4d6e66facf895e2677da</githash>
         <uri>git://git/apps/sc_usb_audio</uri>
     </dependency>
     <dependency repo = "sc_xud">
-        <githash>1bd7ecf3c600656c08a5edb2f16d8cc60d1ad1de</githash>
+        <githash>29b05a59cabef784210d8b34add8879f6e88215f</githash>
         <uri>git://git/apps/sc_xud</uri>
-        <version>1.0.1beta0</version>
     </dependency>
     <dependency repo = "sc_i2c">
         <githash>d8e7a39aa0671340d33cf7b40610e15b9bc7a8f0</githash>
@@ -42,7 +43,7 @@
         <version>2.2.1rc0</version>
     </dependency>
     <dependency repo = "sc_usb_device">
-        <githash>fcd414f6be9f9d4f2977a937ff5580535e7eef0c</githash>
+        <githash>a17689a08753c0899016119cc29cc95124b34819</githash>
         <uri>git://git/apps/sc_usb_device</uri>
     </dependency>
     <description>USB Audio Applications</description>
@@ -110,7 +111,7 @@
     <release parenthash = "924c6ae55fdbb181fdc2ca3c8734c20773e5673b" version = "6.2.0beta7" githash = "b10e1a6fe417fda8c810e1a16201fd17e98cea91"></release>
     <release parenthash = "1d0954793ea542558da2997b2d5e98201f67cf84" version = "6.2.0beta8" githash = "23484fcf1fc05146844476fad5f6b1ddaed986ad"></release>
     <release parenthash = "23ffcdf0e22ab2bcac8342681c32c21c836f72cd" version = "6.2.0beta9" githash = "521eada17fa15868c5c2d2831e40da758eead62b"></release>
-    <release parenthash = "74056e00e01a6c4e56ba401660a8a6dd7a63b4eb" version = "6.2.0beta10"></release>
+    <release parenthash = "74056e00e01a6c4e56ba401660a8a6dd7a63b4eb" version = "6.2.0beta10" githash = "26612ebb43e6bd6ec774778d5ff0d6ede8af48c2"></release>
     <subpartnumber>XM-002775-SM</subpartnumber>
     <vendor>XMOS</vendor>
     <version_defines></version_defines>
