@@ -11,13 +11,13 @@ on stdcore[1] : out port p_gpio = XS1_PORT_32A;
 on stdcore[1] : port p_i2c      = XS1_PORT_4E;
 
 //:codec_init
-void AudioHwInit(chanend ?c_codec) 
+void AudioHwInit(chanend ?c_codec)
 {
     i2c_master_init(p_i2c);
 
     /* Enable SPDIF output (disables SPI flash) */
     p_gpio <: 1;
-    
+
     return;
 }
 //:
@@ -36,8 +36,8 @@ void AudioHwInit(chanend ?c_codec)
 #define CODEC_DACA_VOL_ADDR         0x07
 #define CODEC_DACB_VOL_ADDR         0x08
 
-#define IIC_REGWRITE_1(reg, val) {data[0] = val; i2c_master_write_reg(CODEC1_I2C_DEVICE_ADDR, reg, data, 1, p_i2c);} 
-#define IIC_REGWRITE_2(reg, val) {data[0] = val; i2c_master_write_reg(CODEC2_I2C_DEVICE_ADDR, reg, data, 1, p_i2c);} 
+#define IIC_REGWRITE_1(reg, val) {data[0] = val; i2c_master_write_reg(CODEC1_I2C_DEVICE_ADDR, reg, data, 1, p_i2c);}
+#define IIC_REGWRITE_2(reg, val) {data[0] = val; i2c_master_write_reg(CODEC2_I2C_DEVICE_ADDR, reg, data, 1, p_i2c);}
 
 /* Write to both CODECs */
 #define IIC_REGWRITE(reg, val) {IIC_REGWRITE_1(reg, val);IIC_REGWRITE_2(reg,val);}
@@ -56,21 +56,21 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
 
     /* See whats on the GP out port */
     tmp = p_gpio_peek();
-    
+
     /* Set CODEC in reset */
     tmp &= ~P_GPIO_COD_RST_N;
-    
+
     /* Set master clock select appropriately */
-    if ((samFreq % 22050) == 0) 
+    if ((samFreq % 22050) == 0)
     {
         tmp &= ~P_GPIO_MCLK_SEL;
     }
-    else //if((samFreq % 24000) == 0) 
+    else //if((samFreq % 24000) == 0)
     {
         tmp |= P_GPIO_MCLK_SEL;
     }
-    
-    /* Output to port */  
+
+    /* Output to port */
     p_gpio_out(tmp);
 
     /* Hold in reset for 2ms while waiting for MCLK to stabilise */
@@ -81,11 +81,11 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
     /* CODEC out of reset */
     tmp |= P_GPIO_COD_RST_N;
     p_gpio_out(tmp);
-    
+
     /* Set power down bit in the CODEC over I2C */
     IIC_REGWRITE(CODEC_DEV_ID_ADDR, 0x01);
 
-    /* Now set all registers as we want them :    
+    /* Now set all registers as we want them :
     Mode Control Reg: */
 #ifndef CODEC_MASTER
     /*
@@ -96,10 +96,10 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
     So, write 0x35. */
     IIC_REGWRITE(CODEC_MODE_CTRL_ADDR,    0x35);
 #else
-    
-    /* In master mode (i.e. Xcore is I2S slave) to avoid contention configure one CODEC as master one 
+
+    /* In master mode (i.e. Xcore is I2S slave) to avoid contention configure one CODEC as master one
      * the other as slave */
-    
+
     /*
     Set FM[1:0] as 11. This sets Slave mode.
     Set MCLK_FREQ[2:0] as 010. This sets MCLK to 512Fs in Single, 256Fs in Double and 128Fs in Quad Speed Modes.
@@ -115,12 +115,12 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
 
     {
         unsigned char val = 0b0101;
-   
+
         if(samFreq < 54000)
         {
             // | with 0..
         }
-        else if(samFreq < 108000) 
+        else if(samFreq < 108000)
         {
             val |= 0b00100000;
         }
@@ -132,7 +132,7 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
     }
 
 #endif
-    
+
     /* ADC & DAC Control Reg:
        Leave HPF for ADC inputs continuously running.
        Digital Loopback: OFF
@@ -140,18 +140,18 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
        ADC Digital Interface Format: I2S
        So, write 0x09. */
     IIC_REGWRITE(CODEC_ADC_DAC_CTRL_ADDR, 0x09);
-    
+
     /* Transition Control Reg:
        No De-emphasis. Don't invert any channels. Independent vol controls. Soft Ramp and Zero Cross enabled.*/
     IIC_REGWRITE(CODEC_TRAN_CTRL_ADDR,    0x60);
-    
+
     /* Mute Control Reg: Turn off AUTO_MUTE */
     IIC_REGWRITE(CODEC_MUTE_CTRL_ADDR,    0x00);
-   
+
     /* DAC Chan A Volume Reg:
        We don't require vol control so write 0x00 (0dB) */
     IIC_REGWRITE(CODEC_DACA_VOL_ADDR,     0x00);
-    
+
     /* DAC Chan B Volume Reg:
        We don't require vol control so write 0x00 (0dB)  */
     IIC_REGWRITE(CODEC_DACB_VOL_ADDR,     0x00);

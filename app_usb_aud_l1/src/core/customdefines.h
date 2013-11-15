@@ -1,4 +1,4 @@
-/** 
+/**
  * @file       customdefines.h
  * @brief      Defines relating to device configuration and customisation.
  *             For L1 USB Audio Reference Design
@@ -36,7 +36,7 @@
 #endif
 //:
 
-/* Defines relating to channel count and channel arrangement (Set to 0 for disable) */ 
+/* Defines relating to channel count and channel arrangement (Set to 0 for disable) */
 //:audio_defs
 /* Number of USB streaming channels - Default is 2 in 2 out */
 #ifndef NUM_USB_CHAN_IN
@@ -65,15 +65,15 @@
 
 /* Maximum frequency device runs at */
 #ifndef MAX_FREQ
-#define MAX_FREQ           (192000)       
+#define MAX_FREQ           (192000)
 #endif
 
 /* Index of SPDIF TX channel (duplicated DAC channels 1/2) */
 #define SPDIF_TX_INDEX     (0)
 
 /* Default frequency device reports as running at */
-/* Audio Class 1.0 friendly freq */       
-#define DEFAULT_FREQ       (48000)            
+/* Audio Class 1.0 friendly freq */
+#define DEFAULT_FREQ       (48000)
 //:
 /***** Defines relating to USB descriptors etc *****/
 //:usb_defs

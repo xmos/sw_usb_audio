@@ -26,7 +26,7 @@ void handle_switch_request(in port p_sw)
 
     asm("in %0, res[%1]":"=r"(curSwVal):"r"(p_sw));
     asm("setd res[%0], %1"::"r"(p_sw),"r"(curSwVal));
-    
+
     if((curSwVal & 0b1000) != SWITCH_VAL)
     {
         /* Reset U8 device */
@@ -36,10 +36,10 @@ void handle_switch_request(in port p_sw)
 }
 #endif
 
-#define PORT32A_PEEK(X) {asm volatile("peek %0, res[%1]":"=r"(X):"r"(XS1_PORT_32A));} 
+#define PORT32A_PEEK(X) {asm volatile("peek %0, res[%1]":"=r"(X):"r"(XS1_PORT_32A));}
 #define PORT32A_OUT(X)  {asm volatile("out res[%0], %1"::"r"(XS1_PORT_32A),"r"(X));}
 //:codec_init
-void AudioHwInit(chanend ?c_codec) 
+void AudioHwInit(chanend ?c_codec)
 {
     unsigned x;
     unsigned curSwVal;
@@ -48,7 +48,7 @@ void AudioHwInit(chanend ?c_codec)
     int count = 0;
 
     x = peek(p_gpo);
-    
+
     x |= (P_GPIO_5VA_EN | P_GPIO_SS_EN_CTRL);
 
     PORT32A_OUT(x);
@@ -60,14 +60,14 @@ void AudioHwInit(chanend ?c_codec)
         if((x & P_GPIO_5VA_EN) == P_GPIO_5VA_EN)
             break;
     }
-    
+
 #ifdef SW_INT_HANDLER
      /* Give some time for button debounce */
     t :> time;
     t when timerafter(time+10000000):> void;
 
     p_sw :> curSwVal;
-    
+
     asm("setc res[%0], %1"::"r"(p_sw),"r"(XS1_SETC_COND_NEQ));
     asm("setd res[%0], %1"::"r"(p_sw),"r"(curSwVal));
 
@@ -115,7 +115,7 @@ unsigned readReg(unsigned devAddr, unsigned reg)
     i2c_master_read_reg(devAddr, reg, data, 1, i2cPorts);
     return data[0];
 }
- 
+
 #define DAC_REGREAD(reg, val)  {i2c_master_read_reg(DAC_I2C_DEV_ADDR, reg, val, 1, i2cPorts);}
 
 //:codec_config
@@ -132,22 +132,22 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
     unsigned char data[] = {0, 0};
 
     PORT32A_PEEK(tmp);
-      
-    /* Put DAC and ADC into reset */  
+
+    /* Put DAC and ADC into reset */
     tmp &= (~P_GPIO_RST_DAC);
     tmp &= (~P_GPIO_RST_ADC);
-   
+
     /* Set master clock select appropriately */
-    if ((samFreq % 22050) == 0) 
+    if ((samFreq % 22050) == 0)
     {
         tmp &= ~P_GPIO_MCLK_SEL;
     }
-    else //if((samFreq % 24000) == 0) 
+    else //if((samFreq % 24000) == 0)
     {
         tmp |= P_GPIO_MCLK_SEL;
     }
-    
-    /* Output to port */  
+
+    /* Output to port */
     PORT32A_OUT(tmp);
 
     /* Hold in reset for 2ms while waiting for MCLK to stabilise */
@@ -160,7 +160,7 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
 
     if(dsdMode)
     {
-        //Set DSD mux line high     
+        //Set DSD mux line high
         tmp |= (P_GPIO_DSD_EN);
     }
     else
@@ -169,19 +169,19 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
     }
 
     tmp |= (P_GPIO_RST_DAC | P_GPIO_RST_ADC);
-    
+
     PORT32A_OUT(tmp);
 
-    
+
     /* Give the DAC a little time to settle down after reset */
     t :> time;
     time += 200000;
     t when timerafter(time) :> int _;
-   
+
     /* Set power down (PDN) bit and Control Port Enable bit in DAC */
     DAC_REGWRITE(DAC_REG_ADDR_MODE_CTRL2, DAC_REG_MODE_CTRL2_CPEN | DAC_REG_MODE_CTRL2_PDN);
 
-    /* Mode Control 1 
+    /* Mode Control 1
      * 0:1: Functional Mode
      * 2:3: De-emphasis Control
      * 4:6: Digital Interface Formats
@@ -192,18 +192,18 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
         if(samFreq < 3000000) /* < 3MHz e.g. 2.2822400 MHz */
         {
             /* 64x oversampled DSD with 8 x DSD clock to mclk */
-            DAC_REGWRITE(DAC_REG_ADDR_MODE_CTRL1, 0b00100011); 
-        }   
+            DAC_REGWRITE(DAC_REG_ADDR_MODE_CTRL1, 0b00100011);
+        }
         else
         {
             /* 128x oversampled DSD with 4 x DSD clock to mclk */
-            DAC_REGWRITE(DAC_REG_ADDR_MODE_CTRL1, 0b01100011); 
-        } 
+            DAC_REGWRITE(DAC_REG_ADDR_MODE_CTRL1, 0b01100011);
+        }
     }
     else
     {
         if(samFreq < 100000)
-        {  
+        {
             /* Auto-mute off, i2s, Single-speed */
             DAC_REGWRITE(DAC_REG_ADDR_MODE_CTRL1, 0b00010000);
         }
@@ -224,7 +224,7 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
      * 6:   Soft Ramp
      * 7:   A vol = B vol
      */
-    DAC_REGWRITE(DAC_REG_ADDR_VOLMIX_CTRL, 0b01101001); 
+    DAC_REGWRITE(DAC_REG_ADDR_VOLMIX_CTRL, 0b01101001);
 
     /* Channel A/B Volume Control
      * 0:6: Vol0:Vol6 (Attenutation from 0 to -127db)
@@ -233,10 +233,10 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
     DAC_REGWRITE(DAC_REG_ADDR_A_VOL, 0b00000000);
     DAC_REGWRITE(DAC_REG_ADDR_B_VOL, 0b00000000);
 
-    /* Mode Control 2 
+    /* Mode Control 2
      * 0:1: Reserved
-     * 2:   Soft Volume Ramp-up after Reset 
-     * 3:   Soft Volume Ramp-down after Reset   
+     * 2:   Soft Volume Ramp-up after Reset
+     * 3:   Soft Volume Ramp-down after Reset
      * 4:   Interperlolation Filter Select (0 fast or 1 slow roll-off)
      * 5:7: Reserved
      */
@@ -245,8 +245,8 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
 
 #ifdef CODEC_MASTER
 #error not currently implemented
-#endif 
-    
+#endif
+
     /* Clear power down bit in the DAC - keep control port enabled for now */
     DAC_REGWRITE(DAC_REG_ADDR_MODE_CTRL2, DAC_REG_MODE_CTRL2_CPEN);
 }

@@ -7,7 +7,7 @@ unsigned imgAdr;
 
 in port p_sw = XS1_PORT_4D;
 
-/* Load image based on a switch 
+/* Load image based on a switch
  * Expecting:
    - 0: usb audio
    - 1: ipod dock
@@ -16,7 +16,7 @@ in port p_sw = XS1_PORT_4D;
 
 if an upgrade images exists for the desired function boot this, else use the factory image for the desired functionality */
 
-void init(void) 
+void init(void)
 {
     unsigned tmp;
 
@@ -30,18 +30,18 @@ void init(void)
     }
 }
 
-int checkCandidateImageVersion(int v) 
+int checkCandidateImageVersion(int v)
 {
     /* We assume higher versions get priority.. */
     return (v & 1) == dpVersion;
 }
 
-void recordCandidateImage(int v, unsigned adr) 
+void recordCandidateImage(int v, unsigned adr)
 {
       imgAdr = adr;
 }
 
-unsigned reportSelectedImage(void) 
+unsigned reportSelectedImage(void)
 {
       return imgAdr;
 }

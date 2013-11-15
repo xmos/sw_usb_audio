@@ -1,4 +1,4 @@
-/** 
+/**
  * @file       customdefines.h
  * @brief      Defines relating to device configuration and customisation.
  *             For L1 USB Audio Reference Design
@@ -9,32 +9,32 @@
 
 
 /*
- * Device configuration option defines.  Build can be customised but changing and adding defines here 
+ * Device configuration option defines.  Build can be customised but changing and adding defines here
  *
- * Note, we check if they are already defined in Makefile 
+ * Note, we check if they are already defined in Makefile
  */
 
 /* Enable/Disable MIDI - Default is MIDI off */
 #ifndef MIDI
-#define MIDI 		0			
+#define MIDI 		0
 #endif
 
 /* Enable/Disable SPDIF output - Default is S/PDIF on */
 #ifndef SPDIF
-#define SPDIF		1			
+#define SPDIF		1
 #endif
 
 /* Audio class version to run in - Default is 2.0 */
 #ifndef AUDIO_CLASS
-#define AUDIO_CLASS (2)			
+#define AUDIO_CLASS (2)
 #endif
 
 /* Enable/disable fall back to Audio Class 1.0 when connected to FS hub. */
 #ifndef AUDIO_CLASS_FALLBACK
-#define AUDIO_CLASS_FALLBACK 1 
+#define AUDIO_CLASS_FALLBACK 1
 #endif
 
-/* Defines relating to channel count and channel arrangement (Set to 0 for disable) */ 
+/* Defines relating to channel count and channel arrangement (Set to 0 for disable) */
 //:audio_defs
 /* Number of USB streaming channels - Default is 4 in 4 out */
 #ifndef NUM_USB_CHAN_IN
@@ -54,7 +54,7 @@
 #define I2S_CHANS_ADC     (4)
 #endif
 
-/* Run the CODEC as slave, Xcore as master 
+/* Run the CODEC as slave, Xcore as master
  * Changing this define will cause CODECs to setup appropriately and XCore to be I2S slave
  */
 #define CODEC_MASTER      0
@@ -71,15 +71,15 @@
 
 /* Maximum frequency device runs at */
 #ifndef MAX_FREQ
-#define MAX_FREQ                    (192000)       
+#define MAX_FREQ                    (192000)
 #endif
 
 /* Index of SPDIF TX channel (duplicated DAC channels 1/2) */
 #define SPDIF_TX_INDEX              (0)
 
 /* Default frequency device reports as running at */
-/* Audio Class 1.0 friendly freq */       
-#define DEFAULT_FREQ                (48000)            
+/* Audio Class 1.0 friendly freq */
+#define DEFAULT_FREQ                (48000)
 //:
 /***** Defines relating to USB descriptors etc *****/
 //:usb_defs
@@ -97,7 +97,7 @@
 /* Enable ADC based *EXAMPLE* volume control */
 #define ADC_VOL_CONTROL    0
 
-/* Define to use custom flash part not in tools by default 
+/* Define to use custom flash part not in tools by default
  * Device is M25P40 */
 #define DFU_FLASH_DEVICE \
 {    \

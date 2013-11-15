@@ -3,13 +3,13 @@
 
 extern unsigned g_adcVal;
 
-/* 
+/*
  * Simple *example* of how to potentially used ADC to control a volume (Via HID)
  *
- * Please note this is an *example* only.  An absolute ADC input does not really serve 
+ * Please note this is an *example* only.  An absolute ADC input does not really serve
  * as a good input to a relative HID volume control
  *
- * ADC in the range 0x0 to 7fff 
+ * ADC in the range 0x0 to 7fff
 =======
  * as a good input to a relative HID volume control!
  *
@@ -30,8 +30,8 @@ void Vendor_ReadHIDButtons(unsigned char hidData[])
     hidData[0] = 0;
 
 #if defined(ADC_VOL_CONTROL) && (ADC_VOL_CONTROL == 1)
-    adcVal = g_adcVal >> 20; 
-    
+    adcVal = g_adcVal >> 20;
+
     if(adcVal < (ADC_MIN + THRESH))
     {
         /* Volume down */

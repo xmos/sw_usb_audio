@@ -8,7 +8,7 @@
 #define P_GPIO_USB_SEL0         0x020
 #define P_GPIO_USB_SEL1         0x040
 #define P_GPIP_CPR_RST_N        0x080    /* Apple CoProcessor Reset */
-#define P_GPIO_ACC_DET_EN       0x100    
+#define P_GPIO_ACC_DET_EN       0x100
 #define P_GPIO_AUD_MUTE         0x200
 #define P_GPIO_RST_DAC          (1<<28)
 #define P_GPIO_RST_ADC          (1<<29)

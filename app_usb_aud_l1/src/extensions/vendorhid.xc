@@ -24,10 +24,10 @@ void UserReadHIDButtons(unsigned char hidData[])
 {
 #ifndef MIDI
     unsigned a, b;
-    
+
     p_but_a :> a;
     p_but_b :> b;
-    
+
     a = (~a) & 1;
     b = (~b) & 1;
 
