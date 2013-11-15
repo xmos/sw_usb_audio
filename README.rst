@@ -30,7 +30,9 @@ typically relate to a specific board.  This repository contains the following:
 +----------------------+--------------------------+------------------------------------------------------------+
 | app_usb_aud_su1      | xr-usb-audio-s1          | XMOS XS1-U8 USB Audio Reference Design (prototype only)    |
 +----------------------+--------------------------+------------------------------------------------------------+
-| app_usb_aud_xl_u8_2c | xk-usb-audio-u8-2c       | XMOS XS1-U8 Multi-Function Audio Board                     |
+| app_usb_aud_xk_u8_2c | xk-usb-audio-u8-2c       | XMOS XS1-U8 Multi-Function Audio Board                     |
++----------------------+--------------------------+------------------------------------------------------------+
+| app_usb_aud_u16      | xp-skc-u16 & xa-sk-audio | XMOS XS1-U16 sliceKIT Core Board & Audio Slice             |
 +----------------------+--------------------------+------------------------------------------------------------+
 
 Please refer to individual README files in these apps for more detailed information.
