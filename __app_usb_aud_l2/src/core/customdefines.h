@@ -7,7 +7,7 @@
 #define _CUSTOMDEFINES_H_
 
 
-#define AUDIO_IO_CORE 1
+#define AUDIO_IO_TILE 1
 
 /***** Device configuration option defines.  Build can be customised but changing these defines  *****/
 
@@ -55,7 +55,7 @@
 #define CODEC_SLAVE        1
 #endif
 
-#define DFU 0
+#define DFU 1
 
 /* Define to Enable use of custom flash device for DFU interface */
 #if defined(DFU_CUSTOM_FLASH_DEVICE) && (DFU_CUSTOM_FLASH_DEVICE==0)
@@ -189,7 +189,7 @@ SECTOR_LAYOUT_REGULAR,  /* sane sectors */ \
 
 //#define  LEVEL_METER_PROCESSING     1
 //#define  LEVEL_METER_LEDS           1           /* Enables call to VendorLedRefresh() */
-#define  CLOCK_VALIDITY_CALL        0           /* Enables calls to VendorClockValidity(int valid) */
+//#define  CLOCK_VALIDITY_CALL        0           /* Enables calls to VendorClockValidity(int valid) */
 #define  HOST_ACTIVE_CALL           0           /* Enabled call to VendorHostActive(int active); */
 
 #if 0
