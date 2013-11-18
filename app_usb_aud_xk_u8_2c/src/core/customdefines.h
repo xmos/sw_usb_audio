@@ -1,4 +1,4 @@
-/** 
+/**
  * @file       customdefines.h
  * @brief      Defines relating to device configuration and customisation.
  * @author     Ross Owen, XMOS Limited
@@ -7,33 +7,33 @@
 #define _CUSTOMDEFINES_H_
 
 /*
- * Device configuration option defines.  Build can be customised but changing and adding defines here 
+ * Device configuration option defines.  Build can be customised but changing and adding defines here
  *
- * Note, we check if they are already defined in Makefile 
+ * Note, we check if they are already defined in Makefile
  */
 
 
 /* Enable/Disable MIDI - Default is MIDI off */
 #ifndef MIDI
-#define MIDI 		0			
+#define MIDI 		0
 #endif
 
 /* Enable/Disable SPDIF output - Default is S/PDIF on */
 #ifndef SPDIF
-#define SPDIF		1			
+#define SPDIF		1
 #endif
 
 /* Audio class version to run in - Default is 2.0 */
 #ifndef AUDIO_CLASS
-#define AUDIO_CLASS (2)			
+#define AUDIO_CLASS (2)
 #endif
 
 /* Enable/disable fall back to Audio Class 1.0 when connected to FS hub. */
 #ifndef AUDIO_CLASS_FALLBACK
-#define AUDIO_CLASS_FALLBACK 1 
+#define AUDIO_CLASS_FALLBACK 1
 #endif
 
-/* Defines relating to channel count and channel arrangement (Set to 0 for disable) */ 
+/* Defines relating to channel count and channel arrangement (Set to 0 for disable) */
 //:audio_defs
 #ifndef NUM_USB_CHAN_IN
 #define NUM_USB_CHAN_IN   (2)         /* Device to Host */
@@ -64,21 +64,21 @@
 
 /* Maximum frequency device runs at */
 #ifndef MAX_FREQ
-#define MAX_FREQ           (192000)       
+#define MAX_FREQ           (192000)
 #endif
 
 /* Index of SPDIF TX channel (duplicated DAC channels 1/2) */
 #define SPDIF_TX_INDEX     (0)
 
 /* Default frequency device reports as running at */
-/* Audio Class 1.0 friendly freq */       
-#define DEFAULT_FREQ       (48000)            
+/* Audio Class 1.0 friendly freq */
+#define DEFAULT_FREQ       (48000)
 //:
 /***** Defines relating to USB descriptors etc *****/
 //:usb_defs
 #define VENDOR_ID          (0x20B1) /* XMOS VID */
 #define PID_AUDIO_2        (0x0008) /* XR-USB-AUDIO-U8-2C PID*/
-#define PID_AUDIO_1        (0x0009) 
+#define PID_AUDIO_1        (0x0009)
 //:
 
 /* Enable/Disable example HID code */
@@ -88,7 +88,7 @@
 #define SU1_ADC_ENABLE     0
 
 
-/* Define to use custom flash part not in tools by default 
+/* Define to use custom flash part not in tools by default
  * Device is M25P40 */
 #define DFU_FLASH_DEVICE \
 {    \

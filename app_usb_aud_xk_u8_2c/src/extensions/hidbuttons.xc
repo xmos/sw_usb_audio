@@ -16,7 +16,7 @@ extern in port p_sw;
  * 4: Volime Down
  * 5: Mute
  */
- 
+
 unsigned multicontrol_count = 0;
 unsigned wait_counter =0;
 
@@ -31,7 +31,7 @@ unsigned wait_counter =0;
 #define HID_CONTROL_VOLDN		0x10
 #define HID_CONTROL_MUTE		0x20
 
-typedef enum 
+typedef enum
 {
 	STATE_IDLE = 0x00,
 	STATE_PLAY = 0x01,
@@ -46,14 +46,14 @@ void UserReadHIDButtons(unsigned char hidData[])
 {
     /* Variables for buttons a & b and switch sw */
     unsigned a, b, sw, tmp;
-    
+
     p_sw :> tmp;
- 
+
     /* Buttons are active low */
     tmp = ~tmp;
 
-    a = (tmp & (P_GPI_BUTA_MASK))>>P_GPI_BUTA_SHIFT;   
-    b = (tmp & (P_GPI_BUTB_MASK))>>P_GPI_BUTB_SHIFT;   
+    a = (tmp & (P_GPI_BUTA_MASK))>>P_GPI_BUTA_SHIFT;
+    b = (tmp & (P_GPI_BUTB_MASK))>>P_GPI_BUTB_SHIFT;
     sw = (tmp & (P_GPI_SW1_MASK))>>P_GPI_SW1_SHIFT;
 
     if(sw)
@@ -65,7 +65,7 @@ void UserReadHIDButtons(unsigned char hidData[])
     {
         /* Assign buttons A and B to play for single tap, next/prev for double tap */
         if(b)
-        {   
+        {
             multicontrol_count++;
         	wait_counter = 0;
             lastA = 0;

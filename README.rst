@@ -1,7 +1,7 @@
 XMOS USB Audio 2.0 Reference Design README
 ..........................................
 
-:Latest release: 6.2.0beta10
+:Latest release: 6.3.0alpha1
 :Maintainer: Ross Owen
 :Description: USB Audio Applications
 
@@ -16,7 +16,7 @@ Please see CHANGELOG.rst for detailed change listing.
 
 For full software documentation is not yet available for this releaseplease see the USB Audio Software Design Guide document available from www.xmos.com.
 
-This release is built and tested using version 12.2 of the XMOS tool set.  Build or functionality issues could be experienced with any other version.
+This release is built and tested using version 13 of the XMOS tool set.  Build or functionality issues could be experienced with any other version.
 
 This repository contains applications (or instances) of the XMOS USB Audio Reference Design framework.  These applications
 typically relate to a specific board.  This repository contains the following:
@@ -31,6 +31,8 @@ typically relate to a specific board.  This repository contains the following:
 | app_usb_aud_su1      | xr-usb-audio-s1          | XMOS XS1-U8 USB Audio Reference Design (prototype only)    |
 +----------------------+--------------------------+------------------------------------------------------------+
 | app_usb_aud_xk_u8_2c | xk-usb-audio-u8-2c       | XMOS XS1-U8 Multi-Function Audio Board                     |
++----------------------+--------------------------+------------------------------------------------------------+
+| app_usb_aud_u16      | xp-skc-u16 & xa-sk-audio | XMOS XS1-U16 sliceKIT Core Board & Audio Slice             |
 +----------------------+--------------------------+------------------------------------------------------------+
 
 Please refer to individual README files in these apps for more detailed information.
@@ -171,10 +173,12 @@ For all support issues please visit http://www.xmos.com/support
 Required software (dependencies)
 ================================
 
+  * sc_i2c (ssh://git@github.com/xcore/sc_i2c)
   * sc_usb (git://git/apps/sc_usb)
   * sc_spdif (git://github.com/xcore/sc_spdif)
+  * sc_periph (git://github.com/xcore/sc_periph)
   * sc_usb_audio (git://git/apps/sc_usb_audio)
-  * sc_xud (git://git/apps/sc_xud)
-  * sc_i2c (git://github.com/xcore/sc_i2c)
   * sc_usb_device (git://git/apps/sc_usb_device)
+  * sc_util (git://github.com/xcore/sc_util)
+  * sc_xud (git://git/apps/sc_xud)
 

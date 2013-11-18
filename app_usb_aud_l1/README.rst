@@ -44,7 +44,7 @@ of this application are as follows:
 
 * S/PDIF Output at 176.4kHz not supported due to mclk requirements
 
-  Known Issues
+Known Issues
 ............
 
 See README in sw_usb_audio for general issues.

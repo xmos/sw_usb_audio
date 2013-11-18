@@ -3,18 +3,18 @@
 #include "port32A.h"
 #include "devicedefines.h"
 
-#define PORT32A_PEEK(X) {asm("peek %0, res[%1]":"=r"(X):"r"(XS1_PORT_32A));} 
+#define PORT32A_PEEK(X) {asm("peek %0, res[%1]":"=r"(X):"r"(XS1_PORT_32A));}
 #define PORT32A_OUT(X)  {asm("out res[%0], %1"::"r"(XS1_PORT_32A),"r"(X));}
 
 //:codec_init
-void AudioHwInit(chanend ?c_codec) 
+void AudioHwInit(chanend ?c_codec)
 {
     return;
 }
 //:
 
 //:codec_config
-/* Configures the CODEC for the required sample frequency.  
+/* Configures the CODEC for the required sample frequency.
  * CODEC reset and frequency select are connected to port 32A
  *
  * Port 32A is shared with other functionality (LEDs etc) so we
@@ -28,8 +28,8 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
     unsigned tmp;
 
     /* Put codec in reset and set master clock select appropriately */
-    
-    /* Read current port output */    
+
+    /* Read current port output */
     PORT32A_PEEK(tmp);
 
     /* Put CODEC reset line low */
@@ -42,7 +42,7 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
     }
     else //if((samFreq % 24000) == 0)
     {
-        /* Frequency select high for 48000 etc */ 
+        /* Frequency select high for 48000 etc */
         tmp |= P32A_CLK_SEL;
     }
 

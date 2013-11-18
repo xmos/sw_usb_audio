@@ -9,7 +9,6 @@ APP_NAME =
 BUILD_FLAGS     = -DFLASH_MAX_UPGRADE_SIZE=64*1024 -fcomment-asm -Xmapper --map -Xmapper MAPFILE -Wall -O3 -report -lflash -fsubword-select -save-temps -g -DTEST_MODE_SUPPORT -fxscope -DXSCOPE -DXUD_ON_U_SERIES
 #-fschedule
 
-
 # Test build configs (Note these make use of the defaults in customdefines.h)
 
 # Audio Class 2, Input, Output, No MIDI, SPDIF

@@ -1,11 +1,11 @@
 /**
  * @file        port32A.h
- * @brief       Port 32A bit defs for SU1 USB Audio board 
- * @author      Ross Owen, XMOS Semiconductor 
+ * @brief       Port 32A bit defs for SU1 USB Audio board
+ * @author      Ross Owen, XMOS Semiconductor
  */
 
 #ifndef _PORT32A_OUT_
-#define _PORT32A_OUT_ 
+#define _PORT32A_OUT_
 
 /* General output port bit definitions */
 #define P32A_COD_RST_N     0x01    /* CODEC reset. Active low. */

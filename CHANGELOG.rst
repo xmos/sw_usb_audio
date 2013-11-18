@@ -7,6 +7,10 @@ XMOS USB Audio 2.0 Reference Design Change Log
 Firmware
 ========
 
+6.3.0 (alpha):
+    - ADDED:      Application for XP-SKC-U16 board with XA-SK-AUDIO slice
+    - CHANGE:     Moved to XMOS toolchain version 13
+
 6.2.0:
     - ADDED:      Application for XK-USB-AUDIO-U8-2C board
     - ADDED:      PRODUCT_STR define for Product Strings
