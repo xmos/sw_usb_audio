@@ -12,7 +12,6 @@
  * Note, we check if they are already defined in Makefile
  */
 
-
 /* Enable/Disable MIDI - Default is MIDI off */
 #ifndef MIDI
 #define MIDI 		0
