@@ -7,10 +7,6 @@ XMOS USB Audio 2.0 Reference Design Change Log
 Firmware
 ========
 
-6.3.0 (alpha):
-    - ADDED:      Application for XP-SKC-U16 board with XA-SK-AUDIO slice
-    - CHANGE:     Moved to XMOS toolchain version 13
-
 6.2.0:
     - ADDED:      Application for XK-USB-AUDIO-U8-2C board
     - ADDED:      PRODUCT_STR define for Product Strings
@@ -23,6 +19,7 @@ Firmware
     - CHANGE:     Device reboot code (for DFU) made more generic for multi-tile systems 
     - CHANGE:     DFU code now erases all upgrade images found, rather than just the first one 
     - CHANGE:     ports.h file no longer required.  Please declare custom ports in your own files
+    - CHANGE:     Define based warnings in devicedefines.h moved to warnings.xc to avoid multiple warnings being issued
     - RESOLVED:   (Major) ADC port initialization did not operate as expected at 384kHz
     - RESOLVED:   (Major) Resolved a compatibility issue with streaming on Intel USB 3.0 xHCI host controller
     - RESOLVED:   (Major) Added defence against malformed Audio Class 1.0 packets as experienced on some Win 8.0 hosts. Previously this would cause an exception (Issue fixed in Win 8.1)
