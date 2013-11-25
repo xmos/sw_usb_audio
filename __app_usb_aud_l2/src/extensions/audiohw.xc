@@ -6,15 +6,19 @@
 #include "i2c.h"
 
 /* I2C ports */
-on stdcore[1] : struct r_i2c i2cPorts = {XS1_PORT_1D, XS1_PORT_1C}; 
+on tile[AUDIO_IO_TILE]: struct r_i2c i2cPorts = {PORT_I2C_SCL, PORT_I2C_SDA}; 
 
 /* Reference clock to external fractional-N clock multiplier */
-on stdcore[1] : out port p_pll_ref    = XS1_PORT_4E;
+on tile[AUDIO_IO_TILE]: out port p_pll_ref    = PORT_PLL_REF;
 
-on stdcore[1] : out port p_aud_cfg    = XS1_PORT_4A;
+on tile[AUDIO_IO_TILE]: out port p_aud_cfg    = PORT_AUD_CFG;
 
-#define PLL_DEV_ADR        (0x9C>>1)   
-#define COD_DEV_ADRS       (0x90>>1)
+//#define PLL_DEV_ADR        (0x9C>>1)   
+//#define COD_DEV_ADRS       (0x90>>1)
+
+#define PLL_DEV_ADR        0x9C
+#define COD_DEV_ADRS       0x90
+
 
 unsigned char pllRead(unsigned char reg)
 {
@@ -31,7 +35,7 @@ void PllInit(void)
 {
     unsigned char data[1] = {0};
 
-	/* Enable init */
+    /* Enable init */
     //PLL_REGWR(0x1e, 0b01110000); // increase pll bandwidth to reduce lock time
     PLL_REGWR(0x03, 0x07);
     PLL_REGWR(0x05, 0x01);
@@ -40,8 +44,8 @@ void PllInit(void)
     PLL_REGWR(0x17, 0x00); //0x10 for always gen clock even when unlocked
 
 
-  	/* Check */
-	assert(PLL_REGRD(0x03) == 0x07);
+    /* Check */
+    assert(PLL_REGRD(0x03) == 0x07);
     assert(PLL_REGRD(0x05) == 0x01);
     assert(PLL_REGRD(0x16) == 0x10);
     assert(PLL_REGRD(0x17) == 0x00);
@@ -54,13 +58,13 @@ void PllMult(unsigned mult)
     unsigned char data[1] = {0};
 	
     /* Multiplier is translated to 20.12 format by shifting left by 12 */
-  	PLL_REGWR(0x06, (mult >> 12) & 0xFF);
-  	PLL_REGWR(0x07, (mult >> 4) & 0xFF);
-  	PLL_REGWR(0x08, (mult << 4) & 0xFF);
-  	PLL_REGWR(0x09, 0x00);
+    PLL_REGWR(0x06, (mult >> 12) & 0xFF);
+    PLL_REGWR(0x07, (mult >> 4) & 0xFF);
+    PLL_REGWR(0x08, (mult << 4) & 0xFF);
+    PLL_REGWR(0x09, 0x00);
 
 	/* Check */
-	assert(PLL_REGRD(0x06) == ((mult >> 12) & 0xFF));
+    assert(PLL_REGRD(0x06) == ((mult >> 12) & 0xFF));
     assert(PLL_REGRD(0x07) == ((mult >> 4) & 0xFF));
     assert(PLL_REGRD(0x08) == ((mult << 4) & 0xFF));
     assert(PLL_REGRD(0x09) == 0x00);
@@ -186,4 +190,3 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
 
     i2c_master_write_reg(COD_DEV_ADRS, 0x3, tmp, 1, i2cPorts);
 }
-
