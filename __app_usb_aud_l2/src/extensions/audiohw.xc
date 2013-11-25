@@ -13,11 +13,11 @@ on tile[AUDIO_IO_TILE]: out port p_pll_ref    = PORT_PLL_REF;
 
 on tile[AUDIO_IO_TILE]: out port p_aud_cfg    = PORT_AUD_CFG;
 
-//#define PLL_DEV_ADR        (0x9C>>1)   
-//#define COD_DEV_ADRS       (0x90>>1)
+#define PLL_DEV_ADR        (0x9C>>1)   
+#define COD_DEV_ADRS       (0x90>>1)
 
-#define PLL_DEV_ADR        0x9C
-#define COD_DEV_ADRS       0x90
+//#define PLL_DEV_ADR        0x9C
+//#define COD_DEV_ADRS       0x90
 
 
 unsigned char pllRead(unsigned char reg)
@@ -50,6 +50,7 @@ void PllInit(void)
     assert(PLL_REGRD(0x16) == 0x10);
     assert(PLL_REGRD(0x17) == 0x00);
     //assert(PLL_REGRD(0x1e) == 0b01110000);
+    printstrln("pll initted");
 }
 
 /* Setup PLL multiplier */
