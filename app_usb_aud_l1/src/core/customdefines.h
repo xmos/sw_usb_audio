@@ -71,9 +71,6 @@
 /* Index of SPDIF TX channel (duplicated DAC channels 1/2) */
 #define SPDIF_TX_INDEX     (0)
 
-/* Default frequency device reports as running at */
-/* Audio Class 1.0 friendly freq */
-#define DEFAULT_FREQ       (48000)
 //:
 /***** Defines relating to USB descriptors etc *****/
 //:usb_defs
