@@ -3,8 +3,9 @@
 #include <xs1_su.h>
 #include <print.h>
 #include "devicedefines.h"
-#include "i2c.h"
+#include "i2c_shared.h"
 #include "gpio_defines.h"
+#include "gpio_access.h"
 #include "interrupt.h"
 #include "dsd_support.h"
 
@@ -16,6 +17,10 @@ on stdcore[0] : in port p_sw    = XS1_PORT_4D;
 
 /* I2C ports */
 on stdcore[0] : struct r_i2c i2cPorts = {XS1_PORT_1C, XS1_PORT_1G}; /* In a struct to use module_i2c_simple */
+
+#if defined(SW_INT_HANDLER) && defined(IAP)
+#error not currently supported
+#endif
 
 #ifdef SW_INT_HANDLER
 #define SWITCH_VAL 0b0000
@@ -36,8 +41,6 @@ void handle_switch_request(in port p_sw)
 }
 #endif
 
-#define PORT32A_PEEK(X) {asm volatile("peek %0, res[%1]":"=r"(X):"r"(XS1_PORT_32A));}
-#define PORT32A_OUT(X)  {asm volatile("out res[%0], %1"::"r"(XS1_PORT_32A),"r"(X));}
 //:codec_init
 void AudioHwInit(chanend ?c_codec)
 {
@@ -47,16 +50,16 @@ void AudioHwInit(chanend ?c_codec)
     unsigned time;
     int count = 0;
 
-    x = peek(p_gpo);
-
+    port32A_lock_peek(x);
+    
     x |= (P_GPIO_5VA_EN | P_GPIO_SS_EN_CTRL);
 
-    PORT32A_OUT(x);
+    port32A_out_unlock(x);
 
     /* The 5VA_EN line has a cap on it, wait for it to go high */
     while(1)
     {
-        PORT32A_PEEK(x);
+        x = peek(p_gpo);
         if((x & P_GPIO_5VA_EN) == P_GPIO_5VA_EN)
             break;
     }
@@ -107,16 +110,9 @@ void AudioHwInit(chanend ?c_codec)
 /* Mode Control 3 - Address 0x06 */
 #define DAC_REG_ADDR_MODE_CTRL3        0x06
 
-#define DAC_REGWRITE(reg, val) {data[0] = val; i2c_master_write_reg(DAC_I2C_DEV_ADDR, reg, data, 1, i2cPorts);}
-
-unsigned readReg(unsigned devAddr, unsigned reg)
-{
-    unsigned char data[1] = {0};
-    i2c_master_read_reg(devAddr, reg, data, 1, i2cPorts);
-    return data[0];
-}
-
-#define DAC_REGREAD(reg, val)  {i2c_master_read_reg(DAC_I2C_DEV_ADDR, reg, val, 1, i2cPorts);}
+#define DAC_REGWRITE(reg, val) {data[0] = val; i2c_shared_master_write_reg(DAC_I2C_DEV_ADDR, reg, data, 1);}
+ 
+#define DAC_REGREAD(reg, val)  {i2c_shared_master_read_reg(DAC_I2C_DEV_ADDR, reg, val, 1);}
 
 //:codec_config
 /* Called on a sample frequency change */
@@ -131,9 +127,9 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
     int codec_dev_id;
     unsigned char data[] = {0, 0};
 
-    PORT32A_PEEK(tmp);
-
-    /* Put DAC and ADC into reset */
+    port32A_lock_peek(tmp);
+      
+    /* Put DAC and ADC into reset */  
     tmp &= (~P_GPIO_RST_DAC);
     tmp &= (~P_GPIO_RST_ADC);
 
@@ -146,9 +142,9 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
     {
         tmp |= P_GPIO_MCLK_SEL;
     }
-
-    /* Output to port */
-    PORT32A_OUT(tmp);
+    
+    /* Output to port */  
+    port32A_out_unlock(tmp);
 
     /* Hold in reset for 2ms while waiting for MCLK to stabilise */
     t :> time;
@@ -156,7 +152,7 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
     t when timerafter(time) :> int _;
 
     /* ADC and DAC out of Reset */
-    PORT32A_PEEK(tmp);
+    port32A_lock_peek(tmp);
 
     if(dsdMode)
     {
@@ -169,9 +165,8 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
     }
 
     tmp |= (P_GPIO_RST_DAC | P_GPIO_RST_ADC);
-
-    PORT32A_OUT(tmp);
-
+    
+    port32A_out_unlock(tmp);
 
     /* Give the DAC a little time to settle down after reset */
     t :> time;
