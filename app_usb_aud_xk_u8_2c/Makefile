@@ -77,7 +77,7 @@ endif
 # The USED_MODULES variable lists other module used by the application. These
 # modules will extend the SOURCE_DIRS, INCLUDE_DIRS and LIB_DIRS variables. 
 # Modules are expected to be in the directory above the BASE_DIR directory.
-USED_MODULES += module_usb_shared module_xud module_usb_audio module_spdif_tx module_spdif_rx module_usb_midi module_dfu module_i2c_shared module_usb_device module_usb_aud_xk_u8_2c module_locks
+USED_MODULES += module_usb_shared module_xud module_usb_audio module_spdif_tx module_spdif_rx module_usb_midi module_dfu module_i2c_shared module_usb_device module_locks
 
 MODULE_LIBRARIES = xud_u
 
