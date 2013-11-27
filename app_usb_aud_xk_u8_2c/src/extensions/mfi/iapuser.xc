@@ -1,18 +1,6 @@
 #include "gpio_defines.h"
 #include "gpio_access.h"
 
-/* Enable/Power-on/Reset etc coProcessor - called before authentication */
-void CoProcessorEnable(void)
-{
-    // RST line pulled up on board. Warm reset not currently supported
-}
-
-/* Disable co-processor - Called at end of authentication */
-void CoProcessorDisable(void)
-{
-    // RST line pulled up on board. Warm reset not currently supported
-}
-
 /* Select Apple connector */
 void SelectUSBDock(void)
 {

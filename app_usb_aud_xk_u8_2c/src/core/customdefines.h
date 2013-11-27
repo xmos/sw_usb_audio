@@ -90,7 +90,7 @@
 
 /***** Defines relating to iOS accessory power requirements *****/
 //FIXME should ACCESSORY_POWER_SOURCE be determined by SELF_POWERED?
-#define ACCESSORY_POWER_SOURCE 2 //IAP2_CTRL_SESSION_PowerSourceType_SelfPowered
+#define ACCESSORY_POWER_SOURCE 2 // Self Powered
 #define ACCESSORY_CURRENT_DRAW 0 // mA
 
 /***** Defines relating to iOS accessory language *****/
