@@ -13,16 +13,9 @@ on tile[AUDIO_IO_TILE]: out port p_pll_ref    = PORT_PLL_REF;
 
 on tile[AUDIO_IO_TILE]: out port p_aud_cfg    = PORT_AUD_CFG;
 
-#define CS2300_I2C_DEVICE_ADDR         (0x9c>>1)
-#define PLL_DEV_ADR        (0x9C>>1)
-#define COD_DEV_ADRS       (0x90>>1)
+#define CS2300_I2C_DEVICE_ADDR      (0x9c>>1)
+#define COD_DEV_ADRS                (0x90>>1)
 
-unsigned char pllRead(unsigned char reg)
-{
-    unsigned char data[1] = {0};
-    i2c_master_read_reg(PLL_DEV_ADR, reg, data, 1, i2cPorts); 
-    return data[0];
-}
 #define CS2300_DEVICE_CONFIG_1      0x03
 #define CS2300_GLOBAL_CONFIG        0x05
 #define CS2300_RATIO_1              0x06
@@ -34,7 +27,6 @@ unsigned char pllRead(unsigned char reg)
 
 #define CS2300_REGREAD(reg, val)  {data[0] = 0xAA; i2c_master_read_reg(CS2300_I2C_DEVICE_ADDR, reg, data, 1, i2cPorts);}
 #define CS2300_REGREAD_ASSERT(reg, data, expected)  {data[0] = 0xAA; i2c_master_read_reg(CS2300_I2C_DEVICE_ADDR, reg, data, 1, i2cPorts); assert(data[0] == expected);}
-
 #define CS2300_REGWRITE(reg, val) {data[0] = val; i2c_master_write_reg(PLL_DEV_ADR, reg, data, 1, i2cPorts);}
 
 /* Init of CS2300 */
@@ -48,7 +40,7 @@ void PllInit(void)
     CS2300_REGWRITE(CS2300_FUNC_CONFIG_1, 0x10);
     CS2300_REGWRITE(CS2300_FUNC_CONFIG_2, 0x00); //0x10 for always gen clock even when unlocked
 
-    /* Check */
+    /* Read back and check */
     CS2300_REGREAD_ASSERT(CS2300_DEVICE_CONFIG_1, data, 0x07);
     CS2300_REGREAD_ASSERT(CS2300_GLOBAL_CONFIG, data, 0x01);
     CS2300_REGREAD_ASSERT(CS2300_FUNC_CONFIG_1, data, 0x10);
