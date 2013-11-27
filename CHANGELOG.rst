@@ -9,6 +9,7 @@ Firmware
 
 6.3.0 (alpha):
     - ADDED:      Application for XP-SKC-U16 board with XA-SK-AUDIO slice
+    - ADDED:      Support for Apple MFi build configurations
     - CHANGE:     Moved to XMOS toolchain version 13
 
 6.2.0:
@@ -26,7 +27,7 @@ Firmware
     - RESOLVED:   (Major) ADC port initialization did not operate as expected at 384kHz
     - RESOLVED:   (Major) Resolved a compatibility issue with streaming on Intel USB 3.0 xHCI host controller
     - RESOLVED:   (Major) Added defence against malformed Audio Class 1.0 packets as experienced on some Win 8.0 hosts. Previously this would cause an exception (Issue fixed in Win 8.1)
-    - RESOLVED:   (Minor)  maxPacketSize now reported based on device's read bandwidth requirements.  This allows the driver to reserve the proper bandwith amount (previously bandwidth would have been wasted)    
+    - RESOLVED:   (Minor)  maxPacketSize now reported based on device's read bandwidth requirements.  This allows the driver to reserve the proper bandwidth amount (previously bandwidth would have been wasted)    
     - RESOLVED:   (Minor) Input channel strings used for output in one instance
     - RESOLVED:   (Minor) Volume multiplication now compatible with 32bit samples. Previously assumed 24bit samples and would truncate bottom 3 bits
     - RESOLVED:   (Minor) Fixed issue with SE0_NAK test mode (as required for device receiver sensitivity USB-IF compliance test
