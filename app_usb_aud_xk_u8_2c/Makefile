@@ -77,8 +77,7 @@ INCLUDE_ONLY_IN_2xoxx_mfi =
 XCC_FLAGS_2xoxx_mfi_lp = $(BUILD_FLAGS) -DIAP=1 -DNUM_USB_CHAN_IN=0 -DI2S_CHANS_ADC=0 -DSPDIF=0
 INCLUDE_ONLY_IN_2xoxx_mfi_lp = ./src/extensions/powersave
 
-#The additional USED_MODULES only required for MFi builds
-USED_MODULES += module_ios
+include mfi.mk
 
 endif
 
