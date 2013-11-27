@@ -138,8 +138,8 @@
 
 
 /* Master clock defines (in Hz) */
-#define MCLK_441                 (256*44100)      /* 44.1, 88.2 etc */
-#define MCLK_48                  (256*48000)      /* 48, 96 etc */
+#define MCLK_441                 (512*44100)      /* 44.1, 88.2 etc */
+#define MCLK_48                  (512*48000)      /* 48, 96 etc */
 
 /* Maximum frequency device runs at */
 #define MAX_FREQ                 (192000)
