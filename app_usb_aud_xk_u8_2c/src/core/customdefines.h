@@ -12,6 +12,10 @@
  * Note, we check if they are already defined in Makefile
  */
 
+#define XMOS_USB_AUD_APP_MAJOR_VERSION 6
+#define XMOS_USB_AUD_APP_MINOR_VERSION 3
+#define XMOS_USB_AUD_APP_POINT_VERSION 0
+
 /* Enable/Disable IAP - Default is IAP off */
 #ifndef IAP
 #define IAP         0
@@ -83,8 +87,8 @@
 
 /***** Defines relating to iOS identification *****/
 #define ACCESSORY_MODEL_NUMBER      "XK-USB-AUDIO-U8-2C"
-#define ACCESSORY_HARDWARE_VERSION  {1, 0, 0}
-#define ACCESSORY_FIRMWARE_VERSION  {1, 0, 0}
+#define ACCESSORY_HARDWARE_VERSION  {1, 1, 0}
+#define ACCESSORY_FIRMWARE_VERSION  {XMOS_USB_AUD_APP_MAJOR_VERSION, XMOS_USB_AUD_APP_MINOR_VERSION, XMOS_USB_AUD_APP_POINT_VERSION}
 #define ACCESSORY_USB_TRANS_ID      0xCAFE // Unsigned short
 #define ACCESSORY_USB_TRANS_PURPOSE "iAP2 and Digital Audio"
 
