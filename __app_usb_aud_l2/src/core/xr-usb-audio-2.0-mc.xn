@@ -67,11 +67,10 @@ xsi:schemaLocation="http://www.xmos.com http://www.xmos.com">
         <Port Location="XS1_PORT_1O" Name="PORT_MIDI_OUT"/>
         <Port Location="XS1_PORT_1P" Name="PORT_MIDI_IN"/>
 
-	<Port Location="XS1_PORT_4A" Name="PORT_AUD_CFG"/>
-	<Port Location="XS1_PORT_4B" Name="CURRENTLY_UNUSED"/>
-	<Port Location="XS1_PORT_4E" Name="PORT_PLL_REF"/>
-	<Port Location="XS1_PORT_4F" Name="PORT_GPIO"/>
-	<Port Location="XS1_PORT_8B" Name="PORT_LED"/>
+        <Port Location="XS1_PORT_4A" Name="PORT_AUD_CFG"/>
+        <Port Location="XS1_PORT_4E" Name="PORT_PLL_REF"/>
+        <Port Location="XS1_PORT_4F" Name="PORT_GPIO"/>
+        <Port Location="XS1_PORT_8B" Name="PORT_LED"/>
       </Core>
     </Node>
   </Nodes>
