@@ -27,7 +27,7 @@ on tile[AUDIO_IO_TILE]: out port p_aud_cfg    = PORT_AUD_CFG;
 
 #define CS2300_REGREAD(reg, val)  {data[0] = 0xAA; i2c_master_read_reg(CS2300_I2C_DEVICE_ADDR, reg, data, 1, i2cPorts);}
 #define CS2300_REGREAD_ASSERT(reg, data, expected)  {data[0] = 0xAA; i2c_master_read_reg(CS2300_I2C_DEVICE_ADDR, reg, data, 1, i2cPorts); assert(data[0] == expected);}
-#define CS2300_REGWRITE(reg, val) {data[0] = val; i2c_master_write_reg(PLL_DEV_ADR, reg, data, 1, i2cPorts);}
+#define CS2300_REGWRITE(reg, val) {data[0] = val; i2c_master_write_reg(CS2300_I2C_DEVICE_ADDR, reg, data, 1, i2cPorts);}
 
 /* Init of CS2300 */
 void PllInit(void)
