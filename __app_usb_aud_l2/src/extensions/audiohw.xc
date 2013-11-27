@@ -83,7 +83,7 @@ void AudioHwInit(chanend ?c_codec)
     PllInit();
 
     /* Setup PLL to output default mclk freq */
-    PllMult((48000*512)/300);
+    PllMult(DEFAULT_MCLK_FREQ/300);
 
     /* Power Control Register (Address 02h) */
     /* 0    Power Down                           (PDN)   = 1 Enable, 0 Disable */  
