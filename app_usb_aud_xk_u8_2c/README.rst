@@ -50,6 +50,10 @@ See README in sw_usb_audio for general issues.
 
 - (#14653) DSD over PCM (DoP) 128 mode requires an effective PCM rate of 352.8kHz. Since the DAC is not rated to this speed in PCM mode this is not enabled by default.  It can be enabled by modifying the MAX_FREQ define.
 
+- (#14996) Exception during enumeration if xCORE is booted from flash.
+
+- (#15011) Apple devices display the message "Cannot Use Device. The connected USB device is not supported." if connected to the board when xrun is used. If the MFA board is connected to the Apple device after xrun has completed, it will be enumerated correctly.
+
 Support
 .......
 
