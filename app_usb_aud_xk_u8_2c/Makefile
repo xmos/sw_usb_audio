@@ -66,9 +66,9 @@ else
 XCC_FLAGS_2xoxx = $(BUILD_FLAGS) -DIAP=1 -DNUM_USB_CHAN_IN=0 -DI2S_CHANS_ADC=0 -DSPDIF=0
 INCLUDE_ONLY_IN_2xoxx = 
 
-#Audio Class 2, Input, Output, MIDI, No SPDIF
-XCC_FLAGS_2iomx = $(BUILD_FLAGS) -DIAP=1 -DMIDI=1 -DSPDIF=0
-INCLUDE_ONLY_IN_2iomx = 
+# Audio Class 2, No Input, Output, No MIDI, No SPDIF, power-save featured enabled
+XCC_FLAGS_2xoxx_lp = $(BUILD_FLAGS) -DIAP=1 -DNUM_USB_CHAN_IN=0 -DI2S_CHANS_ADC=0 -DSPDIF=0
+INCLUDE_ONLY_IN_2xoxx_lp = ./src/extensions/powersave
 
 USED_MODULES = module_ios
 
