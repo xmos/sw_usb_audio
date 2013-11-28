@@ -8,7 +8,7 @@ Firmware
 ========
 
 6.3.0 (alpha):
-    - ADDED:      Application for XP-SKC-U16 board with XA-SK-AUDIO slice
+    - ADDED:      Application for XP-SKC-U16 board with XA-SK-AUDIO slice (app_usb_aud_xkc_u16)
     - ADDED:      Support for Apple MFi build configurations
     - CHANGE:     Moved to XMOS toolchain version 13
 
