@@ -14,7 +14,7 @@ Please see CHANGELOG.rst for detailed change listing.
 
 For full software documentation is not yet available for this releaseplease see the USB Audio Software Design Guide document available from www.xmos.com.
 
-This release is built and tested using version 13 of the XMOS tool set.  Build or functionality issues could be experienced with any other version.
+This release is built and tested using version 12 of the XMOS tool set.  Build or functionality issues could be experienced with any other version.
 
 This repository contains applications (or instances) of the XMOS USB Audio Reference Design framework.  These applications
 typically relate to a specific board.  This repository contains the following:
@@ -29,8 +29,6 @@ typically relate to a specific board.  This repository contains the following:
 | app_usb_aud_su1      | xr-usb-audio-s1          | XMOS XS1-U8 USB Audio Reference Design (prototype only)    |
 +----------------------+--------------------------+------------------------------------------------------------+
 | app_usb_aud_xk_u8_2c | xk-usb-audio-u8-2c       | XMOS XS1-U8 Multi-Function Audio Board                     |
-+----------------------+--------------------------+------------------------------------------------------------+
-| app_usb_aud_u16      | xp-skc-u16 & xa-sk-audio | XMOS XS1-U16 sliceKIT Core Board & Audio Slice             |
 +----------------------+--------------------------+------------------------------------------------------------+
 
 Please refer to individual README files in these apps for more detailed information.

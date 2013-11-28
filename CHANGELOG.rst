@@ -24,6 +24,7 @@ Firmware
     - CHANGE:     Device reboot code (for DFU) made more generic for multi-tile systems 
     - CHANGE:     DFU code now erases all upgrade images found, rather than just the first one 
     - CHANGE:     ports.h file no longer required.  Please declare custom ports in your own files
+    - CHANGE:     Define based warnings in devicedefines.h moved to warnings.xc to avoid multiple warnings being issued
     - RESOLVED:   (Major) ADC port initialization did not operate as expected at 384kHz
     - RESOLVED:   (Major) Resolved a compatibility issue with streaming on Intel USB 3.0 xHCI host controller
     - RESOLVED:   (Major) Added defence against malformed Audio Class 1.0 packets as experienced on some Win 8.0 hosts. Previously this would cause an exception (Issue fixed in Win 8.1)

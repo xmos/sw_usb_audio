@@ -42,10 +42,11 @@ void handle_switch_request(in port p_sw)
 void AudioHwInit(chanend ?c_codec)
 {
     unsigned x;
+#ifdef SW_INT_HANDLER
     unsigned curSwVal;
     timer t;
     unsigned time;
-    int count = 0;
+#endif
 
     port32A_lock_peek(x);
     
@@ -121,7 +122,6 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
     timer t;
     unsigned time;
     unsigned tmp;
-    int codec_dev_id;
     unsigned char data[] = {0, 0};
 
     port32A_lock_peek(tmp);
