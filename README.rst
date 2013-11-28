@@ -14,7 +14,7 @@ Please see CHANGELOG.rst for detailed change listing.
 
 For full software documentation is not yet available for this releaseplease see the USB Audio Software Design Guide document available from www.xmos.com.
 
-This release is built and tested using version 12 of the XMOS tool set.  Build or functionality issues could be experienced with any other version.
+This release is built and tested using version 13 of the XMOS tool set.  Build or functionality issues could be experienced with any other version.
 
 This repository contains applications (or instances) of the XMOS USB Audio Reference Design framework.  These applications
 typically relate to a specific board.  This repository contains the following:
