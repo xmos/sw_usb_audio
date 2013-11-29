@@ -119,13 +119,13 @@ void AudioHwInit(chanend ?c_codec)
     return;
 }
 
+/* Core to generate 300Hz reference to CS2300 PLL */
 void genclock()
 {
     timer t;
     unsigned time;
     unsigned pinVal = 0;
 
-    #warning RM ME!!
     t :> time;
     while(1)
     {
@@ -134,7 +134,6 @@ void genclock()
         time += 166667;
         t when timerafter(time) :> void; 
     }
-
 }
 
 

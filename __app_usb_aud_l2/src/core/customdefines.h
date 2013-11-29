@@ -6,6 +6,7 @@
 #ifndef _CUSTOMDEFINES_H_
 #define _CUSTOMDEFINES_H_
 
+#include "user_main.h"
 
 #define AUDIO_IO_TILE 1
 
