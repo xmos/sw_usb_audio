@@ -7,6 +7,10 @@ XMOS USB Audio 2.0 Reference Design Change Log
 Firmware
 ========
 
+6.2.1:
+    - ADDED:      DEFAULT_MCLK_FREQ define added
+    - RESOLVED:   Resolved an issue where the device could become unresonsive when a file of an unsupported frequency is played in DoP mode
+
 6.2.0:
     - ADDED:      Application for XK-USB-AUDIO-U8-2C board
     - ADDED:      PRODUCT_STR define for Product Strings
