@@ -9,7 +9,8 @@ Firmware
 
 6.2.1:
     - ADDED:      DEFAULT_MCLK_FREQ define added
-    - RESOLVED:   Resolved an issue where the device could become unresonsive when a file of an unsupported frequency is played in DoP mode
+    - RESOLVED:   NATIVE_DSD define can now be more easily disable while keeping DoP mode enabled
+    - RESOLVED:   Resolved an issue where the device could become unresponsive if the host plays a steam in a invalid DoP frequency
 
 6.2.0:
     - ADDED:      Application for XK-USB-AUDIO-U8-2C board
