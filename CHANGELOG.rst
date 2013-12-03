@@ -9,7 +9,7 @@ Firmware
 
 6.2.1:
     - ADDED:      DEFAULT_MCLK_FREQ define added
-    - RESOLVED:   NATIVE_DSD define can now be more easily disable while keeping DoP mode enabled
+    - RESOLVED:   Native DSD now easily disabled whilst keeping DoP mode enabled (setting NATIVE_DSD to 0 with DSD_CHANS_DAC > 0)
     - RESOLVED:   Resolved an issue where the device could become unresponsive if the host plays a steam in a invalid DoP frequency
 
 6.2.0:
