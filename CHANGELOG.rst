@@ -1,19 +1,24 @@
 XMOS USB Audio 2.0 Reference Design Change Log
 ..............................................
 
-:Maintainer: Ross Owen
+:Maintainer: Ross Owen, XMOS Limited
 :Description: USB Audio Reference Designs
 
 Firmware
 ========
 
-6.3.0 (alpha):
+6.3.0:
     - ADDED:      Application for XP-SKC-U16 board with XA-SK-AUDIO slice (app_usb_aud_xkc_u16)
     - ADDED:      Support for Apple MFi build configurations
     - ADDED:      USER_MAIN_DECLARATIONS and USER_MAIN_CORES defines to allow easy addition of custom cores
     - CHANGE:     Access to shared GPIO port (typically 32A) now guarded with a lock for safety
     - CHANGE:     Re-organised main() to call two functions with aim to improve readability
     - CHANGE:     Moved to XMOS toolchain version 13
+
+6.2.1:
+    - ADDED:      DEFAULT_MCLK_FREQ define added
+    - RESOLVED:   Native DSD now easily disabled whilst keeping DoP mode enabled (setting NATIVE_DSD to 0 with DSD_CHANS_DAC > 0)
+    - RESOLVED:   Resolved an issue where the device could become unresponsive if the host outputs a stream with an invalid DoP frequency
 
 6.2.0:
     - ADDED:      Application for XK-USB-AUDIO-U8-2C board

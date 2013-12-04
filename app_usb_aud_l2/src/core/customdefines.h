@@ -8,49 +8,26 @@
 
 #define AUDIO_IO_TILE 1
 
-#include "user_main.h"
-
 /***** Device configuration option defines.  Build can be customised but changing these defines  *****/
 
 /* Audio Class Version */
-#define AUDIO_CLASS                 (2)
-
-#define FULL_SPEED_AUDIO_2          (1)
+#define AUDIO_CLASS 2
+//#define AUDIO_CLASS_FALLBACK 1
+#define FULL_SPEED_AUDIO_2 1
 
 /* Defines relating to channel count and channel arrangement (0 for disable) */
 /* Number of USB streaming channels */
-#define NUM_USB_CHAN_IN             (10)               /* Device to Host */
-#define NUM_USB_CHAN_OUT            (10)               /* Host to Device */
-
-/* Number of IS2 chans to DAC..*/
-#define I2S_CHANS_DAC               (8)
-
-/* Number of I2S chans from ADC */
-#define I2S_CHANS_ADC               (6)
+#define NUM_USB_CHAN_IN             (4)               /* Device to Host */
+#define NUM_USB_CHAN_OUT            (4)               /* Host to Device */
 
 /* Define to Enable S/SPDIF output.  Note if OUTPUT is not defined, this just outputs 0 samples */
-#ifndef SPDIF
-#define SPDIF                       1
+#if defined(SPDIF) && (SPDIF==0)
+#undef SPDIF
+#else
+// Enabled by default
+#define SPDIF	           0
 #endif
 
-/* SPDIF and ADAT first input chan indices */
-#define SPDIF_RX_INDEX              (6)
-#define ADAT_RX_INDEX               (8)
-#define SPDIF_TX_INDEX              (8)
-
-
-/* Master clock defines (in Hz) */
-#define MCLK_441                    (256*44100)      /* 44.1, 88.2 etc */
-#define MCLK_48                     (256*48000)      /* 48, 96 etc */
-
-/* Maximum frequency device runs at */
-#define MAX_FREQ                    (192000)
-
-/***** Defines relating to USB descriptors etc *****/
-#define PID_AUDIO_1                 (0x0005)
-#define PID_AUDIO_2                 (0x0004)
-
-#if 0
 /* Define to enable S/PDIF Rx.  Note, this also effects glock gen thread and clock unit descriptors */
 #if defined(SPDIF_RX) && (SPDIF_RX==0)
 #undef SPDIF_RX
@@ -66,11 +43,9 @@
 // Enabled by default
 #define ADAT_RX           0
 #endif
-#endif
 
 #define SELF_POWERED 1
 
-#if 0
 /* Define for CODEC operation mode (i.e. slave/master)*/
 #if defined(CODEC_SLAVE) && (CODEC_SLAVE==0)
 #undef CODEC_SLAVE
@@ -78,7 +53,32 @@
 // Enabled by default
 #define CODEC_SLAVE        1
 #endif
+
+#define DFU 1
+
+/* Define to Enable use of custom flash device for DFU interface */
+#if defined(DFU_CUSTOM_FLASH_DEVICE) && (DFU_CUSTOM_FLASH_DEVICE==0)
+#undef DFU_CUSTOM_FLASH_DEVICE
+#else
+// Disabled by default
+//#define DFU_CUSTOM_FLASH_DEVICE
 #endif
+
+/* Define for enabling MIDI input/output */
+//#if defined(MIDI) && (MIDI==0)
+//#undef MIDI
+//#else
+/// Enabled by default
+//#define MIDI         1
+//#endif
+
+/* Define for enabling mixer interface */
+//#if defined(MIXER) && (MIXER==0)
+#undef MIXER
+//#else
+// Enabled by default
+//#define MIXER
+//#endif
 
 #ifndef MIN_VOLUME
 /* The minimum volume setting above -inf. This is a signed 8.8 fixed point
@@ -122,7 +122,41 @@
 #endif
 
 
-/* SPI Spec for DFU */
+
+/* Number of IS2 chans to DAC..*/
+#define I2S_CHANS_DAC               (0)
+
+/* Number of I2S chans from ADC */
+#define I2S_CHANS_ADC               (4)
+
+
+/* SPDIF and ADAT first input chan indices */
+#define SPDIF_RX_INDEX              (6)
+#define ADAT_RX_INDEX               (8)
+#define SPDIF_TX_INDEX              (8)
+
+
+/* Master clock defines (in Hz) */
+#define MCLK_441                 (512*44100)      /* 44.1, 88.2 etc */
+#define MCLK_48                  (512*48000)      /* 48, 96 etc */
+
+/* Maximum frequency device runs at */
+#define MAX_FREQ                 (192000)
+
+/* Default frequency device reports as running at */
+#define DEFAULT_FREQ             (MAX_FREQ)
+
+/***** Defines relating to USB descriptors etc *****/
+#define VENDOR_STR				 "XMOS "
+#define VENDOR_ID                (0x20B1)        /* XMOS VID */
+#define PID_AUDIO_1              (0x0005)
+#define PID_AUDIO_2              (0x0004)
+#ifndef BCD_DEVICE
+#define BCD_DEVICE               (0x0530)        /* Device release number in BCD: 0xJJMN
+* JJ: Major, M: Minor, N: Sub-minor */
+#endif
+
+#ifdef DFU_CUSTOM_FLASH_DEVICE
 #define DFU_FLASH_DEVICE \
 { \
 ATMEL_AT25FS010, \
@@ -172,3 +206,5 @@ SECTOR_LAYOUT_REGULAR,  /* sane sectors */ \
 //#define MAX_MIX_OUTPUTS             0
 
 
+#endif
+>>>>>>> master:__app_usb_aud_l2/src/core/customdefines.h
