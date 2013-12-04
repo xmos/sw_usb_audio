@@ -1,2 +1,4 @@
-#define IAP1 1
-#define IAP2 0
+#include "devicedefines.h"
+
+#define IAP1 0
+#define IAP2 1

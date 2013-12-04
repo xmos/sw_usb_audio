@@ -88,18 +88,6 @@
 /***** Defines relating to iOS identification *****/
 #define ACCESSORY_MODEL_NUMBER      "XK-USB-AUDIO-U8-2C"
 #define ACCESSORY_HARDWARE_VERSION  {1, 1, 0}
-#define ACCESSORY_FIRMWARE_VERSION  {XMOS_USB_AUD_APP_MAJOR_VERSION, XMOS_USB_AUD_APP_MINOR_VERSION, XMOS_USB_AUD_APP_POINT_VERSION}
-#define ACCESSORY_USB_TRANS_ID      0xCAFE // Unsigned short
-#define ACCESSORY_USB_TRANS_PURPOSE "iAP2 and Digital Audio"
-
-/***** Defines relating to iOS accessory power requirements *****/
-//FIXME should ACCESSORY_POWER_SOURCE be determined by SELF_POWERED?
-#define ACCESSORY_POWER_SOURCE 2 // Self Powered
-#define ACCESSORY_CURRENT_DRAW 0 // mA
-
-/***** Defines relating to iOS accessory language *****/
-#define ACCESSORY_DEFAULT_LANGUAGE "en"
-#define ACCESSORY_SUPPORTED_LANGUAGES "en"
 
 /***** Defines relating to USB descriptors etc *****/
 //:usb_defs
