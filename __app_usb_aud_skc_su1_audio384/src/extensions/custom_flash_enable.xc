@@ -11,7 +11,7 @@ void DFUCustomFlashEnable()
 
     x = p_gpio_peek();
     x &= (~P_GPIO_SS_EN_CTRL);
-    p_gpio_out(x); 
+    p_gpio_out(x);
 }
 
 /* Any code required to disable SPI flash access */
@@ -20,6 +20,6 @@ void DFUCustomFlashDisable()
     int x;
 
     x = p_gpio_peek();
-    x |= P_GPIO_SS_EN_CTRL; 
+    x |= P_GPIO_SS_EN_CTRL;
     p_gpio_out(x);
 }

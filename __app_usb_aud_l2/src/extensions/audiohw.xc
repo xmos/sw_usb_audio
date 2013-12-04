@@ -6,7 +6,7 @@
 #include "i2c.h"
 
 /* I2C ports */
-on tile[AUDIO_IO_TILE]: struct r_i2c i2cPorts = {PORT_I2C_SCL, PORT_I2C_SDA}; 
+on tile[AUDIO_IO_TILE]: struct r_i2c i2cPorts = {PORT_I2C_SCL, PORT_I2C_SDA};
 
 /* Reference clock to external fractional-N clock multiplier */
 on tile[AUDIO_IO_TILE]: out port p_pll_ref    = PORT_PLL_REF;
@@ -51,7 +51,7 @@ void PllInit(void)
 void PllMult(unsigned mult)
 {
     unsigned char data[1] = {0};
-	
+
     /* Multiplier is translated to 20.12 format by shifting left by 12 */
     CS2300_REGWRITE(CS2300_RATIO_1, (mult >> 12) & 0xFF);
     CS2300_REGWRITE(CS2300_RATIO_2, (mult >> 4) & 0xFF);
@@ -67,7 +67,7 @@ void PllMult(unsigned mult)
 
 
 /* CODEC initialisation for Cirrus Logic CS42448 */
-void AudioHwInit(chanend ?c_codec) 
+void AudioHwInit(chanend ?c_codec)
 {
     unsigned char tmp[1];
 
@@ -79,14 +79,14 @@ void AudioHwInit(chanend ?c_codec)
 #endif
 
     i2c_master_init(i2cPorts);
-    
+
     PllInit();
 
     /* Setup PLL to output default mclk freq */
     PllMult(DEFAULT_MCLK_FREQ/300);
 
     /* Power Control Register (Address 02h) */
-    /* 0    Power Down                           (PDN)   = 1 Enable, 0 Disable */  
+    /* 0    Power Down                           (PDN)   = 1 Enable, 0 Disable */
     /* 1:4  Power Down DAC Pairs            (PDN_DACX)   = 1 Enable, 0 Disable */
     /* 5:7  Power Down ADC Pairs            (PDN_ADCX)   = 1 Enable, 0 Disable */
     tmp[0] = 0x01;
@@ -132,24 +132,24 @@ void genclock()
         p_pll_ref <: pinVal;
         pinVal = ~pinVal;
         time += 166667;
-        t when timerafter(time) :> void; 
+        t when timerafter(time) :> void;
     }
 
 }
 
 
-/* 
- * Configures the Audio Hardware  for the required sample frequency.  
+/*
+ * Configures the Audio Hardware  for the required sample frequency.
  *
- * CODEC configuration for sample frequency change for Cirrus Logic CS42448 
+ * CODEC configuration for sample frequency change for Cirrus Logic CS42448
  */
 void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned dsdMode)
 {
     unsigned char tmp[1];
- 
+
     /* For L2 reference design configure external fractional-n clock multiplier for 300Hz -> mClkFreq */
     PllMult(mClk/300);
-    
+
     /* Functional Mode (Address 03h) */
     /* 0:1  DAC Functional Mode                    Slave:Auto-detect samp rate      11 */
     /* 2:3  ADC Functional Mode                    Slave:Auto -detect samp rate     11 */

@@ -1,4 +1,4 @@
-/** 
+/**
  * @file       customdefines.h
  * @brief      Defines relating to device configuration and customisation.
  * @author     Ross Owen, XMOS Limited
@@ -7,11 +7,11 @@
 #define _CUSTOMDEFINES_H_
 
 /*
- * Device configuration option defines.  Build can be customised but changing and adding defines here 
+ * Device configuration option defines.  Build can be customised but changing and adding defines here
  *
- * Note, we check if they are already defined in Makefile 
+ * Note, we check if they are already defined in Makefile
  */
-/* Defines relating to channel count and channel arrangement (Set to 0 for disable) */ 
+/* Defines relating to channel count and channel arrangement (Set to 0 for disable) */
 //:audio_defs
 /* Number of USB streaming channels - Default is 4 in 4 out */
 #ifndef NUM_USB_CHAN_IN
@@ -21,7 +21,7 @@
 #define NUM_USB_CHAN_OUT  (2)         /* Host to Device */
 #endif
 
-#ifndef SPDIF 
+#ifndef SPDIF
 #define SPDIF 0
 #endif
 
@@ -47,7 +47,7 @@
 
 #define PRODUCT_STR "xCORE USB Audio 2.0 - 384kHz"
 
-/* Define to use custom flash part not in tools by default 
+/* Define to use custom flash part not in tools by default
  * Device is M25P40 */
 #define DFU_FLASH_DEVICE \
 {    \

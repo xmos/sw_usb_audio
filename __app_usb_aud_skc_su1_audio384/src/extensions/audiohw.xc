@@ -34,12 +34,12 @@ void PllMult(unsigned inputClk, unsigned outputClk)
 {
     unsigned char data[] = {0, 0};
     float mult = 0;
-    unsigned umult = 0;   
+    unsigned umult = 0;
 
     mult = (float) ((float)outputClk / (float) inputClk) * ((float)1048576);/* 2 ^ 20 */
 
     umult = (unsigned) mult;
-    
+
     /* Multiplier is translated to 20.12 format */
     CS2200_REGWRITE(CS2200_RATIO_4, (umult) & 0xFF);
     CS2200_REGWRITE(CS2200_RATIO_3, (umult >> 8) & 0xFF);
@@ -47,12 +47,12 @@ void PllMult(unsigned inputClk, unsigned outputClk)
     CS2200_REGWRITE(CS2200_RATIO_1, (umult>>24));
 }
 
-void AudioHwInit(chanend ?c_codec) 
+void AudioHwInit(chanend ?c_codec)
 {
     unsigned char data[] = {0, 0};
-    
+
     i2c_master_init(p_i2c);
-    
+
     CS2200_REGWRITE(CS2200_FUNC_CONFIG_1, 0b00001000);
     CS2200_REGWRITE(CS2200_FUNC_CONFIG_2, 0b00010000);
     CS2200_REGWRITE(CS2200_DEVICE_CONFIG_1, 0b00000001);
@@ -60,7 +60,7 @@ void AudioHwInit(chanend ?c_codec)
     CS2200_REGWRITE(CS2200_GLOBAL_CONFIG, 0b00000001);
 
     PllMult(INPUT_CLOCK_FREQ, DEFAULT_MCLK_FREQ);
- 
+
     return;
 }
 //:
@@ -73,7 +73,7 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
     unsigned time;
     unsigned tmp;
     int codec_dev_id;
- 
+
     /* Configure master clock to required rate */
     PllMult(INPUT_CLOCK_FREQ, mClk);
 
