@@ -6,8 +6,6 @@
 
 #include "devicedefines.h"
 #include "i2c.h"
-#include "p_gpio.h"
-#include "p_gpio_defines.h"
 
 on stdcore[0] : out port p_dac_cfg  = XS1_PORT_4C;
 on stdcore[0] : out port p_gpio     = XS1_PORT_32A;
