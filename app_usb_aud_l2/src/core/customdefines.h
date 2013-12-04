@@ -207,4 +207,3 @@ SECTOR_LAYOUT_REGULAR,  /* sane sectors */ \
 
 
 #endif
->>>>>>> master:__app_usb_aud_l2/src/core/customdefines.h
