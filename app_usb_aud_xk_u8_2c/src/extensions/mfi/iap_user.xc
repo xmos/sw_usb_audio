@@ -1,4 +1,6 @@
+#ifdef IAP
 #include "iap_user.h"
+#endif
 #include "gpio_defines.h"
 #include "gpio_access.h"
 
