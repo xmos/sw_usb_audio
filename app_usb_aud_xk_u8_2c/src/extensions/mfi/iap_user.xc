@@ -1,3 +1,4 @@
+#include "iap_user.h"
 #include "gpio_defines.h"
 #include "gpio_access.h"
 
