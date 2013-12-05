@@ -9,10 +9,11 @@ Firmware
 
 6.3.0:
     - ADDED:      Application for XP-SKC-U16 board with XA-SK-AUDIO slice (app_usb_aud_xkc_u16)
-    - ADDED:      Support for Apple MFi build configurations
-    - ADDED:      USER_MAIN_DECLARATIONS and USER_MAIN_CORES defines to allow easy addition of custom cores
-    - CHANGE:     Access to shared GPIO port (typically 32A) now guarded with a lock for safety
-    - CHANGE:     Re-organised main() to call two functions with aim to improve readability
+    - ADDED:      Reinstated application for XR-USB-AUDIO-2.0-MC board (app_usb_aud_l2)
+    - ADDED:      Support for Apple MFi build configurations (see IAP define)
+    - ADDED:      USER_MAIN_DECLARATIONS and USER_MAIN_CORES defines in main for easy addition of custom cores
+    - CHANGE:     Access to shared GPIO port (typically 32A) in app code now guarded with a lock for safety
+    - CHANGE:     Re-organised main() to call two functions with the aim to improve readability
     - CHANGE:     Moved to XMOS toolchain version 13
 
 6.2.1:
