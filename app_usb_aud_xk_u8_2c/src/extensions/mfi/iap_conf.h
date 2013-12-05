@@ -4,3 +4,6 @@
 /***** Defines relating to iOS identification *****/
 #define ACCESSORY_MODEL_NUMBER      "XK-USB-AUDIO-U8-2C"
 #define ACCESSORY_HARDWARE_VERSION  {1, 1, 0}
+
+/* Include global device configuration defines */
+#include "devicedefines.h"

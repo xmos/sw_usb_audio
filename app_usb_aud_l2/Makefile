@@ -15,6 +15,10 @@ BUILD_FLAGS     = -DAUDIO_2 -DFLASH_MAX_UPGRADE_SIZE=64*1024 -fcomment-asm -Xmap
 XCC_FLAGS_2ioxx = $(BUILD_FLAGS) -DSPDIF=0
 INCLUDE_ONLY_IN_2ioxx =  
 
+# Audio Class 2, Input, Output, No MIDI, SPDIF
+XCC_FLAGS_2ioxs = $(BUILD_FLAGS)
+INCLUDE_ONLY_IN_2ioxs = 
+
 # The USED_MODULES variable lists other module used by the application. These
 # modules will extend the SOURCE_DIRS, INCLUDE_DIRS and LIB_DIRS variables. 
 # Modules are expected to be in the directory above the BASE_DIR directory.
