@@ -29,6 +29,14 @@
 #define SPDIF	           1
 #endif
 
+/* Enable Mixer Core(s) */
+#ifndef MIXER
+#define MIXER              1
+#endif
+
+/* Disable mixing - mixer core used for volume only */
+#define MAX_MIX_COUNT      0
+
 /* Device is self powered (not USB bus powered */
 #define SELF_POWERED       1
 
