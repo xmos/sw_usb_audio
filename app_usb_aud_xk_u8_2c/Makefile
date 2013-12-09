@@ -77,6 +77,10 @@ INCLUDE_ONLY_IN_2xoxx_mfi =
 XCC_FLAGS_2xoxx_mfi_lp = $(BUILD_FLAGS) -DIAP=1 -DNUM_USB_CHAN_IN=0 -DI2S_CHANS_ADC=0 -DSPDIF=0
 INCLUDE_ONLY_IN_2xoxx_mfi_lp = ./src/extensions/powersave
 
+#Audio Class 2, iAP enabled, Input, Output, MIDI, No SPDIF
+XCC_FLAGS_2iomx_mfi = $(BUILD_FLAGS) -DIAP=1 -DMIDI=1 -DSPDIF=0
+INCLUDE_ONLY_IN_2iomx_mfi = 
+
 include mfi.mk
 
 endif
