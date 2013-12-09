@@ -1,0 +1,6 @@
+#define DEBUG_PRINT_ENABLE_COPRO          0
+
+#define DEBUG_PRINT_ENABLE_IAP            0
+#define DEBUG_PRINT_ENABLE_IAP1           0
+#define DEBUG_PRINT_ENABLE_IAP2_LINK      0
+#define DEBUG_PRINT_ENABLE_IAP2_CTRL_SESS 0
