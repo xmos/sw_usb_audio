@@ -7,15 +7,21 @@ XMOS USB Audio 2.0 Reference Design Change Log
 Firmware
 ========
 
-6.3.0:
-    - ADDED:      Application for XP-SKC-U16 board with XA-SK-AUDIO slice (app_usb_aud_xkc_u16)
+6.3.1:
     - ADDED:      Reinstated application for XR-USB-AUDIO-2.0-MC board (app_usb_aud_l2)
     - ADDED:      Support for Apple MFi build configurations (see IAP define)
     - ADDED:      USER_MAIN_DECLARATIONS and USER_MAIN_CORES defines in main for easy addition of custom cores
     - CHANGE:     Access to shared GPIO port (typically 32A) in app code now guarded with a lock for safety
     - CHANGE:     Re-organised main() to call two functions with the aim to improve readability
-    - CHANGE:     Moved to XMOS toolchain version 13
+    - CHANGE:     Event queue logic in iAP/MIDI now in XC module-queue such that it can be inlined (code-size saving)
+    - CHANGE:     Various functions now marked static to encourage inlining, saving around 200 bytes of code-size
+    - CHANGE:     Removed redundant MIDI buffering code from previous buffering scheme
+    - CHANGE:     Some tidy of String descriptors table and related defines
 
+6.3.0:
+    - ADDED:      Application for XP-SKC-U16 board with XA-SK-AUDIO slice (app_usb_aud_xkc_u16)
+    - CHANGE:     Moved to XMOS toolchain version 13
+   
 6.2.1:
     - ADDED:      DEFAULT_MCLK_FREQ define added
     - RESOLVED:   Native DSD now easily disabled whilst keeping DoP mode enabled (setting NATIVE_DSD to 0 with DSD_CHANS_DAC > 0)
