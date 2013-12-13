@@ -39,7 +39,7 @@ The app_usb_aud_xk_u8_2c application is designed to run on the XMOS Multi-Functi
 
 - Two LED's for software use
 
-- Support for Apple devices (MFI licensees only - please contact XMOS)
+- Support for operation with Apple devices (MFI licensees only - please contact XMOS)
 
 Note, DSD requires driver and/or player support.
 

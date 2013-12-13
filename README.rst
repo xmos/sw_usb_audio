@@ -76,7 +76,7 @@ Key features of the various applications in this repository are as follow.  Plea
 
 - Simple playback controls via Human Interface Device (HID)
 
-- Support for Apple devices (MFI licensees only - please contact XMOS) 
+- Support for operation with Apple devices (MFI licensees only - please contact XMOS) 
 
 Note, not all features may be supported at all sample frequencies, simultaneously or on all devices.  Some features also require specific host driver support.
 
