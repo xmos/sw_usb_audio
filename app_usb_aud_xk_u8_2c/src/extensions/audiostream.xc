@@ -20,7 +20,7 @@ void UserAudioStreamStart(void)
     unsigned x;
 
     port32A_lock_peek(x);
-        
+
     x |= P_GPIO_LEDB;
 
     port32A_out_unlock(x);
@@ -38,8 +38,8 @@ void UserAudioStreamStop(void)
     unsigned x;
 
     port32A_lock_peek(x);
-        
+
     x &= (~P_GPIO_LEDB);
-    
+
     port32A_out_unlock(x);
 }

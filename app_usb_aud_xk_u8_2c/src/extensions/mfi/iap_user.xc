@@ -9,11 +9,11 @@ void SelectUSBDock(void)
 {
     unsigned tmp;
     port32A_lock_peek(tmp);
-    
+
     tmp |= P_GPIO_USB_SEL1;     // Lightning connector on XA-SK-USB-BLC, USB A connector on XA-SK-USB-ABC
     tmp &= ~P_GPIO_VBUS_OUT_EN; // Enable 5V charge output to Apple device (5V active low)
 
-    /* Output to port */  
+    /* Output to port */
     port32A_out_unlock(tmp);
 }
 
@@ -22,11 +22,11 @@ void SelectUSBPc(void)
 {
     unsigned tmp;
     port32A_lock_peek(tmp);
-    
+
     tmp &= ~P_GPIO_USB_SEL1;   // USB B connector on XA-SK-USB-BLC and XA-SK-USB-ABC
     tmp |= P_GPIO_VBUS_OUT_EN; // Disable 5V charge output to Apple device (5V active low)
 
-    /* Output to port */  
+    /* Output to port */
     port32A_out_unlock(tmp);
 }
 
@@ -37,6 +37,6 @@ unsigned GetIDeviceDetect(void)
 {
     unsigned tmp = 0;
     p_sw :> tmp;
-    
+
     return tmp & P_GPI_DEVDET_MASK;
 }

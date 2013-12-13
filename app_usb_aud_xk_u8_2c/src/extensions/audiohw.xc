@@ -49,7 +49,7 @@ void AudioHwInit(chanend ?c_codec)
 #endif
 
     port32A_lock_peek(x);
-    
+
     x |= (P_GPIO_5VA_EN | P_GPIO_SS_EN_CTRL);
 
     port32A_out_unlock(x);
@@ -109,7 +109,7 @@ void AudioHwInit(chanend ?c_codec)
 #define DAC_REG_ADDR_MODE_CTRL3        0x06
 
 #define DAC_REGWRITE(reg, val) {data[0] = val; i2c_shared_master_write_reg(DAC_I2C_DEV_ADDR, reg, data, 1);}
- 
+
 #define DAC_REGREAD(reg, val)  {i2c_shared_master_read_reg(DAC_I2C_DEV_ADDR, reg, val, 1);}
 
 //:codec_config
@@ -125,8 +125,8 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
     unsigned char data[] = {0, 0};
 
     port32A_lock_peek(tmp);
-      
-    /* Put DAC and ADC into reset */  
+
+    /* Put DAC and ADC into reset */
     tmp &= (~P_GPIO_RST_DAC);
     tmp &= (~P_GPIO_RST_ADC);
 
@@ -139,8 +139,8 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
     {
         tmp |= P_GPIO_MCLK_SEL;
     }
-    
-    /* Output to port */  
+
+    /* Output to port */
     port32A_out_unlock(tmp);
 
     /* Hold in reset for 2ms while waiting for MCLK to stabilise */
@@ -162,7 +162,7 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
     }
 
     tmp |= (P_GPIO_RST_DAC | P_GPIO_RST_ADC);
-    
+
     port32A_out_unlock(tmp);
 
     /* Give the DAC a little time to settle down after reset */

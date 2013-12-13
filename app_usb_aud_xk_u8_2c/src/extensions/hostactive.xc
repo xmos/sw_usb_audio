@@ -10,7 +10,7 @@ void UserHostActive(int active)
     if(active)
     {
         port32A_lock_peek(x);
-        
+
         x |= P_GPIO_LEDA;
 
         port32A_out_unlock(x);
@@ -18,7 +18,7 @@ void UserHostActive(int active)
     else
     {
         port32A_lock_peek(x);
-        
+
         x &= (~P_GPIO_LEDA);
 
         port32A_out_unlock(x);
