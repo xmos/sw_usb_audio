@@ -25,22 +25,23 @@
         <version>1.0.1beta1</version>
     </dependency>
     <dependency repo = "sc_spdif">
-        <githash>7042305acdb0df5351cf31e65ead4b35b07d6c5b</githash>
+        <githash>102b364d54e38f1ab6009d98d5b5e2972c4f3230</githash>
         <uri>git://github.com/xcore/sc_spdif</uri>
-        <version>1.3.0rc4</version>
+        <version>1.3.1beta1</version>
     </dependency>
     <dependency repo = "sc_usb_audio">
-        <githash>7a6e9acf96a3ae493ad7bd99491bef465b83f596</githash>
+        <githash>dd945224d30b65ab3401491705c2b8647ca34a90</githash>
         <uri>git://git/apps/sc_usb_audio</uri>
     </dependency>
     <dependency repo = "sc_xud">
-        <githash>34ca1df26af396eb896d8465ebd89e37d680e300</githash>
+        <githash>69dc46e81ab0cf19c60a170b31167b732836079f</githash>
         <uri>git://git/apps/sc_xud</uri>
         <version>1.0.1beta3</version>
     </dependency>
     <dependency repo = "sc_i2c">
-        <githash>06b14651f1fb9d47de0fbab73604202ec5b93ad3</githash>
+        <githash>6fe8660a95005478d125ab607a0cc25edc706236</githash>
         <uri>git://github.com/xcore/sc_i2c</uri>
+        <version>2.3.0beta0</version>
     </dependency>
     <dependency repo = "sc_usb_device">
         <githash>e4a781dfe42bf669d45ae04264216025d354e55c</githash>
@@ -48,9 +49,9 @@
         <version>1.0.2beta0</version>
     </dependency>
     <dependency repo = "sc_util">
-        <githash>1ed35a50e2d9cc98fcff4c7cc3fb399385ec5d70</githash>
+        <githash>d0531d7c68ab67334582c324828e36d617baf8b3</githash>
         <uri>https://github.com/xcore/sc_util.git</uri>
-        <version>1.0.1rc0</version>
+        <version>1.0.3rc0</version>
     </dependency>
     <description>USB Audio Applications</description>
     <exclude_dir>app_usb_aud_l2</exclude_dir>
@@ -118,7 +119,7 @@
     <release parenthash = "1d0954793ea542558da2997b2d5e98201f67cf84" version = "6.2.0beta8" githash = "23484fcf1fc05146844476fad5f6b1ddaed986ad"></release>
     <release parenthash = "23ffcdf0e22ab2bcac8342681c32c21c836f72cd" version = "6.2.0beta9" githash = "521eada17fa15868c5c2d2831e40da758eead62b"></release>
     <release parenthash = "74056e00e01a6c4e56ba401660a8a6dd7a63b4eb" version = "6.2.0beta10" githash = "26612ebb43e6bd6ec774778d5ff0d6ede8af48c2"></release>
-    <release parenthash = "425244d5ce47e10588f3d26bc6c79646d6b386e1" version = "6.2.1beta0"></release>
+    <release parenthash = "425244d5ce47e10588f3d26bc6c79646d6b386e1" version = "6.2.1beta0" githash = "7a472ebceea3b9a091235da3f33b9455e0ccb19c"></release>
     <release parenthash = "318d2ad66942778fd5b50bcc1e1409f20da36b2b" version = "6.3.0alpha0" githash = "6f8c75568a4918e0301187ba1e0a3be655dd2e3c"></release>
     <release parenthash = "f70257b9a791560a3dd662b374a0e70995ca6da6" version = "6.3.0alpha1" githash = "b7e6fc3a49c8138e52840b7ed3419df5520e1e0e"></release>
     <subpartnumber>XM-002775-SM</subpartnumber>
