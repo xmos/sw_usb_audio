@@ -5,14 +5,15 @@ XMOS USB Audio 2.0 Reference Design README
 :Maintainer: Ross Owen
 :Description: USB Audio Applications
 
+Please note, Alpha and Beta releases may not accurately reflect the final release and documentation maybe not be complete. These releases are not suitable for a production context, and are provided for early evaluation purposes only.
 
-Please note, Alpha releases do not accurately reflect the final release and documentation is not complete. These releases are not suitable for a production context, and are provided for early evaluation purposes only.
+Welcome to version 6 of the XMOS USB Audio Software Framework.
 
-The main feature of version 6 over previous versions of the XMOS USB Audio software framework and associated applications is the added support for the latest U series of devices now available from XMOS.  This release supports the previous L devices, however, there is no need to update to this version unless specific issues is solved by this release.  
+The main feature of version 6 over previous versions of the XMOS USB Audio software framework and associated applications is the added support for the latest U series of devices now available from XMOS.  
 
 Please see CHANGELOG.rst for detailed change listing.
 
-For full software documentation is not yet available for this releaseplease see the USB Audio Software Design Guide document available from www.xmos.com.
+For full software documentation please see the USB Audio Software Design Guide document available from www.xmos.com.
 
 This release is built and tested using version 13 of the XMOS tool set.  Build or functionality issues could be experienced with any other version.
 
@@ -30,6 +31,8 @@ typically relate to a specific board.  This repository contains the following:
 +----------------------+--------------------------+------------------------------------------------------------+
 | app_usb_aud_xk_u8_2c | xk-usb-audio-u8-2c       | XMOS XS1-U8 Multi-Function Audio Board                     |
 +----------------------+--------------------------+------------------------------------------------------------+
+| app_usb_aud_l2       | xk-usb-audio-2.0-mc      | XMOS XS1-L16 USB USB Audio Reference Design                |
++----------------------+--------------------------+------------------------------------------------------------+
 
 Please refer to individual README files in these apps for more detailed information.
 
@@ -42,7 +45,7 @@ Mandatory files per application include:
 Each application also contains an "extensions" folder which includes board specific extensions such as CODEC configuration etc.
 
 Additionally some options are contained in Makefiles for building multiple configurations of an application. For example 
-app_usb_aud_l1 builds a MIDI and a S/PDIF configuration.  See the USB Audio Software Design Guide for full details.
+app_usb_aud_l1 builds a MIDI and S/PDIF configurations.  See the USB Audio Software Design Guide for full details.
 
 Key Framework Features
 ======================
@@ -55,7 +58,7 @@ Key features of the various applications in this repository are as follow.  Plea
 
 - Support for the following sample frequencies: 44.1, 48, 88.2, 96, 176.4, 192, 352.8, 384kHz
 
-- Input/output master/channel volume/mute controls supported
+- Input/output channel and individual volume/mute controls supported
 
 - Field firmware upgrade compliant to the USB Device Firmware Upgrade (DFU) Class Specification
 
@@ -94,8 +97,6 @@ Constraints
 +----------------------+--------------------------------------+---------------+-----------------------------------------+
 | ADAT_TX              | ADAT output                          | Not Supported | Must be set to 0                        |                            
 +----------------------+--------------------------------------+---------------+-----------------------------------------+
-| MIXER                | Enable mixer                         | Not supported | Must be set to 0                        |
-+----------------------+--------------------------------------+---------------+-----------------------------------------+
 | SPDIF_RX             | S/DIF input                          | Not supported | Must be set to 0                        |
 +----------------------+--------------------------------------+---------------+-----------------------------------------+
 
@@ -107,13 +108,13 @@ Supported Options
 +======================+======================================+===============+=========================================+============================+==============+
 | SPDIF                | S/PDIF output                        | Supported     |                                         | 2xoxs, 2ioxs, 1ioxs, 1xoxs |              |
 +----------------------+--------------------------------------+---------------+-----------------------------------------+----------------------------+--------------+
-| NUM_USB_CHANS_IN     | Number of audio channels to host     | Supported     | Up to 4 channels                        | 2xoxs, 2ioxs, 1ioxs, 1xoxs |              |      
+| NUM_USB_CHANS_IN     | Number of audio channels to host     | Supported     | Up to 10 channels                       | 2xoxs, 2ioxs, 1ioxs, 1xoxs |              |      
 +----------------------+--------------------------------------+---------------+-----------------------------------------+----------------------------+--------------+
-| NUM_USB_CHANS_OUT    | Number of audio channels from host   | Supported     | Up to 4 channels                        | 2ioxs, 2ixxx, 1ioxs        |              |
+| NUM_USB_CHANS_OUT    | Number of audio channels from host   | Supported     | Up to 10 channels                       | 2ioxs, 2ixxx, 1ioxs        |              |
 +----------------------+--------------------------------------+---------------+-----------------------------------------+----------------------------+--------------+
-| I2S_CHANS_DAC        | Number of I2S channels to DAC(s)     | Supported     | Up to 4 channels                        | 2xoxs, 2ioxs, 1ioxs, 2xoxx |              |
+| I2S_CHANS_DAC        | Number of I2S channels to DAC(s)     | Supported     | Up to 8 channels                        | 2xoxs, 2ioxs, 1ioxs, 2xoxx |              |
 +----------------------+--------------------------------------+---------------+-----------------------------------------+----------------------------+--------------+
-| I2S_CHANS_ADC        | Number of I2S channels from ADC(s)   | Supported     | Up to 4 channels                        | 2ioxs, 2ixxx               |              |
+| I2S_CHANS_ADC        | Number of I2S channels from ADC(s)   | Supported     | Up to 6 channels                        | 2ioxs, 2ixxx               |              |
 +----------------------+--------------------------------------+---------------+-----------------------------------------+----------------------------+--------------+
 | DSD_CHANS_DAC        | Enable DSD output (DoP and Native)   | Supported     | 0 or 2                                  | 2xoxxd, 2xoxsd, 2ioxsd     | 14769, 14653 |
 +----------------------+--------------------------------------+---------------+-----------------------------------------+----------------------------+--------------+
