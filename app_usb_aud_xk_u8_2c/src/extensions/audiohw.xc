@@ -10,10 +10,16 @@
 #include "dsd_support.h"
 
 /* General Purpose Output port - various output lines such as DAC reset, LEDs etc */
-on stdcore[0] : out port p_gpo  = XS1_PORT_32A;
+on stdcore[0] : out port p_gpo   = XS1_PORT_32A;
 
 /* Input port for buttons and switch */
-on stdcore[0] : in port p_sw    = XS1_PORT_4D;
+on stdcore[0] : in port p_sw     = XS1_PORT_4D;
+
+#ifndef IAP
+/* If IAP not enabled, i2c ports not declared - still needs for DAC config */
+on tile [0] : port p_i2c_sda     = PORT_I2C_SDA;
+on tile [0] : port p_i2c_scl     = PORT_I2C_SCL;
+#endif
 
 #if defined(SW_INT_HANDLER) && defined(IAP)
 #error not currently supported
