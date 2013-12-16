@@ -15,14 +15,14 @@ sw_usb_audio Change Log
 
   * Changes to dependencies:
 
-    - sc_i2c: 2.2.1rc0 -> 2.3.0beta0
+    - sc_i2c: 2.2.1rc0 -> 2.3.0beta1
 
       + module_i2c_simple fixed to ACK correctly during multi-byte reads (all but the final byte will be now be ACKd)
       + module_i2c_simple can now be built with support to send repeated starts and retry reads and writes NACKd by slave
       + module_i2c_shared added to allow multiple logical cores to safely share a single I2C bus
       + Removed readreg() function from single_port module since it was not safe
 
-    - sc_spdif: 1.3.0rc4 -> 1.3.1beta1
+    - sc_spdif: 1.3.0rc4 -> 1.3.1beta2
 
       + Added .type and .size directives to SpdifReceive. This is required for the function to show up in xTIMEcomposer binary viewer
 

@@ -1,11 +1,11 @@
 XMOS XS1-L2 USB Audio 2.0 Reference Design (app_usb_aud_l2)
 ===========================================================
 
-:Maintainer: Ross Owen
-:Scope: Reference Design
-:Description: USB Audio for L2 USB Audio
-:Keywords: USB, Audio, L2
-:Boards: XR-USB-AUDIO-2.0-MC
+:maintainer: Ross Owen
+:scope: Reference Design
+:description: USB Audio for L2 USB Audio
+:keywords: USB, Audio, L2
+:boards: XR-USB-AUDIO-2.0-MC
 
 Overview
 ........
