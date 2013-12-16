@@ -78,7 +78,6 @@
         <version>1.0.3rc0</version>
     </dependency>
     <description>USB Audio Applications</description>
-    <exclude_dir>app_usb_aud_l2</exclude_dir>
     <include_binaries>True</include_binaries>
     <location>git://git/apps/sw_usb_audio</location>
     <name>sw_usb_audio</name>
