@@ -6,11 +6,11 @@ XMOS USB Audio 2.0 Reference Design README
 :Description: USB Audio Applications
 
 
-Please note, Alpha and Beta releases may not accurately reflect the final release and documentation maybe not be complete. These releases are not suitable for a production context, and are provided for early evaluation purposes only.
+Please note, Alpha and Beta releases may not accurately reflect the final release and documentation may not be complete. These early releases are not suitable for a production context, and are provided for evaluation purposes only.
 
 Welcome to version 6 of the XMOS USB Audio Software Framework.
 
-The main feature of version 6 over previous versions of the XMOS USB Audio software framework and associated applications is the added support for the latest U series of devices now available from XMOS.  
+The main feature of version 6 over previous versions of the XMOS USB Audio software framework and associated applications is the added support for U series devices.
 
 Please see CHANGELOG.rst for detailed change listing.
 

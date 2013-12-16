@@ -6,39 +6,30 @@
 #ifndef _CUSTOMDEFINES_H_
 #define _CUSTOMDEFINES_H_
 
-#define XMOS_USB_AUD_APP_MAJOR_VERSION 6
-#define XMOS_USB_AUD_APP_MINOR_VERSION 3
-#define XMOS_USB_AUD_APP_POINT_VERSION 1
-
 /*
  * Device configuration option defines.  Build can be customised but changing and adding defines here
  *
  * Note, we check if they are already defined in Makefile
  */
 
-/* Enable/Disable IAP - Default is IAP off */
-#ifndef IAP
-#define IAP         0
-#endif
-
 /* Enable/Disable MIDI - Default is MIDI off */
 #ifndef MIDI
-#define MIDI 		0
+#define MIDI 		       0
 #endif
 
 /* Enable/Disable SPDIF output - Default is S/PDIF on */
 #ifndef SPDIF
-#define SPDIF		1
+#define SPDIF		       1
 #endif
 
 /* Audio class version to run in - Default is 2.0 */
 #ifndef AUDIO_CLASS
-#define AUDIO_CLASS (2)
+#define AUDIO_CLASS        (2)
 #endif
 
 /* Enable/disable fall back to Audio Class 1.0 when connected to FS hub. */
 #ifndef AUDIO_CLASS_FALLBACK
-#define AUDIO_CLASS_FALLBACK 1
+#define AUDIO_CLASS_FALLBACK 0
 #endif
 
 /* Defines relating to channel count and channel arrangement (Set to 0 for disable) */
@@ -58,6 +49,11 @@
 /* Number of I2S chans from ADC */
 #ifndef I2S_CHANS_ADC
 #define I2S_CHANS_ADC     (2)
+#endif
+
+/* Enable/Disable IAP - Default is IAP off */
+#ifndef IAP
+#define IAP                0
 #endif
 
 /* Enable DFU interface, Note, requires a driver for Windows */
