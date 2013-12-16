@@ -4,7 +4,7 @@ sw_usb_audio Change Log
 6.3.1
 -----
     - ADDED:      Reinstated application for XR-USB-AUDIO-2.0-MC board (app_usb_aud_l2)
-    - ADDED:      Support for Apple MFi build configurations (see IAP define)
+    - ADDED:      Support for operation with Apple devices (MFI licensees only - please contact XMOS)
     - ADDED:      USER_MAIN_DECLARATIONS and USER_MAIN_CORES defines in main for easy addition of custom cores
     - CHANGE:     Access to shared GPIO port (typically 32A) in app code now guarded with a lock for safety
     - CHANGE:     Re-organised main() to call two functions with the aim to improve readability
