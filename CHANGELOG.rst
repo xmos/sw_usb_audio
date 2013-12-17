@@ -8,7 +8,7 @@ sw_usb_audio Change Log
     - ADDED:      USER_MAIN_DECLARATIONS and USER_MAIN_CORES defines in main for easy addition of custom cores
     - CHANGE:     Access to shared GPIO port (typically 32A) in app code now guarded with a lock for safety
     - CHANGE:     Re-organised main() to call two functions with the aim to improve readability
-    - CHANGE:     Event queue logic in iAP/MIDI now in XC module-queue such that it can be inlined (code-size saving)
+    - CHANGE:     Event queue logic in MIDI now in XC module-queue such that it can be inlined (code-size saving)
     - CHANGE:     Various functions now marked static to encourage inlining, saving around 200 bytes of code-size
     - CHANGE:     Removed redundant MIDI buffering code from previous buffering scheme
     - CHANGE:     Some tidy of String descriptors table and related defines
