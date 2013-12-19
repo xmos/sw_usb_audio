@@ -1,6 +1,12 @@
 sw_usb_audio Change Log
 =======================
 
+HEAD
+----
+    - ADDED:      SAMPLE_SUBSLOT_SIZE_HS/SAMPLE_SUBSLOT_SIZE_FS defines
+    - ADDED:      SAMPLE_BIT_RESOLUTION_HS/SAMPLE_BIT_RESOLUTION_FS defines
+    - RESOLVED:   (Minor) Fixed maxPacketSize for audio input endpoint (was hard-coded to 1024)
+
 6.3.1
 -----
     - ADDED:      Reinstated application for XR-USB-AUDIO-2.0-MC board (app_usb_aud_l2)
