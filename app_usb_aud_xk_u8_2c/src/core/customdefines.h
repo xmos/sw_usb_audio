@@ -84,8 +84,8 @@
 /***** Defines relating to USB descriptors etc *****/
 //:usb_defs
 #define VENDOR_ID          (0x20B1) /* XMOS VID */
-#define PID_AUDIO_2        (0x0008) /* XR-USB-AUDIO-U8-2C PID*/
-#define PID_AUDIO_1        (0x0009)
+#define PID_AUDIO_2        (0x000A) /* XR-USB-AUDIO-U8-2C PID*/
+#define PID_AUDIO_1        (0x000B)
 //:
 
 /* Enable/Disable example HID code */
