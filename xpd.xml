@@ -73,13 +73,13 @@
         <version>1.3.1beta2</version>
     </dependency>
     <dependency repo = "sc_usb_audio">
-        <githash>96b4360e4e6a97a2ff745366d9d0a1da4b75d507</githash>
+        <githash>70f5047e2290f0876a3a053624118935eab4156e</githash>
         <uri>git://git/apps/sc_usb_audio</uri>
     </dependency>
     <dependency repo = "sc_xud">
-        <githash>69dc46e81ab0cf19c60a170b31167b732836079f</githash>
+        <githash>3140cdbc6c10be518b076a23082b488aa7b0e3b1</githash>
         <uri>git://git/apps/sc_xud</uri>
-        <version>1.0.1beta3</version>
+        <version>1.0.2alpha1</version>
     </dependency>
     <dependency repo = "sc_i2c">
         <githash>e3829f0c0f6ae94679b31d766dd65b33b2c46b19</githash>
@@ -87,9 +87,8 @@
         <version>2.3.0beta1</version>
     </dependency>
     <dependency repo = "sc_usb_device">
-        <githash>e4a781dfe42bf669d45ae04264216025d354e55c</githash>
+        <githash>59cdc6180286110bdfa6eca50e2ce85b21cd726b</githash>
         <uri>git://git/apps/sc_usb_device</uri>
-        <version>1.0.2beta0</version>
     </dependency>
     <dependency repo = "sc_util">
         <githash>d0531d7c68ab67334582c324828e36d617baf8b3</githash>
@@ -167,7 +166,7 @@
     <release parenthash = "448c598688bf78fb7c886a468b84759eaa0d3a54" version = "6.3.1alpha0" githash = "50e418e38c98e150d1052fa4445e70b17a43f6b7"></release>
     <release parenthash = "c2f529e072402826fac68c1d0eac92fa84662029" version = "6.3.1alpha1" githash = "c96119baaa9b0104cced059faa763cbc27ffd05b"></release>
     <release parenthash = "a19af572239b033f111010da70cd7785e56c1970" version = "6.3.1alpha2" githash = "dc61adf4d4e832b34f0d97c2949f86b43e21210c"></release>
-    <release parenthash = "501e1f3652f74c4e998d2bfd77d3af0147e7ac78" version = "6.3.1alpha3"></release>
+    <release parenthash = "501e1f3652f74c4e998d2bfd77d3af0147e7ac78" version = "6.3.1alpha3" githash = "3ea0f598944937c2e7e4ce62f798ac279706eb75"></release>
     <subpartnumber>XM-002775-SM</subpartnumber>
     <vendor>XMOS</vendor>
     <version_defines>

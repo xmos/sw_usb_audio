@@ -8,6 +8,12 @@ sw_usb_audio Change Log
     - CHANGE:     PIDs in app_usb_aud_xk_2c upated (previously shared with app_usb_aud_skc_su1). Requires Thesycon 2.15 or later
     - RESOLVED:   (Minor) Fixed maxPacketSize for audio input endpoint (was hard-coded to 1024)
 
+  * Changes to dependencies:
+
+    - sc_xud: 1.0.1beta3 -> 1.0.2alpha1
+
+      + ADDED:        Re-instated support for G devices (xud_g library)
+
 6.3.1
 -----
     - ADDED:      Reinstated application for XR-USB-AUDIO-2.0-MC board (app_usb_aud_l2)
