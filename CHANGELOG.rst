@@ -14,6 +14,9 @@ sw_usb_audio Change Log
 
       + ADDED:        Re-instated support for G devices (xud_g library)
 
+    - sc_usb_device: 1.0.2beta0 -> 1.0.3beta0
+
+
 6.3.1
 -----
     - ADDED:      Reinstated application for XR-USB-AUDIO-2.0-MC board (app_usb_aud_l2)
