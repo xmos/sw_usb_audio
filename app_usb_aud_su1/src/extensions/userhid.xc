@@ -2,7 +2,7 @@
 #include <platform.h>
 
 
-on stdcore[0] : in port p_but       = PORT_BUT;
+on tile[0] : in port p_but       = PORT_BUT;
 
 void UserReadHIDButtons(unsigned char hidData[])
 {

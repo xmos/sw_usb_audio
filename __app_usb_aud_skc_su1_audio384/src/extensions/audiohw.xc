@@ -7,9 +7,9 @@
 #include "devicedefines.h"
 #include "i2c.h"
 
-on stdcore[0] : out port p_dac_cfg  = XS1_PORT_4C;
-on stdcore[0] : out port p_gpio     = XS1_PORT_32A;
-on stdcore[0] : port p_i2c          = XS1_PORT_4D;
+on tile[0] : out port p_dac_cfg  = XS1_PORT_4C;
+on tile[0] : out port p_gpio     = XS1_PORT_32A;
+on tile[0] : port p_i2c          = XS1_PORT_4D;
 
 /* Input freq to CS2200 */
 #define INPUT_CLOCK_FREQ            (24000000)

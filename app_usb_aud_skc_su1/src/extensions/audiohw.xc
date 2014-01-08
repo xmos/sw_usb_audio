@@ -7,8 +7,8 @@
 #include "p_gpio.h"
 #include "p_gpio_defines.h"
 
-on stdcore[0] : out port p_gpio = XS1_PORT_4C;
-on stdcore[0] : port p_i2c      = XS1_PORT_4D;
+on tile[0] : out port p_gpio = XS1_PORT_4C;
+on tile[0] : port p_i2c      = XS1_PORT_4D;
 
 //:codec_init
 void AudioHwInit(chanend ?c_codec)
