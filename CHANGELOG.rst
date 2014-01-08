@@ -1,6 +1,10 @@
 sw_usb_audio Change Log
 =======================
 
+6.3.3
+----
+    - RESOLVED:   (Minor) Default for SPDIF define set to 1 in app_usb_aud_l1 customdefines.h. Previously SPDIF not properly enabled in binaries.
+
 6.3.2
 -----
     - ADDED:      SAMPLE_SUBSLOT_SIZE_HS/SAMPLE_SUBSLOT_SIZE_FS defines (default 4/3 bytes)
@@ -15,7 +19,6 @@ sw_usb_audio Change Log
       + ADDED:        Re-instated support for G devices (xud_g library)
 
     - sc_usb_device: 1.0.2beta0 -> 1.0.3beta0
-
 
 6.3.1
 -----

@@ -22,9 +22,9 @@
 #define MIDI               (0)
 #endif
 
-/* Enable/Disable SPDIF - Default is SPDIF off */
+/* Enable/Disable SPDIF - Default is SPDIF on */
 #ifndef SPDIF
-#define SPDIF              (0)
+#define SPDIF              (1)
 #endif
 
 /* Audio Class Version.  Note we run in FS when in Audio Class 1.0 mode. Default is 2 */
