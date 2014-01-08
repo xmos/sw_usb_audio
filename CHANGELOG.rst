@@ -4,7 +4,8 @@ sw_usb_audio Change Log
 6.3.3
 ----
     - RESOLVED:   (Minor) Default for SPDIF define set to 1 in app_usb_aud_l1 customdefines.h. Previously SPDIF not properly enabled in binaries.
-    - RESOLVED    (Minor) All remaining references to stdcore[] replaced with tile[]
+    - RESOLVED:   (Minor) All remaining references to stdcore[] replaced with tile[]
+    - RESOLVED:   (Minor) Removed hostactive.xc and audiostream.xc from app_usb_aud_skc_u16 such that default implemetations are used (hostactive.xc was using an invalid port)
 
 6.3.2
 -----
