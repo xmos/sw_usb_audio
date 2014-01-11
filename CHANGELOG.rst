@@ -18,7 +18,7 @@ sw_usb_audio Change Log
 -----
     - ADDED:      SAMPLE_SUBSLOT_SIZE_HS/SAMPLE_SUBSLOT_SIZE_FS defines (default 4/3 bytes)
     - ADDED:      SAMPLE_BIT_RESOLUTION_HS/SAMPLE_BIT_RESOLUTION_FS defines (default 24/24 bytes)
-    - CHANGE:     PIDs in app_usb_aud_xk_2c upated (previously shared with app_usb_aud_skc_su1). Requires Thesycon 2.15 or later
+    - CHANGE:     PIDs in app_usb_aud_xk_2c updated (previously shared with app_usb_aud_skc_su1). Requires Thesycon 2.15 or later
     - RESOLVED:   (Minor) Fixed maxPacketSize for audio input endpoint (was hard-coded to 1024)
 
   * Changes to dependencies:
