@@ -19,6 +19,10 @@ INCLUDE_ONLY_IN_2ioxx =
 XCC_FLAGS_2ioxs = $(BUILD_FLAGS)
 INCLUDE_ONLY_IN_2ioxs = 
 
+# Audio Class 2, Input, Output, MIDI, no SPDIF
+XCC_FLAGS_2iomx = $(BUILD_FLAGS) -DMIDI=1 -DSPDIF=0
+INCLUDE_ONLY_IN_2iomx = 
+
 # The USED_MODULES variable lists other module used by the application. These
 # modules will extend the SOURCE_DIRS, INCLUDE_DIRS and LIB_DIRS variables. 
 # Modules are expected to be in the directory above the BASE_DIR directory.
