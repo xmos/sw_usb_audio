@@ -135,8 +135,6 @@ General known issues with this release are listed below.  For board/application 
 
 - (#14762) When in DSD mode with S/PDIF output enabled DSD samples are transmitted over S/PDIF, this may or may not be desired
 
-- (#14224) MIDI loop-back testing indicates an issue with events being dropped under heavy MIDI SysEx traffic when used with Thesycon drivers post 1.61 
-
 - (#14173) I2S input is completely disabled when DSD output is active - the input stream to the host will contain 0 samples
 
 - (#14780) Modifying the design to operate at a sample rate of 8kHz may expose a corner case relating to 0 length packet handling
