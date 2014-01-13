@@ -13,6 +13,10 @@ sw_usb_audio Change Log
     - RESOLVED:   (Minor) MIDI input events no longer intermittently dropped under heavy output traffic 
                   (Typically SysEx) from USB host - MIDI Rx port now buffered (#14224)
     - RESOLVED:   (Minor) Fixed port mapping in app_usb_aud_skc_u16 XN file (#15124)
+    - RESOLVED:   (Minor) DEFAULT_FREQ was assumed to be a multiple of 48k during initial calculation
+                  of g_SampFreqMultiplier (#15141) 
+    - RESOLVED:   (Minor) SPDIF not properly enabled in any build of app_usb_aud_l1 (SPDIF define set to
+                  0 in customdefines.h) (#15102) 
 
 
 6.3.2
