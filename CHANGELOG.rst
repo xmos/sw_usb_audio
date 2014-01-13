@@ -63,7 +63,7 @@ sw_usb_audio Change Log
 -----
     - ADDED:      DEFAULT_MCLK_FREQ define added
     - RESOLVED:   Native DSD now easily disabled whilst keeping DoP mode enabled (setting NATIVE_DSD to 0 with DSD_CHANS_DAC > 0)
-    - RESOLVED:   Resolved an issue where the device could become unresponsive if the host outputs a stream with an invalid DoP frequency
+    - RESOLVED:   Device could become unresponsive if the host outputs a stream with an invalid DoP frequency (#14938)
 
 6.2.0
 -----
