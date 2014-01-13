@@ -12,6 +12,7 @@ sw_usb_audio Change Log
                   GetRange(SamplingFrequency) when MAX_FREQ = MIN_FREQ (and MAX_FREQ was 48k based) (#15127)
     - RESOLVED:   (Minor) MIDI input events no longer intermittently dropped under heavy output traffic 
                   (Typically SysEx) from USB host - MIDI Rx port now buffered (#14224)
+    - RESOLVED:   (Minor) Fixed port mapping in app_usb_aud_skc_u16 XN file (#15124)
 
 
 6.3.2
