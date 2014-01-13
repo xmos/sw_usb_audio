@@ -7,6 +7,9 @@
 #ifndef _CUSTOMDEFINES_H_
 #define _CUSTOMDEFINES_H_
 
+#define XMOS_USB_AUD_APP_MAJOR_VERSION 6
+#define XMOS_USB_AUD_APP_MINOR_VERSION 3
+#define XMOS_USB_AUD_APP_POINT_VERSION 2
 
 /*
  * Device configuration option defines.  Build can be customised buy changing and adding defines here
@@ -19,9 +22,9 @@
 #define MIDI               (0)
 #endif
 
-/* Enable/Disable SPDIF - Default is SPDIF off */
+/* Enable/Disable SPDIF - Default is SPDIF on */
 #ifndef SPDIF
-#define SPDIF              (0)
+#define SPDIF              (1)
 #endif
 
 /* Audio Class Version.  Note we run in FS when in Audio Class 1.0 mode. Default is 2 */

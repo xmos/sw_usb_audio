@@ -14,7 +14,7 @@
 #include <xs1.h>
 #include <platform.h>
 
-on stdcore[0] : out port p_led     = XS1_PORT_1B;
+on tile[0] : out port p_led     = XS1_PORT_1B;
 
 void UserAudioStreamStart(void)
 {

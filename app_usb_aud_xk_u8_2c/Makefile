@@ -9,7 +9,18 @@ APP_NAME =
 BUILD_FLAGS     = -DFLASH_MAX_UPGRADE_SIZE=64*1024 -fcomment-asm -Xmapper --map -Xmapper MAPFILE -Wall -O3 -report -lflash -fsubword-select -save-temps -g -DTEST_MODE_SUPPORT -fxscope -DXSCOPE -DXUD_ON_U_SERIES
 #-fschedule
 
+# The USED_MODULES variable lists other module used by the application. These
+# modules will extend the SOURCE_DIRS, INCLUDE_DIRS and LIB_DIRS variables. 
+# Modules are expected to be in the directory above the BASE_DIR directory.
+USED_MODULES = module_usb_shared module_xud module_usb_audio module_spdif_tx module_spdif_rx module_usb_midi module_dfu module_i2c_shared module_usb_device module_locks
+
+MODULE_LIBRARIES = xud_u
+
 # Test build configs (Note these make use of the defaults in customdefines.h)
+
+MFI ?= 0
+
+ifeq ($(MFI), 0)
 
 # Audio Class 2, Input, Output, No MIDI, SPDIF
 XCC_FLAGS_2ioxs = $(BUILD_FLAGS) 
@@ -55,13 +66,24 @@ INCLUDE_ONLY_IN_1ioxs =
 XCC_FLAGS_1xoxs = $(BUILD_FLAGS) -DNUM_USB_CHAN_IN=0 -DNUM_USB_CHAN_OUT=2 -DAUDIO_CLASS=1
 INCLUDE_ONLY_IN_1xoxs = 
 
-# The USED_MODULES variable lists other module used by the application. These
-# modules will extend the SOURCE_DIRS, INCLUDE_DIRS and LIB_DIRS variables. 
-# Modules are expected to be in the directory above the BASE_DIR directory.
-USED_MODULES = module_usb_shared module_xud module_usb_audio module_spdif_tx module_spdif_rx module_usb_midi module_dfu module_i2c_simple module_usb_device
+else
+# MFi test build configs - iAP support enabled
 
-MODULE_LIBRARIES = xud_u
+# Audio Class 2, iAP enabled, No Input, Output, No MIDI, No SPDIF
+XCC_FLAGS_2xoxx_mfi = $(BUILD_FLAGS) -DIAP=1 -DNUM_USB_CHAN_IN=0 -DI2S_CHANS_ADC=0 -DSPDIF=0
+INCLUDE_ONLY_IN_2xoxx_mfi = 
 
+# Audio Class 2, iAP enabled, No Input, Output, No MIDI, No SPDIF, power-save featured enabled
+XCC_FLAGS_2xoxx_mfi_lp = $(BUILD_FLAGS) -DIAP=1 -DNUM_USB_CHAN_IN=0 -DI2S_CHANS_ADC=0 -DSPDIF=0
+INCLUDE_ONLY_IN_2xoxx_mfi_lp = ./src/extensions/powersave
+
+#Audio Class 2, iAP enabled, Input, Output, No MIDI, No SPDIF
+XCC_FLAGS_2ioxx_mfi = $(BUILD_FLAGS) -DIAP=1 -DSPDIF=0
+INCLUDE_ONLY_IN_2ioxx_mfi = 
+
+include mfi.mk
+
+endif
 
 #=============================================================================
 # The following part of the Makefile includes the common build infrastructure

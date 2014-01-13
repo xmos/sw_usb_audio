@@ -20,6 +20,8 @@
             <Port Location="XS1_PORT_1B"  Name="PORT_SPI_SS"/>
             <Port Location="XS1_PORT_1C"  Name="PORT_SPI_CLK"/>
             <Port Location="XS1_PORT_1D"  Name="PORT_SPI_MOSI"/>
+            <Port Location="XS1_PORT_1C"  Name="PORT_I2C_SCL" />
+            <Port Location="XS1_PORT_1G"  Name="PORT_I2C_SDA" />
             <Port Location="XS1_PORT_1A"  Name="PORT_I2S_BCLK"/>
             <Port Location="XS1_PORT_1B"  Name="PORT_SPDIF_OUT"/>
             <Port Location="XS1_PORT_1D"  Name="PORT_I2S_DAC0"/>

@@ -14,22 +14,22 @@
 
 /* Enable/Disable MIDI - Default is MIDI off */
 #ifndef MIDI
-#define MIDI 		0
+#define MIDI 		       0
 #endif
 
 /* Enable/Disable SPDIF output - Default is S/PDIF on */
 #ifndef SPDIF
-#define SPDIF		1
+#define SPDIF		       1
 #endif
 
 /* Audio class version to run in - Default is 2.0 */
 #ifndef AUDIO_CLASS
-#define AUDIO_CLASS (2)
+#define AUDIO_CLASS        (2)
 #endif
 
 /* Enable/disable fall back to Audio Class 1.0 when connected to FS hub. */
 #ifndef AUDIO_CLASS_FALLBACK
-#define AUDIO_CLASS_FALLBACK 1
+#define AUDIO_CLASS_FALLBACK 0
 #endif
 
 /* Defines relating to channel count and channel arrangement (Set to 0 for disable) */
@@ -51,6 +51,11 @@
 #define I2S_CHANS_ADC     (2)
 #endif
 
+/* Enable/Disable IAP - Default is IAP off */
+#ifndef IAP
+#define IAP                0
+#endif
+
 /* Enable DFU interface, Note, requires a driver for Windows */
 #define DFU                (1)
 
@@ -69,15 +74,13 @@
 /* Index of SPDIF TX channel (duplicated DAC channels 1/2) */
 #define SPDIF_TX_INDEX     (0)
 
-/* Default frequency device reports as running at */
-/* Audio Class 1.0 friendly freq */
-#define DEFAULT_FREQ       (48000)
-//:
+#define SELF_POWERED 1
+
 /***** Defines relating to USB descriptors etc *****/
 //:usb_defs
 #define VENDOR_ID          (0x20B1) /* XMOS VID */
-#define PID_AUDIO_2        (0x0008) /* XR-USB-AUDIO-U8-2C PID*/
-#define PID_AUDIO_1        (0x0009)
+#define PID_AUDIO_2        (0x000A) /* XR-USB-AUDIO-U8-2C PID*/
+#define PID_AUDIO_1        (0x000B)
 //:
 
 /* Enable/Disable example HID code */

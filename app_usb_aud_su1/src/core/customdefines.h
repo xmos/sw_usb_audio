@@ -7,6 +7,10 @@
 #ifndef _CUSTOMDEFINES_H_
 #define _CUSTOMDEFINES_H_
 
+#define XMOS_USB_AUD_APP_MAJOR_VERSION 6
+#define XMOS_USB_AUD_APP_MINOR_VERSION 3
+#define XMOS_USB_AUD_APP_POINT_VERSION 2
+
 /***** Device configuration option defines.  Build can be customised but changing these defines  *****/
 
 /* Enable/Disable MIDI - Default is MIDI off */
