@@ -93,10 +93,10 @@ void AudioHwInit(chanend ?c_codec)
     i2c_master_write_reg(COD_DEV_ADRS, 0x2, tmp, 1, i2cPorts);
 
     /* Interface Formats Register (Address 04h)             */
-    /* 0    Freeze Controls                    (FREEZE)     = 0,               */
-    /* 1    Auxiliary Digital Interface Format (AUX_DIF)    = 0, */
-    /* 2:4  DAC Digital Interface Format       (DAC_DIF)    = 010 (Right justified, 24bit) */
-    /* 5:7  ADC Digital Interface Format       (ADC_DIF)    = 010 (Rigth justified, 24bit) */
+    /* 0:2  ADC Digital Interface Format       (ADC_DIF)    = 001 (I2S, 24bit) */
+    /* 3:5  DAC Digital Interface Format       (DAC_DIF)    = 001 (I2S, 24bit) */
+    /* 6    Auxiliary Digital Interface Format (AUX_DIF)    = 1, (I2S)         */
+    /* 7    Freeze Controls                    (FREEZE)     = 0,               */
     tmp[0] = 0x49;
     i2c_master_write_reg(COD_DEV_ADRS, 0x4, tmp, 1, i2cPorts);
 
