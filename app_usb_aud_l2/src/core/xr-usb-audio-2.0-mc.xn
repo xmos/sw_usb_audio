@@ -25,19 +25,6 @@ xsi:schemaLocation="http://www.xmos.com http://www.xmos.com">
         <Port Location="XS1_PORT_1M" Name="PORT_USB_RESET"/>
         <Port Location="XS1_PORT_4E" Name="PORT_PLL_CLK"/>
         <Port Location="XS1_PORT_32A" Name="PORT_MCLK_COUNT"/>
-
-        <!-- USB Ports -->
-        <Port Name="UIFM_INT_CLK_PORT" Location="XS1_PORT_1I"/>
-        <Port Name="UIFM_USB_CLK_PORT" Location="XS1_PORT_1H"/>
-        <Port Name="UIFM_REG_WRITE_PORT" Location="XS1_PORT_8C"/>     
-        <Port Name="UIFM_REG_READ_PORT"  Location="XS1_PORT_8D"/> 
-        <Port Name="UIFM_FLAG_0_PORT"    Location="XS1_PORT_1N"/>       
-        <Port Name="UIFM_FLAG_1_PORT"    Location="XS1_PORT_1O"/>
-        <Port Name="UIFM_FLAG_2_PORT"    Location="XS1_PORT_1P"/>
-        <Port Name="UIFM_TX_DATA_PORT"   Location="XS1_PORT_8A"/>
-        <Port Name="UIFM_RX_DATA_PORT"   Location="XS1_PORT_8B"/>
-        <Port Name="UIFM_STP_SUS_PORT"   Location="XS1_PORT_1E"/>
-        <Port Name="UIFM_LS_PORT"        Location="XS1_PORT_4D"/>
       </Core>
       <Boot>
         <Source Location="SPI:bootFlash"/>

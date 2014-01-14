@@ -1,7 +1,7 @@
 sw_usb_audio Change Log
 =======================
 
-6.3.3 (UNRELEASED)
+6.3.3
 -----
     - RESOLVED:   (Minor) Default for SPDIF define set to 1 in app_usb_aud_l1 customdefines.h. 
                   Previously SPDIF not properly enabled in binaries (#15129)
