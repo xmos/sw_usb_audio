@@ -3,21 +3,31 @@ sw_usb_audio Change Log
 
 6.3.3
 -----
-    - RESOLVED:   (Minor) Default for SPDIF define set to 1 in app_usb_aud_l1 customdefines.h. 
+    - RESOLVED:   (Minor) Default for SPDIF define set to 1 in app_usb_aud_l1 customdefines.h.
                   Previously SPDIF not properly enabled in binaries (#15129)
     - RESOLVED:   (Minor) All remaining references to stdcore[] replaced with tile[] (#15122)
     - RESOLVED:   (Minor) Removed hostactive.xc and audiostream.xc from app_usb_aud_skc_u16 such
                   that default implemetations are used (hostactive.xc was using an invalid port) (#15118)
-    - RESOLVED:   (Minor) The next 44.1 based freq above MAX_FREQ was reported by 
+    - RESOLVED:   (Minor) The next 44.1 based freq above MAX_FREQ was reported by
                   GetRange(SamplingFrequency) when MAX_FREQ = MIN_FREQ (and MAX_FREQ was 48k based) (#15127)
-    - RESOLVED:   (Minor) MIDI input events no longer intermittently dropped under heavy output traffic 
+    - RESOLVED:   (Minor) MIDI input events no longer intermittently dropped under heavy output traffic
                   (Typically SysEx) from USB host - MIDI Rx port now buffered (#14224)
     - RESOLVED:   (Minor) Fixed port mapping in app_usb_aud_skc_u16 XN file (#15124)
     - RESOLVED:   (Minor) DEFAULT_FREQ was assumed to be a multiple of 48k during initial calculation
-                  of g_SampFreqMultiplier (#15141) 
+                  of g_SampFreqMultiplier (#15141)
     - RESOLVED:   (Minor) SPDIF not properly enabled in any build of app_usb_aud_l1 (SPDIF define set to
-                  0 in customdefines.h) (#15102) 
+                  0 in customdefines.h) (#15102)
 
+
+  * Changes to dependencies:
+
+    - sc_xud: 1.0.2alpha1 -> 1.0.3alpha2
+
+      + RESOLVED:   (Minor) ULPI data-lines driven hard low and XMOS pull-up on STP line disabled
+
+    - sc_usb: 1.0.1beta1 -> 1.0.2beta0
+
+      + ADDED:   USB_BMREQ_D2H_VENDOR_DEV and USB_BMREQ_D2H_VENDOR_DEV defines for vendor device requests
 
 6.3.2
 -----
