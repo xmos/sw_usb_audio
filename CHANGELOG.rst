@@ -7,7 +7,7 @@ sw_usb_audio Change Log
                   Previously SPDIF not properly enabled in binaries (#15129)
     - RESOLVED:   (Minor) All remaining references to stdcore[] replaced with tile[] (#15122)
     - RESOLVED:   (Minor) Removed hostactive.xc and audiostream.xc from app_usb_aud_skc_u16 such
-                  that default implemetations are used (hostactive.xc was using an invalid port) (#15118)
+                  that default implementations are used (hostactive.xc was using an invalid port) (#15118)
     - RESOLVED:   (Minor) The next 44.1 based freq above MAX_FREQ was reported by
                   GetRange(SamplingFrequency) when MAX_FREQ = MIN_FREQ (and MAX_FREQ was 48k based) (#15127)
     - RESOLVED:   (Minor) MIDI input events no longer intermittently dropped under heavy output traffic
