@@ -17,6 +17,7 @@ sw_usb_audio Change Log
                   of g_SampFreqMultiplier (#15141)
     - RESOLVED:   (Minor) SPDIF not properly enabled in any build of app_usb_aud_l1 (SPDIF define set to
                   0 in customdefines.h) (#15102)
+    - RESOLVED:   (Minor) DFU enabled by default in app_usb_aud_l2 (#15153)
 
 
   * Changes to dependencies:
