@@ -63,31 +63,10 @@
 #define PID_AUDIO_1        (0x0005)
 #define PID_AUDIO_2        (0x0004)
 
-#define DFU_FLASH_DEVICE \
-{ \
-ATMEL_AT25FS010, \
-256,                    /* page size */ \
-512,                    /* num pages */ \
-3,                      /* address size */ \
-8,                      /* log2 clock divider */ \
-0x9F,                   /* SPI_RDID */ \
-0,                      /* id dummy bytes */ \
-3,                      /* id size in bytes */ \
-0x1f6601,               /* device id */ \
-0xD8,                   /* SPI_SE */ \
-0,                      /* erase is full sector */ \
-0x06,                   /* SPI_WREN */ \
-0x04,                   /* SPI_WRDI */ \
-PROT_TYPE_SR,           /* no protection */ \
-{{0x0c,0x02},{0,0}},    /* SR values for protection */ \
-0x02,                   /* SPI_PP */ \
-0x0B,                   /* SPI_READ_FAST */ \
-1,                      /* 1 read dummy byte*/ \
-SECTOR_LAYOUT_REGULAR,  /* sane sectors */ \
-{32768,{0,{0}}},        /* regular sector sizes */ \
-0x05,                   /* SPI_RDSR */ \
-0x01,                   /* SPI_WRSR */ \
-0x01,                   /* SPI_WIP_BIT_MASK */ \
-}
+/* Enable DFU interface, Note, requires a driver for Windows */
+#define DFU                (1)
+
+/* Flash device for DFU.  Device supported by tools so no need to spec */
+#define DFU_FLASH_DEVICE FL_DEVICE_ATMEL_AT25DF041A
 
 #endif
