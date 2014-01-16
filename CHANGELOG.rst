@@ -18,6 +18,7 @@ sw_usb_audio Change Log
     - RESOLVED:   (Minor) SPDIF not properly enabled in any build of app_usb_aud_l1 (SPDIF define set to
                   0 in customdefines.h) (#15102)
     - RESOLVED:   (Minor) DFU enabled by default in app_usb_aud_l2 (#15153)
+    - RESOLVED:   (Minor) Build issue when NUM_USB_CHAN_IN or NUM_USB_CHAN_OUT set to 0 and MIXER set to 1 (#15096)
 
 
   * Changes to dependencies:
