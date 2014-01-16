@@ -150,14 +150,17 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
     PllMult(mClk/300);
 
     /* Functional Mode (Address 03h) */
-    /* 0:1  DAC Functional Mode                    Slave:Auto-detect samp rate      11 */
-    /* 2:3  ADC Functional Mode                    Slave:Auto -detect samp rate     11 */
+    /* 0                                           Reserved                            */
+    /* 3:1  MCLK Frequency                         256/128/64 :                    000 */
+    /*                                             512/256/128:                    010 */
+    /* 5:4  ADC Functional Mode                    Slave:  Auto-detect samp rate    11 */
     /*                                             Master: Single                   00 */
     /*                                             Master: Double                   01 */
     /*                                             Master: Quad                     10 */
-    /* 4:6  MCLK Frequency                         256/128/64 :                    000 */
-    /*                                             512/256/128:                    010 */
-    /* 7                                           Reserved                            */
+    /* 7:6  DAC Functional Mode                    Slave:  Auto-detect samp rate    11 */
+    /*                                             Master: Single                   00 */
+    /*                                             Master: Double                   01 */
+    /*                                             Master: Quad                     10 */
 #ifndef CODEC_MASTER
     tmp[0] = 0b11110000;                                             /* Autodetect */
 #else
@@ -176,11 +179,11 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
 #endif
     if(mClk < 15000000)
     {
-        tmp[0] |= 0;                   // 256/128/64
+        tmp[0] |= 0;                      // 256/128/64
     }
     else if(mClk < 25000000)
     {
-        tmp[0] |= 0b00000100;            // 512/256/128
+        tmp[0] |= 0b00000100;             // 512/256/128
     }
     else
     {
