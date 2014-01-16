@@ -1,6 +1,10 @@
 sw_usb_audio Change Log
 =======================
 
+LATEST
+-----
+    - CHANGE:     MIDI ports no longer passed to MFi specific functions
+
 6.3.3
 -----
     - RESOLVED:   (Minor) Default for SPDIF define set to 1 in app_usb_aud_l1 customdefines.h.
