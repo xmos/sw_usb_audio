@@ -1,12 +1,9 @@
 sw_usb_audio Change Log
 =======================
 
-LATEST
+6.3.3 (UNRELEASED)
 -----
     - CHANGE:     MIDI ports no longer passed to MFi specific functions
-
-6.3.3
------
     - RESOLVED:   (Minor) Default for SPDIF define set to 1 in app_usb_aud_l1 customdefines.h.
                   Previously SPDIF not properly enabled in binaries (#15129)
     - RESOLVED:   (Minor) All remaining references to stdcore[] replaced with tile[] (#15122)
@@ -23,7 +20,7 @@ LATEST
                   0 in customdefines.h) (#15102)
     - RESOLVED:   (Minor) DFU enabled by default in app_usb_aud_l2 (#15153)
     - RESOLVED:   (Minor) Build issue when NUM_USB_CHAN_IN or NUM_USB_CHAN_OUT set to 0 and MIXER set to 1 (#15096)
-
+    - RESOLVED:   (Minor) Build issue when CODEC_MASTER set (#15162)
 
   * Changes to dependencies:
 
