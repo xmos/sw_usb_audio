@@ -1,7 +1,7 @@
 sw_usb_audio Change Log
 =======================
 
-6.3.3 (UNRELEASED)
+6.3.3
 -----
     - CHANGE:     MIDI ports no longer passed to MFi specific functions
     - RESOLVED:   (Minor) Default for SPDIF define set to 1 in app_usb_aud_l1 customdefines.h.
@@ -24,9 +24,11 @@ sw_usb_audio Change Log
 
   * Changes to dependencies:
 
-    - sc_xud: 1.0.2alpha1 -> 1.0.3alpha2
+    - sc_xud: 1.0.2alpha1 -> 1.0.3alpha5
 
       + RESOLVED:   (Minor) ULPI data-lines driven hard low and XMOS pull-up on STP line disabled
+      + RESOLVED:   (Minor) Fixes to improve memory usage such as adding missing resource usage
+      + RESOLVED:   (Minor) Moved to using supplied tools support for communicating with the USB tile
 
     - sc_usb: 1.0.1beta1 -> 1.0.2beta0
 

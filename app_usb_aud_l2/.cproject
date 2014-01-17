@@ -4,7 +4,7 @@
     <storageModule moduleId="org.eclipse.cdt.core.settings">
               
         <cconfiguration id="com.xmos.cdt.toolchain.13542451">
-            <storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="com.xmos.cdt.toolchain.13542451" moduleId="org.eclipse.cdt.core.settings" name="2iomx">
+            <storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="com.xmos.cdt.toolchain.13542451" moduleId="org.eclipse.cdt.core.settings" name="2ioxs">
                 <externalSettings />
                 <extensions>
                     <extension id="com.xmos.cdt.core.XEBinaryParser" point="org.eclipse.cdt.core.BinaryParser" />
@@ -16,7 +16,7 @@
                 <buildTargets>
                     <target name="all" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
                         <buildCommand>xmake</buildCommand>
-                        <buildArguments>CONFIG=2iomx</buildArguments>
+                        <buildArguments>CONFIG=2ioxs</buildArguments>
                         <buildTarget>all</buildTarget>
                         <stopOnError>true</stopOnError>
                         <useDefaultCommand>true</useDefaultCommand>
@@ -24,7 +24,7 @@
                     </target>
                     <target name="clean" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
                         <buildCommand>xmake</buildCommand>
-                        <buildArguments>CONFIG=2iomx</buildArguments>
+                        <buildArguments>CONFIG=2ioxs</buildArguments>
                         <buildTarget>clean</buildTarget>
                         <stopOnError>true</stopOnError>
                         <useDefaultCommand>true</useDefaultCommand>
@@ -33,13 +33,13 @@
                 </buildTargets>
             </storageModule>
             <storageModule moduleId="cdtBuildSystem" version="4.0.0">
-                <configuration buildProperties="" description="" id="com.xmos.cdt.toolchain.13542451" name="2iomx" parent="org.eclipse.cdt.build.core.emptycfg">
+                <configuration buildProperties="" description="" id="com.xmos.cdt.toolchain.13542451" name="2ioxs" parent="org.eclipse.cdt.build.core.emptycfg">
                     <folderInfo id="com.xmos.cdt.toolchain.13542451.1127281840" name="/" resourcePath="">
                         <toolChain id = "com.xmos.cdt.toolchain.86882386" name="com.xmos.cdt.toolchain" superClass="com.xmos.cdt.toolchain">
                             <targetPlatform archList="all" binaryParser="com.xmos.cdt.core.XEBinaryParser" id = "com.xmos.cdt.core.platform.97433239" isAbstract="false" osList="linux,win32,macosx" superClass="com.xmos.cdt.core.platform" />
-                            <builder arguments="CONFIG=2iomx" id = "com.xmos.cdt.builder.base.3382336" keepEnvironmentInBuildfile="false" managedBuildOn="false" superClass="com.xmos.cdt.builder.base">
+                            <builder arguments="CONFIG=2ioxs" id = "com.xmos.cdt.builder.base.3382336" keepEnvironmentInBuildfile="false" managedBuildOn="false" superClass="com.xmos.cdt.builder.base">
                                 <outputEntries>
-                                    <entry flags="VALUE_WORKSPACE_PATH" kind="outputPath" name="bin/2iomx" />
+                                    <entry flags="VALUE_WORKSPACE_PATH" kind="outputPath" name="bin/2ioxs" />
                                 </outputEntries>
                             </builder>
                             <tool id = "com.xmos.cdt.xc.compiler.3276516" name="com.xmos.cdt.xc.compiler" superClass="com.xmos.cdt.xc.compiler">
@@ -629,7 +629,7 @@
         </cconfiguration>
 
         <cconfiguration id="com.xmos.cdt.toolchain.75510939">
-            <storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="com.xmos.cdt.toolchain.75510939" moduleId="org.eclipse.cdt.core.settings" name="2ioxs">
+            <storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="com.xmos.cdt.toolchain.75510939" moduleId="org.eclipse.cdt.core.settings" name="2iomx">
                 <externalSettings />
                 <extensions>
                     <extension id="com.xmos.cdt.core.XEBinaryParser" point="org.eclipse.cdt.core.BinaryParser" />
@@ -641,7 +641,7 @@
                 <buildTargets>
                     <target name="all" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
                         <buildCommand>xmake</buildCommand>
-                        <buildArguments>CONFIG=2ioxs</buildArguments>
+                        <buildArguments>CONFIG=2iomx</buildArguments>
                         <buildTarget>all</buildTarget>
                         <stopOnError>true</stopOnError>
                         <useDefaultCommand>true</useDefaultCommand>
@@ -649,7 +649,7 @@
                     </target>
                     <target name="clean" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
                         <buildCommand>xmake</buildCommand>
-                        <buildArguments>CONFIG=2ioxs</buildArguments>
+                        <buildArguments>CONFIG=2iomx</buildArguments>
                         <buildTarget>clean</buildTarget>
                         <stopOnError>true</stopOnError>
                         <useDefaultCommand>true</useDefaultCommand>
@@ -658,13 +658,13 @@
                 </buildTargets>
             </storageModule>
             <storageModule moduleId="cdtBuildSystem" version="4.0.0">
-                <configuration buildProperties="" description="" id="com.xmos.cdt.toolchain.75510939" name="2ioxs" parent="org.eclipse.cdt.build.core.emptycfg">
+                <configuration buildProperties="" description="" id="com.xmos.cdt.toolchain.75510939" name="2iomx" parent="org.eclipse.cdt.build.core.emptycfg">
                     <folderInfo id="com.xmos.cdt.toolchain.75510939.1127281840" name="/" resourcePath="">
                         <toolChain id = "com.xmos.cdt.toolchain.39053087" name="com.xmos.cdt.toolchain" superClass="com.xmos.cdt.toolchain">
                             <targetPlatform archList="all" binaryParser="com.xmos.cdt.core.XEBinaryParser" id = "com.xmos.cdt.core.platform.93877826" isAbstract="false" osList="linux,win32,macosx" superClass="com.xmos.cdt.core.platform" />
-                            <builder arguments="CONFIG=2ioxs" id = "com.xmos.cdt.builder.base.42043211" keepEnvironmentInBuildfile="false" managedBuildOn="false" superClass="com.xmos.cdt.builder.base">
+                            <builder arguments="CONFIG=2iomx" id = "com.xmos.cdt.builder.base.42043211" keepEnvironmentInBuildfile="false" managedBuildOn="false" superClass="com.xmos.cdt.builder.base">
                                 <outputEntries>
-                                    <entry flags="VALUE_WORKSPACE_PATH" kind="outputPath" name="bin/2ioxs" />
+                                    <entry flags="VALUE_WORKSPACE_PATH" kind="outputPath" name="bin/2iomx" />
                                 </outputEntries>
                             </builder>
                             <tool id = "com.xmos.cdt.xc.compiler.22639225" name="com.xmos.cdt.xc.compiler" superClass="com.xmos.cdt.xc.compiler">
