@@ -25,17 +25,10 @@ xsi:schemaLocation="http://www.xmos.com http://www.xmos.com">
            </Tile>
            <Tile Number="1" Reference="tile[1]"> 
             <!-- XUD Ports -->
-            <Port Location="XS1_PORT_1H"  Name="PORT_USB_CLK"/>
-            <Port Location="XS1_PORT_1N"  Name="PORT_USB_FLAG0"/>
-            <Port Location="XS1_PORT_1O"  Name="PORT_USB_FLAG1"/>
-            <Port Location="XS1_PORT_1P"  Name="PORT_USB_FLAG2"/>
-            <Port Location="XS1_PORT_8A"  Name="PORT_USB_TXD"/>
-            <Port Location="XS1_PORT_8B"  Name="PORT_USB_RXD"/>
-            <Port Location="XS1_PORT_8C"  Name="PORT_USB_REG_WRITE"/>
-            <Port Location="XS1_PORT_8D"  Name="PORT_USB_REG_READ"/>
             <Port Location="XS1_PORT_1B"  Name="PORT_USB_RESET"/>                                 
-        <Port Location="XS1_PORT_32A" Name="PORT_MCLK_COUNT"/>
-        <Port Location="XS1_PORT_1L" Name="PORT_MCLK_IN2"/>
+            
+            <Port Location="XS1_PORT_32A" Name="PORT_MCLK_COUNT"/>
+            <Port Location="XS1_PORT_1L" Name="PORT_MCLK_IN2"/>
           </Tile>
           <Tile Number="2" Reference="tile[2]">
         
