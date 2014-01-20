@@ -4,6 +4,9 @@ sw_usb_audio Change Log
 6.3.3
 -----
     - CHANGE:     MIDI ports no longer passed to MFi specific functions
+    - CHANGE:     Audio delivery core no longer waits for AUDIO_PLL_LOCK_DELAY after calling AudioHwConfig()
+                  and running audio interfaces. AudioHwConfig() should handle and delays required for stable
+                  MCLK as required by board clocking hardware. 
     - RESOLVED:   (Minor) Default for SPDIF define set to 1 in app_usb_aud_l1 customdefines.h.
                   Previously SPDIF not properly enabled in binaries (#15129)
     - RESOLVED:   (Minor) All remaining references to stdcore[] replaced with tile[] (#15122)
@@ -21,6 +24,8 @@ sw_usb_audio Change Log
     - RESOLVED:   (Minor) DFU enabled by default in app_usb_aud_l2 (#15153)
     - RESOLVED:   (Minor) Build issue when NUM_USB_CHAN_IN or NUM_USB_CHAN_OUT set to 0 and MIXER set to 1 (#15096)
     - RESOLVED:   (Minor) Build issue when CODEC_MASTER set (#15162)
+    - RESOLVED:   (Minor) DSD mute signal output when invalid DSD frequency selected in Native DSD mode. Previously
+                  0 was driven resulting in pop noises on the analague output when switching between DSD/PCM (#14769)
 
   * Changes to dependencies:
 

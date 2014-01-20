@@ -154,7 +154,7 @@ Host System Requirements
 
 - Mac OSX version 10.6 or later
 
-- Windows XP, Vista, 7 or 8, with Thesycon Audio Class 2.0 driver for Windows (Tested against version 2.15). Please contact XMOS for details.
+- Windows XP, Vista, 7 or 8, with Thesycon Audio Class 2.0 driver for Windows (Tested against version 2.18). Please contact XMOS for details.
  
 - Windows XP, Vista, 7 or 8 with built-in USB Audio Class 1.0 driver.
 
