@@ -29,6 +29,9 @@ on tile[AUDIO_IO_TILE]: out port p_aud_cfg    = PORT_AUD_CFG;
 #define CS2300_REGREAD_ASSERT(reg, data, expected)  {data[0] = 0xAA; i2c_master_read_reg(CS2300_I2C_DEVICE_ADDR, reg, data, 1, i2cPorts); assert(data[0] == expected);}
 #define CS2300_REGWRITE(reg, val) {data[0] = val; i2c_master_write_reg(CS2300_I2C_DEVICE_ADDR, reg, data, 1, i2cPorts);}
 
+/* The number of timer ticks to wait for the audio PLL to lock */
+#define AUDIO_PLL_LOCK_DELAY     (40000000) 
+
 /* Init of CS2300 */
 void PllInit(void)
 {
@@ -148,6 +151,14 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
 
     /* For L2 reference design configure external fractional-n clock multiplier for 300Hz -> mClkFreq */
     PllMult(mClk/300);
+
+    /* Allow some time for mclk to lock and MCLK to stabilise - this is important to avoid glitches at start of stream */
+    {
+        timer t;
+        unsigned time;
+        t :> time;
+        t when timerafter(time+AUDIO_PLL_LOCK_DELAY) :> void;
+    }
 
     /* Functional Mode (Address 03h) */
     /* 0                                           Reserved                            */
