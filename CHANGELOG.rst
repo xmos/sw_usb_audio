@@ -3,6 +3,7 @@ sw_usb_audio Change Log
 
 6.3.3
 -----
+    - ADDED:      XK-USB-AUDIO-U8-2C mute output driven high when audiostream not active (app_usb_aud_xk_u8_2c)
     - CHANGE:     MIDI ports no longer passed to MFi specific functions
     - CHANGE:     Audio delivery core no longer waits for AUDIO_PLL_LOCK_DELAY after calling AudioHwConfig()
                   and running audio interfaces. AudioHwConfig() should handle and delays required for stable
