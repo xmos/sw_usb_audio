@@ -159,7 +159,7 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
 
     if(dsdMode)
     {
-        //Set DSD mux line high
+        /* Set DSD mux line high */
         tmp |= (P_GPIO_DSD_EN);
     }
     else
@@ -167,6 +167,7 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
         tmp &= (~P_GPIO_DSD_EN);
     }
 
+    /* ADC and DAC out of Reset */
     tmp |= (P_GPIO_RST_DAC | P_GPIO_RST_ADC);
 
     port32A_out_unlock(tmp);
