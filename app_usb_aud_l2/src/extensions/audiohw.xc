@@ -32,7 +32,7 @@ on tile[AUDIO_IO_TILE]: out port p_aud_cfg    = PORT_AUD_CFG;
 
 /* The number of timer ticks to wait for the audio PLL to lock */
 /* CS2300 lists typical lock time as 100 * input period */
-#define AUDIO_PLL_LOCK_DELAY     (40000000) 
+#define AUDIO_PLL_LOCK_DELAY     (40000000)
 
 /* Init of CS2300 */
 void PllInit(void)
@@ -153,7 +153,7 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
 
     /* For L2 reference design configure external fractional-n clock multiplier for 300Hz -> mClkFreq */
     PllMult(mClk/300);
-    
+
     /* Allow some time for mclk to lock and MCLK to stabilise - this is important to avoid glitches at start of stream */
     {
         timer t;
@@ -163,7 +163,7 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
     }
 
     while(1)
-    { 
+    {
         /* Read Unlock Indicator in PLL as sanity check... */
         CS2300_REGREAD(CS2300_DEVICE_CONTROL, tmp);
         if(!(tmp[0] & 0x80))
