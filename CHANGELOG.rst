@@ -6,8 +6,10 @@ sw_usb_audio Change Log
     - ADDED:      XK-USB-AUDIO-U8-2C mute output driven high when audiostream not active (app_usb_aud_xk_u8_2c)
     - CHANGE:     MIDI ports no longer passed to MFi specific functions
     - CHANGE:     Audio delivery core no longer waits for AUDIO_PLL_LOCK_DELAY after calling AudioHwConfig()
-                  and running audio interfaces. AudioHwConfig() should handle and delays required for stable
-                  MCLK as required by board clocking hardware. 
+                  and running audio interfaces. It should be ensured that AudioHwConfig() implementation 
+                  should handle any delays required for stable MCLK as required by the clocking hardware.
+    - CHANGE:     Delay to allow USB feedback to stabilise after samplerate change now based on USB bus
+                  speed. This allows faster rate change at high-speed. 
     - RESOLVED:   (Minor) Default for SPDIF define set to 1 in app_usb_aud_l1 customdefines.h.
                   Previously SPDIF not properly enabled in binaries (#15129)
     - RESOLVED:   (Minor) All remaining references to stdcore[] replaced with tile[] (#15122)
