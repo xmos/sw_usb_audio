@@ -16,6 +16,7 @@ on tile[AUDIO_IO_TILE]: out port p_aud_cfg    = PORT_AUD_CFG;
 #define CS2300_I2C_DEVICE_ADDR      (0x9c>>1)
 #define COD_DEV_ADRS                (0x90>>1)
 
+#define CS2300_DEVICE_CONTROL       0x02
 #define CS2300_DEVICE_CONFIG_1      0x03
 #define CS2300_GLOBAL_CONFIG        0x05
 #define CS2300_RATIO_1              0x06
@@ -25,11 +26,12 @@ on tile[AUDIO_IO_TILE]: out port p_aud_cfg    = PORT_AUD_CFG;
 #define CS2300_FUNC_CONFIG_1        0x16
 #define CS2300_FUNC_CONFIG_2        0x17
 
-#define CS2300_REGREAD(reg, val)  {data[0] = 0xAA; i2c_master_read_reg(CS2300_I2C_DEVICE_ADDR, reg, data, 1, i2cPorts);}
+#define CS2300_REGREAD(reg, data)  {data[0] = 0xAA; i2c_master_read_reg(CS2300_I2C_DEVICE_ADDR, reg, data, 1, i2cPorts);}
 #define CS2300_REGREAD_ASSERT(reg, data, expected)  {data[0] = 0xAA; i2c_master_read_reg(CS2300_I2C_DEVICE_ADDR, reg, data, 1, i2cPorts); assert(data[0] == expected);}
 #define CS2300_REGWRITE(reg, val) {data[0] = val; i2c_master_write_reg(CS2300_I2C_DEVICE_ADDR, reg, data, 1, i2cPorts);}
 
 /* The number of timer ticks to wait for the audio PLL to lock */
+/* CS2300 lists typical lock time as 100 * input period */
 #define AUDIO_PLL_LOCK_DELAY     (40000000) 
 
 /* Init of CS2300 */
@@ -147,17 +149,27 @@ void genclock()
  */
 void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned dsdMode)
 {
-    unsigned char tmp[1];
+    unsigned char tmp[1] = {0};
 
     /* For L2 reference design configure external fractional-n clock multiplier for 300Hz -> mClkFreq */
     PllMult(mClk/300);
-
+    
     /* Allow some time for mclk to lock and MCLK to stabilise - this is important to avoid glitches at start of stream */
     {
         timer t;
         unsigned time;
         t :> time;
         t when timerafter(time+AUDIO_PLL_LOCK_DELAY) :> void;
+    }
+
+    while(1)
+    { 
+        /* Read Unlock Indicator in PLL as sanity check... */
+        CS2300_REGREAD(CS2300_DEVICE_CONTROL, tmp);
+        if(!(tmp[0] & 0x80))
+        {
+            break;
+        }
     }
 
     /* Functional Mode (Address 03h) */
