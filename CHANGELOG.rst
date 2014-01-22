@@ -10,6 +10,9 @@ sw_usb_audio Change Log
                   should handle any delays required for stable MCLK as required by the clocking hardware.
     - CHANGE:     Delay to allow USB feedback to stabilise after samplerate change now based on USB bus
                   speed. This allows faster rate change at high-speed.
+    - RESOLVED:   (Major) Broken (noisy) playback in DSD native mode (introduced in 6.3.2). Caused by 24bit 
+                  (over 32bit) volume processing when DSD enabled - DSD bits are lost. 24bit volume control 
+                  now guarded by NATIVE_DSD define (#15200)
     - RESOLVED:   (Minor) Default for SPDIF define set to 1 in app_usb_aud_l1 customdefines.h.
                   Previously SPDIF not properly enabled in binaries (#15129)
     - RESOLVED:   (Minor) All remaining references to stdcore[] replaced with tile[] (#15122)
@@ -29,6 +32,10 @@ sw_usb_audio Change Log
     - RESOLVED:   (Minor) Build issue when CODEC_MASTER set (#15162)
     - RESOLVED:   (Minor) DSD mute signal output when invalid DSD frequency selected in Native DSD mode. Previously
                   0 was driven resulting in pop noises on the analague output when switching between DSD/PCM (#14769)
+    - RESOLVED:   (Minor) Build error when OUT_VOLUME_IN_MIXER was set to 0 (#10692)
+    - RESOLVED:   (Minor) LR channel swap issue in CS42448 CODEC by more closely matching recommended
+                  power up sequence (app_usb_aud_l2) (#15189)
+    - RESOLVED:   (Minor) Improved the robustness of ADC I2S data port init when MASTER_CODEC defined (#15203)
 
   * Changes to dependencies:
 
