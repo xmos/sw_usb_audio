@@ -76,51 +76,11 @@ void AudioHwInit(chanend ?c_codec)
 {
     unsigned char tmp[1];
 
-    /* Clock buffers and CODEC out of reset */
-#ifndef CODEC_MASTER
-    p_aud_cfg <: 0b1000;
-#else
-    p_aud_cfg <: 0b1010;
-#endif
-
     i2c_master_init(i2cPorts);
 
+    /* Initialise external PLL */
     PllInit();
-
-    /* Setup PLL to output default mclk freq */
-    PllMult(DEFAULT_MCLK_FREQ/300);
-
-    /* Power Control Register (Address 02h) */
-    /* 0    Power Down                           (PDN)   = 1 Enable, 0 Disable */
-    /* 1:4  Power Down DAC Pairs            (PDN_DACX)   = 1 Enable, 0 Disable */
-    /* 5:7  Power Down ADC Pairs            (PDN_ADCX)   = 1 Enable, 0 Disable */
-    tmp[0] = 0x01;
-    i2c_master_write_reg(COD_DEV_ADRS, 0x2, tmp, 1, i2cPorts);
-
-    /* Interface Formats Register (Address 04h)             */
-    /* 0:2  ADC Digital Interface Format       (ADC_DIF)    = 001 (I2S, 24bit) */
-    /* 3:5  DAC Digital Interface Format       (DAC_DIF)    = 001 (I2S, 24bit) */
-    /* 6    Auxiliary Digital Interface Format (AUX_DIF)    = 1, (I2S)         */
-    /* 7    Freeze Controls                    (FREEZE)     = 0,               */
-    tmp[0] = 0x49;
-    i2c_master_write_reg(COD_DEV_ADRS, 0x4, tmp, 1, i2cPorts);
-
-    /* ADC Control & DAC De-Emphasis (Address 05h) */
-    /* 0   ADC1-2_HPF FREEZE = 0, */
-    /* 1   ADC3_HPF FREEZE = 0, */
-    /* 2   DAC_DEM = 0, */
-    /* 3   ADC1_SINGLE = 1(single ended), */
-    /* 4   ADC2_SINGLE = 1, */
-    /* 5   ADC3_SINGLE = 1, */
-    /* 6   AIN5_MUX = 0, */
-    /* 7   AIN6_MUX = 0 */
-    tmp[0] = 0x1C;
-    i2c_master_write_reg(COD_DEV_ADRS, 0x5, tmp, 1, i2cPorts);
-
-    /* Power Control Register (Address 02h) - PDN disable */
-    tmp[0] = 0x00;
-    i2c_master_write_reg(COD_DEV_ADRS, 0x2, tmp, 1, i2cPorts);
-
+    
     return;
 }
 
@@ -151,6 +111,13 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
 {
     unsigned char tmp[1] = {0};
 
+    /* Clock buffers and CODEC into reset */
+#ifndef CODEC_MASTER
+    p_aud_cfg <: 0b0000;
+#else
+    p_aud_cfg <: 0b0010;
+#endif
+
     /* For L2 reference design configure external fractional-n clock multiplier for 300Hz -> mClkFreq */
     PllMult(mClk/300);
 
@@ -171,7 +138,41 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
             break;
         }
     }
+    
+    /* Clock buffers and CODEC out of reset */
+#ifndef CODEC_MASTER
+    p_aud_cfg <: 0b1000;
+#else
+    p_aud_cfg <: 0b1010;
+#endif
 
+    /* Power Control Register (Address 02h) */
+    /* 0    Power Down                           (PDN)   = 1 Enable, 0 Disable */
+    /* 1:4  Power Down DAC Pairs            (PDN_DACX)   = 1 Enable, 0 Disable */
+    /* 5:7  Power Down ADC Pairs            (PDN_ADCX)   = 1 Enable, 0 Disable */
+    tmp[0] = 0x01;
+    i2c_master_write_reg(COD_DEV_ADRS, 0x2, tmp, 1, i2cPorts);
+
+    /* Interface Formats Register (Address 04h)             */
+    /* 0:2  ADC Digital Interface Format       (ADC_DIF)    = 001 (I2S, 24bit) */
+    /* 3:5  DAC Digital Interface Format       (DAC_DIF)    = 001 (I2S, 24bit) */
+    /* 6    Auxiliary Digital Interface Format (AUX_DIF)    = 1, (I2S)         */
+    /* 7    Freeze Controls                    (FREEZE)     = 0,               */
+    tmp[0] = 0x49;
+    i2c_master_write_reg(COD_DEV_ADRS, 0x4, tmp, 1, i2cPorts);
+
+    /* ADC Control & DAC De-Emphasis (Address 05h) */
+    /* 0   ADC1-2_HPF FREEZE = 0, */
+    /* 1   ADC3_HPF FREEZE = 0, */
+    /* 2   DAC_DEM = 0, */
+    /* 3   ADC1_SINGLE = 1(single ended), */
+    /* 4   ADC2_SINGLE = 1, */
+    /* 5   ADC3_SINGLE = 1, */
+    /* 6   AIN5_MUX = 0, */
+    /* 7   AIN6_MUX = 0 */
+    tmp[0] = 0x1C;
+    i2c_master_write_reg(COD_DEV_ADRS, 0x5, tmp, 1, i2cPorts);
+    
     /* Functional Mode (Address 03h) */
     /* 0                                           Reserved                            */
     /* 3:1  MCLK Frequency                         256/128/64 :                    000 */
@@ -185,18 +186,22 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
     /*                                             Master: Double                   01 */
     /*                                             Master: Quad                     10 */
 #ifndef CODEC_MASTER
-    tmp[0] = 0b11110000;                                             /* Autodetect */
+    /* Autodetect */
+    tmp[0] = 0b11110000;                           
 #else
     if(samFreq < 50000)
-    {
+    { 
+        /* Single */
         tmp[0] = 0b00000000;
     }
     else if(samFreq < 100000)
     {
+        /* Double */
         tmp[0] = 0b01010000;
     }
     else
     {
+        /* Quad */
         tmp[0] = 0b10100000;
     }
 #endif
@@ -214,4 +219,8 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
     }
 
     i2c_master_write_reg(COD_DEV_ADRS, 0x3, tmp, 1, i2cPorts);
+    
+    /* Power Control Register (Address 02h) - PDN disable */
+    tmp[0] = 0x00;
+    i2c_master_write_reg(COD_DEV_ADRS, 0x2, tmp, 1, i2cPorts);
 }
