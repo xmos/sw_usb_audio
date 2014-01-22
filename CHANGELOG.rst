@@ -10,8 +10,8 @@ sw_usb_audio Change Log
                   should handle any delays required for stable MCLK as required by the clocking hardware.
     - CHANGE:     Delay to allow USB feedback to stabilise after samplerate change now based on USB bus
                   speed. This allows faster rate change at high-speed.
-    - RESOLVED:   (Major) Broken (noisy) playback in DSD native mode (introduced in 6.3.2). Caused by 24bit 
-                  (over 32bit) volume processing when DSD enabled - DSD bits are lost. 24bit volume control 
+    - RESOLVED:   (Major) Broken (noisy) playback in DSD native mode (introduced in 6.3.2). Caused by 24bit
+                  (over 32bit) volume processing when DSD enabled - DSD bits are lost. 24bit volume control
                   now guarded by NATIVE_DSD define (#15200)
     - RESOLVED:   (Minor) Default for SPDIF define set to 1 in app_usb_aud_l1 customdefines.h.
                   Previously SPDIF not properly enabled in binaries (#15129)

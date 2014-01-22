@@ -80,7 +80,7 @@ void AudioHwInit(chanend ?c_codec)
 
     /* Initialise external PLL */
     PllInit();
-    
+
     return;
 }
 
@@ -138,7 +138,7 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
             break;
         }
     }
-    
+
     /* Clock buffers and CODEC out of reset */
 #ifndef CODEC_MASTER
     p_aud_cfg <: 0b1000;
@@ -172,7 +172,7 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
     /* 7   AIN6_MUX = 0 */
     tmp[0] = 0x1C;
     i2c_master_write_reg(COD_DEV_ADRS, 0x5, tmp, 1, i2cPorts);
-    
+
     /* Functional Mode (Address 03h) */
     /* 0                                           Reserved                            */
     /* 3:1  MCLK Frequency                         256/128/64 :                    000 */
@@ -187,10 +187,10 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
     /*                                             Master: Quad                     10 */
 #ifndef CODEC_MASTER
     /* Autodetect */
-    tmp[0] = 0b11110000;                           
+    tmp[0] = 0b11110000;
 #else
     if(samFreq < 50000)
-    { 
+    {
         /* Single */
         tmp[0] = 0b00000000;
     }
@@ -219,7 +219,7 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
     }
 
     i2c_master_write_reg(COD_DEV_ADRS, 0x3, tmp, 1, i2cPorts);
-    
+
     /* Power Control Register (Address 02h) - PDN disable */
     tmp[0] = 0x00;
     i2c_master_write_reg(COD_DEV_ADRS, 0x2, tmp, 1, i2cPorts);
