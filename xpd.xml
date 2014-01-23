@@ -73,14 +73,14 @@
         <version>1.3.1beta2</version>
     </dependency>
     <dependency repo = "sc_usb_audio">
-        <githash>4c4cf162049902f3e532eaae88d48eff196981a2</githash>
+        <githash>104c70b4021d9176f8d1ff7b27741efa63f0ca7d</githash>
         <uri>git://git/apps/sc_usb_audio</uri>
-        <version>6.3.3alpha4</version>
+        <version>6.3.3alpha5</version>
     </dependency>
     <dependency repo = "sc_xud">
-        <githash>42d2b6c8eb633efecf7db10c55101106459171b8</githash>
+        <githash>63c93c75c2fd6bd86e420b7ff7726bb9a06186b9</githash>
         <uri>git://git/apps/sc_xud</uri>
-        <version>1.0.3alpha5</version>
+        <version>1.0.3alpha6</version>
     </dependency>
     <dependency repo = "sc_i2c">
         <githash>e3829f0c0f6ae94679b31d766dd65b33b2c46b19</githash>
@@ -88,9 +88,9 @@
         <version>2.3.0beta1</version>
     </dependency>
     <dependency repo = "sc_usb_device">
-        <githash>ed2befe3ac55facd3b8eb989062846c67c406b09</githash>
+        <githash>ad16ec386355e871adbbcbd79977188fd44e8012</githash>
         <uri>git://git/apps/sc_usb_device</uri>
-        <version>1.0.4beta1</version>
+        <version>1.0.4beta2</version>
     </dependency>
     <dependency repo = "sc_util">
         <githash>d0531d7c68ab67334582c324828e36d617baf8b3</githash>
@@ -178,7 +178,7 @@
     <release parenthash = "b01bde90651682d39075479ae4022467b3537cca" version = "6.3.3alpha4" githash = "b2c253fc6639a0e368bf5843831b490461d829c8"></release>
     <release parenthash = "b2c253fc6639a0e368bf5843831b490461d829c8" version = "6.3.3alpha5" githash = "31ee01cd1441ee3b20a2ad8f340627c9d4876cd3"></release>
     <release parenthash = "31ee01cd1441ee3b20a2ad8f340627c9d4876cd3" version = "6.3.3alpha6" githash = "d30f2703ac17529fc08a04186501597e1bb8c28b"></release>
-    <release parenthash = "791a49051fb52d661f8b8438204436fb8590f99e" version = "6.3.3alpha7"></release>
+    <release parenthash = "791a49051fb52d661f8b8438204436fb8590f99e" version = "6.3.3alpha7" githash = "b59b87cea9ca7850095fb87a7ada3c3811bbc2d6"></release>
     <subpartnumber>XM-002775-SM</subpartnumber>
     <vendor>XMOS</vendor>
     <version_defines>
