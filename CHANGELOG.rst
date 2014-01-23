@@ -39,10 +39,14 @@ sw_usb_audio Change Log
     - RESOLVED:   (Minor) Channel counts in Audio 2 descriptors now modified based on bus-speed. Input stream
                   format also modified (previously only output was) (#15202)
     - RESOLVED:   (Minor) Full-speed Audio Class 2.0 sample-rate list properly restricted based on if input
-                  /output are enabled (#15210) 
+                  /output are enabled (#15210)
     - RESOLVED:   (Minor) AUDIO_CLASS_FALLBACK no longer required to be defined when AUDIO_CLASS set to 1 (#13302)
 
   * Changes to dependencies:
+
+    - sc_usb_device: 1.0.3beta0 -> 1.0.4beta0
+
+      + CHANGE:     devDesc_hs and cfgDesc_hs params to USB_StandardRequests() now nullable (usefull for full-speed only devices)
 
     - sc_xud: 1.0.2alpha1 -> 1.0.3alpha5
 
