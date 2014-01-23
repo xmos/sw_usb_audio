@@ -36,6 +36,11 @@ sw_usb_audio Change Log
     - RESOLVED:   (Minor) LR channel swap issue in CS42448 CODEC by more closely matching recommended
                   power up sequence (app_usb_aud_l2) (#15189)
     - RESOLVED:   (Minor) Improved the robustness of ADC I2S data port init when MASTER_CODEC defined (#15203)
+    - RESOLVED:   (Minor) Channel counts in Audio 2 descriptors now modified based on bus-speed. Input stream
+                  format also modified (previously only output was) (#15202)
+    - RESOLVED:   (Minor) Full-speed Audio Class 2.0 sample-rate list properly restricted based on if input
+                  /output are enabled (#15210) 
+    - RESOLVED:   (Minor) AUDIO_CLASS_FALLBACK no longer required to be defined when AUDIO_CLASS set to 1 (#13302)
 
   * Changes to dependencies:
 
