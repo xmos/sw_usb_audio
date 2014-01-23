@@ -27,10 +27,16 @@
 #define AUDIO_CLASS        (2)
 #endif
 
+/* Enable Audio class 2.0 when connected to a FS hub */
+#ifndef FULL_SPEED_AUDIO_2
+#define FULL_SPEED_AUDIO_2 1
+#endif
+
 /* Enable/disable fall back to Audio Class 1.0 when connected to FS hub. */
 #ifndef AUDIO_CLASS_FALLBACK
 #define AUDIO_CLASS_FALLBACK 0
 #endif
+
 
 /* Defines relating to channel count and channel arrangement (Set to 0 for disable) */
 //:audio_defs
