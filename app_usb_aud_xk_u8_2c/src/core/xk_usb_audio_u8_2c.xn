@@ -70,7 +70,7 @@
   </Packages>
 
   <ExternalDevices>
-    <Device NodeId="0" Core="0" Class="SPIFlash" Name="bootFlash" Type="M25P10">
+    <Device NodeId="0" Core="0" Class="SPIFlash" Name="bootFlash" Type="M25P40">
       <Attribute Name="PORT_SPI_MISO" Value="PORT_SPI_MISO"/>
       <Attribute Name="PORT_SPI_SS"   Value="PORT_SPI_SS"/>
       <Attribute Name="PORT_SPI_CLK"  Value="PORT_SPI_CLK"/>
