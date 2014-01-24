@@ -1,7 +1,7 @@
 sw_usb_audio Change Log
 =======================
 
-6.3.3
+6.4.0
 -----
     - ADDED:      XK-USB-AUDIO-U8-2C mute output driven high when audiostream not active (app_usb_aud_xk_u8_2c)
     - CHANGE:     MIDI ports no longer passed to MFi specific functions
