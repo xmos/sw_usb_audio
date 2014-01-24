@@ -44,11 +44,11 @@ sw_usb_audio Change Log
 
   * Changes to dependencies:
 
-    - sc_usb_device: 1.0.3beta0 -> 1.0.4beta2
+    - sc_usb_device: 1.0.3beta0 -> 1.0.4beta3
 
       + CHANGE:     devDesc_hs and cfgDesc_hs params to USB_StandardRequests() now nullable (useful for full-speed only devices)
 
-    - sc_xud: 1.0.2alpha1 -> 1.0.3alpha6
+    - sc_xud: 1.0.2alpha1 -> 1.0.3beta0
 
       + RESOLVED:   (Minor) ULPI data-lines driven hard low and XMOS pull-up on STP line disabled
       + RESOLVED:   (Minor) Fixes to improve memory usage such as adding missing resource usage
