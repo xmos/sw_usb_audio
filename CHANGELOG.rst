@@ -44,17 +44,18 @@ sw_usb_audio Change Log
 
   * Changes to dependencies:
 
-    - sc_usb_device: 1.0.3beta0 -> 1.0.4beta3
+    - sc_usb_device: 1.0.3beta0 -> 1.0.4beta5
 
       + CHANGE:     devDesc_hs and cfgDesc_hs params to USB_StandardRequests() now nullable (useful for full-speed only devices)
+      + CHANGE:     Nullable descriptor array parameters to USB_StandardRequests() changed from ?array[] to (?&array)[] due to
 
-    - sc_xud: 1.0.2alpha1 -> 1.0.3beta0
+    - sc_xud: 1.0.2alpha1 -> 1.0.3beta1
 
       + RESOLVED:   (Minor) ULPI data-lines driven hard low and XMOS pull-up on STP line disabled
       + RESOLVED:   (Minor) Fixes to improve memory usage such as adding missing resource usage
       + RESOLVED:   (Minor) Moved to using supplied tools support for communicating with the USB tile
 
-    - sc_usb: 1.0.1beta1 -> 1.0.2beta0
+    - sc_usb: 1.0.1beta1 -> 1.0.2beta1
 
       + ADDED:   USB_BMREQ_D2H_VENDOR_DEV and USB_BMREQ_D2H_VENDOR_DEV defines for vendor device requests
 
