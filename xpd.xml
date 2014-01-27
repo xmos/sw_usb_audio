@@ -63,9 +63,9 @@
         </component>
     </components>
     <dependency repo = "sc_usb">
-        <githash>05c0827e24ea067f36ab2d0dfba12e60c453bd16</githash>
+        <githash>c8437d2541523b27f848428fe0e8ec78b6821421</githash>
         <uri>git://git/apps/sc_usb</uri>
-        <version>1.0.2beta0</version>
+        <version>1.0.2beta1</version>
     </dependency>
     <dependency repo = "sc_spdif">
         <githash>c6bcccd90a876b230b6c27fedbfe24a7e6f8f7b9</githash>
@@ -73,14 +73,14 @@
         <version>1.3.1beta2</version>
     </dependency>
     <dependency repo = "sc_usb_audio">
-        <githash>92087a2d40da2276c06dffd2b616532e65ea002d</githash>
+        <githash>c6ed243a82555bd3e2825dad48266e3a307db716</githash>
         <uri>git://git/apps/sc_usb_audio</uri>
-        <version>6.4.0beta1</version>
+        <version>6.4.0beta3</version>
     </dependency>
     <dependency repo = "sc_xud">
-        <githash>dcd55b4bdf8f39ccab83549776841f21f6f88537</githash>
+        <githash>7657efde576c8b930be49c6540f0c87c64bbcb75</githash>
         <uri>git://git/apps/sc_xud</uri>
-        <version>1.0.3beta0</version>
+        <version>1.0.3beta1</version>
     </dependency>
     <dependency repo = "sc_i2c">
         <githash>e3829f0c0f6ae94679b31d766dd65b33b2c46b19</githash>
@@ -88,9 +88,9 @@
         <version>2.3.0beta1</version>
     </dependency>
     <dependency repo = "sc_usb_device">
-        <githash>0c3c6a65089218fc68677261e186af433cb2dca7</githash>
+        <githash>3cf68b6de29e3650f90be96a30e5ae98f1c8ccc2</githash>
         <uri>git://git/apps/sc_usb_device</uri>
-        <version>1.0.4beta3</version>
+        <version>1.0.4beta5</version>
     </dependency>
     <dependency repo = "sc_util">
         <githash>d0531d7c68ab67334582c324828e36d617baf8b3</githash>
@@ -181,7 +181,7 @@
     <release parenthash = "791a49051fb52d661f8b8438204436fb8590f99e" version = "6.3.3alpha7" githash = "b59b87cea9ca7850095fb87a7ada3c3811bbc2d6"></release>
     <release parenthash = "0a9946da36b1c97530e9726d09644bc56815b4b3" version = "6.3.3alpha8" githash = "534325b8a08db3d9520353e2f2a92b17edb4fc78"></release>
     <release parenthash = "1879b8e81956ea1a3df556dfde834d89dd30f888" version = "6.3.3alpha9" githash = "a7a22faec6ef902ad08f1ec594d65c64a043d43d"></release>
-    <release parenthash = "cba266cc85568b4b293617486bdde21449481e6e" version = "6.4.0beta0"></release>
+    <release parenthash = "cba266cc85568b4b293617486bdde21449481e6e" version = "6.4.0beta0" githash = "ab696ac3c1cbd2f84b4458c8c400de498df05a02"></release>
     <subpartnumber>XM-002775-SM</subpartnumber>
     <vendor>XMOS</vendor>
     <version_defines>

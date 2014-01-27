@@ -74,8 +74,6 @@ void PllMult(unsigned mult)
 /* CODEC initialisation for Cirrus Logic CS42448 */
 void AudioHwInit(chanend ?c_codec)
 {
-    unsigned char tmp[1];
-
     i2c_master_init(i2cPorts);
 
     /* Initialise external PLL */
