@@ -32,7 +32,9 @@ typically relate to a specific board.  This repository contains the following:
 +----------------------+--------------------------+------------------------------------------------------------+
 | app_usb_aud_xk_u8_2c | xk-usb-audio-u8-2c       | XMOS XS1-U8 Multi-Function Audio Board                     |
 +----------------------+--------------------------+------------------------------------------------------------+
-| app_usb_aud_l2       | xk-usb-audio-2.0-mc      | XMOS XS1-L16 USB USB Audio Reference Design                |
+| app_usb_aud_l2       | xk-usb-audio-2.0-mc      | XMOS XS1-L16 USB Audio Reference Design                    |
++----------------------+--------------------------+------------------------------------------------------------+
+| app_usb_aud_u16      | xp-skc-u16 & xa-sk-audio | XMOS XS1-U16 sliceKIT Core Board and Audio Slice           |
 +----------------------+--------------------------+------------------------------------------------------------+
 
 Please refer to individual README files in these apps for more detailed information.
@@ -77,7 +79,7 @@ Key features of the various applications in this repository are as follow.  Plea
 
 - Simple playback controls via Human Interface Device (HID)
 
-- Support for operation with Apple devices (MFI licensees only - please contact XMOS) 
+- Support for operation with Apple devices (requires sc_mfi for MFI licensees only - please contact XMOS) 
 
 Note, not all features may be supported at all sample frequencies, simultaneously or on all devices.  Some features also require specific host driver support.
 
@@ -100,7 +102,7 @@ Constraints
 +----------------------+--------------------------------------+---------------+-----------------------------------------+
 | ADAT_TX              | ADAT output                          | Not Supported | Must be set to 0                        |                            
 +----------------------+--------------------------------------+---------------+-----------------------------------------+
-| SPDIF_RX             | S/DIF input                          | Not supported | Must be set to 0                        |
+| SPDIF_RX             | S/PDIF input                         | Not supported | Must be set to 0                        |
 +----------------------+--------------------------------------+---------------+-----------------------------------------+
 
 Supported Options
@@ -125,15 +127,15 @@ Supported Options
 +----------------------+--------------------------------------+---------------+-----------------------------------------+----------------------------+--------------+
 | MIDI                 | MIDI input/output                    | Supported     |                                         | 2iomx                      |              |
 +----------------------+--------------------------------------+---------------+-----------------------------------------+----------------------------+--------------+
-| MAX_FREQ             | Maximum Sample Rate                  | Supported     | 192kHz                                  | All                        |              |
+| MAX_FREQ             | Maximum Sample Rate                  | Supported     | 384kHz                                  | All                        |              |
 +----------------------+--------------------------------------+---------------+-----------------------------------------+----------------------------+--------------+
 
 Known Issues
 ============
 
-General known issues with this release are listed below.  For board/application specific known issues please see README in relevant app directory.
+General known issues with this release are listed below.  For board/application specific known issues please see README in relevant app directory
 
-- (#14762) When in DSD mode with S/PDIF output enabled DSD samples are transmitted over S/PDIF, this may or may not be desired
+- (#14762) When in DSD mode with S/PDIF output enabled, DSD samples are transmitted over S/PDIF if the DSD and S/PDIF channels are shared, this may or may not be desired
 
 - (#14173) I2S input is completely disabled when DSD output is active - the input stream to the host will contain 0 samples
 
@@ -143,7 +145,7 @@ General known issues with this release are listed below.  For board/application 
 
 - (#14883) Before DoP mode is detected a small number of DSD samples will be played out as PCM via I2S
 
-- (#14887) Volume control settings currently affect samples in both DSD and PCM modes. This results in invalid DSD output if volume control not set to 0.
+- (#14887) Volume control settings currently affect samples in both DSD and PCM modes. This results in invalid DSD output if volume control not set to 0
 
 -  Windows XP volume control very sensitive.  The Audio 1.0 driver built into Windows XP (usbaudio.sys) does not properly support master volume AND channel volume controls, leading to a very sensitive control.  Descriptors can be easily modified to disable master volume control if required (one byte - bmaControls(0) in Feature Unit descriptors)
 
@@ -172,11 +174,11 @@ Required software (dependencies)
 ================================
 
   * sc_i2c (ssh://git@github.com/xcore/sc_i2c)
-  * sc_usb (git://git/apps/sc_usb)
+  * sc_usb
   * sc_spdif (git://github.com/xcore/sc_spdif)
   * sc_periph (git://github.com/xcore/sc_periph)
-  * sc_usb_audio (git://git/apps/sc_usb_audio)
-  * sc_usb_device (git://git/apps/sc_usb_device)
+  * sc_usb_audio
+  * sc_usb_device
   * sc_util (git://github.com/xcore/sc_util)
-  * sc_xud (git://git/apps/sc_xud)
+  * sc_xud
 

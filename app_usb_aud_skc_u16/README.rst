@@ -16,7 +16,9 @@ Please note, for correct operation the following jumper settings are required:
 
 - J14 (DIA/ALT) should be set to ALT
 
-- J15 (D12 XOVER) should be set to ON 
+- J15 (D12 XOVER) should be set to ON
+
+Please note, this is a development configuration and is not fully tested.
 
 Key Features
 ............
