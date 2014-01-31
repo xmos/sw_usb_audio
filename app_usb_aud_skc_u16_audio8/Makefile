@@ -6,7 +6,7 @@ TARGET = xp-skc-u16-audio8.xn
 APP_NAME =
 
 # The flags passed to xcc when building the application
-BUILD_FLAGS     = -DFLASH_MAX_UPGRADE_SIZE=2*64*1024 -fcomment-asm -Xmapper --map -Xmapper MAPFILE -Wall -O3 -report -lflash -fsubword-select -save-temps -g -fxscope -DXSCOPE -DSDA_HIGH=2 -DSCL_HIGH=1 -DXUD_ON_U_SERIES=1
+BUILD_FLAGS     = -DFLASH_MAX_UPGRADE_SIZE=2*64*1024 -fcomment-asm -Xmapper --map -Xmapper MAPFILE -Wall -O3 -report -lflash -fsubword-select -save-temps -g -fxscope -DXSCOPE -DSDA_HIGH=2 -DSCL_HIGH=1 -DXUD_SERIES_SUPPORT=1
 
 # Test build configs (Note these make use of the defaults in customdefines.h)
 
@@ -21,17 +21,10 @@ USED_MODULES = module_usb_shared module_xud module_usb_audio module_spdif_tx mod
 
 MODULE_LIBRARIES = xud_u
 
-
-#=============================================================================
 #=============================================================================
 # The following part of the Makefile includes the common build infrastructure
 # for compiling XMOS applications. You should not need to edit below here.
 
 XMOS_MAKE_PATH ?= ../..
-ifneq ($(wildcard $(XMOS_MAKE_PATH)/xcommon/module_xcommon/build/Makefile.common),)
 include $(XMOS_MAKE_PATH)/xcommon/module_xcommon/build/Makefile.common
-else
-include ../module_xcommon/build/Makefile.common
-endif
-
 

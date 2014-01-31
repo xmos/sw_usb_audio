@@ -1,7 +1,7 @@
 /**
  * @file       customdefines.h
  * @brief      Defines relating to device configuration and customisation.
- *             For L1 USB Audio Reference Design
+ *             For U16 USB Audio Reference Design
  * @author     Ross Owen, XMOS Limited
  */
 #ifndef _CUSTOMDEFINES_H_

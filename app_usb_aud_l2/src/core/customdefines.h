@@ -35,9 +35,11 @@
 #endif
 
 /* Disable mixing - mixer core used for volume only */
+#ifndef MAX_MIX_COUNT
 #define MAX_MIX_COUNT      0
+#endif
 
-/* Device is self powered (not USB bus powered) */
+/* Device is self powered (i.e. not USB bus powered) */
 #define SELF_POWERED       1
 
 /* Number of IS2 chans to DAC..*/

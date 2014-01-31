@@ -1,6 +1,11 @@
 sw_usb_audio Change Log
 =======================
 
+6.5.0 (UNRELEASED)
+-----          
+    - ADDED:      app_usb_skc_u16_audio8
+    - CHANGE:     USB Test mode support enabled by default (required for compliance testing)    
+    
 6.4.0
 -----
     - ADDED:      XK-USB-AUDIO-U8-2C mute output driven high when audiostream not active (app_usb_aud_xk_u8_2c)
