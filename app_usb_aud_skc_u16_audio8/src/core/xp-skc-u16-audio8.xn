@@ -40,8 +40,8 @@ xsi:schemaLocation="http://www.xmos.com http://www.xmos.com">
             <Port Location="XS1_PORT_1F"  Name="PORT_MCLK_IN2"/>
             <!-- GPIO Ports -->
             <Port Location="XS1_PORT_4C" Name="PORT_USB_GPIO"/>
-            <Port Location="XS1_PORT_1E" Name="PORT_I2C_SCL_COPRO"/>
-            <Port Location="XS1_PORT_1L" Name="PORT_I2C_SDA_COPRO"/>
+            <Port Location="XS1_PORT_1E" Name="PORT_I2C_SCL"/>
+            <Port Location="XS1_PORT_1L" Name="PORT_I2C_SDA"/>
             <Port Location="XS1_PORT_1B" Name="PORT_BUTTON_4"/>
             <Port Location="XS1_PORT_1C"  Name="PORT_SPDIF_IN_COAX"/>
             <Port Location="XS1_PORT_1G"  Name="PORT_SPDIF_IN_OPT"/>
@@ -80,8 +80,8 @@ xsi:schemaLocation="http://www.xmos.com http://www.xmos.com">
             <Port Location="XS1_PORT_1P"  Name="PORT_MIDI_IN"/>
             <Port Location="XS1_PORT_4B"  Name="PORT_MIDI_OUT"/>
             <!-- GPIO Ports -->
-            <Port Location="XS1_PORT_1B"  Name="PORT_I2C_SDA"/>
-            <Port Location="XS1_PORT_4A"  Name="PORT_I2C_SCL"/>
+            <Port Location="XS1_PORT_1B"  Name="PORT_I2C_SDA_AUD"/>
+            <Port Location="XS1_PORT_4A"  Name="PORT_I2C_SCL_AUD"/>
             <Port Location="XS1_PORT_32A"  Name="PORT_LED_ARRAY"/>>
             <Port Location="XS1_PORT_4C"  Name="PORT_BUTTON_GPIO"/>
             <Port Location="XS1_PORT_4E"  Name="PORT_CODEC_RST_CLKSEL_DSD"/>
