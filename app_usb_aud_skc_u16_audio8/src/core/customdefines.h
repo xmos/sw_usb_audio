@@ -15,6 +15,7 @@
 
 /* Tile on which audio IO is located */
 #define AUDIO_IO_TILE 1
+#define IAP_TILE 0
 
 /* Enable/Disable MIDI - Default is MIDI on */
 #ifndef MIDI
