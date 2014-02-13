@@ -18,9 +18,9 @@ on tile[0] : in port p_sw     = XS1_PORT_4D;
 
 #ifndef IAP
 /* If IAP not enabled, i2c ports not declared - still needs for DAC config */
-on tile [AUDIO_IO_TILE] : struct r_i2c i2cPorts = {PORT_I2C_SCL, PORT_I2C_SDA};
+on tile [AUDIO_IO_TILE] : struct r_i2c r_i2c = {PORT_I2C_SCL, PORT_I2C_SDA};
 #else
-extern struct r_i2c i2cPorts;
+extern struct r_i2c r_i2c;
 #endif
 
 #if defined(SW_INT_HANDLER) && defined(IAP)
@@ -116,9 +116,9 @@ void AudioHwInit(chanend ?c_codec)
 /* Mode Control 3 - Address 0x06 */
 #define DAC_REG_ADDR_MODE_CTRL3        0x06
 
-#define DAC_REGWRITE(reg, val) {data[0] = val; i2c_shared_master_write_reg(i2cPorts, DAC_I2C_DEV_ADDR, reg, data, 1);}
+#define DAC_REGWRITE(reg, val) {data[0] = val; i2c_shared_master_write_reg(r_i2c, DAC_I2C_DEV_ADDR, reg, data, 1);}
 
-#define DAC_REGREAD(reg, val)  {i2c_shared_master_read_reg(i2cPorts, DAC_I2C_DEV_ADDR, reg, val, 1);}
+#define DAC_REGREAD(reg, val)  {i2c_shared_master_read_reg(r_i2c, DAC_I2C_DEV_ADDR, reg, val, 1);}
 
 //:codec_config
 /* Called on a sample frequency change */
