@@ -5,7 +5,7 @@
 #include "gpio_access.h"
 
 /* Select Apple connector */
-void SelectUSBDock(void)
+void SelectUSBApple(void)
 {
     unsigned tmp;
     port32A_lock_peek(tmp);
