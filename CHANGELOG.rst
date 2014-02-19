@@ -5,7 +5,14 @@ sw_usb_audio Change Log
 -----          
     - ADDED:      app_usb_skc_u16_audio8
     - CHANGE:     USB Test mode support enabled by default (required for compliance testing)    
-    
+    - CHANGE:     Default fs behaviour is now audio class 2, previously was to null device
+    - RESOLVED:   (Minor) iAP interface string index in descriptors when MIXER enabled (#15257)
+
+6.4.1 (UNRELEASED)
+-----
+    - RESOLVED:   (Minor) MIDI on single-tile L series devices now functional. CLKBLK_REF no longer used
+                  for MIDI when running on the same tile as XUD_Manager().  
+
 6.4.0
 -----
     - ADDED:      XK-USB-AUDIO-U8-2C mute output driven high when audiostream not active (app_usb_aud_xk_u8_2c)
@@ -37,7 +44,7 @@ sw_usb_audio Change Log
     - RESOLVED:   (Minor) DFU enabled by default in app_usb_aud_l2 (#15153)
     - RESOLVED:   (Minor) Build issue when NUM_USB_CHAN_IN or NUM_USB_CHAN_OUT set to 0 and MIXER set to 1 (#15096)
     - RESOLVED:   (Minor) Build issue when CODEC_MASTER set (#15162)
-    - RESOLVED:   (Minor) DSD mute signal output when invalid DSD frequency selected in Native DSD mode. Previously
+    - RESOLVED:   (Minor) DSD mute pattern output when invalid DSD frequency selected in Native DSD mode. Previously
                   0 was driven resulting in pop noises on the analague output when switching between DSD/PCM (#14769)
     - RESOLVED:   (Minor) Build error when OUT_VOLUME_IN_MIXER was set to 0 (#10692)
     - RESOLVED:   (Minor) LR channel swap issue in CS42448 CODEC by more closely matching recommended
