@@ -63,12 +63,14 @@ void AudioHwInit(chanend ?c_codec)
     port32A_out_unlock(x);
 
     /* The 5VA_EN line has a cap on it, wait for it to go high */
+    port32A_lock();
     while(1)
     {
         x = peek(p_gpo);
         if((x & P_GPIO_5VA_EN) == P_GPIO_5VA_EN)
             break;
     }
+    port32A_unlock();
 
 #ifdef SW_INT_HANDLER
      /* Give some time for button debounce */
