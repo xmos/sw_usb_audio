@@ -3,15 +3,26 @@ sw_usb_audio Change Log
 
 6.5.0 (UNRELEASED)
 -----          
-    - ADDED:      app_usb_skc_u16_audio8
     - CHANGE:     USB Test mode support enabled by default (required for compliance testing)    
-    - CHANGE:     Default fs behaviour is now audio class 2, previously was to null device
+    - CHANGE:     Default full-speed behaviour is now Audio Class 2, previously was a null device
+    - CHANGE:     Various changes to use XUD_Result_t returned from XUD functions
+    - CHANGE:     All remaining references to ARCH_x defines removed. XUD_SERIES_SUPPORT should 
+                  now be used (#15270)
+    - CHANGE:     Added IAP_TILE and MIDI_TILE defines (default to AUDIO_IO_TILE) (#15271)
     - RESOLVED:   (Minor) iAP interface string index in descriptors when MIXER enabled (#15257)
+    - RESOLVED:   (Minor) First feedback packet could be the wrong size (3 vs 4 byte) after a bus-
+                  speed change. usb_buffer() core now explictly re-sizes initial feedback packet 
+                  on stream-start based on bus-speed
+    - RESOLVED:   (Minor) Preprocessor error when AUDIO_CLASS_FALLBACK enabled and FULL_SPEED_AUDIO_2
+                  not defined. FULL_SPEED_AUDIO_2 now only enabled by default if AUDIO_CLASS_FALLBACK 
+                  is not enabled (#15272)
+    - RESOLVED:   (Minor) XUD_STATUS_ENABLED set :for iAP IN endpoints (and disabled for OUT
+                  endpoint) to avoid potential stale buffer being transmitted after bus-reset. 
 
-6.4.1 (UNRELEASED)
+6.4.1
 -----
     - RESOLVED:   (Minor) MIDI on single-tile L series devices now functional. CLKBLK_REF no longer used
-                  for MIDI when running on the same tile as XUD_Manager().  
+                  for MIDI when running on the same tile as XUD_Manager()  
 
 6.4.0
 -----
