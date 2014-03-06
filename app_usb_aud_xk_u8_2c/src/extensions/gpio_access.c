@@ -4,6 +4,16 @@
 
 swlock_t gpo_swlock = SWLOCK_INITIAL_VALUE;
 
+void port32A_lock()
+{
+    swlock_acquire(&gpo_swlock);
+}
+
+void port32A_unlock()
+{
+    swlock_release(&gpo_swlock);
+}
+
 void port32A_lock_peek(unsigned *x)
 {
     // Wrapped in lock to ensure it's safe from multiple logical cores
