@@ -1,7 +1,7 @@
 sw_usb_audio Change Log
 =======================
 
-6.5.0 (UNRELEASED)
+6.5.0
 -----          
     - CHANGE:     USB Test mode support enabled by default (required for compliance testing)    
     - CHANGE:     Default full-speed behaviour is now Audio Class 2, previously was a null device
@@ -9,14 +9,24 @@ sw_usb_audio Change Log
     - CHANGE:     All remaining references to ARCH_x defines removed. XUD_SERIES_SUPPORT should 
                   now be used (#15270)
     - CHANGE:     Added IAP_TILE and MIDI_TILE defines (default to AUDIO_IO_TILE) (#15271)
+    - CHANGE:     Multiple output stream formats now supported. See OUTPUT_FORMAT_COUNT and
+                  various _STREAM_FORMAT_OUTPUT_ defines. This allows dynamically selectable streaming
+                  interfaces with different formats e.g. sub-slot size, resolution etc
+    - CHANGE:     Audio buffering code now handles different slot size for input/output streams
+    - CHANGE:     Endpoint 0 code now in standard C (rather than XC) to allow better use of packed 
+                  structures for descriptors
+    - CHANGE:     Use of structures/enums/headers in module_usb_shared to give more modular Audio 
+                  Class 2.0 descriptors that can be more easily modified at run-time
+    - CHANGE:     16bit audio buffer packing/unpacking optimised
+    - RESOLVED:   (Minor) All access to port32A now guarded by locks in app_usb_aud_xk_u8_2c
     - RESOLVED:   (Minor) iAP interface string index in descriptors when MIXER enabled (#15257)
     - RESOLVED:   (Minor) First feedback packet could be the wrong size (3 vs 4 byte) after a bus-
-                  speed change. usb_buffer() core now explictly re-sizes initial feedback packet 
+                  speed change. usb_buffer() core now explicitly re-sizes initial feedback packet 
                   on stream-start based on bus-speed
     - RESOLVED:   (Minor) Preprocessor error when AUDIO_CLASS_FALLBACK enabled and FULL_SPEED_AUDIO_2
                   not defined. FULL_SPEED_AUDIO_2 now only enabled by default if AUDIO_CLASS_FALLBACK 
                   is not enabled (#15272)
-    - RESOLVED:   (Minor) XUD_STATUS_ENABLED set :for iAP IN endpoints (and disabled for OUT
+    - RESOLVED:   (Minor) XUD_STATUS_ENABLED set for iAP IN endpoints (and disabled for OUT
                   endpoint) to avoid potential stale buffer being transmitted after bus-reset. 
 
 6.4.1
@@ -31,7 +41,7 @@ sw_usb_audio Change Log
     - CHANGE:     Audio delivery core no longer waits for AUDIO_PLL_LOCK_DELAY after calling AudioHwConfig()
                   and running audio interfaces. It should be ensured that AudioHwConfig() implementation
                   should handle any delays required for stable MCLK as required by the clocking hardware.
-    - CHANGE:     Delay to allow USB feedback to stabilise after samplerate change now based on USB bus
+    - CHANGE:     Delay to allow USB feedback to stabilise after sample-rate change now based on USB bus
                   speed. This allows faster rate change at high-speed.
     - CHANGE:     FL_DEVICE_ flash spec macros (from flash.h) used for DFU_FLASH_DEVICE define where appropriate
                   rather than defining the spec manually
