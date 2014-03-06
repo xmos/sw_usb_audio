@@ -20,7 +20,7 @@
 
 void UserReadHIDButtons(unsigned char hidData[])
 {
-    
+
 }
 
 #endif

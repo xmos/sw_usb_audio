@@ -16,10 +16,10 @@ on tile[AUDIO_IO_TILE]: port p_led_array = PORT_LED_ARRAY;
 
 //Arrays of reg addresses and associated data arrays, which are initialsed for startup/initial config
 static unsigned char reg_addr_cs4384[] = {CS4384_MODE_CTRL, CS4384_PCM_CTRL, CS4384_DSD_CTRL, CS4384_MODE_CTRL};
-static unsigned char reg_data_cs4384[] = {CS4384_MODE_CTRL_PCM, CS4384_PCM_CTRL_PCM, CS4384_DSD_CTL_DSD1x, 
+static unsigned char reg_data_cs4384[] = {CS4384_MODE_CTRL_PCM, CS4384_PCM_CTRL_PCM, CS4384_DSD_CTL_DSD1x,
                                             CS4384_MODE_CTL2_PCM};
 
-static unsigned char reg_addr_cs5368[] = {CS5368_GCTL_MDE, CS5368_OVFL_ST, CS5368_OVFL_MSK, CS5368_HPF_CTRL, 
+static unsigned char reg_addr_cs5368[] = {CS5368_GCTL_MDE, CS5368_OVFL_ST, CS5368_OVFL_MSK, CS5368_HPF_CTRL,
                                             CS5368_PWR_DN, CS5368_MUTE_CTRL, CS5368_SDO_EN};
 static unsigned char reg_data_cs5368[] = {CS5368_GCTL_MDE_VAL, CS5368_OVFL_ST_VAL, CS5368_OVFL_MSK_VAL,
                                             CS5368_HPF_CTRL_VAL, CS5368_PWR_DN_VAL, CS5368_MUTE_CTRL_VAL, CS5368_SDO_EN_VAL};
@@ -31,7 +31,7 @@ int i2c_slave_configure(int codec_addr, int num_writes, unsigned char reg_addr[]
 {
     int success = 1;
     unsigned char data[1];
-    
+
     for(int i = 0; i < num_writes; i++){
         data[0] = reg_data[i];
         success &= i2c_master_write_reg(codec_addr, reg_addr[i], data, 1, r_i2c);
@@ -60,11 +60,11 @@ int i2c_slave_configure(int codec_addr, int num_writes, unsigned char reg_addr[]
 }
 
 
-void AudioHwInit(chanend ?c_codec) 
+void AudioHwInit(chanend ?c_codec)
 {
     /* Init the i2c module */
     i2c_master_init(r_i2c_aud);
-    
+
     /* Assert reset to ADC and DAC */
     set_gpio(p_adrst_cksel_dsd, P_DAC_RST_N, 0);
     set_gpio(p_adrst_cksel_dsd, P_ADC_RST_N, 0);
@@ -80,7 +80,7 @@ void AudioHwInit(chanend ?c_codec)
 
 }
 
-/* Configures the external audio hardware for the required sample frequency.  
+/* Configures the external audio hardware for the required sample frequency.
  * See gpio.h for I2C helper functions and gpio access
  */
 void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned dsdMode)
@@ -92,17 +92,17 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
 	set_gpio(p_adrst_cksel_dsd, P_ADC_RST_N, 0);
 
     /* Set master clock select appropriately */
-    if (mClk == MCLK_441)  
+    if (mClk == MCLK_441)
     {
         set_gpio(p_adrst_cksel_dsd, P_F_SELECT, 0);
     }
     else
-    { 
+    {
         set_gpio(p_adrst_cksel_dsd, P_F_SELECT, 1); //mClk = MCLK_48
     }
 
     /* Allow MCLK to settle */
-    wait_us(2000); // 2ms 
+    wait_us(2000); // 2ms
 
     if (dsdMode)
     {
@@ -111,18 +111,18 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
 
         /* DAC out out reset, note ADC in reset in DSD mode */
         set_gpio(p_adrst_cksel_dsd, P_DAC_RST_N, 1);
-        
-        
+
+
         /* Configure DAC with DSD values. Note 2 writes to mode control to enable/disable freeze/power down */
         reg_data_cs4384[0] = CS4384_MODE_CTRL_DSD;
         if (samFreq > 3000000)
-        {   
+        {
             /* DSD128 */
             reg_data_cs4384[2] = CS4384_DSD_CTL_DSD2x;
             p_led_array <: LED_SQUARE_BIG;
         }
-        else 
-        {   
+        else
+        {
             /* DSD64 */
             reg_data_cs4384[2] = CS4384_DSD_CTL_DSD1x;
             p_led_array <: LED_SQUARE_SML;
@@ -134,14 +134,14 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
 
         //Note ADC kept in reset, no config sent. DSD mode is output only
     }
-    else 
-    {    
-        /* dsdMode == 0 */ 
+    else
+    {
+        /* dsdMode == 0 */
         /* Set MUX to DSD mode (muxes ADC I2S data lines) */
         set_gpio(p_adrst_cksel_dsd, P_DSD_MODE, 0);
 
         /* Configure DAC with PCM values. Note 2 writes to mode control to enable/disable freeze/power down */
-        set_gpio(p_adrst_cksel_dsd, P_DAC_RST_N, 1);//De-assert DAC reset        
+        set_gpio(p_adrst_cksel_dsd, P_DAC_RST_N, 1);//De-assert DAC reset
         reg_data_cs4384[0] = CS4384_MODE_CTRL_PCM;
         reg_data_cs4384[1] = CS4384_PCM_CTRL_PCM;
         reg_data_cs4384[3] = CS4384_MODE_CTL2_PCM;
@@ -163,7 +163,7 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
 
 #ifdef CODEC_MASTER
 #error not currently implemented
-#endif 
+#endif
     return;
 }
 //:
