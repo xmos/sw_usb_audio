@@ -25,6 +25,13 @@ ifeq ($(MFI), 0)
 XCC_FLAGS_2ioxs = $(BUILD_FLAGS) 
 INCLUDE_ONLY_IN_2ioxs = 
 
+# Audio Class 2, No Input, Output, No MIDI, SPDIF
+XCC_FLAGS_2xoxs = $(BUILD_FLAGS) -DNUM_USB_CHAN_IN=0
+INCLUDE_ONLY_IN_2xoxs = 
+
+# Audio Class 2, No Input, Output, No MIDI, SPDIF, DSD
+#XCC_FLAGS_2xoxsd = $(BUILD_FLAGS) -DDSD_CHANS_DAC=2 -DUM_USB_CHAN_IN=0
+#INCLUDE_ONLY_IN_2xosd = 
 else
 
 # MFi test build configs - iAP support enabled
