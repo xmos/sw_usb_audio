@@ -19,7 +19,7 @@
 
 /* Enable/Disable MIDI - Default is MIDI on */
 #ifndef MIDI
-#define MIDI 		1
+#define MIDI 		0
 #endif
 
 /* Enable/Disable SPDIF output - Default is S/PDIF on */
