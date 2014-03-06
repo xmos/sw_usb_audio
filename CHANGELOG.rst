@@ -11,7 +11,8 @@ sw_usb_audio Change Log
     - CHANGE:     Added IAP_TILE and MIDI_TILE defines (default to AUDIO_IO_TILE) (#15271)
     - CHANGE:     Multiple output stream formats now supported. See OUTPUT_FORMAT_COUNT and
                   various _STREAM_FORMAT_OUTPUT_ defines. This allows dynamically selectable streaming
-                  interfaces with different formats e.g. sub-slot size, resolution etc
+                  interfaces with different formats e.g. sub-slot size, resolution etc. 16bit and 
+                  24bit enabled by default
     - CHANGE:     Audio buffering code now handles different slot size for input/output streams
     - CHANGE:     Endpoint 0 code now in standard C (rather than XC) to allow better use of packed 
                   structures for descriptors
