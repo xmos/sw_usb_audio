@@ -1,7 +1,7 @@
 XMOS USB Audio 2.0 Reference Design README
 ..........................................
 
-:Latest release: 6.5.0beta1
+:Latest release: 6.5.0beta2
 :Maintainer: Ross Owen
 :Description: USB Audio Applications
 
@@ -178,11 +178,11 @@ Required software (dependencies)
 ================================
 
   * sc_i2c (ssh://git@github.com/xcore/sc_i2c)
-  * sc_usb
+  * sc_usb (git://git/apps/sc_usb)
   * sc_spdif (git://github.com/xcore/sc_spdif)
   * sc_periph (git://github.com/xcore/sc_periph)
-  * sc_usb_audio
-  * sc_usb_device
+  * sc_usb_audio (git://git/apps/sc_usb_audio)
+  * sc_usb_device (git://git/apps/sc_usb_device)
   * sc_util (git://github.com/xcore/sc_util)
-  * sc_xud
+  * sc_xud (git://git/apps/sc_xud)
 
