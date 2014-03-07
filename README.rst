@@ -63,6 +63,8 @@ Key features of the various applications in this repository are as follow.  Plea
 
 - Input/output channel and individual volume/mute controls supported
 
+- Support for dynamically selectable output audio formats (e.g. resolution)
+
 - Field firmware upgrade compliant to the USB Device Firmware Upgrade (DFU) Class Specification
 
 - S/PDIF output
@@ -135,6 +137,8 @@ Known Issues
 
 General known issues with this release are listed below.  For board/application specific known issues please see README in relevant app directory
 
+- (#15341) Native DSD does not operate correctly when multiple output streaming formats are exposed by the device (Thesycon 2.19)
+
 - (#14762) When in DSD mode with S/PDIF output enabled, DSD samples are transmitted over S/PDIF if the DSD and S/PDIF channels are shared, this may or may not be desired
 
 - (#14173) I2S input is completely disabled when DSD output is active - the input stream to the host will contain 0 samples
@@ -156,7 +160,7 @@ Host System Requirements
 
 - Mac OSX version 10.6 or later
 
-- Windows XP, Vista, 7 or 8, with Thesycon Audio Class 2.0 driver for Windows (Tested against version 2.18). Please contact XMOS for details.
+- Windows XP, Vista, 7 or 8, with Thesycon Audio Class 2.0 driver for Windows (Tested against version 2.19). Please contact XMOS for details.
  
 - Windows XP, Vista, 7 or 8 with built-in USB Audio Class 1.0 driver.
 
@@ -174,11 +178,11 @@ Required software (dependencies)
 ================================
 
   * sc_i2c (ssh://git@github.com/xcore/sc_i2c)
-  * sc_usb (git://git/apps/sc_usb)
+  * sc_usb
   * sc_spdif (git://github.com/xcore/sc_spdif)
   * sc_periph (git://github.com/xcore/sc_periph)
-  * sc_usb_audio (git://git/apps/sc_usb_audio)
-  * sc_usb_device (git://git/apps/sc_usb_device)
+  * sc_usb_audio
+  * sc_usb_device
   * sc_util (git://github.com/xcore/sc_util)
-  * sc_xud (git://git/apps/sc_xud)
+  * sc_xud
 
