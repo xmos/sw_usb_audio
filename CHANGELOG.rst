@@ -22,13 +22,14 @@ sw_usb_audio Change Log
 
       + see sw_usb_audio for changelog
 
-    - sc_usb_device: 1.1.0beta0 -> 1.2.0beta2
+    - sc_usb_device: 1.1.0beta0 -> 1.2.0beta3
 
       + CHANGE:     USB_StandardRequests() now returns XUD_Result_t instead of int
       + CHANGE:     app_hid_mouse_demo now uses XUD_Result_t
       + CHANGE:     app_custom_bulk_demo now uses XUD_Result_t
       + CHANGE:     USB_StandardRequests() now takes the string table as an array of char pointers rather
       + CHANGE:     Demo applications now set LangID string at build-time (rather than run-time)
+      + CHANGE:     Test mode support no longer guarded by TEST_MODE_SUPPORT
 
 6.5.0
 -----
