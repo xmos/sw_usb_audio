@@ -4,48 +4,65 @@ sw_usb_audio Change Log
 6.5.1
 -----
     - CHANGE:     String table rationalisation (now based on a structure rather than a global array)
-    - CHANGE:     Channel strings now set at build-time (rather than run-time) avoiding the use 
+    - CHANGE:     Channel strings now set at build-time (rather than run-time) avoiding the use
                   of memcpy
     - CHANGE:     Added MIDI_RX_PORT_WIDTH define such that a 4-bit port can be used for MIDI Rx
-    - CHANGE:     Re-added c_aud_cfg channel (guarded by AUDIO_CFG_CHAN) allowing easy communication 
+    - CHANGE:     Re-added c_aud_cfg channel (guarded by AUDIO_CFG_CHAN) allowing easy communication
                   of audio hardware config to a remote core
     - CHANGE:     Channel strings now labeled "Analogue X, SPDIF Y" if S/PDIF and Analogue channels
                   overlap (previously Analogue naming took precedence)
     - RESOLVED:   (Minor) USB test mode requests re-enabled
 
+  * Changes to dependencies:
+
+    - sc_spdif: 1.3.1beta3 -> 1.3.2beta0
+
+
+    - sc_usb_audio: 6.5.0beta2 -> 6.5.1beta0
+
+      + see sw_usb_audio for changelog
+
+    - sc_usb_device: 1.1.0beta0 -> 1.2.0beta2
+
+      + CHANGE:     USB_StandardRequests() now returns XUD_Result_t instead of int
+      + CHANGE:     app_hid_mouse_demo now uses XUD_Result_t
+      + CHANGE:     app_custom_bulk_demo now uses XUD_Result_t
+      + CHANGE:     USB_StandardRequests() now takes the string table as an array of char pointers rather
+      + CHANGE:     Demo applications now set LangID string at build-time (rather than run-time)
+
 6.5.0
------          
-    - CHANGE:     USB Test mode support enabled by default (required for compliance testing)    
+-----
+    - CHANGE:     USB Test mode support enabled by default (required for compliance testing)
     - CHANGE:     Default full-speed behaviour is now Audio Class 2, previously was a null device
     - CHANGE:     Various changes to use XUD_Result_t returned from XUD functions
-    - CHANGE:     All remaining references to ARCH_x defines removed. XUD_SERIES_SUPPORT should 
+    - CHANGE:     All remaining references to ARCH_x defines removed. XUD_SERIES_SUPPORT should
                   now be used (#15270)
     - CHANGE:     Added IAP_TILE and MIDI_TILE defines (default to AUDIO_IO_TILE) (#15271)
     - CHANGE:     Multiple output stream formats now supported. See OUTPUT_FORMAT_COUNT and
                   various _STREAM_FORMAT_OUTPUT_ defines. This allows dynamically selectable streaming
-                  interfaces with different formats e.g. sub-slot size, resolution etc. 16bit and 
+                  interfaces with different formats e.g. sub-slot size, resolution etc. 16bit and
                   24bit enabled by default
     - CHANGE:     Audio buffering code now handles different slot size for input/output streams
-    - CHANGE:     Endpoint 0 code now in standard C (rather than XC) to allow better use of packed 
+    - CHANGE:     Endpoint 0 code now in standard C (rather than XC) to allow better use of packed
                   structures for descriptors
-    - CHANGE:     Use of structures/enums/headers in module_usb_shared to give more modular Audio 
+    - CHANGE:     Use of structures/enums/headers in module_usb_shared to give more modular Audio
                   Class 2.0 descriptors that can be more easily modified at run-time
     - CHANGE:     16bit audio buffer packing/unpacking optimised
     - RESOLVED:   (Minor) All access to port32A now guarded by locks in app_usb_aud_xk_u8_2c
     - RESOLVED:   (Minor) iAP interface string index in descriptors when MIXER enabled (#15257)
     - RESOLVED:   (Minor) First feedback packet could be the wrong size (3 vs 4 byte) after a bus-
-                  speed change. usb_buffer() core now explicitly re-sizes initial feedback packet 
+                  speed change. usb_buffer() core now explicitly re-sizes initial feedback packet
                   on stream-start based on bus-speed
     - RESOLVED:   (Minor) Preprocessor error when AUDIO_CLASS_FALLBACK enabled and FULL_SPEED_AUDIO_2
-                  not defined. FULL_SPEED_AUDIO_2 now only enabled by default if AUDIO_CLASS_FALLBACK 
+                  not defined. FULL_SPEED_AUDIO_2 now only enabled by default if AUDIO_CLASS_FALLBACK
                   is not enabled (#15272)
     - RESOLVED:   (Minor) XUD_STATUS_ENABLED set for iAP IN endpoints (and disabled for OUT
-                  endpoint) to avoid potential stale buffer being transmitted after bus-reset. 
+                  endpoint) to avoid potential stale buffer being transmitted after bus-reset.
 
 6.4.1
 -----
     - RESOLVED:   (Minor) MIDI on single-tile L series devices now functional. CLKBLK_REF no longer used
-                  for MIDI when running on the same tile as XUD_Manager()  
+                  for MIDI when running on the same tile as XUD_Manager()
 
 6.4.0
 -----
