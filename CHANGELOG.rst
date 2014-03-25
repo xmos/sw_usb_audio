@@ -1,6 +1,18 @@
 sw_usb_audio Change Log
 =======================
 
+6.5.1
+-----
+    - CHANGE:     String table rationalisation (now based on a structure rather than a global array)
+    - CHANGE:     Channel strings now set at build-time (rather than run-time) avoiding the use 
+                  of memcpy
+    - CHANGE:     Added MIDI_RX_PORT_WIDTH define such that a 4-bit port can be used for MIDI Rx
+    - CHANGE:     Re-added c_aud_cfg channel (guarded by AUDIO_CFG_CHAN) allowing easy communication 
+                  of audio hardware config to a remote core
+    - CHANGE:     Channel strings now labeled "Analogue X, SPDIF Y" if S/PDIF and Analogue channels
+                  overlap (previously Analogue naming took precedence)
+    - RESOLVED:   (Minor) USB test mode requests re-enabled
+
 6.5.0
 -----          
     - CHANGE:     USB Test mode support enabled by default (required for compliance testing)    
