@@ -11,7 +11,7 @@ sw_usb_audio Change Log
                   of audio hardware config to a remote core
     - CHANGE:     Channel strings now labeled "Analogue X, SPDIF Y" if S/PDIF and Analogue channels
                   overlap (previously Analogue naming took precedence)
-    - RESOLVED:   (Minor) USB test mode requests re-enabled - previously was guarded by 
+    - RESOLVED:   (Minor) USB test mode requests re-enabled - previously was guarded by
                   TEST_MODE_SUPPORT in module_usb_device (#15385)
 
   * Changes to dependencies:
@@ -19,11 +19,18 @@ sw_usb_audio Change Log
     - sc_spdif: 1.3.1beta3 -> 1.3.2beta0
 
 
-    - sc_usb_audio: 6.5.0beta2 -> 6.5.1beta0
+    - sc_util: 1.0.3rc0 -> 1.0.4rc0
+
+      + module_logging now compiled at -Os
+      + debug_printf in module_logging uses a buffer to deliver messages unfragmented
+      + Fix thread local storage calculation bug in libtrycatch
+      + Fix debug_printf itoa to work for unsigned values > 0x80000000
+
+    - sc_usb_audio: 6.5.0beta2 -> 6.5.1beta1
 
       + see sw_usb_audio for changelog
 
-    - sc_usb_device: 1.1.0beta0 -> 1.2.0beta3
+    - sc_usb_device: 1.1.0beta0 -> 1.2.0beta4
 
       + CHANGE:     USB_StandardRequests() now returns XUD_Result_t instead of int
       + CHANGE:     app_hid_mouse_demo now uses XUD_Result_t
