@@ -11,7 +11,8 @@ sw_usb_audio Change Log
                   of audio hardware config to a remote core
     - CHANGE:     Channel strings now labeled "Analogue X, SPDIF Y" if S/PDIF and Analogue channels
                   overlap (previously Analogue naming took precedence)
-    - RESOLVED:   (Minor) USB test mode requests re-enabled
+    - RESOLVED:   (Minor) USB test mode requests re-enabled - previously was guarded by 
+                  TEST_MODE_SUPPORT in module_usb_device (#15385)
 
   * Changes to dependencies:
 
