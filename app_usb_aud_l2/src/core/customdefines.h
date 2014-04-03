@@ -20,7 +20,11 @@
 
 /* When connected to a full-speed hub, run in USB Audio Class 2.0 mode */
 #ifndef FULL_SPEED_AUDIO_2
+#if (AUDIO_CLASS == 2)
 #define FULL_SPEED_AUDIO_2 (1)
+#else
+#define FULL_SPEED_AUDIO_2 (0)
+#endif
 #endif
 
 /* Defines relating to channel count and channel arrangement (0 for disable) */
