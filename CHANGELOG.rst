@@ -15,6 +15,8 @@ sw_usb_audio Change Log
                   TEST_MODE_SUPPORT in module_usb_device (#15385)
     - RESOLVED:   (Minor) Audio Class 1.0 sample frequency list now respects MAX_FREQ (previously 
                   based on OUTPUT and INPUT defines) (#15417)
+    - RESOLVED:   (Minor) Audio Class 1.0 mute control SET requests stalled due to incorrect data
+                  length check (#15419) 
 
   * Changes to dependencies:
 
