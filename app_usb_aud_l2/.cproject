@@ -4,7 +4,7 @@
     <storageModule moduleId="org.eclipse.cdt.core.settings">
               
         <cconfiguration id="com.xmos.cdt.toolchain.13542451">
-            <storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="com.xmos.cdt.toolchain.13542451" moduleId="org.eclipse.cdt.core.settings" name="2ioxs">
+            <storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="com.xmos.cdt.toolchain.13542451" moduleId="org.eclipse.cdt.core.settings" name="2iomx">
                 <externalSettings />
                 <extensions>
                     <extension id="com.xmos.cdt.core.XEBinaryParser" point="org.eclipse.cdt.core.BinaryParser" />
@@ -16,7 +16,7 @@
                 <buildTargets>
                     <target name="all" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
                         <buildCommand>xmake</buildCommand>
-                        <buildArguments>CONFIG=2ioxs</buildArguments>
+                        <buildArguments>CONFIG=2iomx</buildArguments>
                         <buildTarget>all</buildTarget>
                         <stopOnError>true</stopOnError>
                         <useDefaultCommand>true</useDefaultCommand>
@@ -24,7 +24,7 @@
                     </target>
                     <target name="clean" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
                         <buildCommand>xmake</buildCommand>
-                        <buildArguments>CONFIG=2ioxs</buildArguments>
+                        <buildArguments>CONFIG=2iomx</buildArguments>
                         <buildTarget>clean</buildTarget>
                         <stopOnError>true</stopOnError>
                         <useDefaultCommand>true</useDefaultCommand>
@@ -33,13 +33,13 @@
                 </buildTargets>
             </storageModule>
             <storageModule moduleId="cdtBuildSystem" version="4.0.0">
-                <configuration buildProperties="" description="" id="com.xmos.cdt.toolchain.13542451" name="2ioxs" parent="org.eclipse.cdt.build.core.emptycfg">
+                <configuration buildProperties="" description="" id="com.xmos.cdt.toolchain.13542451" name="2iomx" parent="org.eclipse.cdt.build.core.emptycfg">
                     <folderInfo id="com.xmos.cdt.toolchain.13542451.1127281840" name="/" resourcePath="">
                         <toolChain id = "com.xmos.cdt.toolchain.86882386" name="com.xmos.cdt.toolchain" superClass="com.xmos.cdt.toolchain">
                             <targetPlatform archList="all" binaryParser="com.xmos.cdt.core.XEBinaryParser" id = "com.xmos.cdt.core.platform.97433239" isAbstract="false" osList="linux,win32,macosx" superClass="com.xmos.cdt.core.platform" />
-                            <builder arguments="CONFIG=2ioxs" id = "com.xmos.cdt.builder.base.3382336" keepEnvironmentInBuildfile="false" managedBuildOn="false" superClass="com.xmos.cdt.builder.base">
+                            <builder arguments="CONFIG=2iomx" id = "com.xmos.cdt.builder.base.3382336" keepEnvironmentInBuildfile="false" managedBuildOn="false" superClass="com.xmos.cdt.builder.base">
                                 <outputEntries>
-                                    <entry flags="VALUE_WORKSPACE_PATH" kind="outputPath" name="bin/2ioxs" />
+                                    <entry flags="VALUE_WORKSPACE_PATH" kind="outputPath" name="bin/2iomx" />
                                 </outputEntries>
                             </builder>
                             <tool id = "com.xmos.cdt.xc.compiler.3276516" name="com.xmos.cdt.xc.compiler" superClass="com.xmos.cdt.xc.compiler">
@@ -632,7 +632,7 @@
         </cconfiguration>
 
         <cconfiguration id="com.xmos.cdt.toolchain.75510939">
-            <storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="com.xmos.cdt.toolchain.75510939" moduleId="org.eclipse.cdt.core.settings" name="2iomx">
+            <storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="com.xmos.cdt.toolchain.75510939" moduleId="org.eclipse.cdt.core.settings" name="1xoxx">
                 <externalSettings />
                 <extensions>
                     <extension id="com.xmos.cdt.core.XEBinaryParser" point="org.eclipse.cdt.core.BinaryParser" />
@@ -644,7 +644,7 @@
                 <buildTargets>
                     <target name="all" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
                         <buildCommand>xmake</buildCommand>
-                        <buildArguments>CONFIG=2iomx</buildArguments>
+                        <buildArguments>CONFIG=1xoxx</buildArguments>
                         <buildTarget>all</buildTarget>
                         <stopOnError>true</stopOnError>
                         <useDefaultCommand>true</useDefaultCommand>
@@ -652,7 +652,7 @@
                     </target>
                     <target name="clean" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
                         <buildCommand>xmake</buildCommand>
-                        <buildArguments>CONFIG=2iomx</buildArguments>
+                        <buildArguments>CONFIG=1xoxx</buildArguments>
                         <buildTarget>clean</buildTarget>
                         <stopOnError>true</stopOnError>
                         <useDefaultCommand>true</useDefaultCommand>
@@ -661,13 +661,13 @@
                 </buildTargets>
             </storageModule>
             <storageModule moduleId="cdtBuildSystem" version="4.0.0">
-                <configuration buildProperties="" description="" id="com.xmos.cdt.toolchain.75510939" name="2iomx" parent="org.eclipse.cdt.build.core.emptycfg">
+                <configuration buildProperties="" description="" id="com.xmos.cdt.toolchain.75510939" name="1xoxx" parent="org.eclipse.cdt.build.core.emptycfg">
                     <folderInfo id="com.xmos.cdt.toolchain.75510939.1127281840" name="/" resourcePath="">
                         <toolChain id = "com.xmos.cdt.toolchain.39053087" name="com.xmos.cdt.toolchain" superClass="com.xmos.cdt.toolchain">
                             <targetPlatform archList="all" binaryParser="com.xmos.cdt.core.XEBinaryParser" id = "com.xmos.cdt.core.platform.93877826" isAbstract="false" osList="linux,win32,macosx" superClass="com.xmos.cdt.core.platform" />
-                            <builder arguments="CONFIG=2iomx" id = "com.xmos.cdt.builder.base.42043211" keepEnvironmentInBuildfile="false" managedBuildOn="false" superClass="com.xmos.cdt.builder.base">
+                            <builder arguments="CONFIG=1xoxx" id = "com.xmos.cdt.builder.base.42043211" keepEnvironmentInBuildfile="false" managedBuildOn="false" superClass="com.xmos.cdt.builder.base">
                                 <outputEntries>
-                                    <entry flags="VALUE_WORKSPACE_PATH" kind="outputPath" name="bin/2iomx" />
+                                    <entry flags="VALUE_WORKSPACE_PATH" kind="outputPath" name="bin/1xoxx" />
                                 </outputEntries>
                             </builder>
                             <tool id = "com.xmos.cdt.xc.compiler.22639225" name="com.xmos.cdt.xc.compiler" superClass="com.xmos.cdt.xc.compiler">
@@ -1260,7 +1260,7 @@
         </cconfiguration>
 
         <cconfiguration id="com.xmos.cdt.toolchain.64207808">
-            <storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="com.xmos.cdt.toolchain.64207808" moduleId="org.eclipse.cdt.core.settings" name="2ioxx">
+            <storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="com.xmos.cdt.toolchain.64207808" moduleId="org.eclipse.cdt.core.settings" name="1ioxx">
                 <externalSettings />
                 <extensions>
                     <extension id="com.xmos.cdt.core.XEBinaryParser" point="org.eclipse.cdt.core.BinaryParser" />
@@ -1272,7 +1272,7 @@
                 <buildTargets>
                     <target name="all" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
                         <buildCommand>xmake</buildCommand>
-                        <buildArguments>CONFIG=2ioxx</buildArguments>
+                        <buildArguments>CONFIG=1ioxx</buildArguments>
                         <buildTarget>all</buildTarget>
                         <stopOnError>true</stopOnError>
                         <useDefaultCommand>true</useDefaultCommand>
@@ -1280,7 +1280,7 @@
                     </target>
                     <target name="clean" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
                         <buildCommand>xmake</buildCommand>
-                        <buildArguments>CONFIG=2ioxx</buildArguments>
+                        <buildArguments>CONFIG=1ioxx</buildArguments>
                         <buildTarget>clean</buildTarget>
                         <stopOnError>true</stopOnError>
                         <useDefaultCommand>true</useDefaultCommand>
@@ -1289,13 +1289,13 @@
                 </buildTargets>
             </storageModule>
             <storageModule moduleId="cdtBuildSystem" version="4.0.0">
-                <configuration buildProperties="" description="" id="com.xmos.cdt.toolchain.64207808" name="2ioxx" parent="org.eclipse.cdt.build.core.emptycfg">
+                <configuration buildProperties="" description="" id="com.xmos.cdt.toolchain.64207808" name="1ioxx" parent="org.eclipse.cdt.build.core.emptycfg">
                     <folderInfo id="com.xmos.cdt.toolchain.64207808.1127281840" name="/" resourcePath="">
                         <toolChain id = "com.xmos.cdt.toolchain.96158173" name="com.xmos.cdt.toolchain" superClass="com.xmos.cdt.toolchain">
                             <targetPlatform archList="all" binaryParser="com.xmos.cdt.core.XEBinaryParser" id = "com.xmos.cdt.core.platform.35514332" isAbstract="false" osList="linux,win32,macosx" superClass="com.xmos.cdt.core.platform" />
-                            <builder arguments="CONFIG=2ioxx" id = "com.xmos.cdt.builder.base.9306860" keepEnvironmentInBuildfile="false" managedBuildOn="false" superClass="com.xmos.cdt.builder.base">
+                            <builder arguments="CONFIG=1ioxx" id = "com.xmos.cdt.builder.base.9306860" keepEnvironmentInBuildfile="false" managedBuildOn="false" superClass="com.xmos.cdt.builder.base">
                                 <outputEntries>
-                                    <entry flags="VALUE_WORKSPACE_PATH" kind="outputPath" name="bin/2ioxx" />
+                                    <entry flags="VALUE_WORKSPACE_PATH" kind="outputPath" name="bin/1ioxx" />
                                 </outputEntries>
                             </builder>
                             <tool id = "com.xmos.cdt.xc.compiler.31323207" name="com.xmos.cdt.xc.compiler" superClass="com.xmos.cdt.xc.compiler">
@@ -1887,8 +1887,1264 @@
             <storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings" />
         </cconfiguration>
 
+        <cconfiguration id="com.xmos.cdt.toolchain.76246434">
+            <storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="com.xmos.cdt.toolchain.76246434" moduleId="org.eclipse.cdt.core.settings" name="2ioxs">
+                <externalSettings />
+                <extensions>
+                    <extension id="com.xmos.cdt.core.XEBinaryParser" point="org.eclipse.cdt.core.BinaryParser" />
+                    <extension id="com.xmos.cdt.core.XdeErrorParser" point="org.eclipse.cdt.core.ErrorParser" />
+                    <extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser" />
+                </extensions>
+            </storageModule>
+            <storageModule moduleId="org.eclipse.cdt.make.core.buildtargets">
+                <buildTargets>
+                    <target name="all" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+                        <buildCommand>xmake</buildCommand>
+                        <buildArguments>CONFIG=2ioxs</buildArguments>
+                        <buildTarget>all</buildTarget>
+                        <stopOnError>true</stopOnError>
+                        <useDefaultCommand>true</useDefaultCommand>
+                        <runAllBuilders>true</runAllBuilders>
+                    </target>
+                    <target name="clean" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+                        <buildCommand>xmake</buildCommand>
+                        <buildArguments>CONFIG=2ioxs</buildArguments>
+                        <buildTarget>clean</buildTarget>
+                        <stopOnError>true</stopOnError>
+                        <useDefaultCommand>true</useDefaultCommand>
+                        <runAllBuilders>true</runAllBuilders>
+                    </target>
+                </buildTargets>
+            </storageModule>
+            <storageModule moduleId="cdtBuildSystem" version="4.0.0">
+                <configuration buildProperties="" description="" id="com.xmos.cdt.toolchain.76246434" name="2ioxs" parent="org.eclipse.cdt.build.core.emptycfg">
+                    <folderInfo id="com.xmos.cdt.toolchain.76246434.1127281840" name="/" resourcePath="">
+                        <toolChain id = "com.xmos.cdt.toolchain.13531089" name="com.xmos.cdt.toolchain" superClass="com.xmos.cdt.toolchain">
+                            <targetPlatform archList="all" binaryParser="com.xmos.cdt.core.XEBinaryParser" id = "com.xmos.cdt.core.platform.21620893" isAbstract="false" osList="linux,win32,macosx" superClass="com.xmos.cdt.core.platform" />
+                            <builder arguments="CONFIG=2ioxs" id = "com.xmos.cdt.builder.base.14753686" keepEnvironmentInBuildfile="false" managedBuildOn="false" superClass="com.xmos.cdt.builder.base">
+                                <outputEntries>
+                                    <entry flags="VALUE_WORKSPACE_PATH" kind="outputPath" name="bin/2ioxs" />
+                                </outputEntries>
+                            </builder>
+                            <tool id = "com.xmos.cdt.xc.compiler.49793039" name="com.xmos.cdt.xc.compiler" superClass="com.xmos.cdt.xc.compiler">
+                                <option id = "com.xmos.c.compiler.option.defined.symbols.44417461" name="com.xmos.c.compiler.option.defined.symbols" superClass="com.xmos.c.compiler.option.defined.symbols" valueType="definedSymbols">
+                                    <listOptionValue builtIn="false" value="__SHRT_MAX__=32767"/>
+                                    <listOptionValue builtIn="false" value="__SCHAR_MAX__=127"/>
+                                    <listOptionValue builtIn="false" value="__SIZE_TYPE__=unsigned"/>
+                                    <listOptionValue builtIn="false" value="__WCHAR_TYPE__=unsigned"/>
+                                    <listOptionValue builtIn="false" value="__STDC_HOSTED__=1"/>
+                                    <listOptionValue builtIn="false" value="XCC_VERSION_YEAR=11"/>
+                                    <listOptionValue builtIn="false" value="__PTRDIFF_TYPE__=int"/>
+                                    <listOptionValue builtIn="false" value="XCC_VERSION_MAJOR=1111"/>
+                                    <listOptionValue builtIn="false" value="XCC_VERSION_MINOR=1"/>
+                                    <listOptionValue builtIn="false" value="XCC_VERSION_MONTH=11"/>
+                                    <listOptionValue builtIn="false" value="__CHAR_UNSIGNED__=1"/>
+                                    <listOptionValue builtIn="false" value="__MCPP=2"/>
+                                    <listOptionValue builtIn="false" value="__XC__=1"/>
+                                    <listOptionValue builtIn="false" value="__XS1B__=1"/>
+                                    <listOptionValue builtIn="false" value="__INT_MAX__=2147483647"/>
+                                    <listOptionValue builtIn="false" value="__LONG_MAX__=2147483647L"/>
+                                    <listOptionValue builtIn="false" value="__STDC__=1"/>
+                                    <listOptionValue builtIn="false" value="__GNUC__=4"/>
+                                    <listOptionValue builtIn="false" value="__GNUC_MINOR__=2"/>
+                                    <listOptionValue builtIn="false" value="__GNUC_PATCHLEVEL__=1"/>
+                                    <listOptionValue builtIn="false" value="__llvm__=1"/>
+                                    <listOptionValue builtIn="false" value="__WINT_TYPE__=unsigned"/>
+                                    <listOptionValue builtIn="false" value="__INTMAX_TYPE__=long"/>
+                                    <listOptionValue builtIn="false" value="__UINTMAX_TYPE__=long"/>
+                                    <listOptionValue builtIn="false" value="__GXX_ABI_VERSION=1002"/>
+                                    <listOptionValue builtIn="false" value="__LONG_LONG_MAX__=9223372036854775807LL"/>
+                                    <listOptionValue builtIn="false" value="__WCHAR_MAX__=255U"/>
+                                    <listOptionValue builtIn="false" value="__CHAR_BIT__=8"/>
+                                    <listOptionValue builtIn="false" value="__INTMAX_MAX__=9223372036854775807LL"/>
+                                    <listOptionValue builtIn="false" value="__FLT_EVAL_METHOD__=0"/>
+                                    <listOptionValue builtIn="false" value="__DEC_EVAL_METHOD__=2"/>
+                                    <listOptionValue builtIn="false" value="__FLT_RADIX__=2"/>
+                                    <listOptionValue builtIn="false" value="__FLT_MANT_DIG__=24"/>
+                                    <listOptionValue builtIn="false" value="__FLT_DIG__=6"/>
+                                    <listOptionValue builtIn="false" value="__FLT_MIN_EXP__=(-125)"/>
+                                    <listOptionValue builtIn="false" value="__FLT_MIN_10_EXP__=(-37)"/>
+                                    <listOptionValue builtIn="false" value="__FLT_MAX_EXP__=128"/>
+                                    <listOptionValue builtIn="false" value="__FLT_MAX_10_EXP__=38"/>
+                                    <listOptionValue builtIn="false" value="__FLT_MAX__=3.40282347e+38F"/>
+                                    <listOptionValue builtIn="false" value="__FLT_MIN__=1.17549435e-38F"/>
+                                    <listOptionValue builtIn="false" value="__FLT_EPSILON__=1.19209290e-7F"/>
+                                    <listOptionValue builtIn="false" value="__FLT_DENORM_MIN__=1.40129846e-45F"/>
+                                    <listOptionValue builtIn="false" value="__FLT_HAS_DENORM__=1"/>
+                                    <listOptionValue builtIn="false" value="__FLT_HAS_INFINITY__=1"/>
+                                    <listOptionValue builtIn="false" value="__FLT_HAS_QUIET_NAN__=1"/>
+                                    <listOptionValue builtIn="false" value="__DBL_MANT_DIG__=53"/>
+                                    <listOptionValue builtIn="false" value="__DBL_DIG__=15"/>
+                                    <listOptionValue builtIn="false" value="__DBL_MIN_EXP__=(-1021)"/>
+                                    <listOptionValue builtIn="false" value="__DBL_MIN_10_EXP__=(-307)"/>
+                                    <listOptionValue builtIn="false" value="__DBL_MAX_EXP__=1024"/>
+                                    <listOptionValue builtIn="false" value="__DBL_MAX_10_EXP__=308"/>
+                                    <listOptionValue builtIn="false" value="__DBL_MAX__=1.7976931348623157e+308"/>
+                                    <listOptionValue builtIn="false" value="__DBL_MIN__=2.2250738585072014e-308"/>
+                                    <listOptionValue builtIn="false" value="__DBL_EPSILON__=2.2204460492503131e-16"/>
+                                    <listOptionValue builtIn="false" value="__DBL_DENORM_MIN__=4.9406564584124654e-324"/>
+                                    <listOptionValue builtIn="false" value="__DBL_HAS_DENORM__=1"/>
+                                    <listOptionValue builtIn="false" value="__DBL_HAS_INFINITY__=1"/>
+                                    <listOptionValue builtIn="false" value="__DBL_HAS_QUIET_NAN__=1"/>
+                                    <listOptionValue builtIn="false" value="__LDBL_MANT_DIG__=53"/>
+                                    <listOptionValue builtIn="false" value="__LDBL_DIG__=15"/>
+                                    <listOptionValue builtIn="false" value="__LDBL_MIN_EXP__=(-1021)"/>
+                                    <listOptionValue builtIn="false" value="__LDBL_MIN_10_EXP__=(-307)"/>
+                                    <listOptionValue builtIn="false" value="__LDBL_MAX_EXP__=1024"/>
+                                    <listOptionValue builtIn="false" value="__LDBL_MAX_10_EXP__=308"/>
+                                    <listOptionValue builtIn="false" value="__DECIMAL_DIG__=17"/>
+                                    <listOptionValue builtIn="false" value="__LDBL_MAX__=1.7976931348623157e+308L"/>
+                                    <listOptionValue builtIn="false" value="__LDBL_MIN__=2.2250738585072014e-308L"/>
+                                    <listOptionValue builtIn="false" value="__LDBL_EPSILON__=2.2204460492503131e-16L"/>
+                                    <listOptionValue builtIn="false" value="__LDBL_DENORM_MIN__=4.9406564584124654e-324L"/>
+                                    <listOptionValue builtIn="false" value="__LDBL_HAS_DENORM__=1"/>
+                                    <listOptionValue builtIn="false" value="__LDBL_HAS_INFINITY__=1"/>
+                                    <listOptionValue builtIn="false" value="__LDBL_HAS_QUIET_NAN__=1"/>
+                                    <listOptionValue builtIn="false" value="__DEC32_MANT_DIG__=7"/>
+                                    <listOptionValue builtIn="false" value="__DEC32_MIN_EXP__=(-95)"/>
+                                    <listOptionValue builtIn="false" value="__DEC32_MAX_EXP__=96"/>
+                                    <listOptionValue builtIn="false" value="__DEC32_MIN__=1E-95DF"/>
+                                    <listOptionValue builtIn="false" value="__DEC32_MAX__=9.999999E96DF"/>
+                                    <listOptionValue builtIn="false" value="__DEC32_EPSILON__=1E-6DF"/>
+                                    <listOptionValue builtIn="false" value="__DEC32_DEN__=0.000001E-95DF"/>
+                                    <listOptionValue builtIn="false" value="__DEC64_MANT_DIG__=16"/>
+                                    <listOptionValue builtIn="false" value="__DEC64_MIN_EXP__=(-383)"/>
+                                    <listOptionValue builtIn="false" value="__DEC64_MAX_EXP__=384"/>
+                                    <listOptionValue builtIn="false" value="__DEC64_MIN__=1E-383DD"/>
+                                    <listOptionValue builtIn="false" value="__DEC64_MAX__=9.999999999999999E384DD"/>
+                                    <listOptionValue builtIn="false" value="__DEC64_EPSILON__=1E-15DD"/>
+                                    <listOptionValue builtIn="false" value="__DEC64_DEN__=0.000000000000001E-383DD"/>
+                                    <listOptionValue builtIn="false" value="__DEC128_MANT_DIG__=34"/>
+                                    <listOptionValue builtIn="false" value="__DEC128_MIN_EXP__=(-6143)"/>
+                                    <listOptionValue builtIn="false" value="__DEC128_MAX_EXP__=6144"/>
+                                    <listOptionValue builtIn="false" value="__DEC128_MIN__=1E-6143DL"/>
+                                    <listOptionValue builtIn="false" value="__DEC128_MAX__=9.999999999999999999999999999999999E6144DL"/>
+                                    <listOptionValue builtIn="false" value="__DEC128_EPSILON__=1E-33DL"/>
+                                    <listOptionValue builtIn="false" value="__DEC128_DEN__=0.000000000000000000000000000000001E-6143DL"/>
+                                    <listOptionValue builtIn="false" value="__REGISTER_PREFIX__"/>
+                                    <listOptionValue builtIn="false" value="__USER_LABEL_PREFIX__"/>
+                                    <listOptionValue builtIn="false" value="__VERSION__=&quot;4.2.1"/>
+                                    <listOptionValue builtIn="false" value="__GNUC_GNU_INLINE__=1"/>
+                                    <listOptionValue builtIn="false" value="__BLOCKS__=1"/>
+                                    <listOptionValue builtIn="false" value="__NO_INLINE__=1"/>
+                                    <listOptionValue builtIn="false" value="__FINITE_MATH_ONLY__=0"/>
+                                    <listOptionValue builtIn="false" value="__ELF__=1"/>
+                                    <listOptionValue builtIn="false" value="__XCC_HAVE_FLOAT__=1"/>
+                                    <listOptionValue builtIn="false" value="__cplusplus=1"/>
+                                    <listOptionValue builtIn="false" value="__GNUG__=4"/>
+                                    <listOptionValue builtIn="false" value="__GXX_WEAK__=1"/>
+                                    <listOptionValue builtIn="false" value="__DEPRECATED=1"/>
+                                    <listOptionValue builtIn="false" value="__EXCEPTIONS=1"/>
+                                    <listOptionValue builtIn="false" value="__WCHAR_UNSIGNED__=1"/>
+                                </option>
+								<option id = "com.xmos.xc.compiler.option.include.paths.1545031" name="com.xmos.xc.compiler.option.include.paths" superClass="com.xmos.xc.compiler.option.include.paths" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/gcc&quot;"/>
+                                    <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_l2/src/core}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_l2/src/extensions}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_l2/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_l2}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources/DWARF}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_queue/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_queue}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/endpoint0}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/hostactive}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/powersave}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_device/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_device}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared/src/class}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xassert/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xassert}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/include}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/lib/xs1b}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc/glx_support}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc/included}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/lib}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud}&quot;' />
+
+								</option>
+								<inputType id = "com.xmos.cdt.xc.compiler.input.78565431" name="XC" superClass="com.xmos.cdt.xc.compiler.input"/>
+                            </tool>
+							<tool id = "com.xmos.cdt.c.compiler.3142421" name="com.xmos.cdt.c.compiler" superClass="com.xmos.cdt.c.compiler">
+								<option id = "com.xmos.c.compiler.option.defined.symbols.58447373" name="com.xmos.c.compiler.option.defined.symbols" superClass="com.xmos.c.compiler.option.defined.symbols" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="__STDC__=1"/>
+									<listOptionValue builtIn="false" value="__STDC_VERSION__=199901L"/>
+									<listOptionValue builtIn="false" value="__STDC_HOSTED__=1"/>
+									<listOptionValue builtIn="false" value="__GNUC__=4"/>
+									<listOptionValue builtIn="false" value="__GNUC_MINOR__=2"/>
+									<listOptionValue builtIn="false" value="__GNUC_PATCHLEVEL__=1"/>
+									<listOptionValue builtIn="false" value="__llvm__=1"/>
+									<listOptionValue builtIn="false" value="__SIZE_TYPE__=unsigned"/>
+									<listOptionValue builtIn="false" value="__PTRDIFF_TYPE__=int"/>
+									<listOptionValue builtIn="false" value="__WCHAR_TYPE__=unsigned"/>
+									<listOptionValue builtIn="false" value="__WINT_TYPE__=unsigned"/>
+									<listOptionValue builtIn="false" value="__INTMAX_TYPE__=long"/>
+									<listOptionValue builtIn="false" value="__UINTMAX_TYPE__=long"/>
+									<listOptionValue builtIn="false" value="__GXX_ABI_VERSION=1002"/>
+									<listOptionValue builtIn="false" value="__SCHAR_MAX__=127"/>
+									<listOptionValue builtIn="false" value="__SHRT_MAX__=32767"/>
+									<listOptionValue builtIn="false" value="__INT_MAX__=2147483647"/>
+									<listOptionValue builtIn="false" value="__LONG_MAX__=2147483647L"/>
+									<listOptionValue builtIn="false" value="__LONG_LONG_MAX__=9223372036854775807LL"/>
+									<listOptionValue builtIn="false" value="__WCHAR_MAX__=255U"/>
+									<listOptionValue builtIn="false" value="__CHAR_BIT__=8"/>
+									<listOptionValue builtIn="false" value="__INTMAX_MAX__=9223372036854775807LL"/>
+									<listOptionValue builtIn="false" value="__FLT_EVAL_METHOD__=0"/>
+									<listOptionValue builtIn="false" value="__DEC_EVAL_METHOD__=2"/>
+									<listOptionValue builtIn="false" value="__FLT_RADIX__=2"/>
+									<listOptionValue builtIn="false" value="__FLT_MANT_DIG__=24"/>
+									<listOptionValue builtIn="false" value="__FLT_DIG__=6"/>
+									<listOptionValue builtIn="false" value="__FLT_MIN_EXP__=(-125)"/>
+									<listOptionValue builtIn="false" value="__FLT_MIN_10_EXP__=(-37)"/>
+									<listOptionValue builtIn="false" value="__FLT_MAX_EXP__=128"/>
+									<listOptionValue builtIn="false" value="__FLT_MAX_10_EXP__=38"/>
+									<listOptionValue builtIn="false" value="__FLT_MAX__=3.40282347e+38F"/>
+									<listOptionValue builtIn="false" value="__FLT_MIN__=1.17549435e-38F"/>
+									<listOptionValue builtIn="false" value="__FLT_EPSILON__=1.19209290e-7F"/>
+									<listOptionValue builtIn="false" value="__FLT_DENORM_MIN__=1.40129846e-45F"/>
+									<listOptionValue builtIn="false" value="__FLT_HAS_DENORM__=1"/>
+									<listOptionValue builtIn="false" value="__FLT_HAS_INFINITY__=1"/>
+									<listOptionValue builtIn="false" value="__FLT_HAS_QUIET_NAN__=1"/>
+									<listOptionValue builtIn="false" value="__DBL_MANT_DIG__=53"/>
+									<listOptionValue builtIn="false" value="__DBL_DIG__=15"/>
+									<listOptionValue builtIn="false" value="__DBL_MIN_EXP__=(-1021)"/>
+									<listOptionValue builtIn="false" value="__DBL_MIN_10_EXP__=(-307)"/>
+									<listOptionValue builtIn="false" value="__DBL_MAX_EXP__=1024"/>
+									<listOptionValue builtIn="false" value="__DBL_MAX_10_EXP__=308"/>
+									<listOptionValue builtIn="false" value="__DBL_MAX__=1.7976931348623157e+308"/>
+									<listOptionValue builtIn="false" value="__DBL_MIN__=2.2250738585072014e-308"/>
+									<listOptionValue builtIn="false" value="__DBL_EPSILON__=2.2204460492503131e-16"/>
+									<listOptionValue builtIn="false" value="__DBL_DENORM_MIN__=4.9406564584124654e-324"/>
+									<listOptionValue builtIn="false" value="__DBL_HAS_DENORM__=1"/>
+									<listOptionValue builtIn="false" value="__DBL_HAS_INFINITY__=1"/>
+									<listOptionValue builtIn="false" value="__DBL_HAS_QUIET_NAN__=1"/>
+									<listOptionValue builtIn="false" value="__LDBL_MANT_DIG__=53"/>
+									<listOptionValue builtIn="false" value="__LDBL_DIG__=15"/>
+									<listOptionValue builtIn="false" value="__LDBL_MIN_EXP__=(-1021)"/>
+									<listOptionValue builtIn="false" value="__LDBL_MIN_10_EXP__=(-307)"/>
+									<listOptionValue builtIn="false" value="__LDBL_MAX_EXP__=1024"/>
+									<listOptionValue builtIn="false" value="__LDBL_MAX_10_EXP__=308"/>
+									<listOptionValue builtIn="false" value="__DECIMAL_DIG__=17"/>
+									<listOptionValue builtIn="false" value="__LDBL_MAX__=1.7976931348623157e+308L"/>
+									<listOptionValue builtIn="false" value="__LDBL_MIN__=2.2250738585072014e-308L"/>
+									<listOptionValue builtIn="false" value="__LDBL_EPSILON__=2.2204460492503131e-16L"/>
+									<listOptionValue builtIn="false" value="__LDBL_DENORM_MIN__=4.9406564584124654e-324L"/>
+									<listOptionValue builtIn="false" value="__LDBL_HAS_DENORM__=1"/>
+									<listOptionValue builtIn="false" value="__LDBL_HAS_INFINITY__=1"/>
+									<listOptionValue builtIn="false" value="__LDBL_HAS_QUIET_NAN__=1"/>
+									<listOptionValue builtIn="false" value="__DEC32_MANT_DIG__=7"/>
+									<listOptionValue builtIn="false" value="__DEC32_MIN_EXP__=(-95)"/>
+									<listOptionValue builtIn="false" value="__DEC32_MAX_EXP__=96"/>
+									<listOptionValue builtIn="false" value="__DEC32_MIN__=1E-95DF"/>
+									<listOptionValue builtIn="false" value="__DEC32_MAX__=9.999999E96DF"/>
+									<listOptionValue builtIn="false" value="__DEC32_EPSILON__=1E-6DF"/>
+									<listOptionValue builtIn="false" value="__DEC32_DEN__=0.000001E-95DF"/>
+									<listOptionValue builtIn="false" value="__DEC64_MANT_DIG__=16"/>
+									<listOptionValue builtIn="false" value="__DEC64_MIN_EXP__=(-383)"/>
+									<listOptionValue builtIn="false" value="__DEC64_MAX_EXP__=384"/>
+									<listOptionValue builtIn="false" value="__DEC64_MIN__=1E-383DD"/>
+									<listOptionValue builtIn="false" value="__DEC64_MAX__=9.999999999999999E384DD"/>
+									<listOptionValue builtIn="false" value="__DEC64_EPSILON__=1E-15DD"/>
+									<listOptionValue builtIn="false" value="__DEC64_DEN__=0.000000000000001E-383DD"/>
+									<listOptionValue builtIn="false" value="__DEC128_MANT_DIG__=34"/>
+									<listOptionValue builtIn="false" value="__DEC128_MIN_EXP__=(-6143)"/>
+									<listOptionValue builtIn="false" value="__DEC128_MAX_EXP__=6144"/>
+									<listOptionValue builtIn="false" value="__DEC128_MIN__=1E-6143DL"/>
+									<listOptionValue builtIn="false" value="__DEC128_MAX__=9.999999999999999999999999999999999E6144DL"/>
+									<listOptionValue builtIn="false" value="__DEC128_EPSILON__=1E-33DL"/>
+									<listOptionValue builtIn="false" value="__DEC128_DEN__=0.000000000000000000000000000000001E-6143DL"/>
+									<listOptionValue builtIn="false" value="__REGISTER_PREFIX__"/>
+									<listOptionValue builtIn="false" value="__USER_LABEL_PREFIX__"/>
+									<listOptionValue builtIn="false" value="__VERSION__=&quot;4.2.1"/>
+									<listOptionValue builtIn="false" value="__GNUC_STDC_INLINE__=1"/>
+									<listOptionValue builtIn="false" value="__BLOCKS__=1"/>
+									<listOptionValue builtIn="false" value="__NO_INLINE__=1"/>
+									<listOptionValue builtIn="false" value="__FINITE_MATH_ONLY__=0"/>
+									<listOptionValue builtIn="false" value="__CHAR_UNSIGNED__=1"/>
+									<listOptionValue builtIn="false" value="__XS1B__=1"/>
+									<listOptionValue builtIn="false" value="__ELF__=1"/>
+									<listOptionValue builtIn="false" value="XCC_VERSION_YEAR=12"/>
+									<listOptionValue builtIn="false" value="XCC_VERSION_MONTH=2"/>
+									<listOptionValue builtIn="false" value="XCC_VERSION_MAJOR=1202"/>
+									<listOptionValue builtIn="false" value="XCC_VERSION_MINOR=0"/>
+									<listOptionValue builtIn="false" value="__XCC_HAVE_FLOAT__=1"/>
+								</option>
+								<option id = "com.xmos.c.compiler.option.include.paths.84348376" name="com.xmos.c.compiler.option.include.paths" superClass="com.xmos.c.compiler.option.include.paths" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/gcc&quot;"/>
+                                    <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_l2/src/core}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_l2/src/extensions}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_l2/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_l2}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources/DWARF}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_queue/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_queue}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/endpoint0}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/hostactive}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/powersave}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_device/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_device}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared/src/class}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xassert/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xassert}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/include}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/lib/xs1b}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc/glx_support}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc/included}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/lib}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud}&quot;' />
+
+								</option>
+								<inputType id = "com.xmos.cdt.c.compiler.input.c.41577457" name="C" superClass="com.xmos.cdt.c.compiler.input.c"/>
+							</tool>
+							<tool id = "com.xmos.cdt.cxx.compiler.81846471" name="com.xmos.cdt.cxx.compiler" superClass="com.xmos.cdt.cxx.compiler">
+								<option id = "com.xmos.cxx.compiler.option.defined.symbols.16857795" name="com.xmos.cxx.compiler.option.defined.symbols" superClass="com.xmos.cxx.compiler.option.defined.symbols" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="__STDC__=1"/>
+									<listOptionValue builtIn="false" value="__cplusplus=1"/>
+									<listOptionValue builtIn="false" value="__STDC_HOSTED__=1"/>
+									<listOptionValue builtIn="false" value="__GNUC__=4"/>
+									<listOptionValue builtIn="false" value="__GNUG__=4"/>
+									<listOptionValue builtIn="false" value="__GNUC_MINOR__=2"/>
+									<listOptionValue builtIn="false" value="__GNUC_PATCHLEVEL__=1"/>
+									<listOptionValue builtIn="false" value="__llvm__=1"/>
+									<listOptionValue builtIn="false" value="__SIZE_TYPE__=unsigned"/>
+									<listOptionValue builtIn="false" value="__PTRDIFF_TYPE__=int"/>
+									<listOptionValue builtIn="false" value="__WCHAR_TYPE__=unsigned"/>
+									<listOptionValue builtIn="false" value="__WINT_TYPE__=unsigned"/>
+									<listOptionValue builtIn="false" value="__INTMAX_TYPE__=long"/>
+									<listOptionValue builtIn="false" value="__UINTMAX_TYPE__=long"/>
+									<listOptionValue builtIn="false" value="__GXX_WEAK__=1"/>
+									<listOptionValue builtIn="false" value="__DEPRECATED=1"/>
+									<listOptionValue builtIn="false" value="__GXX_ABI_VERSION=1002"/>
+									<listOptionValue builtIn="false" value="__SCHAR_MAX__=127"/>
+									<listOptionValue builtIn="false" value="__SHRT_MAX__=32767"/>
+									<listOptionValue builtIn="false" value="__INT_MAX__=2147483647"/>
+									<listOptionValue builtIn="false" value="__LONG_MAX__=2147483647L"/>
+									<listOptionValue builtIn="false" value="__LONG_LONG_MAX__=9223372036854775807LL"/>
+									<listOptionValue builtIn="false" value="__WCHAR_MAX__=255U"/>
+									<listOptionValue builtIn="false" value="__CHAR_BIT__=8"/>
+									<listOptionValue builtIn="false" value="__INTMAX_MAX__=9223372036854775807LL"/>
+									<listOptionValue builtIn="false" value="__FLT_EVAL_METHOD__=0"/>
+									<listOptionValue builtIn="false" value="__DEC_EVAL_METHOD__=2"/>
+									<listOptionValue builtIn="false" value="__FLT_RADIX__=2"/>
+									<listOptionValue builtIn="false" value="__FLT_MANT_DIG__=24"/>
+									<listOptionValue builtIn="false" value="__FLT_DIG__=6"/>
+									<listOptionValue builtIn="false" value="__FLT_MIN_EXP__=(-125)"/>
+									<listOptionValue builtIn="false" value="__FLT_MIN_10_EXP__=(-37)"/>
+									<listOptionValue builtIn="false" value="__FLT_MAX_EXP__=128"/>
+									<listOptionValue builtIn="false" value="__FLT_MAX_10_EXP__=38"/>
+									<listOptionValue builtIn="false" value="__FLT_MAX__=3.40282347e+38F"/>
+									<listOptionValue builtIn="false" value="__FLT_MIN__=1.17549435e-38F"/>
+									<listOptionValue builtIn="false" value="__FLT_EPSILON__=1.19209290e-7F"/>
+									<listOptionValue builtIn="false" value="__FLT_DENORM_MIN__=1.40129846e-45F"/>
+									<listOptionValue builtIn="false" value="__FLT_HAS_DENORM__=1"/>
+									<listOptionValue builtIn="false" value="__FLT_HAS_INFINITY__=1"/>
+									<listOptionValue builtIn="false" value="__FLT_HAS_QUIET_NAN__=1"/>
+									<listOptionValue builtIn="false" value="__DBL_MANT_DIG__=53"/>
+									<listOptionValue builtIn="false" value="__DBL_DIG__=15"/>
+									<listOptionValue builtIn="false" value="__DBL_MIN_EXP__=(-1021)"/>
+									<listOptionValue builtIn="false" value="__DBL_MIN_10_EXP__=(-307)"/>
+									<listOptionValue builtIn="false" value="__DBL_MAX_EXP__=1024"/>
+									<listOptionValue builtIn="false" value="__DBL_MAX_10_EXP__=308"/>
+									<listOptionValue builtIn="false" value="__DBL_MAX__=1.7976931348623157e+308"/>
+									<listOptionValue builtIn="false" value="__DBL_MIN__=2.2250738585072014e-308"/>
+									<listOptionValue builtIn="false" value="__DBL_EPSILON__=2.2204460492503131e-16"/>
+									<listOptionValue builtIn="false" value="__DBL_DENORM_MIN__=4.9406564584124654e-324"/>
+									<listOptionValue builtIn="false" value="__DBL_HAS_DENORM__=1"/>
+									<listOptionValue builtIn="false" value="__DBL_HAS_INFINITY__=1"/>
+									<listOptionValue builtIn="false" value="__DBL_HAS_QUIET_NAN__=1"/>
+									<listOptionValue builtIn="false" value="__LDBL_MANT_DIG__=53"/>
+									<listOptionValue builtIn="false" value="__LDBL_DIG__=15"/>
+									<listOptionValue builtIn="false" value="__LDBL_MIN_EXP__=(-1021)"/>
+									<listOptionValue builtIn="false" value="__LDBL_MIN_10_EXP__=(-307)"/>
+									<listOptionValue builtIn="false" value="__LDBL_MAX_EXP__=1024"/>
+									<listOptionValue builtIn="false" value="__LDBL_MAX_10_EXP__=308"/>
+									<listOptionValue builtIn="false" value="__DECIMAL_DIG__=17"/>
+									<listOptionValue builtIn="false" value="__LDBL_MAX__=1.7976931348623157e+308L"/>
+									<listOptionValue builtIn="false" value="__LDBL_MIN__=2.2250738585072014e-308L"/>
+									<listOptionValue builtIn="false" value="__LDBL_EPSILON__=2.2204460492503131e-16L"/>
+									<listOptionValue builtIn="false" value="__LDBL_DENORM_MIN__=4.9406564584124654e-324L"/>
+									<listOptionValue builtIn="false" value="__LDBL_HAS_DENORM__=1"/>
+									<listOptionValue builtIn="false" value="__LDBL_HAS_INFINITY__=1"/>
+									<listOptionValue builtIn="false" value="__LDBL_HAS_QUIET_NAN__=1"/>
+									<listOptionValue builtIn="false" value="__DEC32_MANT_DIG__=7"/>
+									<listOptionValue builtIn="false" value="__DEC32_MIN_EXP__=(-95)"/>
+									<listOptionValue builtIn="false" value="__DEC32_MAX_EXP__=96"/>
+									<listOptionValue builtIn="false" value="__DEC32_MIN__=1E-95DF"/>
+									<listOptionValue builtIn="false" value="__DEC32_MAX__=9.999999E96DF"/>
+									<listOptionValue builtIn="false" value="__DEC32_EPSILON__=1E-6DF"/>
+									<listOptionValue builtIn="false" value="__DEC32_DEN__=0.000001E-95DF"/>
+									<listOptionValue builtIn="false" value="__DEC64_MANT_DIG__=16"/>
+									<listOptionValue builtIn="false" value="__DEC64_MIN_EXP__=(-383)"/>
+									<listOptionValue builtIn="false" value="__DEC64_MAX_EXP__=384"/>
+									<listOptionValue builtIn="false" value="__DEC64_MIN__=1E-383DD"/>
+									<listOptionValue builtIn="false" value="__DEC64_MAX__=9.999999999999999E384DD"/>
+									<listOptionValue builtIn="false" value="__DEC64_EPSILON__=1E-15DD"/>
+									<listOptionValue builtIn="false" value="__DEC64_DEN__=0.000000000000001E-383DD"/>
+									<listOptionValue builtIn="false" value="__DEC128_MANT_DIG__=34"/>
+									<listOptionValue builtIn="false" value="__DEC128_MIN_EXP__=(-6143)"/>
+									<listOptionValue builtIn="false" value="__DEC128_MAX_EXP__=6144"/>
+									<listOptionValue builtIn="false" value="__DEC128_MIN__=1E-6143DL"/>
+									<listOptionValue builtIn="false" value="__DEC128_MAX__=9.999999999999999999999999999999999E6144DL"/>
+									<listOptionValue builtIn="false" value="__DEC128_EPSILON__=1E-33DL"/>
+									<listOptionValue builtIn="false" value="__DEC128_DEN__=0.000000000000000000000000000000001E-6143DL"/>
+									<listOptionValue builtIn="false" value="__REGISTER_PREFIX__"/>
+									<listOptionValue builtIn="false" value="__USER_LABEL_PREFIX__"/>
+									<listOptionValue builtIn="false" value="__VERSION__=&quot;4.2.1"/>
+									<listOptionValue builtIn="false" value="__GNUC_GNU_INLINE__=1"/>
+									<listOptionValue builtIn="false" value="__BLOCKS__=1"/>
+									<listOptionValue builtIn="false" value="__NO_INLINE__=1"/>
+									<listOptionValue builtIn="false" value="__FINITE_MATH_ONLY__=0"/>
+									<listOptionValue builtIn="false" value="__CHAR_UNSIGNED__=1"/>
+									<listOptionValue builtIn="false" value="__WCHAR_UNSIGNED__=1"/>
+									<listOptionValue builtIn="false" value="__XS1B__=1"/>
+									<listOptionValue builtIn="false" value="__ELF__=1"/>
+									<listOptionValue builtIn="false" value="XCC_VERSION_YEAR=12"/>
+									<listOptionValue builtIn="false" value="XCC_VERSION_MONTH=2"/>
+									<listOptionValue builtIn="false" value="XCC_VERSION_MAJOR=1202"/>
+									<listOptionValue builtIn="false" value="XCC_VERSION_MINOR=0"/>
+									<listOptionValue builtIn="false" value="__XCC_HAVE_FLOAT__=1"/>
+								</option>
+								<option id = "com.xmos.cxx.compiler.option.include.paths.176304" name="com.xmos.cxx.compiler.option.include.paths" superClass="com.xmos.cxx.compiler.option.include.paths" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/gcc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/c++/4.2.1&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/c++/4.2.1/xcore-xmos-elf&quot;"/>
+                                    <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_l2/src/core}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_l2/src/extensions}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_l2/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_l2}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources/DWARF}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_queue/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_queue}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/endpoint0}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/hostactive}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/powersave}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_device/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_device}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared/src/class}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xassert/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xassert}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/include}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/lib/xs1b}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc/glx_support}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc/included}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/lib}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud}&quot;' />
+
+								</option>
+								<inputType id = "com.xmos.cdt.cxx.compiler.input.cpp.67556451" name="C++" superClass="com.xmos.cdt.cxx.compiler.input.cpp"/>
+							</tool>
+                        </toolChain>
+                    </folderInfo>
+                    <sourceEntries>
+                        <entry excluding=".build_*" flags="VALUE_WORKSPACE_PATH|RESOLVED"
+                    kind="sourcePath" name="" />
+                    </sourceEntries>
+                </configuration>
+            </storageModule>
+            <storageModule moduleId="scannerConfiguration">
+                <autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="" />
+                <profile id="org.eclipse.cdt.make.core.GCCStandardMakePerProjectProfile">
+                    <buildOutputProvider>
+                        <openAction enabled="true" filePath="" />
+                        <parser enabled="true" />
+                    </buildOutputProvider>
+                    <scannerInfoProvider id="specsFile">
+                        <runAction arguments="-E -P -v -dD ${plugin_state_location}/${specs_file}" command="gcc" useDefault="true" />
+                        <parser enabled="true" />
+                    </scannerInfoProvider>
+                </profile>
+                <profile id="org.eclipse.cdt.make.core.GCCStandardMakePerFileProfile">
+                    <buildOutputProvider>
+                        <openAction enabled="true" filePath="" />
+                        <parser enabled="true" />
+                    </buildOutputProvider>
+                    <scannerInfoProvider id="makefileGenerator">
+                        <runAction arguments="-E -P -v -dD" command="" useDefault="true" />
+                        <parser enabled="true" />
+                    </scannerInfoProvider>
+                </profile>
+                <profile id="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfile">
+                    <buildOutputProvider>
+                        <openAction enabled="true" filePath="" />
+                        <parser enabled="true" />
+                    </buildOutputProvider>
+                    <scannerInfoProvider id="specsFile">
+                        <runAction arguments="-E -P -v -dD ${plugin_state_location}/${specs_file}" command="gcc" useDefault="true" />
+                        <parser enabled="true" />
+                    </scannerInfoProvider>
+                </profile>
+                <profile id="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileCPP">
+                    <buildOutputProvider>
+                        <openAction enabled="true" filePath="" />
+                        <parser enabled="true" />
+                    </buildOutputProvider>
+                    <scannerInfoProvider id="specsFile">
+                        <runAction arguments="-E -P -v -dD ${plugin_state_location}/specs.cpp" command="g++" useDefault="true" />
+                        <parser enabled="true" />
+                    </scannerInfoProvider>
+                </profile>
+                <profile id="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileC">
+                    <buildOutputProvider>
+                        <openAction enabled="true" filePath="" />
+                        <parser enabled="true" />
+                    </buildOutputProvider>
+                    <scannerInfoProvider id="specsFile">
+                        <runAction arguments="-E -P -v -dD ${plugin_state_location}/specs.c" command="gcc" useDefault="true" />
+                        <parser enabled="true" />
+                    </scannerInfoProvider>
+                </profile>
+                <profile id="org.eclipse.cdt.managedbuilder.core.GCCWinManagedMakePerProjectProfile">
+                    <buildOutputProvider>
+                        <openAction enabled="true" filePath="" />
+                        <parser enabled="true" />
+                    </buildOutputProvider>
+                    <scannerInfoProvider id="specsFile">
+                        <runAction arguments='-c &apos;gcc -E -P -v -dD &quot;${plugin_state_location}/${specs_file}&quot;&apos;' command="sh" useDefault="true" />
+                        <parser enabled="true" />
+                    </scannerInfoProvider>
+                </profile>
+                <profile id="org.eclipse.cdt.managedbuilder.core.GCCWinManagedMakePerProjectProfileCPP">
+                    <buildOutputProvider>
+                        <openAction enabled="true" filePath="" />
+                        <parser enabled="true" />
+                    </buildOutputProvider>
+                    <scannerInfoProvider id="specsFile">
+                        <runAction arguments='-c &apos;g++ -E -P -v -dD &quot;${plugin_state_location}/specs.cpp&quot;&apos;' command="sh" useDefault="true" />
+                        <parser enabled="true" />
+                    </scannerInfoProvider>
+                </profile>
+                <profile id="org.eclipse.cdt.managedbuilder.core.GCCWinManagedMakePerProjectProfileC">
+                    <buildOutputProvider>
+                        <openAction enabled="true" filePath="" />
+                        <parser enabled="true" />
+                    </buildOutputProvider>
+                    <scannerInfoProvider id="specsFile">
+                        <runAction arguments='-c &apos;gcc -E -P -v -dD &quot;${plugin_state_location}/specs.c&quot;&apos;' command="sh" useDefault="true" />
+                        <parser enabled="true" />
+                    </scannerInfoProvider>
+                </profile>
+            </storageModule>
+            <storageModule moduleId="org.eclipse.cdt.core.externalSettings" />
+            <storageModule moduleId="org.eclipse.cdt.core.language.mapping" />
+            <storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings" />
+        </cconfiguration>
+
+        <cconfiguration id="com.xmos.cdt.toolchain.60678764">
+            <storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="com.xmos.cdt.toolchain.60678764" moduleId="org.eclipse.cdt.core.settings" name="2ioxx">
+                <externalSettings />
+                <extensions>
+                    <extension id="com.xmos.cdt.core.XEBinaryParser" point="org.eclipse.cdt.core.BinaryParser" />
+                    <extension id="com.xmos.cdt.core.XdeErrorParser" point="org.eclipse.cdt.core.ErrorParser" />
+                    <extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser" />
+                </extensions>
+            </storageModule>
+            <storageModule moduleId="org.eclipse.cdt.make.core.buildtargets">
+                <buildTargets>
+                    <target name="all" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+                        <buildCommand>xmake</buildCommand>
+                        <buildArguments>CONFIG=2ioxx</buildArguments>
+                        <buildTarget>all</buildTarget>
+                        <stopOnError>true</stopOnError>
+                        <useDefaultCommand>true</useDefaultCommand>
+                        <runAllBuilders>true</runAllBuilders>
+                    </target>
+                    <target name="clean" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+                        <buildCommand>xmake</buildCommand>
+                        <buildArguments>CONFIG=2ioxx</buildArguments>
+                        <buildTarget>clean</buildTarget>
+                        <stopOnError>true</stopOnError>
+                        <useDefaultCommand>true</useDefaultCommand>
+                        <runAllBuilders>true</runAllBuilders>
+                    </target>
+                </buildTargets>
+            </storageModule>
+            <storageModule moduleId="cdtBuildSystem" version="4.0.0">
+                <configuration buildProperties="" description="" id="com.xmos.cdt.toolchain.60678764" name="2ioxx" parent="org.eclipse.cdt.build.core.emptycfg">
+                    <folderInfo id="com.xmos.cdt.toolchain.60678764.1127281840" name="/" resourcePath="">
+                        <toolChain id = "com.xmos.cdt.toolchain.69870342" name="com.xmos.cdt.toolchain" superClass="com.xmos.cdt.toolchain">
+                            <targetPlatform archList="all" binaryParser="com.xmos.cdt.core.XEBinaryParser" id = "com.xmos.cdt.core.platform.25981945" isAbstract="false" osList="linux,win32,macosx" superClass="com.xmos.cdt.core.platform" />
+                            <builder arguments="CONFIG=2ioxx" id = "com.xmos.cdt.builder.base.7875429" keepEnvironmentInBuildfile="false" managedBuildOn="false" superClass="com.xmos.cdt.builder.base">
+                                <outputEntries>
+                                    <entry flags="VALUE_WORKSPACE_PATH" kind="outputPath" name="bin/2ioxx" />
+                                </outputEntries>
+                            </builder>
+                            <tool id = "com.xmos.cdt.xc.compiler.16538820" name="com.xmos.cdt.xc.compiler" superClass="com.xmos.cdt.xc.compiler">
+                                <option id = "com.xmos.c.compiler.option.defined.symbols.33399625" name="com.xmos.c.compiler.option.defined.symbols" superClass="com.xmos.c.compiler.option.defined.symbols" valueType="definedSymbols">
+                                    <listOptionValue builtIn="false" value="__SHRT_MAX__=32767"/>
+                                    <listOptionValue builtIn="false" value="__SCHAR_MAX__=127"/>
+                                    <listOptionValue builtIn="false" value="__SIZE_TYPE__=unsigned"/>
+                                    <listOptionValue builtIn="false" value="__WCHAR_TYPE__=unsigned"/>
+                                    <listOptionValue builtIn="false" value="__STDC_HOSTED__=1"/>
+                                    <listOptionValue builtIn="false" value="XCC_VERSION_YEAR=11"/>
+                                    <listOptionValue builtIn="false" value="__PTRDIFF_TYPE__=int"/>
+                                    <listOptionValue builtIn="false" value="XCC_VERSION_MAJOR=1111"/>
+                                    <listOptionValue builtIn="false" value="XCC_VERSION_MINOR=1"/>
+                                    <listOptionValue builtIn="false" value="XCC_VERSION_MONTH=11"/>
+                                    <listOptionValue builtIn="false" value="__CHAR_UNSIGNED__=1"/>
+                                    <listOptionValue builtIn="false" value="__MCPP=2"/>
+                                    <listOptionValue builtIn="false" value="__XC__=1"/>
+                                    <listOptionValue builtIn="false" value="__XS1B__=1"/>
+                                    <listOptionValue builtIn="false" value="__INT_MAX__=2147483647"/>
+                                    <listOptionValue builtIn="false" value="__LONG_MAX__=2147483647L"/>
+                                    <listOptionValue builtIn="false" value="__STDC__=1"/>
+                                    <listOptionValue builtIn="false" value="__GNUC__=4"/>
+                                    <listOptionValue builtIn="false" value="__GNUC_MINOR__=2"/>
+                                    <listOptionValue builtIn="false" value="__GNUC_PATCHLEVEL__=1"/>
+                                    <listOptionValue builtIn="false" value="__llvm__=1"/>
+                                    <listOptionValue builtIn="false" value="__WINT_TYPE__=unsigned"/>
+                                    <listOptionValue builtIn="false" value="__INTMAX_TYPE__=long"/>
+                                    <listOptionValue builtIn="false" value="__UINTMAX_TYPE__=long"/>
+                                    <listOptionValue builtIn="false" value="__GXX_ABI_VERSION=1002"/>
+                                    <listOptionValue builtIn="false" value="__LONG_LONG_MAX__=9223372036854775807LL"/>
+                                    <listOptionValue builtIn="false" value="__WCHAR_MAX__=255U"/>
+                                    <listOptionValue builtIn="false" value="__CHAR_BIT__=8"/>
+                                    <listOptionValue builtIn="false" value="__INTMAX_MAX__=9223372036854775807LL"/>
+                                    <listOptionValue builtIn="false" value="__FLT_EVAL_METHOD__=0"/>
+                                    <listOptionValue builtIn="false" value="__DEC_EVAL_METHOD__=2"/>
+                                    <listOptionValue builtIn="false" value="__FLT_RADIX__=2"/>
+                                    <listOptionValue builtIn="false" value="__FLT_MANT_DIG__=24"/>
+                                    <listOptionValue builtIn="false" value="__FLT_DIG__=6"/>
+                                    <listOptionValue builtIn="false" value="__FLT_MIN_EXP__=(-125)"/>
+                                    <listOptionValue builtIn="false" value="__FLT_MIN_10_EXP__=(-37)"/>
+                                    <listOptionValue builtIn="false" value="__FLT_MAX_EXP__=128"/>
+                                    <listOptionValue builtIn="false" value="__FLT_MAX_10_EXP__=38"/>
+                                    <listOptionValue builtIn="false" value="__FLT_MAX__=3.40282347e+38F"/>
+                                    <listOptionValue builtIn="false" value="__FLT_MIN__=1.17549435e-38F"/>
+                                    <listOptionValue builtIn="false" value="__FLT_EPSILON__=1.19209290e-7F"/>
+                                    <listOptionValue builtIn="false" value="__FLT_DENORM_MIN__=1.40129846e-45F"/>
+                                    <listOptionValue builtIn="false" value="__FLT_HAS_DENORM__=1"/>
+                                    <listOptionValue builtIn="false" value="__FLT_HAS_INFINITY__=1"/>
+                                    <listOptionValue builtIn="false" value="__FLT_HAS_QUIET_NAN__=1"/>
+                                    <listOptionValue builtIn="false" value="__DBL_MANT_DIG__=53"/>
+                                    <listOptionValue builtIn="false" value="__DBL_DIG__=15"/>
+                                    <listOptionValue builtIn="false" value="__DBL_MIN_EXP__=(-1021)"/>
+                                    <listOptionValue builtIn="false" value="__DBL_MIN_10_EXP__=(-307)"/>
+                                    <listOptionValue builtIn="false" value="__DBL_MAX_EXP__=1024"/>
+                                    <listOptionValue builtIn="false" value="__DBL_MAX_10_EXP__=308"/>
+                                    <listOptionValue builtIn="false" value="__DBL_MAX__=1.7976931348623157e+308"/>
+                                    <listOptionValue builtIn="false" value="__DBL_MIN__=2.2250738585072014e-308"/>
+                                    <listOptionValue builtIn="false" value="__DBL_EPSILON__=2.2204460492503131e-16"/>
+                                    <listOptionValue builtIn="false" value="__DBL_DENORM_MIN__=4.9406564584124654e-324"/>
+                                    <listOptionValue builtIn="false" value="__DBL_HAS_DENORM__=1"/>
+                                    <listOptionValue builtIn="false" value="__DBL_HAS_INFINITY__=1"/>
+                                    <listOptionValue builtIn="false" value="__DBL_HAS_QUIET_NAN__=1"/>
+                                    <listOptionValue builtIn="false" value="__LDBL_MANT_DIG__=53"/>
+                                    <listOptionValue builtIn="false" value="__LDBL_DIG__=15"/>
+                                    <listOptionValue builtIn="false" value="__LDBL_MIN_EXP__=(-1021)"/>
+                                    <listOptionValue builtIn="false" value="__LDBL_MIN_10_EXP__=(-307)"/>
+                                    <listOptionValue builtIn="false" value="__LDBL_MAX_EXP__=1024"/>
+                                    <listOptionValue builtIn="false" value="__LDBL_MAX_10_EXP__=308"/>
+                                    <listOptionValue builtIn="false" value="__DECIMAL_DIG__=17"/>
+                                    <listOptionValue builtIn="false" value="__LDBL_MAX__=1.7976931348623157e+308L"/>
+                                    <listOptionValue builtIn="false" value="__LDBL_MIN__=2.2250738585072014e-308L"/>
+                                    <listOptionValue builtIn="false" value="__LDBL_EPSILON__=2.2204460492503131e-16L"/>
+                                    <listOptionValue builtIn="false" value="__LDBL_DENORM_MIN__=4.9406564584124654e-324L"/>
+                                    <listOptionValue builtIn="false" value="__LDBL_HAS_DENORM__=1"/>
+                                    <listOptionValue builtIn="false" value="__LDBL_HAS_INFINITY__=1"/>
+                                    <listOptionValue builtIn="false" value="__LDBL_HAS_QUIET_NAN__=1"/>
+                                    <listOptionValue builtIn="false" value="__DEC32_MANT_DIG__=7"/>
+                                    <listOptionValue builtIn="false" value="__DEC32_MIN_EXP__=(-95)"/>
+                                    <listOptionValue builtIn="false" value="__DEC32_MAX_EXP__=96"/>
+                                    <listOptionValue builtIn="false" value="__DEC32_MIN__=1E-95DF"/>
+                                    <listOptionValue builtIn="false" value="__DEC32_MAX__=9.999999E96DF"/>
+                                    <listOptionValue builtIn="false" value="__DEC32_EPSILON__=1E-6DF"/>
+                                    <listOptionValue builtIn="false" value="__DEC32_DEN__=0.000001E-95DF"/>
+                                    <listOptionValue builtIn="false" value="__DEC64_MANT_DIG__=16"/>
+                                    <listOptionValue builtIn="false" value="__DEC64_MIN_EXP__=(-383)"/>
+                                    <listOptionValue builtIn="false" value="__DEC64_MAX_EXP__=384"/>
+                                    <listOptionValue builtIn="false" value="__DEC64_MIN__=1E-383DD"/>
+                                    <listOptionValue builtIn="false" value="__DEC64_MAX__=9.999999999999999E384DD"/>
+                                    <listOptionValue builtIn="false" value="__DEC64_EPSILON__=1E-15DD"/>
+                                    <listOptionValue builtIn="false" value="__DEC64_DEN__=0.000000000000001E-383DD"/>
+                                    <listOptionValue builtIn="false" value="__DEC128_MANT_DIG__=34"/>
+                                    <listOptionValue builtIn="false" value="__DEC128_MIN_EXP__=(-6143)"/>
+                                    <listOptionValue builtIn="false" value="__DEC128_MAX_EXP__=6144"/>
+                                    <listOptionValue builtIn="false" value="__DEC128_MIN__=1E-6143DL"/>
+                                    <listOptionValue builtIn="false" value="__DEC128_MAX__=9.999999999999999999999999999999999E6144DL"/>
+                                    <listOptionValue builtIn="false" value="__DEC128_EPSILON__=1E-33DL"/>
+                                    <listOptionValue builtIn="false" value="__DEC128_DEN__=0.000000000000000000000000000000001E-6143DL"/>
+                                    <listOptionValue builtIn="false" value="__REGISTER_PREFIX__"/>
+                                    <listOptionValue builtIn="false" value="__USER_LABEL_PREFIX__"/>
+                                    <listOptionValue builtIn="false" value="__VERSION__=&quot;4.2.1"/>
+                                    <listOptionValue builtIn="false" value="__GNUC_GNU_INLINE__=1"/>
+                                    <listOptionValue builtIn="false" value="__BLOCKS__=1"/>
+                                    <listOptionValue builtIn="false" value="__NO_INLINE__=1"/>
+                                    <listOptionValue builtIn="false" value="__FINITE_MATH_ONLY__=0"/>
+                                    <listOptionValue builtIn="false" value="__ELF__=1"/>
+                                    <listOptionValue builtIn="false" value="__XCC_HAVE_FLOAT__=1"/>
+                                    <listOptionValue builtIn="false" value="__cplusplus=1"/>
+                                    <listOptionValue builtIn="false" value="__GNUG__=4"/>
+                                    <listOptionValue builtIn="false" value="__GXX_WEAK__=1"/>
+                                    <listOptionValue builtIn="false" value="__DEPRECATED=1"/>
+                                    <listOptionValue builtIn="false" value="__EXCEPTIONS=1"/>
+                                    <listOptionValue builtIn="false" value="__WCHAR_UNSIGNED__=1"/>
+                                </option>
+								<option id = "com.xmos.xc.compiler.option.include.paths.17004430" name="com.xmos.xc.compiler.option.include.paths" superClass="com.xmos.xc.compiler.option.include.paths" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/gcc&quot;"/>
+                                    <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_l2/src/core}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_l2/src/extensions}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_l2/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_l2}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources/DWARF}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_queue/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_queue}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/endpoint0}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/hostactive}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/powersave}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_device/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_device}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared/src/class}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xassert/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xassert}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/include}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/lib/xs1b}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc/glx_support}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc/included}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/lib}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud}&quot;' />
+
+								</option>
+								<inputType id = "com.xmos.cdt.xc.compiler.input.61345412" name="XC" superClass="com.xmos.cdt.xc.compiler.input"/>
+                            </tool>
+							<tool id = "com.xmos.cdt.c.compiler.90678227" name="com.xmos.cdt.c.compiler" superClass="com.xmos.cdt.c.compiler">
+								<option id = "com.xmos.c.compiler.option.defined.symbols.5648201" name="com.xmos.c.compiler.option.defined.symbols" superClass="com.xmos.c.compiler.option.defined.symbols" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="__STDC__=1"/>
+									<listOptionValue builtIn="false" value="__STDC_VERSION__=199901L"/>
+									<listOptionValue builtIn="false" value="__STDC_HOSTED__=1"/>
+									<listOptionValue builtIn="false" value="__GNUC__=4"/>
+									<listOptionValue builtIn="false" value="__GNUC_MINOR__=2"/>
+									<listOptionValue builtIn="false" value="__GNUC_PATCHLEVEL__=1"/>
+									<listOptionValue builtIn="false" value="__llvm__=1"/>
+									<listOptionValue builtIn="false" value="__SIZE_TYPE__=unsigned"/>
+									<listOptionValue builtIn="false" value="__PTRDIFF_TYPE__=int"/>
+									<listOptionValue builtIn="false" value="__WCHAR_TYPE__=unsigned"/>
+									<listOptionValue builtIn="false" value="__WINT_TYPE__=unsigned"/>
+									<listOptionValue builtIn="false" value="__INTMAX_TYPE__=long"/>
+									<listOptionValue builtIn="false" value="__UINTMAX_TYPE__=long"/>
+									<listOptionValue builtIn="false" value="__GXX_ABI_VERSION=1002"/>
+									<listOptionValue builtIn="false" value="__SCHAR_MAX__=127"/>
+									<listOptionValue builtIn="false" value="__SHRT_MAX__=32767"/>
+									<listOptionValue builtIn="false" value="__INT_MAX__=2147483647"/>
+									<listOptionValue builtIn="false" value="__LONG_MAX__=2147483647L"/>
+									<listOptionValue builtIn="false" value="__LONG_LONG_MAX__=9223372036854775807LL"/>
+									<listOptionValue builtIn="false" value="__WCHAR_MAX__=255U"/>
+									<listOptionValue builtIn="false" value="__CHAR_BIT__=8"/>
+									<listOptionValue builtIn="false" value="__INTMAX_MAX__=9223372036854775807LL"/>
+									<listOptionValue builtIn="false" value="__FLT_EVAL_METHOD__=0"/>
+									<listOptionValue builtIn="false" value="__DEC_EVAL_METHOD__=2"/>
+									<listOptionValue builtIn="false" value="__FLT_RADIX__=2"/>
+									<listOptionValue builtIn="false" value="__FLT_MANT_DIG__=24"/>
+									<listOptionValue builtIn="false" value="__FLT_DIG__=6"/>
+									<listOptionValue builtIn="false" value="__FLT_MIN_EXP__=(-125)"/>
+									<listOptionValue builtIn="false" value="__FLT_MIN_10_EXP__=(-37)"/>
+									<listOptionValue builtIn="false" value="__FLT_MAX_EXP__=128"/>
+									<listOptionValue builtIn="false" value="__FLT_MAX_10_EXP__=38"/>
+									<listOptionValue builtIn="false" value="__FLT_MAX__=3.40282347e+38F"/>
+									<listOptionValue builtIn="false" value="__FLT_MIN__=1.17549435e-38F"/>
+									<listOptionValue builtIn="false" value="__FLT_EPSILON__=1.19209290e-7F"/>
+									<listOptionValue builtIn="false" value="__FLT_DENORM_MIN__=1.40129846e-45F"/>
+									<listOptionValue builtIn="false" value="__FLT_HAS_DENORM__=1"/>
+									<listOptionValue builtIn="false" value="__FLT_HAS_INFINITY__=1"/>
+									<listOptionValue builtIn="false" value="__FLT_HAS_QUIET_NAN__=1"/>
+									<listOptionValue builtIn="false" value="__DBL_MANT_DIG__=53"/>
+									<listOptionValue builtIn="false" value="__DBL_DIG__=15"/>
+									<listOptionValue builtIn="false" value="__DBL_MIN_EXP__=(-1021)"/>
+									<listOptionValue builtIn="false" value="__DBL_MIN_10_EXP__=(-307)"/>
+									<listOptionValue builtIn="false" value="__DBL_MAX_EXP__=1024"/>
+									<listOptionValue builtIn="false" value="__DBL_MAX_10_EXP__=308"/>
+									<listOptionValue builtIn="false" value="__DBL_MAX__=1.7976931348623157e+308"/>
+									<listOptionValue builtIn="false" value="__DBL_MIN__=2.2250738585072014e-308"/>
+									<listOptionValue builtIn="false" value="__DBL_EPSILON__=2.2204460492503131e-16"/>
+									<listOptionValue builtIn="false" value="__DBL_DENORM_MIN__=4.9406564584124654e-324"/>
+									<listOptionValue builtIn="false" value="__DBL_HAS_DENORM__=1"/>
+									<listOptionValue builtIn="false" value="__DBL_HAS_INFINITY__=1"/>
+									<listOptionValue builtIn="false" value="__DBL_HAS_QUIET_NAN__=1"/>
+									<listOptionValue builtIn="false" value="__LDBL_MANT_DIG__=53"/>
+									<listOptionValue builtIn="false" value="__LDBL_DIG__=15"/>
+									<listOptionValue builtIn="false" value="__LDBL_MIN_EXP__=(-1021)"/>
+									<listOptionValue builtIn="false" value="__LDBL_MIN_10_EXP__=(-307)"/>
+									<listOptionValue builtIn="false" value="__LDBL_MAX_EXP__=1024"/>
+									<listOptionValue builtIn="false" value="__LDBL_MAX_10_EXP__=308"/>
+									<listOptionValue builtIn="false" value="__DECIMAL_DIG__=17"/>
+									<listOptionValue builtIn="false" value="__LDBL_MAX__=1.7976931348623157e+308L"/>
+									<listOptionValue builtIn="false" value="__LDBL_MIN__=2.2250738585072014e-308L"/>
+									<listOptionValue builtIn="false" value="__LDBL_EPSILON__=2.2204460492503131e-16L"/>
+									<listOptionValue builtIn="false" value="__LDBL_DENORM_MIN__=4.9406564584124654e-324L"/>
+									<listOptionValue builtIn="false" value="__LDBL_HAS_DENORM__=1"/>
+									<listOptionValue builtIn="false" value="__LDBL_HAS_INFINITY__=1"/>
+									<listOptionValue builtIn="false" value="__LDBL_HAS_QUIET_NAN__=1"/>
+									<listOptionValue builtIn="false" value="__DEC32_MANT_DIG__=7"/>
+									<listOptionValue builtIn="false" value="__DEC32_MIN_EXP__=(-95)"/>
+									<listOptionValue builtIn="false" value="__DEC32_MAX_EXP__=96"/>
+									<listOptionValue builtIn="false" value="__DEC32_MIN__=1E-95DF"/>
+									<listOptionValue builtIn="false" value="__DEC32_MAX__=9.999999E96DF"/>
+									<listOptionValue builtIn="false" value="__DEC32_EPSILON__=1E-6DF"/>
+									<listOptionValue builtIn="false" value="__DEC32_DEN__=0.000001E-95DF"/>
+									<listOptionValue builtIn="false" value="__DEC64_MANT_DIG__=16"/>
+									<listOptionValue builtIn="false" value="__DEC64_MIN_EXP__=(-383)"/>
+									<listOptionValue builtIn="false" value="__DEC64_MAX_EXP__=384"/>
+									<listOptionValue builtIn="false" value="__DEC64_MIN__=1E-383DD"/>
+									<listOptionValue builtIn="false" value="__DEC64_MAX__=9.999999999999999E384DD"/>
+									<listOptionValue builtIn="false" value="__DEC64_EPSILON__=1E-15DD"/>
+									<listOptionValue builtIn="false" value="__DEC64_DEN__=0.000000000000001E-383DD"/>
+									<listOptionValue builtIn="false" value="__DEC128_MANT_DIG__=34"/>
+									<listOptionValue builtIn="false" value="__DEC128_MIN_EXP__=(-6143)"/>
+									<listOptionValue builtIn="false" value="__DEC128_MAX_EXP__=6144"/>
+									<listOptionValue builtIn="false" value="__DEC128_MIN__=1E-6143DL"/>
+									<listOptionValue builtIn="false" value="__DEC128_MAX__=9.999999999999999999999999999999999E6144DL"/>
+									<listOptionValue builtIn="false" value="__DEC128_EPSILON__=1E-33DL"/>
+									<listOptionValue builtIn="false" value="__DEC128_DEN__=0.000000000000000000000000000000001E-6143DL"/>
+									<listOptionValue builtIn="false" value="__REGISTER_PREFIX__"/>
+									<listOptionValue builtIn="false" value="__USER_LABEL_PREFIX__"/>
+									<listOptionValue builtIn="false" value="__VERSION__=&quot;4.2.1"/>
+									<listOptionValue builtIn="false" value="__GNUC_STDC_INLINE__=1"/>
+									<listOptionValue builtIn="false" value="__BLOCKS__=1"/>
+									<listOptionValue builtIn="false" value="__NO_INLINE__=1"/>
+									<listOptionValue builtIn="false" value="__FINITE_MATH_ONLY__=0"/>
+									<listOptionValue builtIn="false" value="__CHAR_UNSIGNED__=1"/>
+									<listOptionValue builtIn="false" value="__XS1B__=1"/>
+									<listOptionValue builtIn="false" value="__ELF__=1"/>
+									<listOptionValue builtIn="false" value="XCC_VERSION_YEAR=12"/>
+									<listOptionValue builtIn="false" value="XCC_VERSION_MONTH=2"/>
+									<listOptionValue builtIn="false" value="XCC_VERSION_MAJOR=1202"/>
+									<listOptionValue builtIn="false" value="XCC_VERSION_MINOR=0"/>
+									<listOptionValue builtIn="false" value="__XCC_HAVE_FLOAT__=1"/>
+								</option>
+								<option id = "com.xmos.c.compiler.option.include.paths.81087633" name="com.xmos.c.compiler.option.include.paths" superClass="com.xmos.c.compiler.option.include.paths" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/gcc&quot;"/>
+                                    <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_l2/src/core}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_l2/src/extensions}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_l2/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_l2}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources/DWARF}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_queue/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_queue}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/endpoint0}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/hostactive}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/powersave}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_device/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_device}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared/src/class}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xassert/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xassert}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/include}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/lib/xs1b}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc/glx_support}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc/included}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/lib}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud}&quot;' />
+
+								</option>
+								<inputType id = "com.xmos.cdt.c.compiler.input.c.20027186" name="C" superClass="com.xmos.cdt.c.compiler.input.c"/>
+							</tool>
+							<tool id = "com.xmos.cdt.cxx.compiler.30751071" name="com.xmos.cdt.cxx.compiler" superClass="com.xmos.cdt.cxx.compiler">
+								<option id = "com.xmos.cxx.compiler.option.defined.symbols.39095168" name="com.xmos.cxx.compiler.option.defined.symbols" superClass="com.xmos.cxx.compiler.option.defined.symbols" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="__STDC__=1"/>
+									<listOptionValue builtIn="false" value="__cplusplus=1"/>
+									<listOptionValue builtIn="false" value="__STDC_HOSTED__=1"/>
+									<listOptionValue builtIn="false" value="__GNUC__=4"/>
+									<listOptionValue builtIn="false" value="__GNUG__=4"/>
+									<listOptionValue builtIn="false" value="__GNUC_MINOR__=2"/>
+									<listOptionValue builtIn="false" value="__GNUC_PATCHLEVEL__=1"/>
+									<listOptionValue builtIn="false" value="__llvm__=1"/>
+									<listOptionValue builtIn="false" value="__SIZE_TYPE__=unsigned"/>
+									<listOptionValue builtIn="false" value="__PTRDIFF_TYPE__=int"/>
+									<listOptionValue builtIn="false" value="__WCHAR_TYPE__=unsigned"/>
+									<listOptionValue builtIn="false" value="__WINT_TYPE__=unsigned"/>
+									<listOptionValue builtIn="false" value="__INTMAX_TYPE__=long"/>
+									<listOptionValue builtIn="false" value="__UINTMAX_TYPE__=long"/>
+									<listOptionValue builtIn="false" value="__GXX_WEAK__=1"/>
+									<listOptionValue builtIn="false" value="__DEPRECATED=1"/>
+									<listOptionValue builtIn="false" value="__GXX_ABI_VERSION=1002"/>
+									<listOptionValue builtIn="false" value="__SCHAR_MAX__=127"/>
+									<listOptionValue builtIn="false" value="__SHRT_MAX__=32767"/>
+									<listOptionValue builtIn="false" value="__INT_MAX__=2147483647"/>
+									<listOptionValue builtIn="false" value="__LONG_MAX__=2147483647L"/>
+									<listOptionValue builtIn="false" value="__LONG_LONG_MAX__=9223372036854775807LL"/>
+									<listOptionValue builtIn="false" value="__WCHAR_MAX__=255U"/>
+									<listOptionValue builtIn="false" value="__CHAR_BIT__=8"/>
+									<listOptionValue builtIn="false" value="__INTMAX_MAX__=9223372036854775807LL"/>
+									<listOptionValue builtIn="false" value="__FLT_EVAL_METHOD__=0"/>
+									<listOptionValue builtIn="false" value="__DEC_EVAL_METHOD__=2"/>
+									<listOptionValue builtIn="false" value="__FLT_RADIX__=2"/>
+									<listOptionValue builtIn="false" value="__FLT_MANT_DIG__=24"/>
+									<listOptionValue builtIn="false" value="__FLT_DIG__=6"/>
+									<listOptionValue builtIn="false" value="__FLT_MIN_EXP__=(-125)"/>
+									<listOptionValue builtIn="false" value="__FLT_MIN_10_EXP__=(-37)"/>
+									<listOptionValue builtIn="false" value="__FLT_MAX_EXP__=128"/>
+									<listOptionValue builtIn="false" value="__FLT_MAX_10_EXP__=38"/>
+									<listOptionValue builtIn="false" value="__FLT_MAX__=3.40282347e+38F"/>
+									<listOptionValue builtIn="false" value="__FLT_MIN__=1.17549435e-38F"/>
+									<listOptionValue builtIn="false" value="__FLT_EPSILON__=1.19209290e-7F"/>
+									<listOptionValue builtIn="false" value="__FLT_DENORM_MIN__=1.40129846e-45F"/>
+									<listOptionValue builtIn="false" value="__FLT_HAS_DENORM__=1"/>
+									<listOptionValue builtIn="false" value="__FLT_HAS_INFINITY__=1"/>
+									<listOptionValue builtIn="false" value="__FLT_HAS_QUIET_NAN__=1"/>
+									<listOptionValue builtIn="false" value="__DBL_MANT_DIG__=53"/>
+									<listOptionValue builtIn="false" value="__DBL_DIG__=15"/>
+									<listOptionValue builtIn="false" value="__DBL_MIN_EXP__=(-1021)"/>
+									<listOptionValue builtIn="false" value="__DBL_MIN_10_EXP__=(-307)"/>
+									<listOptionValue builtIn="false" value="__DBL_MAX_EXP__=1024"/>
+									<listOptionValue builtIn="false" value="__DBL_MAX_10_EXP__=308"/>
+									<listOptionValue builtIn="false" value="__DBL_MAX__=1.7976931348623157e+308"/>
+									<listOptionValue builtIn="false" value="__DBL_MIN__=2.2250738585072014e-308"/>
+									<listOptionValue builtIn="false" value="__DBL_EPSILON__=2.2204460492503131e-16"/>
+									<listOptionValue builtIn="false" value="__DBL_DENORM_MIN__=4.9406564584124654e-324"/>
+									<listOptionValue builtIn="false" value="__DBL_HAS_DENORM__=1"/>
+									<listOptionValue builtIn="false" value="__DBL_HAS_INFINITY__=1"/>
+									<listOptionValue builtIn="false" value="__DBL_HAS_QUIET_NAN__=1"/>
+									<listOptionValue builtIn="false" value="__LDBL_MANT_DIG__=53"/>
+									<listOptionValue builtIn="false" value="__LDBL_DIG__=15"/>
+									<listOptionValue builtIn="false" value="__LDBL_MIN_EXP__=(-1021)"/>
+									<listOptionValue builtIn="false" value="__LDBL_MIN_10_EXP__=(-307)"/>
+									<listOptionValue builtIn="false" value="__LDBL_MAX_EXP__=1024"/>
+									<listOptionValue builtIn="false" value="__LDBL_MAX_10_EXP__=308"/>
+									<listOptionValue builtIn="false" value="__DECIMAL_DIG__=17"/>
+									<listOptionValue builtIn="false" value="__LDBL_MAX__=1.7976931348623157e+308L"/>
+									<listOptionValue builtIn="false" value="__LDBL_MIN__=2.2250738585072014e-308L"/>
+									<listOptionValue builtIn="false" value="__LDBL_EPSILON__=2.2204460492503131e-16L"/>
+									<listOptionValue builtIn="false" value="__LDBL_DENORM_MIN__=4.9406564584124654e-324L"/>
+									<listOptionValue builtIn="false" value="__LDBL_HAS_DENORM__=1"/>
+									<listOptionValue builtIn="false" value="__LDBL_HAS_INFINITY__=1"/>
+									<listOptionValue builtIn="false" value="__LDBL_HAS_QUIET_NAN__=1"/>
+									<listOptionValue builtIn="false" value="__DEC32_MANT_DIG__=7"/>
+									<listOptionValue builtIn="false" value="__DEC32_MIN_EXP__=(-95)"/>
+									<listOptionValue builtIn="false" value="__DEC32_MAX_EXP__=96"/>
+									<listOptionValue builtIn="false" value="__DEC32_MIN__=1E-95DF"/>
+									<listOptionValue builtIn="false" value="__DEC32_MAX__=9.999999E96DF"/>
+									<listOptionValue builtIn="false" value="__DEC32_EPSILON__=1E-6DF"/>
+									<listOptionValue builtIn="false" value="__DEC32_DEN__=0.000001E-95DF"/>
+									<listOptionValue builtIn="false" value="__DEC64_MANT_DIG__=16"/>
+									<listOptionValue builtIn="false" value="__DEC64_MIN_EXP__=(-383)"/>
+									<listOptionValue builtIn="false" value="__DEC64_MAX_EXP__=384"/>
+									<listOptionValue builtIn="false" value="__DEC64_MIN__=1E-383DD"/>
+									<listOptionValue builtIn="false" value="__DEC64_MAX__=9.999999999999999E384DD"/>
+									<listOptionValue builtIn="false" value="__DEC64_EPSILON__=1E-15DD"/>
+									<listOptionValue builtIn="false" value="__DEC64_DEN__=0.000000000000001E-383DD"/>
+									<listOptionValue builtIn="false" value="__DEC128_MANT_DIG__=34"/>
+									<listOptionValue builtIn="false" value="__DEC128_MIN_EXP__=(-6143)"/>
+									<listOptionValue builtIn="false" value="__DEC128_MAX_EXP__=6144"/>
+									<listOptionValue builtIn="false" value="__DEC128_MIN__=1E-6143DL"/>
+									<listOptionValue builtIn="false" value="__DEC128_MAX__=9.999999999999999999999999999999999E6144DL"/>
+									<listOptionValue builtIn="false" value="__DEC128_EPSILON__=1E-33DL"/>
+									<listOptionValue builtIn="false" value="__DEC128_DEN__=0.000000000000000000000000000000001E-6143DL"/>
+									<listOptionValue builtIn="false" value="__REGISTER_PREFIX__"/>
+									<listOptionValue builtIn="false" value="__USER_LABEL_PREFIX__"/>
+									<listOptionValue builtIn="false" value="__VERSION__=&quot;4.2.1"/>
+									<listOptionValue builtIn="false" value="__GNUC_GNU_INLINE__=1"/>
+									<listOptionValue builtIn="false" value="__BLOCKS__=1"/>
+									<listOptionValue builtIn="false" value="__NO_INLINE__=1"/>
+									<listOptionValue builtIn="false" value="__FINITE_MATH_ONLY__=0"/>
+									<listOptionValue builtIn="false" value="__CHAR_UNSIGNED__=1"/>
+									<listOptionValue builtIn="false" value="__WCHAR_UNSIGNED__=1"/>
+									<listOptionValue builtIn="false" value="__XS1B__=1"/>
+									<listOptionValue builtIn="false" value="__ELF__=1"/>
+									<listOptionValue builtIn="false" value="XCC_VERSION_YEAR=12"/>
+									<listOptionValue builtIn="false" value="XCC_VERSION_MONTH=2"/>
+									<listOptionValue builtIn="false" value="XCC_VERSION_MAJOR=1202"/>
+									<listOptionValue builtIn="false" value="XCC_VERSION_MINOR=0"/>
+									<listOptionValue builtIn="false" value="__XCC_HAVE_FLOAT__=1"/>
+								</option>
+								<option id = "com.xmos.cxx.compiler.option.include.paths.39189866" name="com.xmos.cxx.compiler.option.include.paths" superClass="com.xmos.cxx.compiler.option.include.paths" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/gcc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/c++/4.2.1&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/c++/4.2.1/xcore-xmos-elf&quot;"/>
+                                    <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_l2/src/core}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_l2/src/extensions}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_l2/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_l2}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources/DWARF}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_i2c_simple}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_queue/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_queue}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_rx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_spdif_tx}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/audiostream}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/clocking}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/endpoint0}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/hostactive}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/locks}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/mixer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/pll}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/ports}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/powersave}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/usb_buffer}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio/xuduser}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_audio}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_device/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_device}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_midi}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared/src/class}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_usb_shared}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xassert/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xassert}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/include}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/lib/xs1b}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc/glx_support}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc/included}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/libsrc}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/lib}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud/src}&quot;' />
+<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_xud}&quot;' />
+
+								</option>
+								<inputType id = "com.xmos.cdt.cxx.compiler.input.cpp.32429939" name="C++" superClass="com.xmos.cdt.cxx.compiler.input.cpp"/>
+							</tool>
+                        </toolChain>
+                    </folderInfo>
+                    <sourceEntries>
+                        <entry excluding=".build_*" flags="VALUE_WORKSPACE_PATH|RESOLVED"
+                    kind="sourcePath" name="" />
+                    </sourceEntries>
+                </configuration>
+            </storageModule>
+            <storageModule moduleId="scannerConfiguration">
+                <autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="" />
+                <profile id="org.eclipse.cdt.make.core.GCCStandardMakePerProjectProfile">
+                    <buildOutputProvider>
+                        <openAction enabled="true" filePath="" />
+                        <parser enabled="true" />
+                    </buildOutputProvider>
+                    <scannerInfoProvider id="specsFile">
+                        <runAction arguments="-E -P -v -dD ${plugin_state_location}/${specs_file}" command="gcc" useDefault="true" />
+                        <parser enabled="true" />
+                    </scannerInfoProvider>
+                </profile>
+                <profile id="org.eclipse.cdt.make.core.GCCStandardMakePerFileProfile">
+                    <buildOutputProvider>
+                        <openAction enabled="true" filePath="" />
+                        <parser enabled="true" />
+                    </buildOutputProvider>
+                    <scannerInfoProvider id="makefileGenerator">
+                        <runAction arguments="-E -P -v -dD" command="" useDefault="true" />
+                        <parser enabled="true" />
+                    </scannerInfoProvider>
+                </profile>
+                <profile id="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfile">
+                    <buildOutputProvider>
+                        <openAction enabled="true" filePath="" />
+                        <parser enabled="true" />
+                    </buildOutputProvider>
+                    <scannerInfoProvider id="specsFile">
+                        <runAction arguments="-E -P -v -dD ${plugin_state_location}/${specs_file}" command="gcc" useDefault="true" />
+                        <parser enabled="true" />
+                    </scannerInfoProvider>
+                </profile>
+                <profile id="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileCPP">
+                    <buildOutputProvider>
+                        <openAction enabled="true" filePath="" />
+                        <parser enabled="true" />
+                    </buildOutputProvider>
+                    <scannerInfoProvider id="specsFile">
+                        <runAction arguments="-E -P -v -dD ${plugin_state_location}/specs.cpp" command="g++" useDefault="true" />
+                        <parser enabled="true" />
+                    </scannerInfoProvider>
+                </profile>
+                <profile id="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileC">
+                    <buildOutputProvider>
+                        <openAction enabled="true" filePath="" />
+                        <parser enabled="true" />
+                    </buildOutputProvider>
+                    <scannerInfoProvider id="specsFile">
+                        <runAction arguments="-E -P -v -dD ${plugin_state_location}/specs.c" command="gcc" useDefault="true" />
+                        <parser enabled="true" />
+                    </scannerInfoProvider>
+                </profile>
+                <profile id="org.eclipse.cdt.managedbuilder.core.GCCWinManagedMakePerProjectProfile">
+                    <buildOutputProvider>
+                        <openAction enabled="true" filePath="" />
+                        <parser enabled="true" />
+                    </buildOutputProvider>
+                    <scannerInfoProvider id="specsFile">
+                        <runAction arguments='-c &apos;gcc -E -P -v -dD &quot;${plugin_state_location}/${specs_file}&quot;&apos;' command="sh" useDefault="true" />
+                        <parser enabled="true" />
+                    </scannerInfoProvider>
+                </profile>
+                <profile id="org.eclipse.cdt.managedbuilder.core.GCCWinManagedMakePerProjectProfileCPP">
+                    <buildOutputProvider>
+                        <openAction enabled="true" filePath="" />
+                        <parser enabled="true" />
+                    </buildOutputProvider>
+                    <scannerInfoProvider id="specsFile">
+                        <runAction arguments='-c &apos;g++ -E -P -v -dD &quot;${plugin_state_location}/specs.cpp&quot;&apos;' command="sh" useDefault="true" />
+                        <parser enabled="true" />
+                    </scannerInfoProvider>
+                </profile>
+                <profile id="org.eclipse.cdt.managedbuilder.core.GCCWinManagedMakePerProjectProfileC">
+                    <buildOutputProvider>
+                        <openAction enabled="true" filePath="" />
+                        <parser enabled="true" />
+                    </buildOutputProvider>
+                    <scannerInfoProvider id="specsFile">
+                        <runAction arguments='-c &apos;gcc -E -P -v -dD &quot;${plugin_state_location}/specs.c&quot;&apos;' command="sh" useDefault="true" />
+                        <parser enabled="true" />
+                    </scannerInfoProvider>
+                </profile>
+            </storageModule>
+            <storageModule moduleId="org.eclipse.cdt.core.externalSettings" />
+            <storageModule moduleId="org.eclipse.cdt.core.language.mapping" />
+            <storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings" />
+        </cconfiguration>
+
     </storageModule>
     <storageModule moduleId="cdtBuildSystem" version="4.0.0">
-        <project id = "app_usb_aud_l2.null.76246434" name="app_usb_aud_l2" />
+        <project id = "app_usb_aud_l2.null.37889574" name="app_usb_aud_l2" />
     </storageModule>
 </cproject>

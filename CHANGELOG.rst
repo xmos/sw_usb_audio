@@ -13,10 +13,10 @@ sw_usb_audio Change Log
                   overlap (previously Analogue naming took precedence)
     - RESOLVED:   (Minor) USB test mode requests re-enabled - previously was guarded by
                   TEST_MODE_SUPPORT in module_usb_device (#15385)
-    - RESOLVED:   (Minor) Audio Class 1.0 sample frequency list now respects MAX_FREQ (previously 
+    - RESOLVED:   (Minor) Audio Class 1.0 sample frequency list now respects MAX_FREQ (previously
                   based on OUTPUT and INPUT defines) (#15417)
     - RESOLVED:   (Minor) Audio Class 1.0 mute control SET requests stalled due to incorrect data
-                  length check (#15419) 
+                  length check (#15419)
 
   * Changes to dependencies:
 
@@ -30,11 +30,11 @@ sw_usb_audio Change Log
       + Fix thread local storage calculation bug in libtrycatch
       + Fix debug_printf itoa to work for unsigned values > 0x80000000
 
-    - sc_usb_audio: 6.5.0beta2 -> 6.5.1beta1
+    - sc_usb_audio: 6.5.0beta2 -> 6.5.1beta2
 
       + see sw_usb_audio for changelog
 
-    - sc_usb_device: 1.1.0beta0 -> 1.2.0beta4
+    - sc_usb_device: 1.1.0beta0 -> 1.2.0rc0
 
       + CHANGE:     USB_StandardRequests() now returns XUD_Result_t instead of int
       + CHANGE:     app_hid_mouse_demo now uses XUD_Result_t
