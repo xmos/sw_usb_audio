@@ -14,15 +14,24 @@
 #define AUDIO_IO_TILE 1
 
 /* Audio Class Version */
+#ifndef AUDIO_CLASS
 #define AUDIO_CLASS        (2)
+#endif
 
 /* When connected to a full-speed hub, run in USB Audio Class 2.0 mode */
+#ifndef FULL_SPEED_AUDIO_2
 #define FULL_SPEED_AUDIO_2 (1)
+#endif
 
 /* Defines relating to channel count and channel arrangement (0 for disable) */
 /* Number of USB streaming channels */
+#ifndef NUM_USB_CHAN_IN
 #define NUM_USB_CHAN_IN    (10)              /* Device to Host */
+#endif
+
+#ifndef NUM_USB_CHAN_OUT
 #define NUM_USB_CHAN_OUT   (10)              /* Host to Device */
+#endif
 
 /* S/PDIF Tx enabled by default */
 #ifndef SPDIF
