@@ -13,6 +13,8 @@ sw_usb_audio Change Log
                   overlap (previously Analogue naming took precedence)
     - RESOLVED:   (Minor) USB test mode requests re-enabled - previously was guarded by
                   TEST_MODE_SUPPORT in module_usb_device (#15385)
+    - RESOLVED:   (Minor) Audio Class 1.0 sample frequency list now respects MAX_FREQ (previously 
+                  based on OUTPUT and INPUT defines)
 
   * Changes to dependencies:
 
