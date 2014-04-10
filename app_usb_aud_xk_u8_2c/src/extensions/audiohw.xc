@@ -162,6 +162,7 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
     /* ADC and DAC out of Reset */
     port32A_lock_peek(tmp);
 
+#if (DSD_CHANS_DAC > 0)
     if(dsdMode)
     {
         /* Set DSD mux line high */
@@ -171,6 +172,9 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
     {
         tmp &= (~P_GPIO_DSD_EN);
     }
+#else
+    tmp &= (~P_GPIO_DSD_EN);
+#endif
 
     /* ADC and DAC out of Reset */
     tmp |= (P_GPIO_RST_DAC | P_GPIO_RST_ADC);
@@ -191,6 +195,7 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
      * 4:6: Digital Interface Formats
      * 7:   Auto-mute
     */
+#if (DSD_CHANS_OUT > 0)
     if((dsdMode == DSD_MODE_NATIVE) || (dsdMode == DSD_MODE_DOP))
     {
         if(samFreq < 3000000) /* < 3MHz e.g. 2.2822400 MHz */
@@ -205,6 +210,7 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
         }
     }
     else
+#endif
     {
         if(samFreq < 100000)
         {
