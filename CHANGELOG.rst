@@ -11,6 +11,13 @@ sw_usb_audio Change Log
                   of audio hardware config to a remote core
     - CHANGE:     Channel strings now labeled "Analogue X, SPDIF Y" if S/PDIF and Analogue channels
                   overlap (previously Analogue naming took precedence)
+    - CHANGE:     Stream sample resolution now passed though to audio I/O core - previously only the 
+                  buffering code was notified. AudioHwConfig() now takes parameters for sample 
+                  resolution for DAC and ADC
+    - CHANGE:     Endpoint0 core only sends out notifications of stream format change on stream start
+                  event if there is an actual change in format (e.g. 16bit to 24bit or PCM to DSD). 
+                  This avoids unnecessary audio I/O restarts and reconfiguration of external audio 
+                  hardware (via AudioHwConfig())
     - RESOLVED:   (Minor) USB test mode requests re-enabled - previously was guarded by
                   TEST_MODE_SUPPORT in module_usb_device (#15385)
     - RESOLVED:   (Minor) Audio Class 1.0 sample frequency list now respects MAX_FREQ (previously
