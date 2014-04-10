@@ -21,7 +21,8 @@ void AudioHwInit(chanend ?c_codec)
  * access via inline assembly. We also take care to retain the
  * state of the other bits.
  */
-void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned dsdMode)
+void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned dsdMode,
+    unsigned samRes_DAC, unsigned samRes_ADC)
 {
     timer t;
     unsigned time;

@@ -105,7 +105,8 @@ void genclock()
  *
  * CODEC configuration for sample frequency change for Cirrus Logic CS42448
  */
-void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned dsdMode)
+void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned dsdMode, 
+    unsigned samRes_DAC, unsigned samRes_ADC)
 {
     unsigned char tmp[1] = {0};
 

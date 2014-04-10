@@ -44,7 +44,8 @@ int readReg2(unsigned devAdr, unsigned reg)
 
 //:codec_config
 /* Called on a sample frequency change */
-void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned dsdMode)
+void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned dsdMode,
+    unsigned samFreq_DAC, unsigned samFreq_ADC)
 {
     timer t;
     unsigned time;
