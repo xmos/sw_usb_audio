@@ -127,7 +127,7 @@ void AudioHwInit(chanend ?c_codec)
 /* Configure the CS4392 DAC
  * Note the CS5340 ADC doesn't require any config - it is set to Slave mode in hardware (M0 & M1 pins high)
  */
-void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned dsdMode, 
+void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned dsdMode,
     unsigned samRes_DAC, unsigned samRes_ADC)
 {
     timer t;

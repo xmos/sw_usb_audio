@@ -67,7 +67,7 @@ void AudioHwInit(chanend ?c_codec)
 
 //:codec_config
 /* Called on a sample frequency change */
-void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned dsdMode, 
+void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned dsdMode,
     unsigned samRes_DAC, unsigned samRes_ADC)
 {
     timer t;
