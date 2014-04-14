@@ -11,12 +11,12 @@ sw_usb_audio Change Log
                   of audio hardware config to a remote core
     - CHANGE:     Channel strings now labeled "Analogue X, SPDIF Y" if S/PDIF and Analogue channels
                   overlap (previously Analogue naming took precedence)
-    - CHANGE:     Stream sample resolution now passed though to audio I/O core - previously only the 
-                  buffering code was notified. AudioHwConfig() now takes parameters for sample 
+    - CHANGE:     Stream sample resolution now passed though to audio I/O core - previously only the
+                  buffering code was notified. AudioHwConfig() now takes parameters for sample
                   resolution for DAC and ADC
     - CHANGE:     Endpoint0 core only sends out notifications of stream format change on stream start
-                  event if there is an actual change in format (e.g. 16bit to 24bit or PCM to DSD). 
-                  This avoids unnecessary audio I/O restarts and reconfiguration of external audio 
+                  event if there is an actual change in format (e.g. 16bit to 24bit or PCM to DSD).
+                  This avoids unnecessary audio I/O restarts and reconfiguration of external audio
                   hardware (via AudioHwConfig())
     - RESOLVED:   (Minor) USB test mode requests re-enabled - previously was guarded by
                   TEST_MODE_SUPPORT in module_usb_device (#15385)
@@ -37,18 +37,22 @@ sw_usb_audio Change Log
       + Fix thread local storage calculation bug in libtrycatch
       + Fix debug_printf itoa to work for unsigned values > 0x80000000
 
-    - sc_usb_audio: 6.5.0beta2 -> 6.5.1beta2
+    - sc_xud: 2.0.0beta1 -> 2.0.1rc0
+
+      + RESOLVED:   (Minor) XUD_GetRequest failed to send a zero-length packet at the end of a transfer
+      + RESOLVED:   (Minor) Error when building module_xud in xTimeComposer due to invalid project
+
+    - sc_usb_audio: 6.5.0beta2 -> 6.5.1beta3
 
       + see sw_usb_audio for changelog
 
-    - sc_usb_device: 1.1.0beta0 -> 1.2.0rc0
+    - sc_usb_device: 1.1.0beta0 -> 1.2.2rc0
 
-      + CHANGE:     USB_StandardRequests() now returns XUD_Result_t instead of int
-      + CHANGE:     app_hid_mouse_demo now uses XUD_Result_t
-      + CHANGE:     app_custom_bulk_demo now uses XUD_Result_t
-      + CHANGE:     USB_StandardRequests() now takes the string table as an array of char pointers rather
-      + CHANGE:     Demo applications now set LangID string at build-time (rather than run-time)
-      + CHANGE:     Test mode support no longer guarded by TEST_MODE_SUPPORT
+      + sc_util: 1.0.3rc0 -> 1.0.4rc0
+      + module_logging now compiled at -Os
+      + debug_printf in module_logging uses a buffer to deliver messages unfragmented
+      + Fix thread local storage calculation bug in libtrycatch
+      + Fix debug_printf itoa to work for unsigned values > 0x80000000
 
 6.5.0
 -----
