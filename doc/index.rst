@@ -1,8 +1,8 @@
 
 .. TODO
+.. Description of descriptors
 .. DSD
-.. HID
-.. MFI
+.. 16bit / stream formats
 .. App/dir/file arrangement
 
 USB Audio Design Guide

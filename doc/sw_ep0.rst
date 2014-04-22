@@ -7,20 +7,26 @@ Endpoint 0: Management and Control
 
 All USB devices must support a mandatory control endpoint, Endpoint 0.  This controls the management tasks of the USB device.
 
-These tasks can be generally split into enumeration, reset, audio configuration and firmware upgrade.
+These tasks can be generally split into enumeration, audio configuration and firmware upgrade requests.
 
-Startup/Enumeration
-~~~~~~~~~~~~~~~~~~~
+Enumeration
+~~~~~~~~~~~
 
 When the device is first attached to a host, enumeration occurs.  This process involves the host interrogating the device as to its functionality. The device does this by presenting several interfaces to the host via a set of descriptors.
 
 During the enumeration process the host will issue various commands to the device including assigning the device a unique address on the bus.
 
-The endpoint 0 code runs in its own core and follows a similar format to that of the USB Device examples in sc_usb_device. That is, a call is made to ``USB_GetSetupPAcket()`` to receive a command from the host.  Any device specific requests are handled - in this case audio class, MIDI class, DFU requests etc.  
+The endpoint 0 code runs in its own core and follows a similar format to that of the USB Device examples in sc_usb_device (i.e. Example HID Mouse Demo). That is, a call is made to ``USB_GetSetupPacket()`` to receive a command from the host. This populates a ``USB_SetupPacket_t`` structure, which is then parsed. 
 
-There are many mandatory requests that a USB Device must support as required by the USB Specification. Since these are required for all in order devices a 
-``USB_StandardRequests()`` function is provided (see ``module_usb_device``). After performing all the application specific requests the endpoint 0 core makes a call to ``USB_StandardReques()`` to handle these common USB requests.  If the request is not recognised, ``USB_StandardRequests()`` will issue a STALL this indicates to the host that the request is not supported by the device.
+There are many mandatory requests that a USB Device must support as required by the USB Specification. Since these are required for all devices in order to function a 
+``USB_StandardRequests()`` function is provided (see ``module_usb_device``) which implements all of these requests. This includes the following items:
 
+    - Requests for standard descriptors (Device descriptor, configuration descriptor etc) and string descriptors
+    - USB GET/SET INTERFACE requests
+    - USB SET_CONFIGURATION requests
+    - USB SET_ADDRESS requests
+
+For more information and full documentation, including full worked examples of simple devices, please refer the `XMOS USB Device Design Guide <https://www.xmos.com/zh/node/17007?page=9>`_
 
 The ``USB_StandardRequests()`` function takes the devices various descriptors as parameters, these are passed from data structures found in the ``descriptors.h`` file. 
 These data structures are fully customised based on the how the design is configured using various defines (see :ref:`usb_audio_sec_custom_defines_api`).
@@ -28,63 +34,45 @@ These data structures are fully customised based on the how the design is config
 The ``USB_StandardRequests()`` functions returns a ``XUD_Result_t``. ``XUD_RESULT_OKAY`` indicates that the request was fully handled without error and no further action is required
 - The device should move to receiving the next request from the host (via ``USB_GetSetupPacket()``).
 
-The function returns ``XUD_RES_ERR`` if the request was not recognised by the ``USB_StandardRequests()`` function and a stall has been issued. 
+The function returns ``XUD_RES_ERR`` if the request was not recognised by the ``USB_StandardRequests()`` function and a STALL has been issued. 
 
 The function may also return ``XUD_RES_RST`` if a bus-reset has been issued onto the bus by the host and communicated from XUD to Endpoint 0.
 
-For more information and full documentation, including full worked examples of simple devices, please see the `XMOS USB Device Design Guide <https://www.xmos.com/zh/node/17007?page=9>`_
+Since the ``USB_StandardRequests()`` function STALLS an unknown request, the endpoint 0 code must parse the ``USB_SetupPacket_t`` structure to handle device specific requests and then calling ``USB_StandardRequests()`` as required.  This is described next.
 
-.. _fig_usb_devices:
+Over-riding Standard Requests
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. table:: USB interfaces presented to host
-  :class: center
+The USB Audio design "over-rides" some of the requests handled by ``USB_StandardRequests()``, for example it uses the SET_INTERFACE request to indicate it if the host is streaming audio to the device.  In this case the setup packet is parsed, the relevant action taken, the ``USB_StandardRequests()`` is called to handle the response to the host etc.
 
-  +-----------------------+----------------------------------+
-  | **Mode**              | **Interfaces**                   |
-  +=======================+==================================+ 
-  | Application mode      | | Audio Class 2/Audio Class 1    |
-  |                       | | DFU Class 1.1                  |
-  |                       | | MIDI Device Class 1.0          |
-  +-----------------------+----------------------------------+
-  | DFU mode              | DFU Class 1.1                    |
-  +-----------------------+----------------------------------+
+Class Requests
+~~~~~~~~~~~~~~
+Before making the call to ``USB_StandardRequests()`` the setup packet is parsed for Class requests. These are handled in functions such as ``AudioClasRequests_2()``, ``AudioClassRequests_2``, ``DFUDeviceRequests()`` etc depending on the type of request.
 
-The device initially starts in Application mode.
+Any device specific requests are handled - in this case audio class, MIDI class, DFU requests etc.  
 
+Some of the common Audio Class requests and their associated behaviour will now be examined. 
 
+Audio Requests
+++++++++++++++
 
+When the host issues an audio request (e.g. sample rate or volume change), it sends a command to Endpoint 0. Like all requests this is returned from ``USB_GetSetupPacker()``. After some parsing (namely as Class Request to an Audio Interface) the request is handled by either the ``AudioClassRequests_1()`` or ``AudioClassRequests_2()`` function (based on whether the device is running in Audio Class 1.0 or 2.0 mode).
 
-:ref:`usb_audio_sec_dfu` describes how DFU mode is used. The
-audio device class (1 or 2) is set at compile time---see :ref:`usb_audio_sec_custom_defines_api`.
+Note, Audio Class 1.0 Sample rate changes are send to the relevant endpoint, rather than the interface - this is handled as a special case in he endpoint 0 request parsing where ``AudioEndpointRequests_1()`` is called.
 
+The ``AudioClassRequests_X()`` functions parses the request further in order to ascertain the correct audio operation to execute.
 
+Audio Request: Set Sample Rate
+++++++++++++++++++++++++++++++
 
-Reset
-~~~~~
+The ``AudioClassRequests_2()`` function parses the passed ``USB_SetupPacket_t`` structure for a ``CUR`` request of type ``SAM_FREQ_CNTROL`` to a Clock Unit in the devices topology (as described in the devices descriptors).
 
-On receiving a reset request, three steps occur:
-
-#. Depending on the DFU state, the device may be set into DFU
-   mode.
-
-#. A XUD function is called to reset the endpoint structure and receive the new bus speed.
-
-.. _usb_audio_sec_audio-requ-sett: 
-
-Audio Request: Setting The Sample Rate
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-When the host requests a change of sample
-rate, it sends a command to Endpoint 0. 
-
-Since the ``DescriptorRequests()`` function does not deal with audio requests it returns 1.  After some parsing the
-request is handled by either the ``AudioRequests_1()`` or ``AudioRequests_2()`` function (based on whether the device is running 
-in Audio Class 1.0 or 2.0 mode).
+The new sample frequency is extracted and passed via channel to the rest of the design - through the buffering code and eventually to the I2S core.  The ``AudioClassRequests_2()`` function waits for a handshake to propagate back though the system before signalling to the host that the request has completed successfully. Note, during this time the USB library is NAKing the host essentially holding off further traffic/requests until the sample-rate change is fully complete.
 
 .. _usb_audio_sec_audio-requ-volume: 
 
 Audio Request: Volume Control
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++++++++++++++++++++++++++++++
 
 When the host requests a volume change, it
 sends an audio interface request to Endpoint 0. An array is
@@ -95,12 +83,12 @@ When changing the volume, Endpoint 0 applies the master volume and
 channel volume, producing a single volume value for each channel.
 These are stored in the array.
 
-The volume will either be handled by the decoupler or the mixer
+The volume will either be handled by the ``decoupler`` core or the mixer
 component (if the mixer component is used). Handling the volume in the
 mixer gives the decoupler more performance to handle more channels.
 
 If the effect of the volume control array on the audio input and
-output is implemented by the decoupler, the decoupler core 
+output is implemented by the decoupler, the ``decoupler`` core 
 reads the volume values from this array. Note that this array is shared
 between Endpoint 0 and the decoupler core. This is done in a safe
 manner, since only Endpoint 0 can write to the array, word update
@@ -119,11 +107,10 @@ Endpoint Buffer
 ~~~~~~~~~~~~~~~
 
 All endpoints other that Endpoint 0 are handled in one core. This
-core is implemented in the file ``usb_buffer.xc``. This loop is responsive to the XUD library. 
+core is implemented in the file ``usb_buffer.xc``. This core is communicates directly with the XUD library. 
 
-This core is also responsible for feedback calculation based on
-SOF notification and reads from the port counter of a port
-connected to the master clock.
+The USB buffer core is also responsible for feedback calculation based on USB Start Of Frame
+(SOF) notification and reads from the port counter of a port connected to the master clock.
 
 Decoupler
 ~~~~~~~~~
@@ -139,7 +126,6 @@ implemented in the file ``decouple.xc``.
 Audio Buffering Scheme
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-Both audio and MIDI use a similar buffering scheme for USB data.
 This scheme is executed by co-operation between the buffering
 core, the decouple core and the XUD library.
 
@@ -231,44 +217,48 @@ frequency change case):
  +-----------------+-----------------+-----------------------------------------+
  |                 | inuint()        | Word indication ACK input (No SF change)|
  +-----------------+-----------------+-----------------------------------------+
- | inuint()        |                 | Sample transfer (Device to Host)        |
+ | inuint()        | outuint()       | Sample transfer (Device to Host)        |
  +-----------------+-----------------+-----------------------------------------+
- | inuint()        |                 |                                         |
+ | inuint()        | outuint()       |                                         |
  +-----------------+-----------------+-----------------------------------------+
- | inuint()        |                 |                                         |
- +-----------------+-----------------+-----------------------------------------+
- | ...             |                 |                                         |
- +-----------------+-----------------+-----------------------------------------+
- | outuint()       |                 | Sample transfer (Host to Device)        |
- +-----------------+-----------------+-----------------------------------------+
- | outuint()       |                 |                                         |
- +-----------------+-----------------+-----------------------------------------+
- | outuint()       |                 |                                         |
- +-----------------+-----------------+-----------------------------------------+
- | outuint()       |                 |                                         |
+ | inuint()        | outuint()       |                                         |
  +-----------------+-----------------+-----------------------------------------+
  | ...             |                 |                                         |
  +-----------------+-----------------+-----------------------------------------+
+ | outuint()       | inuint()        | Sample transfer (Host to Device)        |
+ +-----------------+-----------------+-----------------------------------------+
+ | outuint()       | inuint()        |                                         |
+ +-----------------+-----------------+-----------------------------------------+
+ | outuint()       | inuint()        |                                         |
+ +-----------------+-----------------+-----------------------------------------+
+ | outuint()       | inuint()        |                                         |
+ +-----------------+-----------------+-----------------------------------------+
+ | ...             |                 |                                         |
+ +-----------------+-----------------+-----------------------------------------+
 
+.. note::
+    The acknowledgement sent from Decouple to the Audio System is an "output undeflow flag"
+    if set to 1 the subsequent host to device sample transfer does not take place. This allows
+    the Audio subsystem to implement a suitable underflow behaviour based on the current audio 
+    format. 
 
-
-Aysnc Feedback
-++++++++++++++
+Asynchronous Feedback
++++++++++++++++++++++
 
 The device uses a feedback endpoint to report the rate at which
 audio is output/input to/from external audio interfaces/devices. This feedback is in accordance with
-the *USB Audio Class 2.0 specification*.
+the *USB 2.0 Specification*.
 
 After each received USB SOF token, the buffering core takes a
-timestamp from a port clocked off the master clock. By subtracting
-the timestamp taken at the previous SOF, the number of master clock
+time-stamp from a port clocked off the master clock. By subtracting
+the time-stamp taken at the previous SOF, the number of master clock
 ticks since the last SOF is calculated. From this the number of
 samples (as a fixed point number) between SOFs can be calculated.
 This count is aggregated over 128 SOFs and used as a basis for the
 feedback value.
 
 The sending of feedback to the host is also handled in the USB
-buffering core.
+buffering core via the feedback IN endpoint.
 
 USB Rate Control
 ++++++++++++++++
@@ -316,3 +306,42 @@ To implement this control, the decoupler core uses the feedback
 value calculated in the buffering core. This value is used to
 work out the size of the next packet it will insert into the audio
 FIFO.
+
+
+
+.. .. _fig_usb_devices:
+
+.. .. table:: USB interfaces presented to host
+..   :class: center
+..
+..  +-----------------------+----------------------------------+
+..  | **Mode**              | **Interfaces**                   |
+.. +=======================+==================================+ 
+..  | Application mode      | | Audio Class 2/Audio Class 1    |
+..  |                       | | DFU Class 1.1                  |
+..  |                       | | MIDI Device Class 1.0          |
+..  +-----------------------+----------------------------------+
+..  | DFU mode              | DFU Class 1.1                    |
+..  +-----------------------+----------------------------------+
+
+.. The device initially starts in Application mode.
+
+
+
+
+.. :ref:`usb_audio_sec_dfu` describes how DFU mode is used. The
+.. audio device class (1 or 2) is set at compile time---see :ref:`usb_audio_sec_custom_defines_api`.
+
+
+
+.. Reset
+.. ~~~~~
+
+.. On receiving a reset request, three steps occur:
+
+.. #. Depending on the DFU state, the device may be set into DFU
+   mode.
+
+.. #. A XUD function is called to reset the endpoint structure and receive the new bus speed.
+
+.. _usb_audio_sec_audio-requ-sett: 

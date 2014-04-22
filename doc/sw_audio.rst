@@ -9,7 +9,7 @@ It then drives several in and out I2S channels. If
 the firmware is configured with the CODEC as slave, it will also
 drive the word and bit clocks in this core as well. The word
 clocks, bit clocks and data are all derived from the incoming
-master clock (the output of the external clocking chip). The audio
+master clock (typically the output of the external oscillator or PLL). The audio
 driver is implemented in the file ``audio.xc``.
 
 The audio driver captures and plays audio data over I2S. It also
@@ -17,17 +17,16 @@ forwards on relevant audio data to the S/PDIF transmit core.
 
 The audio core must be connected to a CODEC that supports I2S (other
 modes such as "left justified" can be supported with firmware changes). In
-slave mode, the XS1 device acts as the master generating the Bit
+slave mode, the XMOS device acts as the master generating the Bit
 Clock (BCLK) and Left-Right Clock (LRCLK, also called Word Clock)
-signals. Although the reference designs use the Cirrus CS4270/CS42448, 
-any CODEC that supports I2S and can be used.
+signals. Any CODEC or DAC/ADC combination that supports I2S and can be used.
 
 :ref:`usb_audio_codec_signals` shows the signals used to communicate audio between
-the XS1 device and the CODEC.
+the XMOS device and the CODEC.
 
 .. _usb_audio_codec_signals:
 
-.. list-table:: CODEC Signals
+.. list-table:: I2S Signals
    :header-rows: 1
    :widths: 20 80
   
@@ -38,15 +37,15 @@ the XS1 device and the CODEC.
    * - BCLK     
      - The bit clock, clocks data in and out
    * - SDIN
-     - Sample data in (from CODEC to XS1-L)
+     - Sample data in (from CODEC/ADC to the XMOS device)
    * - SDOUT 
-     - Sample data out (from XS1-L to CODEC)
+     - Sample data out (from the XMOS device to CODEC/DAC)
    * - MCLK
-     - The master clock running the CODEC
+     - The master clock running the CODEC/DAC/ADC
 
 The bit clock controls the rate at which data is transmitted to and
 from the CODEC. 
-In the case where the XS1 device is the master, it divides the MCLK to generate the required signals for both BCLK and LRCLK,
+In the case where the XMOS device is the master, it divides the MCLK to generate the required signals for both BCLK and LRCLK,
 with BCLK then being used to clock data in (SDIN) and data out
 (SDOUT) of the CODEC.
 
@@ -88,20 +87,20 @@ for different sample rates (note that this reflects the single tile L-Series ref
     - 12.288 
     - 2
 
-The master clock must be supplied by an external source e.g. clock generator chip, 
+The master clock must be supplied by an external source e.g. clock generator, 
 fixed oscillators, PLL etc to generate the two frequencies to support
 44.1kHz and 48kHz audio frequencies (e.g. 11.2896/22.5792MHz and 12.288/24.576MHz
 respectively).  This master clock input is then provided to the CODEC and
-the XS1 device. 
+the XMOS device. 
 
 
 Port Configuration (CODEC Slave)
 ++++++++++++++++++++++++++++++++
 
-The default software configuration is CODEC Slave (XS1 master).  That is, the XS1
+The default software configuration is CODEC Slave (XMOS master).  That is, the XMOS device
 provides the BCLK and LRCLK signals to the CODEC.
 
-XS1 ports and XS1 clocks provide many valuable features for
+XS1 ports and XMOS clocks provide many valuable features for
 implementing I2S. This section describes how these are configured
 and used to drive the I2S interface.
 
