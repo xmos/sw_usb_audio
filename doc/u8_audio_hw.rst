@@ -11,7 +11,7 @@ The kit is made up of two boards:
     - A main board which includes the XMOS U-series device and all audio hardware
     - A "USB Slice" board which contains USB connectivity
 
-The seperate USB slice board allows flexibility in the connection method to the USB audio source/sink as well as other functionality such as Apple Authentication ICs and any required USB switching.  This also means the XMOS device can be used as a USB device or host using the same main board.  
+The separate USB slice board allows flexibility in the connection method to the USB audio source/sink as well as other functionality such as Apple Authentication ICs and any required USB switching.  This also means the XMOS device can be used as a USB device or host using the same main board.
 
 This document addresses the combination of the main board with the USB B slice (part numbers XK-USB-AUDIO-U8-2C and XA-SK-USB-B respectively).  This provides a standard USB device hardware configuration.
 

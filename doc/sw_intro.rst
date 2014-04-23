@@ -68,6 +68,6 @@ components that can be added to a design:
       USB Audio Core Diagram
 
 :ref:`usb_audio_threads` shows how the components interact with each
-other.  The green circles represent cores with arrows indicating inter-core communcations. 
+other.  The green circles represent cores with arrows indicating inter-core communications.
 
 This section will now examine these components in detail.
