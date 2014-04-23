@@ -1,7 +1,7 @@
 .. _usb_audio_sec_clock_recovery:
 
-Clock Recovery
---------------
+External Clock Recovery
+-----------------------
 
 An application can either provide fixed master clock sources via selectable
 oscillators, clock generation IC, etc., to provide the audio master or use 

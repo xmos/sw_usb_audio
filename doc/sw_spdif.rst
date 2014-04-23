@@ -1,24 +1,22 @@
 S/PDIF Transmit
 ---------------
 
-XS1 devices can support S/PDIF transmit up to 192kHz. 
-The S/PDIF transmitter uses a
-lookup table to encode the audio data. It receives samples from the
-Audio core two at a time, one for each channel. For each sample,
-it performs a lookup on each byte, generating 16 bits of encoded
-data which it outputs to the port.
+XMOS devices can support S/PDIF transmit up to 192kHz. The XMOS S/SPDIF transmitter component runs
+in a single core and can be found in ``sc_spdif/module_spdif_tx``
 
-S/PDIF sends data in frames, each containing 192 samples of the
-left and right channels.
+The S/PDIF transmitter core takes PCM audio samples via a channel and outputs them
+in S/PDIF format to a port.  A lookup table is used to encode the audio data into the required format. 
 
-The core takes PCM audio samples via a channel and outputs them
-in S/PDIF format to a port. Audio samples are encapsulated into
-S/PDIF words (adding preamble, parity, channel status and validity
-bits) and transmitted in biphase-mark encoding (BMC) with respect
-to an *external* master clock. Note that a minor change to the
-``SpdifTransmitPortConfig`` function would enable *internal* master
-clock generation (e.g. when clock source is already locked to
-desired audio clock).
+It receives samples from the Audio I/O core two at a time (for left and right). For each sample,
+it performs a lookup on each byte, generating 16 bits of encoded data which it outputs to a port.
+
+S/PDIF sends data in frames, each containing 192 samples of the left and right channels.
+
+Audio samples are encapsulated into S/PDIF words (adding preamble, parity, channel status and validity
+bits) and transmitted in biphase-mark encoding (BMC) with respect to an *external* master clock.
+
+Note that a minor change to the ``SpdifTransmitPortConfig`` function would enable *internal* master
+clock generation (e.g. when clock source is already locked to desired audio clock).
 
 ..  list-table:: S/PDIF Capabilities
    
@@ -45,22 +43,18 @@ Clocking
    D-Type Jitter Reduction
 
 
-The S/PDIF signal is output at a rate dictated by the external
-master clock. The master clock must be 1x 2x or 4x the BMC bit rate
-(that is 128x 256x or 512x audio sample rate, respectively). The minimum 
-master clock frequency for 192kHz is therefore 24.576MHz.
+The S/PDIF signal is output at a rate dictated by the external master clock. The master clock must 
+be 1x 2x or 4x the BMC bit rate (that is 128x 256x or 512x audio sample rate, respectively). 
+For example, the minimum master clock frequency for 192kHz is therefore 24.576MHz.
 
-This resamples the master clock to its clock domain (oscillator), which
-introduces jitter of 2.5-5 ns on the S/PDIF signal. A
-typical jitter-reduction scheme is an external D-type flip-flop
-clocked from the master clock (as shown in the preceding diagram).
+This resamples the master clock to its clock domain (oscillator), which introduces jitter of 2.5-5 ns on the S/PDIF signal. 
+A typical jitter-reduction scheme is an external D-type flip-flop clocked from the master clock (as shown in the preceding diagram).
 
 Usage
 +++++
 
-The interface is normal channel with streaming built-ins
-(``outuint``, ``inuint``). Data format is 24-bit left-aligned in a
-32-bit word: ``0x12345600``
+The interface to the S/PDIF transmitter core is via a normal channel with streaming built-ins
+(``outuint``, ``inuint``). Data format should be 24-bit left-aligned in a 32-bit word: ``0x12345600``
 
 The following protocol is used on the channel:
 

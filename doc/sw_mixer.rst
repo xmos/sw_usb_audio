@@ -3,7 +3,7 @@
 Digital Mixer
 -------------
 
-The mixer core takes outgoing audio from the decoupler and incoming
+The mixer core(s) take outgoing audio from the decoupler and incoming
 audio from the audio driver. It then applies the volume to each
 channel and passes incoming audio on to the decoupler and outgoing
 audio to the audio driver. The volume update is achieved using the
@@ -18,7 +18,7 @@ down to two mixes when switching to a higher rate.
 
 The mixer can take inputs from either:
 
-   * The USB outputs from the host---these samples come from the decoupler.
+   * The USB outputs from the host---these samples come from the decoupler core.
    * The inputs from the audio interface on the device---these
      samples come from the audio driver.
 
@@ -29,8 +29,8 @@ possible inputs to the mixer inputs.
 After the mix occurs, the final outputs are created. There are two
 output destinations:
 
-   * The USB inputs to the host---these samples are sent to the
-     decoupler.
+   * The USB inputs to the host---these samples are sent to the decoupler core.
+
    * The outputs to the audio interface on the device---these samples
      are sent to the audio driver.
 
@@ -46,7 +46,7 @@ volume setting) then the component will use only one core.
 Control
 ~~~~~~~
 
-The mixers can receive the following control commands from the Endpoint 0 core: 
+The mixers can receive the following control commands from the Endpoint 0 core via a channel: 
 
 .. list-table:: Mixer Component Commands
  :header-rows: 1
@@ -78,9 +78,10 @@ The mixers can receive the following control commands from the Endpoint 0 core:
 Host Control
 ~~~~~~~~~~~~
 
-The mixer can be controlled from a host PC. XMOS provides a simple command line based sample
-application demonstrating how the mixer can be controlled. For details, consult the
-README in the host_usb_mixer_control directory.
+The mixer can be controlled from a host PC by sending requests to Endpoint 0. XMOS provides a simple 
+command line based sample application demonstrating how the mixer can be controlled. 
+
+For details, consult the README in the host_usb_mixer_control directory.
 
 The main requirements of this control are to
 

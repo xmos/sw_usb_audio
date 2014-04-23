@@ -120,7 +120,7 @@ The code to configure the ports and clocks is in the
 ``ConfigAudioPorts()`` function. Developers should not need to modify 
 this.
 
-The L-Series device inputs MCLK and divides
+The XMOS device inputs MCLK and divides
 it down to generate BCLK and LRCLK. To achieve this, MCLK is input
 into the device using the 1-bit port ``p_mclk``. This is
 attached to the clock block ``clk_audio_mclk``, which is in
@@ -182,17 +182,17 @@ Changing Audio Sample Frequency
 .. _usb_audio_sec_chang-audio-sample:
 
 When the host changes sample frequency, a new frequency is sent to
-the audio driver core by
-Endpoint 0. First, a change of sample frequency is reported by
+the audio driver core by Endpoint 0 (via the buffering cores and mixer).
+
+First, a change of sample frequency is reported by
 sending the new frequency over an XC channel. The audio core
-detects this using the ``select`` function on a channel (a
-``default`` case such that processing can continue if no signal is
-present on the channel).
+detects this by checking for the presence of a control token on the channel channel 
 
 Upon receiving the change of sample frequency request, the audio
 core stops the I2S interface and calls the CODEC/port configuration 
-functions. Once this is
-complete, the I2S interface is restarted at the new frequency.
+functions. 
+
+Once this is complete, the I2S interface is restarted at the new frequency.
 
 
 
