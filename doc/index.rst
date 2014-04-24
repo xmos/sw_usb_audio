@@ -14,7 +14,7 @@ asynchronous mode and sample rates up to 384kHz.
 
 The complete source code, together with the free XMOS xTIMEcomposer development tools and XCORE multicore microcontroller devices allow the implementer to select the exact mix of interfaces and processing required.
 
-The XMOS USB Audio solution is deployed as a framework with reference design applications based on this framework provided. These reference designs have particular qualified feature set and an accommpanying reference hardware platform.
+The XMOS USB Audio solution is deployed as a framework with reference design applications based on this framework provided. These reference designs have particular qualified feature set and an accompanying reference hardware platform.
 
 This software design guide assumes the reader is familiar with the XC
 language and XCORE devices. For more information see `Programming

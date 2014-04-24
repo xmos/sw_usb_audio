@@ -1,10 +1,10 @@
 
 .. _usb_audio_sec_su1_audio_sw:
 
-The Mult-function Audio Kit (U-Series)
+The Multi-function Audio Kit (U-Series)
 --------------------------------------
 
-Proviced is an application of the USB audio framework specifically for the hardware described in :ref:`usb_audio_sec_u8_audio_hw` and is implemented on the U-Series single tile device (500MIPS).  The application assumes a standard USB B socket (i.e. USB device) is attached as the USB connectivity method.
+Provided is an application of the USB audio framework specifically for the hardware described in :ref:`usb_audio_sec_u8_audio_hw` and is implemented on the U-Series single tile device (500MIPS).  The application assumes a standard USB B socket (i.e. USB device) is attached as the USB connectivity method.
 
 The software design supports 2 channels channels of
 audio at sample frequencies up to 192kHz and uses the following components:
