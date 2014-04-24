@@ -34,8 +34,8 @@ The information in this guide is valid with respect to XMOS USB Audio software r
     Overview <overview>
     Hardware Platforms <hw>
     Software Architecture <sw>
-..   Programming Guide <programming>
-..   API <api>
+    Programming Guide <programming>
+    API <api>
 
 
 
