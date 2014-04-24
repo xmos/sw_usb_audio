@@ -195,7 +195,7 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
      * 4:6: Digital Interface Formats
      * 7:   Auto-mute
     */
-#if (DSD_CHANS_OUT > 0)
+#if (DSD_CHANS_DAC > 0)
     if((dsdMode == DSD_MODE_NATIVE) || (dsdMode == DSD_MODE_DOP))
     {
         if(samFreq < 3000000) /* < 3MHz e.g. 2.2822400 MHz */
