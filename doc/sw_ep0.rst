@@ -23,7 +23,7 @@ There are many mandatory requests that a USB Device must support as required by 
 
     - Requests for standard descriptors (Device descriptor, configuration descriptor etc) and string descriptors
     - USB GET/SET INTERFACE requests
-    - USB SET_CONFIGURATION requests
+    - USB GET/SET_CONFIGURATION requests
     - USB SET_ADDRESS requests
 
 For more information and full documentation, including full worked examples of simple devices, please refer the `XMOS USB Device Design Guide <https://www.xmos.com/zh/node/17007?page=9>`_
@@ -38,7 +38,7 @@ The function returns ``XUD_RES_ERR`` if the request was not recognised by the ``
 
 The function may also return ``XUD_RES_RST`` if a bus-reset has been issued onto the bus by the host and communicated from XUD to Endpoint 0.
 
-Since the ``USB_StandardRequests()`` function STALLS an unknown request, the endpoint 0 code must parse the ``USB_SetupPacket_t`` structure to handle device specific requests and then calling ``USB_StandardRequests()`` as required.  This is described next.
+Since the ``USB_StandardRequests()`` function STALLs an unknown request, the endpoint 0 code must parse the ``USB_SetupPacket_t`` structure to handle device specific requests and then calling ``USB_StandardRequests()`` as required.  This is described next.
 
 Over-riding Standard Requests
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -67,7 +67,7 @@ Audio Request: Set Sample Rate
 
 The ``AudioClassRequests_2()`` function parses the passed ``USB_SetupPacket_t`` structure for a ``CUR`` request of type ``SAM_FREQ_CNTROL`` to a Clock Unit in the devices topology (as described in the devices descriptors).
 
-The new sample frequency is extracted and passed via channel to the rest of the design - through the buffering code and eventually to the I2S core.  The ``AudioClassRequests_2()`` function waits for a handshake to propagate back though the system before signalling to the host that the request has completed successfully. Note, during this time the USB library is NAKing the host essentially holding off further traffic/requests until the sample-rate change is fully complete.
+The new sample frequency is extracted and passed via channel to the rest of the design - through the buffering code and eventually to the Audio IO/I2S core.  The ``AudioClassRequests_2()`` function waits for a handshake to propagate back though the system before signalling to the host that the request has completed successfully. Note, during this time the USB library is NAKing the host essentially holding off further traffic/requests until the sample-rate change is fully complete.
 
 .. _usb_audio_sec_audio-requ-volume: 
 
@@ -237,7 +237,7 @@ frequency change case):
  +-----------------+-----------------+-----------------------------------------+
 
 .. note::
-    The acknowledgement sent from Decouple to the Audio System is an "output undeflow flag"
+    The acknowledgement sent from Decouple to the Audio System is an "output underflow flag"
     if set to 1 the subsequent host to device sample transfer does not take place. This allows
     the Audio subsystem to implement a suitable underflow behaviour based on the current audio 
     format. 
@@ -249,16 +249,17 @@ The device uses a feedback endpoint to report the rate at which
 audio is output/input to/from external audio interfaces/devices. This feedback is in accordance with
 the *USB 2.0 Specification*.
 
-After each received USB SOF token, the buffering core takes a
-time-stamp from a port clocked off the master clock. By subtracting
-the time-stamp taken at the previous SOF, the number of master clock
-ticks since the last SOF is calculated. From this the number of
-samples (as a fixed point number) between SOFs can be calculated.
-This count is aggregated over 128 SOFs and used as a basis for the
-feedback value.
+This asynchronous clocking scheme means that the device is the clocking master than therefore 
+means a high-quality local master clock source can be used.
 
-The sending of feedback to the host is also handled in the USB
-buffering core via the feedback IN endpoint.
+After each received USB SOF token, the buffering core takes a time-stamp from a port clocked off 
+the master clock. By subtracting the time-stamp taken at the previous SOF, the number of master
+clock ticks since the last SOF is calculated. From this the number of samples (as a fixed 
+point number) between SOFs can be calculated.
+This count is aggregated over 128 SOFs and used as a basis for the feedback value.
+
+The sending of feedback to the host is also handled in the USB buffering core via the feedback 
+IN endpoint.
 
 USB Rate Control
 ++++++++++++++++

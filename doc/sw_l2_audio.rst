@@ -1,15 +1,15 @@
 .. _usb_audio_sec_l2_audio_sw:
 
-The USB Audio 2.0  Multichannel Reference Design (L-Series) Software
----------------------------------------------------------------------
+USB Audio 2.0  Multichannel Reference Design (L-Series) Application
+-------------------------------------------------------------------
 
-The USB Audio 2.0 Multichannel Reference Design 
-is an application of the USB audio
-framework specifically for the hardware described in
-:ref:`usb_audio_sec_l1_audio_hw` and is implemented on an L-Series dual tile
-device (1000MIPS).
-The software design supports up to 16 channels of
-audio in and 10 channels of audio out and supports sample frequencies up to 192 kHz and uses the following components:
+The USB Audio 2.0 Multichannel Reference Design is an application of the USB audio
+framework specifically for the hardware described in :ref:`usb_audio_sec_l2_audio_hw` and is
+implemented on an L-Series dual tile device (1000MIPS).  The code can be found in
+`app_usb_aud_l2`
+
+The software design supports up to 16 channels of audio in and 10 channels of audio out and
+supports sample frequencies up to 192 kHz and uses the following components:
 
  * XMOS USB Device Driver (XUD)
  * Endpoint 0

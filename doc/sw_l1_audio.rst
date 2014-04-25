@@ -1,12 +1,14 @@
 .. _usb_audio_sec_l1_audio_sw:
 
-The USB Audio 2.0 Reference Design (L-Series) Software
--------------------------------------------------------
+USB Audio 2.0 Reference Design (L-Series) Application
+-----------------------------------------------------
 
-The USB Audio 2.0 Reference Design is an application of the USB audio
-framework specifically for the hardware described in :ref:`usb_audio_sec_l1_audio_hw` and is implemented on the L-Series single tile device (500MIPS).
-The software design supports two channels of
-audio at sample frequencies up to 192kHz and uses the following components:
+The USB Audio 2.0 Reference Design is an application of the USB audio framework specifically 
+for the hardware described in :ref:`usb_audio_sec_l1_audio_hw` and is implemented
+on the L-Series single tile device (500MIPS). The code can be found in `app_usb_aud_l2`
+
+The software design supports two channels of audio at sample frequencies up to 192kHz and uses
+the following components:
 
  * XMOS USB Device Driver (XUD)
  * Endpoint 0
@@ -16,15 +18,11 @@ audio at sample frequencies up to 192kHz and uses the following components:
  * Device Firmware Upgrade (DFU)
  * S/PDIF Transmitter *or* MIDI
 
-The diagrams :ref:`usb_audio_l1_threads-spdif` and :ref:`usb_audio_l1_threads-midi`
-show the software layout of the code
-running on the XS1-L chip. Each unit runs in a single
-core concurrently with the others units. The lines show the
-communication between each functional unit. Due to the MIPS
-requirement of the USB driver 
-(see :ref:`usb_audio_sec_resource_usage`), only six cores can be
-run on the single tile L-Series device so only one of S/PDIF transmit or MIDI
-can be supported. 
+The diagrams :ref:`usb_audio_l1_threads-spdif` and :ref:`usb_audio_l1_threads-midi` show the
+software layout of the code running on the XS1-L chip. Each unit runs in a single core concurrently
+with the others units. The lines show the communication between each functional unit. Due to the MIPS
+requirement of the USB driver (see :ref:`usb_audio_sec_resource_usage`), only six cores can be
+run on the single tile L-Series device so only one of S/PDIF transmit or MIDI can be supported. 
 
 .. _usb_audio_l1_threads-spdif:
 
@@ -44,27 +42,27 @@ can be supported.
 Port 32A
 ++++++++
 
-Port 32A on the XS1-L device is a 32-bit wide port that has several separate
-signal bit signals connected to it, accessed by multiple cores.  To this end, 
-any output to this port must be *read-modify-write* i.e. to change a single bit of 
-the port, the software reads the current value being driven across 32 bits, flips 
-a bit and then outputs the modified value.
+Port 32A on the XS1-L device is a 32-bit wide port that has several separate signal bit signal
+connected to it, accessed by multiple cores.  To this end, any output to this port must be 
+*read-modify-write* i.e. to change a single bit of the port, the software reads the current value 
+being driven across 32 bits, flips a bit and then outputs the modified value.
 
-This method of port usage (i.e. sharing a port between cores) is outside the standard XC usage model so is implemented
-using inline assembly as required.  The ``peek`` instruction is used to get the current output value on the port::
+This method of port usage (i.e. sharing a port between cores) is outside the standard XC usage model
+so is implemented using inline assembly as required.  The ``peek`` instruction is used to get the 
+current output value on the port::
 
     /* Peek at current port value using port 32A resource ID */
     asm("peek %0, res[%1]":=r"(x):"r"(XS1_PORT_32A));
 
-The required output value is then assembled using the relevant bit-wise operation(s) before the ``out`` instruction is 
-used directly to output data to the port::
+The required output value is then assembled using the relevant bit-wise operation(s) before the
+``out`` instruction is used directly to output data to the port::
 
     /* Output to port */
     asm("out res[%0], %1"::"r"(XS1_PORT_32A),"r"(x));
 
 
-The table :ref:`usb_audio_port32A_signals` shows the signals connected to port 32A on the USB Audio Class 2.0
-reference design board.  Note, they are all *outputs* from the XS1-L device.
+The table :ref:`usb_audio_port32A_signals` shows the signals connected to port 32A on the USB Audio
+Class 2.0 reference design board.  Note, they are all *outputs* from the XS1-L device.
 
 .. _usb_audio_port32A_signals:
 
@@ -94,13 +92,11 @@ reference design board.  Note, they are all *outputs* from the XS1-L device.
 Clocking
 ++++++++
 
-The board has two on-board oscillators for master clock generation.
-These produce 11.2896MHz for sample rates 44.1, 88.2, 176.4KHz etc and
-24.567MHz for sample rates 48, 96, 192kHz etc. 
+The board has two on-board oscillators for master clock generation. These produce 11.2896MHz for sample
+rates 44.1, 88.2, 176.4KHz etc and 24.567MHz for sample rates 48, 96, 192kHz etc. 
 
-The required master clock is selected from one of these using an external mux circuit via 
-port *P32A[2]* (pin 2 of port 32A). Setting *P32A[2]* high 
-selects 11.2896MHz, low selects 24.576MHz.
+The required master clock is selected from one of these using an external mux circuit via port *P32A[2]*
+(pin 2 of port 32A). Setting *P32A[2]* high selects 11.2896MHz, low selects 24.576MHz.
 
 .. only:: latex
 
@@ -114,16 +110,14 @@ selects 11.2896MHz, low selects 24.576MHz.
 
    Audio Clock Connections
 
-The reference design board uses a 24 bit, 192kHz stereo audio CODEC 
-(Cirrus Logic CS4270).
+The reference design board uses a 24 bit, 192kHz stereo audio CODEC (Cirrus Logic CS4270).
 
-The CODEC is configured to operate in *stand-alone mode* meaning that no
-serial configuration interface is required.  The digital audio interface
-is set to I2S mode with all clocks being inputs (i.e. slave mode).
+The CODEC is configured to operate in *stand-alone mode* meaning that no serial configuration interface
+is required.  The digital audio interface is set to I2S mode with all clocks being inputs (i.e. slave
+mode).
 
-The CODEC has three internal modes depending on the sampling rate used. 
-These change the oversampling ratio used internally in the CODEC. The 
-three modes are shown below:
+The CODEC has three internal modes depending on the sampling rate used. These change the oversampling
+ratio used internally in the CODEC. The three modes are shown below:
 
 .. list-table:: CODEC Modes
   :header-rows: 1
@@ -138,8 +132,8 @@ three modes are shown below:
   * - Quad-Speed 
     - 100-216
 
-In stand-alone mode, the CODEC automatically determines which mode to operate in
-based on input clock rates.
+In stand-alone mode, the CODEC automatically determines which mode to operate in based on input
+clock rates.
 
 The internal master clock dividers are set using the MDIV pins.  MDIV is tied low
 and MDIV2 is connected to bit 2 of port 32A (as well as to the master clock 
@@ -157,9 +151,6 @@ When changing sample frequency, the
 setting *P32A[1]* low. It selects the required master clock/CODEC dividers and
 keeps the CODEC in reset for 1ms to allow the clocks to stabilize.
 The CODEC is brought out of reset by setting *P32A[1]* back high.
-
-
-.. port32A
 
 HID
 +++

@@ -5,8 +5,8 @@
 The USB Audio System Architecture
 ---------------------------------
 
-The XMOS USB Audio platform consists of a series of communicating
-components. Every system is required to have the shared components listed in
+The XMOS USB Audio platform consists of a series of communicating components. Every system is 
+required to have the shared components listed in
 :ref:`usb_audio_shared_components`.
 
 .. _usb_audio_shared_components:
@@ -31,8 +31,7 @@ components. Every system is required to have the shared components listed in
    - Handles audio I/O over I2S and manages audio data
      to/from other digital audio I/O components.
      
-In addition :ref:`usb_audio_optional_components` shows
-components that can be added to a design:
+In addition :ref:`usb_audio_optional_components` shows components that can be added to a design:
 
 .. _usb_audio_optional_components:
 
@@ -70,4 +69,4 @@ components that can be added to a design:
 :ref:`usb_audio_threads` shows how the components interact with each
 other.  The green circles represent cores with arrows indicating inter-core communications.
 
-This section will now examine these components in detail.
+This section will now examine these components in further detail.

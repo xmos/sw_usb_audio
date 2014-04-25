@@ -11,9 +11,14 @@ The kit is made up of two boards:
     - A main board which includes the XMOS U-series device and all audio hardware
     - A "USB Slice" board which contains USB connectivity
 
-The separate USB slice board allows flexibility in the connection method to the USB audio source/sink as well as other functionality such as Apple Authentication ICs and any required USB switching.  This also means the XMOS device can be used as a USB device or host using the same main board.
+The separate USB slice board allows flexibility in the connection method to the USB audio 
+source/sink as well as other functionality such as 3rd party authentication ICs and any required 
+USB switching.  This also means the XMOS device can be used as a USB device or host using the same
+main board.
 
-This document addresses the combination of the main board with the USB B slice (part numbers XK-USB-AUDIO-U8-2C and XA-SK-USB-B respectively).  This provides a standard USB device hardware configuration.
+This document addresses the combination of the main board with the USB B slice (part numbers 
+XK-USB-AUDIO-U8-2C and XA-SK-USB-B respectively).  This provides a standard USB Audio device 
+hardware configuration.
 
 
 .. _usb_audio_mfa_hw_diagram:
@@ -25,6 +30,10 @@ This document addresses the combination of the main board with the USB B slice (
      Multi-function Audio Kit Block Diagram
 
 
-The core board includes a U-Series device with integrated USB PHY, a stereo DAC (supporting DSD) and a stereo ADC.  Both ADC and DAC support sample frequencies up to 192kHz.  Aswell as analogue channels the main board also has MIDI input and output connectors and a COAX connector for S/PDIF output.
+The core board includes a U-Series device with integrated USB PHY, a stereo DAC (supporting Direct
+Stream Digital) and a stereo ADC.  Both ADC and DAC support sample frequencies up to 192kHz.  
+Aswell as analogue channels the main board also has MIDI input and output connectors and a COAX 
+connector for S/PDIF output.
 
-In addition the main board also includes two LEDs, two buttons and one switch for use by the user application.
+In addition the main board also includes two LEDs, two buttons and one two-position switch for 
+use by the user application.

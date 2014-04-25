@@ -1,5 +1,5 @@
-USB Audio Class Support
------------------------
+USB Audio Class Version Support
+-------------------------------
 
 The XMOS USB Audio framework supports both USB Audio Class 1.0 and Audio Class 2.0.
 

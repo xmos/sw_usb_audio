@@ -17,3 +17,5 @@ The board supports six analogue inputs and eight analogue outputs (via a CS4244 
 
 The reference board has an associated firmware application that uses the USB Audio 2.0 software reference
 platform. Details of this application can be found in section :ref:`usb_audio_sec_l2_audio_sw`.
+
+|newpage|
