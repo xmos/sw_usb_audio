@@ -28,7 +28,7 @@ INCLUDE_ONLY_IN_2xoxx_512 =
 # Modules are expected to be in the directory above the BASE_DIR directory.
 USED_MODULES = module_usb_shared module_xud module_usb_audio module_dfu module_i2c_single_port module_usb_device
 
-MODULE_LIBRARIES = xud_s
+MODULE_LIBRARIES = xud_u
 
 
 #=============================================================================
