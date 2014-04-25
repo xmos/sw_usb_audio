@@ -3,10 +3,13 @@ sw_usb_audio Change Log
 
 6.5.1
 -----
+    - ADDED:      Added USB Design Guide to this repo including major update.
+    - ADDED:      Added MIDI_RX_PORT_WIDTH define such that a 4-bit port can be used for MIDI Rx
+    - CHANGE:     I2S data to clock edge setup time improvements when BCLK = MCLK (particularly 
+                  when running at 384kHz with a 24.576MHz master-clock)
     - CHANGE:     String table rationalisation (now based on a structure rather than a global array)
     - CHANGE:     Channel strings now set at build-time (rather than run-time) avoiding the use
                   of memcpy
-    - CHANGE:     Added MIDI_RX_PORT_WIDTH define such that a 4-bit port can be used for MIDI Rx
     - CHANGE:     Re-added c_aud_cfg channel (guarded by AUDIO_CFG_CHAN) allowing easy communication
                   of audio hardware config to a remote core
     - CHANGE:     Channel strings now labeled "Analogue X, SPDIF Y" if S/PDIF and Analogue channels
