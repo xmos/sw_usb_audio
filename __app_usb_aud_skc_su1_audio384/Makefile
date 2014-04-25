@@ -11,6 +11,10 @@ BUILD_FLAGS     = -DAUDIO_2 -DFLASH_MAX_UPGRADE_SIZE=64*1024 -fcomment-asm -Xmap
 
 # Test build configs (Note these make use of the defaults in customdefines.h)
 
+# Audio Class 2, No Input, Output, No MIDI, No SPDIF, 128x mClks 
+XCC_FLAGS_2xoxx_128 = $(BUILD_FLAGS) -DMCLK_441=128*44100 -DMCLK_48=128*48000 -DMAX_FREQ=96000
+INCLUDE_ONLY_IN_2xoxx_128 = 
+
 # Audio Class 2, No Input, Output, No MIDI, No SPDIF, 256x mClks 
 XCC_FLAGS_2xoxx_256 = $(BUILD_FLAGS) -DMCLK_441=256*44100 -DMCLK_48=256*48000 -DMAX_FREQ=192000 
 INCLUDE_ONLY_IN_2xoxx_256 = 
@@ -22,6 +26,10 @@ INCLUDE_ONLY_IN_2xoxx_512 =
 # Audio Class 2, No Input, Output, No MIDI, No SPDIF, 1024xFS mClks 
 XCC_FLAGS_2xoxx_1024 = $(BUILD_FLAGS) -DMCLK_441=1024*44100 -DMCLK_48=1024*48000 -DMAX_FREQ=384000
 INCLUDE_ONLY_IN_2xoxx_512 = 
+
+# Audio Class 2, Input, Output, No MIDI, No SPDIF, 512xFS mClks 
+XCC_FLAGS_2i6oxx_512 = $(BUILD_FLAGS) -DNUM_USB_CHAN_IN=2 -DNUM_USB_CHAN_OUT=6 -DI2S_CHANS_DAC=2 -DI2S_CHANS_ADC=2 -DMCLK_441=512*44100 -DMCLK_48=512*48000 -DMAX_FREQ=384000 -DHS_STREAM_FORMAT_OUTPUT_1_SUBSLOT_BYTES=3
+INCLUDE_ONLY_IN_2i6oxx_512 = 
 
 # The USED_MODULES variable lists other module used by the application. These
 # modules will extend the SOURCE_DIRS, INCLUDE_DIRS and LIB_DIRS variables. 
