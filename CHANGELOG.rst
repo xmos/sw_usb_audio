@@ -5,7 +5,7 @@ sw_usb_audio Change Log
 -----
     - ADDED:      Added USB Design Guide to this repo including major update.
     - ADDED:      Added MIDI_RX_PORT_WIDTH define such that a 4-bit port can be used for MIDI Rx
-    - CHANGE:     I2S data to clock edge setup time improvements when BCLK = MCLK (particularly 
+    - CHANGE:     I2S data to clock edge setup time improvements when BCLK = MCLK (particularly
                   when running at 384kHz with a 24.576MHz master-clock)
     - CHANGE:     String table rationalisation (now based on a structure rather than a global array)
     - CHANGE:     Channel strings now set at build-time (rather than run-time) avoiding the use
@@ -45,11 +45,11 @@ sw_usb_audio Change Log
       + RESOLVED:   (Minor) XUD_GetRequest failed to send a zero-length packet at the end of a transfer
       + RESOLVED:   (Minor) Error when building module_xud in xTimeComposer due to invalid project
 
-    - sc_usb_audio: 6.5.0beta2 -> 6.5.1beta3
+    - sc_usb_audio: 6.5.0beta2 -> 6.5.1beta4
 
       + see sw_usb_audio for changelog
 
-    - sc_usb_device: 1.1.0beta0 -> 1.2.2rc0
+    - sc_usb_device: 1.1.0beta0 -> 1.2.2rc1
 
       + sc_util: 1.0.3rc0 -> 1.0.4rc0
       + module_logging now compiled at -Os
