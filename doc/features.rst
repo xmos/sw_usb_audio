@@ -10,5 +10,4 @@ This section looks at some of the available features of the USB Audio design.
    sw_hid
    sw_iap
    feat_audio_formats
-   sw_val_build_opts
 

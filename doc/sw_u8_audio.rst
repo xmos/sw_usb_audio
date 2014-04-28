@@ -66,22 +66,23 @@ The example ``Vendor_ReadHIDButtons()`` firstly reads the state of the buttons a
 
 If the switch input is low (i.e. high when inverted) then the button states are shifted up into the position required perform volume up and down and written into the *hidData[]* array:
 
-.. literalinclude:: sw_usb_audio/app_usb_aud_skc_su1/src/extensions/vendorhid.xc
+.. literalinclude:: sw_usb_audio/app_usb_aud_xk_u8_2c/src/extensions/hidbuttons.xc
    :start-after: /* Assign buttons
    :end-before: }
 
 If the switch input is high (i.e. low when inverted) then the buttons states are used to either indicate play/pause or next/previous.  Based on counter and a small state-machine a single click on either button provides a play/pause command.  A double tap on button A or B provides a previous or next command respectively.
 
 The full code listing is shown below:
-.. literalinclude:: sw_usb_audio/app_usb_aud_skc_su1/src/extensions/vendorhid.xc
-   :start-after: #define THRESH
-   :end-before: typedef
+
+.. literalinclude:: sw_usb_audio/app_usb_aud_xk_u8_2c/src/extensions/hidbuttons.xc
+   :start-after: lastA;
+   :end-before: #endif
 
 Validated Build Options
 +++++++++++++++++++++++
 
 The reference design can be built in several ways by changing the
-build options.  These are described in :ref:`usb_audio_sec_custom_defines_api`. 
+build options.  These are described in :ref:`sec_custom_defines_api`. 
 
 The design has only been fully validated against the build options as set in the
 application as distributed.  See :ref:`usb_audio_sec_valbuild` for details and binary naming scheme.

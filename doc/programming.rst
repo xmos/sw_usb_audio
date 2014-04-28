@@ -8,6 +8,7 @@ programs and creating your own custom USB audio applications.
 .. toctree::
 
    prog_getting_started
-   prog_code_structure
+   prog_proj_structure
+   prog_build_configs
    prog_app_tutorial
    prog_modification

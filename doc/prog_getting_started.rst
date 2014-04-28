@@ -1,6 +1,9 @@
 Getting Started 
 ================
 
+Building and Running
+--------------------
+
 .. only:: xdehtml
 
   .. raw:: html
@@ -49,8 +52,8 @@ Getting Started
   
         xmake all
 
-The main Makefile for the project is in the
-``app_usb_aud_l1`` or ``app_usb_aud_l2`` directory. This file specifies build
+The main Makefile for the project is in the app directory e.g. 
+``app_usb_aud_l1`` or ``app_usb_aud_l2``. This file specifies build
 options and used modules. The Makefile uses the common build
 infrastructure in ``module_xmos_common``. This system includes
 the source files from the relevant modules and is documented within

@@ -10,14 +10,14 @@ XUD library.
 
    The reference designs have been verified against a variety of host
    OS types, across different samples rates. However, modifications to
-   the code may invalidate the results of this verification and you are strongly encouraged to retest the resulting software.   
+   the code may invalidate the results of this verification and you are strongly encouraged to fully 
+   re- test the resulting software.   
 
 The general steps are:
 
 #. Make a copy of the eclipse project or
-   application directory (``app_usb_aud_l1`` or ``app_usb_aud_l2``) 
-   you wish to base your
-   code on, to a separate directory with a different name.
+   application directory (.e.g. ``app_usb_aud_l1`` or ``app_usb_aud_l2``) 
+   you wish to base your code on, to a separate directory with a different name.
 
 #. Make a copy of any modules you wish to alter (most of the time
    you probably do not want to do this). Update the Makefile of your
@@ -60,7 +60,7 @@ these steps to update the code:
 
 
 #. Remove some functionality using the defines in
-   :ref:`usb_audio_sec_custom_defines_api`.
+   :ref:`sec_custom_defines_api` to free up a core.
 
 #. Add another core to do the DSP. This core will probably have
    three XC channels: one channel to receive samples from decoupler
@@ -71,12 +71,4 @@ these steps to update the code:
 #. Implement the DSP on this core. This needs to be synchronous
    (i.e. for every sample received from the decoupler, a sample needs
    to be outputted to the audio driver).
-
-#. Update the Endpoint 0 code to accept custom requests to the audio
-   class interface to control the DSP. It can then forward the changes
-   onto the DSP core.
-
-#. Update host drivers to use these custom requests.
-
-
 

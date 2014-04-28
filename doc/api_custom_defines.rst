@@ -1,13 +1,95 @@
-.. _usb_audio_sec_custom_defines_api:
+
+.. _sec_custom_defines_api:
 
 Custom Defines
 --------------
 
-An application using the USB audio framework needs to have a defines
-file called ``customdefines.h``. This file can set the following defines:
+An application using the USB audio framework needs to have a defines set for configuration.
+Defaults for these defines are found in ``module_usb_audio`` in ``devicedefines.h``.
+
+These defines should be over-ridden in the mandatory  ``customdefines.h`` file or in ``Makefile``. 
+
+The following defines can be set.
+
+Code location (tile)
+~~~~~~~~~~~~~~~~~~~~
+
+.. doxygendefine:: AUDIO_IO_TILE
+
+.. doxygendefine:: XUD_TILE
+
+.. doxygendefine:: IAP_TILE
+
+.. doxygendefine:: MIDI_TILE
+
+Channel Counts
+~~~~~~~~~~~~~~
+
+.. doxygendefine:: NUM_USB_CHAN_OUT 
+
+.. doxygendefine:: NUM_USB_CHAN_IN 
+
+.. doxygendefine:: DSD_CHANS_DAC
+
+.. doxygendefine:: I2S_CHANS_DAC 
+
+.. doxygendefine:: I2S_CHANS_ADC 
+
+Frequencies and Clocks 
+~~~~~~~~~~~~~~~~~~~~~~
+
+.. doxygendefine:: MAX_FREQ
+
+.. doxygendefine:: MIN_FREQ
+
+.. doxygendefine:: DEFAULT_FREQ
+
+.. doxygendefine:: MCLK_441
+
+.. doxygendefine:: MCLK_48
+
+Audio Class
+~~~~~~~~~~~
+
+.. doxygendefine:: AUDIO_CLASS
+
+.. doxygendefine:: AUDIO_CLASS_FALLBACK
+
+.. doxygendefine:: FULL_SPEED_AUDIO_CLASS_2
+
 
 System Feature Configuration
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+MIDI
+....
+
+.. doxygendefine:: MIDI
+
+.. doxygendefine:: MIDI_RX_PORT_WIDTH
+
+S/PDIF
+......
+
+.. doxygendefine:: SPDIF
+
+.. doxygendefine:: SPDIF_RX
+
+ADAT
+....
+
+.. doxygendefine:: ADAT_RX
+
+
+DFU
+...
+
+.. doxygendefine:: DFU
+
+.. doxygendefine:: DFU_FLASH_DEVICE
+
+
+
 
 .. tabularcolumns:: p{0.3\linewidth}p{0.4\linewidth}p{0.2\linewidth}
 
@@ -18,68 +100,11 @@ System Feature Configuration
    * - Define
      - Description
      - Default
-     
-   * - ``INPUT`` 
-     - Define for enabling audio input, in descriptors, buffering and
-       so on.
-     - defined 
-
-   * - ``DFU`` 
-     - Define to enable DFU interface. Requires a custom driver for
-       Windows. 
-     - defined 
-
-   * - ``DFU_CUSTOM_FLASH_DEVICE`` 
-     - Define to enable use of custom
-       flash device for DFU interface.  
-     - not defined 
-
-   * - ``MIDI`` 
-     - Define to enable MIDI input and output. 
-     - defined 
 
    * - ``CODEC_SLAVE`` 
      - If defined the CODEC acts as I2S slave
        (and the XCORE Tile as master) otherwise the CODEC acts as master. 
      - defined 
-
-   * - ``NUM_USB_CHAN_IN`` 
-     - Number of audio channels the USB audio
-       interface has from host to the device. 
-     - 10 
-
-   * - ``NUM_USB_CHAN_OUT`` 
-     - Number of audio channels the USB audio
-       interface has from device to host. 
-     - 10 
-
-   * - ``MAX_FREQ``
-     - Maximum frequency device runs at in Hz
-     - 96000
-
-   * - ``I2S_CHANS_DAC`` 
-     - Number of I2S audio channels output to the
-       codec. This must be a multiple of 2. 
-     - 8 
-
-   * - ``I2S_CHANS_ADC`` 
-     - Number of I2S audio channels input from the codec.
-       This must be a multiple of 2.  
-     - 8 
-
-   * - ``SPDIF`` 
-     - Define to Enable S/PDIF output.  If OUTPUT is not
-       defined, zero-ed samples are emitted. The S/PDIF audio channels will
-       be two channels immediately following ``I2S_CHANS_DAC``.
-     - defined 
-
-   * - ``SPDIF_RX`` 
-     - Define to enable S/PDIF input.
-     - not defined 
-
-   * - ``ADAT_RX`` 
-     - Define to enable ADAT input.
-     - not defined 
 
    * - ``MIXER`` 
      - Define to enable the MIXER.
