@@ -1,61 +1,49 @@
 
 .. _sec_custom_defines_api:
 
-Custom Defines
---------------
+Configuration Defines
+---------------------
 
-An application using the USB audio framework needs to have a defines set for configuration.
+An application using the USB audio framework needs to have defines set for configuration.
 Defaults for these defines are found in ``module_usb_audio`` in ``devicedefines.h``.
 
-These defines should be over-ridden in the mandatory  ``customdefines.h`` file or in ``Makefile``. 
+These defines should be over-ridden in the mandatory  ``customdefines.h`` file or in ``Makefile``
+for a relevant build configuration. 
 
-The following defines can be set.
+This section fully documents all of the setable defines and their default values (where appropriate).  
 
 Code location (tile)
 ~~~~~~~~~~~~~~~~~~~~
 
 .. doxygendefine:: AUDIO_IO_TILE
-
 .. doxygendefine:: XUD_TILE
-
 .. doxygendefine:: IAP_TILE
-
 .. doxygendefine:: MIDI_TILE
 
 Channel Counts
 ~~~~~~~~~~~~~~
 
 .. doxygendefine:: NUM_USB_CHAN_OUT 
-
 .. doxygendefine:: NUM_USB_CHAN_IN 
-
 .. doxygendefine:: DSD_CHANS_DAC
-
 .. doxygendefine:: I2S_CHANS_DAC 
-
 .. doxygendefine:: I2S_CHANS_ADC 
 
 Frequencies and Clocks 
 ~~~~~~~~~~~~~~~~~~~~~~
 
 .. doxygendefine:: MAX_FREQ
-
 .. doxygendefine:: MIN_FREQ
-
 .. doxygendefine:: DEFAULT_FREQ
-
 .. doxygendefine:: MCLK_441
-
 .. doxygendefine:: MCLK_48
 
 Audio Class
 ~~~~~~~~~~~
 
 .. doxygendefine:: AUDIO_CLASS
-
 .. doxygendefine:: AUDIO_CLASS_FALLBACK
-
-.. doxygendefine:: FULL_SPEED_AUDIO_CLASS_2
+.. doxygendefine:: FULL_SPEED_AUDIO_2
 
 
 System Feature Configuration
@@ -65,118 +53,111 @@ MIDI
 ....
 
 .. doxygendefine:: MIDI
-
 .. doxygendefine:: MIDI_RX_PORT_WIDTH
 
 S/PDIF
 ......
 
 .. doxygendefine:: SPDIF
-
+.. doxygendefine:: SPDIF_TX_INDEX
 .. doxygendefine:: SPDIF_RX
+.. doxygendefine:: SPDIF_RX_INDEX
 
 ADAT
 ....
 
 .. doxygendefine:: ADAT_RX
-
+.. doxygendefine:: ADAT_RX_INDEX
 
 DFU
 ...
 
 .. doxygendefine:: DFU
 
-.. doxygendefine:: DFU_FLASH_DEVICE
+.. .. doxygendefine:: DFU_FLASH_DEVICE
+
+HID
+...
+
+.. doxygendefine:: HID_CONTROLS
+
+CODEC Interface
+...............
+
+.. doxygendefine:: CODEC_MASTER
 
 
+USB Device Configuration
+~~~~~~~~~~~~~~~~~~~~~~~
+
+.. doxygendefine:: VENDOR_STR
+.. doxygendefine:: VENDOR_ID
+.. doxygendefine:: PRODUCT_STR
+.. doxygendefine:: PRODUCT_STR_A2
+.. doxygendefine:: PRODUCT_STR_A1
+.. doxygendefine:: PID_AUDIO_1
+.. doxygendefine:: PID_AUDIO_2
+.. doxygendefine:: BCD_DEVICE
 
 
-.. tabularcolumns:: p{0.3\linewidth}p{0.4\linewidth}p{0.2\linewidth}
+Stream Formats
+~~~~~~~~~~~~~~
 
-.. list-table::
-   :header-rows: 1
-   :class: longtable
+Output/Playback
+...............
 
-   * - Define
-     - Description
-     - Default
+.. doxygendefine:: OUTPUT_FORMAT_COUNT
 
-   * - ``CODEC_SLAVE`` 
-     - If defined the CODEC acts as I2S slave
-       (and the XCORE Tile as master) otherwise the CODEC acts as master. 
-     - defined 
+.. doxygendefine:: STREAM_FORMAT_OUTPUT_1_RESOLUTION_BITS
+.. doxygendefine:: STREAM_FORMAT_OUTPUT_2_RESOLUTION_BITS
+.. doxygendefine:: STREAM_FORMAT_OUTPUT_3_RESOLUTION_BITS
 
-   * - ``MIXER`` 
-     - Define to enable the MIXER.
-     - not defined 
+.. doxygendefine:: HS_STREAM_FORMAT_OUTPUT_1_SUBSLOT_BYTES
+.. doxygendefine:: HS_STREAM_FORMAT_OUTPUT_2_SUBSLOT_BYTES
+.. doxygendefine:: HS_STREAM_FORMAT_OUTPUT_3_SUBSLOT_BYTES
 
-   * - ``MIN_VOLUME``
-     - The minimum volume setting above -inf. This is a signed 8.8 fixed point
-       number that must be strictly greater than -128 (0x8000).
-     - 0x8100
+.. doxygendefine:: FS_STREAM_FORMAT_OUTPUT_1_SUBSLOT_BYTES
+.. doxygendefine:: FS_STREAM_FORMAT_OUTPUT_2_SUBSLOT_BYTES
+.. doxygendefine:: FS_STREAM_FORMAT_OUTPUT_3_SUBSLOT_BYTES
 
-   * - ``MAX_VOLUME``
-     - The maximum volume setting for the mixer in db.
-       This is a signed 8.8 fixed point number.
-     - 0
+.. doxygendefine:: STREAM_FORMAT_OUTPUT_1_DATAFORMAT
+.. doxygendefine:: STREAM_FORMAT_OUTPUT_2_DATAFORMAT
+.. doxygendefine:: STREAM_FORMAT_OUTPUT_3_DATAFORMAT
 
-   * - ``VOLUME_RES``
-     - The resolution of the volume control in db as a 8.8 fixed point
-       number.
-     - 0x100
+Input/Recording
+...............
+.. doxygendefine:: INPUT_FORMAT_COUNT
 
-   * - ``MIN_MIXER_VOLUME``
-     - The minimum volume setting for the mixer unit above -inf. 
-       This is a signed 8.8 fixed point
-       number that must be strictly greater than -128 (0x8000). 
-     - 0x8080
+.. doxygendefine:: STREAM_FORMAT_INPUT_1_RESOLUTION_BITS
 
-   * - ``MAX_MIXER_VOLUME``
-     -  The maximum volume setting for the mixer. This is a
-        signed 8.8 fixed point number. 
-     -  0x0600
+.. doxygendefine:: HS_STREAM_FORMAT_INPUT_1_SUBSLOT_BYTES
 
-   * - ``VOLUME_RES_MIXER``
-     - The resolution of the volume control in db as a 8.8 fixed point number. 
-     - 0x080
+.. doxygendefine:: FS_STREAM_FORMAT_INPUT_1_SUBSLOT_BYTES
 
-   
+.. doxygendefine:: STREAM_FORMAT_INPUT_1_DATAFORMAT
 
-USB Device Configuration Options
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Volume Control
+~~~~~~~~~~~~~
 
+.. doxygendefine:: OUTPUT_VOLUME_CONTROL
+.. doxygendefine:: INPUT_VOLUME_CONTROL
+.. doxygendefine:: MIN_VOLUME
+.. doxygendefine:: MAX_VOLUME
+.. doxygendefine:: VOLUME_RES
 
-.. tabularcolumns:: p{0.3\linewidth}p{0.4\linewidth}p{0.2\linewidth}
+Mixing Parameters
+~~~~~~~~~~~~~~~~~
 
-.. list-table::
-   :header-rows: 1
-   :class: longtable smaller
+.. doxygendefine:: MIXER
+.. doxygendefine:: MAX_MIX_COUNT
+.. doxygendefine:: MIX_INPUTS
+.. doxygendefine:: MIN_MIXER_VOLUME
+.. doxygendefine:: MAX_MIXER_VOLUME
+.. doxygendefine:: VOLUME_RES_MIXER
 
-   * - Define
-     - Description
-     - Default
+Power
+~~~~~
 
+.. doxygendefine:: SELF_POWERED
+.. doxygendefine:: BMAX_POWER
 
-   * - ``VENDOR_ID``
-     - Vendor ID 
-     - (0x20B1) 
-
-   * - ``PID_AUDIO_2`` 
-     - Product ID (Audio Class 2) 
-     - N/A 
-
-   * - ``PID_AUDIO_1`` 
-     - Product ID (Audio Class 1) 
-     - N/A 
-
-   * - ``BCD_DEVICE`` 
-     - Device release number in BCD form 
-     - N/A 
-
-   * - ``VENDOR_STR`` 
-     - String identifying vendor 
-     - XMOS 
-
-   * - ``SERIAL_STR`` 
-     - String identifying serial number 
-     - "0000" 
