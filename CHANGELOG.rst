@@ -21,6 +21,8 @@ sw_usb_audio Change Log
                   event if there is an actual change in format (e.g. 16bit to 24bit or PCM to DSD).
                   This avoids unnecessary audio I/O restarts and reconfiguration of external audio
                   hardware (via AudioHwConfig())
+    - CHANGE:     All occurances of historical INPUT and OUTPUT defines now removed. NUM_USB_CHAN_IN
+                  and NUM_USB_CHAN_OUT now used throughout the codebase.
     - RESOLVED:   (Minor) USB test mode requests re-enabled - previously was guarded by
                   TEST_MODE_SUPPORT in module_usb_device (#15385)
     - RESOLVED:   (Minor) Audio Class 1.0 sample frequency list now respects MAX_FREQ (previously
