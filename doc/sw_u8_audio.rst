@@ -1,8 +1,8 @@
 
-.. _usb_audio_sec_su1_audio_sw:
+.. _usb_audio_sec_u8_audio_sw:
 
 The Multi-function Audio Kit (U-Series)
---------------------------------------
+---------------------------------------
 
 Provided is an application of the USB audio framework specifically for the hardware described in :ref:`usb_audio_sec_u8_audio_hw` and is implemented on the U-Series single tile device (500MIPS).  The application assumes a standard USB B socket (i.e. USB device) is attached as the USB connectivity method.
 
