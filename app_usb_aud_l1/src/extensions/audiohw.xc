@@ -3,17 +3,18 @@
 #include "port32A.h"
 #include "devicedefines.h"
 
+// Port 32A helpers
 #define PORT32A_PEEK(X) {asm("peek %0, res[%1]":"=r"(X):"r"(XS1_PORT_32A));}
 #define PORT32A_OUT(X)  {asm("out res[%0], %1"::"r"(XS1_PORT_32A),"r"(X));}
 
-//:codec_init
+//:audiohw_init
 void AudioHwInit(chanend ?c_codec)
 {
     return;
 }
 //:
 
-//:codec_config
+//:audiohw_config
 /* Configures the CODEC for the required sample frequency.
  * CODEC reset and frequency select are connected to port 32A
  *
