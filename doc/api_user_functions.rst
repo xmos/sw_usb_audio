@@ -16,8 +16,7 @@ External Audio Hardware Configuration Functions
                    with other cores.
   
 
-.. c:function:: void AudioHwConfig(unsigned samFreq, unsigned mclk, chanend ?c_codec, unsigned dsdMode, 
-    unsigned sampRes_DAC, unsigned sampRes_ADC)
+.. c:function:: void AudioHwConfig(unsigned samFreq, unsigned mclk, chanend ?c_codec, unsigned dsdMode, unsigned sampRes_DAC, unsigned sampRes_ADC)
 
    This function is called when the audio core starts or changes
    sample rate. It should configure the extenal audio hardware to run at the specified
@@ -71,5 +70,4 @@ The following function is called when the device wishes to read physical user in
 
 .. c:function:: void UserReadHIDButtons(unsigned char hidData[])
 
-    :param hidData[]: The function should write relevant HID bits into this array. The bit ordering and
-    functionality is defined by the HID report descriptor used.
+    :param hidData: The function should write relevant HID bits into this array. The bit ordering and functionality is defined by the HID report descriptor used.

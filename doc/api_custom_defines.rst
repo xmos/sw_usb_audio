@@ -88,7 +88,7 @@ CODEC Interface
 
 
 USB Device Configuration
-~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. doxygendefine:: VENDOR_STR
 .. doxygendefine:: VENDOR_ID
@@ -137,7 +137,7 @@ Input/Recording
 .. doxygendefine:: STREAM_FORMAT_INPUT_1_DATAFORMAT
 
 Volume Control
-~~~~~~~~~~~~~
+~~~~~~~~~~~~~~
 
 .. doxygendefine:: OUTPUT_VOLUME_CONTROL
 .. doxygendefine:: INPUT_VOLUME_CONTROL
