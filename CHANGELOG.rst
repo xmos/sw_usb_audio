@@ -32,7 +32,7 @@ sw_usb_audio Change Log
 
   * Changes to dependencies:
 
-    - sc_spdif: 1.3.1beta3 -> 1.3.2rc1
+    - sc_spdif: 1.3.1beta3 -> 1.3.2rc2
 
 
     - sc_i2c: 2.4.0beta1 -> 2.4.1rc1
