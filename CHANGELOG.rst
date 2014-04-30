@@ -3,7 +3,7 @@ sw_usb_audio Change Log
 
 6.5.1
 -----
-    - ADDED:      Added USB Design Guide to this repo including major update.
+    - ADDED:      Added USB Design Guide to this repo including major update (see /doc)
     - ADDED:      Added MIDI_RX_PORT_WIDTH define such that a 4-bit port can be used for MIDI Rx
     - CHANGE:     I2S data to clock edge setup time improvements when BCLK = MCLK (particularly
                   when running at 384kHz with a 24.576MHz master-clock)
