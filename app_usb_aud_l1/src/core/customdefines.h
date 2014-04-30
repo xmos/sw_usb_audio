@@ -78,6 +78,6 @@
 #define HID_CONTROLS       (1)
 
 /* SPI Flash spec for DFU */
-#define DFU_FLASH_DEVICE   FL_DEVICE_ATMEL_AT25FS010 
+#define DFU_FLASH_DEVICE   FL_DEVICE_ATMEL_AT25FS010
 
 #endif
