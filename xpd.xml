@@ -76,9 +76,9 @@
     </dependency>
     <dependency repo = "sc_usb_audio">
         <gitbranch>master</gitbranch>
-        <githash>dcfc791b3e9f3bee50fab2cd7c5070ed24a1c3da</githash>
+        <githash>ed6bb50d26c3b588fa14ab4aac15a5204527954c</githash>
         <uri>git://git/apps/sc_usb_audio</uri>
-        <version>6.5.1rc0</version>
+        <version>6.5.1rc1</version>
     </dependency>
     <dependency repo = "sc_xud">
         <gitbranch>master</gitbranch>
@@ -199,7 +199,7 @@
     <release parenthash = "4c4624ce4524ddb537645a89c5214c7f2362983d" version = "6.5.1beta2" githash = "aafa2f5ca85a7e5233d9b31e0a51fc1cfd90b50d"></release>
     <release parenthash = "56ad9cf79664080a1241ba1426884d509bcaa646" version = "6.5.1beta3" githash = "6c0d5e8fac25192b13c1b2844c18e56f776970ac"></release>
     <release parenthash = "e58448390267d8de30ee2b4210334daa146cd0f2" version = "6.5.1beta4" githash = "583bc8cdf9b5c71773983a1409110ca22dd3c911"></release>
-    <release parenthash = "83cfc161287787bfa89e8595d1cf40009302ebe3" version = "6.5.1rc0"></release>
+    <release parenthash = "83cfc161287787bfa89e8595d1cf40009302ebe3" version = "6.5.1rc0" githash = "626952c342f937c51db92d057d7efbc146cee4d0"></release>
     <subpartnumber>XM-002775-SM</subpartnumber>
     <vendor>XMOS</vendor>
     <version_defines>
