@@ -32,10 +32,10 @@ sw_usb_audio Change Log
 
   * Changes to dependencies:
 
-    - sc_spdif: 1.3.1beta3 -> 1.3.2rc0
+    - sc_spdif: 1.3.1beta3 -> 1.3.2rc1
 
 
-    - sc_i2c: 2.4.0beta1 -> 2.4.1rc0
+    - sc_i2c: 2.4.0beta1 -> 2.4.1rc1
 
       + module_i2c_simple header-file comments updated to correctly reflect API
 
