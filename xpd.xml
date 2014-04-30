@@ -209,6 +209,7 @@
         <version_define name = "XMOS_USB_AUD_APP_POINT_VERSION" format = "%POINT%"></version_define>
     </version_defines>
     <xpd_version>1.0</xpd_version>
+    <docdir>doc</docdir>
     <xsoftip_exclude>app_usb_aud_skc_su1</xsoftip_exclude>
     <xsoftip_exclude>app_usb_aud_su1</xsoftip_exclude>
     <xsoftip_exclude>app_usb_aud_l1</xsoftip_exclude>
