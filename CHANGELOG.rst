@@ -41,7 +41,7 @@ sw_usb_audio Change Log
 
       + module_i2c_simple header-file comments updated to correctly reflect API
 
-    - sc_usb_audio: 6.5.0beta2 -> 6.5.1rc2
+    - sc_usb_audio: 6.5.0beta2 -> 6.5.1rc3
 
       + see sw_usb_audio for changelog
 
