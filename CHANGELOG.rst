@@ -29,6 +29,8 @@ sw_usb_audio Change Log
                   based on OUTPUT and INPUT defines) (#15417)
     - RESOLVED:   (Minor) Audio Class 1.0 mute control SET requests stalled due to incorrect data
                   length check (#15419)
+    - RESOLVED    (Minor) DFU Upload request now functional (Returns current upgrade image to host)
+                  (#151571)
 
   * Changes to dependencies:
 
