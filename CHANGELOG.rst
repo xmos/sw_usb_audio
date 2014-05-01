@@ -41,11 +41,11 @@ sw_usb_audio Change Log
 
       + module_i2c_simple header-file comments updated to correctly reflect API
 
-    - sc_usb_audio: 6.5.0beta2 -> 6.5.1rc1
+    - sc_usb_audio: 6.5.0beta2 -> 6.5.1rc2
 
       + see sw_usb_audio for changelog
 
-    - sc_usb_device: 1.1.0beta0 -> 1.2.2rc1
+    - sc_usb_device: 1.1.0beta0 -> 1.2.2rc4
 
       + sc_util: 1.0.3rc0 -> 1.0.4rc0
       + module_logging now compiled at -Os
@@ -60,9 +60,8 @@ sw_usb_audio Change Log
       + Fix thread local storage calculation bug in libtrycatch
       + Fix debug_printf itoa to work for unsigned values > 0x80000000
 
-    - sc_xud: 2.0.0beta1 -> 2.0.1rc0
+    - sc_xud: 2.0.0beta1 -> 2.0.1rc3
 
-      + RESOLVED:   (Minor) XUD_GetRequest failed to send a zero-length packet at the end of a transfer
       + RESOLVED:   (Minor) Error when building module_xud in xTimeComposer due to invalid project
 
 6.5.0
