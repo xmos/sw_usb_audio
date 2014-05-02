@@ -151,10 +151,10 @@ In order to clearly identify when this PCM stream contains DSD and when it conta
 bits are added to the sample.  A 24-bit PCM stream is therefore used, with the most significant
 byte being used for a DSD marker (alternating 0x05 and 0xFA values).
 
-When enabled, if USB audio design detects a un-interrupted run of these samples it switches to 
-DSD mode, using the lower 16-bits as DSD sample data.  When this check for DSD headers fails 
-the design falls back to PCM mode.  DoP detection and switching is done completely in the Audio
-/I2S core (`audio.xc`). All other code 
+When enabled, if USB audio design detects a un-interrupted run of these samples (above a defined 
+threshold) it switches to DSD mode, using the lower 16-bits as DSD sample data.  When this check for 
+DSD headers fails the design falls back to PCM mode.  DoP detection and switching is done completely 
+in the Audio/I2S core (`audio.xc`). All other code handles the audio samples as PCM. 
 
 The design supports higher DSD/DoP rates (i.e. DSD128) by simply raising the underlying PCM sample
 rate e.g. from 176.4kHz to 352.8kHz. The marker byte scheme remains exactly the same regardless
@@ -162,5 +162,5 @@ of rate.
 
 .. note::
     
-    DoP requires bit-perfect transmision - therefore any volume processing will break the stream.
+    DoP requires bit-perfect transmission - therefore any audio/volume processing will break the stream.
 

@@ -5,7 +5,7 @@ The `USB Audio 2.0 Multichannel Reference Design (XR-USB-AUDIO-2.0-MC) <http://w
  
 :ref:`usb_audio_l2_hw_diagram` shows the block layout of the USB Audio 2.0 Multichannel Reference Design board.
 
-The board supports six analogue inputs and eight analogue outputs (via a CS4244 CODEC), digital input and output (via coax and optical connectors) and MIDI input and output. For full details please refer to the hardware manual available on the XMOS website.
+The board supports six analogue inputs and eight analogue outputs (via a CS4244 CODEC), digital input and output (via coax and optical connectors) and MIDI input and output. For full details please refer to `USB Audio 2.0 Reference Design, XS1-L2 Edition Hardware Manual <https://www.xmos.com/download/public/USB-Audio-2.0-MC-Hardware-Manual%281.6%29.pdf>`.
 
 .. _usb_audio_l2_hw_diagram:
 

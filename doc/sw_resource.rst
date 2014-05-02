@@ -41,8 +41,8 @@ component of the reference design software.
 
 .. note::
 
-    The XUD library requires an 80MIPS cores to function correctly
-    (i.e. on a 500MHz parts only six cores can run).
+    The XUD library requires an 80MIPS core to function correctly
+    (i.e. on a 500MHz part only six cores can run).
 
 .. note::
 

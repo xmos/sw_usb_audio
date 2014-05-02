@@ -4,7 +4,7 @@
 USB Audio 2.0 DJ Kit
 --------------------
 
-`The XMOS USB Audio 2.0 DJ kit (XS1 U-Series) <http://www.xmos.com/products/development-kits/usbaudio2>`_ is a
+`The XMOS USB Audio 2.0 DJ kit (XR-USB-AUDIO-2.0-4C) <http://www.xmos.com/products/development-kits/usbaudio2>`_ is a
 hardware reference design available from XMOS based on the XMOS U8 device. 
 
 The DJ naming simply comes from the fact the board has 4 input and 4 output audio channels - a common configuration for a DJ controller.

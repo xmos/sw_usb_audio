@@ -17,7 +17,7 @@ Building and Running
 
 .. only:: xdehtml
 
-  To build, select the ``app_usb_aud_l1`` or ``app_usb_aud_l2`` project in the
+  To build, select the relavant project (e.g. ``app_usb_aud_l1``) in the
   Project Explorer and click the **Build** icon.
 
 .. cssclass:: xde-outside
@@ -39,7 +39,7 @@ Building and Running
    
   #. Click **Finish**.
 
-  To build, select the ``app_usb_aud_l1`` or ``app_usb_aud_l2`` project in the
+  To build, select the relevant project (e.g. ``app_usb_aud_l1``) in the
   Project Explorer and click the **Build** icon.
 
 .. cssclass:: cmd-only
@@ -48,12 +48,11 @@ Building and Running
 
     #. To install, unzip the package zip.
   
-    #. To build, change into the ``app_usb_aud_l1`` or ``app_usb_aud_l2`` directory and execute the command::
+    #. To build, change into the relevant application directory (e.g. ``app_usb_aud_l1``) and execute the command::
   
         xmake all
 
-The main Makefile for the project is in the app directory e.g. 
-``app_usb_aud_l1`` or ``app_usb_aud_l2``. This file specifies build
+The main Makefile for the project is in the app directory (e.g. ``app_usb_aud_l1``). This file specifies build
 options and used modules. The Makefile uses the common build
 infrastructure in ``module_xmos_common``. This system includes
 the source files from the relevant modules and is documented within

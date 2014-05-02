@@ -14,7 +14,7 @@ The main feature of version 6 over previous versions of the XMOS USB Audio softw
 
 Please see CHANGELOG.rst for detailed change listing.
 
-For full software documentation please see the USB Audio Software Design Guide document available from www.xmos.com.
+For full software documentation please see the USB Audio Design Guide document.
 
 This release is built and tested using version 13 of the XMOS tool set.  Build or functionality issues could be experienced with any other version.
 

@@ -11,7 +11,7 @@ modules can be included by adding the module name to the
 .. list-table:: Modules used by USB Audio
 
  * - module_xud
-   - Low level USB library
+   - Low level USB device library
  * - module_usb_shared
    - Common code for USB applications
  * - module_usb_device

@@ -18,8 +18,8 @@ and customising this framework. These reference designs have particular qualifie
 an accompanying reference hardware platform.
 
 This software design guide assumes the reader is familiar with the XC language and XCORE devices. 
-For more information see `Programming XC on XMOS Devices
-<https://www.xmos.com/products/documentation/programming-xc-xmos-devices>`_.
+For more information see `XMOS Programming Guide 
+<https://www.xmos.com/published/xmos-programming-guide>`_.
 
 The reader should also familiarise themselves with the `XMOS USB Device Library 
 <http://www.xmos.com/published/xuddg>`_ and the `XMOS USB Device Design Guide 

@@ -4,7 +4,7 @@ USB Audio Software Architecture
 The following sections describe the software architecture of the XMOS USB Audio platform.
 
 XMOS USB Audio solutions are provided as a framework with reference design applications customising
-and extending this framework to provide required functionality.  These applications execute on a 
+and extending this framework to provide the required functionality.  These applications execute on a 
 reference hardware platform.
 
 .. toctree::
