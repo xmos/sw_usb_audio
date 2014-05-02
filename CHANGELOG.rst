@@ -1,6 +1,10 @@
 sw_usb_audio Change Log
 =======================
 
+6.6.0 (UNRELEASED)
+-----
+    - CHANGE:     Support for XA-SK-USB-BLC 1V2 USB slice (1V1 slices will no longer function)
+
 6.5.1
 -----
     - ADDED:      Added USB Design Guide to this repo including major update (see /doc)
