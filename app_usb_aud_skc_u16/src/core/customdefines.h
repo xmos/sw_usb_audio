@@ -102,33 +102,7 @@
 /* Enable ADC based *EXAMPLE* volume control */
 #define ADC_VOL_CONTROL    0
 
-/* Define to use custom flash part not in tools by default
- * Device is M25P40 */
-#define DFU_FLASH_DEVICE \
-{    \
-    1, \
-    256,                    /* page size */\
-    1024,                   /* num pages */\
-    3,                      /* address size */\
-    8,                      /* log2 clock divider */\
-    0x9f,                   /* SPI_RDID */\
-    0,                      /* id dummy bytes */\
-    3,                      /* id size in bytes */ \
-    0x202013,               /* device id */\
-    0xD8,                   /* SPI_SE */\
-    0,                      /* full sector erase */\
-    0x06,                   /* SPI_WREN */\
-    0x04,                   /* SPI_WRDI */\
-    PROT_TYPE_SR,           /* SR protection */\
-    {{0x0c,0x0},{0,0}},     /* no values */\
-    0x02,                   /* SPI_PP */\
-    0x0b,                   /* SPI_READFAST */\
-    1,                      /* 1 read dummy byte */\
-    SECTOR_LAYOUT_REGULAR,  /* sane sectors */\
-    {32768,{0,{0}}},        /* regular sector size */\
-    0x05,                   /* SPI_RDSR */\
-    0x01,                   /* no SPI_WRSR */\
-    0x01,                   /* SPI_WIP_BIT_MASK */\
-}
+/* Specify FLASH type on U16 sliceKIT */
+#define DFU_FLASH_DEVICE FL_DEVICE_NUMONYX_M25P16 
 
 #endif
