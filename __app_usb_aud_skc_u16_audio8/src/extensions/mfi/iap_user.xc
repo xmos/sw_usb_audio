@@ -36,5 +36,5 @@ unsigned GetIDeviceDetect(void)
     unsigned tmp = 0;
     p_acc_det :> tmp;
 
-    return tmp; //& P_GPI_DEVDET_MASK;
+    return !tmp;
 }

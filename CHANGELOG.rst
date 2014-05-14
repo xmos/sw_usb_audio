@@ -3,6 +3,9 @@ sw_usb_audio Change Log
 
 6.6.0
 -----
+    - CHANGE:     Support for XA-SK-USB-BLC 1V2 USB slice in app_usb_aud_xk_u8_2c and 
+                  app_usb_aud_skc_u16 (1V1 slices will not operate correctly without software
+                  modification)
     - RESOLVED:   (Minor) DFU_FLASH_DEVICE define corrected in app_usb_aud_skc_u16. Previously an
                   incorrect SPI spec was defined causing DFU to fail for this example application.
 
@@ -43,7 +46,7 @@ sw_usb_audio Change Log
 
 
     - sc_i2c: 2.4.0beta1 -> 2.4.1rc1
-
+.
       + module_i2c_simple header-file comments updated to correctly reflect API
 
     - sc_usb_audio: 6.5.0beta2 -> 6.5.1rc4
