@@ -31,11 +31,6 @@
 #define AUDIO_CLASS        (2)
 #endif
 
-/* Enable Fall-back to audio class 1.0 when connected to FS hub */
-#ifndef AUDIO_CLASS_FALLBACK
-#define AUDIO_CLASS_FALLBACK (1)
-#endif
-
 /* Defines relating to channel count and channel arrangement (Set to 0 for disable) */
 /* Number of USB streaming channels - Default is 2 in 2 out */
 #ifndef NUM_USB_CHAN_IN
