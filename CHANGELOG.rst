@@ -1,7 +1,7 @@
 sw_usb_audio Change Log
 =======================
 
-6.5.2
+6.6.0
 -----
     - RESOLVED:   (Minor) DFU_FLASH_DEVICE define corrected in app_usb_aud_skc_u16. Previously an
                   incorrect SPI spec was defined causing DFU to fail for this example application.
