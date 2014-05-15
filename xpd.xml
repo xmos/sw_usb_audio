@@ -214,11 +214,6 @@
     <release parenthash = "5717229c6ad30bcdbf5942f670198257018168a5" version = "6.6.0beta0"></release>
     <subpartnumber>XM-002775-SM</subpartnumber>
     <vendor>XMOS</vendor>
-    <version_defines>
-        <version_define name = "XMOS_USB_AUD_APP_MAJOR_VERSION" format = "%MAJOR%"></version_define>
-        <version_define name = "XMOS_USB_AUD_APP_MINOR_VERSION" format = "%MINOR%"></version_define>
-        <version_define name = "XMOS_USB_AUD_APP_POINT_VERSION" format = "%POINT%"></version_define>
-    </version_defines>
     <xpd_version>1.0</xpd_version>
     <xsoftip_exclude>app_usb_aud_skc_su1</xsoftip_exclude>
     <xsoftip_exclude>app_usb_aud_su1</xsoftip_exclude>
