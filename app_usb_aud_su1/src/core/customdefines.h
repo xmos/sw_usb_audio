@@ -1,15 +1,15 @@
 /**
  * @file       customdefines.h
  * @brief      Defines relating to device configuration and customisation.
- *             For L1 USB Audio Reference Design
+ *             For SU1 USB Audio Reference Design
  * @author     Ross Owen, XMOS Limited
  */
 #ifndef _CUSTOMDEFINES_H_
 #define _CUSTOMDEFINES_H_
 
 #define XMOS_USB_AUD_APP_MAJOR_VERSION 6
-#define XMOS_USB_AUD_APP_MINOR_VERSION 5
-#define XMOS_USB_AUD_APP_POINT_VERSION 1
+#define XMOS_USB_AUD_APP_MINOR_VERSION 6
+#define XMOS_USB_AUD_APP_POINT_VERSION 0
 
 /***** Device configuration option defines.  Build can be customised but changing these defines  *****/
 
