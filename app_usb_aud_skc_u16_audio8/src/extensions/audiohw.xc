@@ -39,7 +39,7 @@ void AudioHwInit(chanend ?c_codec)
 /* Configures the external audio hardware for the required sample frequency.
  * See gpio.h for I2C helper functions and gpio access
  */
-void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned dsdMode, 
+void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned dsdMode,
     unsigned sampRes_DAC, unsigned sampRes_ADC)
 {
 	unsigned char data[1] = {0};
@@ -59,7 +59,7 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
     }
 
     /* Allow MCLK to settle */
-    wait_us(2000); 
+    wait_us(2000);
 
     if((dsdMode == DSD_MODE_NATIVE) || (dsdMode == DSD_MODE_DOP))
     {
@@ -70,7 +70,7 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
         set_gpio(p_adrst_cksel_dsd, P_DAC_RST_N, 1);
 
         /* Configure DAC values required for DSD mode */
-        
+
         /* Mode Control 1 (Address: 0x02) */
         /* bit[7] : Control Port Enable (CPEN)     : Set to 1 for enable
          * bit[6] : Freeze controls (FREEZE)       : Set to 1 for freeze
@@ -78,20 +78,20 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
          * bit[4:1] : DAC Pair Disable (DACx_DIS)  : All Dac Pairs enabled
          * bit[0] : Power Down (PDN)               : Powered down
          */
-        DAC_REGWRITE(CS4384_MODE_CTRL, 0xe1); 
+        DAC_REGWRITE(CS4384_MODE_CTRL, 0xe1);
 
         if (samFreq > 3000000)
         {
-            /* DSD128 */ 
+            /* DSD128 */
             /* DSD Control (Address: 0x04) */
             /* bit[7:5] : DSD Digital Inteface Format (DSD_DIF) : 128x over samples with 4x MCLK
-             * bit[4] : Direct DSD Conversion: Set to 0, data sent to DSD processor 
+             * bit[4] : Direct DSD Conversion: Set to 0, data sent to DSD processor
              * bit[3] : Static DSD detect : 1 for enabled
-             * bit[2] : Invalid DSD Detect : 1 for enabled 
-             * bit[1] : DSD Phase Modulation Mode Select 
+             * bit[2] : Invalid DSD Detect : 1 for enabled
+             * bit[1] : DSD Phase Modulation Mode Select
              * bit[0] : DSD Phase Modulation Enable
-             */           
-            DAC_REGWRITE(CS4384_DSD_CTRL, 0b11001100); 
+             */
+            DAC_REGWRITE(CS4384_DSD_CTRL, 0b11001100);
             p_led_array <: LED_SQUARE_BIG;
         }
         else
@@ -99,13 +99,13 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
             /* DSD64 */
             /* DSD Control (Address: 0x04) */
             /* bit[7:5] : DSD Digital Inteface Format (DSD_DIF) : 64x over samples with 8x MCLK
-             * bit[4] : Direct DSD Conversion: Set to 0, data sent to DSD processor 
+             * bit[4] : Direct DSD Conversion: Set to 0, data sent to DSD processor
              * bit[3] : Static DSD detect : 1 for enabled
-             * bit[2] : Invalid DSD Detect : 1 for enabled 
-             * bit[1] : DSD Phase Modulation Mode Select 
+             * bit[2] : Invalid DSD Detect : 1 for enabled
+             * bit[1] : DSD Phase Modulation Mode Select
              * bit[0] : DSD Phase Modulation Enable
-             */ 
-            DAC_REGWRITE(CS4384_DSD_CTRL, 0b01001100); 
+             */
+            DAC_REGWRITE(CS4384_DSD_CTRL, 0b01001100);
             p_led_array <: LED_SQUARE_SML;
         }
 
@@ -114,10 +114,10 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
          * bit[6] : Freeze controls (FREEZE)       : Set to 0 for not freeze
          * bit[5] : PCM/DSD Selection (DSD/PCM)    : Set to 1 for DSD
          * bit[4:1] : DAC Pair Disable (DACx_DIS)  : All Dac Pairs enabled
-         * bit[0] : Power Down (PDN)               : Power down disabled 
+         * bit[0] : Power Down (PDN)               : Power down disabled
          */
-        DAC_REGWRITE(CS4384_MODE_CTRL, 0xA0); 
-        
+        DAC_REGWRITE(CS4384_MODE_CTRL, 0xA0);
+
         /* Note: ADC kept in reset, no config sent. DSD mode is output only 0*/
     }
     else
@@ -128,7 +128,7 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
 
         /* Configure DAC with PCM values. Note 2 writes to mode control to enable/disable freeze/power down */
         set_gpio(p_adrst_cksel_dsd, P_DAC_RST_N, 1);//De-assert DAC reset
- 
+
         /* Mode Control 1 (Address: 0x02) */
         /* bit[7] : Control Port Enable (CPEN)     : Set to 1 for enable
          * bit[6] : Freeze controls (FREEZE)       : Set to 1 for freeze
@@ -136,23 +136,23 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
          * bit[4:1] : DAC Pair Disable (DACx_DIS)  : All Dac Pairs enabled
          * bit[0] : Power Down (PDN)               : Powered down
          */
-        DAC_REGWRITE(CS4384_MODE_CTRL, 0b11000001); 
-        
+        DAC_REGWRITE(CS4384_MODE_CTRL, 0b11000001);
+
         /* PCM Control (Address: 0x03) */
         /* bit[7:4] : Digital Interface Format (DIF) : 0b0001 for I2S up to 24bit
          * bit[3:2] : Reserved
          * bit[1:0] : Functional Mode (FM) : 0x11 for auto-speed detect (32 to 200kHz)
-        */ 
+        */
         DAC_REGWRITE(CS4384_PCM_CTRL, 0b00010111);
-       
+
         /* Mode Control 1 (Address: 0x02) */
         /* bit[7] : Control Port Enable (CPEN)     : Set to 1 for enable
          * bit[6] : Freeze controls (FREEZE)       : Set to 0 for freeze
          * bit[5] : PCM/DSD Selection (DSD/PCM)    : Set to 0 for PCM
          * bit[4:1] : DAC Pair Disable (DACx_DIS)  : All Dac Pairs enabled
-         * bit[0] : Power Down (PDN)               : Not powered down 
+         * bit[0] : Power Down (PDN)               : Not powered down
          */
-        DAC_REGWRITE(CS4384_MODE_CTRL, 0b10000000); 
+        DAC_REGWRITE(CS4384_MODE_CTRL, 0b10000000);
 
         /* Take ADC out of reset */
         set_gpio(p_adrst_cksel_dsd, P_ADC_RST_N, 1);
@@ -160,26 +160,26 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
         /* Reg 0x01: (GCTL) Global Mode Control Register */
         /* Bit[7]: CP-EN: Manages control-port mode
          * Bit[6]: CLKMODE: Setting puts part in 384x mode
-         * Bit[5:4]: MDIV[1:0]: Set to 01 for /2 
-         * Bit[3:2]: DIF[1:0]: Data Format: 0x01 for I2S 
-         * Bit[1:0]: MODE[1:0]: Mode: 0x11 for slave mode 
+         * Bit[5:4]: MDIV[1:0]: Set to 01 for /2
+         * Bit[3:2]: DIF[1:0]: Data Format: 0x01 for I2S
+         * Bit[1:0]: MODE[1:0]: Mode: 0x11 for slave mode
          */
         ADC_REGWRITE(CS5368_GCTL_MDE, 0b10010111);
 
         /* Reg 0x06: (PDN) Power Down Register */
         /* Bit[7:6]: Reserved
          * Bit[5]: PDN-BG: When set, this bit powers-own the bandgap reference
-         * Bit[4]: PDM-OSC: Controls power to internal oscillator core 
+         * Bit[4]: PDM-OSC: Controls power to internal oscillator core
          * Bit[3:0]: PDN: When any bit is set all clocks going to that channel pair are turned off
          */
         ADC_REGWRITE(CS5368_PWR_DN, 0b00000000);
 
         /* Illuminate LEDs based on sample-rate */
         if (samFreq > 192000)
-        { 
+        {
             p_led_array <: LED_ALL_ON;
         }
-        else if (samFreq > 96000) 
+        else if (samFreq > 96000)
         {
             p_led_array <: LED_ROW_3;
         }
