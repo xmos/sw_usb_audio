@@ -3,7 +3,7 @@ XMOS XS1-U16 USB Audio
 ======================
 
 :maintainer: Ross Owen
-:scope: Reference Design
+:scope: General Use
 :description: USB Audio application for XP-SKC-U16 and XA-SK-AUDIO8 (1v1)
 :keywords: USB, Audio, I2S, S/PDIF
 :boards: SLICEKIT-U16, XA-SK-AUDIO8 (1v1)
