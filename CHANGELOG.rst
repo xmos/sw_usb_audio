@@ -3,7 +3,7 @@ sw_usb_audio Change Log
 
 6.6.0
 -----
-    - CHANGE:     Support for XA-SK-USB-BLC 1V2 USB slice in app_usb_aud_xk_u8_2c and 
+    - CHANGE:     Support for XA-SK-USB-BLC 1V2 USB slice in app_usb_aud_xk_u8_2c and
                   app_usb_aud_skc_u16 (1V1 slices will not operate correctly without software
                   modification)
     - CHANGE:     app_usb_aud_su1 removed
@@ -11,6 +11,20 @@ sw_usb_audio Change Log
     - RESOLVED:   (Minor) DFU_FLASH_DEVICE define corrected in app_usb_aud_skc_u16. Previously an
                   incorrect SPI spec was defined causing DFU to fail for this example application.
     - RESOLVED:   (Minor) HID descriptor properly defined when HID_CONTROLS enabled
+
+  * Changes to dependencies:
+
+    - sc_xud: 2.0.1rc3 -> 2.1.0beta0
+
+      + CHANGE:     XUD no longer takes a additional chanend parameter for enabling USB test-modes.
+
+    - sc_usb_audio: 6.5.1rc4 -> 6.6.0beta1
+
+      + see sw_usb_audio for changelog
+
+    - sc_usb_device: 1.2.2rc4 -> 1.3.0beta0
+
+      + CHANGE:  Required updates for XUD API change relating to USB test-mode-support
 
 6.5.1
 -----
