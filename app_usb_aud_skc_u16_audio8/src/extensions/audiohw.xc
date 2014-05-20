@@ -5,6 +5,7 @@
 #include "cs4384.h"
 #include "cs5368.h"
 #include "print.h"
+#include "dsd_support.h"
 
 /* I2C bus to DAC */
 on tile[AUDIO_IO_TILE]: struct r_i2c r_i2c_aud = { PORT_I2C_SCL_AUD, PORT_I2C_SDA_AUD };
@@ -13,57 +14,8 @@ on tile[AUDIO_IO_TILE]: port p_adrst_cksel_dsd = PORT_CODEC_RST_CLKSEL_DSD;
 on tile[AUDIO_IO_TILE]: port p_pwr_pll_mute = PORT_PWR_PLL_MUTE;
 on tile[AUDIO_IO_TILE]: port p_led_array = PORT_LED_ARRAY;
 
-/* Arrays of reg addresses and associated data arrays, which are initialsed for startup/initial config */
-//static unsigned char reg_addr_cs4384[] = {CS4384_MODE_CTRL, CS4384_PCM_CTRL, CS4384_DSD_CTRL, CS4384_MODE_CTRL};
-//static unsigned char reg_data_cs4384[] = {CS4384_MODE_CTRL_PCM, CS4384_PCM_CTRL_PCM, CS4384_DSD_CTL_DSD1x,
-                                            //CS4384_MODE_CTL2_PCM};
-
-//static unsigned char reg_addr_cs5368[] = {CS5368_GCTL_MDE, CS5368_OVFL_ST, CS5368_OVFL_MSK, CS5368_HPF_CTRL,
-                                            //CS5368_PWR_DN, CS5368_MUTE_CTRL, CS5368_SDO_EN};
-//static unsigned char reg_data_cs5368[] = {CS5368_GCTL_MDE_VAL, CS5368_OVFL_ST_VAL, CS5368_OVFL_MSK_VAL,
-                                            //CS5368_HPF_CTRL_VAL, CS5368_PWR_DN_VAL, CS5368_MUTE_CTRL_VAL, CS5368_SDO_EN_VAL};
-
 #define DAC_REGWRITE(reg, val) {data[0] = val; i2c_master_write_reg(CS4384_I2C_ADDR, reg, data, 1, r_i2c_aud);}
 #define ADC_REGWRITE(reg, val) {data[0] = val; i2c_master_write_reg(CS5368_I2C_ADDR, reg, data, 1, r_i2c_aud);}
-//#define DAC_REGREAD(reg, val)  {i2c_master_read_reg(r_i2c, DAC_I2C_DEV_ADDR, reg, val, 1);}
-//#define CS2300_REGREAD_ASSERT(reg, data, expected)  {data[0] = 0x00; i2c_master_read_reg(CS2300_I2C_DEVICE_ADDR, reg, data, 1, i2cPorts); assert(data[0] == expected);}
-
-#define VERIFY_I2C 1
-
-/* Write array of register to i2c device */
-#if 0
-int i2c_slave_configure(int codec_addr, int num_writes, unsigned char reg_addr[], unsigned char reg_data[], struct r_i2c &r_i2c)
-{
-    int success = 1;
-    unsigned char data[1];
-
-    for(int i = 0; i < num_writes; i++){
-        data[0] = reg_data[i];
-        success &= i2c_master_write_reg(codec_addr, reg_addr[i], data, 1, r_i2c);
-#if VERIFY_I2C==1
-        if (success == 0) {
-            printstr("ACK failed on I2C write to device 0x");
-            printhex(codec_addr);
-            printstr(", reg address 0x");
-            printhexln(reg_addr[i]);
-        }
-        i2c_master_read_reg(codec_addr, reg_addr[i], data, 1, r_i2c);
-        if (data[0] != reg_data[i]){
-            printstr("ERROR");
-            printstr(" verifying I2C device 0x");
-            printhex(codec_addr);
-            printstr(" register address 0x");
-            printhex(reg_addr[i]);
-            printstr(". Expected 0x");
-            printhex(reg_data[i]);
-            printstr(", received 0x");
-            printhexln(data[0]);
-        }
-#endif
-    }
-    return(success);
-}
-#endif
 
 void AudioHwInit(chanend ?c_codec)
 {
@@ -82,7 +34,6 @@ void AudioHwInit(chanend ?c_codec)
 
     /* Wait for supply rail to settle */
     wait_us(5000); //5ms
-
 }
 
 /* Configures the external audio hardware for the required sample frequency.
@@ -110,7 +61,7 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
     /* Allow MCLK to settle */
     wait_us(2000); 
 
-    if (dsdMode)
+    if((dsdMode == DSD_MODE_NATIVE) || (dsdMode == DSD_MODE_DOP))
     {
         /* Enable DSD 8ch out mode on mux */
         set_gpio(p_adrst_cksel_dsd, P_DSD_MODE, 1);
@@ -140,8 +91,7 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
              * bit[1] : DSD Phase Modulation Mode Select 
              * bit[0] : DSD Phase Modulation Enable
              */           
-            DAC_REGWRITE(CS4384_DSD_CTRL, 0x48); 
-
+            DAC_REGWRITE(CS4384_DSD_CTRL, 0b11001100); 
             p_led_array <: LED_SQUARE_BIG;
         }
         else
