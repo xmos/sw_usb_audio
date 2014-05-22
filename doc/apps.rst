@@ -13,3 +13,4 @@ framework.
     sw_su1_audio
     sw_l2_audio
     sw_u8_audio
+    sw_u16_audio8

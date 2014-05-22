@@ -10,3 +10,4 @@ development with the XMOS USB Audio software platform.
    l2_audio_hw
    su1_audio_hw
    u8_audio_hw
+   hw_u16_audio8
