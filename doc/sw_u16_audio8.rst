@@ -2,7 +2,7 @@
 .. _usb_audio_sec_u16_audio8_sw:
 
 The U-Series Multi-Channel USB Audio Kit
----------------------------------------
+----------------------------------------
 
 An application of the USB audio framework is provideed specifically for the hardware described in
 :ref:`usb_audio_sec_hw_u16_audio8` and is implemented on the U-Series dual tile device (1000MIPS).  
@@ -81,13 +81,12 @@ The reset lines of the DAC and ADC are connected to bits 0 and 1 of `PORT 4E` re
 AudioHwInit()
 +++++++++++++
 
-The `AudioHwInit()` function is implemented to perform the following: 
+The :c:func:`AudioHwInit()` function is implemented to perform the following: 
 
     * Initialise the I2C master software module
     * Puts the audio hardware into reset
     * Enables the power to the audio hardware
-    * Selects the PhaseLink PLL as the audio master clock source.
-
+    * Select the PhaseLink PLL as the audio master clock source.
 
 AudioHwConfig()
 +++++++++++++++

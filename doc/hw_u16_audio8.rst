@@ -1,15 +1,14 @@
 .. _usb_audio_sec_hw_u16_audio8:
 
 
-U16 USB sliceKIT with Audio 8 Slice
------------------------------------
-
-The U16 Multi-channel USB Audio kit is a hardware development platform available from XMOS based on
-a dual tile XMOS U-series device.
+U16 Mult-Channel USB Audio Kit
+------------------------------
+`The XMOS U16 Multi-Channel USB Audio kit <http://www.xmos.com/usbaudio16mc>`_ is a hardware
+development platform available from XMOS based on a dual tile XMOS U-series device.
 
 The kit is made up of three boards:
     - A sliceKIT core board which includes the XMOS U-series device (XP-SKC-U16)
-    - A "USB Slice" board which contains USB connectivity
+    - A "USB Slice" board which contains USB connectivity (XA-SK-USB-AB)
     - A double-slot slice card including audio hardware and connectors (XA-SK-AUDIO8)
 
 The separate USB slice board allows flexibility in the connection method to the USB audio 
@@ -36,4 +35,5 @@ to 192kHz with the DAC supporting Direct Stream Digital (DSD).
 As well as analogue channels the audio-slice also has MIDI input and output connectors and both COAX 
 and optical connectors for digital output.
 
-Additionally the slice also includes an LED matrix and three push-buttons for use by the user application.
+Additionally the slice also includes an LED matrix and three push-buttons for use by the user 
+application.
