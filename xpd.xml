@@ -238,7 +238,4 @@
     <vendor>XMOS</vendor>
     <version_defines></version_defines>
     <xpd_version>1.0</xpd_version>
-    <xsoftip_exclude>app_usb_aud_skc_su1</xsoftip_exclude>
-    <xsoftip_exclude>app_usb_aud_su1</xsoftip_exclude>
-    <xsoftip_exclude>app_usb_aud_l1</xsoftip_exclude>
 </xpd>
