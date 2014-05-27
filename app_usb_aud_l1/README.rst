@@ -1,11 +1,11 @@
 XMOS XS1-L8 USB Audio 2.0 Reference Design (app_usb_aud_l1)
 ===========================================================
 
-:Maintainer: Ross Owen
-:Scope: Reference Design
-:Description: USB Audio for L1 USB Audio board
-:Keywords: USB, Audio, MFA
-:Boards: XR-USB-AUDIO-2.0
+:maintainer: Ross Owen
+:scope: General Use
+:description: USB Audio for L1 USB Audio board
+:keywords: USB, Audio, MFA
+:boards: XR-USB-AUDIO-2.0
 
 Overview
 ........
