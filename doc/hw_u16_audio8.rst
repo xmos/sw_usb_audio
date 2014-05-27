@@ -35,5 +35,4 @@ to 192kHz with the DAC supporting Direct Stream Digital (DSD).
 As well as analogue channels the audio-slice also has MIDI input and output connectors and both COAX 
 and optical connectors for digital output.
 
-Additionally the slice also includes an LED matrix and three push-buttons for use by the user 
-application.
+Additionally the slice also includes an LED matrix and three push-buttons for use by the user application.
