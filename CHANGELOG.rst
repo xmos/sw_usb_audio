@@ -3,11 +3,14 @@ sw_usb_audio Change Log
 
 6.6.0
 -----
+    - ADDED:      Added app_usb_aud_skc_u16_audio8 application for XP-SKC-U16 with XA-SK-AUDIO8
     - CHANGE:     Support for XA-SK-USB-BLC 1V2 USB slice in app_usb_aud_xk_u8_2c and
                   app_usb_aud_skc_u16 (1V1 slices will not operate correctly without software
                   modification)
-    - CHANGE:     app_usb_aud_su1 removed
-    - CHANGE:     Endpoint 0 code updated to support new XUD test-mode enabled API
+    - CHANGE:     Removed app_usb_aud_su1
+    - CHANGE:     Endpoint 0 code updated to support new XUD test-mode enable API
+    - CHANGE:     Macs operation for volume processing in mixer core now retains lower bits when 
+                  device configured to use either 32bit samples or Native DSD.
     - RESOLVED:   (Minor) DFU_FLASH_DEVICE define corrected in app_usb_aud_skc_u16. Previously an
                   incorrect SPI spec was defined causing DFU to fail for this example application.
     - RESOLVED:   (Minor) HID descriptor properly defined when HID_CONTROLS enabled
