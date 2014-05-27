@@ -22,7 +22,7 @@ sw_usb_audio Change Log
       + ADDED:      Warning emitted when number of cores is greater than 6
       + CHANGE:     XUD no longer takes a additional chanend parameter for enabling USB test-modes.
 
-    - sc_usb_audio: 6.5.1rc4 -> 6.6.0rc0
+    - sc_usb_audio: 6.5.1rc4 -> 6.6.0rc1
 
       + see sw_usb_audio for changelog
 
