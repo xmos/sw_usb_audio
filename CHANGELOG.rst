@@ -9,7 +9,7 @@ sw_usb_audio Change Log
                   modification)
     - CHANGE:     Removed app_usb_aud_su1
     - CHANGE:     Endpoint 0 code updated to support new XUD test-mode enable API
-    - CHANGE:     Macs operation for volume processing in mixer core now retains lower bits when 
+    - CHANGE:     Macs operation for volume processing in mixer core now retains lower bits when
                   device configured to use either 32bit samples or Native DSD.
     - RESOLVED:   (Minor) DFU_FLASH_DEVICE define corrected in app_usb_aud_skc_u16. Previously an
                   incorrect SPI spec was defined causing DFU to fail for this example application.
@@ -17,15 +17,16 @@ sw_usb_audio Change Log
 
   * Changes to dependencies:
 
-    - sc_xud: 2.0.1rc3 -> 2.1.0beta0
+    - sc_xud: 2.0.1rc3 -> 2.1.1rc0
 
+      + ADDED:      Warning emitted when number of cores is greater than 6
       + CHANGE:     XUD no longer takes a additional chanend parameter for enabling USB test-modes.
 
-    - sc_usb_audio: 6.5.1rc4 -> 6.6.0beta1
+    - sc_usb_audio: 6.5.1rc4 -> 6.6.0rc0
 
       + see sw_usb_audio for changelog
 
-    - sc_usb_device: 1.2.2rc4 -> 1.3.0beta0
+    - sc_usb_device: 1.2.2rc4 -> 1.3.0rc0
 
       + CHANGE:  Required updates for XUD API change relating to USB test-mode-support
 
