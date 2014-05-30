@@ -118,6 +118,11 @@ include mfi.mk
 
 endif
 
+ifeq ($(TEST_CONFIGS),1)
+XCC_FLAGS_upgrade1 = $(BUILD_FLAGS) -DBCD_DEVICE=0x9901
+XCC_FLAGS_upgrade2 = $(BUILD_FLAGS) -DBCD_DEVICE=0x9902
+endif
+
 #=============================================================================
 # The following part of the Makefile includes the common build infrastructure
 # for compiling XMOS applications. You should not need to edit below here.
