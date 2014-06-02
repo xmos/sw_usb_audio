@@ -21,7 +21,6 @@
 
 /* Enable/Disable MIDI - Default is MIDI on */
 #ifndef MIDI
-#error
 #define MIDI 		       0
 #endif
 
