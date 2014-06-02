@@ -5,7 +5,7 @@ XMOS XK-USB-AUDIO-U8-2C USB Audio (app_usb_aud_xk_u8_2c)
 :scope: General Use
 :description: USB Audio for XK-USB-AUDIO-U8-2C board
 :keywords: USB, Audio, MFA
-:boards: XK-USB-AUDIO-U8-2C
+:boards: XK-USB-AUDIO-U8-2C (1v2)
 
 Overview
 ........
@@ -15,7 +15,7 @@ The firmware provides a high-speed USB Audio device designed to be compliant to 
 Key Features
 ............
 
-The app_usb_aud_xk_u8_2c application is designed to run on the XMOS Multi-Function Audio (MFA) Board (XR-USB-AUDIO-U8-2C) version 1.1.  This should be used in conjunction with a valid USB Slice including valid USB Device functionality (e.g. a USB B connector).  The application uses the XMOS USB Audio framework to implement a USB Audio device with the following key features:
+The app_usb_aud_xk_u8_2c application is designed to run on the XMOS Multi-Function Audio (MFA) Board (XR-USB-AUDIO-U8-2C) version 1.2.  This should be used in conjunction with a valid USB Slice including valid USB Device functionality (e.g. a USB B connector).  The application uses the XMOS USB Audio framework to implement a USB Audio device with the following key features:
 
 - USB Audio Class 2.0 Compliant
 
