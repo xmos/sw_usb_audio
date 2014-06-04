@@ -1,6 +1,10 @@
 sw_usb_audio Change Log
 =======================
 
+6.6.1 (UNRELEASED)
+-----
+    - RESOLVED:  Makefile issue for 2ioxx config in app_usb_aud_skc_su1
+
 6.6.0
 -----
     - ADDED:      Added app_usb_aud_skc_u16_audio8 application for XP-SKC-U16 with XA-SK-AUDIO8
