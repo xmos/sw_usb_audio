@@ -42,8 +42,7 @@ void init(void)
 
     dpVersion = IMAGE_NUM_DOCK;      /* Default to iPod dock */
 
-   // if((switchVal & 0b1000)== 0b0000)
-    if(0)
+    if((switchVal & 0b1000)== 0b0000)
     {
         dpVersion = IMAGE_NUM_USB_AUD;  /* USB Audio (B connector) */
     }
