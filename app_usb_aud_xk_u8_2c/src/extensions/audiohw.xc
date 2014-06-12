@@ -28,7 +28,9 @@ extern struct r_i2c r_i2c;
 #endif
 
 #ifdef SW_INT_HANDLER
+#ifndef SWITCH_VAL
 #define SWITCH_VAL 0b0000
+#endif
 #pragma select handler
 void handle_switch_request(in port p_sw)
 {
