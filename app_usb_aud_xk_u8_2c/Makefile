@@ -95,6 +95,11 @@ XCC_FLAGS_2xoxs_16b4pcm_32b4dsd_24b4pcm = $(BUILD_FLAGS) -DOUTPUT_FORMAT_COUNT=3
  	-DSTREAM_FORMAT_OUTPUT_3_RESOLUTION_BITS=24 -DHS_STREAM_FORMAT_OUTPUT_3_SUBSLOT_BYTES=4 -DSTREAM_FORMAT_OUTPUT_3_DATAFORMAT=0x00000001
 INCLUDE_ONLY_IN_2xoxs_16b4pcm_32b4dsd_24b4pcm =
 
+#Audio Class 2, Input, Output, MIDI, No SPDIF
+XCC_FLAGS_2iomx_reboot = $(BUILD_FLAGS) -DMIDI=1 -DSPDIF=0 -DSW_INT_HANDLER=1
+INCLUDE_ONLY_IN_2iomx_reboot = 
+
+
 else
 # MFi test build configs - iAP support enabled
 
@@ -113,6 +118,14 @@ INCLUDE_ONLY_IN_2ioxx_mfi =
 #Audio Class 2, iAP enabled, Input, Output, MIDI, No SPDIF
 XCC_FLAGS_2iomx_mfi = $(BUILD_FLAGS) -DIAP=1 -DMIDI=1 -DSPDIF=0
 INCLUDE_ONLY_IN_2iomx_mfi = 
+
+#Audio Class 2, iAP enabled, Input, Output, MIDI, No SPDIF. On USB A port.
+XCC_FLAGS_2iomx_usba_mfi = $(BUILD_FLAGS) -DIAP=1 -DMIDI=1 -DSPDIF=0 -DUSB_SEL_A=1
+INCLUDE_ONLY_IN_2iomx_usba_mfi = 
+
+#Audio Class 2, iAP enabled, Input, Output, MIDI, No SPDIF. On USB A port. Turn on reboot based on switch.
+XCC_FLAGS_2iomx_usba_reboot_mfi = $(BUILD_FLAGS) -DIAP=1 -DMIDI=1 -DSPDIF=0 -DUSB_SEL_A=1 -DSW_INT_HANDLER=1 -DSWITCH_VAL=0b1000
+INCLUDE_ONLY_IN_2iomx_usba_reboot_mfi = 
 
 include mfi.mk
 
