@@ -48,6 +48,10 @@ INCLUDE_ONLY_IN_2ioxx_mfi =
 XCC_FLAGS_2xoxx_mfi = $(BUILD_FLAGS) -DIAP=1 -DMIDI=0 -DSPDIF=0 -DNUM_USB_CHAN_IN=0
 INCLUDE_ONLY_IN_2xoxx_mfi = 
 
+#Audio Class 2, iAP enabled, EA Protocol (Native Transport), Input, Output, No MIDI, No SPDIF
+XCC_FLAGS_2ioxx_mfi_n = $(BUILD_FLAGS) -DIAP=1 -DIAP_EA_NATIVE=1 -DMIDI=0 -DSPDIF=0
+INCLUDE_ONLY_IN_2ioxx_mfi_n = 
+
 include mfi.mk
 
 endif
