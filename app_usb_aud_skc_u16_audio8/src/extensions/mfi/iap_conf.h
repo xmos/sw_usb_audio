@@ -18,3 +18,5 @@
 
 #define ACCESSORY_CURRENT_SUPPLY 2400 // mA
 #define APPLE_BATTERY_CHARGING   1
+
+#define IAP_EA_NATIVE_PROTOCOL_NAME "com.xmos.led_control"
