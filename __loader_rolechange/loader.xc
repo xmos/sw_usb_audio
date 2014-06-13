@@ -9,12 +9,12 @@ unsigned loadmagic()
     unsigned x;
     asm("ldw %0, %1[0]" : "=r"(x):  "r"(0x1ffc8));
     return x;
-}  
+}
 
 void storemagic(unsigned x)
 {
     asm("stw %0, %1[0]" :: "r"(x), "r"(0x1ffc8));
-}   
+}
 
 int dpVersion;
 unsigned imgAdr;

@@ -14,7 +14,7 @@ void HandleRebootTimeout(timer t)
 {
     unsigned time;
     t :> time;
-    
+
     /* Reset U8 device */
     write_node_config_reg(usb_tile, XS1_SU_CFG_RST_MISC_NUM, 1);
     while(1);
@@ -29,7 +29,7 @@ void XUD_UserSuspend(void)
 
     UserAudioStreamStop();
     UserHostActive(0);
-    
+
     DISABLE_INTERRUPTS();
 
     g_rebootTimer :> time;
@@ -44,7 +44,7 @@ void XUD_UserSuspend(void)
 void XUD_UserResume(void)
 {
     unsigned config;
-    
+
     /* Clear the reboot interrupt */
     DISABLE_INTERRUPTS();
     asm("edu res[%0]"::"r"(g_rebootTimer));
