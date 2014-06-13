@@ -1,9 +1,19 @@
 sw_usb_audio Change Log
 =======================
 
-6.6.1 (UNRELEASED)
+6.6.1
 -----
     - RESOLVED:  Makefile issue for 2ioxx config in app_usb_aud_skc_su1
+
+  * Changes to dependencies:
+
+    - sc_xud: 2.1.1rc0 -> 2.2.0rc0
+
+      + CHANGE:     Timer usage optimisation - usage reduced by one.
+      + CHANGE:     OTG Flags register explicitly cleared at start up - useful if previously running
+
+    - sc_usb_device: 1.3.0rc0 -> 1.3.1rc0
+
 
 6.6.0
 -----
