@@ -29,9 +29,10 @@ unsigned imgAdr;
 
 TODO if an upgrade images exists for the desired function boot this, else use the factory image for the desired functionality */
 
-#define IMAGE_NUM_DOCK        0
-#define IMAGE_NUM_USB_AUD_MFI 1
-#define IMAGE_NUM_USB_AUD     2
+#define IMAGE_NUM_USB_AUD_FACT      0   /* Factory USB audio */
+#define IMAGE_NUM_DOCK              1
+#define IMAGE_NUM_USB_AUD_MFI       2
+#define IMAGE_NUM_USB_AUD_UP        3  /* Upgrade for USB audio */
 
 void init(void)
 {
@@ -40,13 +41,9 @@ void init(void)
 
     p_sw :>  switchVal;
 
-    dpVersion = IMAGE_NUM_DOCK;      /* Default to iPod dock */
+    dpVersion = IMAGE_NUM_USB_AUD_FACT;      /* Default to factory USB Audio (b-connector)*/
 
-    if((switchVal & 0b1000)== 0b0000)
-    {
-        dpVersion = IMAGE_NUM_USB_AUD;  /* USB Audio (B connector) */
-    }
-    else
+    if((switchVal & 0b1000)== 0b1000)
     {
         tmp = loadmagic();
 
@@ -54,14 +51,22 @@ void init(void)
         {
             dpVersion = IMAGE_NUM_USB_AUD_MFI;  /* USB Audio MFI*/
         }
+        else
+        {
+            dpVersion = IMAGE_NUM_DOCK;       /* iPod Dock */
+        }
     }
     storemagic(0);
 }
 
+/* We assume higher versions get priority.. */
 int checkCandidateImageVersion(int v)
 {
-    /* We assume higher versions get priority.. */
-    return (v) == dpVersion;
+    /* Special case for usb audio (b-connector) upgrade image */
+    //if((dpVersion == IMAGE_NUM_USB_AUD_FACT) && (v == IMAGE_NUM_USB_AUD_UP))
+      //  return 1; 
+    
+    return v == dpVersion;
 }
 
 void recordCandidateImage(int v, unsigned adr)
