@@ -99,6 +99,14 @@ INCLUDE_ONLY_IN_2xoxs_16b4pcm_32b4dsd_24b4pcm =
 XCC_FLAGS_2iomx_reboot = $(BUILD_FLAGS) -DMIDI=1 -DSPDIF=0 -DSW_INT_HANDLER=1
 INCLUDE_ONLY_IN_2iomx_reboot = 
 
+#Audio Class 2, Input, Output, MIDI, No SPDIF
+#BCD_DEVICE changed for DFU test
+XCC_FLAGS_2iomx_reboot_upgrade1 = $(BUILD_FLAGS) -DMIDI=1 -DSPDIF=0 -DSW_INT_HANDLER=1 -DBCD_DEVICE=0xFF01
+
+#Audio Class 2, Input, Output, MIDI, No SPDIF
+#BCD_DEVICE changed for DFU test
+XCC_FLAGS_2iomx_reboot_upgrade2 = $(BUILD_FLAGS) -DMIDI=1 -DSPDIF=0 -DSW_INT_HANDLER=1 -DBCD_DEVICE=0xFF02
+
 
 else
 # MFi test build configs - iAP support enabled
@@ -126,6 +134,14 @@ INCLUDE_ONLY_IN_2iomx_usba_mfi =
 #Audio Class 2, iAP enabled, Input, Output, MIDI, No SPDIF. On USB A port. Turn on reboot based on switch.
 XCC_FLAGS_2iomx_usba_reboot_mfi = $(BUILD_FLAGS) -DIAP=1 -DMIDI=1 -DSPDIF=0 -DUSB_SEL_A=1 -DSW_INT_HANDLER=1 -DSWITCH_VAL=0b1000
 INCLUDE_ONLY_IN_2iomx_usba_reboot_mfi = 
+
+#Audio Class 2, iAP enabled, Input, Output, MIDI, No SPDIF. On USB A port. Turn on reboot based on switch.
+#BCD_DEVICE changed for DFU test
+XCC_FLAGS_2iomx_usba_reboot_mfi_upgrade1 = $(BUILD_FLAGS) -DIAP=1 -DMIDI=1 -DSPDIF=0 -DUSB_SEL_A=1 -DSW_INT_HANDLER=1 -DSWITCH_VAL=0b1000 -DBCD_DEVICE=0xFF01
+
+#Audio Class 2, iAP enabled, Input, Output, MIDI, No SPDIF. On USB A port. Turn on reboot based on switch.
+#BCD_DEVICE changed for DFU test
+XCC_FLAGS_2iomx_usba_reboot_mfi_upgrade2 = $(BUILD_FLAGS) -DIAP=1 -DMIDI=1 -DSPDIF=0 -DUSB_SEL_A=1 -DSW_INT_HANDLER=1 -DSWITCH_VAL=0b1000 -DBCD_DEVICE=0xFF02
 
 include mfi.mk
 
