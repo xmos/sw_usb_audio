@@ -101,12 +101,12 @@ INCLUDE_ONLY_IN_2iomx_reboot =
 
 #Audio Class 2, Input, Output, MIDI, No SPDIF
 #BCD_DEVICE changed for DFU test
-XCC_FLAGS_2iomx_reboot_upgrade1 = $(BUILD_FLAGS) -DMIDI=1 -DSPDIF=0 -DSW_INT_HANDLER=1 -DBCD_DEVICE=0xFF01
+XCC_FLAGS_2iomx_reboot_upgrade1 = $(BUILD_FLAGS) -DMIDI=1 -DSPDIF=0 -DSW_INT_HANDLER=1 -DBCD_DEVICE_J=99 -DBCD_DEVICE_M=0 -DBCD_DEVICE_N=1
+
 
 #Audio Class 2, Input, Output, MIDI, No SPDIF
 #BCD_DEVICE changed for DFU test
-XCC_FLAGS_2iomx_reboot_upgrade2 = $(BUILD_FLAGS) -DMIDI=1 -DSPDIF=0 -DSW_INT_HANDLER=1 -DBCD_DEVICE=0xFF02
-
+XCC_FLAGS_2iomx_reboot_upgrade2 = $(BUILD_FLAGS) -DMIDI=1 -DSPDIF=0 -DSW_INT_HANDLER=1 -DBCD_DEVICE_J=99 -DBCD_DEVICE_M=0 -DBCD_DEVICE_N=2
 
 else
 # MFi test build configs - iAP support enabled
@@ -137,19 +137,22 @@ INCLUDE_ONLY_IN_2iomx_usba_reboot_mfi =
 
 #Audio Class 2, iAP enabled, Input, Output, MIDI, No SPDIF. On USB A port. Turn on reboot based on switch.
 #BCD_DEVICE changed for DFU test
-XCC_FLAGS_2iomx_usba_reboot_mfi_upgrade1 = $(BUILD_FLAGS) -DIAP=1 -DMIDI=1 -DSPDIF=0 -DUSB_SEL_A=1 -DSW_INT_HANDLER=1 -DSWITCH_VAL=0b1000 -DBCD_DEVICE=0xFF01
+XCC_FLAGS_2iomx_usba_reboot_mfi_upgrade1 = $(BUILD_FLAGS) -DIAP=1 -DMIDI=1 -DSPDIF=0 -DUSB_SEL_A=1 -DSW_INT_HANDLER=1 -DSWITCH_VAL=0b1000 -DBCD_DEVICE_J=99 -DBCD_DEVICE_M=0 -DBCD_DEVICE_N=1
+INCLUDE_ONLY_IN_2iomx_usba_reboot_mfi_upgrade1 =
 
 #Audio Class 2, iAP enabled, Input, Output, MIDI, No SPDIF. On USB A port. Turn on reboot based on switch.
 #BCD_DEVICE changed for DFU test
-XCC_FLAGS_2iomx_usba_reboot_mfi_upgrade2 = $(BUILD_FLAGS) -DIAP=1 -DMIDI=1 -DSPDIF=0 -DUSB_SEL_A=1 -DSW_INT_HANDLER=1 -DSWITCH_VAL=0b1000 -DBCD_DEVICE=0xFF02
+XCC_FLAGS_2iomx_usba_reboot_mfi_upgrade2 = $(BUILD_FLAGS) -DIAP=1 -DMIDI=1 -DSPDIF=0 -DUSB_SEL_A=1 -DSW_INT_HANDLER=1 -DSWITCH_VAL=0b1000 -DBCD_DEVICE_J=99 -DBCD_DEVICE_M=0 -DBCD_DEVICE_N=1
+INCLUDE_ONLY_IN_2iomx_usba_reboot_mfi_upgrade2 =
 
 include mfi.mk
 
 endif
 
 ifeq ($(TEST_CONFIGS),1)
-XCC_FLAGS_upgrade1 = $(BUILD_FLAGS) -DBCD_DEVICE=0x9901
-XCC_FLAGS_upgrade2 = $(BUILD_FLAGS) -DBCD_DEVICE=0x9902
+XCC_FLAGS_upgrade1 = $(BUILD_FLAGS) -DBCD_DEVICE_J=0x99 -DBCD_DEVICE_M=0x0 -DBCD_DEVICE_N=0x1
+XCC_FLAGS_upgrade2 = $(BUILD_FLAGS) -DBCD_DEVICE_J=0x99 -DBCD_DEVICE_M=0x0 -DBCD_DEVICE_N=0x2
+
 endif
 
 #=============================================================================
