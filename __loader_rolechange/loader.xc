@@ -63,8 +63,8 @@ void init(void)
 int checkCandidateImageVersion(int v)
 {
     /* Special case for usb audio (b-connector) upgrade image */
-    //if((dpVersion == IMAGE_NUM_USB_AUD_FACT) && (v == IMAGE_NUM_USB_AUD_UP))
-      //  return 1; 
+    if((dpVersion == IMAGE_NUM_USB_AUD_FACT) && (v == IMAGE_NUM_USB_AUD_UP))
+        return 1; 
     
     return v == dpVersion;
 }
