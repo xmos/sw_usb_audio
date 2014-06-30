@@ -154,7 +154,7 @@
     <dependency repo = "sc_usb_device">
         <gitbranch>master</gitbranch>
         <githash>8130db0c78b25721c2ed370e2b79f85128b0f542</githash>
-        <uri>git://git/apps/sc_usb_device</uri>
+        <uri>git://github.com/xcore/sc_usb_device</uri>
         <version>1.3.0rc0</version>
     </dependency>
     <dependency repo = "sc_util">
