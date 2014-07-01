@@ -118,9 +118,9 @@ INCLUDE_ONLY_IN_2ioxx_mfi =
 XCC_FLAGS_2iomx_mfi = $(BUILD_FLAGS) -DIAP=1 -DMIDI=1 -DSPDIF=0
 INCLUDE_ONLY_IN_2iomx_mfi = 
 
-#Audio Class 2, iAP enabled, Input, Output, MIDI, No SPDIF. Select USB A port. Turn on reboot based on switch.
+#Audio Class 2, iAP enabled, Input, Output, MIDI, No SPDIF. Select USB A port. Turn on reboot based on switch. Ignore VBUS.
 #Note, this is the config used for Apple role-switch
-XCC_FLAGS_2iomx_usba_reboot_mfi = $(BUILD_FLAGS) -DIAP=1 -DMIDI=1 -DSPDIF=0 -DUSB_SEL_A=1 -DSW_INT_HANDLER=1 -DSWITCH_VAL=0b1000
+XCC_FLAGS_2iomx_usba_reboot_mfi = $(BUILD_FLAGS) -DIAP=1 -DMIDI=1 -DSPDIF=0 -DUSB_SEL_A=1 -DSW_INT_HANDLER=1 -DSWITCH_VAL=0b1000 -DXUD_PWR_CFG=0
 INCLUDE_ONLY_IN_2iomx_usba_reboot_mfi = 
 
 include mfi.mk
