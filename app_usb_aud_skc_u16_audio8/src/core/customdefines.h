@@ -66,8 +66,11 @@
 /* Device is self-powered (i.e. not USB bus powered) */
 #define SELF_POWERED       1
 
-/* Index of SPDIF TX channel (duplicated DAC channels 1/2 when index is 0) */
+/* Index of SPDIF Rx channels (duplicated DAC channels 1/2 when index is 0) */
 #define SPDIF_TX_INDEX     (8)
+
+/* Index of SPDIF Rx channels */
+#define SPDIF_RX_INDEX     (8)
 
 /***** Defines relating to USB descriptors etc *****/
 #define PID_AUDIO_2        (0x000C) /* XMOS U16 - Audio Class 2.0 */

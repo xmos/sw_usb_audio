@@ -27,6 +27,10 @@ INCLUDE_ONLY_IN_2iomx =
 XCC_FLAGS_1ioxx = $(BUILD_FLAGS) -DAUDIO_CLASS=1 -DMIDI=0 -DSPDIF=0
 INCLUDE_ONLY_IN_1ioxx = 
 
+# Audio Class 2, Input, Output, No MIDI, SPDIF out, SPDIF in
+XCC_FLAGS_2io_spdifout_spdifin = $(BUILD_FLAGS) -DSPDIF_RX=1
+INCLUDE_ONLY_IN_2io_spdifout_spdifin = 
+
 # Audio Class 1, no Input, Output, no MIDI, no SPDIF
 XCC_FLAGS_1xoxx = $(BUILD_FLAGS) -DAUDIO_CLASS=1 -DMIDI=0 -DSPDIF=0 -DNUM_USB_CHAN_IN=0
 INCLUDE_ONLY_IN_1xoxx = 
