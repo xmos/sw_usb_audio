@@ -23,12 +23,14 @@ on tile [AUDIO_IO_TILE] : struct r_i2c r_i2c = {PORT_I2C_SCL, PORT_I2C_SDA};
 extern struct r_i2c r_i2c;
 #endif
 
-#if defined(SW_INT_HANDLER) && defined(IAP)
+#if defined(SW_INT_HANDLER) && defined(IAP) && !defined(USB_SEL_A)
 #error not currently supported
 #endif
 
 #ifdef SW_INT_HANDLER
+#ifndef SWITCH_VAL
 #define SWITCH_VAL 0b0000
+#endif
 #pragma select handler
 void handle_switch_request(in port p_sw)
 {
@@ -46,6 +48,13 @@ void handle_switch_request(in port p_sw)
 }
 #endif
 
+#ifdef USB_SEL_A
+#define USB_SEL_VAL P_GPIO_USB_SEL1
+#else
+/* Disable VBUS when not using A port */
+#define USB_SEL_VAL (0 | P_GPIO_VBUS_OUT_EN)
+#endif
+
 //:codec_init
 void AudioHwInit(chanend ?c_codec)
 {
@@ -58,7 +67,7 @@ void AudioHwInit(chanend ?c_codec)
 
     port32A_lock_peek(x);
 
-    x |= (P_GPIO_5VA_EN | P_GPIO_SS_EN_CTRL);
+    x |= (P_GPIO_5VA_EN | P_GPIO_SS_EN_CTRL | USB_SEL_VAL);
 
     port32A_out_unlock(x);
 
@@ -134,6 +143,7 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
     unsigned time;
     unsigned tmp;
     unsigned char data[] = {0, 0};
+
 
     port32A_lock_peek(tmp);
 
