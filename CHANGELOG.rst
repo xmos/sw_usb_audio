@@ -4,9 +4,15 @@ sw_usb_audio Change Log
 6.7.0
 -----
     - CHANGE:     Audio interrupt endpoint implementation simplified (use for notifying host of clock
-                  validity changes) simplified. Decouple() no longer involved. 
+                  validity changes) simplified. Decouple() no longer involved.
     - RESOLVED:   Makefile issue for 2ioxx config in app_usb_aud_skc_su1
     - RESOLVED:   Support for S/PDIF input reinstated (includes descriptors, clocking support etc)
+
+  * Changes to dependencies:
+
+    - sc_usb_audio: 6.6.1rc1 -> 6.7.0alpha0
+
+      + see sw_usb_audio for changelog
 
 6.6.1
 -----
