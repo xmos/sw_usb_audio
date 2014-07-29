@@ -1,9 +1,16 @@
 sw_usb_audio Change Log
 =======================
 
+6.7.0
+-----
+    - CHANGE:     Audio interrupt endpoint implementation simplified (use for notifying host of clock
+                  validity changes) simplified. Decouple() no longer involved. 
+    - RESOLVED:   Makefile issue for 2ioxx config in app_usb_aud_skc_su1
+    - RESOLVED:   Support for S/PDIF input reinstated (includes descriptors, clocking support etc)
+
 6.6.1
 -----
-    - ADDED:      DFU documentation
+    - ADDED:      Documentation for DFU
     - ADDED:      XUD_PWR_CFG define
     - CHANGE:     DSD ports now only enabled once to avoid potential lock up on DSD->PCM mode change
                   due to un-driven line floating high. ConfigAudioPortsWrapper() also simplified.
