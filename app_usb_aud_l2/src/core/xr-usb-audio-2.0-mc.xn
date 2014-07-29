@@ -19,8 +19,8 @@ xsi:schemaLocation="http://www.xmos.com http://www.xmos.com">
         <Port Location="XS1_PORT_1D" Name="PORT_SPI_MOSI"/>
 
         <!-- Standard USB Audio Ports --> 
-        <Port Location="XS1_PORT_1J" Name="PORT_OPT_IN"/>
         <Port Location="XS1_PORT_1K" Name="PORT_SPDIF_IN"/> <!-- coax -->
+        <!--<Port Location="XS1_PORT_1J" Name="PORT_SPDIF_IN"/> --> <!-- opt -->
         <Port Location="XS1_PORT_1L" Name="PORT_MCLK_IN2"/>
         <Port Location="XS1_PORT_1M" Name="PORT_USB_RESET"/>
         <Port Location="XS1_PORT_4E" Name="PORT_PLL_CLK"/>
