@@ -2,7 +2,7 @@
 
 #include "iap.h"
 
-void ea_protcol_demo(chanend c_ea_data)
+void ea_protocol_demo(chanend c_ea_data)
 {
     while (1)
     {
