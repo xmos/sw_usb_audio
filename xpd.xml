@@ -169,7 +169,7 @@
     <location>git://git/apps/sw_usb_audio</location>
     <name>sw_usb_audio</name>
     <maintainer>Ross Owen</maintainer>
-    <partnumber>XM-006005-DH</partnumber>
+    <partnumber>XM-002774-DH</partnumber>
     <release parenthash = "b2a76343f69bcc2dd10ded9f53c84bb76c63f7ff" version = "6.0.0alpha0" githash = "6d3ad975a906402f2cce649fc61e3caf4ab73d77"></release>
     <release parenthash = "e3892816f8c7b6b83bfdd0b9cbd50fd4377aedd4" version = "6.0.0alpha1" githash = "9031aaaa521489a88ba01f2fe27d5a5756458e16"></release>
     <release parenthash = "bfc454b8e28e7a5a86b55df58586e9bf57a10f55" version = "6.0.0alpha2" githash = "02d73ec64b9f522e46e75110cd29fd56cc7a0507"></release>
