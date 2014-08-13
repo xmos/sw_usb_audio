@@ -63,11 +63,14 @@ void com_xmos_demo_protocol_message_parser(unsigned char packet[n], unsigned n)
     // Check packet length is not zero
     if (n > 0)
     {
-        short message_length = (packet[MESSAGE_LENGTH_OFFSET] | (packet[MESSAGE_LENGTH_OFFSET + 1] << 8)) - MESSAGE_LENGTH_SIZE;
-        if (message_length > 0)
+        short packet_length = ((packet[MESSAGE_LENGTH_OFFSET] << 8) | packet[MESSAGE_LENGTH_OFFSET + 1]); //TODO: check packet_length == n
+        short message_length = packet_length - MESSAGE_LENGTH_SIZE; // Exclude packet header
+        if (message_length > 0) //TODO: check message_length does not exceed packet length 'n'
         {
             com_xmos_demo_protocol_msg_t message_type = packet[MESSAGE_TYPE_OFFSET];
-            short message_data_length = (message_length - MESSAGE_DATA_OFFSET);
+            short message_data_length = (packet_length - MESSAGE_DATA_OFFSET);
+
+            debug_printf("EA Protocol demo: packet of length %d received, containing %d bytes of message data\n", packet_length, message_data_length);
 
             // Check protocol message type
             switch (message_type)
