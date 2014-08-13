@@ -52,6 +52,7 @@ int com_xmos_demo_led_ctrl_command_parser(unsigned char packet[n], unsigned n)
             return 0;
         case LED_ON_CMD:
             //TODO: LED on
+            debug_printf("LED ON\n");
             return 0;
     }
     return 1;
@@ -156,7 +157,7 @@ void ea_protocol_demo(chanend c_ea_data)
     {
         char data[IAP2_EA_NATIVE_TRANS_MAX_PACKET_SIZE];
 
-        select
+        select //TODO: could use iAP2_EANativeTransport_dataToiOS() here - would need to update names etc. to keep it clear
         {
             case c_ea_data :> int dataLength:
                 // Receive the data
@@ -164,6 +165,7 @@ void ea_protocol_demo(chanend c_ea_data)
                 {
                     c_ea_data :> data[i];
                 }
+                com_xmos_demo_protocol_message_parser(data, dataLength);
                 break;
         }
     }
