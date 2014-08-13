@@ -67,7 +67,7 @@ void com_xmos_demo_protocol_message_parser(unsigned char packet[n], unsigned n)
         if (message_length > 0)
         {
             com_xmos_demo_protocol_msg_t message_type = packet[MESSAGE_TYPE_OFFSET];
-            short message_data_lenght = (message_length - MESSAGE_DATA_OFFSET);
+            short message_data_length = (message_length - MESSAGE_DATA_OFFSET);
 
             // Check protocol message type
             switch (message_type)
@@ -80,7 +80,7 @@ void com_xmos_demo_protocol_message_parser(unsigned char packet[n], unsigned n)
                 case START_CMD:
                     debug_printf("EA Protocol demo: START_CMD received\n");
                     // Check we're using the same protocol version as the iOS app
-                    if (message_data_lenght == 1)
+                    if (message_data_length == 1)
                     {
                         char iOS_protocol_version = packet[MESSAGE_DATA_OFFSET];
                         if (iOS_protocol_version == COM_XMOS_DEMO_PROTOCOL_VERSION)
@@ -109,7 +109,7 @@ void com_xmos_demo_protocol_message_parser(unsigned char packet[n], unsigned n)
                      * printing out all supported command sets for debug purposes
                      */
                     debug_printf("EA Protocol demo: iOS app supports the following demo command sets:\n");
-                    for (int i = 0; i < message_data_lenght; i++)
+                    for (int i = 0; i < message_data_length; i++)
                     {
                         debug_printf("EA Protocol demo: 0x%x\n", packet[MESSAGE_DATA_OFFSET+i]);
                     }
