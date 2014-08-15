@@ -1,6 +1,10 @@
 sw_usb_audio Change Log
 =======================
 
+6.6.2
+-----
+    - CHANGE:     "Output" and "Input" no longer appended to Audio string descriptors
+
 6.6.1
 -----
     - ADDED:      DFU documentation
