@@ -6,7 +6,7 @@ static void user_init_constructor(void) __attribute__((constructor));
 
 static void user_init_constructor(void)
 {
-#ifdef XUD_ON_U_SERIES
+#if(XUD_SERIES_SUPPORT == 1)
     archU_powerSaving();
 #endif
 }
