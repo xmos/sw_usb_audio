@@ -157,16 +157,11 @@
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/gcc&quot;"/>
                                     <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/core}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/lp}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/mfi}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/powersave}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources/DWARF}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
@@ -324,16 +319,11 @@
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/gcc&quot;"/>
                                     <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/core}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/lp}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/mfi}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/powersave}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources/DWARF}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
@@ -497,16 +487,11 @@
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/c++/4.2.1&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/c++/4.2.1/xcore-xmos-elf&quot;"/>
                                     <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/core}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/lp}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/mfi}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/powersave}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources/DWARF}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
@@ -806,16 +791,11 @@
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/gcc&quot;"/>
                                     <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/core}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/lp}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/mfi}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/powersave}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources/DWARF}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
@@ -973,16 +953,11 @@
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/gcc&quot;"/>
                                     <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/core}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/lp}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/mfi}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/powersave}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources/DWARF}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
@@ -1146,16 +1121,11 @@
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/c++/4.2.1&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/c++/4.2.1/xcore-xmos-elf&quot;"/>
                                     <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/core}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/lp}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/mfi}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/powersave}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources/DWARF}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
@@ -1455,16 +1425,11 @@
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/gcc&quot;"/>
                                     <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/core}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/lp}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/mfi}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/powersave}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources/DWARF}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
@@ -1622,16 +1587,11 @@
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/gcc&quot;"/>
                                     <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/core}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/lp}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/mfi}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/powersave}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources/DWARF}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
@@ -1795,16 +1755,11 @@
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/c++/4.2.1&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/c++/4.2.1/xcore-xmos-elf&quot;"/>
                                     <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/core}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/lp}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/mfi}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/powersave}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources/DWARF}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
@@ -2104,16 +2059,11 @@
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/gcc&quot;"/>
                                     <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/core}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/lp}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/mfi}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/powersave}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources/DWARF}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
@@ -2271,16 +2221,11 @@
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/gcc&quot;"/>
                                     <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/core}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/lp}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/mfi}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/powersave}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources/DWARF}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
@@ -2444,16 +2389,11 @@
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/c++/4.2.1&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/c++/4.2.1/xcore-xmos-elf&quot;"/>
                                     <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/core}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/lp}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/mfi}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/powersave}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources/DWARF}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
@@ -2753,16 +2693,11 @@
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/gcc&quot;"/>
                                     <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/core}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/lp}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/mfi}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/powersave}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources/DWARF}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
@@ -2920,16 +2855,11 @@
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/gcc&quot;"/>
                                     <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/core}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/lp}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/mfi}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/powersave}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources/DWARF}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
@@ -3093,16 +3023,11 @@
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/c++/4.2.1&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/c++/4.2.1/xcore-xmos-elf&quot;"/>
                                     <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/core}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/lp}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/mfi}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/powersave}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources/DWARF}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
@@ -3402,16 +3327,11 @@
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/gcc&quot;"/>
                                     <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/core}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/lp}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/mfi}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/powersave}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources/DWARF}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
@@ -3569,16 +3489,11 @@
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/gcc&quot;"/>
                                     <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/core}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/lp}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/mfi}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/powersave}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources/DWARF}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
@@ -3742,16 +3657,11 @@
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/c++/4.2.1&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/c++/4.2.1/xcore-xmos-elf&quot;"/>
                                     <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/core}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/lp}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/mfi}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/powersave}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources/DWARF}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
@@ -4051,16 +3961,11 @@
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/gcc&quot;"/>
                                     <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/core}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/lp}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/mfi}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/powersave}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources/DWARF}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
@@ -4218,16 +4123,11 @@
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/gcc&quot;"/>
                                     <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/core}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/lp}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/mfi}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/powersave}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources/DWARF}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
@@ -4391,16 +4291,11 @@
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/c++/4.2.1&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/c++/4.2.1/xcore-xmos-elf&quot;"/>
                                     <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/core}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/lp}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/mfi}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/powersave}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources/DWARF}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
@@ -4700,16 +4595,11 @@
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/gcc&quot;"/>
                                     <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/core}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/lp}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/mfi}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/powersave}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources/DWARF}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
@@ -4867,16 +4757,11 @@
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/gcc&quot;"/>
                                     <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/core}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/lp}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/mfi}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/powersave}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources/DWARF}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
@@ -5040,16 +4925,11 @@
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/c++/4.2.1&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/c++/4.2.1/xcore-xmos-elf&quot;"/>
                                     <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/core}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/lp}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/mfi}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/powersave}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources/DWARF}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
@@ -5349,16 +5229,11 @@
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/gcc&quot;"/>
                                     <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/core}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/lp}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/mfi}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/powersave}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources/DWARF}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
@@ -5516,16 +5391,11 @@
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/gcc&quot;"/>
                                     <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/core}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/lp}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/mfi}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/powersave}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources/DWARF}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
@@ -5689,16 +5559,11 @@
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/c++/4.2.1&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/c++/4.2.1/xcore-xmos-elf&quot;"/>
                                     <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/core}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/lp}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/mfi}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/powersave}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources/DWARF}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
@@ -5998,16 +5863,11 @@
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/gcc&quot;"/>
                                     <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/core}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/lp}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/mfi}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/powersave}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources/DWARF}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
@@ -6165,16 +6025,11 @@
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/gcc&quot;"/>
                                     <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/core}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/lp}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/mfi}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/powersave}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources/DWARF}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
@@ -6338,16 +6193,11 @@
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/c++/4.2.1&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/c++/4.2.1/xcore-xmos-elf&quot;"/>
                                     <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/core}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/lp}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/mfi}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/powersave}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources/DWARF}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
@@ -6647,16 +6497,11 @@
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/gcc&quot;"/>
                                     <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/core}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/lp}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/mfi}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/powersave}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources/DWARF}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
@@ -6814,16 +6659,11 @@
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/gcc&quot;"/>
                                     <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/core}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/lp}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/mfi}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/powersave}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources/DWARF}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
@@ -6987,16 +6827,11 @@
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/c++/4.2.1&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/c++/4.2.1/xcore-xmos-elf&quot;"/>
                                     <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/core}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/lp}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/mfi}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/powersave}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources/DWARF}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
@@ -7296,16 +7131,11 @@
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/gcc&quot;"/>
                                     <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/core}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/lp}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/mfi}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/powersave}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources/DWARF}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
@@ -7463,16 +7293,11 @@
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/gcc&quot;"/>
                                     <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/core}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/lp}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/mfi}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/powersave}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources/DWARF}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
@@ -7636,16 +7461,11 @@
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/c++/4.2.1&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/c++/4.2.1/xcore-xmos-elf&quot;"/>
                                     <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/core}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/lp}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/mfi}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/powersave}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources/DWARF}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
@@ -7945,16 +7765,11 @@
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/gcc&quot;"/>
                                     <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/core}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/lp}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/mfi}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/powersave}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources/DWARF}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
@@ -8112,16 +7927,11 @@
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/gcc&quot;"/>
                                     <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/core}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/lp}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/mfi}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/powersave}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources/DWARF}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
@@ -8285,16 +8095,11 @@
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/c++/4.2.1&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/c++/4.2.1/xcore-xmos-elf&quot;"/>
                                     <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/core}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/lp}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/mfi}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/powersave}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources/DWARF}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
@@ -8594,16 +8399,11 @@
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/gcc&quot;"/>
                                     <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/core}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/lp}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/mfi}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/powersave}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources/DWARF}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
@@ -8761,16 +8561,11 @@
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/gcc&quot;"/>
                                     <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/core}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/lp}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/mfi}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/powersave}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources/DWARF}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
@@ -8934,16 +8729,11 @@
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/c++/4.2.1&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/c++/4.2.1/xcore-xmos-elf&quot;"/>
                                     <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/core}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/lp}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/mfi}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/powersave}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources/DWARF}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
@@ -9243,16 +9033,11 @@
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/gcc&quot;"/>
                                     <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/core}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/lp}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/mfi}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/powersave}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources/DWARF}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
@@ -9410,16 +9195,11 @@
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/gcc&quot;"/>
                                     <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/core}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/lp}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/mfi}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/powersave}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources/DWARF}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
@@ -9583,16 +9363,11 @@
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/c++/4.2.1&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/c++/4.2.1/xcore-xmos-elf&quot;"/>
                                     <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/core}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/lp}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/mfi}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/powersave}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources/DWARF}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
@@ -9892,16 +9667,11 @@
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/gcc&quot;"/>
                                     <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/core}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/lp}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/mfi}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/powersave}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources/DWARF}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
@@ -10059,16 +9829,11 @@
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/gcc&quot;"/>
                                     <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/core}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/lp}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/mfi}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/powersave}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources/DWARF}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
@@ -10232,16 +9997,11 @@
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/c++/4.2.1&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/c++/4.2.1/xcore-xmos-elf&quot;"/>
                                     <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/core}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/lp}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/mfi}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/powersave}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources/DWARF}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
@@ -10541,16 +10301,11 @@
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/gcc&quot;"/>
                                     <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/core}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/lp}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/mfi}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/powersave}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources/DWARF}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
@@ -10708,16 +10463,11 @@
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/gcc&quot;"/>
                                     <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/core}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/lp}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/mfi}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/powersave}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources/DWARF}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
@@ -10881,16 +10631,11 @@
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/c++/4.2.1&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/c++/4.2.1/xcore-xmos-elf&quot;"/>
                                     <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/core}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/lp}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/mfi}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/powersave}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources/DWARF}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
@@ -11190,16 +10935,11 @@
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/gcc&quot;"/>
                                     <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/core}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/lp}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/mfi}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/powersave}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources/DWARF}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
@@ -11357,16 +11097,11 @@
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/gcc&quot;"/>
                                     <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/core}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/lp}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/mfi}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/powersave}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources/DWARF}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
@@ -11530,16 +11265,11 @@
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/c++/4.2.1&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${XMOS_TOOL_PATH}/target/include/c++/4.2.1/xcore-xmos-elf&quot;"/>
                                     <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/core}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/lp}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/mfi}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions/powersave}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_xk_u8_2c}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources/DWARF}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/src}&quot;' />
