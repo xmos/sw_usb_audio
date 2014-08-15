@@ -17,7 +17,7 @@ sw_usb_audio Change Log
       + CHANGE:     Timer usage optimisation - usage reduced by one.
       + CHANGE:     OTG Flags register explicitly cleared at start up - useful if previously running
 
-    - sc_usb_audio: 6.6.0rc2 -> 6.6.1rc1
+    - sc_usb_audio: 6.6.0rc2 -> 6.6.2rc0
 
       + see sw_usb_audio for changelog
 
