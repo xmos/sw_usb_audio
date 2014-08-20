@@ -73,16 +73,17 @@ int com_xmos_demo_protocol_message_parser(unsigned char packet_data[n], unsigned
     // Get the length of the first message the packet data
     short message_length = ((packet_data[MESSAGE_LENGTH_OFFSET] << 8) | packet_data[MESSAGE_LENGTH_OFFSET+1]);
 
-    if (message_length < MIN_VALID_MSG_LEN)
-    {
-        // Message is shorter than minimum expected length
-        debug_printf("EA Protocol demo: ERROR - Message length of %d shorter than the minimum valid length of %d\n", message_length, MIN_VALID_MSG_LEN);
-        return message_length;
-    }
     if (n < message_length)
     {
         // Message exceeds length of packet data
         debug_printf("EA Protocol demo: ERROR - Message length of %d exceeds length of packet data %d bytes\n", message_length, n);
+        return n;
+    }
+
+    if (message_length < MIN_VALID_MSG_LEN)
+    {
+        // Message is shorter than minimum expected length
+        debug_printf("EA Protocol demo: ERROR - Message length of %d shorter than the minimum valid length of %d\n", message_length, MIN_VALID_MSG_LEN);
         return message_length;
     }
 
