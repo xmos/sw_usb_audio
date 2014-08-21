@@ -4,10 +4,10 @@
 #ifdef IAP_EA_NATIVE_TRANS
 #include <xccompat.h>
 
-void ea_protocol_demo(chanend c_ea_data);
+void u16_audio8_ea_protocol_demo(chanend c_ea_data);
 
 #define USER_MAIN_CORES \
-    on tile[1] : ea_protocol_demo(c_ea_data);
+    on tile[1] : u16_audio8_ea_protocol_demo(c_ea_data);
 
 #endif /* IAP_EA_NATIVE_TRANS */
 
