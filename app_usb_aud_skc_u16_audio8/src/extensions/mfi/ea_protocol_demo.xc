@@ -10,8 +10,25 @@
 /*
  * com.xmos.demo protocol message layout:
  *
- * MESSAGE_LENGTH | MESSAGE_TYPE | MESSAGE_DATA
- *   0xNN 0xNN    |     0xNN     | 0xNN ... 0xNN
+ * +----------------+--------------+-------------------+
+ * | MESSAGE_LENGTH | MESSAGE_TYPE |   MESSAGE_DATA    |
+ * +================+==============+===================+
+ * |   0xNN 0xNN    |     0xNN     | -/<0xNN ... 0xNN> |
+ * +----------------+--------------+-------------------+
+ *
+ *
+ * Message data layout for DEMO_CMD:
+ *
+ * +-------------+----------------------+----------------------------------+
+ * | command_set | <command_set>command | <command_set><command>parameters |
+ * +=============+======================+==================================+
+ * |    0xNN     |        0xNN          |        -/<0xNN ... 0xNN>         |
+ * +-------------+----------------------+----------------------------------+
+ *
+ *
+ * Example message containing LED_CTRL LED_ON_CMD command:
+ *
+ * [0x00, 0x05, 0x05, 0x00, 0x01]
  */
 #define MESSAGE_LENGTH_OFFSET 0
 #define MESSAGE_LENGTH_SIZE   2 // Size in bytes
