@@ -17,7 +17,7 @@ void u16_audio8_ea_protocol_demo(chanend c_ea_data)
                 {
                     c_ea_data :> data[i];
                 }
-                usb_packet_parser(data, dataLength);
+                usb_packet_parser(data, dataLength, c_ea_data);
                 break;
 
             //TODO: Add button handler
