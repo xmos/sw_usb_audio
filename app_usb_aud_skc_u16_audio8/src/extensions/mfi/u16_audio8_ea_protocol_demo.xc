@@ -2,6 +2,19 @@
 
 #include "iap.h"
 #include "ea_protocol_demo.h"
+#include "gpio.h"
+
+void com_xmos_demo_led_ctrl_user(com_xmos_demo_led_ctrl_commands_t demo_command)
+{
+    if (demo_command == LED_OFF_CMD)
+    {
+        set_led_array_mask(LED_MASK_COL_OFF);
+    }
+    else
+    {
+        set_led_array_mask(LED_MASK_DISABLE);
+    }
+}
 
 void u16_audio8_ea_protocol_demo(chanend c_ea_data)
 {
