@@ -48,3 +48,8 @@ void set_led_array_mask(unsigned short led_mask)
 
     hwlock_release(led_hwlock);
 }
+
+unsigned short get_led_array_mask()
+{
+    return g_led_mask;
+}
