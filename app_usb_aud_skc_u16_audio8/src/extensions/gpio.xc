@@ -22,6 +22,3 @@ void wait_us(int microseconds)
     t :> time;
     t when timerafter (time + (microseconds * 100)) :> void;
 }
-
-
-
