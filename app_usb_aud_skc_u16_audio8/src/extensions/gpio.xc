@@ -1,7 +1,6 @@
 #include <platform.h>
 #include <xs1.h>
 #include "gpio.h"
-#include "print.h"
 
 #define VERIFY_I2C 1
 
