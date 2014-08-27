@@ -92,7 +92,7 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
              * bit[0] : DSD Phase Modulation Enable
              */
             DAC_REGWRITE(CS4384_DSD_CTRL, 0b11001100);
-            p_led_array <: LED_SQUARE_BIG;
+            set_led_array(LED_SQUARE_BIG);
         }
         else
         {
@@ -106,7 +106,7 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
              * bit[0] : DSD Phase Modulation Enable
              */
             DAC_REGWRITE(CS4384_DSD_CTRL, 0b01001100);
-            p_led_array <: LED_SQUARE_SML;
+            set_led_array(LED_SQUARE_SML);
         }
 
         /* Mode Control 1 (Address: 0x02) */
@@ -177,19 +177,19 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
         /* Illuminate LEDs based on sample-rate */
         if (samFreq > 192000)
         {
-            p_led_array <: LED_ALL_ON;
+            set_led_array(LED_ALL_ON);
         }
         else if (samFreq > 96000)
         {
-            p_led_array <: LED_ROW_3;
+            set_led_array(LED_ROW_3);
         }
         else if (samFreq > 48000)
         {
-            p_led_array <: LED_ROW_2;
+            set_led_array(LED_ROW_2);
         }
         else
         {
-            p_led_array <: LED_ROW_1;
+            set_led_array(LED_ROW_1);
         }
     }
 

@@ -23,7 +23,11 @@
 #define LED_ROW_2               0xf003
 #define LED_ROW_3               0xf007
 #define ALL_OFF                 0x0000
+// LED array masks
+#define LED_MASK_COL_OFF        0x7fff
+#define LED_MASK_DISABLE        0xffff
 
+#if __XC__
 void set_gpio(out port p_gpio, unsigned bit, unsigned value);
 
 void wait_us(int microseconds);
@@ -47,4 +51,10 @@ void i2c_slave_verify(int codec_addr, int num_writes,
                       struct r_i2c &r_i2c
 #endif
                       );
+#endif /* __XC__ */
+
+void set_led_array(unsigned short led_pattern);
+
+void set_led_array_mask(unsigned short led_mask);
+
 #endif //_GPIO_H_
