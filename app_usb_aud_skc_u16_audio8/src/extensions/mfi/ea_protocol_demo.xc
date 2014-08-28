@@ -1,3 +1,5 @@
+#ifdef IAP_EA_NATIVE_TRANS
+
 #include "iap.h"
 
 void ea_protcol_demo(chanend c_ea_data)
@@ -18,3 +20,4 @@ void ea_protcol_demo(chanend c_ea_data)
         }
     }
 }
+#endif
