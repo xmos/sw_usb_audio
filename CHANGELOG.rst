@@ -1,6 +1,11 @@
 sw_usb_audio Change Log
 =======================
 
+6.8.0
+-----
+    - ADDED:      Mixer enabled config to app_usb_aud_l2 Makefile
+    - ADDED:      Example code for using iAP EA Native Transport endpoints to app_usb_aud_skc_u16_audio8
+
 6.7.0
 -----
     - CHANGE:     Audio interrupt endpoint implementation simplified (use for notifying host of clock
