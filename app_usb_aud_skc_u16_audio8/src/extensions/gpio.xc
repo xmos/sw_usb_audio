@@ -1,7 +1,6 @@
 #include <platform.h>
 #include <xs1.h>
 #include "gpio.h"
-#include "print.h"
 
 #define VERIFY_I2C 1
 
@@ -22,6 +21,3 @@ void wait_us(int microseconds)
     t :> time;
     t when timerafter (time + (microseconds * 100)) :> void;
 }
-
-
-
