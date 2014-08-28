@@ -7,6 +7,8 @@
 #ifndef _CUSTOMDEFINES_H_
 #define _CUSTOMDEFINES_H_
 
+#include "user_main.h"
+
 /*
  * Device configuration option defines.  Build can be customised but changing and adding defines here
  *
