@@ -6,7 +6,7 @@ TARGET = xk_usb_audio_u8_2c.xn
 APP_NAME =
 
 # The flags passed to xcc when building the application
-BUILD_FLAGS     = -DFLASH_MAX_UPGRADE_SIZE=64*1024 -fcomment-asm -Xmapper --map -Xmapper MAPFILE -Wall -O3 -report -lflash -fsubword-select -save-temps -g -fxscope -DXSCOPE -DXUD_SERIES_SUPPORT=1
+BUILD_FLAGS     = -DFLASH_MAX_UPGRADE_SIZE=64*1024*3 -fcomment-asm -Xmapper --map -Xmapper MAPFILE -Wall -O3 -report -lflash -fsubword-select -save-temps -g -fxscope -DXSCOPE -DXUD_SERIES_SUPPORT=1
 #-fschedule
 
 # The USED_MODULES variable lists other module used by the application. These
@@ -95,6 +95,10 @@ XCC_FLAGS_2xoxs_16b4pcm_32b4dsd_24b4pcm = $(BUILD_FLAGS) -DOUTPUT_FORMAT_COUNT=3
  	-DSTREAM_FORMAT_OUTPUT_3_RESOLUTION_BITS=24 -DHS_STREAM_FORMAT_OUTPUT_3_SUBSLOT_BYTES=4 -DSTREAM_FORMAT_OUTPUT_3_DATAFORMAT=0x00000001
 INCLUDE_ONLY_IN_2xoxs_16b4pcm_32b4dsd_24b4pcm =
 
+#Audio Class 2, Input, Output, MIDI, No SPDIF, reboot interrupt handler based on switch
+XCC_FLAGS_2iomx_reboot = $(BUILD_FLAGS) -DMIDI=1 -DSPDIF=0 -DSW_INT_HANDLER=1
+INCLUDE_ONLY_IN_2iomx_reboot = 
+
 else
 # MFi test build configs - iAP support enabled
 
@@ -114,13 +118,19 @@ INCLUDE_ONLY_IN_2ioxx_mfi =
 XCC_FLAGS_2iomx_mfi = $(BUILD_FLAGS) -DIAP=1 -DMIDI=1 -DSPDIF=0
 INCLUDE_ONLY_IN_2iomx_mfi = 
 
+#Audio Class 2, iAP enabled, Input, Output, MIDI, No SPDIF. Select USB A port. Turn on reboot based on switch. Ignore VBUS.
+#Note, this is the config used for Apple role-switch
+XCC_FLAGS_2iomx_usba_reboot_mfi = $(BUILD_FLAGS) -DIAP=1 -DMIDI=1 -DSPDIF=0 -DUSB_SEL_A=1 -DSW_INT_HANDLER=1 -DSWITCH_VAL=0b1000 -DXUD_PWR_CFG=0
+INCLUDE_ONLY_IN_2iomx_usba_reboot_mfi = 
+
 include mfi.mk
 
 endif
 
 ifeq ($(TEST_CONFIGS),1)
-XCC_FLAGS_upgrade1 = $(BUILD_FLAGS) -DBCD_DEVICE=0x9901
-XCC_FLAGS_upgrade2 = $(BUILD_FLAGS) -DBCD_DEVICE=0x9902
+XCC_FLAGS_upgrade1 = $(BUILD_FLAGS) -DBCD_DEVICE_J=0x99 -DBCD_DEVICE_M=0x0 -DBCD_DEVICE_N=0x1
+XCC_FLAGS_upgrade2 = $(BUILD_FLAGS) -DBCD_DEVICE_J=0x99 -DBCD_DEVICE_M=0x0 -DBCD_DEVICE_N=0x2
+
 endif
 
 #=============================================================================

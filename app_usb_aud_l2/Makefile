@@ -6,7 +6,7 @@ TARGET = xr-usb-audio-2.0-mc
 APP_NAME =
 
 # The flags passed to xcc when building the application
-BUILD_FLAGS     =  -DFLASH_MAX_UPGRADE_SIZE=64*1024 -fcomment-asm -Xmapper --map -Xmapper MAPFILE -Wall -O3 -report -lflash -fsubword-select -save-temps -g -DXUD_SERIES_SUPPORT=2 -fxscope
+BUILD_FLAGS     =  -DFLASH_MAX_UPGRADE_SIZE=64*1024 -fcomment-asm -Xmapper --map -Xmapper MAPFILE -Wall -O3 -report -lflash -fsubword-select -save-temps -g -DXUD_SERIES_SUPPORT=2 -DXSCOPE=1 -fxscope
 #-fschedule
 
 #Test build configs (Note these make use of the defaults in customdefines.h)
@@ -26,6 +26,14 @@ INCLUDE_ONLY_IN_2iomx =
 # Audio Class 1, Input, Output, no MIDI, no SPDIF
 XCC_FLAGS_1ioxx = $(BUILD_FLAGS) -DAUDIO_CLASS=1 -DMIDI=0 -DSPDIF=0
 INCLUDE_ONLY_IN_1ioxx = 
+
+# Audio Class 2, Input, Output, No MIDI, SPDIF out, SPDIF in
+XCC_FLAGS_2io_spdifout_spdifin = $(BUILD_FLAGS) -DSPDIF_RX=1
+INCLUDE_ONLY_IN_2io_spdifout_spdifin = 
+
+# Audio Class 2, Input, Output, No MIDI, SPDIF out, SPDIF in, Mixer enabled
+XCC_FLAGS_2io_spdifout_spdifin_mix8 = $(BUILD_FLAGS) -DSPDIF_RX=1 -DMAX_MIX_COUNT=8 -DLEVEL_METER_HOST=1
+INCLUDE_ONLY_IN_2io_spdifout_spdifin_mix8 = 
 
 # Audio Class 1, no Input, Output, no MIDI, no SPDIF
 XCC_FLAGS_1xoxx = $(BUILD_FLAGS) -DAUDIO_CLASS=1 -DMIDI=0 -DSPDIF=0 -DNUM_USB_CHAN_IN=0

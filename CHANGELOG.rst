@@ -1,9 +1,44 @@
 sw_usb_audio Change Log
 =======================
 
-6.6.1 (UNRELEASED)
+6.7.0
 -----
-    - RESOLVED:  Makefile issue for 2ioxx config in app_usb_aud_skc_su1
+    - CHANGE:     Audio interrupt endpoint implementation simplified (use for notifying host of clock
+                  validity changes) simplified. Decouple() no longer involved.
+    - RESOLVED:   Makefile issue for 2ioxx config in app_usb_aud_skc_su1
+    - RESOLVED:   Support for S/PDIF input reinstated (includes descriptors, clocking support etc)
+
+  * Changes to dependencies:
+
+    - sc_usb_audio: 6.6.1rc1 -> 6.7.0alpha0
+
+      + see sw_usb_audio for changelog
+
+6.6.1
+-----
+    - ADDED:      Documentation for DFU
+    - ADDED:      XUD_PWR_CFG define
+    - CHANGE:     DSD ports now only enabled once to avoid potential lock up on DSD->PCM mode change
+                  due to un-driven line floating high. ConfigAudioPortsWrapper() also simplified.
+    - RESOLVED:   Makefile issue for 2ioxx config in app_usb_aud_skc_su1
+
+  * Changes to dependencies:
+
+    - sc_xud: 2.1.1rc0 -> 2.2.1rc0
+
+      + RESOLVED:   Slight optimisations (long jumps replaced with short) to aid inter-packet gaps.
+      + CHANGE:     Timer usage optimisation - usage reduced by one.
+      + CHANGE:     OTG Flags register explicitly cleared at start up - useful if previously running
+
+    - sc_usb_audio: 6.6.0rc2 -> 6.6.1rc1
+
+      + see sw_usb_audio for changelog
+
+    - sc_usb_device: 1.3.0rc0 -> 1.3.2rc0
+
+      + sc_xud: 2.1.1rc0 -> 2.2.0rc0
+      + CHANGE:     Timer usage optimisation - usage reduced by one.
+      + CHANGE:     OTG Flags register explicitly cleared at start up - useful if previously running
 
 6.6.0
 -----
