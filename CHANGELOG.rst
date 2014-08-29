@@ -16,7 +16,7 @@ sw_usb_audio Change Log
 
       + CHANGE:     Header file comment clarification only
 
-    - sc_usb_audio: 6.7.0alpha0 -> 6.8.0alpha1
+    - sc_usb_audio: 6.7.0alpha0 -> 6.8.0alpha2
 
       + ADDED:      Evaluation support for iAP EA Native Transport endpoints
       + RESOLVED:   (Minor) Reverted change in 6.5.1 release where sample rate listing in Audio Class
@@ -24,6 +24,7 @@ sw_usb_audio Change Log
       + RESOLVED:   (Major) Endpoint 0 was requesting an out of bounds channel whilst requesting level data
       + RESOLVED:   (Major) Fast mix code not operates correctly in 13 tools, assembler inserting long jmp
       + RESOLVED:   (Minor) LED level meter code now compatible with 13 tools (shared mem access)
+      + RESOLVED    (Minor) Ordering of level data from the device now matches channel ordering into
       + CHANGE:     Level meter buffer naming now resemble functionality
 
     - sc_usb: 1.0.3rc0 -> 1.0.4alpha0
