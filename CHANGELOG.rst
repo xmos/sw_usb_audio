@@ -5,6 +5,7 @@ sw_usb_audio Change Log
 -----
     - ADDED:      Mixer enabled config to app_usb_aud_l2 Makefile
     - ADDED:      Example code for using iAP EA Native Transport endpoints to app_usb_aud_skc_u16_audio8
+    - ADDED:      Example LED level metering code to app_usb_aud_l2
 
 6.7.0
 -----

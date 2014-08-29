@@ -32,7 +32,7 @@ XCC_FLAGS_2io_spdifout_spdifin = $(BUILD_FLAGS) -DSPDIF_RX=1
 INCLUDE_ONLY_IN_2io_spdifout_spdifin = 
 
 # Audio Class 2, Input, Output, No MIDI, SPDIF out, SPDIF in, Mixer enabled
-XCC_FLAGS_2io_spdifout_spdifin_mix8 = $(BUILD_FLAGS) -DSPDIF_RX=1 -DMAX_MIX_COUNT=8 -DLEVEL_METER_HOST=1
+XCC_FLAGS_2io_spdifout_spdifin_mix8 = $(BUILD_FLAGS) -DSPDIF_RX=1 -DMAX_MIX_COUNT=8 -DLEVEL_METER_LEDS=1 -DLEVEL_METER_HOST=1
 INCLUDE_ONLY_IN_2io_spdifout_spdifin_mix8 = 
 
 # Audio Class 1, no Input, Output, no MIDI, no SPDIF
