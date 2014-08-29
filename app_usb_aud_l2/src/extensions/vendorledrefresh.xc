@@ -1,7 +1,7 @@
 /*
  * lvlleds.xc
  *
- * Interface to optional extra LED board 
+ * Interface to optional extra LED board
  *
  */
 #include <xclib.h>
@@ -11,7 +11,7 @@
 
 #define NUM_LED_SHIFT_REGS 6
 
-unsigned data[NUM_LED_SHIFT_REGS]; 
+unsigned data[NUM_LED_SHIFT_REGS];
 unsigned lvldata[NUM_USB_CHAN_IN];
 
 unsigned peaklvlcount[NUM_LED_SHIFT_REGS];
@@ -28,7 +28,7 @@ static inline void shiftOut(out port p_gpio, unsigned data)
 {
     unsigned tmp;
 
-#pragma loop unroll 
+#pragma loop unroll
     for (int i = 7; i >= 0; i--)
     {
         p_gpio <: 0;
@@ -62,7 +62,7 @@ void WriteToLEDShiftRegs(out port p_gpio, unsigned data[], unsigned length)
 }
 
 #pragma unsafe arrays
-void VendorLedRefresh(unsigned levelData[]) 
+void VendorLedRefresh(unsigned levelData[])
 {
 	WriteToLEDShiftRegs(p_gpio, data, NUM_LED_SHIFT_REGS);
 
@@ -79,11 +79,11 @@ void VendorLedRefresh(unsigned levelData[])
             asm("mkmsk %0, %1" : "=r" (tmp): "r" (lvldata[i]));
 
             peaklvlcount[i] |= (tmp & 0x80);
-            
+
             if(peaklvlcount[i])
-                tmp|= 0x80; 
-              
-            peaklvlcount[i] >>= 1;     
+                tmp|= 0x80;
+
+            peaklvlcount[i] >>= 1;
 
             data[i] = tmp ;
         }
