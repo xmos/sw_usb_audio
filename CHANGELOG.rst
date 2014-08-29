@@ -7,6 +7,29 @@ sw_usb_audio Change Log
     - ADDED:      Example code for using iAP EA Native Transport endpoints to app_usb_aud_skc_u16_audio8
     - ADDED:      Example LED level metering code to app_usb_aud_l2
 
+  * Changes to dependencies:
+
+    - sc_usb_device: 1.3.2rc0 -> 1.3.3alpha0
+
+
+    - sc_xud: 2.2.1rc0 -> 2.2.2alpha0
+
+      + CHANGE:     Header file comment clarification only
+
+    - sc_usb_audio: 6.7.0alpha0 -> 6.8.0alpha1
+
+      + ADDED:      Evaluation support for iAP EA Native Transport endpoints
+      + RESOLVED:   (Minor) Reverted change in 6.5.1 release where sample rate listing in Audio Class
+      + RESOLVED:   (Major) Mixer functionality re-instated, including descriptors and various required
+      + RESOLVED:   (Major) Endpoint 0 was requesting an out of bounds channel whilst requesting level data
+      + RESOLVED:   (Major) Fast mix code not operates correctly in 13 tools, assembler inserting long jmp
+      + RESOLVED:   (Minor) LED level meter code now compatible with 13 tools (shared mem access)
+      + CHANGE:     Level meter buffer naming now resemble functionality
+
+    - sc_usb: 1.0.3rc0 -> 1.0.4alpha0
+
+      + ADDED:      Structs for Audio Class 2.0 Mixer and Extension Units
+
 6.7.0
 -----
     - CHANGE:     Audio interrupt endpoint implementation simplified (use for notifying host of clock
