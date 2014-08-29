@@ -34,11 +34,22 @@ void u16_audio8_ea_protocol_demo(chanend c_ea_data)
     {
         char data[IAP2_EA_NATIVE_TRANS_MAX_PACKET_SIZE];
         unsigned dataLength;
+        int ea_control;
 
         select
         {
-            case iAP2_EANativeTransport_readFromChan(c_ea_data, data, dataLength):
-                ea_demo_usb_packet_parser(data, dataLength, c_ea_data);
+            case iAP2_EANativeTransport_readFromChan(c_ea_data, ea_control, data, dataLength):
+                if (ea_control)
+                {
+                    if ((dataLength == 1) && (data[0] == EA_NATIVE_DISCONNECTED))
+                    {
+                        com_xmos_demo_clear_state();
+                    }
+                }
+                else
+                {
+                    ea_demo_usb_packet_parser(data, dataLength, c_ea_data);
+                }
                 break;
 
             /* Button handler */
