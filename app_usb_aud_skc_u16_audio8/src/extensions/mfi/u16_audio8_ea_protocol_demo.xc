@@ -38,7 +38,7 @@ void u16_audio8_ea_protocol_demo(chanend c_ea_data)
         select
         {
             case iAP2_EANativeTransport_readFromChan(c_ea_data, data, dataLength):
-                usb_packet_parser(data, dataLength, c_ea_data);
+                ea_demo_usb_packet_parser(data, dataLength, c_ea_data);
                 break;
 
             /* Button handler */
@@ -53,7 +53,7 @@ void u16_audio8_ea_protocol_demo(chanend c_ea_data)
                         set_led_array_mask(LED_MASK_COL_OFF);
 
                         // Send protocol message so this change of state is reflect correctly
-                        process_user_input(0, c_ea_data);
+                        ea_demo_process_user_input(0, c_ea_data);
                     }
                     else
                     {
@@ -61,7 +61,7 @@ void u16_audio8_ea_protocol_demo(chanend c_ea_data)
                         set_led_array_mask(LED_MASK_DISABLE);
 
                         // Send protocol message so this change of state is reflect correctly
-                        process_user_input(1, c_ea_data);
+                        ea_demo_process_user_input(1, c_ea_data);
                     }
                 }
 
