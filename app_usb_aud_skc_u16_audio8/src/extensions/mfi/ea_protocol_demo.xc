@@ -34,11 +34,22 @@ void u16_audio8_ea_protocol_demo(chanend c_ea_data)
     {
         char data[IAP2_EA_NATIVE_TRANS_MAX_PACKET_SIZE];
         unsigned dataLength;
+        int ea_control;
 
         select
         {
-            case iAP2_EANativeTransport_readFromChan(c_ea_data, data, dataLength):
-                usb_packet_parser(data, dataLength, c_ea_data);
+            case iAP2_EANativeTransport_readFromChan(c_ea_data, ea_control, data, dataLength):
+                if (ea_control)
+                {
+                    if ((dataLength == 1) && (data[0] == EA_NATIVE_DISCONNECTED))
+                    {
+                        com_xmos_demo_clear_state();
+                    }
+                }
+                else
+                {
+                    ea_demo_usb_packet_parser(data, dataLength, c_ea_data);
+                }
                 break;
 
             /* Button handler */
@@ -53,7 +64,7 @@ void u16_audio8_ea_protocol_demo(chanend c_ea_data)
                         set_led_array_mask(LED_MASK_COL_OFF);
 
                         // Send protocol message so this change of state is reflect correctly
-                        process_user_input(0, c_ea_data);
+                        ea_demo_process_user_input(0, c_ea_data);
                     }
                     else
                     {
@@ -61,7 +72,7 @@ void u16_audio8_ea_protocol_demo(chanend c_ea_data)
                         set_led_array_mask(LED_MASK_DISABLE);
 
                         // Send protocol message so this change of state is reflect correctly
-                        process_user_input(1, c_ea_data);
+                        ea_demo_process_user_input(1, c_ea_data);
                     }
                 }
 
