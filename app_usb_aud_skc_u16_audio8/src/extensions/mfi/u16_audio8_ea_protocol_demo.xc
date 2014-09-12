@@ -41,9 +41,19 @@ void u16_audio8_ea_protocol_demo(chanend c_ea_data)
             case iAP2_EANativeTransport_readFromChan(c_ea_data, ea_control, data, dataLength):
                 if (ea_control == EA_NATIVE_SEND_CONTROL)
                 {
-                    if ((dataLength == 1) && (data[0] == EA_NATIVE_DISCONNECTED))
+                    switch (data[0])
                     {
-                        com_xmos_demo_clear_state();
+                        case EA_NATIVE_RESET:
+                        case EA_NATIVE_DISCONNECTED:
+                            // Disable the LED mask as the EA Protocol demo is no longer active
+                            set_led_array_mask(LED_MASK_DISABLE);
+                            //com_xmos_demo_clear_state(); //TODO: remove if the com.xmos.demo stack has no state
+                            break;
+                        case EA_NATIVE_CONNECTED:
+                            // Start with the LED off
+                            set_led_array_mask(LED_MASK_COL_OFF);
+                            break;
+                            break;
                     }
                 }
                 else
