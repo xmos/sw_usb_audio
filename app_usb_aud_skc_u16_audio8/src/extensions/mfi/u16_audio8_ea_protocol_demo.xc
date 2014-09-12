@@ -39,7 +39,7 @@ void u16_audio8_ea_protocol_demo(chanend c_ea_data)
         select
         {
             case iAP2_EANativeTransport_readFromChan(c_ea_data, ea_control, data, dataLength):
-                if (ea_control)
+                if (ea_control == EA_NATIVE_SEND_CONTROL)
                 {
                     if ((dataLength == 1) && (data[0] == EA_NATIVE_DISCONNECTED))
                     {
