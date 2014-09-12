@@ -2,6 +2,7 @@
 
 #include "iap.h"
 #include "ea_protocol_demo.h"
+#include "com_xmos_demo.h"
 #include "gpio.h"
 #include <platform.h>
 #include <timer.h>
