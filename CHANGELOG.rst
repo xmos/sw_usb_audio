@@ -3,7 +3,27 @@ sw_usb_audio Change Log
 
 6.9.0
 -----
-    - ADDED:    Added ADAT Rx enabled build config in app_usb_aud_l2   
+    - ADDED:    Added ADAT Rx enabled build config in app_usb_aud_l2
+
+  * Changes to dependencies:
+
+    - sc_xud: 2.2.2alpha0 -> 2.2.3rc0
+
+      + RESOLVED:   (Minor) XUD_ResetEpStateByAddr() could operate on corresponding OUT endpoint
+
+    - sc_usb_audio: 6.8.0alpha2 -> 6.9.0alpha0
+
+      + ADDED:      ADAT S-MUX II functionality (i.e. 2 channels at 192kHz) - Previously only S-MUX
+      + ADDED:      Explicit build warnings if sample rate/depth & channel combination exceeds
+      + RESOLVED:   (Major) Reinstated ADAT input functionality, including descriptors and clock
+      + RESOLVED:   (Major) S/PDIF/ADAT sample transfer code in audio() (from ClockGen()) moved to
+      + CHANGE:     Modifying mix map now only affects specified mix, previous was applied to all
+      + CHANGE:     Channel c_dig_rx is no longer nullable, assists with timing due to removal of
+      + CHANGE:     ADAT SMUX selection now based on device sample frequency rather than selected
+
+    - sc_usb_device: 1.3.3alpha0 -> 1.3.4rc0
+
+      + Minor documentation updates only
 
 6.8.0
 -----
