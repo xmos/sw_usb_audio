@@ -8,7 +8,7 @@
 /* I2C ports */
 on tile[AUDIO_IO_TILE]: struct r_i2c i2cPorts = {PORT_I2C_SCL, PORT_I2C_SDA};
 
-#ifndef SPDIF_RX
+#if !(defined(SPDIF_RX) || defined (ADAT_RX))
 /* Reference clock to external fractional-N clock multiplier */
 on tile[AUDIO_IO_TILE]: out port p_pll_ref    = PORT_PLL_REF;
 #endif
@@ -85,7 +85,7 @@ void AudioHwInit(chanend ?c_codec)
     return;
 }
 
-#ifndef SPDIF_RX
+#if !(defined(SPDIF_RX) || defined(ADAT_RX))
 /* Core to generate 300Hz reference to CS2300 PLL */
 void genclock()
 {
