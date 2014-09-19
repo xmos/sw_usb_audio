@@ -1,11 +1,15 @@
 sw_usb_audio Change Log
 =======================
 
+6.9.0
+-----
+    - ADDED:    Added ADAT Rx enabled build config in app_usb_aud_l2   
+
 6.8.0
 -----
-    - ADDED:      Mixer enabled config to app_usb_aud_l2 Makefile
-    - ADDED:      Example code for using iAP EA Native Transport endpoints to app_usb_aud_skc_u16_audio8
-    - ADDED:      Example LED level metering code to app_usb_aud_l2
+    - ADDED:    Mixer enabled config to app_usb_aud_l2 Makefile
+    - ADDED:    Example code for using iAP EA Native Transport endpoints to app_usb_aud_skc_u16_audio8
+    - ADDED:    Example LED level metering code to app_usb_aud_l2
 
   * Changes to dependencies:
 
