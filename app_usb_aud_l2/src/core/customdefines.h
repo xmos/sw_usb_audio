@@ -71,7 +71,9 @@
 #define MCLK_48            (512*48000)       /* 48, 96 etc */
 
 /* Maximum frequency device runs at */
+#ifndef MAX_FREQ
 #define MAX_FREQ           (192000)
+#endif
 
 /***** Defines relating to USB descriptors etc *****/
 #define VENDOR_ID          (0x20B1)          /* XMOS VID */
