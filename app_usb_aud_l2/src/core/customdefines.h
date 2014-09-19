@@ -62,7 +62,7 @@
 #define I2S_CHANS_ADC      (6)
 
 /* SPDIF and ADAT first input chan indices */
-#define SPDIF_RX_INDEX     (8)
+#define SPDIF_RX_INDEX     (6)
 #define ADAT_RX_INDEX      (8)
 #define SPDIF_TX_INDEX     (8)
 
