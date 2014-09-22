@@ -1,11 +1,46 @@
 sw_usb_audio Change Log
 =======================
 
+6.9.0
+-----
+    - ADDED:    Added ADAT Rx enabled build config in app_usb_aud_l2
+
+  * Changes to dependencies:
+
+    - sc_xud: 2.2.2alpha0 -> 2.2.3rc0
+
+      + RESOLVED:   (Minor) XUD_ResetEpStateByAddr() could operate on corresponding OUT endpoint
+        instead of the desired IN endpoint address as passed into the function (and
+        vice versa)
+
+    - sc_usb_audio: 6.8.0alpha2 -> 6.9.0alpha0
+
+      + ADDED:      ADAT S-MUX II functionality (i.e. 2 channels at 192kHz) - Previously only S-MUX
+        supported (4 channels at 96kHz).
+      + ADDED:      Explicit build warnings if sample rate/depth & channel combination exceeds
+        available USB bus bandwidth.
+      + RESOLVED:   (Major) Reinstated ADAT input functionality, including descriptors and clock
+        generation/control and stream configuration defines/tables.
+      + RESOLVED:   (Major) S/PDIF/ADAT sample transfer code in audio() (from ClockGen()) moved to
+        aid timing.
+      + CHANGE:     Modifying mix map now only affects specified mix, previous was applied to all
+        mixes. CS_XU_MIXSEL control selector now takes values 0 to MAX_MIX_COUNT + 1
+        (with 0 affecting all mixes).
+      + CHANGE:     Channel c_dig_rx is no longer nullable, assists with timing due to removal of
+        null checks inserted by compiler.
+      + CHANGE:     ADAT SMUX selection now based on device sample frequency rather than selected
+        stream format - Endpoint 0 now configures clockgen() on a sample-rate change
+        rather than stream start.
+
+    - sc_usb_device: 1.3.3alpha0 -> 1.3.4rc0
+
+      + Minor documentation updates only
+
 6.8.0
 -----
-    - ADDED:      Mixer enabled config to app_usb_aud_l2 Makefile
-    - ADDED:      Example code for using iAP EA Native Transport endpoints to app_usb_aud_skc_u16_audio8
-    - ADDED:      Example LED level metering code to app_usb_aud_l2
+    - ADDED:    Mixer enabled config to app_usb_aud_l2 Makefile
+    - ADDED:    Example code for using iAP EA Native Transport endpoints to app_usb_aud_skc_u16_audio8
+    - ADDED:    Example LED level metering code to app_usb_aud_l2
 
   * Changes to dependencies:
 
