@@ -22,6 +22,7 @@ void com_xmos_demo_led_ctrl_user(com_xmos_demo_led_ctrl_commands_t demo_command)
         set_led_array_mask(LED_MASK_DISABLE);
     }
 }
+//::
 
 void u16_audio8_ea_protocol_demo(chanend c_ea_data)
 {
