@@ -78,18 +78,16 @@ void u16_audio8_ea_protocol_demo(chanend c_ea_data)
                     // LED used for EA Protocol demo is on when the mask is disabled
                     if (get_led_array_mask() == LED_MASK_DISABLE)
                     {
-                        // So turn it off now
-                        set_led_array_mask(LED_MASK_COL_OFF);
-
-                        // Send protocol message so this change of state is reflect correctly
+                        /* So turn it off now
+                         * and send protocol message so this change of state is reflect correctly
+                         */
                         ea_demo_process_user_input(0, c_ea_data);
                     }
                     else
                     {
-                        // So turn it on now
-                        set_led_array_mask(LED_MASK_DISABLE);
-
-                        // Send protocol message so this change of state is reflect correctly
+                        /* So turn it on now
+                         * and send protocol message so this change of state is reflect correctly
+                         */
                         ea_demo_process_user_input(1, c_ea_data);
                     }
                 }
