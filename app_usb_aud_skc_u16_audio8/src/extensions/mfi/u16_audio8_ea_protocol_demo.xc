@@ -68,6 +68,7 @@ void u16_audio8_ea_protocol_demo(chanend c_ea_data)
                     ea_demo_usb_packet_parser(data, dataLength, c_ea_data);
                 }
                 break;
+                //::
 
             /* Button handler */
             // If the button is "stable", react when the I/O pin changes value
@@ -106,6 +107,7 @@ void u16_audio8_ea_protocol_demo(chanend c_ea_data)
             case !is_stable => tmr when timerafter(debounce_timeout) :> void:
                 is_stable = 1;
                 break;
+            //::
         }
     }
 }
