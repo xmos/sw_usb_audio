@@ -51,7 +51,7 @@ void u16_audio8_ea_protocol_demo(chanend c_ea_data)
                         case EA_NATIVE_DISCONNECTED:
                             // Disable the LED mask as the EA Protocol demo is no longer active
                             set_led_array_mask(LED_MASK_DISABLE);
-                            //com_xmos_demo_clear_state(); //TODO: remove if the com.xmos.demo stack has no state
+                            ea_demo_init(); // Clear any queued but unsent data
                             break;
                         case EA_NATIVE_CONNECTED:
                             // Start with the LED off
