@@ -40,6 +40,8 @@ xsi:schemaLocation="http://www.xmos.com http://www.xmos.com">
             <Port Location="XS1_PORT_1F"  Name="PORT_MCLK_IN2"/>
             <!-- GPIO Ports -->
             <Port Location="XS1_PORT_4C" Name="PORT_USB_GPIO"/>
+            <Port Location="XS1_PORT_1A" Name="PORT_ACC_PWR"/>
+            <Port Location="XS1_PORT_1D" Name="PORT_VBUS_OUT_EN"/>
             <Port Location="XS1_PORT_1E" Name="PORT_I2C_SCL"/>
             <Port Location="XS1_PORT_1L" Name="PORT_I2C_SDA"/>
             <Port Location="XS1_PORT_1B" Name="PORT_BUTTON_4"/>
