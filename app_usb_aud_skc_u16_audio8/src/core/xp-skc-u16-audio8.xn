@@ -96,7 +96,7 @@ xsi:schemaLocation="http://www.xmos.com http://www.xmos.com">
       </Nodes>
     </Package>
   </Packages>
-  
+
   <Nodes>
     <Node Id="3" Type="device:" routingId="0x8000">
       <Service Id="0" Proto="xscope_host_data(chanend c);">
@@ -104,7 +104,7 @@ xsi:schemaLocation="http://www.xmos.com http://www.xmos.com">
       </Service>
     </Node>
   </Nodes>
-  
+
   <Links>
     <Link Encoding="5wire" Delays="0,1">
       <LinkEndpoint NodeId="0" Link="XLG"/>
@@ -149,6 +149,6 @@ xsi:schemaLocation="http://www.xmos.com http://www.xmos.com">
     <JTAGDevice NodeId="0"/>
     <JTAGDevice NodeId="1"/>
   </JTAGChain>
-  
+
 </Network>
 
