@@ -8,6 +8,12 @@ UNRELEASED
                   app_usb_aud_skc_u16 and app_usb_aud_skc_u16_audio8
                   (1V2 core boards and slices will not operate correctly without
                   software modification)
+    - CHANGE:     Support for XK-USB-AUDIO-U8-2C 2V0 core board and
+                  XA-SK-USB-BLC 2V0 and XA-SK-USB-ABC 2V0 USB slices in
+                  app_usb_aud_xk_u8_2c
+                  (1V2 core boards and slices will not operate correctly
+                  without software modification)
+
 6.9.0
 -----
     - ADDED:    Added ADAT Rx enabled build config in app_usb_aud_l2
