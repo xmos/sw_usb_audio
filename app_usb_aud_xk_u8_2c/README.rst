@@ -26,9 +26,9 @@ The app_usb_aud_xk_u8_2c application is designed to run on the XMOS Multi-Functi
 - 2 channels analogue output (Via I2S to 1 x stereo DAC), configured via I2C
 
 - Stereo DSD output (Both Native and DoP)
-  
+
 - S/PDIF output (via COAX connector)
-  
+
 - MIDI input and output
 
 - Support for the following sample frequencies: 44.1, 48, 88.2, 96, 176.4, 192kHz
