@@ -3,12 +3,12 @@ sw_usb_audio Change Log
 
 UNRELEASED
 -----
-    - CHANGE:     Support for XP-SKC-U16 2V0 core board and
+    - CHANGE:     Support for XP-SKC-U16 2V0 core board with
                   XA-SK-USB-BLC 2V0 and XA-SK-USB-ABC 2V0 USB slices in
                   app_usb_aud_skc_u16 and app_usb_aud_skc_u16_audio8
                   (1V2 core boards and slices will not operate correctly without
                   software modification)
-    - CHANGE:     Support for XK-USB-AUDIO-U8-2C 2V0 core board and
+    - CHANGE:     Support for XK-USB-AUDIO-U8-2C 2V0 core board with
                   XA-SK-USB-BLC 2V0 and XA-SK-USB-ABC 2V0 USB slices in
                   app_usb_aud_xk_u8_2c
                   (1V2 core boards and slices will not operate correctly
