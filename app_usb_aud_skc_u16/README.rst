@@ -3,9 +3,9 @@ XMOS XS1-U16 USB Audio
 
 :maintainer: Ross Owen
 :scope: Example
-:description: USB Audio application for XP-SKC-U16 and XA-SK-AUDIO (1v1)
 :keywords: USB,  
-:boards: XP-SKC-SU1, XA-SK-AUDIO (1v1)
+:description: USB Audio application for XP-SKC-U16 (2v0) and XA-SK-AUDIO (1v1)
+:boards: XP-SKC-U16 (2v0), XA-SK-AUDIO (1v1)
 
 Overview
 ........
