@@ -15,20 +15,20 @@ on tile[0] : out port p_vbus_out_en = PORT_VBUS_OUT_EN;
 void SelectUSBApple(void)
 {
     unsigned tmp = USB_SLICE_P4C_CPR_RST_N;
-    tmp |= USB_SLICE_P4C_USB_SEL; // Lightning connector on XA-SK-USB-BLC, USB A connector on XA-SK-USB-ABC
-    p_usb_slice <: tmp;
 
-    p_vbus_out_en <: USB_SLICE_P1D_VBUS_OUT_EN; // Enable 5V charge output to Apple device
+    tmp |= USB_SLICE_P4C_USB_SEL; // Lightning connector on XA-SK-USB-BLC, USB A connector on XA-SK-USB-ABC
+
+    p_usb_slice <: tmp;
 }
 
 /* Select USB socket (normally B) */
 void SelectUSBPc(void)
 {
     unsigned tmp = USB_SLICE_P4C_CPR_RST_N;
-    tmp &= ~USB_SLICE_P4C_USB_SEL; // USB B connector on XA-SK-USB-BLC and XA-SK-USB-ABC
-    p_usb_slice <: tmp;
 
-    p_vbus_out_en <: !USB_SLICE_P1D_VBUS_OUT_EN; // Disable 5V charge output to Apple device
+    tmp &= ~USB_SLICE_P4C_USB_SEL; // USB B connector on XA-SK-USB-BLC and XA-SK-USB-ABC
+
+    p_usb_slice <: tmp;
 }
 
 /* Return iDevice detect state, return zero for detected */
