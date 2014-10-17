@@ -51,7 +51,7 @@ void handle_switch_request(in port p_sw)
 #ifdef USB_SEL_A
 #define USB_SEL_VAL P_GPIO_USB_SEL1
 #else
-#define USB_SEL_VAL P_GPIO_USB_SEL2
+#define USB_SEL_VAL 0
 #endif
 
 //:codec_init
