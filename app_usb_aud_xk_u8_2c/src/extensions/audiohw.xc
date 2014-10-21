@@ -90,6 +90,7 @@ void AudioHwInit(chanend ?c_codec)
     t when timerafter(time+10000000):> void;
 
     p_sw :> curSwVal;
+    curSwVal = (curSwVal & 0b0111) | SWITCH_VAL; // Ensure we don't miss any switches that happened during reboot
 
     asm("setc res[%0], %1"::"r"(p_sw),"r"(XS1_SETC_COND_NEQ));
     asm("setd res[%0], %1"::"r"(p_sw),"r"(curSwVal));
