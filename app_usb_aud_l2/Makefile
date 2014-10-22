@@ -11,6 +11,10 @@ BUILD_FLAGS     =  -DFLASH_MAX_UPGRADE_SIZE=64*1024 -fcomment-asm -Xmapper --map
 
 #Test build configs (Note these make use of the defaults in customdefines.h)
 
+# Audio Class 2, no Input, Output, no MIDI, SPDIF
+XCC_FLAGS_2xoxs = $(BUILD_FLAGS) -DMIDI=0 -DSPDIF=1 -DNUM_USB_CHAN_IN=0
+INCLUDE_ONLY_IN_2xoxs = 
+
 # Audio Class 2, Input, Output, No MIDI, No SPDIF
 XCC_FLAGS_2ioxx = $(BUILD_FLAGS) -DSPDIF=0
 INCLUDE_ONLY_IN_2ioxx =  
