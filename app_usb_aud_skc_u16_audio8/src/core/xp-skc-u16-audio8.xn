@@ -31,20 +31,20 @@ xsi:schemaLocation="http://www.xmos.com http://www.xmos.com">
             <Port Location="XS1_PORT_8A"  Name="PORT_USB_TXD"/>
             <Port Location="XS1_PORT_8C"  Name="PORT_USB_RXD"/>
             <!-- SPI Ports -->
-            <Port Location="XS1_PORT_1A" Name="PORT_SPI_MISO"/>
-            <Port Location="XS1_PORT_1B" Name="PORT_SPI_SS"/>
-            <Port Location="XS1_PORT_1C" Name="PORT_SPI_CLK"/>
-            <Port Location="XS1_PORT_1D" Name="PORT_SPI_MOSI"/>
+            <Port Location="XS1_PORT_1A"  Name="PORT_SPI_MISO"/>
+            <Port Location="XS1_PORT_1B"  Name="PORT_SPI_SS"/>
+            <Port Location="XS1_PORT_1C"  Name="PORT_SPI_CLK"/>
+            <Port Location="XS1_PORT_1D"  Name="PORT_SPI_MOSI"/>
             <!-- Audio Ports on XA-SK-AUDIO8 support board-->
-            <Port Location="XS1_PORT_16B"  Name="PORT_MCLK_COUNT"/>
+            <Port Location="XS1_PORT_16B" Name="PORT_MCLK_COUNT"/>
             <Port Location="XS1_PORT_1F"  Name="PORT_MCLK_IN2"/>
             <!-- GPIO Ports -->
-            <Port Location="XS1_PORT_4C" Name="PORT_USB_GPIO"/>
-            <Port Location="XS1_PORT_1E" Name="PORT_I2C_SCL"/>
-            <Port Location="XS1_PORT_1L" Name="PORT_I2C_SDA"/>
-            <Port Location="XS1_PORT_1B" Name="PORT_BUTTON_4"/>
-            <Port Location="XS1_PORT_1C"  Name="PORT_SPDIF_IN_COAX"/>
-            <Port Location="XS1_PORT_1G"  Name="PORT_SPDIF_IN_OPT"/>
+            <Port Location="XS1_PORT_4C"  Name="PORT_USB_GPIO"/>
+            <Port Location="XS1_PORT_1E"  Name="PORT_I2C_SCL"/>
+            <Port Location="XS1_PORT_1L"  Name="PORT_I2C_SDA"/>
+            <Port Location="XS1_PORT_1B"  Name="PORT_BUTTON_4"/>
+            <Port Location="XS1_PORT_1C"  Name="PORT_SPDIF_IN_COAX"/> <!-- COAX -->
+            <Port Location="XS1_PORT_1G"  Name="PORT_SPDIF_IN"/>  <!-- OPT -->
           </Tile>
 
         </Node>
@@ -76,7 +76,7 @@ xsi:schemaLocation="http://www.xmos.com http://www.xmos.com">
             <Port Location="XS1_PORT_1J"  Name="PORT_DSD_DAC2"/>
             <Port Location="XS1_PORT_1H"  Name="PORT_DSD_DAC1"/>
             <Port Location="XS1_PORT_1D"  Name="PORT_DSD_DAC0"/>
-            <Port Location="XS1_PORT_1A"  Name="PORT_PLL_SYNC"/>
+            <Port Location="XS1_PORT_1A"  Name="PORT_PLL_REF"/>
             <Port Location="XS1_PORT_1P"  Name="PORT_MIDI_IN"/>
             <Port Location="XS1_PORT_4B"  Name="PORT_MIDI_OUT"/>
             <!-- GPIO Ports -->
