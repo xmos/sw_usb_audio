@@ -51,8 +51,7 @@ void handle_switch_request(in port p_sw)
 #ifdef USB_SEL_A
 #define USB_SEL_VAL P_GPIO_USB_SEL1
 #else
-/* Disable VBUS when not using A port */
-#define USB_SEL_VAL (0 | P_GPIO_VBUS_OUT_EN)
+#define USB_SEL_VAL 0
 #endif
 
 //:codec_init
@@ -67,6 +66,10 @@ void AudioHwInit(chanend ?c_codec)
 
     port32A_lock_peek(x);
 
+#ifndef IAP
+    /* P_GPIO_VBUS_OUT_EN is pulled up, drive low to disable in non MFi builds */
+    x&= ~P_GPIO_VBUS_OUT_EN;
+#endif
     x |= (P_GPIO_5VA_EN | P_GPIO_SS_EN_CTRL | USB_SEL_VAL);
 
     port32A_out_unlock(x);
@@ -87,6 +90,7 @@ void AudioHwInit(chanend ?c_codec)
     t when timerafter(time+10000000):> void;
 
     p_sw :> curSwVal;
+    curSwVal = (curSwVal & 0b0111) | SWITCH_VAL; // Ensure we don't miss any switches that happened during reboot
 
     asm("setc res[%0], %1"::"r"(p_sw),"r"(XS1_SETC_COND_NEQ));
     asm("setd res[%0], %1"::"r"(p_sw),"r"(curSwVal));

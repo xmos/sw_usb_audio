@@ -3,16 +3,16 @@ XMOS XS1-U16 USB Audio
 
 :maintainer: Ross Owen
 :scope: Example
-:description: USB Audio application for XP-SKC-U16 and XA-SK-AUDIO (1v1)
-:keywords: USB,  
-:boards: XP-SKC-SU1, XA-SK-AUDIO (1v1)
+:description: USB Audio application for XP-SKC-U16 (2v0) and XA-SK-AUDIO (1v1)
+:keywords: USB,
+:boards: XP-SKC-U16 (2v0), XA-SK-AUDIO (1v1)
 
 Overview
 ........
 
 The firmware provides a high-speed USB Audio device designed to be compliant to version 2.0 of the USB Audio Class Specification based on the XMOS U16 device.
 
-Please note, for correct operation the following jumper settings are required: 
+Please note, for correct operation the following jumper settings are required:
 
 - J14 (DIA/ALT) should be set to ALT
 
@@ -32,7 +32,7 @@ The app_usb_aud_skc_u16 application is designed to run on the U16 Slice Kit Core
 - 4 channels analogue input and 4 channels analogue output (Via I2S to 2 x Stereo CODECs)
 
 - S/PDIF output (via COAX connector)
-  
+
 - Supports for the following sample frequencies: 44.1, 48, 88.2, 96, 176.4, 192kHz
 
 - MIDI input and output

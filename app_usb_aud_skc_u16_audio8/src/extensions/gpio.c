@@ -29,7 +29,7 @@ void set_led_array(unsigned short led_pattern)
 
 void set_led_array_mask(unsigned short led_mask)
 {
-        if (led_hwlock == HWLOCK_NOT_ALLOCATED)
+    if (led_hwlock == HWLOCK_NOT_ALLOCATED)
     {
         // Allocate a lock the first time the LED array is used only
         led_hwlock = hwlock_alloc();

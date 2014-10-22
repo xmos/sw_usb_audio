@@ -5,4 +5,4 @@
 
 #define USB_SLICE_P1A_ACC_DET_EN 0x01
 
-
+#define USB_SLICE_P1D_VBUS_OUT_EN 0x01

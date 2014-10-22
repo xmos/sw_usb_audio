@@ -22,6 +22,7 @@ void com_xmos_demo_led_ctrl_user(com_xmos_demo_led_ctrl_commands_t demo_command)
         set_led_array_mask(LED_MASK_DISABLE);
     }
 }
+//::
 
 void u16_audio8_ea_protocol_demo(chanend c_ea_data)
 {
@@ -50,7 +51,7 @@ void u16_audio8_ea_protocol_demo(chanend c_ea_data)
                         case EA_NATIVE_DISCONNECTED:
                             // Disable the LED mask as the EA Protocol demo is no longer active
                             set_led_array_mask(LED_MASK_DISABLE);
-                            //com_xmos_demo_clear_state(); //TODO: remove if the com.xmos.demo stack has no state
+                            ea_demo_init(); // Clear any queued but unsent data
                             break;
                         case EA_NATIVE_CONNECTED:
                             // Start with the LED off
@@ -68,6 +69,7 @@ void u16_audio8_ea_protocol_demo(chanend c_ea_data)
                     ea_demo_usb_packet_parser(data, dataLength, c_ea_data);
                 }
                 break;
+                //::
 
             /* Button handler */
             // If the button is "stable", react when the I/O pin changes value
@@ -77,18 +79,16 @@ void u16_audio8_ea_protocol_demo(chanend c_ea_data)
                     // LED used for EA Protocol demo is on when the mask is disabled
                     if (get_led_array_mask() == LED_MASK_DISABLE)
                     {
-                        // So turn it off now
-                        set_led_array_mask(LED_MASK_COL_OFF);
-
-                        // Send protocol message so this change of state is reflect correctly
+                        /* So turn it off now
+                         * and send protocol message so this change of state is reflect correctly
+                         */
                         ea_demo_process_user_input(0, c_ea_data);
                     }
                     else
                     {
-                        // So turn it on now
-                        set_led_array_mask(LED_MASK_DISABLE);
-
-                        // Send protocol message so this change of state is reflect correctly
+                        /* So turn it on now
+                         * and send protocol message so this change of state is reflect correctly
+                         */
                         ea_demo_process_user_input(1, c_ea_data);
                     }
                 }
@@ -106,6 +106,7 @@ void u16_audio8_ea_protocol_demo(chanend c_ea_data)
             case !is_stable => tmr when timerafter(debounce_timeout) :> void:
                 is_stable = 1;
                 break;
+            //::
         }
     }
 }
