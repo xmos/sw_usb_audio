@@ -25,6 +25,10 @@ ifeq ($(MFI), 0)
 XCC_FLAGS_2ioxs = $(BUILD_FLAGS)
 INCLUDE_ONLY_IN_2ioxs =
 
+# Audio Class 2, Input, Output, No MIDI, SPDIF Tx, SPDIF Rx
+XCC_FLAGS_2io_spdifout_spdifin = $(BUILD_FLAGS) -DSPDIF_RX=1
+INCLUDE_ONLY_IN_2io_spdifout_spdifin =
+
 # Audio Class 2, Input, Output, MIDI, SPDIF
 XCC_FLAGS_2ioms = $(BUILD_FLAGS) -DMIDI=1
 INCLUDE_ONLY_IN_2ioms =
