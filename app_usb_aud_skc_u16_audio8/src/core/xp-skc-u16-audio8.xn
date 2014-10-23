@@ -75,8 +75,15 @@ xsi:schemaLocation="http://www.xmos.com http://www.xmos.com">
             <Port Location="XS1_PORT_1A"  Name="PORT_PLL_REF"/>
             <Port Location="XS1_PORT_1P"  Name="PORT_MIDI_IN"/>
             <Port Location="XS1_PORT_4B"  Name="PORT_MIDI_OUT"/>
+
+            <!-- Misc ports --> 
+            <port Location="XS1_PORT_32A" Name="PORT_LED_ARRAY"/>>
+            <Port Location="XS1_PORT_4C"  Name="PORT_BUTTON_GPIO"/>
+            <Port Location="XS1_PORT_4E"  Name="PORT_CODEC_RST_CLKSEL_DSD"/>
+            <Port Location="XS1_PORT_4D"  Name="PORT_PWR_PLL_MUTE"/>
             <Port Location="XS1_PORT_1B"  Name="PORT_I2C_SDA_AUD"/>
             <Port Location="XS1_PORT_4A"  Name="PORT_I2C_SCL_AUD"/>
+          
           </Tile>
         </Node>
         <Node Id="2" InPackageId="2" Type="periph:XS1-SU" Reference="usb_tile" Oscillator="24MHz">
