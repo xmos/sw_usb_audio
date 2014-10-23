@@ -4,24 +4,22 @@ sw_usb_audio Change Log
 6.10.0
 ------
     - CHANGE:   Support for version 2V0 of XP-SKC-U16 core board and XA-SK-USB-BLC and XA-SK-USB-ABC
-                slices. Affects app_usb_aud_xk_u82c and app_usb_aud_skc_u16_audio8 (changes 
-                §incompatible with 1V2 boards)
+                slices in app_usb_aud_xk_u8_2c and app_usb_aud_skc_u16_audio8 (previous board versions
+                will not operate correctly without software modification)
 
   * Changes to dependencies:
 
     - sc_xud: 2.2.3rc0 -> 2.2.4rc0
 
       + RESOLVED:   (L/G series only) Potential for lock-up when waiting for USB clock on startup.
-        (Port buffers enabled on USB clock port)
+                    (Port buffers enabled on USB clock port)
 
     - sc_usb_audio: 6.9.0alpha0 -> 6.10.0alpha0
 
-      + ADDED:      iAP EA Native Transport endpoint management in buffer()
-      + CHANGE:     iAP EA Native Transport endpoint manager core no longer included in main()
+      + CHANGE:     Endpoint management for iAP EA Native Transport now merged into buffer() core.
+                    Previously was separate core (as added in 6.8.0). 
 
     - sc_usb_device: 1.3.4rc0 -> 1.3.5rc0
-
-        (Port buffers enabled on USB clock port)
 
 6.9.0
 -----
@@ -60,14 +58,13 @@ sw_usb_audio Change Log
 
 6.8.0
 -----
-                  (Port buffers enabled on USB clock port)    - ADDED:    Mixer enabled config to app_usb_aud_l2 Makefile
+    - ADDED:    Mixer enabled config to app_usb_aud_l2 Makefile
     - ADDED:    Example code for using iAP EA Native Transport endpoints to app_usb_aud_skc_u16_audio8
     - ADDED:    Example LED level metering code to app_usb_aud_l2
 
   * Changes to dependencies:
 
     - sc_usb_device: 1.3.2rc0 -> 1.3.3alpha0
-
 
     - sc_xud: 2.2.1rc0 -> 2.2.2alpha0
 
@@ -90,7 +87,7 @@ sw_usb_audio Change Log
 
 6.7.0
 -----
-                  (Port buffers enabled on USB clock port)    - CHANGE:     Audio interrupt endpoint implementation simplified (use for notifying host of clock
+    - CHANGE:     Audio interrupt endpoint implementation simplified (use for notifying host of clock
                   validity changes) simplified. Decouple() no longer involved.
     - RESOLVED:   Makefile issue for 2ioxx config in app_usb_aud_skc_su1
     - RESOLVED:   Support for S/PDIF input reinstated (includes descriptors, clocking support etc)
@@ -103,7 +100,7 @@ sw_usb_audio Change Log
 
 6.6.1
 -----
-                  (Port buffers enabled on USB clock port)    - ADDED:      Documentation for DFU
+    - ADDED:      Documentation for DFU
     - ADDED:      XUD_PWR_CFG define
     - CHANGE:     DSD ports now only enabled once to avoid potential lock up on DSD->PCM mode change
                   due to un-driven line floating high. ConfigAudioPortsWrapper() also simplified.
@@ -129,7 +126,7 @@ sw_usb_audio Change Log
 
 6.6.0
 -----
-                  (Port buffers enabled on USB clock port)    - ADDED:      Added app_usb_aud_skc_u16_audio8 application for XP-SKC-U16 with XA-SK-AUDIO8
+    - ADDED:      Added app_usb_aud_skc_u16_audio8 application for XP-SKC-U16 with XA-SK-AUDIO8
     - CHANGE:     Support for XA-SK-USB-BLC 1V2 USB slice in app_usb_aud_xk_u8_2c and
                   app_usb_aud_skc_u16 (1V1 slices will not operate correctly without software
                   modification)
@@ -158,7 +155,7 @@ sw_usb_audio Change Log
 
 6.5.1
 -----
-                  (Port buffers enabled on USB clock port)    - ADDED:      Added USB Design Guide to this repo including major update (see /doc)
+    - ADDED:      Added USB Design Guide to this repo including major update (see /doc)
     - ADDED:      Added MIDI_RX_PORT_WIDTH define such that a 4-bit port can be used for MIDI Rx
     - CHANGE:     I2S data to clock edge setup time improvements when BCLK = MCLK (particularly
                   when running at 384kHz with a 24.576MHz master-clock)
@@ -221,7 +218,7 @@ sw_usb_audio Change Log
 
 6.5.0
 -----
-                  (Port buffers enabled on USB clock port)    - CHANGE:     USB Test mode support enabled by default (required for compliance testing)
+    - CHANGE:     USB Test mode support enabled by default (required for compliance testing)
     - CHANGE:     Default full-speed behaviour is now Audio Class 2, previously was a null device
     - CHANGE:     Various changes to use XUD_Result_t returned from XUD functions
     - CHANGE:     All remaining references to ARCH_x defines removed. XUD_SERIES_SUPPORT should
@@ -250,12 +247,12 @@ sw_usb_audio Change Log
 
 6.4.1
 -----
-                  (Port buffers enabled on USB clock port)    - RESOLVED:   (Minor) MIDI on single-tile L series devices now functional. CLKBLK_REF no longer used
+    - RESOLVED:   (Minor) MIDI on single-tile L series devices now functional. CLKBLK_REF no longer used
                   for MIDI when running on the same tile as XUD_Manager()
 
 6.4.0
 -----
-                  (Port buffers enabled on USB clock port)    - ADDED:      XK-USB-AUDIO-U8-2C mute output driven high when audiostream not active (app_usb_aud_xk_u8_2c)
+    - ADDED:      XK-USB-AUDIO-U8-2C mute output driven high when audiostream not active (app_usb_aud_xk_u8_2c)
     - CHANGE:     MIDI ports no longer passed to MFi specific functions
     - CHANGE:     Audio delivery core no longer waits for AUDIO_PLL_LOCK_DELAY after calling AudioHwConfig()
                   and running audio interfaces. It should be ensured that AudioHwConfig() implementation
@@ -315,7 +312,7 @@ sw_usb_audio Change Log
 
 6.3.2
 -----
-                  (Port buffers enabled on USB clock port)    - ADDED:      SAMPLE_SUBSLOT_SIZE_HS/SAMPLE_SUBSLOT_SIZE_FS defines (default 4/3 bytes)
+    - ADDED:      SAMPLE_SUBSLOT_SIZE_HS/SAMPLE_SUBSLOT_SIZE_FS defines (default 4/3 bytes)
     - ADDED:      SAMPLE_BIT_RESOLUTION_HS/SAMPLE_BIT_RESOLUTION_FS defines (default 24/24 bytes)
     - CHANGE:     PIDs in app_usb_aud_xk_2c updated (previously shared with app_usb_aud_skc_su1). Requires Thesycon 2.15 or later
     - RESOLVED:   (Minor) Fixed maxPacketSize for audio input endpoint (was hard-coded to 1024)
@@ -330,7 +327,7 @@ sw_usb_audio Change Log
 
 6.3.1
 -----
-                  (Port buffers enabled on USB clock port)    - ADDED:      Reinstated application for XR-USB-AUDIO-2.0-MC board (app_usb_aud_l2)
+    - ADDED:      Reinstated application for XR-USB-AUDIO-2.0-MC board (app_usb_aud_l2)
     - ADDED:      Support for operation with Apple devices (MFI licensees only - please contact XMOS)
     - ADDED:      USER_MAIN_DECLARATIONS and USER_MAIN_CORES defines in main for easy addition of custom cores
     - CHANGE:     Access to shared GPIO port (typically 32A) in app code now guarded with a lock for safety
@@ -355,18 +352,18 @@ sw_usb_audio Change Log
 
 6.3.0
 -----
-                  (Port buffers enabled on USB clock port)    - ADDED:      Application for XP-SKC-U16 board with XA-SK-AUDIO slice (app_usb_aud_xkc_u16)
+    - ADDED:      Application for XP-SKC-U16 board with XA-SK-AUDIO slice (app_usb_aud_xkc_u16)
     - CHANGE:     Moved to XMOS toolchain version 13
 
 6.2.1
 -----
-                  (Port buffers enabled on USB clock port)    - ADDED:      DEFAULT_MCLK_FREQ define added
+    - ADDED:      DEFAULT_MCLK_FREQ define added
     - RESOLVED:   Native DSD now easily disabled whilst keeping DoP mode enabled (setting NATIVE_DSD to 0 with DSD_CHANS_DAC > 0)
     - RESOLVED:   Device could become unresponsive if the host outputs a stream with an invalid DoP frequency (#14938)
 
 6.2.0
 -----
-                  (Port buffers enabled on USB clock port)    - ADDED:      Application for XK-USB-AUDIO-U8-2C board
+    - ADDED:      Application for XK-USB-AUDIO-U8-2C board
     - ADDED:      PRODUCT_STR define for Product Strings
     - ADDED:      Added DSD over PCM (DoP) mode
     - ADDED:      Added Native DSD (Driver support required)
@@ -380,27 +377,33 @@ sw_usb_audio Change Log
     - CHANGE:     Define based warnings in devicedefines.h moved to warnings.xc to avoid multiple warnings being issued
     - RESOLVED:   (Major) ADC port initialization did not operate as expected at 384kHz
     - RESOLVED:   (Major) Resolved a compatibility issue with streaming on Intel USB 3.0 xHCI host controller
-    - RESOLVED:   (Major) Added defence against malformed Audio Class 1.0 packets as experienced on some Win 8.0 hosts. Previously this would cause an exception (Issue fixed in Win 8.1)
-    - RESOLVED:   (Minor)  maxPacketSize now reported based on device's read bandwidth requirements.  This allows the driver to reserve the proper bandwidth amount (previously bandwidth would have been wasted)
+    - RESOLVED:   (Major) Added defence against malformed Audio Class 1.0 packets as experienced on 
+                  some Win 8.0 hosts. Previously this would cause an exception (Issue fixed in Win 8.1)
+    - RESOLVED:   (Minor)  maxPacketSize now reported based on device's read bandwidth requirements.  
+                  This allows the driver to reserve the proper bandwidth amount (previously bandwidth
+                  would have been wasted)
     - RESOLVED:   (Minor) Input channel strings used for output in one instance
-    - RESOLVED:   (Minor) Volume multiplication now compatible with 32bit samples. Previously assumed 24bit samples and would truncate bottom 3 bits
-    - RESOLVED:   (Minor) Fixed issue with SE0_NAK test mode (as required for device receiver sensitivity USB-IF compliance test
+    - RESOLVED:   (Minor) Volume multiplication now compatible with 32bit samples. Previously assumed
+                  24bit samples and would truncate bottom 3 bits
+    - RESOLVED:   (Minor) Fixed issue with SE0_NAK test mode (as required for device receiver
+                  sensitivity USB-IF compliance test
     - RESOLVED:   (Minor) Fixed issue with packet parameters compliance test
-    - RESOLVED:   (Minor) Added bounds checking to string requests. Previously an exception was raised if an invalid String was requested
+    - RESOLVED:   (Minor) Added bounds checking to string requests. Previously an exception was
+                  raised if an invalid String was requested
 
 6.1.0
 -----
-                  (Port buffers enabled on USB clock port)    - RESOLVED:   Resolved issue with DFU caused by SU1 ADC usage causing issues with soft reboot
+    - RESOLVED:   Resolved issue with DFU caused by SU1 ADC usage causing issues with soft reboot
     - ADDED:      Added ability for channel count changes between UAC1 and UAC2 modes
     - ADDED:      Support for iOS authentication (MFI licencees only - please contact XMOS)
 
 6.0.1
 -----
-                  (Port buffers enabled on USB clock port)    - CHANGE:     Removed support for early engineering sample U-series devices
+    - CHANGE:     Removed support for early engineering sample U-series devices
 
 6.0.0
 -----
-                  (Port buffers enabled on USB clock port)    - ADDED:      Support for SU1 (Via SU1 Core Board and Audio Slice) - see app_usb_aud_skc_su1
+    - ADDED:      Support for SU1 (Via SU1 Core Board and Audio Slice) - see app_usb_aud_skc_su1
     - ADDED:      Design moved to new build system
     - ADDED:      Optional support for USB test modes
     - ADDED:      Optional HID endpoint for audio controls and example usages
@@ -420,10 +423,11 @@ sw_usb_audio Change Log
 (Note: USB Audio version numbers unified across all products at this point)
 
 Previous L1 Firmware Releases
++++++++++++++++++++++++++++++
 
 3.3.0
 -----
-                  (Port buffers enabled on USB clock port)    - ADDED:      Added support for protocol Stall for un-recognised requests to Endpoint 0.
+    - ADDED:      Added support for protocol Stall for un-recognised requests to Endpoint 0.
                   BOS Descriptor test in latest version of USB CV test now passes.
     - RESOLVED:   (Major) Removed redundant delays in DFU image download.  This aids Windows DFU reliability.
     - RESOLVED:   (Minor) DFU Run-time descriptors updated from DFU 1.0 to DFU 1.1 spec.  This allows USB CV test pass.
@@ -438,19 +442,19 @@ Previous L1 Firmware Releases
 
 3.2.0
 -----
-                  (Port buffers enabled on USB clock port)    - RESOLVED:   (Major) Fixed reset reliability for self-powered devices.  This was due to an issue with
+    - RESOLVED:   (Major) Fixed reset reliability for self-powered devices.  This was due to an issue with
                   XUD/Endpoint synchronisation during communication of RESET bus state over channels.
                   Bus powered devices should not be effected due to power up on every plug event.
                   Note: Changes limited to XUD library only.
 
 3.1.1
 -----
-                  (Port buffers enabled on USB clock port)    - RESOLVED    (Major) Removed size in re-interpret cast of DFU data buffer (unsigned to unsigned char). This
+    - RESOLVED    (Major) Removed size in re-interpret cast of DFU data buffer (unsigned to unsigned char). This
                   was due to a new optimisation in the 11.2 compiler which removes part of the DFU buffer (dfu.xc)
                   as it considers it un-used.  This causes the DFU download request to fail due to stack corruption.
 3.1.0
 -----
-                  (Port buffers enabled on USB clock port)    - ADDED:      Re-added LEDA "Valid Host" functionality using VendorHostActive() call. This functionality
+    - ADDED:      Re-added LEDA "Valid Host" functionality using VendorHostActive() call. This functionality
                   missing since 3v00.  Note LED now indicated "Valid Host" rather than "Suspend" condition
     - RESOLVED:   (Major) Fixed issue when sharing bus with other devices especially high throughput bulk devices
                   (e.g. hard disk drive). This is issue typically caused SOFs to missed by the device
@@ -476,15 +480,15 @@ Previous L1 Firmware Releases
 
 3.0.2
 -----
-                  (Port buffers enabled on USB clock port)    - RESOLVED:   Windows build issue (#9681)
+    - RESOLVED:   Windows build issue (#9681)
 
 3.0.1
 -----
-                  (Port buffers enabled on USB clock port)    - RESOLVED:   Version number reported as 0x0200, not 0x0300 (#9676)
+    - RESOLVED:   Version number reported as 0x0200, not 0x0300 (#9676)
 
 3.0.0
 -----
-                  (Port buffers enabled on USB clock port)    - ADDED:      Added support to allow easy addition of custom audio requests
+    - ADDED:      Added support to allow easy addition of custom audio requests
     - ADDED:      Optional "Host Active" function calls
     - RESOLVED:   Single sample delay between ADC L/R channels resolved (#8783)
     - RESOLVED:   Use of MIDI cable numbers now compliant to specification (#8892)
@@ -494,49 +498,49 @@ Previous L1 Firmware Releases
 
 2.0.0
 -----
-                  (Port buffers enabled on USB clock port)	- Buffering re-factoring
-	- Addition of MIDI
+	- ADDED:      MIDI functionality
+    - CHANGE:     Buffering re-factored
 
 1.7.0
 -----
-                  (Port buffers enabled on USB clock port)	- Buffering fixes for non-intel USB chipsets
+    - RESOLVED:   Buffering fixes for non-intel USB chipsets
 
 1.7.0
 -----
-                  (Port buffers enabled on USB clock port)    - Modifications for XMOS 10.4 tools release
+    - Modifications for XMOS 10.4 tools release
     - Added USB Compliance Test Mode support
     - Added 88.2kHz sample frequency support for Audio Class 1.0
     - Various fixes for USB Compliance Command Verifier
 
 1.6.4
 -----
-                  (Port buffers enabled on USB clock port)    - Thesycon Windows Driver DFU support added
+    - Thesycon Windows Driver DFU support added
     - LSB inprecision at 0dB volume fixed
     - DFU now supports custom flash parts
 
 1.5.0
 -----
-                  (Port buffers enabled on USB clock port)    - Audio Class 1.0 available using build option, runs at full-speed
+    - Audio Class 1.0 available using build option, runs at full-speed
     - Device falls back to Audio Class 1.0 when connected via a full-speed hub
     - DFU functionality added
 
 1.4.5
 -----
-                  (Port buffers enabled on USB clock port)    - Suspend/Resume supported.  LED A indicates suspend condition
+    - Suspend/Resume supported.  LED A indicates suspend condition
     - LED B now indicates presence of audio stream
     - Code refactor for easy user customisation
 
 1.3.0
 -----
-                  (Port buffers enabled on USB clock port)    - Fixed feedback issue in 1v2 release of USB library xud.a (used 3-byte feedback)
+    - Fixed feedback issue in 1v2 release of USB library xud.a (used 3-byte feedback)
 
 1.2.0
 -----
-                  (Port buffers enabled on USB clock port)    - Device now enumerates correctly on Windows
+     - Device now enumerates correctly on Windows
 
 1.1.0
 -----
-                  (Port buffers enabled on USB clock port)    - Device enumerates as 24bit (previously 32bit)
+    - Device enumerates as 24bit (previously 32bit)
     - Bit errors at 96kHz and 192kHz resolved
     - S/PDIF output functionality added
     - 88.2KHz analog in/out and S/PDIF output added
@@ -545,30 +549,32 @@ Previous L1 Firmware Releases
 
 1.0.0
 -----
-                  (Port buffers enabled on USB clock port)    - Initial release
+    - Initial release
 
 
 L1 Hardware
++++++++++++
 
 1.2.0
 -----
-                  (Port buffers enabled on USB clock port)    - Explicit power supply sequencing
+    - Explicit power supply sequencing
     - Power-on reset modified to include TRST_N
 
 1.1.0
 -----
-                  (Port buffers enabled on USB clock port)    - Master clock re-routed to reduce cross-talk
+    - Master clock re-routed to reduce cross-talk
 
 1.0.0
 -----
-                  (Port buffers enabled on USB clock port)    - Initial Version
+    - Initial Version
 
 
 Previous L2 Firmware Releases
++++++++++++++++++++++++++++++
 
 5.3.0
 -----
-                  (Port buffers enabled on USB clock port)    - ADDED:      Added support for protocol Stall for un-recognised requests to Endpoint 0.
+    - ADDED:      Added support for protocol Stall for un-recognised requests to Endpoint 0.
                   BOS Descriptor test in latest version of USB CV test now passes.
     - RESOLVED:   (Major) Removed redundant delays in DFU image download.  This aids Windows DFU reliability.
     - RESOLVED:   (Minor) DFU Run-time descriptors updated from DFU 1.0 to DFU 1.1 spec.  This allows USB CV test pass.
@@ -585,20 +591,20 @@ Previous L2 Firmware Releases
 
 5.2.0
 -----
-                  (Port buffers enabled on USB clock port)    - RESOLVED:   (Major) Fixed reset reliability for self-powered devices.  This was due to an issue with
+    - RESOLVED:   (Major) Fixed reset reliability for self-powered devices.  This was due to an issue with
                   XUD/Endpoint synchronisation during communication of RESET bus state over channels.
                   Bus powered devices should not be effected due to power up on every plug event.
                   Note: Changes limited to XUD library only.
 
 5.1.1
 -----
-                  (Port buffers enabled on USB clock port)    - RESOLVED:   (Major) Removed size in re-interpret cast of DFU data buffer (unsigned to unsigned char). This
+    - RESOLVED:   (Major) Removed size in re-interpret cast of DFU data buffer (unsigned to unsigned char). This
                   was due to a new optimisation in the 11.2 compiler which removes part of the DFU buffer (dfu.xc)
                   as it considers it un-used.  This causes the DFU download request to fail due to stack corruption.
 
 5.1.0
 -----
-                  (Port buffers enabled on USB clock port)    - RESOLVED:   (Major) Fixed issue when sharing bus with other devices especially high throughput bulk devices
+    - RESOLVED:   (Major) Fixed issue when sharing bus with other devices especially high throughput bulk devices
                   (e.g. hard disk drive). This is issue typically caused SOFs to missed by the device
                   resulting in incorrect feedback calculation and ultimately audio glitching.  Note: Changes
                   limited to XUD library only.
@@ -620,7 +626,7 @@ Previous L2 Firmware Releases
 
 5.0.0
 -----
-                  (Port buffers enabled on USB clock port)    - ADDED:      Added support to allow easy addition of custom audio requests
+    - ADDED:      Added support to allow easy addition of custom audio requests
     - ADDED:      Optional level meter processing added to mixer
     - ADDED:      Volume control locations customisable (before/after mix etc)
     - ADDED:      Mixer inputs are now runtime configurable (includes an "off" setting)
@@ -639,36 +645,36 @@ Previous L2 Firmware Releases
 
 4.0.0
 -----
-                  (Port buffers enabled on USB clock port)    - ADDED:      Addition of ADAT RX
+    - ADDED:      Addition of ADAT RX
     - ADDED:      Design can now cope with variable channel numbers set by the host (via Alternate Interfaces)
     - ADDED:      Fix to mixer volume range (range and resolution now definable in customdefines.h) (#9051)
 
 3.0.0
 -----
-                  (Port buffers enabled on USB clock port)    - ADDED:      Addition of mixer
+    - ADDED:      Addition of mixer
     - ADDED:      Example host mixer application to package.  Uses Lib USB for OSX/Linux, Thesycon for Windows
     - RESOLVED:   Fixed internal clock mode jitter on reference to fractional-n
 
 2.0.0
 -----
-                  (Port buffers enabled on USB clock port)    - ADDED:      Addition of S/PDIF Rx functionality and associated clocking functionality
+    - ADDED:      Addition of S/PDIF Rx functionality and associated clocking functionality
     - ADDED:      Addition of Interrupt endpoint (interrupts on clock sources)
     - RESOLVED:   String descriptors added for input channels
     - RESOLVED:   Full-speed fall-back descriptors corrected for compliance
 
 1.0.0
 -----
-                  (Port buffers enabled on USB clock port)    - ADDED:      Addition of MIDI input/output functionality
+    - ADDED:      Addition of MIDI input/output functionality
     - ADDED:      Addition of DFU functionality
     - RESOLVED:   Descriptor fixes for Windows (Thesycon) driver
 
 0.5.2
 -----
-                  (Port buffers enabled on USB clock port)    - ADDED:      Addition of support for CODEC in master mode (see CODEC_SLAVE define)
+    - ADDED:      Addition of support for CODEC in master mode (see CODEC_SLAVE define)
 
 0.5.1
 -----
-                  (Port buffers enabled on USB clock port)    - ADDED:      BCLK == MCLK now supported (i..e 192kHz from 12.288MHz)
+    - ADDED:      BCLK == MCLK now supported (i..e 192kHz from 12.288MHz)
     - ADDED:      MCLK defines now propagate to feedback calculation and CODEC configuration
     - RESOLVED:   XN file update for proper xflash operation
 
@@ -680,17 +686,18 @@ Previous L2 Firmware Releases
 
 
 L2 Hardware
++++++++++++
 
 1.2.0
 -----
-                  (Port buffers enabled on USB clock port)    - Update for coax in, coax out cap & minor tidyup
+    - Update for coax in, coax out cap & minor tidyup
 
 1.1.0
 -----
-                  (Port buffers enabled on USB clock port)    - Initial production
+    - Initial production
 
 1.0.0
 -----
-                  (Port buffers enabled on USB clock port)    - Pre-production
+    - Pre-production
 
 
