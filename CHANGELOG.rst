@@ -6,22 +6,25 @@ sw_usb_audio Change Log
     - CHANGE:     Support for version 2V0 of XP-SKC-U16 core board and XA-SK-USB-BLC and XA-SK-USB-ABC
                   slices in app_usb_aud_xk_u8_2c and app_usb_aud_skc_u16_audio8 (previous board
                   versions will not operate correctly without software modification)
-    - RESOLVED:   (minor) AudioHwConfig() in app_usb_aud_l2 now writes correct register value to 
+    - RESOLVED:   (minor) AudioHwConfig() in app_usb_aud_l2 now writes correct register value to
                   CS42448 CODEC for MCLK frequencies in the range 25MHz to 51MHz.
 
   * Changes to dependencies:
 
-    - sc_xud: 2.2.3rc0 -> 2.2.4rc0
+    - sc_xud: 2.2.3rc0 -> 2.2.4rc3
 
-      + RESOLVED:   (L/G series only) Potential for lock-up when waiting for USB clock on startup.
-                    (Port buffers enabled on USB clock port)
+      + RESOLVED:   (Minor) Potential for lock-up when waiting for USB clock on startup. This is is
+        avoided by enabling port buffering on the USB clock port. Affects L/G series only.
 
-    - sc_usb_audio: 6.9.0alpha0 -> 6.10.0alpha0
+    - sc_usb_audio: 6.9.0alpha0 -> 6.10.0alpha1
 
       + CHANGE:     Endpoint management for iAP EA Native Transport now merged into buffer() core.
-                    Previously was separate core (as added in 6.8.0). 
+        Previously was separate core (as added in 6.8.0).
+      + CHANGE:     Minor optimisation to I2S port code for inputs from ADC
 
-    - sc_usb_device: 1.3.4rc0 -> 1.3.5rc0
+    - sc_usb_device: 1.3.4rc0 -> 1.3.5rc2
+
+      + RESOLVED:   (Minor) Design Guide documentation build errors
 
 6.9.0
 -----
@@ -379,9 +382,9 @@ sw_usb_audio Change Log
     - CHANGE:     Define based warnings in devicedefines.h moved to warnings.xc to avoid multiple warnings being issued
     - RESOLVED:   (Major) ADC port initialization did not operate as expected at 384kHz
     - RESOLVED:   (Major) Resolved a compatibility issue with streaming on Intel USB 3.0 xHCI host controller
-    - RESOLVED:   (Major) Added defence against malformed Audio Class 1.0 packets as experienced on 
+    - RESOLVED:   (Major) Added defence against malformed Audio Class 1.0 packets as experienced on
                   some Win 8.0 hosts. Previously this would cause an exception (Issue fixed in Win 8.1)
-    - RESOLVED:   (Minor)  maxPacketSize now reported based on device's read bandwidth requirements.  
+    - RESOLVED:   (Minor)  maxPacketSize now reported based on device's read bandwidth requirements.
                   This allows the driver to reserve the proper bandwidth amount (previously bandwidth
                   would have been wasted)
     - RESOLVED:   (Minor) Input channel strings used for output in one instance
