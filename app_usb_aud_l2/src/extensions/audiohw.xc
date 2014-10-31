@@ -216,9 +216,13 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
     {
         tmp[0] |= 0b00000100;             // 512/256/128
     }
+    else if(mClk < 51000000)
+    {
+        tmp[0] |= 0b00001000;             // 1024/512/256
+    }
     else
     {
-        printstrln("Err: MCLK currently not supported");
+        printstrln("Err: AudioHWConfig(): Mclk freq not supported");
     }
 
     i2c_master_write_reg(COD_DEV_ADRS, 0x3, tmp, 1, i2cPorts);
