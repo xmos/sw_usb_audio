@@ -16,7 +16,7 @@ sw_usb_audio Change Log
       + RESOLVED:   (Minor) Potential for lock-up when waiting for USB clock on startup. This is is
         avoided by enabling port buffering on the USB clock port. Affects L/G series only.
 
-    - sc_usb_audio: 6.9.0alpha0 -> 6.10.0alpha1
+    - sc_usb_audio: 6.9.0alpha0 -> 6.10.0alpha2
 
       + CHANGE:     Endpoint management for iAP EA Native Transport now merged into buffer() core.
         Previously was separate core (as added in 6.8.0).
