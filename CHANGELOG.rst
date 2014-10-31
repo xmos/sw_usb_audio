@@ -3,9 +3,11 @@ sw_usb_audio Change Log
 
 6.10.0
 ------
-    - CHANGE:   Support for version 2V0 of XP-SKC-U16 core board and XA-SK-USB-BLC and XA-SK-USB-ABC
-                slices in app_usb_aud_xk_u8_2c and app_usb_aud_skc_u16_audio8 (previous board versions
-                will not operate correctly without software modification)
+    - CHANGE:     Support for version 2V0 of XP-SKC-U16 core board and XA-SK-USB-BLC and XA-SK-USB-ABC
+                  slices in app_usb_aud_xk_u8_2c and app_usb_aud_skc_u16_audio8 (previous board
+                  versions will not operate correctly without software modification)
+    - RESOLVED:   (minor) AudioHwConfig() in app_usb_aud_l2 now writes correct register value to 
+                  CS42448 CODEC for MCLK frequencies in the range 25MHz to 51MHz.
 
   * Changes to dependencies:
 
