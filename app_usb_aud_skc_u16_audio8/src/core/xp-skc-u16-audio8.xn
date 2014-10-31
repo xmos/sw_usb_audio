@@ -76,7 +76,7 @@ xsi:schemaLocation="http://www.xmos.com http://www.xmos.com">
             <Port Location="XS1_PORT_1P"  Name="PORT_MIDI_IN"/>
             <Port Location="XS1_PORT_4B"  Name="PORT_MIDI_OUT"/>
 
-            <!-- Misc ports --> 
+            <!-- Misc board specific ports --> 
             <port Location="XS1_PORT_32A" Name="PORT_LED_ARRAY"/>>
             <Port Location="XS1_PORT_4C"  Name="PORT_BUTTON_GPIO"/>
             <Port Location="XS1_PORT_4E"  Name="PORT_CODEC_RST_CLKSEL_DSD"/>
