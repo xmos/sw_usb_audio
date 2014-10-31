@@ -109,7 +109,6 @@ sw_usb_audio Change Log
     - ADDED:      XUD_PWR_CFG define
     - CHANGE:     DSD ports now only enabled once to avoid potential lock up on DSD->PCM mode change
                   due to un-driven line floating high. ConfigAudioPortsWrapper() also simplified.
-    - RESOLVED:   Makefile issue for 2ioxx config in app_usb_aud_skc_su1
 
   * Changes to dependencies:
 
