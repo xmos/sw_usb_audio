@@ -54,6 +54,10 @@ INCLUDE_ONLY_IN_2xoxx_lp = ./src/extensions/powersave
 XCC_FLAGS_2iomx = $(BUILD_FLAGS) -DMIDI=1 -DSPDIF=0
 INCLUDE_ONLY_IN_2iomx = 
 
+#Audio Class 2, Input, Output, No MIDI, No SPDIF
+XCC_FLAGS_2ioxx = $(BUILD_FLAGS) -DSPDIF=0
+INCLUDE_ONLY_IN_2ioxx = 
+
 #Audio Class 2, Input, no Output, no MIDI, No SPDIF
 XCC_FLAGS_2ixxx = $(BUILD_FLAGS) -DNUM_USB_CHAN_OUT=0 -DI2S_CHANS_DAC=0 -DSPDIF=0
 INCLUDE_ONLY_IN_2ixxx = 
