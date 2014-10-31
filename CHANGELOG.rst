@@ -264,7 +264,7 @@ sw_usb_audio Change Log
                   should handle any delays required for stable MCLK as required by the clocking hardware.
     - CHANGE:     Delay to allow USB feedback to stabilise after sample-rate change now based on USB bus
                   speed. This allows faster rate change at high-speed.
-    - CHANGE:     FL_DEVICE_ flash spec macros (from flash.h) used for DFU_FLASH_DEVICE define where appropriate
+    - CHANGE:     FL_DEVICE flash spec macros (from flash.h) used for DFU_FLASH_DEVICE define where appropriate
                   rather than defining the spec manually
     - RESOLVED:   (Major) Broken (noisy) playback in DSD native mode (introduced in 6.3.2). Caused by 24bit
                   (over 32bit) volume processing when DSD enabled - DSD bits are lost. 24bit volume control
