@@ -25,8 +25,11 @@ flashwithup:
 create_upgrades:
 	xflash --upgrade 1 ../app_usb_aud_xk_u8_2c/bin/2ioxs_up1/app_usb_aud_xk_u8_2c_2ioxs_up1.xe 0x10000 -o usbaudup1.bin; xflash --upgrade 2 ../app_usb_aud_xk_u8_2c/bin/2ioxs_up2/app_usb_aud_xk_u8_2c_2ioxs_up2.xe 0x10000 -o usbaudup2.bin; tr "\000" "\000" < /dev/zero | dd ibs=1k count=64 of=usbaudup1_padded.bin; dd if=usbaudup1.bin of=usbaudup1_padded.bin conv=notrunc; cat usbaudup1_padded.bin usbaudup2.bin > usbaudupcat.bin; 
 
+# Phony clean target to avoid error when clean is called when there is nothing to remove
+.PHONY : clean
+
 clean: 
-	rm loader.o 
+	-rm loader.o
 
 #=============================================================================
 # The following part of the Makefile includes the common build infrastructure
