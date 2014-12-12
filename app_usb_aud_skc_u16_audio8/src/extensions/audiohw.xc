@@ -138,12 +138,21 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
          */
         DAC_REGWRITE(CS4384_MODE_CTRL, 0b11000001);
 
+#ifdef I2S_MODE_TDM
+        /* PCM Control (Address: 0x03) */
+        /* bit[7:4] : Digital Interface Format (DIF) : 0b1100 for TDM
+         * bit[3:2] : Reserved
+         * bit[1:0] : Functional Mode (FM) : 0x11 for auto-speed detect (32 to 200kHz)
+        */
+        DAC_REGWRITE(CS4384_PCM_CTRL, 0b11000111);
+#else
         /* PCM Control (Address: 0x03) */
         /* bit[7:4] : Digital Interface Format (DIF) : 0b0001 for I2S up to 24bit
          * bit[3:2] : Reserved
          * bit[1:0] : Functional Mode (FM) : 0x11 for auto-speed detect (32 to 200kHz)
         */
         DAC_REGWRITE(CS4384_PCM_CTRL, 0b00010111);
+#endif
 
         /* Mode Control 1 (Address: 0x02) */
         /* bit[7] : Control Port Enable (CPEN)     : Set to 1 for enable
@@ -157,6 +166,16 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
         /* Take ADC out of reset */
         set_gpio(p_adrst_cksel_dsd, P_ADC_RST_N, 1);
 
+#ifdef I2S_MODE_TDM
+        /* Reg 0x01: (GCTL) Global Mode Control Register */
+        /* Bit[7]: CP-EN: Manages control-port mode
+         * Bit[6]: CLKMODE: Setting puts part in 384x mode
+         * Bit[5:4]: MDIV[1:0]: Set to 01 for /2
+         * Bit[3:2]: DIF[1:0]: Data Format: 0x01 for I2S
+         * Bit[1:0]: MODE[1:0]: Mode: 0x11 for slave mode
+         */
+        ADC_REGWRITE(CS5368_GCTL_MDE, 0b10011011);
+#else
         /* Reg 0x01: (GCTL) Global Mode Control Register */
         /* Bit[7]: CP-EN: Manages control-port mode
          * Bit[6]: CLKMODE: Setting puts part in 384x mode
@@ -165,6 +184,7 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
          * Bit[1:0]: MODE[1:0]: Mode: 0x11 for slave mode
          */
         ADC_REGWRITE(CS5368_GCTL_MDE, 0b10010111);
+#endif
 
         /* Reg 0x06: (PDN) Power Down Register */
         /* Bit[7:6]: Reserved
