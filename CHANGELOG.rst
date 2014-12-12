@@ -4,7 +4,8 @@ sw_usb_audio Change Log
 6.11.0
 ------
     - ADDED:      Build configurations in app_usb_aud_skc_u16_audio8 for TDM
-
+    - ADDED:      DAC/ADC configuration for TDM in app_usb_aud_skc_u16_audio8 when 
+                  I2S_MODE_TDM enabled.
 6.10.0
 ------
     - CHANGE:     Support for version 2V0 of XK-USB-AUDIO-U8-2C and XP-SKC-U16 core boards and
