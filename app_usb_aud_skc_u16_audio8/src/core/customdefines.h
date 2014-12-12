@@ -79,7 +79,9 @@
 #define PID_AUDIO_1        (0x000D) /* XMOS U16 - Audio Class 1.0 */
 
 /* Enable/Disable example HID code */
+#ifndef HID_CONTROLS
 #define HID_CONTROLS       0
+#endif
 
 /* Specify FLASH type on U16 sliceKIT */
 #define DFU_FLASH_DEVICE FL_DEVICE_NUMONYX_M25P16
