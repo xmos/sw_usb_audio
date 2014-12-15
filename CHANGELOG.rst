@@ -4,8 +4,19 @@ sw_usb_audio Change Log
 6.11.0
 ------
     - ADDED:      Build configurations in app_usb_aud_skc_u16_audio8 for TDM
-    - ADDED:      DAC/ADC configuration for TDM in app_usb_aud_skc_u16_audio8 when 
+    - ADDED:      DAC/ADC configuration for TDM in app_usb_aud_skc_u16_audio8 when
                   I2S_MODE_TDM enabled.
+  * Changes to dependencies:
+
+    - sc_usb_audio: 6.10.0alpha2 -> 6.11.0alpha2
+
+      + ADDED:      Basic TDM I2S functionality added. See I2S_CHANS_PER_FRAME and I2S_MODE_TDM
+      + CHANGE:     Various optimisations in 'mixer' core to improve performance for higher
+        channel counts including the use of XC unsafe pointers instead of inline ASM
+      + CHANGE:     Mixer mapping disabled when MAX_MIX_COUNT is 0 since this is wasted processing.
+      + CHANGE:     Descriptor changes to allow for channel input/output channel count up to 32
+        (previous limit was 18)
+
 6.10.0
 ------
     - CHANGE:     Support for version 2V0 of XK-USB-AUDIO-U8-2C and XP-SKC-U16 core boards and
