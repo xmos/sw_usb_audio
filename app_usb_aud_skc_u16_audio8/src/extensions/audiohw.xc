@@ -123,7 +123,7 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
     else
     {
         /* dsdMode == 0 */
-        /* Set MUX to DSD mode (muxes ADC I2S data lines) */
+        /* Set MUX to PCM mode (muxes ADC I2S data lines) */
         set_gpio(p_adrst_cksel_dsd, P_DSD_MODE, 0);
 
         /* Configure DAC with PCM values. Note 2 writes to mode control to enable/disable freeze/power down */
@@ -166,25 +166,36 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
         /* Take ADC out of reset */
         set_gpio(p_adrst_cksel_dsd, P_ADC_RST_N, 1);
 
+        {
+            unsigned dif = 0, mode = 0;
 #ifdef I2S_MODE_TDM
-        /* Reg 0x01: (GCTL) Global Mode Control Register */
-        /* Bit[7]: CP-EN: Manages control-port mode
-         * Bit[6]: CLKMODE: Setting puts part in 384x mode
-         * Bit[5:4]: MDIV[1:0]: Set to 01 for /2
-         * Bit[3:2]: DIF[1:0]: Data Format: 0x01 for I2S
-         * Bit[1:0]: MODE[1:0]: Mode: 0x11 for slave mode
-         */
-        ADC_REGWRITE(CS5368_GCTL_MDE, 0b10011011);
+            dif = 0x02;   /* TDM */
 #else
-        /* Reg 0x01: (GCTL) Global Mode Control Register */
-        /* Bit[7]: CP-EN: Manages control-port mode
-         * Bit[6]: CLKMODE: Setting puts part in 384x mode
-         * Bit[5:4]: MDIV[1:0]: Set to 01 for /2
-         * Bit[3:2]: DIF[1:0]: Data Format: 0x01 for I2S
-         * Bit[1:0]: MODE[1:0]: Mode: 0x11 for slave mode
-         */
-        ADC_REGWRITE(CS5368_GCTL_MDE, 0b10010111);
+            dif = 0x01;   /* I2S */
 #endif
+
+#ifdef CODEC_MASTER
+            /* Note, only the ADC device supports being I2S master. 
+             * Set ADC as master and run DAC as slave */
+            if(samFreq < 54000)
+                mode = 0x00;     /* Single-speed Mode Master */
+            else if(samFreq < 108000)
+                mode = 0x01;     /* Double-speed Mode Master */
+            else if(samFreq < 216000)
+                mode = 0x02;     /* Quad-speed Mode Master */
+#else
+            mode = 0x03;    /* Slave mode all speeds */
+#endif
+
+            /* Reg 0x01: (GCTL) Global Mode Control Register */
+            /* Bit[7]: CP-EN: Manages control-port mode
+            * Bit[6]: CLKMODE: Setting puts part in 384x mode
+            * Bit[5:4]: MDIV[1:0]: Set to 01 for /2
+            * Bit[3:2]: DIF[1:0]: Data Format: 0x01 for I2S, 0x02 for TDM
+            * Bit[1:0]: MODE[1:0]: Mode: 0x11 for slave mode
+            */
+            ADC_REGWRITE(CS5368_GCTL_MDE, 0b10010000 | (dif << 2) | mode);
+        }
 
         /* Reg 0x06: (PDN) Power Down Register */
         /* Bit[7:6]: Reserved
@@ -216,9 +227,6 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
     /* De-assert MUTE lines (Only connected to testpoints on audio8 slice) */
     set_gpio(p_pwr_pll_mute, P_MUTE_A | P_MUTE_B, 0);
 
-#ifdef CODEC_MASTER
-#error not currently implemented
-#endif
     return;
 }
 //:

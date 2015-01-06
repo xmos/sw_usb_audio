@@ -1,6 +1,11 @@
 sw_usb_audio Change Log
 =======================
 
+HEAD
+----
+    - ADDED:      Added audio hardware configuration for XCore I2S slave mode to 
+                  app_usb_aud_skc_u16_audio8 when CODEC_MASTER enabled.
+
 6.11.0
 ------
     - ADDED:      Build configurations in app_usb_aud_skc_u16_audio8 for TDM

@@ -48,6 +48,10 @@ INCLUDE_ONLY_IN_2xo_tdm32 =
 XCC_FLAGS_2io = $(BUILD_FLAGS) -DSPDIF=0 
 INCLUDE_ONLY_IN_2io =
 
+# Audio Class 2, Input, Output, No MIDI, No SPDIF, XCore I2S Slave
+XCC_FLAGS_2io_slave = $(BUILD_FLAGS) -DSPDIF=0 -DCODEC_MASTER=1
+INCLUDE_ONLY_IN_2io_slave =
+
 # Audio Class 2, Input, Output, No MIDI, SPDIF
 XCC_FLAGS_2ioxs = $(BUILD_FLAGS)
 INCLUDE_ONLY_IN_2ioxs =
