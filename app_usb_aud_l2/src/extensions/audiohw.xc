@@ -156,12 +156,24 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
     tmp[0] = 0x01;
     i2c_master_write_reg(COD_DEV_ADRS, 0x2, tmp, 1, i2cPorts);
 
+#ifdef I2S_MODE_TDM
+#ifdef CODEC_MASTER
+#error CODEC supports slave mode only in TDM mode
+#endif
+  /* Interface Formats Register (Address 04h)             */
+    /* 0:2  ADC Digital Interface Format       (ADC_DIF)    = 110 (TDM, 24bit) */
+    /* 3:5  DAC Digital Interface Format       (DAC_DIF)    = 110 (TDM, 24bit) */
+    /* 6    Auxiliary Digital Interface Format (AUX_DIF)    = 1, (I2S)         */
+    /* 7    Freeze Controls                    (FREEZE)     = 0,               */
+    tmp[0] = 0x76;
+#else
     /* Interface Formats Register (Address 04h)             */
     /* 0:2  ADC Digital Interface Format       (ADC_DIF)    = 001 (I2S, 24bit) */
     /* 3:5  DAC Digital Interface Format       (DAC_DIF)    = 001 (I2S, 24bit) */
     /* 6    Auxiliary Digital Interface Format (AUX_DIF)    = 1, (I2S)         */
     /* 7    Freeze Controls                    (FREEZE)     = 0,               */
     tmp[0] = 0x49;
+#endif
     i2c_master_write_reg(COD_DEV_ADRS, 0x4, tmp, 1, i2cPorts);
 
     /* ADC Control & DAC De-Emphasis (Address 05h) */

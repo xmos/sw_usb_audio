@@ -56,10 +56,14 @@
 #define SELF_POWERED       1
 
 /* Number of IS2 chans to DAC..*/
+#ifndef I2S_CHANS_DAC
 #define I2S_CHANS_DAC      (8)
+#endif
 
 /* Number of I2S chans from ADC */
+#ifndef I2S_CHANS_ADC
 #define I2S_CHANS_ADC      (6)
+#endif
 
 /* SPDIF and ADAT first input chan indices */
 #define SPDIF_RX_INDEX     (6)
