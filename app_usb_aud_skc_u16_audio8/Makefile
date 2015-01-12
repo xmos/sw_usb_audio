@@ -79,6 +79,11 @@ INCLUDE_ONLY_IN_2xoxx =
 # Audio Class 2, No Input, Output, No MIDI, SPDIF, DSD
 XCC_FLAGS_2xoxxd = $(BUILD_FLAGS) -DDSD_CHANS_DAC=2 -DNUM_USB_CHAN_IN=0
 INCLUDE_ONLY_IN_2xoxxd =
+
+# Audio Class 1, Input, Output, no MIDI, no SPDIF
+XCC_FLAGS_1ioxx = $(BUILD_FLAGS) -DAUDIO_CLASS=1 -DMIDI=0 -DSPDIF=0
+INCLUDE_ONLY_IN_1ioxx = 
+
 else
 
 # MFi test build configs - iAP support enabled
