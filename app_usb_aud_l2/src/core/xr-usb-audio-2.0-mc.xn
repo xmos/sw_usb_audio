@@ -47,7 +47,7 @@ xsi:schemaLocation="http://www.xmos.com http://www.xmos.com">
         <Port Location="XS1_PORT_1G" Name="PORT_I2S_ADC0"/>
         <Port Location="XS1_PORT_1H" Name="PORT_I2S_DAC2"/>
         <Port Location="XS1_PORT_1I" Name="PORT_I2S_BCLK"/>
-        <!--Port Location="XS1_PORT_1J" Name="PORT_OPT_OUT"/-->
+        <Port Location="XS1_PORT_1J" Name="PORT_ADAT_OUT"/>
         <Port Location="XS1_PORT_1K" Name="PORT_SPDIF_OUT"/>
         <Port Location="XS1_PORT_1L" Name="PORT_MCLK_IN"/>
         <Port Location="XS1_PORT_1M" Name="PORT_I2S_DAC0"/>
