@@ -39,7 +39,7 @@
 
 /* S/PDIF Tx enabled by default */
 #ifndef SPDIF
-#define SPDIF	           1
+#define SPDIF	           0
 #endif
 
 /* Enable Mixer Core(s) */
