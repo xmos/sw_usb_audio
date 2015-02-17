@@ -40,7 +40,7 @@ XCC_FLAGS_2io_spdifout_spdifin = $(BUILD_FLAGS) -DSPDIF_RX=1
 INCLUDE_ONLY_IN_2io_spdifout_spdifin = 
 
 # Audio Class 2, Input, Output, ADAT out
-XCC_FLAGS_2io_adatout = $(BUILD_FLAGS) -DMIDI=0 -DADAT_TX=1
+XCC_FLAGS_2io_adatout = $(BUILD_FLAGS) -DMIDI=0 -DADAT_TX=1 -DMAX_FREQ=48000
 INCLUDE_ONLY_IN_2io_adatout = 
 
 # Audio Class 2, Input, Output, No MIDI, SPDIF out, SPDIF in, Mixer enabled
