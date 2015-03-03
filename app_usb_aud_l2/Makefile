@@ -6,7 +6,7 @@ TARGET = xr-usb-audio-2.0-mc
 APP_NAME =
 
 # The flags passed to xcc when building the application
-BUILD_FLAGS     =  -DFLASH_MAX_UPGRADE_SIZE=64*1024 -fcomment-asm -Xmapper --map -Xmapper MAPFILE -Wall -O3 -report -lflash -fsubword-select -save-temps -g -DXUD_SERIES_SUPPORT=2 -DXSCOPE=1 -fxscope
+BUILD_FLAGS     =  -DFLASH_MAX_UPGRADE_SIZE=64*1024 -fcomment-asm -Xmapper --map -Xmapper MAPFILE -Wall -O3 -report -lflash -fsubword-select -save-temps -g -DXUD_SERIES_SUPPORT=2 -DXSCOPE=1 -fxscope -DADAT_TX_USE_SHARED_BUFF=1
 #-fschedule
 
 #Test build configs (Note these make use of the defaults in customdefines.h)
@@ -40,7 +40,7 @@ XCC_FLAGS_2io_spdifout_spdifin = $(BUILD_FLAGS) -DSPDIF_RX=1
 INCLUDE_ONLY_IN_2io_spdifout_spdifin = 
 
 # Audio Class 2, Input, Output, ADAT out
-XCC_FLAGS_2io_adatout = $(BUILD_FLAGS) -DMIDI=0 -DADAT_TX=1 -DMAX_FREQ=48000
+XCC_FLAGS_2io_adatout = $(BUILD_FLAGS) -DSPDIF=1 -DMIDI=0 -DADAT_TX=1 -DMAX_FREQ=192000
 INCLUDE_ONLY_IN_2io_adatout = 
 
 # Audio Class 2, Input, Output, No MIDI, SPDIF out, SPDIF in, Mixer enabled
