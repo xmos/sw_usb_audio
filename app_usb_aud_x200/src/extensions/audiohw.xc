@@ -1,163 +1,223 @@
 #include <xs1.h>
-#include <xs1.h>
-#include <platform.h>
 
+#define I2C_COMBINE_SCL_SDA 1
 #include "devicedefines.h"
-#include "i2c.h"
-#include "p_gpio.h"
+#include <platform.h>
+#include "gpio.h"
 #include "p_gpio_defines.h"
+#include "cs4384.h"
+#include "cs5368.h"
+#include "print.h"
+#include "dsd_support.h"
 
-on tile[1] : out port p_gpio = XS1_PORT_32A;
-on tile[1] : port p_i2c      = XS1_PORT_4E;
+on tile[0] : out port p_gpio = XS1_PORT_8C;
 
-//:codec_init
+on tile[0] : port p_i2c      = XS1_PORT_4A;
+
+#define DAC_REGWRITE(reg, val) {data[0] = val; i2c_master_write_reg(CS4384_I2C_ADDR, reg, data, 1, p_i2c);}
+#define ADC_REGWRITE(reg, val) {data[0] = val; i2c_master_write_reg(CS5368_I2C_ADDR, reg, data, 1, p_i2c);}
+
 void AudioHwInit(chanend ?c_codec)
 {
+    set_gpio(p_gpio, P_GPIO_USB_SEL0, 1);
+    set_gpio(p_gpio, P_GPIO_USB_SEL1, 1);
+    
+    /* Init the i2c module */
     i2c_master_init(p_i2c);
 
-    /* Enable SPDIF output (disables SPI flash) */
-    p_gpio <: 1;
-
-    return;
+    /* Assert reset to ADC and DAC */
+    set_gpio(p_gpio, P_DAC_RST_N, 0);
+    set_gpio(p_gpio, P_ADC_RST_N, 0);
 }
-//:
 
-
-/* Audio slice uses I2C configured CODECs*/
-#define CODEC1_I2C_DEVICE_ADDR       (0x90)
-#define CODEC2_I2C_DEVICE_ADDR       (0x92)
-
-#define CODEC_DEV_ID_ADDR           0x01
-#define CODEC_PWR_CTRL_ADDR         0x02
-#define CODEC_MODE_CTRL_ADDR        0x03
-#define CODEC_ADC_DAC_CTRL_ADDR     0x04
-#define CODEC_TRAN_CTRL_ADDR        0x05
-#define CODEC_MUTE_CTRL_ADDR        0x06
-#define CODEC_DACA_VOL_ADDR         0x07
-#define CODEC_DACB_VOL_ADDR         0x08
-
-#define IIC_REGWRITE_1(reg, val) {data[0] = val; i2c_master_write_reg(CODEC1_I2C_DEVICE_ADDR, reg, data, 1, p_i2c);}
-#define IIC_REGWRITE_2(reg, val) {data[0] = val; i2c_master_write_reg(CODEC2_I2C_DEVICE_ADDR, reg, data, 1, p_i2c);}
-
-/* Write to both CODECs */
-#define IIC_REGWRITE(reg, val) {IIC_REGWRITE_1(reg, val);IIC_REGWRITE_2(reg,val);}
-#define IIC_REGREAD(reg, val)  {i2c_master_read_reg(CODEC1_I2C_DEVICE_ADDR, reg, val, 1, p_i2c);}
-
-
-//:codec_config
-/* Called on a sample frequency change */
+/* Configures the external audio hardware for the required sample frequency.
+ * See gpio.h for I2C helper functions and gpio access
+ */
 void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned dsdMode,
-    unsigned samRes_DAC, unsigned samRes_ADC)
+    unsigned sampRes_DAC, unsigned sampRes_ADC)
 {
-    timer t;
-    unsigned time;
-    unsigned tmp;
-    int codec_dev_id;
-    unsigned char data[] = {0, 0};
+	unsigned char data[1] = {0};
 
-    /* See whats on the GP out port */
-    tmp = p_gpio_peek();
-
-    /* Set CODEC in reset */
-    tmp &= ~P_GPIO_COD_RST_N;
+    /* Put ADC and DAC into reset */
+	set_gpio(p_gpio, P_GPIO_DAC_RST_N, 0);
+	set_gpio(p_gpio, P_GPIO_ADC_RST_N, 0);
 
     /* Set master clock select appropriately */
-    if ((samFreq % 22050) == 0)
+    if (mClk == MCLK_441)
     {
-        tmp &= ~P_GPIO_MCLK_SEL;
+        set_gpio(p_gpio, P_GPIO_MCLK_FSEL, 0);
     }
-    else //if((samFreq % 24000) == 0)
+    else
     {
-        tmp |= P_GPIO_MCLK_SEL;
+        set_gpio(p_gpio, P_GPIO_MCLK_FSEL, 1); //mClk = MCLK_48
     }
 
-    /* Output to port */
-    p_gpio_out(tmp);
+    /* Allow MCLK to settle */
+    wait_us(2000);
 
-    /* Hold in reset for 2ms while waiting for MCLK to stabilise */
-    t :> time;
-    time += 200000;
-    t when timerafter(time) :> int _;
-
-    /* CODEC out of reset */
-    tmp |= P_GPIO_COD_RST_N;
-    p_gpio_out(tmp);
-
-    /* Set power down bit in the CODEC over I2C */
-    IIC_REGWRITE(CODEC_DEV_ID_ADDR, 0x01);
-
-    /* Now set all registers as we want them :
-    Mode Control Reg: */
-#ifndef CODEC_MASTER
-    /*
-    Set FM[1:0] as 11. This sets Slave mode.
-    Set MCLK_FREQ[2:0] as 010. This sets MCLK to 512Fs in Single, 256Fs in Double and 128Fs in Quad Speed Modes.
-    This means 24.576MHz for 48k and 22.5792MHz for 44.1k.
-    Set Popguard Transient Control.
-    So, write 0x35. */
-    IIC_REGWRITE(CODEC_MODE_CTRL_ADDR,    0x35);
-#else
-
-    /* In master mode (i.e. Xcore is I2S slave) to avoid contention configure one CODEC as master one
-     * the other as slave */
-
-    /*
-    Set FM[1:0] as 11. This sets Slave mode.
-    Set MCLK_FREQ[2:0] as 010. This sets MCLK to 512Fs in Single, 256Fs in Double and 128Fs in Quad Speed Modes.
-    This means 24.576MHz for 48k and 22.5792MHz for 44.1k.
-    Set Popguard Transient Control.
-    So, write 0x35. */
-    IIC_REGWRITE_1(CODEC_MODE_CTRL_ADDR,    0x35);
-
-    /* Set FM[1:0] Based on Single/Double/Quad mode
-    Set MCLK_FREQ[2:0] as 010. This sets MCLK to 512Fs in Single, 256Fs in Double and 128Fs in Quad Speed Modes.
-    This means 24.576MHz for 48k and 22.5792MHz for 44.1k.
-    Set Popguard Transient Control.*/
-
+    if((dsdMode == DSD_MODE_NATIVE) || (dsdMode == DSD_MODE_DOP))
     {
-        unsigned char val = 0b0101;
+        /* Enable DSD 8ch out mode on mux */
+        //set_gpio(p_adrst_cksel_dsd, P_DSD_MODE, 1);
 
-        if(samFreq < 54000)
+        /* DAC out out reset, note ADC left in reset in for DSD mode */
+        //set_gpio(p_adrst_cksel_dsd, P_DAC_RST_N, 1);
+
+        /* Configure DAC values required for DSD mode */
+
+        /* Mode Control 1 (Address: 0x02) */
+        /* bit[7] : Control Port Enable (CPEN)     : Set to 1 for enable
+         * bit[6] : Freeze controls (FREEZE)       : Set to 1 for freeze
+         * bit[5] : PCM/DSD Selection (DSD/PCM)    : Set to 1 for DSD
+         * bit[4:1] : DAC Pair Disable (DACx_DIS)  : All Dac Pairs enabled
+         * bit[0] : Power Down (PDN)               : Powered down
+         */
+        DAC_REGWRITE(CS4384_MODE_CTRL, 0xe1);
+
+        if (samFreq > 3000000)
         {
-            // | with 0..
-        }
-        else if(samFreq < 108000)
-        {
-            val |= 0b00100000;
+            /* DSD128 */
+            /* DSD Control (Address: 0x04) */
+            /* bit[7:5] : DSD Digital Inteface Format (DSD_DIF) : 128x over samples with 4x MCLK
+             * bit[4] : Direct DSD Conversion: Set to 0, data sent to DSD processor
+             * bit[3] : Static DSD detect : 1 for enabled
+             * bit[2] : Invalid DSD Detect : 1 for enabled
+             * bit[1] : DSD Phase Modulation Mode Select
+             * bit[0] : DSD Phase Modulation Enable
+             */
+            DAC_REGWRITE(CS4384_DSD_CTRL, 0b11001100);
+            //set_led_array(LED_SQUARE_BIG);
         }
         else
         {
-            val |= 0b00100000;
+            /* DSD64 */
+            /* DSD Control (Address: 0x04) */
+            /* bit[7:5] : DSD Digital Inteface Format (DSD_DIF) : 64x over samples with 8x MCLK
+             * bit[4] : Direct DSD Conversion: Set to 0, data sent to DSD processor
+             * bit[3] : Static DSD detect : 1 for enabled
+             * bit[2] : Invalid DSD Detect : 1 for enabled
+             * bit[1] : DSD Phase Modulation Mode Select
+             * bit[0] : DSD Phase Modulation Enable
+             */
+            DAC_REGWRITE(CS4384_DSD_CTRL, 0b01001100);
+            //set_led_array(LED_SQUARE_SML);
         }
-        IIC_REGWRITE_2(CODEC_MODE_CTRL_ADDR, val);
-    }
 
+        /* Mode Control 1 (Address: 0x02) */
+        /* bit[7] : Control Port Enable (CPEN)     : Set to 1 for enable
+         * bit[6] : Freeze controls (FREEZE)       : Set to 0 for not freeze
+         * bit[5] : PCM/DSD Selection (DSD/PCM)    : Set to 1 for DSD
+         * bit[4:1] : DAC Pair Disable (DACx_DIS)  : All Dac Pairs enabled
+         * bit[0] : Power Down (PDN)               : Power down disabled
+         */
+        DAC_REGWRITE(CS4384_MODE_CTRL, 0xA0);
+
+        /* Note: ADC kept in reset, no config sent. DSD mode is output only 0*/
+    }
+    else
+    {
+        /* dsdMode == 0 */
+        /* Set MUX to PCM mode (muxes ADC I2S data lines) */
+        set_gpio(p_gpio, P_GPIO_DSD_MODE, 0);
+
+        /* Configure DAC with PCM values. Note 2 writes to mode control to enable/disable freeze/power down */
+        set_gpio(p_gpio, P_GPIO_DAC_RST_N, 1);//De-assert DAC reset
+
+        /* Mode Control 1 (Address: 0x02) */
+        /* bit[7] : Control Port Enable (CPEN)     : Set to 1 for enable
+         * bit[6] : Freeze controls (FREEZE)       : Set to 1 for freeze
+         * bit[5] : PCM/DSD Selection (DSD/PCM)    : Set to 0 for PCM
+         * bit[4:1] : DAC Pair Disable (DACx_DIS)  : All Dac Pairs enabled
+         * bit[0] : Power Down (PDN)               : Powered down
+         */
+        DAC_REGWRITE(CS4384_MODE_CTRL, 0b11000001);
+
+#ifdef I2S_MODE_TDM
+        /* PCM Control (Address: 0x03) */
+        /* bit[7:4] : Digital Interface Format (DIF) : 0b1100 for TDM
+         * bit[3:2] : Reserved
+         * bit[1:0] : Functional Mode (FM) : 0x11 for auto-speed detect (32 to 200kHz)
+        */
+        DAC_REGWRITE(CS4384_PCM_CTRL, 0b11000111);
+#else
+        /* PCM Control (Address: 0x03) */
+        /* bit[7:4] : Digital Interface Format (DIF) : 0b0001 for I2S up to 24bit
+         * bit[3:2] : Reserved
+         * bit[1:0] : Functional Mode (FM) : 0x11 for auto-speed detect (32 to 200kHz)
+        */
+        DAC_REGWRITE(CS4384_PCM_CTRL, 0b00010111);
 #endif
 
-    /* ADC & DAC Control Reg:
-       Leave HPF for ADC inputs continuously running.
-       Digital Loopback: OFF
-       DAC Digital Interface Format: I2S
-       ADC Digital Interface Format: I2S
-       So, write 0x09. */
-    IIC_REGWRITE(CODEC_ADC_DAC_CTRL_ADDR, 0x09);
+        /* Mode Control 1 (Address: 0x02) */
+        /* bit[7] : Control Port Enable (CPEN)     : Set to 1 for enable
+         * bit[6] : Freeze controls (FREEZE)       : Set to 0 for freeze
+         * bit[5] : PCM/DSD Selection (DSD/PCM)    : Set to 0 for PCM
+         * bit[4:1] : DAC Pair Disable (DACx_DIS)  : All Dac Pairs enabled
+         * bit[0] : Power Down (PDN)               : Not powered down
+         */
+        DAC_REGWRITE(CS4384_MODE_CTRL, 0b10000000);
 
-    /* Transition Control Reg:
-       No De-emphasis. Don't invert any channels. Independent vol controls. Soft Ramp and Zero Cross enabled.*/
-    IIC_REGWRITE(CODEC_TRAN_CTRL_ADDR,    0x60);
+        /* Take ADC out of reset */
+        set_gpio(p_gpio, P_GPIO_ADC_RST_N, 1);
 
-    /* Mute Control Reg: Turn off AUTO_MUTE */
-    IIC_REGWRITE(CODEC_MUTE_CTRL_ADDR,    0x00);
+        {
+            unsigned dif = 0, mode = 0;
+#ifdef I2S_MODE_TDM
+            dif = 0x02;   /* TDM */
+#else
+            dif = 0x01;   /* I2S */
+#endif
 
-    /* DAC Chan A Volume Reg:
-       We don't require vol control so write 0x00 (0dB) */
-    IIC_REGWRITE(CODEC_DACA_VOL_ADDR,     0x00);
+#ifdef CODEC_MASTER
+            /* Note, only the ADC device supports being I2S master. 
+             * Set ADC as master and run DAC as slave */
+            if(samFreq < 54000)
+                mode = 0x00;     /* Single-speed Mode Master */
+            else if(samFreq < 108000)
+                mode = 0x01;     /* Double-speed Mode Master */
+            else if(samFreq < 216000)
+                mode = 0x02;     /* Quad-speed Mode Master */
+#else
+            mode = 0x03;    /* Slave mode all speeds */
+#endif
 
-    /* DAC Chan B Volume Reg:
-       We don't require vol control so write 0x00 (0dB)  */
-    IIC_REGWRITE(CODEC_DACB_VOL_ADDR,     0x00);
+            /* Reg 0x01: (GCTL) Global Mode Control Register */
+            /* Bit[7]: CP-EN: Manages control-port mode
+            * Bit[6]: CLKMODE: Setting puts part in 384x mode
+            * Bit[5:4]: MDIV[1:0]: Set to 01 for /2
+            * Bit[3:2]: DIF[1:0]: Data Format: 0x01 for I2S, 0x02 for TDM
+            * Bit[1:0]: MODE[1:0]: Mode: 0x11 for slave mode
+            */
+            ADC_REGWRITE(CS5368_GCTL_MDE, 0b10010000 | (dif << 2) | mode);
+        }
 
-    /* Clear power down bit in the CODEC over I2C */
-    IIC_REGWRITE(CODEC_PWR_CTRL_ADDR, 0x00);
+        /* Reg 0x06: (PDN) Power Down Register */
+        /* Bit[7:6]: Reserved
+         * Bit[5]: PDN-BG: When set, this bit powers-own the bandgap reference
+         * Bit[4]: PDM-OSC: Controls power to internal oscillator core
+         * Bit[3:0]: PDN: When any bit is set all clocks going to that channel pair are turned off
+         */
+        ADC_REGWRITE(CS5368_PWR_DN, 0b00000000);
+
+        /* Illuminate LEDs based on sample-rate */
+        if (samFreq > 192000)
+        {
+            //set_led_array(LED_ALL_ON);
+        }
+        else if (samFreq > 96000)
+        {
+            //set_led_array(LED_ROW_3);
+        }
+        else if (samFreq > 48000)
+        {
+            //set_led_array(LED_ROW_2);
+        }
+        else
+        {
+            //set_led_array(LED_ROW_1);
+        }
+    }
+    
+    return;
 }
 //:

@@ -7,8 +7,8 @@
 #ifndef _CUSTOMDEFINES_H_
 #define _CUSTOMDEFINES_H_
 
-#define AUDIO_IO_TILE 1
-//#define XUD_TILE 1
+#define AUDIO_IO_TILE   0
+#define XUD_TILE        1
 
 /*
  * Device configuration option defines.  Build can be customised but changing and adding defines here
@@ -23,7 +23,7 @@
 
 /* Enable/Disable SPDIF output - Default is S/PDIF on */
 #ifndef SPDIF
-#define SPDIF		1
+#define SPDIF		0
 #endif
 
 /* Audio class version to run in - Default is 2.0 */
@@ -33,7 +33,7 @@
 
 /* Enable/disable fall back to Audio Class 1.0 when connected to FS hub. */
 #ifndef AUDIO_CLASS_FALLBACK
-#define AUDIO_CLASS_FALLBACK 1
+#define AUDIO_CLASS_FALLBACK 0
 #endif
 
 /* Defines relating to channel count and channel arrangement (Set to 0 for disable) */
@@ -92,12 +92,6 @@
 
 /* Enable/Disable example HID code */
 #define HID_CONTROLS       0
-
-/* Enable/Disable SU1 ADC */
-#define SU1_ADC_ENABLE     0
-
-/* Enable ADC based *EXAMPLE* volume control */
-#define ADC_VOL_CONTROL    0
 
 /* Specify FLASH type on U16 sliceKIT */
 #define DFU_FLASH_DEVICE FL_DEVICE_NUMONYX_M25P16
