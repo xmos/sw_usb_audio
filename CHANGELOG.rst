@@ -1,8 +1,9 @@
 sw_usb_audio Change Log
 =======================
 
-HEAD
-----
+6.11.1
+------
+    - ADDED:      ADAT transmit enabled build configs to app_usb_aud_l2
     - ADDED:      Audio hardware configuration for XCore I2S slave mode to 
                   app_usb_aud_skc_u16_audio8 when CODEC_MASTER enabled.
     - ADDED:      Build configurations in app_usb_aud_l2 for TDM
