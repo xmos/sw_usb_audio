@@ -34,7 +34,7 @@
 #endif
 
 #ifndef NUM_USB_CHAN_OUT
-#define NUM_USB_CHAN_OUT   (18)              /* Host to Device */
+#define NUM_USB_CHAN_OUT   (10)              /* Host to Device */
 #endif
 
 /* S/PDIF Tx enabled by default */
