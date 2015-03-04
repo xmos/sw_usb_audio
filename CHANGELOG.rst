@@ -12,7 +12,7 @@ sw_usb_audio Change Log
 
   * Changes to dependencies:
 
-    - sc_usb_audio: 6.11.0alpha2 -> 6.11.1beta1
+    - sc_usb_audio: 6.11.0alpha2 -> 6.11.1beta2
 
       + ADDED:      ADAT transmit functionality, including SMUX. See ADAT_TX and ADAT_TX_INDEX.
       + RESOLVED:   Build issue with CODEC_MASTER (xCore is I2S slave) enabled
