@@ -1,7 +1,7 @@
 XMOS USB Audio 2.0 Reference Design README
 ..........................................
 
-:Latest release: 6.11.0alpha0
+:Latest release: 6.11.1beta0
 :Maintainer: Ross Owen
 :Description: USB Audio Applications
 
@@ -175,6 +175,7 @@ For all support issues please visit http://www.xmos.com/support
 Required software (dependencies)
 ================================
 
+  * sc_adat (git@github.com:xcore/sc_adat.git)
   * sc_i2c (ssh://git@github.com/xcore/sc_i2c)
   * sc_u_series_support (git@github.com:xcore/sc_u_series_support.git)
   * sc_usb (git://git/apps/sc_usb)
