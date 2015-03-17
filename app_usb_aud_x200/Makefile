@@ -14,6 +14,27 @@ BUILD_FLAGS     = -DFLASH_MAX_UPGRADE_SIZE=64*1024 -fcomment-asm -Xmapper --map 
 XCC_FLAGS_2ioxs = $(BUILD_FLAGS) 
 INCLUDE_ONLY_IN_2ioxs = 
 
+# Audio Class 2, Input, Output, No MIDI, No SPDIF, TDM (8in/8out)
+XCC_FLAGS_2io_tdm8 = $(BUILD_FLAGS) -DSPDIF=0 -DI2S_MODE_TDM=1 -DMAX_FREQ=192000 -DI2S_CHANS_DAC=8 -DI2S_CHANS_ADC=8 -DNUM_USB_CHAN_OUT=8 -DNUM_USB_CHAN_IN=8
+INCLUDE_ONLY_IN_2io_tdm8 =
+
+# Audio Class 2, Input, Output, No MIDI, No SPDIF, TDM (8in/8out)
+XCC_FLAGS_2io_tdm16 = $(BUILD_FLAGS) -DSPDIF=0 -DI2S_MODE_TDM=1 -DMAX_FREQ=96000 -DI2S_CHANS_DAC=16 -DI2S_CHANS_ADC=16 -DNUM_USB_CHAN_OUT=16 -DNUM_USB_CHAN_IN=16
+INCLUDE_ONLY_IN_2io_tdm16 =
+
+
+# Audio Class 2, Input, Output, No MIDI, No SPDIF, TDM (32in/32out)
+XCC_FLAGS_2io_tdm32 = $(BUILD_FLAGS) -DSPDIF=0 -DI2S_MODE_TDM=1 -DI2S_CHANS_ADC=32 -DMAX_FREQ=48000 -DI2S_CHANS_DAC=32 -DNUM_USB_CHAN_OUT=32 -DNUM_USB_CHAN_IN=32
+INCLUDE_ONLY_IN_2io_tdm32 =
+
+# Audio Class 2, Input, Output, No MIDI, SPDIF, TDM (32in/32out)
+XCC_FLAGS_2io_tdm32_spdifout = $(BUILD_FLAGS) -DSPDIF=1 -DI2S_MODE_TDM=1 -DI2S_CHANS_ADC=32 -DMAX_FREQ=48000 -DI2S_CHANS_DAC=32 -DNUM_USB_CHAN_OUT=32 -DNUM_USB_CHAN_IN=32
+INCLUDE_ONLY_IN_2io_tdm32_spdifout =
+
+# Audio Class 2, Input, Output, MIDI, no SPDIF
+XCC_FLAGS_2iomx = $(BUILD_FLAGS) -DMIDI=1 -DSPDIF=0
+INCLUDE_ONLY_IN_2iomx = 
+
 # The USED_MODULES variable lists other module used by the application. These
 # modules will extend the SOURCE_DIRS, INCLUDE_DIRS and LIB_DIRS variables. 
 # Modules are expected to be in the directory above the BASE_DIR directory.
