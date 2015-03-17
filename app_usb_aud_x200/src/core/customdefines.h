@@ -9,6 +9,11 @@
 
 #define AUDIO_IO_TILE   0
 #define XUD_TILE        1
+#define SPDIF_TX_TILE   1
+#define MIDI_TILE       1
+
+#define MIXER 1
+#define MAX_MIX_COUNT 0
 
 /*
  * Device configuration option defines.  Build can be customised but changing and adding defines here
@@ -23,7 +28,7 @@
 
 /* Enable/Disable SPDIF output - Default is S/PDIF on */
 #ifndef SPDIF
-#define SPDIF		0
+#define SPDIF		1
 #endif
 
 /* Audio class version to run in - Default is 2.0 */
@@ -40,32 +45,24 @@
 //:audio_defs
 /* Number of USB streaming channels - Default is 4 in 4 out */
 #ifndef NUM_USB_CHAN_IN
-#define NUM_USB_CHAN_IN   (4)         /* Device to Host */
+#define NUM_USB_CHAN_IN   (10)         /* Device to Host */
 #endif
 #ifndef NUM_USB_CHAN_OUT
-#define NUM_USB_CHAN_OUT  (4)         /* Host to Device */
+#define NUM_USB_CHAN_OUT  (10)         /* Host to Device */
 #endif
 
 /* Number of IS2 chans to DAC..*/
 #ifndef I2S_CHANS_DAC
-#define I2S_CHANS_DAC     (4)
+#define I2S_CHANS_DAC     (8)
 #endif
 
 /* Number of I2S chans from ADC */
 #ifndef I2S_CHANS_ADC
-#define I2S_CHANS_ADC     (4)
+#define I2S_CHANS_ADC     (8)
 #endif
-
-/* Run the CODEC as slave, Xcore as master
- * Changing this define will cause CODECs to setup appropriately and XCore to be I2S slave
- */
-#define CODEC_MASTER      0
 
 /* Enable DFU interface, Note, requires a driver for Windows */
 #define DFU             1
-
-#define MIDI_SHIFT_TX   7
-
 
 /* Master clock defines (in Hz) */
 #define MCLK_441          (512*44100)   /* 44.1, 88.2 etc */
@@ -91,7 +88,7 @@
 //:
 
 /* Enable/Disable example HID code */
-#define HID_CONTROLS       0
+#define HID_CONTROLS       1
 
 /* Specify FLASH type on U16 sliceKIT */
 #define DFU_FLASH_DEVICE FL_DEVICE_NUMONYX_M25P16
