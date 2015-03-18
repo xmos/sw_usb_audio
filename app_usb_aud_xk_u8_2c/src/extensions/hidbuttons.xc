@@ -1,6 +1,7 @@
 
 #include "devicedefines.h"
 #include "gpio_defines.h"
+#include "user_hid.h"
 
 #ifdef HID_CONTROLS
 extern in port p_sw;
@@ -20,16 +21,8 @@ extern in port p_sw;
 unsigned multicontrol_count = 0;
 unsigned wait_counter =0;
 
-
 #define THRESH 1
 #define MULTIPRESS_WAIT 25
-
-#define HID_CONTROL_NEXT 		0x02
-#define HID_CONTROL_PLAYPAUSE 	0x01
-#define HID_CONTROL_PREV		0x04
-#define HID_CONTROL VOLUP       0x08
-#define HID_CONTROL_VOLDN		0x10
-#define HID_CONTROL_MUTE		0x20
 
 typedef enum
 {
@@ -59,7 +52,7 @@ void UserReadHIDButtons(unsigned char hidData[])
     if(sw)
     {
         /* Assign buttons A and B to Vol Up/Down */
-        hidData[0] = (a << 4) | (b << 3);
+        hidData[0] = (a << HID_CONTROL_VOLUP_SHIFT) | (b << HID_CONTROL_VOLDN_SHIFT);
     }
     else
     {
@@ -89,14 +82,14 @@ void UserReadHIDButtons(unsigned char hidData[])
             {
     		    if(state == STATE_PLAY)
                 {
-    			    hidData[0] = HID_CONTROL_PLAYPAUSE;
+    			    hidData[0] = (1 << HID_CONTROL_PLAYPAUSE_SHIFT);
     		    }
     		    else if(state == STATE_NEXTPREV)
                 {
                     if(lastA)
-    			        hidData[0] = HID_CONTROL_PREV;
+    			        hidData[0] = (1 << HID_CONTROL_PREV_SHIFT);
     		        else
-    			        hidData[0] = HID_CONTROL_NEXT;
+    			        hidData[0] = (1 << HID_CONTROL_NEXT_SHIFT);
                 }
     		    state = STATE_IDLE;
     	    }
