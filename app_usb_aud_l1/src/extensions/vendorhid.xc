@@ -2,6 +2,7 @@
 #include <platform.h>
 
 #include "devicedefines.h"
+#include "user_hid.h"
 
 #ifndef MIDI
 /* MIDI shared with button pins */
@@ -32,7 +33,7 @@ void UserReadHIDButtons(unsigned char hidData[])
     b = (~b) & 1;
 
     /* Assign buttons A and B to Vol Up/Down */
-    hidData[0] = (a << 3) | (b << 4);
+    hidData[0] = (a << HID_CONTROL_VOLUP_SHIFT) | (b << HID_CONTROL_VOLDN_SHIFT);
 #endif
 }
 #endif // HID_CONTROLS
