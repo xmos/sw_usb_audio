@@ -1,6 +1,11 @@
 sw_usb_audio Change Log
 =======================
 
+HEAD
+----
+    - CHANGE:     Example HID code uses defines from module_usb_audio/user_hid.h
+
+
 6.11.1
 ------
     - ADDED:      ADAT transmit enabled build configs to app_usb_aud_l2
