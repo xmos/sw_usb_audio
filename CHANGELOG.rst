@@ -3,11 +3,27 @@ sw_usb_audio Change Log
 
 HEAD
 ----
-    - ADDED:      Audio hardware configuration for XCore I2S slave mode to 
+    - CHANGE:     Example HID code uses defines from module_usb_audio/user_hid.h
+
+
+6.11.1
+------
+    - ADDED:      ADAT transmit enabled build configs to app_usb_aud_l2
+    - ADDED:      Audio hardware configuration for XCore I2S slave mode to
                   app_usb_aud_skc_u16_audio8 when CODEC_MASTER enabled.
     - ADDED:      Build configurations in app_usb_aud_l2 for TDM
     - ADDED:      DAC/ADC configuration for TDM in app_usb_aud_l2 when
                   I2S_MODE_TDM enabled.
+
+  * Changes to dependencies:
+
+    - sc_usb_audio: 6.11.0alpha2 -> 6.11.1beta2
+
+      + ADDED:      ADAT transmit functionality, including SMUX. See ADAT_TX and ADAT_TX_INDEX.
+      + RESOLVED:   Build issue with CODEC_MASTER (xCore is I2S slave) enabled
+      + RESOLVED:   Channel ordering issue in when TDM and CODEC_MASTER mode enabled
+      + RESOLVED:   DFU fails when SPDIF_RX enabled due to clock block being shared between SPDIF
+        core and FlashLib
 
 6.11.0
 ------

@@ -175,7 +175,7 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
 #endif
 
 #ifdef CODEC_MASTER
-            /* Note, only the ADC device supports being I2S master. 
+            /* Note, only the ADC device supports being I2S master.
              * Set ADC as master and run DAC as slave */
             if(samFreq < 54000)
                 mode = 0x00;     /* Single-speed Mode Master */

@@ -34,7 +34,7 @@
 #endif
 
 #ifndef NUM_USB_CHAN_OUT
-#define NUM_USB_CHAN_OUT   (18)              /* Host to Device */
+#define NUM_USB_CHAN_OUT   (10)              /* Host to Device */
 #endif
 
 /* S/PDIF Tx enabled by default */
@@ -69,7 +69,12 @@
 #define SPDIF_RX_INDEX     (6)
 #define ADAT_RX_INDEX      (8)
 #define SPDIF_TX_INDEX     (I2S_CHANS_DAC)
+
+#if defined(SPDIF) && (SPDIF==1)
 #define ADAT_TX_INDEX      (SPDIF_TX_INDEX+2)
+#else
+#define ADAT_TX_INDEX      (I2S_CHANS_DAC)
+#endif
 
 /* Master clock defines (in Hz) */
 #define MCLK_441           (512*44100)       /* 44.1, 88.2 etc */

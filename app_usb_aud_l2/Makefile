@@ -23,6 +23,10 @@ INCLUDE_ONLY_IN_2xoxs =
 XCC_FLAGS_2ioxx = $(BUILD_FLAGS) -DSPDIF=0
 INCLUDE_ONLY_IN_2ioxx =  
 
+# Audio Class 2, Input, Output, No MIDI, No SPDIF, Mixing
+XCC_FLAGS_2ioxx_mix8 = $(BUILD_FLAGS) -DSPDIF=0 -DMAX_MIX_COUNT=8
+INCLUDE_ONLY_IN_2ioxx_mix8 =  
+
 # Audio Class 2, Input, Output, No MIDI, SPDIF
 XCC_FLAGS_2ioxs = $(BUILD_FLAGS)
 INCLUDE_ONLY_IN_2ioxs = 
@@ -40,8 +44,12 @@ XCC_FLAGS_2io_spdifout_spdifin = $(BUILD_FLAGS) -DSPDIF_RX=1
 INCLUDE_ONLY_IN_2io_spdifout_spdifin = 
 
 # Audio Class 2, Input, Output, ADAT out
-XCC_FLAGS_2io_adatout = $(BUILD_FLAGS) -DSPDIF=1 -DMIDI=0 -DADAT_TX=1 -DMAX_FREQ=192000
+XCC_FLAGS_2io_adatout = $(BUILD_FLAGS) -DSPDIF=0 -DMIDI=0 -DADAT_TX=1 -DMAX_FREQ=96000 -DNUM_USB_CHAN_OUT=16
 INCLUDE_ONLY_IN_2io_adatout = 
+
+# Audio Class 2, Input, Output, SPDIF out, ADAT out
+XCC_FLAGS_2io_spdifout_adatout = $(BUILD_FLAGS) -DMIDI=0 -DADAT_TX=1 -DMAX_FREQ=96000 -DNUM_USB_CHAN_OUT=18
+INCLUDE_ONLY_IN_2io_spdifout_adatout = 
 
 # Audio Class 2, Input, Output, No MIDI, SPDIF out, SPDIF in, Mixer enabled
 XCC_FLAGS_2io_spdifout_spdifin_mix8 = $(BUILD_FLAGS) -DSPDIF_RX=1 -DMAX_MIX_COUNT=8 -DLEVEL_METER_LEDS=1 -DLEVEL_METER_HOST=1
@@ -63,7 +71,7 @@ endif
 # The USED_MODULES variable lists other module used by the application. These
 # modules will extend the SOURCE_DIRS, INCLUDE_DIRS and LIB_DIRS variables. 
 # Modules are expected to be in the directory above the BASE_DIR directory.
-USED_MODULES = module_usb_shared module_xud module_usb_audio module_spdif_tx module_spdif_rx module_usb_midi module_dfu module_usb_device module_i2c_simple module_usb_audio_adat module_adat_tx
+USED_MODULES = module_usb_shared module_xud module_usb_audio module_spdif_tx module_spdif_rx module_usb_midi module_dfu module_usb_device module_i2c_simple module_adat_rx module_adat_tx
 
 MODULE_LIBRARIES = xud_l
 
