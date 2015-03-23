@@ -28,8 +28,6 @@ typically relate to a specific board.  This repository contains the following:
 +----------------------+--------------------------+------------------------------------------------------------+
 | app_usb_aud_skc_su1  | xp-skc-su1 & xa-sk-audio | XMOS XS1-U8 USB Audio Kit                                  |
 +----------------------+--------------------------+------------------------------------------------------------+
-| app_usb_aud_su1      | xr-usb-audio-s1          | XMOS XS1-U8 USB Audio Reference Design (prototype only)    |
-+----------------------+--------------------------+------------------------------------------------------------+
 | app_usb_aud_xk_u8_2c | xk-usb-audio-u8-2c       | XMOS XS1-U8 Multi-Function Audio Board                     |
 +----------------------+--------------------------+------------------------------------------------------------+
 | app_usb_aud_l2       | xk-usb-audio-2.0-mc      | XMOS XS1-L16 USB Audio Reference Design                    |
@@ -71,6 +69,8 @@ Key features of the various applications in this repository are as follow.  Plea
 
 - S/PDIF input
 
+- ADAT output
+
 - ADAT input
 
 - MIDI input/output (Compliant to USB Class Specification for MIDI devices)
@@ -81,56 +81,9 @@ Key features of the various applications in this repository are as follow.  Plea
 
 - Simple playback controls via Human Interface Device (HID)
 
-- Support for operation with Apple devices (requires sc_mfi for MFI licensees only - please contact XMOS) 
+- Support for operation with Apple devices (requires software module sc_mfi for MFI licensees only - please contact XMOS) 
 
 Note, not all features may be supported at all sample frequencies, simultaneously or on all devices.  Some features also require specific host driver support.
-
-Support Status
-==============
-
-The following tables describe key features/build options that have been tested (and are therefore supported) with this release.
-
-The constraints table lists other features that may not operate as expected or may even fail the build process and are to be used only at the risk of the developer.  
-
-In addition to these tables please see "Known Issues".
-
-Constraints
------------
-
-+----------------------+--------------------------------------+---------------+-----------------------------------------+
-|    Option            |     Description                      | Status        | Notes                                   | 
-+======================+======================================+===============+=========================================+
-| ADAT_RX              | ADAT input                           | Not supported | Must be set to 0                        |
-+----------------------+--------------------------------------+---------------+-----------------------------------------+
-| ADAT_TX              | ADAT output                          | Not Supported | Must be set to 0                        |                            
-+----------------------+--------------------------------------+---------------+-----------------------------------------+
-| SPDIF_RX             | S/PDIF input                         | Not supported | Must be set to 0                        |
-+----------------------+--------------------------------------+---------------+-----------------------------------------+
-
-Supported Options
------------------
-
-+----------------------+--------------------------------------+---------------+-----------------------------------------+----------------------------+--------------+
-|    Option            |     Description                      | Status        | Notes                                   | Example Binaries           | Known Issues |
-+======================+======================================+===============+=========================================+============================+==============+
-| SPDIF                | S/PDIF output                        | Supported     |                                         | 2xoxs, 2ioxs, 1ioxs, 1xoxs |              |
-+----------------------+--------------------------------------+---------------+-----------------------------------------+----------------------------+--------------+
-| NUM_USB_CHANS_IN     | Number of audio channels to host     | Supported     | Up to 10 channels                       | 2xoxs, 2ioxs, 1ioxs, 1xoxs |              |      
-+----------------------+--------------------------------------+---------------+-----------------------------------------+----------------------------+--------------+
-| NUM_USB_CHANS_OUT    | Number of audio channels from host   | Supported     | Up to 10 channels                       | 2ioxs, 2ixxx, 1ioxs        |              |
-+----------------------+--------------------------------------+---------------+-----------------------------------------+----------------------------+--------------+
-| I2S_CHANS_DAC        | Number of I2S channels to DAC(s)     | Supported     | Up to 8 channels                        | 2xoxs, 2ioxs, 1ioxs, 2xoxx |              |
-+----------------------+--------------------------------------+---------------+-----------------------------------------+----------------------------+--------------+
-| I2S_CHANS_ADC        | Number of I2S channels from ADC(s)   | Supported     | Up to 6 channels                        | 2ioxs, 2ixxx               |              |
-+----------------------+--------------------------------------+---------------+-----------------------------------------+----------------------------+--------------+
-| DSD_CHANS_DAC        | Enable DSD output (DoP and Native)   | Supported     | 0 or 2                                  | 2xoxxd, 2xoxsd, 2ioxsd     |              |
-+----------------------+--------------------------------------+---------------+-----------------------------------------+----------------------------+--------------+
-| DFU                  | In field firmware upgrade            | Supported     | Thesycon DFU app or example OSX app     | All                        |              |
-+----------------------+--------------------------------------+---------------+-----------------------------------------+----------------------------+--------------+
-| MIDI                 | MIDI input/output                    | Supported     |                                         | 2iomx                      |              |
-+----------------------+--------------------------------------+---------------+-----------------------------------------+----------------------------+--------------+
-| MAX_FREQ             | Maximum Sample Rate                  | Supported     | 384kHz                                  | All                        |              |
-+----------------------+--------------------------------------+---------------+-----------------------------------------+----------------------------+--------------+
 
 Known Issues
 ============
