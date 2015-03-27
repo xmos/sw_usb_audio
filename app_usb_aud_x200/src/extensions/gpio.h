@@ -1,12 +1,5 @@
-<<<<<<< Updated upstream:app_usb_aud_x200/src/extensions/gpio.h
-#ifndef _GPIO_H_
-#define _GPIO_H_
-#include "i2c.h"
-=======
-#ifndef __PERIPHERALS_H__
-#define __PERIPHERALS_H__
-#include "i2c_shared.h"
->>>>>>> Stashed changes:app_usb_aud_x200/src/extensions/peripherals.h
+#ifndef __GPIO_H__
+#define __GPIO_H__
 
 #define I2C_COMBINE_SCL_SDA 1
 /* General output port bit definitions (port 4D, PORT_PWR_PLL_MUTE) */
@@ -36,30 +29,8 @@
 
 #if __XC__
 void set_gpio(out port p_gpio, unsigned bit, unsigned value);
-
+#endif
 void wait_us(int microseconds);
-<<<<<<< Updated upstream:app_usb_aud_x200/src/extensions/gpio.h
-
-
-
-int i2c_slave_configure(int codec_addr, int num_writes,
-		              unsigned char reg_addr[], unsigned char reg_data[],
-#if I2C_COMBINE_SCL_SDA
-                      port r_i2c
-#else
-                      struct r_i2c &r_i2c
-#endif
-                      );
-
-void i2c_slave_verify(int codec_addr, int num_writes,
-		              unsigned char reg_addr[], unsigned char reg_data[],
-#if I2C_COMBINE_SCL_SDA
-                      port r_i2c
-#else
-                      struct r_i2c &r_i2c
-=======
->>>>>>> Stashed changes:app_usb_aud_x200/src/extensions/peripherals.h
-#endif
 
 void set_led_array(unsigned short led_pattern);
 
@@ -67,4 +38,4 @@ void set_led_array_mask(unsigned short led_mask);
 
 unsigned short get_led_array_mask();
 
-#endif //_GPIO_H_
+#endif 
