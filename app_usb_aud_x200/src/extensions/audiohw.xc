@@ -4,6 +4,7 @@
 #include "devicedefines.h"
 #include <platform.h>
 #include "gpio.h"
+#include "i2c_shared.h"
 #include "p_gpio_defines.h"
 #include "cs4384.h"
 #include "cs5368.h"
