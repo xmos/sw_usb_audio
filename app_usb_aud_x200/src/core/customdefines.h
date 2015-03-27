@@ -15,6 +15,8 @@
 #define MIXER 1
 #define MAX_MIX_COUNT 0
 
+#define SELF_POWERED 1
+
 /*
  * Device configuration option defines.  Build can be customised but changing and adding defines here
  *

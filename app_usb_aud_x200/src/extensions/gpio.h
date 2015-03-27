@@ -1,6 +1,12 @@
+<<<<<<< Updated upstream:app_usb_aud_x200/src/extensions/gpio.h
 #ifndef _GPIO_H_
 #define _GPIO_H_
 #include "i2c.h"
+=======
+#ifndef __PERIPHERALS_H__
+#define __PERIPHERALS_H__
+#include "i2c_shared.h"
+>>>>>>> Stashed changes:app_usb_aud_x200/src/extensions/peripherals.h
 
 #define I2C_COMBINE_SCL_SDA 1
 /* General output port bit definitions (port 4D, PORT_PWR_PLL_MUTE) */
@@ -32,6 +38,7 @@
 void set_gpio(out port p_gpio, unsigned bit, unsigned value);
 
 void wait_us(int microseconds);
+<<<<<<< Updated upstream:app_usb_aud_x200/src/extensions/gpio.h
 
 
 
@@ -50,9 +57,9 @@ void i2c_slave_verify(int codec_addr, int num_writes,
                       port r_i2c
 #else
                       struct r_i2c &r_i2c
+=======
+>>>>>>> Stashed changes:app_usb_aud_x200/src/extensions/peripherals.h
 #endif
-                      );
-#endif /* __XC__ */
 
 void set_led_array(unsigned short led_pattern);
 

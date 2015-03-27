@@ -31,6 +31,8 @@
             <Port Location="XS1_PORT_1J"  Name="PORT_I2S_ADC1"/>
             <Port Location="XS1_PORT_1K"  Name="PORT_I2S_ADC2"/>
             <Port Location="XS1_PORT_1L"  Name="PORT_I2S_ADC3"/>
+            <Port Location="XS1_PORT_4A"  Name="PORT_I2C"/>
+
           </Tile>
           <Tile Number="1" Reference="tile[1]">
                 
