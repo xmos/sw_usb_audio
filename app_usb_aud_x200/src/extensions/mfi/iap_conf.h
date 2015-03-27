@@ -3,6 +3,7 @@
 
 /* Include global device configuration defines */
 #include "devicedefines.h"
+#include "descriptor_defs.h"
 
 /***** Defines relating to iOS identification *****/
 #define ACCESSORY_MODEL_NUMBER   "XK-USB-AUDIO-U8-2C"
@@ -18,3 +19,5 @@
 
 #define ACCESSORY_CURRENT_SUPPLY 2400 // mA
 #define APPLE_BATTERY_CHARGING   1
+
+#define IAP2_USBHOST_HID_INTERFACE_NUMBER INTERFACE_NUMBER_HID
