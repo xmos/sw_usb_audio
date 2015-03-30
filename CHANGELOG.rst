@@ -6,6 +6,26 @@ sw_usb_audio Change Log
     - CHANGE:     Example HID code uses defines from module_usb_audio/user_hid.h
     - CHANGE:     module_usb_audio_adat replaced with module_adat from sc_adat
 
+  * Changes to dependencies:
+
+    - sc_usb_audio: 6.11.1beta2 -> 6.11.2rc0
+
+      + RESOLVED:   (Major) Enumeration issue when MAX_MIX_COUNT > 0 only. Introduced in mixer
+        optimisations in 6.11.0. Only affects designs using mixer functionality.
+      + RESOLVED:   (Normal) Audio buffering request system modified such that the mixer output is
+        not silent when in underflow case (i.e. host output stream not active) This issue was
+        introduced with the addition of DSD functionality and only affects designs using
+        mixer functionality.
+      + RESOLVED:   (Minor) Potential build issue due to duplicate labels in inline asm in
+        set_interrupt_handler macro
+      + RESOLVED:   (Minor) BCD_DEVICE define in devicedefines.h now guarded by ifndef (caused issues
+        with DFU test build configs.
+      + RESOLVED:   (Minor) String descriptor for Clock Selector unit incorrectly reported
+      + RESOLVED:   (Minor) BCD_DEVICE in devicedefines.h now guarded by #ifndef (Caused issues with
+        default DFU test build configs.
+      + CHANGE:     HID report descriptor defines added to shared user_hid.h
+      + CHANGE:     Now uses module_adat_rx from sc_adat (local module_usb_audio_adat removed)
+
 6.11.1
 ------
     - ADDED:      ADAT transmit enabled build configs to app_usb_aud_l2
