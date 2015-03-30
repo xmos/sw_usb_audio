@@ -1,10 +1,10 @@
 sw_usb_audio Change Log
 =======================
 
-HEAD
-----
+6.11.2
+------
     - CHANGE:     Example HID code uses defines from module_usb_audio/user_hid.h
-
+    - CHANGE:     module_usb_audio_adat replaced with module_adat from sc_adat
 
 6.11.1
 ------
