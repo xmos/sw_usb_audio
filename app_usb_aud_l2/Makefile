@@ -23,6 +23,10 @@ INCLUDE_ONLY_IN_2xoxs =
 XCC_FLAGS_2ioxx = $(BUILD_FLAGS) -DSPDIF=0
 INCLUDE_ONLY_IN_2ioxx =  
 
+# Audio Class 2, Input, Output, No MIDI, No SPDIF, Mixing
+XCC_FLAGS_2ioxx_mix8 = $(BUILD_FLAGS) -DSPDIF=0 -DMAX_MIX_COUNT=8
+INCLUDE_ONLY_IN_2ioxx_mix8 =  
+
 # Audio Class 2, Input, Output, No MIDI, SPDIF
 XCC_FLAGS_2ioxs = $(BUILD_FLAGS)
 INCLUDE_ONLY_IN_2ioxs = 
