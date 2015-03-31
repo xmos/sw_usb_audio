@@ -69,7 +69,7 @@ XCC_FLAGS_2ioms = $(BUILD_FLAGS) -DMIDI=1
 INCLUDE_ONLY_IN_2ioms =
 
 # Audio Class 2, No Input, Output, No MIDI, SPDIF
-XCC_FLAGS_2xoxs = $(BUILD_FLAGS) -DNUM_USB_CHAN_IN=0
+XCC_FLAGS_2xoxs = $(BUILD_FLAGS) -DNUM_USB_CHAN_IN=0 -DI2S_CHANS_ADC=0
 INCLUDE_ONLY_IN_2xoxs =
 
 # Audio Class 2, No Input, Output, No MIDI, No SPDIF
@@ -77,7 +77,7 @@ XCC_FLAGS_2xoxx = $(BUILD_FLAGS) -DNUM_USB_CHAN_IN=0 -DSPDIF=0
 INCLUDE_ONLY_IN_2xoxx =
 
 # Audio Class 2, No Input, Output, No MIDI, SPDIF, DSD
-XCC_FLAGS_2xoxxd = $(BUILD_FLAGS) -DDSD_CHANS_DAC=2 -DNUM_USB_CHAN_IN=0
+XCC_FLAGS_2xoxxd = $(BUILD_FLAGS) -DDSD_CHANS_DAC=2 -DNUM_USB_CHAN_IN=0 -DI2S_CHANS_ADC=0
 INCLUDE_ONLY_IN_2xoxxd =
 
 # Audio Class 1, Input, Output, no MIDI, no SPDIF
@@ -93,7 +93,7 @@ XCC_FLAGS_2ioxx_mfi = $(BUILD_FLAGS) -DIAP=1 -DMIDI=0 -DSPDIF=0
 INCLUDE_ONLY_IN_2ioxx_mfi =
 
 #Audio Class 2, iAP enabled, No Input, Output, No MIDI, No SPDIF
-XCC_FLAGS_2xoxx_mfi = $(BUILD_FLAGS) -DIAP=1 -DMIDI=0 -DSPDIF=0 -DNUM_USB_CHAN_IN=0
+XCC_FLAGS_2xoxx_mfi = $(BUILD_FLAGS) -DIAP=1 -DMIDI=0 -DSPDIF=0 -DNUM_USB_CHAN_IN=0 -DI2S_CHANS_ADC=0
 INCLUDE_ONLY_IN_2xoxx_mfi =
 
 #Audio Class 2, iAP enabled, EA Protocol (Native Transport), Input, Output, No MIDI, No SPDIF
