@@ -68,11 +68,27 @@
 /* Device is self-powered (i.e. not USB bus powered) */
 #define SELF_POWERED       1
 
-/* Index of SPDIF Rx channels (duplicated DAC channels 1/2 when index is 0) */
+/* Channel index of SPDIF Rx channels (duplicated DAC channels 1/2 when index is 0) */
 #define SPDIF_TX_INDEX     (8)
 
-/* Index of SPDIF Rx channels */
+/* Channel index of SPDIF Rx channels */
 #define SPDIF_RX_INDEX     (8)
+
+/* Channel index of ADAT Tx channels */
+#if defined(SPDIF) && (SPDIF==1)
+#define ADAT_TX_INDEX      (SPDIF_TX_INDEX+2)
+#else
+#define ADAT_TX_INDEX      (I2S_CHANS_DAC)
+#endif
+
+/* Channel index of ADAT Rx channels */
+#if defined(SPDIF_RX) && (SPDIF_RX==1)
+#define ADAT_RX_INDEX      (SPDIF_RX_INDEX+2)
+#else
+#define ADAT_RX_INDEX      (I2S_CHANS_ADC)
+#endif
+
+
 
 /***** Defines relating to USB descriptors etc *****/
 #define PID_AUDIO_2        (0x000C) /* XMOS U16 - Audio Class 2.0 */
