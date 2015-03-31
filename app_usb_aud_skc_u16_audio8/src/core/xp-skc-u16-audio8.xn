@@ -40,8 +40,8 @@ xsi:schemaLocation="http://www.xmos.com http://www.xmos.com">
             <Port Location="XS1_PORT_1F"  Name="PORT_MCLK_IN2"/>
             <Port Location="XS1_PORT_1E"  Name="PORT_I2C_SCL"/>
             <Port Location="XS1_PORT_1L"  Name="PORT_I2C_SDA"/>
-            <Port Location="XS1_PORT_1C"  Name="PORT_SPDIF_IN_COAX"/>   <!-- COAX -->
-            <Port Location="XS1_PORT_1G"  Name="PORT_SPDIF_IN"/>        <!-- OPT -->
+            <Port Location="XS1_PORT_1C"  Name="PORT_SPDIF_IN"/>     <!-- COAX -->
+            <Port Location="XS1_PORT_1G"  Name="PORT_ADAT_IN"/>      <!-- OPT -->
           </Tile>
         </Node>
         <Node Id="1" InPackageId="1" Type="XS1-L8A-64" Oscillatorsrc="2" SystemFrequency="500MHz">
