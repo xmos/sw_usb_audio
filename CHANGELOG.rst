@@ -8,7 +8,7 @@ sw_usb_audio Change Log
 
   * Changes to dependencies:
 
-    - sc_usb_audio: 6.11.1beta2 -> 6.11.2rc0
+    - sc_usb_audio: 6.11.1beta2 -> 6.11.2rc1
 
       + RESOLVED:   (Major) Enumeration issue when MAX_MIX_COUNT > 0 only. Introduced in mixer
         optimisations in 6.11.0. Only affects designs using mixer functionality.
