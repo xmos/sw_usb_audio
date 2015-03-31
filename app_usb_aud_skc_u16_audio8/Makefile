@@ -6,12 +6,12 @@ TARGET = xp-skc-u16-audio8.xn
 APP_NAME =
 
 # The flags passed to xcc when building the application
-BUILD_FLAGS     = -DFLASH_MAX_UPGRADE_SIZE=2*64*1024 -fcomment-asm -Xmapper --map -Xmapper MAPFILE -Wall -O3 -report -lflash -fsubword-select -save-temps -g -fxscope -DXSCOPE -DSDA_HIGH=2 -DSCL_HIGH=1 -DXUD_SERIES_SUPPORT=1
+BUILD_FLAGS     = -DFLASH_MAX_UPGRADE_SIZE=2*64*1024 -fcomment-asm -Xmapper --map -Xmapper MAPFILE -Wall -O3 -report -lflash -fsubword-select -save-temps -g -fxscope -DXSCOPE -DSDA_HIGH=2 -DSCL_HIGH=1 -DXUD_SERIES_SUPPORT=1 -DADAT_TX_USE_SHARED_BUFF=1
 
 # The USED_MODULES variable lists other module used by the application. These
 # modules will extend the SOURCE_DIRS, INCLUDE_DIRS and LIB_DIRS variables.
 # Modules are expected to be in the directory above the BASE_DIR directory.
-USED_MODULES = module_usb_shared module_xud module_usb_audio module_spdif_tx module_spdif_rx module_usb_midi module_dfu module_i2c_simple module_usb_device module_locks
+USED_MODULES = module_usb_shared module_xud module_usb_audio module_spdif_tx module_spdif_rx module_usb_midi module_dfu module_i2c_simple module_usb_device module_locks module_adat_rx module_adat_tx
 
 MODULE_LIBRARIES = xud_u
 
@@ -60,10 +60,6 @@ INCLUDE_ONLY_IN_2io_slave =
 XCC_FLAGS_2ioxs = $(BUILD_FLAGS)
 INCLUDE_ONLY_IN_2ioxs =
 
-# Audio Class 2, Input, Output, No MIDI, SPDIF Tx, SPDIF Rx
-XCC_FLAGS_2io_spdifout_spdifin = $(BUILD_FLAGS) -DSPDIF_RX=1
-INCLUDE_ONLY_IN_2io_spdifout_spdifin =
-
 # Audio Class 2, Input, Output, MIDI, SPDIF Tx
 XCC_FLAGS_2ioms = $(BUILD_FLAGS) -DMIDI=1
 INCLUDE_ONLY_IN_2ioms =
@@ -83,6 +79,10 @@ INCLUDE_ONLY_IN_2xoxxd =
 # Audio Class 1, Input, Output, no MIDI, no SPDIF Tx
 XCC_FLAGS_1ioxx = $(BUILD_FLAGS) -DAUDIO_CLASS=1 -DMIDI=0 -DSPDIF=0
 INCLUDE_ONLY_IN_1ioxx = 
+
+# Audio Class 2, Input, Output, ADAT out
+XCC_FLAGS_2io_adatout = $(BUILD_FLAGS) -DSPDIF=0 -DMIDI=0 -DADAT_TX=1 -DMAX_FREQ=96000 -DNUM_USB_CHAN_OUT=16
+INCLUDE_ONLY_IN_2io_adatout = 
 
 else
 
