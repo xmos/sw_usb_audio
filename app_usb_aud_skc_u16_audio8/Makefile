@@ -64,15 +64,15 @@ INCLUDE_ONLY_IN_2ioxs =
 XCC_FLAGS_2io_spdifout_spdifin = $(BUILD_FLAGS) -DSPDIF_RX=1
 INCLUDE_ONLY_IN_2io_spdifout_spdifin =
 
-# Audio Class 2, Input, Output, MIDI, SPDIF
+# Audio Class 2, Input, Output, MIDI, SPDIF Tx
 XCC_FLAGS_2ioms = $(BUILD_FLAGS) -DMIDI=1
 INCLUDE_ONLY_IN_2ioms =
 
-# Audio Class 2, No Input, Output, No MIDI, SPDIF
+# Audio Class 2, No Input, Output, No MIDI, SPDIF_Tx
 XCC_FLAGS_2xoxs = $(BUILD_FLAGS) -DNUM_USB_CHAN_IN=0 -DI2S_CHANS_ADC=0
 INCLUDE_ONLY_IN_2xoxs =
 
-# Audio Class 2, No Input, Output, No MIDI, No SPDIF
+# Audio Class 2, No Input, Output, No MIDI, No SPDIF Tx
 XCC_FLAGS_2xoxx = $(BUILD_FLAGS) -DNUM_USB_CHAN_IN=0 -DSPDIF=0
 INCLUDE_ONLY_IN_2xoxx =
 
@@ -80,7 +80,7 @@ INCLUDE_ONLY_IN_2xoxx =
 XCC_FLAGS_2xoxxd = $(BUILD_FLAGS) -DDSD_CHANS_DAC=2 -DNUM_USB_CHAN_IN=0 -DI2S_CHANS_ADC=0
 INCLUDE_ONLY_IN_2xoxxd =
 
-# Audio Class 1, Input, Output, no MIDI, no SPDIF
+# Audio Class 1, Input, Output, no MIDI, no SPDIF Tx
 XCC_FLAGS_1ioxx = $(BUILD_FLAGS) -DAUDIO_CLASS=1 -DMIDI=0 -DSPDIF=0
 INCLUDE_ONLY_IN_1ioxx = 
 
