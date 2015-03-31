@@ -56,7 +56,7 @@ XCC_FLAGS_2io_spdifout_spdifin_mix8 = $(BUILD_FLAGS) -DSPDIF_RX=1 -DMAX_MIX_COUN
 INCLUDE_ONLY_IN_2io_spdifout_spdifin_mix8 = 
 
 # Audio Class 2, Input, Output, No MIDI, ADAT in
-XCC_FLAGS_2io_adatin = $(BUILD_FLAGS) -DNUM_USB_CHAN_IN=16 -DADAT_RX=1
+XCC_FLAGS_2io_adatin = $(BUILD_FLAGS) -DNUM_USB_CHAN_IN=16 -DADAT_RX=1 -DMAX_FREQ=96000
 INCLUDE_ONLY_IN_2io_adatin = 
 
 # Audio Class 1, no Input, Output, no MIDI, no SPDIF
