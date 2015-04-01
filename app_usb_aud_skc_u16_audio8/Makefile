@@ -84,6 +84,14 @@ INCLUDE_ONLY_IN_1ioxx =
 XCC_FLAGS_2io_adatout = $(BUILD_FLAGS) -DSPDIF=0 -DMIDI=0 -DADAT_TX=1 -DMAX_FREQ=96000 -DNUM_USB_CHAN_OUT=16
 INCLUDE_ONLY_IN_2io_adatout = 
 
+# Audio Class 2, Input, Output, No MIDI, SPDIF out, SPDIF in
+XCC_FLAGS_2io_spdifout_spdifin = $(BUILD_FLAGS) -DSPDIF_RX=1
+INCLUDE_ONLY_IN_2io_spdifout_spdifin = 
+
+# Audio Class 2, Input, Output, No MIDI, ADAT in
+XCC_FLAGS_2io_adatin = $(BUILD_FLAGS) -DNUM_USB_CHAN_IN=16 -DADAT_RX=1 -DMAX_FREQ=96000
+INCLUDE_ONLY_IN_2io_adatin = 
+
 else
 
 # MFi test build configs - iAP support enabled

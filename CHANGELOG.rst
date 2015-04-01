@@ -3,6 +3,8 @@ sw_usb_audio Change Log
 
 6.11.2
 ------
+    - ADDED:      S/PDIF & ADAT input enabled build configs to app_usb_aud_skc_u16_audio8 including
+                  required external Cirrus fractional-N configuration.
     - CHANGE:     Example HID code uses defines from module_usb_audio/user_hid.h
     - CHANGE:     module_usb_audio_adat replaced with module_adat from sc_adat
 
@@ -32,8 +34,7 @@ sw_usb_audio Change Log
     - ADDED:      Audio hardware configuration for XCore I2S slave mode to
                   app_usb_aud_skc_u16_audio8 when CODEC_MASTER enabled.
     - ADDED:      Build configurations in app_usb_aud_l2 for TDM
-    - ADDED:      DAC/ADC configuration for TDM in app_usb_aud_l2 when
-                  I2S_MODE_TDM enabled.
+    - ADDED:      DAC/ADC configuration for TDM in app_usb_aud_l2 when I2S_MODE_TDM enabled.
 
   * Changes to dependencies:
 
