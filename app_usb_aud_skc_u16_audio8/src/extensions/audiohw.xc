@@ -84,7 +84,7 @@ void AudioHwInit(chanend ?c_codec)
     /* Wait for supply rail to settle */
     wait_us(5000); //5ms
 
-#ifdef USE_FRACTIONAL_N    
+#ifdef USE_FRACTIONAL_N
     /* Set clock source to CS Fractional-N clock multiplier */
     set_gpio(p_pwr_pll_mute, P_PLL_SEL, 1);
     /* If Initialise external PLL */
