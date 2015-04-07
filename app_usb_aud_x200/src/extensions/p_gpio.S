@@ -12,7 +12,7 @@
 
 // TODO for safety a hardware lock should be used
 .cc_top p_gpio_out.function
-.align 2
+.align 4
 p_gpio_out:
 ldw   r11, dp[p_gpio]
 out   res[r11], r0
@@ -33,7 +33,7 @@ retsp 0
 
 // TODO for safety a hardware lock should be used
 .cc_top p_gpio_peek.function
-.align 2
+.align 4
 p_gpio_peek:
 ldw   r11, dp[p_gpio]
 peek r0, res[r11]
