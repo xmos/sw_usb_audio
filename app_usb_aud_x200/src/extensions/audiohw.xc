@@ -13,14 +13,12 @@
 
 on tile[0] : out port p_gpio = XS1_PORT_8C;
 
-
 #ifndef IAP
 /* If IAP not enabled, i2c ports not declared - still needs for DAC config */
 on tile [0] : struct r_i2c r_i2c = {XS1_PORT_4A};
 #else
 extern struct r_i2c r_i2c;
 #endif
-
 
 #define DAC_REGWRITE(reg, val) {data[0] = val; i2c_shared_master_write_reg(r_i2c, CS4384_I2C_ADDR, reg, data, 1);}
 #define DAC_REGREAD(reg, val)  {i2c_shared_master_read_reg(r_i2c, CS4384_I2C_ADDR, reg, val, 1);}
@@ -32,9 +30,12 @@ void AudioHwInit(chanend ?c_codec)
     /* 0b11 : USB B */
     /* 0b10 : Lightning */
     set_gpio(p_gpio, P_GPIO_USB_SEL0, 1);
-    set_gpio(p_gpio, P_GPIO_USB_SEL1, 0);
+    set_gpio(p_gpio, P_GPIO_USB_SEL1, 1);
+
+#ifdef IAP
     set_gpio(p_gpio, P_GPIO_VBUS_EN, 1);
-    
+#endif
+
     /* Init the i2c module */
     i2c_shared_master_init(r_i2c);
 
