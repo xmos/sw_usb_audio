@@ -2,8 +2,6 @@
 #include <xs1.h>
 #include "gpio.h"
 
-#define VERIFY_I2C 1
-
 void set_gpio(out port p_gpio, unsigned bit, unsigned value)
 {
 	unsigned port_shadow;
