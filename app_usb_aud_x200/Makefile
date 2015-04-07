@@ -43,9 +43,9 @@ else
 
 # MFi test build configs - iAP support enabled
 	
-# # Audio Class 2, iAP enabled, No Input, Output, No MIDI, No SPDIF
-XCC_FLAGS_2ioxx_mfi = $(BUILD_FLAGS) -DIAP=1 -DSPDIF=0 -mno-dual-issue
-INCLUDE_ONLY_IN_2ioxx_mfi = 
+# # Audio Class 2, iAP enabled, No Input, Output, No MIDI, SPDIF
+XCC_FLAGS_2ioxs_mfi = $(BUILD_FLAGS) -DIAP=1 -DSPDIF=1 -DMIDI=0
+INCLUDE_ONLY_IN_2ioxs_mfi = 
 
 include mfi.mk
 
