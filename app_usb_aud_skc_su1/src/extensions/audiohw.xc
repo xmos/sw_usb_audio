@@ -8,7 +8,7 @@
 #include "p_gpio_defines.h"
 
 on tile[0] : out port p_gpio = XS1_PORT_4C;
-on tile[0] : port p_i2c      = XS1_PORT_4D;
+on tile[0] : struct r_i2c p_i2c       = {XS1_PORT_4D};
 
 //:codec_init
 void AudioHwInit(chanend ?c_codec)
@@ -24,8 +24,8 @@ void AudioHwInit(chanend ?c_codec)
 
 
 /* S1 Board uses I2C configured CODEC */
-#define CODEC1_I2C_DEVICE_ADDR       (0x90)
-#define CODEC2_I2C_DEVICE_ADDR       (0x92)
+#define CODEC1_I2C_DEVICE_ADDR       (0x90>>1)
+#define CODEC2_I2C_DEVICE_ADDR       (0x92>>1)
 
 #define CODEC_DEV_ID_ADDR           0x01
 #define CODEC_PWR_CTRL_ADDR         0x02

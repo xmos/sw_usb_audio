@@ -103,7 +103,7 @@ void AudioHwInit(chanend ?c_codec)
 
 
 /* I2C address of CS4392 DAC */
-#define DAC_I2C_DEV_ADDR               0x10
+#define DAC_I2C_DEV_ADDR               0x20
 
 /* Mode Control 1 Register - Address 0x01 */
 #define DAC_REG_ADDR_MODE_CTRL1        0x01
