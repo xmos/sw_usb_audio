@@ -2,7 +2,7 @@
 #define _CS5368_H_
 
 //Address on I2C bus
-#define CS5368_I2C_ADDR      (0x4C<<1)
+#define CS5368_I2C_ADDR      (0x4C)
 
 //Register Addresess
 #define CS5368_CHIP_REV      0x00

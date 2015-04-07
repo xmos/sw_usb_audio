@@ -2,7 +2,7 @@
 #define CS4384_H_
 
 //Address on I2C bus
-#define CS4384_I2C_ADDR      (0x18<<1)
+#define CS4384_I2C_ADDR      (0x18)
 
 //Register Addresess
 #define CS4384_CHIP_REV      0x01
