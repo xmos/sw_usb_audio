@@ -1,6 +1,9 @@
 sw_usb_audio Change Log
 =======================
 
+6.11.3
+------
+
 6.11.2
 ------
     - ADDED:      S/PDIF & ADAT input enabled build configs to app_usb_aud_skc_u16_audio8 including
