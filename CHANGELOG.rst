@@ -4,6 +4,12 @@ sw_usb_audio Change Log
 6.11.3
 ------
 
+  * Changes to dependencies:
+
+    - sc_usb_audio: 6.11.2rc2 -> 6.11.3rc0
+
+      + RESOLVED:  (Major) Streaming issue when mixer not enabled (introduced in 6.11.2)
+
 6.11.2
 ------
     - ADDED:      S/PDIF & ADAT input enabled build configs to app_usb_aud_skc_u16_audio8 including
