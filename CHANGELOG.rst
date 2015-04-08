@@ -10,8 +10,9 @@ sw_usb_audio Change Log
 
   * Changes to dependencies:
 
-    - sc_usb_audio: 6.11.1beta2 -> 6.11.2rc2
+    - sc_usb_audio: 6.11.1beta2 -> 6.11.3rc0
 
+      + RESOLVED:  (Major) Streaming issue when mixer not enabled (introduced in 6.11.2)
       + RESOLVED:   (Major) Enumeration issue when MAX_MIX_COUNT > 0 only. Introduced in mixer
         optimisations in 6.11.0. Only affects designs using mixer functionality.
       + RESOLVED:   (Normal) Audio buffering request system modified such that the mixer output is
