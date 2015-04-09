@@ -9,6 +9,25 @@ sw_usb_audio Change Log
                   is used (previously module_i2c_shared had module_i2c_simple as a dependancy)
     - CHANGE:     I2C ports now in structs as required to match new I2C module API
 
+  * Changes to dependencies:
+
+    - sc_spdif: 1.3.2rc2 -> 1.3.3alpha0
+
+
+    - sc_xud: 2.2.4rc3 -> 2.3.0alpha0
+
+      + ADDED:      Support for XCORE-200 (libxud_x200.a)
+      + CHANGE:     Compatibilty fixes for XMOS toolset version 14 (dual-issue support etc)
+
+    - sc_usb_audio: 6.11.2rc2 -> 6.12.0alpha0
+
+      + ADDED:      Checks for XUD_200_SERIES define where required
+      + RESOLVED:   Run-time exception due to decouple interrupt not entering correct issue mode
+        (affects XCORE-200 only)
+      + CHANGE:     SPDIF Tx Core may now reside on a different tile from I2S
+      + CHANGE:     I2C ports now in structure to match new module_i2c_singleport/shared API.
+      + RESOLVED:  (Major) Streaming issue when mixer not enabled (introduced in 6.11.2)
+
 6.11.2
 ------
     - ADDED:      S/PDIF & ADAT input enabled build configs to app_usb_aud_skc_u16_audio8 including
