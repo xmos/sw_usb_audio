@@ -1,6 +1,13 @@
 sw_usb_audio Change Log
 =======================
 
+6.12.0
+------
+    - ADDED:      app_usb_aud_x200 application for xCORE-200-MC-AUDIO board
+    - CHANGE:     Varous I2C device addresses updated for new I2C API.
+    - CHANGE:     Added I2C module as an explicy dependancy to various apps where module_i2c_shared
+                  is used (previously module_i2c_shared had module_i2c_simple as a dependancy)
+
 6.11.2
 ------
     - ADDED:      S/PDIF & ADAT input enabled build configs to app_usb_aud_skc_u16_audio8 including
