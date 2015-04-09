@@ -100,8 +100,8 @@ XCC_FLAGS_2xoxs_16b4pcm_32b4dsd_24b4pcm = $(BUILD_FLAGS) -DOUTPUT_FORMAT_COUNT=3
 INCLUDE_ONLY_IN_2xoxs_16b4pcm_32b4dsd_24b4pcm =
 
 #Audio Class 2, Input, Output, MIDI, No SPDIF, reboot interrupt handler based on switch
-XCC_FLAGS_2iomx_reboot = $(BUILD_FLAGS) -DMIDI=1 -DSPDIF=0 -DSW_INT_HANDLER=1
-INCLUDE_ONLY_IN_2iomx_reboot = 
+#XCC_FLAGS_2iomx_reboot = $(BUILD_FLAGS) -DMIDI=1 -DSPDIF=0 -DSW_INT_HANDLER=1
+#INCLUDE_ONLY_IN_2iomx_reboot = 
 
 else
 # MFi test build configs - iAP support enabled
