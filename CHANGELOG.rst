@@ -11,22 +11,37 @@ sw_usb_audio Change Log
 
   * Changes to dependencies:
 
-    - sc_spdif: 1.3.2rc2 -> 1.3.3alpha0
+    - sc_spdif: 1.3.2rc2 -> 1.3.3alpha2
 
 
-    - sc_xud: 2.2.4rc3 -> 2.3.0alpha0
+    - sc_i2c: 2.4.1rc1 -> 3.0.0alpha1
 
-      + ADDED:      Support for XCORE-200 (libxud_x200.a)
-      + CHANGE:     Compatibilty fixes for XMOS toolset version 14 (dual-issue support etc)
+      + Read support added to module_i2c_single_port (xCORE 200 only)
+      + Retry on NACK added to module_i2c_single_port (matches module_i2c_simple)
+      + module_i2c_single_port functions now takes struct for port resources (matches module_i2c_simple)
+      + module_i2c_simple removed from module_i2c_shared dependancies. Allows use with other i2c modules.
+        It is now the applications responsibilty to include the desired i2c module as a depenancy.
+      + Data arrays passed to write_reg functions now marked const
 
-    - sc_usb_audio: 6.11.2rc2 -> 6.12.0alpha0
+    - sc_usb_audio: 6.11.2rc2 -> 6.12.0alpha1
 
       + ADDED:      Checks for XUD_200_SERIES define where required
       + RESOLVED:   Run-time exception due to decouple interrupt not entering correct issue mode
         (affects XCORE-200 only)
       + CHANGE:     SPDIF Tx Core may now reside on a different tile from I2S
       + CHANGE:     I2C ports now in structure to match new module_i2c_singleport/shared API.
-      + RESOLVED:  (Major) Streaming issue when mixer not enabled (introduced in 6.11.2)
+
+    - sc_usb_device: 1.3.5rc2 -> 1.3.6alpha0
+
+
+    - sc_util: 1.0.4rc0 -> 1.0.5alpha0
+
+      + xCORE-200 Compatiblity fixes to module_locks
+
+    - sc_xud: 2.2.4rc3 -> 2.3.0alpha0
+
+      + ADDED:      Support for XCORE-200 (libxud_x200.a)
+      + CHANGE:     Compatibilty fixes for XMOS toolset version 14 (dual-issue support etc)
 
 6.11.2
 ------
