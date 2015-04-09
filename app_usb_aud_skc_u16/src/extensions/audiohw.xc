@@ -8,12 +8,15 @@
 #include "p_gpio_defines.h"
 
 on tile[1] : out port p_gpio = XS1_PORT_32A;
-on tile[1] : port p_i2c      = XS1_PORT_4E;
+
+on tile[1] : struct r_i2c r_i2c = {XS1_PORT_4E};
+
+
 
 //:codec_init
 void AudioHwInit(chanend ?c_codec)
 {
-    i2c_master_init(p_i2c);
+    i2c_master_init(r_i2c);
 
     /* Enable SPDIF output (disables SPI flash) */
     p_gpio <: 1;
@@ -36,12 +39,12 @@ void AudioHwInit(chanend ?c_codec)
 #define CODEC_DACA_VOL_ADDR         0x07
 #define CODEC_DACB_VOL_ADDR         0x08
 
-#define IIC_REGWRITE_1(reg, val) {data[0] = val; i2c_master_write_reg(CODEC1_I2C_DEVICE_ADDR, reg, data, 1, p_i2c);}
-#define IIC_REGWRITE_2(reg, val) {data[0] = val; i2c_master_write_reg(CODEC2_I2C_DEVICE_ADDR, reg, data, 1, p_i2c);}
+#define IIC_REGWRITE_1(reg, val) {data[0] = val; i2c_master_write_reg(CODEC1_I2C_DEVICE_ADDR, reg, data, 1, r_i2c);}
+#define IIC_REGWRITE_2(reg, val) {data[0] = val; i2c_master_write_reg(CODEC2_I2C_DEVICE_ADDR, reg, data, 1, r_i2c);}
 
 /* Write to both CODECs */
 #define IIC_REGWRITE(reg, val) {IIC_REGWRITE_1(reg, val);IIC_REGWRITE_2(reg,val);}
-#define IIC_REGREAD(reg, val)  {i2c_master_read_reg(CODEC1_I2C_DEVICE_ADDR, reg, val, 1, p_i2c);}
+#define IIC_REGREAD(reg, val)  {i2c_master_read_reg(CODEC1_I2C_DEVICE_ADDR, reg, val, 1, r_i2c);}
 
 
 //:codec_config
