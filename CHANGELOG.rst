@@ -7,6 +7,7 @@ sw_usb_audio Change Log
     - CHANGE:     Varous I2C device addresses updated for new I2C API.
     - CHANGE:     Added I2C module as an explicy dependancy to various apps where module_i2c_shared
                   is used (previously module_i2c_shared had module_i2c_simple as a dependancy)
+    - CHANGE:     I2C ports now in structs as required to match new I2C module API
 
 6.11.2
 ------
