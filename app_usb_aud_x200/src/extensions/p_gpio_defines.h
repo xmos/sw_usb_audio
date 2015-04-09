@@ -1,6 +1,6 @@
 
 /* General output port bit definitions */
-#define P_GPIO_DSD_MODE         (1 << 0)    
+#define P_GPIO_DSD_MODE         (1 << 0)
 #define P_GPIO_DAC_RST_N        (1 << 1)
 #define P_GPIO_ADC_RST_N          (1 << 2)
 #define P_GPIO_USB_SEL0         (1 << 3)

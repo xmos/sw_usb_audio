@@ -38,4 +38,4 @@ void set_led_array_mask(unsigned short led_mask);
 
 unsigned short get_led_array_mask();
 
-#endif 
+#endif
