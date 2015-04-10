@@ -17,11 +17,11 @@ void p_gpio_unlock()
 unsigned p_gpio_peek()
 {
     unsigned portId, x;
-   
+
     // Wrapped in lock to ensure it's safe from multiple logical cores
     swlock_acquire(&gpo_swlock);
 
-    asm("ldw %0, dp[p_gpio]":"=r"(portId));                        
+    asm("ldw %0, dp[p_gpio]":"=r"(portId));
     asm volatile("peek %0, res[%1]":"=r"(x):"r"(portId));
 
     return x;
@@ -30,10 +30,10 @@ unsigned p_gpio_peek()
 void p_gpio_out(unsigned x)
 {
     unsigned portId;
-    
-    asm("ldw %0, dp[p_gpio]":"=r"(portId));                        
+
+    asm("ldw %0, dp[p_gpio]":"=r"(portId));
     asm volatile("out res[%0], %1"::"r"(portId),"r"(x));
-    
+
     // Wrapped in lock to ensure it's safe from multiple logical cores
     swlock_release(&gpo_swlock);
 }
