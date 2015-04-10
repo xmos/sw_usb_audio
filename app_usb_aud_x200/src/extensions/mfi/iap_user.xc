@@ -5,7 +5,7 @@
 #include <xs1.h>
 
 #include "iap_user.h"
-#include "p_gpio_defines.h"
+#include "gpio_access.h"
 
 on tile[0] : in port p_acc_det = XS1_PORT_4C;
 
@@ -16,9 +16,7 @@ unsigned p_gpio_peek();
 void SelectUSBApple(void)
 {
     unsigned tmp = p_gpio_peek();
-
     tmp &= (~(P_GPIO_USB_SEL0 | P_GPIO_USB_SEL1));
-
     p_gpio_out(tmp | P_GPIO_USB_SEL0);
 
 }
@@ -27,9 +25,7 @@ void SelectUSBApple(void)
 void SelectUSBPc(void)
 {
     unsigned tmp = p_gpio_peek();
-
     tmp &= (~(P_GPIO_USB_SEL0 | P_GPIO_USB_SEL1));
-
     p_gpio_out(tmp | P_GPIO_USB_SEL1 | P_GPIO_USB_SEL0);
 }
 
