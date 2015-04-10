@@ -55,6 +55,10 @@ else
 XCC_FLAGS_2ioxs_mfi = $(BUILD_FLAGS) -DIAP=1 -DSPDIF=1 -DMIDI=0
 INCLUDE_ONLY_IN_2ioxs_mfi = 
 
+# # Audio Class 2, iAP enabled, No Input, Output, No MIDI, SPDIF, DSD
+XCC_FLAGS_2ioxsd_mfi = $(BUILD_FLAGS) -DIAP=1 -DSPDIF=1 -DMIDI=0 -DDSD_CHANS_DAC=2
+INCLUDE_ONLY_IN_2ioxsd_mfi = 
+
 include mfi.mk
 
 endif
