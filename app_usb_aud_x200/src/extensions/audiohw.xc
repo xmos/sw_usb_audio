@@ -3,9 +3,8 @@
 #define I2C_COMBINE_SCL_SDA 1
 #include "devicedefines.h"
 #include <platform.h>
-#include "gpio.h"
+#include "gpio_access.h"
 #include "i2c_shared.h"
-#include "p_gpio_defines.h"
 #include "cs4384.h"
 #include "cs5368.h"
 #include "print.h"
@@ -24,24 +23,32 @@ extern struct r_i2c r_i2c;
 #define DAC_REGREAD(reg, val)  {i2c_shared_master_read_reg(r_i2c, CS4384_I2C_ADDR, reg, val, 1);}
 #define ADC_REGWRITE(reg, val) {data[0] = val; i2c_shared_master_write_reg(r_i2c, CS5368_I2C_ADDR, reg, data, 1);}
 
+void wait_us(int microseconds)
+{
+    timer t;
+    unsigned time;
+
+    t :> time;
+    t when timerafter(time + (microseconds * 100)) :> void;
+}
 
 void AudioHwInit(chanend ?c_codec)
 {
     /* 0b11 : USB B */
     /* 0b10 : Lightning */
-    set_gpio(p_gpio, P_GPIO_USB_SEL0, 1);
-    set_gpio(p_gpio, P_GPIO_USB_SEL1, 1);
+    set_gpio(P_GPIO_USB_SEL0, 1);
+    set_gpio(P_GPIO_USB_SEL1, 1);
 
 #ifdef IAP
-    set_gpio(p_gpio, P_GPIO_VBUS_EN, 1);
+    set_gpio(P_GPIO_VBUS_EN, 1);
 #endif
 
     /* Init the i2c module */
     i2c_shared_master_init(r_i2c);
 
     /* Assert reset to ADC and DAC */
-    set_gpio(p_gpio, P_DAC_RST_N, 0);
-    set_gpio(p_gpio, P_ADC_RST_N, 0);
+    set_gpio(P_GPIO_DAC_RST_N, 0);
+    set_gpio(P_GPIO_ADC_RST_N, 0);
 }
 
 /* Configures the external audio hardware for the required sample frequency.
@@ -53,17 +60,17 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
 	unsigned char data[1] = {0};
 
     /* Put ADC and DAC into reset */
-	set_gpio(p_gpio, P_GPIO_DAC_RST_N, 0);
-	set_gpio(p_gpio, P_GPIO_ADC_RST_N, 0);
+	set_gpio(P_GPIO_DAC_RST_N, 0);
+	set_gpio(P_GPIO_ADC_RST_N, 0);
 
     /* Set master clock select appropriately */
     if (mClk == MCLK_441)
     {
-        set_gpio(p_gpio, P_GPIO_MCLK_FSEL, 0);
+        set_gpio(P_GPIO_MCLK_FSEL, 0);
     }
     else
     {
-        set_gpio(p_gpio, P_GPIO_MCLK_FSEL, 1); //mClk = MCLK_48
+        set_gpio(P_GPIO_MCLK_FSEL, 1); //mClk = MCLK_48
     }
 
     /* Allow MCLK to settle */
@@ -75,7 +82,7 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
         //set_gpio(p_adrst_cksel_dsd, P_DSD_MODE, 1);
 
         /* DAC out out reset, note ADC left in reset in for DSD mode */
-        set_gpio(p_gpio, P_GPIO_DAC_RST_N, 1);
+        set_gpio(P_GPIO_DAC_RST_N, 1);
 
         /* Configure DAC values required for DSD mode */
 
@@ -132,10 +139,10 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
     {
         /* dsdMode == 0 */
         /* Set MUX to PCM mode (muxes ADC I2S data lines) */
-        set_gpio(p_gpio, P_GPIO_DSD_MODE, 0);
+        set_gpio(P_GPIO_DSD_MODE, 0);
 
         /* Configure DAC with PCM values. Note 2 writes to mode control to enable/disable freeze/power down */
-        set_gpio(p_gpio, P_GPIO_DAC_RST_N, 1);//De-assert DAC reset
+        set_gpio(P_GPIO_DAC_RST_N, 1);//De-assert DAC reset
 
         /* Mode Control 1 (Address: 0x02) */
         /* bit[7] : Control Port Enable (CPEN)     : Set to 1 for enable
@@ -172,7 +179,7 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
         DAC_REGWRITE(CS4384_MODE_CTRL, 0b10000000);
 
         /* Take ADC out of reset */
-        set_gpio(p_gpio, P_GPIO_ADC_RST_N, 1);
+        set_gpio(P_GPIO_ADC_RST_N, 1);
 
         {
             unsigned dif = 0, mode = 0;
