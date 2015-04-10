@@ -1,5 +1,7 @@
-#ifndef __GPIO_H__
-#define __GPIO_H__
+#ifndef _GPIO_ACCESS_H_
+#define _GPIO_ACCESS_H_
+#include <xccompat.h>
+
 
 #define I2C_COMBINE_SCL_SDA 1
 /* General output port bit definitions (port 4D, PORT_PWR_PLL_MUTE) */
@@ -28,7 +30,7 @@
 #define LED_MASK_DISABLE        0xffff
 
 #if __XC__
-void set_gpio(out port p_gpio, unsigned bit, unsigned value);
+void set_gpio(unsigned bit, unsigned value);
 #endif
 void wait_us(int microseconds);
 
@@ -37,5 +39,10 @@ void set_led_array(unsigned short led_pattern);
 void set_led_array_mask(unsigned short led_mask);
 
 unsigned short get_led_array_mask();
+
+void p_gpio_lock();
+void p_gpio_unlock();
+unsigned p_gpio_peek();
+void p_gpio_out(unsigned x);
 
 #endif
