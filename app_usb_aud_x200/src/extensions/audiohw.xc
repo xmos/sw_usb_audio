@@ -75,7 +75,7 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
         //set_gpio(p_adrst_cksel_dsd, P_DSD_MODE, 1);
 
         /* DAC out out reset, note ADC left in reset in for DSD mode */
-        //set_gpio(p_adrst_cksel_dsd, P_DAC_RST_N, 1);
+        set_gpio(p_gpio, P_GPIO_DAC_RST_N, 1);
 
         /* Configure DAC values required for DSD mode */
 
