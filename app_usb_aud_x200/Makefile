@@ -43,6 +43,9 @@ INCLUDE_ONLY_IN_2ioms =
 XCC_FLAGS_2ioxs = $(BUILD_FLAGS) -DMIDI=0 -DSPDIF=1
 INCLUDE_ONLY_IN_2ioxs = 
 
+# Audio Class 2, Input, Output, No Midi, SPDIF, DSD
+XCC_FLAGS_2ioxsd = $(BUILD_FLAGS) -DSPDIF=1 -DDSD_CHANS_DAC=2
+INCLUDE_ONLY_IN_2ioxsd = 
 
 else
 
