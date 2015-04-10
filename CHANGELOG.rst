@@ -3,7 +3,7 @@ sw_usb_audio Change Log
 
 6.12.1
 ------
-    - ADDED:      DSD enabled build configuration to app_usb_aud_x200
+    - ADDED:      DSD enabled build configurations to app_usb_aud_x200
     - CHANGE:     GPIO access in app_usb_aud_x200 guarded with a lock for safety
 
 6.12.0
