@@ -1,21 +1,15 @@
 #ifndef _GPIO_ACCESS_H_
 #define _GPIO_ACCESS_H_
-#include <xccompat.h>
 
-
-#define I2C_COMBINE_SCL_SDA 1
-/* General output port bit definitions (port 4D, PORT_PWR_PLL_MUTE) */
-#define P_VA_EN                 0x1    /* 1 = 5V analog and 2v5 ADC digital supply enable */
-#define P_PLL_SEL               0x2    /* 1 = CS2100, 0 = Phaselink clock source */
-#define P_MUTE_A                0x4    /* Mute A signal - Brought out to header only*/
-#define P_MUTE_B                0x8    /* Mute B signal - Brought out to header only*/
-
-
-/* General output port bit definitions (port 4E, PORT_ADRST_CKSEL_DSD) */
-#define P_DAC_RST_N             0x1    /* 0 = Reset ADC */
-#define P_ADC_RST_N             0x2    /* 0 = Reset DAC */
-#define P_F_SELECT              0x4    /* Select frequency on Phaselink clock. 0 = 24.576MHz for 48k, 1 = 22.5792MHz for 44.1k.*/
-#define P_DSD_MODE              0x8    /* DSD mode select 0 = 8i/8o I2S, 1 = 8o DSD*/
+/* General output port bit definitions */
+#define P_GPIO_DSD_MODE         (1 << 0) /* DSD mode select 0 = 8i/8o I2S, 1 = 8o DSD*/
+#define P_GPIO_DAC_RST_N        (1 << 1)
+#define P_GPIO_ADC_RST_N        (1 << 2)
+#define P_GPIO_USB_SEL0         (1 << 3)
+#define P_GPIO_USB_SEL1         (1 << 4)
+#define P_GPIO_VBUS_EN          (1 << 5)
+#define P_GPIO_MCLK_FSEL        (1 << 6) /* Select frequency on Phaselink clock. 0 = 24.576MHz for 48k, 1 = 22.5792MHz for 44.1k.*/
+#define P_GPIO_PLL_SEL          (1 << 7) /* 1 = CS2100, 0 = Phaselink clock source */
 
 /*LED array defines*/
 #define LED_ALL_ON              0xf00f
@@ -29,17 +23,7 @@
 #define LED_MASK_COL_OFF        0x7fff
 #define LED_MASK_DISABLE        0xffff
 
-#if __XC__
 void set_gpio(unsigned bit, unsigned value);
-#endif
-void wait_us(int microseconds);
-
-void set_led_array(unsigned short led_pattern);
-
-void set_led_array_mask(unsigned short led_mask);
-
-unsigned short get_led_array_mask();
-
 void p_gpio_lock();
 void p_gpio_unlock();
 unsigned p_gpio_peek();
