@@ -3,35 +3,52 @@
 #include "iap.h"
 #include "ea_protocol_demo.h"
 #include "com_xmos_demo.h"
-#include "gpio.h"
 #include <platform.h>
 #include <timer.h>
+#include <print.h>
 
-#define AUDIO8_BUTTON_1 0xE
+#define BUTTONS_MASK 0xE
 
-on tile[AUDIO_IO_TILE]: in port p_buttons = PORT_BUTTON_GPIO;
+#define LEDS_PORTVAL_OFF 0x00
+#define LEDS_PORTVAL_ON  0xFF
 
+/* Buttons/switch port */
+in port p_sw = on tile[1] : XS1_PORT_4B;
+
+/* LED grid port */
+out port p_leds_row = on tile[1] : XS1_PORT_4C;
+out port p_leds_col = on tile[1] : XS1_PORT_4D;
+
+void OutputLedVal(unsigned char x)
+{
+    p_leds_row <: (unsigned) (x & 0xf);
+    p_leds_col <: (unsigned) (x >> 4);
+} 
+ 
 void com_xmos_demo_led_ctrl_user(com_xmos_demo_led_ctrl_commands_t demo_command)
 {
     if (demo_command == LED_OFF_CMD)
     {
-        set_led_array_mask(LED_MASK_COL_OFF);
+        OutputLedVal(LEDS_PORTVAL_OFF);
     }
     else
     {
-        set_led_array_mask(LED_MASK_DISABLE);
+        OutputLedVal(LEDS_PORTVAL_ON);
     }
 }
 //::
 
-void u16_audio8_ea_protocol_demo(chanend c_ea_data)
+void ea_protocol_demo(chanend c_ea_data)
 {
     unsigned char current_val = 0xFF; // Buttons pulled up
     int is_stable = 1;
     timer tmr;
     const unsigned debounce_delay_ms = 50;
     unsigned debounce_timeout;
+    unsigned char ledVals = LEDS_PORTVAL_OFF;
 
+    OutputLedVal(ledVals);
+        
     ea_demo_init();
 
     while (1)
@@ -50,12 +67,12 @@ void u16_audio8_ea_protocol_demo(chanend c_ea_data)
                         case EA_NATIVE_RESET:
                         case EA_NATIVE_DISCONNECTED:
                             // Disable the LED mask as the EA Protocol demo is no longer active
-                            set_led_array_mask(LED_MASK_DISABLE);
+                            OutputLedVal(LEDS_PORTVAL_OFF);
                             ea_demo_init(); // Clear any queued but unsent data
                             break;
                         case EA_NATIVE_CONNECTED:
                             // Start with the LED off
-                            set_led_array_mask(LED_MASK_COL_OFF);
+                            OutputLedVal(LEDS_PORTVAL_OFF);
                             break;
                         case EA_NATIVE_DATA_SENT:
                             ea_demo_data_sent();
@@ -73,15 +90,18 @@ void u16_audio8_ea_protocol_demo(chanend c_ea_data)
 
             /* Button handler */
             // If the button is "stable", react when the I/O pin changes value
-            case is_stable => p_buttons when pinsneq(current_val) :> current_val:
-                if ((current_val | AUDIO8_BUTTON_1) == AUDIO8_BUTTON_1)
+            case is_stable => p_sw when pinsneq(current_val) :> current_val:
+                
+                /* Check if button 1 is pressed */
+                if ((current_val | BUTTONS_MASK) == BUTTONS_MASK)
                 {
-                    // LED used for EA Protocol demo is on when the mask is disabled
-                    if (get_led_array_mask() == LEDS_PORT_OFF)
+                    /* LED used for EA Protocol demo is on when the mask is disabled */
+                    if (ledVals == LEDS_PORTVAL_ON)
                     {
                         /* So turn it off now
                          * and send protocol message so this change of state is reflect correctly
                          */
+                        ledVals = LEDS_PORTVAL_OFF;
                         ea_demo_process_user_input(0, c_ea_data);
                     }
                     else
@@ -89,6 +109,7 @@ void u16_audio8_ea_protocol_demo(chanend c_ea_data)
                         /* So turn it on now
                          * and send protocol message so this change of state is reflect correctly
                          */
+                        ledVals = LEDS_PORTVAL_ON;
                         ea_demo_process_user_input(1, c_ea_data);
                     }
                 }

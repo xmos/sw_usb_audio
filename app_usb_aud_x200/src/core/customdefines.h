@@ -7,6 +7,8 @@
 #ifndef _CUSTOMDEFINES_H_
 #define _CUSTOMDEFINES_H_
 
+#include "user_main.h"
+
 #define AUDIO_IO_TILE   0
 #define XUD_TILE        1
 #define SPDIF_TX_TILE   1
@@ -90,7 +92,9 @@
 //:
 
 /* Enable/Disable example HID code */
+#ifndef HID_CONTROLS
 #define HID_CONTROLS       1
+#endif
 
 /* Specify FLASH type on U16 sliceKIT */
 #define DFU_FLASH_DEVICE FL_DEVICE_NUMONYX_M25P16
