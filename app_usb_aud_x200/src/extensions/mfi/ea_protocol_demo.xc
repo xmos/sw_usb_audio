@@ -23,8 +23,8 @@ void OutputLedVal(unsigned char x)
 {
     p_leds_row <: (unsigned) (x & 0xf);
     p_leds_col <: (unsigned) (x >> 4);
-} 
- 
+}
+
 void com_xmos_demo_led_ctrl_user(com_xmos_demo_led_ctrl_commands_t demo_command)
 {
     if (demo_command == LED_OFF_CMD)
@@ -48,7 +48,7 @@ void ea_protocol_demo(chanend c_ea_data)
     unsigned char ledVals = LEDS_PORTVAL_OFF;
 
     OutputLedVal(ledVals);
-        
+
     ea_demo_init();
 
     while (1)
@@ -91,7 +91,7 @@ void ea_protocol_demo(chanend c_ea_data)
             /* Button handler */
             // If the button is "stable", react when the I/O pin changes value
             case is_stable => p_sw when pinsneq(current_val) :> current_val:
-                
+
                 /* Check if button 1 is pressed */
                 if ((current_val | BUTTONS_MASK) == BUTTONS_MASK)
                 {
