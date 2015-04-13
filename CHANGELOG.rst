@@ -1,6 +1,10 @@
 sw_usb_audio Change Log
 =======================
 
+6.12.2
+------
+    - ADDED:      Example code for using iAP EA Native Transport endpoints to app_usb_aud_x200    
+
 6.12.1
 ------
     - ADDED:      DSD enabled build configurations to app_usb_aud_x200
