@@ -6,8 +6,13 @@ sw_usb_audio Change Log
 
   * Changes to dependencies:
 
-    - sc_usb_audio: 6.11.2rc2 -> 6.11.3rc0
+    - sc_usb_audio: 6.11.2rc2 -> 6.11.4rc0
 
+      + ADDED:      Check for xTimeComposer major version. Build error generated for versions other
+        than 13 (see warnings.xc)
+      + RESOLVED:   (Major) Streaming issues with xTimeComposer 14 due to removal of inline asm lines
+        not properly marked volatile. Only affects xTimeComposer versions > 13
+      + RESOLVED:   (Minor) Warning emitted from build system related to rebootwrapper.s
       + RESOLVED:  (Major) Streaming issue when mixer not enabled (introduced in 6.11.2)
 
 6.11.2
