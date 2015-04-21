@@ -6,7 +6,7 @@ sw_usb_audio Change Log
 
   * Changes to dependencies:
 
-    - sc_usb_audio: 6.11.3rc0 -> 6.11.4rc0
+    - sc_usb_audio: 6.11.3rc0 -> 6.11.4rc1
 
       + ADDED:      Check for xTimeComposer major version. Build error generated for versions other
         than 13 (see warnings.xc)
