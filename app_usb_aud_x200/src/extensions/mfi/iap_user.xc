@@ -15,18 +15,21 @@ unsigned p_gpio_peek();
 /* Select Apple connector */
 void SelectUSBApple(void)
 {
+#ifndef USB_SEL_A
     unsigned tmp = p_gpio_peek();
     tmp &= (~(P_GPIO_USB_SEL0 | P_GPIO_USB_SEL1));
     p_gpio_out(tmp | P_GPIO_USB_SEL0);
-
+#endif
 }
 
 /* Select USB socket (normally B) */
 void SelectUSBPc(void)
 {
+#ifndef USB_SEL_A
     unsigned tmp = p_gpio_peek();
     tmp &= (~(P_GPIO_USB_SEL0 | P_GPIO_USB_SEL1));
     p_gpio_out(tmp | P_GPIO_USB_SEL1 | P_GPIO_USB_SEL0);
+#endif
 }
 
 #include <xs1.h>
@@ -34,11 +37,14 @@ void SelectUSBPc(void)
 unsigned GetIDeviceDetect(void)
 {
     unsigned tmp;
-
+#ifdef USB_SEL_A
+    return 0;
+#else
     p_acc_det :> tmp;
 
     /* ACC_POWER connected to bit[1] */
     return !(tmp&2);
+#endif
 }
 
 #endif

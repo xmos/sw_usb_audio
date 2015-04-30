@@ -34,10 +34,17 @@ void wait_us(int microseconds)
 
 void AudioHwInit(chanend ?c_codec)
 {
+
     /* 0b11 : USB B */
-    /* 0b10 : Lightning */
+    /* 0b01 : Lightning */
+    /* 0b10 : USB A */
+#ifdef USB_SEL_A
+    set_gpio(P_GPIO_USB_SEL0, 0);
+    set_gpio(P_GPIO_USB_SEL1, 1);
+#else
     set_gpio(P_GPIO_USB_SEL0, 1);
     set_gpio(P_GPIO_USB_SEL1, 1);
+#endif
 
 #ifdef IAP
     set_gpio(P_GPIO_VBUS_EN, 1);
