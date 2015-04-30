@@ -6,7 +6,7 @@ TARGET = x200-mc-audio.xn
 APP_NAME =
 
 # The flags passed to xcc when building the application
-BUILD_FLAGS     = -DFLASH_MAX_UPGRADE_SIZE=64*1024 -fcomment-asm -Xmapper --map -Xmapper MAPFILE -Wall -O3 -report -lflash -fsubword-select -save-temps -g -fxscope -DXSCOPE -DSDA_HIGH=2 -DSCL_HIGH=1 -DXUD_SERIES_SUPPORT=4 -march=xs2a -DUSB_TILE=tile[1]
+BUILD_FLAGS     = -DFLASH_MAX_UPGRADE_SIZE=64*1024 -fcomment-asm -Xmapper --map -Xmapper MAPFILE -Wall -O3 -report -lflash -fsubword-select -save-temps -g -fxscope -DXSCOPE -DSDA_HIGH=2 -DSCL_HIGH=1 -DXUD_SERIES_SUPPORT=4 -march=xs2a -DUSB_TILE=tile[1] 
 
 # The USED_MODULES variable lists other module used by the application. These
 # modules will extend the SOURCE_DIRS, INCLUDE_DIRS and LIB_DIRS variables. 
@@ -63,6 +63,12 @@ INCLUDE_ONLY_IN_2ioxsd_mfi =
 # Hid controls disabled (buttons used for EA)
 XCC_FLAGS_2ioxx_mfi_n = $(BUILD_FLAGS) -DIAP=1 -DIAP_EA_NATIVE_TRANS=1 -DMIDI=0 -DSPDIF=0 -DHID_CONTROLS=0
 INCLUDE_ONLY_IN_2ioxx_mfi_n =
+
+#Audio Class 2, iAP enabled, Input, Output, No,  No SPDIF. Select USB A port. Ignore VBUS.
+#Note, this is the config used for Apple role-switch
+XCC_FLAGS_2ioxx_usba_mfi = $(BUILD_FLAGS) -DIAP=1 -DMIDI=0 -DSPDIF=0 -DUSB_SEL_A=1 -DXUD_PWR_CFG=0
+INCLUDE_ONLY_IN_2ioxx_usba_mfi = 
+
 
 include mfi.mk
 
