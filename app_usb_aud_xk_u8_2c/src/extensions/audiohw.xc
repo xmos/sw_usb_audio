@@ -95,7 +95,7 @@ void AudioHwInit(chanend ?c_codec)
     asm("setc res[%0], %1"::"r"(p_sw),"r"(XS1_SETC_COND_NEQ));
     asm("setd res[%0], %1"::"r"(p_sw),"r"(curSwVal));
 
-    set_interrupt_handler(handle_switch_request, 200, 1, p_sw, 0)
+    set_interrupt_handler(handle_switch_request, 1, p_sw, 0)
 #endif
     return;
 }

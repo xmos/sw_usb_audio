@@ -38,7 +38,7 @@ void XUD_UserSuspend(void)
     asm("setd res[%0], %1"::"r"(g_rebootTimer),"r"(time));
     asm("setc res[%0], %1"::"r"(g_rebootTimer),"r"(XS1_SETC_COND_AFTER));
 
-    set_interrupt_handler(HandleRebootTimeout, 200, 1, g_rebootTimer, 0)
+    set_interrupt_handler(HandleRebootTimeout, 1, g_rebootTimer, 0)
 }
 
 void XUD_UserResume(void)
