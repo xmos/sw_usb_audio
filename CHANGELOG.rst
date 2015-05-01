@@ -1,7 +1,7 @@
 sw_usb_audio Change Log
 =======================
 
-6.12.4
+6.12.3
 ------
     - ADDED:      Added roleswitch compatible build config to app_usb_aud_x200
     - CHANGE:     iPod detect code upataed and USB mux set appropriately for roleswitch (guarded by
@@ -16,7 +16,6 @@ sw_usb_audio Change Log
         if user suspend/resume functions enabled interrupts e.g. for roleswitch
 
     - sc_usb_device: 1.3.6alpha0 -> 1.3.7alpha0
-
 
 6.12.2
 ------
