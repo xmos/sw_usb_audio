@@ -1,5 +1,5 @@
-sw_usb_audio Change Log (6.11 maintenance branch)
-=================================================
+sw_usb_audio Change Log
+=======================
 
 6.11.4
 ------
