@@ -77,7 +77,7 @@ void u16_audio8_ea_protocol_demo(chanend c_ea_data)
                 if ((current_val | AUDIO8_BUTTON_1) == AUDIO8_BUTTON_1)
                 {
                     // LED used for EA Protocol demo is on when the mask is disabled
-                    if (get_led_array_mask() == LEDS_PORT_OFF)
+                    if (get_led_array_mask() == LED_MASK_DISABLE)
                     {
                         /* So turn it off now
                          * and send protocol message so this change of state is reflect correctly
