@@ -1,6 +1,10 @@
 sw_usb_audio Change Log
 =======================
 
+UNRELEASED
+------
+    - RESOLVED:   (Minor) Fixed build issue with iAP EA Native Transport endpoints example code in app_usb_aud_skc_u16_audio8
+
 6.12.3
 ------
     - ADDED:      Added roleswitch compatible build config to app_usb_aud_x200
