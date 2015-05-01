@@ -5,12 +5,22 @@ sw_usb_audio Change Log
 ------
     - ADDED:      Added roleswitch compatible build config to app_usb_aud_x200
     - CHANGE:     iPod detect code upataed and USB mux set appropriately for roleswitch (guarded by
-                  USB_SEL_A) 
+                  USB_SEL_A)
     - CHANGE:     Updated all interrupts used for role-switch to new interrupt.h API
+
+  * Changes to dependencies:
+
+    - sc_xud: 2.3.1alpha0 -> 2.3.2alpha0
+
+      + CHANGE:     Interrupts disabled during any access to usb_tile. Allows greater reliablity
+        if user suspend/resume functions enabled interrupts e.g. for roleswitch
+
+    - sc_usb_device: 1.3.6alpha0 -> 1.3.7alpha0
+
 
 6.12.2
 ------
-    - ADDED:      Example code for using iAP EA Native Transport endpoints to app_usb_aud_x200    
+    - ADDED:      Example code for using iAP EA Native Transport endpoints to app_usb_aud_x200
 
 6.12.1
 ------
