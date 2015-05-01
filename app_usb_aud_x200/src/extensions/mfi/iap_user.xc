@@ -36,10 +36,10 @@ void SelectUSBPc(void)
 /* Return iDevice detect state, return zero for detected */
 unsigned GetIDeviceDetect(void)
 {
-    unsigned tmp;
 #ifdef USB_SEL_A
     return 0;
 #else
+    unsigned tmp;
     p_acc_det :> tmp;
 
     /* ACC_POWER connected to bit[1] */
