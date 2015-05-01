@@ -17,6 +17,7 @@ sw_usb_audio Change Log
 
     - sc_usb_device: 1.3.6alpha0 -> 1.3.7alpha0
 
+
 6.12.2
 ------
     - ADDED:      Example code for using iAP EA Native Transport endpoints to app_usb_aud_x200
