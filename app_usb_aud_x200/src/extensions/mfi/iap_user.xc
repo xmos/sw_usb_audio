@@ -1,5 +1,7 @@
 
 #ifdef IAP
+#include "customdefines.h"
+
 #include <print.h>
 #include <platform.h>
 #include <xs1.h>
@@ -32,7 +34,6 @@ void SelectUSBPc(void)
 #endif
 }
 
-#include <xs1.h>
 /* Return iDevice detect state, return zero for detected */
 unsigned GetIDeviceDetect(void)
 {
@@ -42,8 +43,14 @@ unsigned GetIDeviceDetect(void)
     unsigned tmp;
     p_acc_det :> tmp;
 
+#if XCORE_200_MC_AUDIO_HW_VERSION == 2
+    /* ACC_POWER connected to bit[0] */
+    return !(tmp & 1);
+#else
     /* ACC_POWER connected to bit[1] */
-    return !(tmp&2);
+    return !(tmp & 2);
+#endif
+
 #endif
 }
 

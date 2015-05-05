@@ -7,11 +7,23 @@
 #ifndef _CUSTOMDEFINES_H_
 #define _CUSTOMDEFINES_H_
 
+/* Default to hw version 2.0 */
+#ifndef XCORE_200_MC_AUDIO_HW_VERSION 
+#define XCORE_200_MC_AUDIO_HW_VERSION 2
+#endif
+
 #include "user_main.h"
+
+
+
 
 #define AUDIO_IO_TILE   0
 #define XUD_TILE        1
+
+#if XCORE_200_MC_AUDIO_HW_VERSION < 2
 #define SPDIF_TX_TILE   1
+#endif
+
 #define MIDI_TILE       1
 
 #define MIXER 1
