@@ -48,7 +48,7 @@ class SPDIFInputTester(xmostest.Tester):
                 print "Failure reason: Discontinuity in ramp detected"
                 result = False
 
-        xmostest.set_test_result("usb_audio",
+        xmostest.set_test_result("sw_usb_audio",
                                  "digital_hw_tests",
                                  "spdif_input_test",
                                  config={'app_name':app_name,

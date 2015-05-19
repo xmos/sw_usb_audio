@@ -131,7 +131,7 @@ class VolumeOutputTester(xmostest.Tester):
                            % (expected_freq, i))
                     result = False
 
-        xmostest.set_test_result("usb_audio",
+        xmostest.set_test_result("sw_usb_audio",
                                  "analogue_hw_tests",
                                  "volume_output_test",
                                  config={'app_name':app_name,

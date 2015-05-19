@@ -4,7 +4,7 @@ import xmostest
 if __name__ == "__main__":
     xmostest.init()
 
-    xmostest.register_group("usb_audio",
+    xmostest.register_group("sw_usb_audio",
                             "analogue_hw_tests",
                             "Analogue audio hardware tests",
     """
@@ -23,7 +23,7 @@ The tests are run at sample rates of 44.1kHz, 48kHz, 88.2kHz, 96kHz, 176.4kHz an
 192kHz. Tests utilise all analogue channels of the board simultaneously.
 """)
 
-    xmostest.register_group("usb_audio",
+    xmostest.register_group("sw_usb_audio",
                             "digital_hw_tests",
                             "Digital audio hardware tests",
     """
@@ -41,7 +41,7 @@ The tests are run at sample rates of 44.1kHz, 48kHz, 88.2kHz, 96kHz, 176.4kHz an
 192kHz. Tests utilise all digital channels of the board simultaneously.
 """)
 
-    xmostest.register_group("usb_audio",
+    xmostest.register_group("sw_usb_audio",
                             "non_audio_hw_tests",
                             "A collection of tests covering non audio related features",
     """
@@ -55,7 +55,7 @@ and record data. Tests are run to test the following features:
     * DFU
 """)
 
-    xmostest.register_group("usb_audio",
+    xmostest.register_group("sw_usb_audio",
                             "stress_hw_tests",
                             "A collection of stress tests run on hardware",
     """

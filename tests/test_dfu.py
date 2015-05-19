@@ -155,7 +155,7 @@ class DFUTester(xmostest.Tester):
                        % expected_line)
                 result = False
 
-        xmostest.set_test_result("usb_audio",
+        xmostest.set_test_result("sw_usb_audio",
                                  "non_audio_hw_tests",
                                  "dfu_test",
                                  config={'app_name':app_name,
