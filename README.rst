@@ -90,6 +90,10 @@ Known Issues
 
 General known issues with this release are listed below.  For board/application specific known issues please see README in relevant app directory
 
+- DFU for Quad-SPI flash currently not supported
+
+- DFU for xCORE-200 currently not supported
+
 - (#14762) When in DSD mode with S/PDIF output enabled, DSD samples are transmitted over S/PDIF if the DSD and S/PDIF channels are shared, this may or may not be desired
 
 - (#14173) I2S input is completely disabled when DSD output is active - the input stream to the host will contain 0 samples
