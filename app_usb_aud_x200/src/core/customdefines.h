@@ -23,7 +23,10 @@
 
 #define MIDI_TILE       1
 
+#ifndef MIXER
 #define MIXER 1
+#endif
+
 #define MAX_MIX_COUNT 0
 
 #define SELF_POWERED 1
