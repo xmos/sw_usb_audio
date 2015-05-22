@@ -9,7 +9,7 @@
   <Packages>
     <Package id="0" Type="XS2-UnA-512-FB236">
       <Nodes>
-        <Node Id="0" InPackageId="0" Type="XS2-L16A-512" Oscillator="24MHz" SystemFrequency="500MHz">
+        <Node Id="0" InPackageId="0" Type="XS2-L16A-512" Oscillator="24MHz" SystemFrequency="500MHz" referencefrequency="100MHz">
           <Boot>
             <Source Location="SPI:bootFlash"/>
           </Boot>
@@ -18,7 +18,8 @@
             <Port Location="XS1_PORT_1C" Name="PORT_SQI_SCLK"/>
             <Port Location="XS1_PORT_4B" Name="PORT_SQI_SIO"/>
         
-            <!-- Audio Ports -->          
+            <!-- Audio Ports -->         
+            <Port Location="XS1_PORT_1A"  Name="PORT_PLL_REF"/>
             <Port Location="XS1_PORT_1F"  Name="PORT_MCLK_IN"/>
             <Port Location="XS1_PORT_1G"  Name="PORT_I2S_LRCLK"/>
             <Port Location="XS1_PORT_1H"  Name="PORT_I2S_BCLK"/>
