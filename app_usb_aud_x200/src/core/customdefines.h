@@ -1,7 +1,7 @@
 /**
  * @file       customdefines.h
  * @brief      Defines relating to device configuration and customisation.
- *             For U16 USB Audio Reference Design
+ *             For xCORE-200 Audio MC Board
  * @author     Ross Owen, XMOS Limited
  */
 #ifndef _CUSTOMDEFINES_H_
@@ -13,9 +13,6 @@
 #endif
 
 #include "user_main.h"
-
-
-
 
 #define AUDIO_IO_TILE   0
 #define XUD_TILE        1
