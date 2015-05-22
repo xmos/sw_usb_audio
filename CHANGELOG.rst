@@ -1,10 +1,13 @@
 sw_usb_audio Change Log
 =======================
 
-UNRELEASED
+6.12.4
 ------
-    - RESOLVED:   (Minor) Fixed build issue with iAP EA Native Transport endpoints example code in app_usb_aud_skc_u16_audio8
-    - ADDED:      ADAT output build configuration to app_usb_aud_x200
+    - RESOLVED:   (Minor) Fixed build issue with iAP EA Native Transport endpoints example code in
+                  app_usb_aud_skc_u16_audio8
+    - ADDED:      Support for xCORE-200 MC AUDIO board version 2.0 (in app_usb_aud_x200)
+    - ADDED:      ADAT output/input build configuration to app_usb_aud_x200
+    - CHANGE:     Rationalised build config naming in app_usb_aud_x200
 
 6.12.3
 ------
