@@ -8,7 +8,7 @@
 #define _CUSTOMDEFINES_H_
 
 /* Default to hw version 2.0 */
-#ifndef XCORE_200_MC_AUDIO_HW_VERSION 
+#ifndef XCORE_200_MC_AUDIO_HW_VERSION
 #define XCORE_200_MC_AUDIO_HW_VERSION 2
 #endif
 

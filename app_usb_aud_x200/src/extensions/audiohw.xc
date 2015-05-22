@@ -285,7 +285,7 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
          * bit[3:2] : Reserved
          * bit[1:0] : Functional Mode (FM) : 0x00 - single-speed mode (4-50kHz)
          *                                 : 0x01 - double-speed mode (50-100kHz)
-         *                                 : 0x10 - quad-speed mode (100-200kHz) 
+         *                                 : 0x10 - quad-speed mode (100-200kHz)
          *                                 : 0x11 - auto-speed detect (32 to 200kHz)
          *                                 (note, some Mclk/SR ratios not supported in auto)
          *
