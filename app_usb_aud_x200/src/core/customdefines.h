@@ -77,8 +77,25 @@
 #define I2S_CHANS_ADC     (8)
 #endif
 
-/* Enable DFU interface, Note, requires a driver for Windows */
-#define DFU             1
+/* Channel index of SPDIF Rx channels (duplicated DAC channels 1/2 when index is 0) */
+#define SPDIF_TX_INDEX     (8)
+
+/* Channel index of SPDIF Rx channels */
+#define SPDIF_RX_INDEX     (8)
+
+/* Channel index of ADAT Tx channels */
+#if defined(SPDIF) && (SPDIF==1)
+#define ADAT_TX_INDEX      (SPDIF_TX_INDEX+2)
+#else
+#define ADAT_TX_INDEX      (I2S_CHANS_DAC)
+#endif
+
+/* Channel index of ADAT Rx channels */
+#if defined(SPDIF_RX) && (SPDIF_RX==1)
+#define ADAT_RX_INDEX      (SPDIF_RX_INDEX+2)
+#else
+#define ADAT_RX_INDEX      (I2S_CHANS_ADC)
+#endif
 
 /* Master clock defines (in Hz) */
 #define MCLK_441          (512*44100)   /* 44.1, 88.2 etc */
@@ -88,9 +105,6 @@
 #ifndef MAX_FREQ
 #define MAX_FREQ                    (192000)
 #endif
-
-/* Index of SPDIF TX channel (duplicated DAC channels 1/2) */
-#define SPDIF_TX_INDEX              (0)
 
 /* Default frequency device reports as running at */
 /* Audio Class 1.0 friendly freq */
