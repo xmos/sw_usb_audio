@@ -119,14 +119,13 @@ def do_analogue_input_test(board, os, app_name, app_config, freq, duration,
                                          enable_xscope = True,
                                          timeout = duration + 10, # Ensure signal generator runs for longer than audio analyzer
                                          start_after_completed = [dut_job],
-                                         xscope_host_cmd = ['bash', '-c',
-                                         './../../sw_audio_analyzer/host_xscope_controller/xscope_controller %s %s %s "%s" "%s" "%s"'
-                                         % (analysis2_debugger_addr,
-                                            analysis2_debugger_port,
-                                            duration + 10, # Ensure host app runs for longer than xCORE app (started with delay)
-                                            "b 4",
-                                            "c 4 5000 0 0 0",
-                                            "c 5 6000 0 0 0")],
+                                         xscope_host_cmd = ['../../sw_audio_analyzer/host_xscope_controller/bin/xscope_controller',
+                                         analysis2_debugger_addr,
+                                         analysis2_debugger_port,
+                                         "%d" % (duration + 10), # Ensure host app runs for longer than xCORE app (started with delay)
+                                         "b 4",
+                                         "c 4 5000 0 0 0",
+                                         "c 5 6000 0 0 0"],
                                          xscope_host_tester = ctester[3],
                                          xscope_host_timeout = duration + 60, # Host app should stop itself gracefully
                                          xscope_host_initial_delay = 5)

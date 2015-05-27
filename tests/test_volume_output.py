@@ -202,14 +202,14 @@ def do_volume_output_test(board, os, app_name, app_config, freq, num_chans,
 
     print "Scheduling xCORE analyzer jobs"
     (analysis1_debugger_addr, analysis1_debugger_port) = resources['analysis_device_1'].get_xscope_port().split(':')
-    analysis1_cmd_string = ('./../../sw_audio_analyzer/host_xscope_controller/xscope_controller %s %s %s '
-                            % (analysis1_debugger_addr,
-                               analysis1_debugger_port,
-                               duration))
+    analysis1_xscope_host_cmd = ['../../sw_audio_analyzer/host_xscope_controller/bin/xscope_controller',
+                                 analysis1_debugger_addr,
+                                 analysis1_debugger_port,
+                                 "%d" % duration]
     if channel is 'master':
-        analysis1_cmd_string += "".join("\"m %d v\" " % chan for chan in range(4))
+        analysis1_xscope_host_cmd.extend("m %d v" % chan for chan in range(4))
     elif channel < 4:
-        analysis1_cmd_string += ("\"m %d v\" " % channel)
+        analysis1_xscope_host_cmd.append("m %d v" % channel)
     analysis1_job = xmostest.run_on_xcore(resources['analysis_device_1'],
                                           analyser_binary,
                                           tester = ctester[2],
@@ -217,22 +217,21 @@ def do_volume_output_test(board, os, app_name, app_config, freq, num_chans,
                                           timeout = duration,
                                           start_after_completed = [dut_job],
                                           start_after_started = [sig_gen_job],
-                                          xscope_host_cmd = ['bash', '-c',
-                                          analysis1_cmd_string],
+                                          xscope_host_cmd = analysis1_xscope_host_cmd,
                                           xscope_host_tester = ctester[3],
                                           xscope_host_timeout = duration + 60, # Host app should stop itself gracefully
                                           xscope_host_initial_delay = 5)
 
     (analysis2_debugger_addr, analysis2_debugger_port) = resources['analysis_device_2'].get_xscope_port().split(':')
-    analysis2_cmd_string = ('./../../sw_audio_analyzer/host_xscope_controller/xscope_controller %s %s %s "%s" '
-                            % (analysis2_debugger_addr,
-                               analysis2_debugger_port,
-                               duration,
-                               "b 4"))
+    analysis2_xscope_host_cmd = ['../../sw_audio_analyzer/host_xscope_controller/bin/xscope_controller',
+                                 analysis2_debugger_addr,
+                                 analysis2_debugger_port,
+                                 "%d" % duration,
+                                 "b 4"]
     if channel is 'master':
-        analysis2_cmd_string += "".join("\"m %d v\" " % chan for chan in range(4, num_chans))
+        analysis2_xscope_host_cmd.extend("m %d v" % chan for chan in range(4, num_chans))
     elif channel >= 4:
-        analysis2_cmd_string += ("\"m %d v\" " % channel)
+        analysis2_xscope_host_cmd.append("m %d v" % channel)
     analysis2_job = xmostest.run_on_xcore(resources['analysis_device_2'],
                                           analyser_binary,
                                           tester = ctester[4],
@@ -242,8 +241,7 @@ def do_volume_output_test(board, os, app_name, app_config, freq, num_chans,
                                           start_after_completed = [dut_job],
                                           start_after_started = [sig_gen_job,
                                                                  analysis1_job],
-                                          xscope_host_cmd = ['bash', '-c',
-                                          analysis2_cmd_string],
+                                          xscope_host_cmd = analysis2_xscope_host_cmd,
                                           xscope_host_tester = ctester[5],
                                           xscope_host_timeout = duration + 60, # Host app should stop itself gracefully
                                           xscope_host_initial_delay = 5)
