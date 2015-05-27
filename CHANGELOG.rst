@@ -1,10 +1,26 @@
 sw_usb_audio Change Log
 =======================
 
-UNRELEASED
+6.12.4
 ------
-    - RESOLVED:   (Minor) Fixed build issue with iAP EA Native Transport endpoints example code in app_usb_aud_skc_u16_audio8
-    - ADDED:      ADAT output build configuration to app_usb_aud_x200
+    - RESOLVED:   (Minor) Fixed build issue with iAP EA Native Transport endpoints example code in
+                  app_usb_aud_skc_u16_audio8
+    - ADDED:      Support for xCORE-200 MC AUDIO board version 2.0 (in app_usb_aud_x200)
+    - ADDED:      ADAT output/input build configuration to app_usb_aud_x200
+    - ADDED:      SPDIF input build configuration to app_usb_aud_x200
+    - CHANGE:     Rationalised build config naming in app_usb_aud_x200
+
+  * Changes to dependencies:
+
+    - sc_spdif: 1.3.3alpha2 -> 1.3.4alpha0
+
+      + Changes to RX codebase to allow running on xCORE-200
+
+    - sc_usb_audio: 6.12.0alpha1 -> 6.12.1alpha0
+
+      + RESOLVED:   Fixes to TDM input timing/sample-alignment when BCLK=MCLK
+      + RESOLVED:   Various minor fixes to allow ADAT_RX to run on xCORE 200 MC AUDIO hardware
+      + CHANGE:     Moved from old SPDIF define to SPDIF_TX
 
 6.12.3
 ------

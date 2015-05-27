@@ -1,14 +1,19 @@
 #include <xs1.h>
 
-#define I2C_COMBINE_SCL_SDA 1
+#include <assert.h>
 #include "devicedefines.h"
 #include <platform.h>
 #include "gpio_access.h"
 #include "i2c_shared.h"
 #include "cs4384.h"
 #include "cs5368.h"
+#include "cs2100.h"
 #include "print.h"
 #include "dsd_support.h"
+
+#if defined(SPDIF_RX) || defined(ADAT_RX)
+#define USE_FRACTIONAL_N 1
+#endif
 
 on tile[0] : out port p_gpio = XS1_PORT_8C;
 
@@ -23,6 +28,81 @@ extern struct r_i2c r_i2c;
 #define DAC_REGREAD(reg, val)  {i2c_shared_master_read_reg(r_i2c, CS4384_I2C_ADDR, reg, val, 1);}
 #define ADC_REGWRITE(reg, val) {data[0] = val; i2c_shared_master_write_reg(r_i2c, CS5368_I2C_ADDR, reg, data, 1);}
 
+#ifdef USE_FRACTIONAL_N
+
+#define CS2100_REGREAD(reg, data)  {data[0] = 0xAA; i2c_master_read_reg(CS2100_I2C_DEVICE_ADDR, reg, data, 1, r_i2c);}
+#define CS2100_REGREAD_ASSERT(reg, data, expected)  {data[0] = 0xAA; i2c_master_read_reg(CS2100_I2C_DEVICE_ADDR, reg, data, 1, r_i2c); assert(data[0] == expected);}
+#define CS2100_REGWRITE(reg, val) {data[0] = val; i2c_master_write_reg(CS2100_I2C_DEVICE_ADDR, reg, data, 1, r_i2c);}
+
+/* The number of timer ticks to wait for the audio PLL to lock */
+/* CS2100 lists typical lock time as 100 * input period */
+#define     AUDIO_PLL_LOCK_DELAY     (40000000)
+
+/* Init of CS2100 */
+void PllInit(void)
+{
+    unsigned char data[1] = {0};
+
+#if XCORE_200_MC_AUDIO_HW_VERSION < 2
+    /* Enable init */
+    CS2100_REGWRITE(CS2100_DEVICE_CONFIG_1, 0x05);
+#else
+    CS2100_REGWRITE(CS2100_DEVICE_CONFIG_1, 0x07);
+#endif
+    CS2100_REGWRITE(CS2100_GLOBAL_CONFIG, 0x01);
+    CS2100_REGWRITE(CS2100_FUNC_CONFIG_1, 0x08);
+    CS2100_REGWRITE(CS2100_FUNC_CONFIG_2, 0x00); //0x10 for always gen clock even when unlocked
+
+    /* Read back and check */
+#if XCORE_200_MC_AUDIO_HW_VERSION < 2
+    CS2100_REGREAD_ASSERT(CS2100_DEVICE_CONFIG_1, data, 0x05);
+#else
+    CS2100_REGREAD_ASSERT(CS2100_DEVICE_CONFIG_1, data, 0x07);
+#endif
+    CS2100_REGREAD_ASSERT(CS2100_GLOBAL_CONFIG, data, 0x01);
+    CS2100_REGREAD_ASSERT(CS2100_FUNC_CONFIG_1, data, 0x08);
+    CS2100_REGREAD_ASSERT(CS2100_FUNC_CONFIG_2, data, 0x00);
+}
+
+/* Setup PLL multiplier */
+void PllMult(unsigned mult)
+{
+    unsigned char data[1] = {0};
+
+    /* Multiplier is translated to 20.12 format by shifting left by 12 */
+    CS2100_REGWRITE(CS2100_RATIO_1, (mult >> 12) & 0xFF);
+    CS2100_REGWRITE(CS2100_RATIO_2, (mult >> 4) & 0xFF);
+    CS2100_REGWRITE(CS2100_RATIO_3, (mult << 4) & 0xFF);
+    CS2100_REGWRITE(CS2100_RATIO_4, 0x00);
+
+	/* Read back and check */
+    CS2100_REGREAD_ASSERT(CS2100_RATIO_1, data, ((mult >> 12) & 0xFF));
+    CS2100_REGREAD_ASSERT(CS2100_RATIO_2, data, ((mult >> 4) & 0xFF));
+    CS2100_REGREAD_ASSERT(CS2100_RATIO_3, data, ((mult << 4) & 0xFF));
+    CS2100_REGREAD_ASSERT(CS2100_RATIO_4, data, 0x00);
+}
+#endif
+
+#if !(defined(SPDIF_RX) || defined(ADAT_RX)) && defined(USE_FRACTIONAL_N)
+extern out port p_pll_clk;
+/* Core to generate 300Hz reference to CS2100 PLL */
+void genclock()
+{
+    timer t;
+    unsigned time;
+    unsigned pinVal = 0;
+
+    t :> time;
+    while(1)
+    {
+        p_pll_clk <: pinVal;
+        pinVal = ~pinVal;
+        time += 166667;
+        t when timerafter(time) :> void;
+    }
+}
+#endif
+
 void wait_us(int microseconds)
 {
     timer t;
@@ -34,6 +114,12 @@ void wait_us(int microseconds)
 
 void AudioHwInit(chanend ?c_codec)
 {
+    /* Init the i2c module */
+    i2c_shared_master_init(r_i2c);
+
+    /* Assert reset to ADC and DAC */
+    set_gpio(P_GPIO_DAC_RST_N, 0);
+    set_gpio(P_GPIO_ADC_RST_N, 0);
 
     /* 0b11 : USB B */
     /* 0b01 : Lightning */
@@ -46,16 +132,18 @@ void AudioHwInit(chanend ?c_codec)
     set_gpio(P_GPIO_USB_SEL1, 1);
 #endif
 
-#ifdef IAP
-    set_gpio(P_GPIO_VBUS_EN, 1);
+#ifdef USE_FRACTIONAL_N
+    /* If we have any digital input then use the external PLL - selected via MUX */
+    set_gpio(P_GPIO_PLL_SEL, 1);
+
+     /* Initialise external PLL */
+    PllInit();
 #endif
 
-    /* Init the i2c module */
-    i2c_shared_master_init(r_i2c);
-
-    /* Assert reset to ADC and DAC */
-    set_gpio(P_GPIO_DAC_RST_N, 0);
-    set_gpio(P_GPIO_ADC_RST_N, 0);
+#ifdef IAP
+    /* Enable VBUS output */
+    set_gpio(P_GPIO_VBUS_EN, 1);
+#endif
 }
 
 /* Configures the external audio hardware for the required sample frequency.
@@ -71,6 +159,28 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
 	set_gpio(P_GPIO_ADC_RST_N, 0);
 
     /* Set master clock select appropriately */
+#if defined(USE_FRACTIONAL_N)
+    /* Configure external fractional-n clock multiplier for 300Hz -> mClkFreq */
+    PllMult(mClk/300);
+
+    /* Allow some time for mclk to lock and MCLK to stabilise - this is important to avoid glitches at start of stream */
+    {
+        timer t;
+        unsigned time;
+        t :> time;
+        t when timerafter(time+AUDIO_PLL_LOCK_DELAY) :> void;
+    }
+
+    while(1)
+    {
+        /* Read Unlock Indicator in PLL as sanity check... */
+        CS2100_REGREAD(CS2100_DEVICE_CONTROL, data);
+        if(!(data[0] & 0x80))
+        {
+            break;
+        }
+    }
+#else
     if (mClk == MCLK_441)
     {
         set_gpio(P_GPIO_MCLK_FSEL, 0);
@@ -82,7 +192,9 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
 
     /* Allow MCLK to settle */
     wait_us(2000);
+#endif
 
+#if 1
     if((dsdMode == DSD_MODE_NATIVE) || (dsdMode == DSD_MODE_DOP))
     {
         /* Enable DSD 8ch out mode on mux */
@@ -171,9 +283,22 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
         /* PCM Control (Address: 0x03) */
         /* bit[7:4] : Digital Interface Format (DIF) : 0b0001 for I2S up to 24bit
          * bit[3:2] : Reserved
-         * bit[1:0] : Functional Mode (FM) : 0x11 for auto-speed detect (32 to 200kHz)
-        */
-        DAC_REGWRITE(CS4384_PCM_CTRL, 0b00010111);
+         * bit[1:0] : Functional Mode (FM) : 0x00 - single-speed mode (4-50kHz)
+         *                                 : 0x01 - double-speed mode (50-100kHz)
+         *                                 : 0x10 - quad-speed mode (100-200kHz)
+         *                                 : 0x11 - auto-speed detect (32 to 200kHz)
+         *                                 (note, some Mclk/SR ratios not supported in auto)
+         *
+         */
+        unsigned char regVal = 0;
+        if(samFreq < 50000)
+            regVal = 0b00010100;
+        else if(samFreq < 100000)
+            regVal = 0b00010101;
+        else //if(samFreq < 200000)
+            regVal = 0b00010110;
+
+        DAC_REGWRITE(CS4384_PCM_CTRL, regVal);
 #endif
 
         /* Mode Control 1 (Address: 0x02) */
@@ -227,25 +352,8 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
          */
         ADC_REGWRITE(CS5368_PWR_DN, 0b00000000);
 
-        /* Illuminate LEDs based on sample-rate */
-        if (samFreq > 192000)
-        {
-            //set_led_array(LED_ALL_ON);
-        }
-        else if (samFreq > 96000)
-        {
-            //set_led_array(LED_ROW_3);
-        }
-        else if (samFreq > 48000)
-        {
-            //set_led_array(LED_ROW_2);
-        }
-        else
-        {
-            //set_led_array(LED_ROW_1);
-        }
     }
-
+#endif
     return;
 }
 //:

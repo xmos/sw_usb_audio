@@ -1,7 +1,7 @@
 XMOS USB Audio 2.0 Reference Design README
 ..........................................
 
-:Latest release: 6.12.4alpha0
+:Latest release: 6.12.4alpha1
 :Maintainer: Ross Owen
 :Description: USB Audio Applications
 
@@ -89,6 +89,10 @@ Known Issues
 ============
 
 General known issues with this release are listed below.  For board/application specific known issues please see README in relevant app directory
+
+- DFU for Quad-SPI flash currently not supported
+
+- DFU for xCORE-200 currently not supported
 
 - (#14762) When in DSD mode with S/PDIF output enabled, DSD samples are transmitted over S/PDIF if the DSD and S/PDIF channels are shared, this may or may not be desired
 

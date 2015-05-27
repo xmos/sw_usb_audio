@@ -1,21 +1,18 @@
 /**
  * @file       customdefines.h
  * @brief      Defines relating to device configuration and customisation.
- *             For U16 USB Audio Reference Design
+ *             For xCORE-200 Audio MC Board
  * @author     Ross Owen, XMOS Limited
  */
 #ifndef _CUSTOMDEFINES_H_
 #define _CUSTOMDEFINES_H_
 
 /* Default to hw version 2.0 */
-#ifndef XCORE_200_MC_AUDIO_HW_VERSION 
+#ifndef XCORE_200_MC_AUDIO_HW_VERSION
 #define XCORE_200_MC_AUDIO_HW_VERSION 2
 #endif
 
 #include "user_main.h"
-
-
-
 
 #define AUDIO_IO_TILE   0
 #define XUD_TILE        1
@@ -26,7 +23,10 @@
 
 #define MIDI_TILE       1
 
+#ifndef MIXER
 #define MIXER 1
+#endif
+
 #define MAX_MIX_COUNT 0
 
 #define SELF_POWERED 1
@@ -43,8 +43,8 @@
 #endif
 
 /* Enable/Disable SPDIF output - Default is S/PDIF on */
-#ifndef SPDIF
-#define SPDIF		1
+#ifndef SPDIF_TX
+#define SPDIF_TX		1
 #endif
 
 /* Audio class version to run in - Default is 2.0 */
@@ -77,8 +77,25 @@
 #define I2S_CHANS_ADC     (8)
 #endif
 
-/* Enable DFU interface, Note, requires a driver for Windows */
-#define DFU             1
+/* Channel index of SPDIF Rx channels (duplicated DAC channels 1/2 when index is 0) */
+#define SPDIF_TX_INDEX     (8)
+
+/* Channel index of SPDIF Rx channels */
+#define SPDIF_RX_INDEX     (8)
+
+/* Channel index of ADAT Tx channels */
+#if defined(SPDIF) && (SPDIF==1)
+#define ADAT_TX_INDEX      (SPDIF_TX_INDEX+2)
+#else
+#define ADAT_TX_INDEX      (I2S_CHANS_DAC)
+#endif
+
+/* Channel index of ADAT Rx channels */
+#if defined(SPDIF_RX) && (SPDIF_RX==1)
+#define ADAT_RX_INDEX      (SPDIF_RX_INDEX+2)
+#else
+#define ADAT_RX_INDEX      (I2S_CHANS_ADC)
+#endif
 
 /* Master clock defines (in Hz) */
 #define MCLK_441          (512*44100)   /* 44.1, 88.2 etc */
@@ -88,9 +105,6 @@
 #ifndef MAX_FREQ
 #define MAX_FREQ                    (192000)
 #endif
-
-/* Index of SPDIF TX channel (duplicated DAC channels 1/2) */
-#define SPDIF_TX_INDEX              (0)
 
 /* Default frequency device reports as running at */
 /* Audio Class 1.0 friendly freq */
