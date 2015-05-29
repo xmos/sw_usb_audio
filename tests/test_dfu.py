@@ -129,8 +129,10 @@ class DFUTester(xmostest.Tester):
                 expected_line = expected_line.format(version_str = starting_version, pid_str = pid)
 
             found = False
-            for dfu_line in dfu_output:
-                dfu_output = dfu_output[1:] # Remove each line as it's checked
+            # Original output included in results, so create a copy to modify
+            dfu_output_scratch = dfu_output
+            for dfu_line in dfu_output_scratch:
+                dfu_output_scratch = dfu_output_scratch[1:] # Remove each line as it's checked
                 if line_mode.count('x'):
                     # Extract values from output
                     extracted_vals = re.split(expected_line, dfu_line)
