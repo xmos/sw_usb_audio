@@ -151,12 +151,11 @@ def do_analogue_output_test(board, os, app_name, app_config, freq, duration,
                                           timeout = duration,
                                           start_after_completed = [dut_job],
                                           start_after_started = [sig_gen_job],
-                                          xscope_host_cmd = ['bash', '-c',
-                                          './../../sw_audio_analyzer/host_xscope_controller/xscope_controller %s %s %s "%s"'
-                                          % (analysis2_debugger_addr,
-                                             analysis2_debugger_port,
-                                             duration,
-                                             "b 4")],
+                                          xscope_host_cmd = ['../../sw_audio_analyzer/host_xscope_controller/bin/xscope_controller',
+                                          analysis2_debugger_addr,
+                                          analysis2_debugger_port,
+                                          "%d" % duration,
+                                          "b 4"],
                                           xscope_host_tester = ctester[4],
                                           xscope_host_timeout = duration + 60, # Host app should stop itself gracefully
                                           xscope_host_initial_delay = 5)
