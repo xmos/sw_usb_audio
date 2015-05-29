@@ -101,7 +101,8 @@ class DFUTester(xmostest.Tester):
         result = True
 
         # Check for any errors
-        for line in (dut_programming_output + upgrade_build_output + dfu_output):
+        for line in (dut_programming_output + upgrade_build_output + dfu_output +
+                     local_cleanup_output): # TODO: Add + remote_cleanup_output
             if re.match('.*ERROR|.*error|.*Error|.*Problem', line):
                 print "Failure reason: Error message seen"
                 result = False
