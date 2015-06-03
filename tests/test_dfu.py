@@ -101,7 +101,8 @@ class DFUTester(xmostest.Tester):
         result = True
 
         # Check for any errors
-        for line in (dut_programming_output + upgrade_build_output + dfu_output):
+        for line in (dut_programming_output + upgrade_build_output + dfu_output +
+                     local_cleanup_output): # TODO: Add + remote_cleanup_output
             if re.match('.*ERROR|.*error|.*Error|.*Problem', line):
                 print "Failure reason: Error message seen"
                 result = False
@@ -129,8 +130,10 @@ class DFUTester(xmostest.Tester):
                 expected_line = expected_line.format(version_str = starting_version, pid_str = pid)
 
             found = False
-            for dfu_line in dfu_output:
-                dfu_output = dfu_output[1:] # Remove each line as it's checked
+            # Original output included in results, so create a copy to modify
+            dfu_output_scratch = dfu_output
+            for dfu_line in dfu_output_scratch:
+                dfu_output_scratch = dfu_output_scratch[1:] # Remove each line as it's checked
                 if line_mode.count('x'):
                     # Extract values from output
                     extracted_vals = re.split(expected_line, dfu_line)

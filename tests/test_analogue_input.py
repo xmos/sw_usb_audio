@@ -118,6 +118,7 @@ def do_analogue_input_test(board, os, app_name, app_config, freq, duration,
                                          tester = ctester[2],
                                          enable_xscope = True,
                                          timeout = duration + 10, # Ensure signal generator runs for longer than audio analyzer
+                                         initial_delay = 1, # Avoid accessing both xTAGs together
                                          start_after_completed = [dut_job],
                                          xscope_host_cmd = ['../../sw_audio_analyzer/host_xscope_controller/bin/xscope_controller',
                                          analysis2_debugger_addr,

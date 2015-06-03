@@ -149,6 +149,7 @@ def do_analogue_output_test(board, os, app_name, app_config, freq, duration,
                                           tester = ctester[3],
                                           enable_xscope = True,
                                           timeout = duration,
+                                          initial_delay = 1, # Avoid accessing both xTAGs together
                                           start_after_completed = [dut_job],
                                           start_after_started = [sig_gen_job],
                                           xscope_host_cmd = ['../../sw_audio_analyzer/host_xscope_controller/bin/xscope_controller',
