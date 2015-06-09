@@ -198,6 +198,7 @@
     </dependency>
     <description>USB Audio Applications</description>
     <docdir>doc</docdir>
+    <exclude_dir>tests</exclude_dir>
     <include_binaries>True</include_binaries>
     <location>git://git/apps/sw_usb_audio</location>
     <name>sw_usb_audio</name>
