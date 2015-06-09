@@ -91,13 +91,20 @@ expected_win32 = [
 
 class DFUTester(xmostest.Tester):
 
-    def __init__(self):
+    def __init__(self, app_name, app_config, os):
         super(DFUTester, self).__init__()
+        self.product = "sw_usb_audio"
+        self.group = "non_audio_hw_tests"
+        self.test = "dfu_test"
+        self.config = {'app_name':app_name,
+                       'app_config':app_config,
+                       'os':os}
+        self.register_test(self.product, self.group, self.test, self.config)
 
     def run(self, dut_programming_output, upgrade_build_output, dfu_output,
             local_cleanup_output,
             # remote_cleanup_output,
-            os, app_name, pid, app_config):
+            pid):
         result = True
 
         # Check for any errors
@@ -114,9 +121,9 @@ class DFUTester(xmostest.Tester):
                 result = False
 
         # Check DFU output is as expected
-        if os.startswith('os_x'):
+        if self.config['os'].startswith('os_x'):
             expected_result = expected_osx
-        elif os.startswith('win_'):
+        elif self.config['os'].startswith('win_'):
             expected_result = expected_win32
 
         starting_version = ''
@@ -158,26 +165,28 @@ class DFUTester(xmostest.Tester):
                        % expected_line)
                 result = False
 
-        xmostest.set_test_result("sw_usb_audio",
-                                 "non_audio_hw_tests",
-                                 "dfu_test",
-                                 config={'app_name':app_name,
-                                        'os':os,
-                                        'app_config':app_config},
-                                 result=result,
+        xmostest.set_test_result(self.product,
+                                 self.group,
+                                 self.test,
+                                 self.config,
+                                 result,
                                  env={},
                                  output={'dfu_output':''.join(dfu_output)})
+        # TODO: add failure reason to test_result output{}
 
-def do_dfu_test(board, os, app_name, pid, app_config):
+def do_dfu_test(testlevel, board, app_name, pid, app_config, os):
+
+    ctester = xmostest.CombinedTester(4, DFUTester(app_name, app_config, os),
+                                      pid)
+    ctester.set_min_testlevel(testlevel)
+
     print ("Starting DFU test on %s:%s under %s" % (app_name, app_config, os))
-    resources = xmostest.request_resource("uac2_%s_testrig_%s" % (board, os))
+    resources = xmostest.request_resource("uac2_%s_testrig_%s" % (board, os),
+                                          ctester)
 
     dut_app_path = "../%s" % app_name
     dut_binary = ('%s/bin/%s/%s_%s.xe' %
                   (dut_app_path, app_config, app_name, app_config))
-
-    ctester = xmostest.CombinedTester(4, DFUTester(), os, app_name, pid,
-                                      app_config)
 
     print "Scheduling DUT flashing job"
     dut_job = xmostest.flash_xcore(resources['dut'], dut_binary,
@@ -193,12 +202,14 @@ def do_dfu_test(board, os, app_name, pid, app_config):
     cmd_string = " ".join([x for x in xflash_cmds])
     
     # Scheduled as a job to delay building upgrades until dut_job has completed
-    ctester[1].start_run()
-    upgrade_job = schedule_job(cmd = ['bash', '-c', "%s" % cmd_string],
-                               tester = ctester[1],
-                               timeout = 600,
-                               timeout_msg = "Building upgrade images timed out",
-                               start_after_completed = [dut_job])
+    upgrade_job = []
+    if xmostest.testrun_is_required(ctester[1]):
+        ctester[1].start_run()
+        upgrade_job = schedule_job(cmd = ['bash', '-c', "%s" % cmd_string],
+                                   tester = ctester[1],
+                                   timeout = 600,
+                                   timeout_msg = "Building upgrade images timed out",
+                                   start_after_completed = [dut_job])
 
     print "Scheduling PC DFU job"
     if os.startswith('os_x'):
@@ -218,54 +229,46 @@ def do_dfu_test(board, os, app_name, pid, app_config):
                     'rm upgrade1.bin upgrade2.bin;',
                     'xmake CONFIG=%s' % app_config]
     cmd_string = " ".join([x for x in cleanup_cmds])
-    ctester[3].start_run()
-    cleanup_job = schedule_job(cmd = ['bash', '-c', "%s" % cmd_string],
-                               tester = ctester[3],
-                               timeout = 600,
-                               timeout_msg = "Removing upgrade images timed out",
-                               start_after_completed = [dfu_job])
+    
+    if xmostest.testrun_is_required(ctester[3]):
+        ctester[3].start_run()
+        cleanup_job = schedule_job(cmd = ['bash', '-c', "%s" % cmd_string],
+                                   tester = ctester[3],
+                                   timeout = 600,
+                                   timeout_msg = "Removing upgrade images timed out",
+                                   start_after_completed = [dfu_job])
 
-    remote_cleanup_job = xmostest.run_on_pc(resources['host'],
-                                            ["rm", "upload.bin"],
-                                            # tester = ctester[4], # FIXME: locks up when output passed to tester
-                                            timeout = 600,
-                                            start_after_completed = [dfu_job])
+        remote_cleanup_job = xmostest.run_on_pc(resources['host'],
+                                                ["rm", "upload.bin"],
+                                                # tester = ctester[4], # FIXME: locks up when output passed to tester
+                                                timeout = 600,
+                                                start_after_completed = [dfu_job])
 
 def runtest():
-    # key = friendly board name : values = 'app name', 'pid', [(app config, test level)...]...
-    APP_NAME_OFFSET = 0
-    PID_OFFSET = 1
-    CONFIG_LIST_OFFSET = 2
-    CONFIG_NAME_OFFSET = 0
-    CONFIG_TEST_LEVEL_OFFSET = 1
-    tests = {
-             'l2' : ('app_usb_aud_l2', '0x0004', [('2io_adatin', 'nightly'),
-                                                  ('2io_adatout', 'nightly'),
-                                                  ('2io_spdifout_adatout', 'nightly'),
-                                                  ('2io_spdifout_spdifin', 'nightly'),
-                                                  ('2io_spdifout_spdifin_mix8', 'nightly'),
-                                                  ('2io_tdm8', 'nightly'),
-                                                  ('2iomx', 'smoke'),
-                                                  ('2ioxs', 'smoke'),
-                                                  ('2ioxx', 'smoke'),
-                                                  ('2xoxs', 'smoke')])
-            }
+    test_configs = [
+        {'board':'l2','app':'app_usb_aud_l2','pid':'0x0004','app_configs':[
+            {'config':'2io_adatin','testlevel':'nightly'},
+            {'config':'2io_adatout','testlevel':'nightly'},
+            {'config':'2io_spdifout_adatout','testlevel':'nightly'},
+            {'config':'2io_spdifout_spdifin','testlevel':'nightly'},
+            {'config':'2io_spdifout_spdifin_mix8','testlevel':'nightly'},
+            {'config':'2io_tdm8','testlevel':'nightly'},
+            {'config':'2iomx','testlevel':'smoke'},
+            {'config':'2ioxs','testlevel':'smoke'},
+            {'config':'2ioxx','testlevel':'smoke'},
+            {'config':'2xoxs','testlevel':'smoke'}
+            ]
+        }
+    ]
 
-    if xmostest.get_testlevel() != 'smoke':
-        audio_boards = ['l2']
-        host_oss = ['os_x', 'win_vista', 'win_7', 'win_8']
-    else:
-        # Smoke test only
-        audio_boards = ['l2']
-        host_oss = ['os_x']
+    host_oss = ['os_x', 'win_vista', 'win_7', 'win_8']
 
-    for board in audio_boards:
-        app = tests[board][APP_NAME_OFFSET]
-        pid = tests[board][PID_OFFSET]
+    for test in test_configs:
+        board = test['board']
+        app = test['app']
+        pid = test['pid']
         for os in host_oss:
-            for config in tests[board][CONFIG_LIST_OFFSET]:
-                required_testlevel = config[CONFIG_TEST_LEVEL_OFFSET]
-                if xmostest.testlevel_is_at_least(xmostest.get_testlevel(),
-                                                  required_testlevel):
-                    config_name = config[CONFIG_NAME_OFFSET]
-                    do_dfu_test(board, os, app, pid, config_name)
+            for config in test['app_configs']:
+                config_name = config['config']
+                testlevel = config['testlevel']
+                do_dfu_test(testlevel, board, app, pid, config_name, os)
