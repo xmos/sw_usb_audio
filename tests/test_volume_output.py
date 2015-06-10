@@ -7,28 +7,29 @@ class VolumeChangeChecker(object):
     def __init__(self):
         self.initial_change = 0
 
-    def initial_decrease(self, output):
+    def initial_decrease(self, failure_reporter, output):
         m = re.match('.*Volume change by -([\d]*)', output)
-        self.initial_change = int(m.groups(0)[0])
-        return True
+        try:
+            self.initial_change = int(m.groups(0)[0])
+        except AttributeError, ValueError:
+            failure_reporter("Cannot interpret initial volume decrease")
 
-    def check_change(self, output, expected_ratio):
+    def check_change(self, failure_reporter, output, expected_ratio):
         if  expected_ratio > 0:
             r = '.*Volume change by ([\d]*)'
         else:
             r = '.*Volume change by -([\d]*)'
             expected_ratio = -expected_ratio
         m = re.match(r, output)
-        if not m:
-            print "Failure reason: Cannot interpret volume change"
-            return False
-        v = int(m.groups(0)[0])
+        try:
+            v = int(m.groups(0)[0])
+        except AttributeError, ValueError:
+            failure_reporter("Cannot interpret volume change")
+            return
         ratio = float(v)/float(self.initial_change)
         # Test within 15% tolerance
         if (ratio < expected_ratio - 0.15 or ratio > expected_ratio + 0.15):
-            print "Failure reason: Volume change not as expected"
-            return False
-        return True
+            failure_reporter("Volume change not as expected")
 
 class VolumeOutputTester(xmostest.Tester):
 
@@ -44,52 +45,47 @@ class VolumeOutputTester(xmostest.Tester):
                            'os':os}
             self.register_test(self.product, self.group, self.test, self.config)
 
+    def record_failure(self, failure_reason):
+        self.failures.append(failure_reason)
+        print "Failure reason: %s" % failure_reason
+        self.result = False
+
     def check_channel(self, analyzer_output, chan):
         EXPECTED_NUM_CHANGES = 6
         EXPECTED_INITIAL_VOL = 84
-        result = True
         chan_output = []
 
         for line in analyzer_output:
             if line.startswith('Channel %d:' % chan):
                 chan_output.append(line)
         if len(chan_output) != EXPECTED_NUM_CHANGES:
-            print ("Failure reason: Unexpected number of lines of output seen for channel %d"
-                   % chan)
-            result = False
+            self.record_failure("Unexpected number of lines of output seen for channel %d"
+                                % chan)
         else:
             volume_checker = VolumeChangeChecker()
             if not chan_output[0].startswith('Channel %d: Set mode to volume check' % chan):
-                print ("Failure reason: Channel %d not set to volume check mode" % chan)
-                result = False
+                self.record_failure("Channel %d not set to volume check mode" % chan)
             if not chan_output[1].startswith('Channel %d: Volume change by %d'
                                              % (chan, EXPECTED_INITIAL_VOL)):
-                print ("Failure reason: Initial volume level of channel %d was not %ddb"
-                       % (chan, EXPECTED_INITIAL_VOL))
-                print chan_output[1]
-                result = False
-            if not volume_checker.initial_decrease(chan_output[2]):
-                result = False
-            if not volume_checker.check_change(chan_output[3], 1.0):
-                result = False
-            if not volume_checker.check_change(chan_output[4], -0.5):
-                result = False
-            if not volume_checker.check_change(chan_output[5], 0.5):
-                result = False
-        return result
+                self.record_failure("Initial volume level of channel %d was not %ddb"
+                                    % (chan, EXPECTED_INITIAL_VOL))
+            volume_checker.initial_decrease(self.record_failure, chan_output[2])
+            volume_checker.check_change(self.record_failure, chan_output[3], 1.0)
+            volume_checker.check_change(self.record_failure, chan_output[4], -0.5)
+            volume_checker.check_change(self.record_failure, chan_output[5], 0.5)
 
     def run(self, dut_programming_output, sig_gen_output, analyzer1_output,
             analyzer1_host_xscope_output, analyzer2_output,
             analyzer2_host_xscope_output, vol_ctrl_output):
-        result = True
+        self.result = True
+        self.failures = []
 
         # Check for any errors
         for line in (dut_programming_output + sig_gen_output +
                      analyzer1_output + analyzer1_host_xscope_output +
                      analyzer2_output + analyzer2_host_xscope_output):
             if re.match('.*ERROR|.*error|.*Error|.*Problem', line):
-                print "Failure reason: Error message seen"
-                result = False
+                self.record_failure(line)
 
         if xmostest.testlevel_is_at_least(xmostest.get_testlevel(), 'nightly'):
             # Check DUT was flashed correctly
@@ -98,31 +94,29 @@ class VolumeOutputTester(xmostest.Tester):
                 if re.match('.*Site 0 has finished.*', line):
                     found = True
             if not found:
-                print "Failure reason: Expected xFLASH success message not seen"
-                result = False
+                self.record_failure("Expected xFLASH success message not seen")
 
         # Check that the signals were never lost
         for line in (analyzer1_output + analyzer1_host_xscope_output +
                      analyzer2_output + analyzer2_host_xscope_output):
             if re.match('Channel [0-9]*: Lost signal', line):
-                print "Failure reason: Signal lost detected"
-                result = False
+                self.record_failure(line)
 
         # Check each channel transitions through the expected changes of volume
         if self.config['channel'] is 'master':
             for chan in range(self.config['num_chans']):
-                if not self.check_channel((analyzer1_output +
-                                          analyzer1_host_xscope_output +
-                                          analyzer2_output +
-                                          analyzer2_host_xscope_output), chan):
-                    result = False
+                self.check_channel((analyzer1_output +
+                                    analyzer1_host_xscope_output +
+                                    analyzer2_output +
+                                    analyzer2_host_xscope_output),
+                                   chan)
         else:
             # Check channel transitions through the expected changes of volume
-            if not self.check_channel((analyzer1_output +
-                                      analyzer1_host_xscope_output +
-                                      analyzer2_output +
-                                      analyzer2_host_xscope_output), self.config['channel']):
-                result = False
+            self.check_channel((analyzer1_output +
+                                analyzer1_host_xscope_output +
+                                analyzer2_output +
+                                analyzer2_host_xscope_output),
+                               self.config['channel'])
             # Check all other channels have expected frequency
             for i in range(self.config['num_chans']):
                 if i == self.config['channel']:
@@ -135,22 +129,23 @@ class VolumeOutputTester(xmostest.Tester):
                     if line.startswith(expected_line):
                         found = True
                 if not found:
-                    print ("Failure reason: Expected frequency of %d not seen on channel %d"
-                           % (expected_freq, i))
-                    result = False
+                    self.record_failure("Expected frequency of %d not seen on channel %d"
+                                        % (expected_freq, i))
 
+        output = {'sig_gen_output':''.join(sig_gen_output),
+                  'analyzer1_output':''.join(analyzer1_output),
+                  'analyzer1_host_xscope_output':''.join(analyzer1_host_xscope_output),
+                  'analyzer2_output':''.join(analyzer2_output),
+                  'analyzer2_host_xscope_output':''.join(analyzer2_host_xscope_output)}
+        if not self.result:
+            output['failures'] = ''.join(self.failures)
         xmostest.set_test_result(self.product,
                                  self.group,
                                  self.test,
                                  self.config,
-                                 result,
+                                 self.result,
                                  env={},
-                                 output={'sig_gen_output':''.join(sig_gen_output),
-                                         'analyzer1_output':''.join(analyzer1_output),
-                                         'analyzer1_host_xscope_output':''.join(analyzer1_host_xscope_output),
-                                         'analyzer2_output':''.join(analyzer2_output),
-                                         'analyzer2_host_xscope_output':''.join(analyzer2_host_xscope_output)})
-        # TODO: add failure reason to test_result output{}
+                                 output=output)
 
 def do_volume_output_test(testlevel, board, app_name, app_config, num_chans,
                           sample_rate, channel, os):

@@ -20,14 +20,19 @@ class SPDIFInputTester(xmostest.Tester):
                        'use_wdm':use_wdm}
         self.register_test(self.product, self.group, self.test, self.config)
 
+    def record_failure(self, failure_reason):
+        self.failures.append(failure_reason)
+        print "Failure reason: %s" % failure_reason
+        self.result = False
+
     def run(self, dut_programming_output, sig_gen_output, analyzer_output):
-        result = True
+        self.result = True
+        self.failures = []
 
         # Check for any errors
         for line in (dut_programming_output + sig_gen_output + analyzer_output):
             if re.match('.*ERROR|.*error|.*Error|.*Problem', line):
-                print "Failure reason: Error message seen"
-                result = False
+                self.record_failure(line)
 
         if xmostest.testlevel_is_at_least(xmostest.get_testlevel(), 'nightly'):
             # Check DUT was flashed correctly
@@ -36,8 +41,7 @@ class SPDIFInputTester(xmostest.Tester):
                 if re.match('.*Site 0 has finished.*', line):
                     found = True
             if not found:
-                print "Failure reason: Expected xFLASH success message not seen"
-                result = False
+                self.record_failure("Expected xFLASH success message not seen")
 
         # Check that the signals detected follow the correct ramps
         expected_chan_step_sizes = [7, -5]
@@ -49,25 +53,25 @@ class SPDIFInputTester(xmostest.Tester):
                 if line.startswith(expected_line):
                     found = True
             if not found:
-                print ("Failure reason: Expected step of %d not seen on channel %d"
-                       % (expected_step, self.config['spdif_base_chan']+i))
-                result = False
+                self.record_failure("Expected step of %d not seen on channel %d"
+                                    % (expected_step, self.config['spdif_base_chan']+i))
 
         # Check that there are no discontinuities detected in the signals
         for line in analyzer_output:
             if re.match('.*discontinuity', line):
-                print "Failure reason: Discontinuity in ramp detected"
-                result = False
+                self.record_failure("Discontinuity in ramp detected")
 
+        output = {'sig_gen_output':''.join(sig_gen_output),
+                  'analyzer_output':''.join(analyzer_output)}
+        if not self.result:
+            output['failures'] = ''.join(self.failures)
         xmostest.set_test_result(self.product,
                                  self.group,
                                  self.test,
                                  self.config,
-                                 result,
+                                 self.result,
                                  env={},
-                                 output={'sig_gen_output':''.join(sig_gen_output),
-                                         'analyzer_output':''.join(analyzer_output)})
-        # TODO: add failure reason to test_result output{}
+                                 output=output)
 
 def do_spdif_input_test(testlevel, board, app_name, app_config, spdif_base_chan,
                         sample_rate, duration, os, use_wdm=False):

@@ -101,24 +101,36 @@ class DFUTester(xmostest.Tester):
                        'os':os}
         self.register_test(self.product, self.group, self.test, self.config)
 
+    def record_failure(self, failure_reason):
+        self.failures.append(failure_reason)
+        print "Failure reason: %s" % failure_reason
+        self.result = False
+
     def run(self, dut_programming_output, upgrade_build_output, dfu_output,
             local_cleanup_output,
             # remote_cleanup_output,
             pid):
-        result = True
+        self.result = True
+        self.failures = []
 
         # Check for any errors
         for line in (dut_programming_output + upgrade_build_output + dfu_output +
                      local_cleanup_output): # TODO: Add + remote_cleanup_output
             if re.match('.*ERROR|.*error|.*Error|.*Problem', line):
-                print "Failure reason: Error message seen"
-                result = False
+                self.record_failure(line)
+
+        # Check DUT was flashed correctly
+        found = False
+        for line in dut_programming_output:
+            if re.match('.*Site 0 has finished.*', line):
+                found = True
+        if not found:
+            self.record_failure("Expected xFLASH success message not seen")
 
         # Check cleanup worked
         for line in (local_cleanup_output): # TODO: Add + remote_cleanup_output
             if re.match('.*No such file|.*Stop', line):
-                print "Failure reason: Post test cleanup did not succeed"
-                result = False
+                self.record_failure("Post test cleanup did not succeed\n%s" % line)
 
         # Check DFU output is as expected
         if self.config['os'].startswith('os_x'):
@@ -161,18 +173,19 @@ class DFUTester(xmostest.Tester):
                         found = True
                         break
             if not found:
-                print ("Failure reason: Match for expected line not found, or not found in expected sequence...\n    Expected line: \"%s\""
-                       % expected_line)
-                result = False
+                self.record_failure("Match for expected line not found, or not found in expected sequence...\n    Expected line: \"%s\""
+                                    % expected_line)
 
+        output = {'dfu_output':''.join(dfu_output)}
+        if not self.result:
+            output['failures'] = ''.join(self.failures)
         xmostest.set_test_result(self.product,
                                  self.group,
                                  self.test,
                                  self.config,
-                                 result,
+                                 self.result,
                                  env={},
-                                 output={'dfu_output':''.join(dfu_output)})
-        # TODO: add failure reason to test_result output{}
+                                 output=output)
 
 def do_dfu_test(testlevel, board, app_name, pid, app_config, os):
 

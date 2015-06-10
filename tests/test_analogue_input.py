@@ -20,16 +20,21 @@ class AnalogueInputTester(xmostest.Tester):
                            'use_wdm':use_wdm}
             self.register_test(self.product, self.group, self.test, self.config)
 
+    def record_failure(self, failure_reason):
+        self.failures.append(failure_reason)
+        print "Failure reason: %s" % failure_reason
+        self.result = False
+
     def run(self, dut_programming_output, sig_gen1_output,
             sig_gen2_output, sig_gen2_host_xscope_output, analyzer_output):
-        result = True
+        self.result = True
+        self.failures = []
 
         # Check for any errors
         for line in (dut_programming_output + sig_gen1_output + sig_gen2_output +
                      sig_gen2_host_xscope_output + analyzer_output):
             if re.match('.*ERROR|.*error|.*Error|.*Problem', line):
-                print "Failure reason: Error message seen"
-                result = False
+                self.record_failure(line)
 
         if xmostest.testlevel_is_at_least(xmostest.get_testlevel(), 'nightly'):
             # Check DUT was flashed correctly
@@ -38,8 +43,7 @@ class AnalogueInputTester(xmostest.Tester):
                 if re.match('.*Site 0 has finished.*', line):
                     found = True
             if not found:
-                print "Failure reason: Expected xFLASH success message not seen"
-                result = False
+                self.record_failure("Expected xFLASH success message not seen")
 
         # Check that the signals detected are of the correct frequencies
         for i in range(self.config['num_chans']):
@@ -50,40 +54,38 @@ class AnalogueInputTester(xmostest.Tester):
                 if line.startswith(expected_line):
                     found = True
             if not found:
-                print ("Failure reason: Expected frequency of %d not seen on channel %d"
-                       % (expected_freq, i))
-                result = False
+                self.record_failure("Expected frequency of %d not seen on channel %d"
+                                    % (expected_freq, i))
 
         for line in analyzer_output:
             # Check that the signals were never lost
             if re.match('Channel [0-9]*: Lost signal', line):
-                print "Failure reason: Signal lost detected"
-                result = False
+                self.record_failure(line)
             # Check that unexpected signals are not detected
             if re.match('Channel [0-9]*: Signal detected .*', line):
                 chan_num = int(re.findall('\d', line)[0])
                 if chan_num not in range(0, self.config['num_chans']):
-                    print ("Failure reason: Unexpected signal detected on channel %d"
-                           % chan_num)
-                    result = False
+                    self.record_failure("Unexpected signal detected on channel %d"
+                                        % chan_num)
             if re.match('Channel [0-9]*: Frequency [0-9]* .*', line):
                 chan_num = int(re.findall('\d', line)[0])
                 if chan_num not in range(0, self.config['num_chans']):
-                    print ("Failure reason: Unexpected frequency reported on channel %d"
-                           % chan_num)
-                    result = False
+                    self.record_failure("Unexpected frequency reported on channel %d"
+                                        % chan_num)
 
+        output = {'sig_gen1_output':''.join(sig_gen1_output),
+                  'sig_gen2_output':''.join(sig_gen2_output),
+                  'sig_gen2_host_xscope_output':''.join(sig_gen2_host_xscope_output),
+                  'analyzer_output':''.join(analyzer_output)}
+        if not self.result:
+            output['failures'] = ''.join(self.failures)
         xmostest.set_test_result(self.product,
                                  self.group,
                                  self.test,
                                  self.config,
-                                 result,
+                                 self.result,
                                  env={},
-                                 output={'sig_gen1_output':''.join(sig_gen1_output),
-                                         'sig_gen2_output':''.join(sig_gen2_output),
-                                         'sig_gen2_host_xscope_output':''.join(sig_gen2_host_xscope_output),
-                                         'analyzer_output':''.join(analyzer_output)})
-        # TODO: add failure reason to test_result output{}
+                                 output=output)
 
 def do_analogue_input_test(testlevel, board, app_name, app_config, num_chans,
                            sample_rate, duration, os, use_wdm=False):
