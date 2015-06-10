@@ -118,7 +118,4 @@
 #define HID_CONTROLS       1
 #endif
 
-/* Specify FLASH type on U16 sliceKIT */
-#define DFU_FLASH_DEVICE FL_DEVICE_NUMONYX_M25P16
-
 #endif
