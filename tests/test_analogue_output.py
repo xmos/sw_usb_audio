@@ -97,9 +97,6 @@ def do_analogue_output_test(testlevel, board, app_name, app_config, num_chans,
                                             duration, os, use_wdm))
     ctester.set_min_testlevel(testlevel)
 
-    print ("Starting analogue output test at %d on %s:%s under %s" %
-           (sample_rate, app_name, app_config, os))
-
     resources = xmostest.request_resource("uac2_%s_testrig_%s" % (board, os),
                                           ctester)
 
@@ -109,16 +106,13 @@ def do_analogue_output_test(testlevel, board, app_name, app_config, num_chans,
     analyser_binary = '../../sw_audio_analyzer/app_audio_analyzer_mc/bin/app_audio_analyzer_mc.xe'
 
     if xmostest.testlevel_is_at_least(testlevel, 'nightly'):
-        print "Scheduling DUT flashing job"
         dut_job = xmostest.flash_xcore(resources['dut'], dut_binary,
                                          tester = ctester[0])
     else:
-        print "Scheduling DUT xrun job"
         dut_job = xmostest.run_on_xcore(resources['dut'], dut_binary,
                                         tester = ctester[0],
                                         disable_debug_io = True)
 
-    print "Scheduling PC signal generator job"
     run_xsig_path = "../../../../xsig/xsig/bin/"
     xsig_configs_path = "../../../../usb_audio_testing/xsig_configs/"
     if os.startswith('os_x'):
@@ -145,7 +139,6 @@ def do_analogue_output_test(testlevel, board, app_name, app_config, num_chans,
                                      initial_delay = 5,
                                      start_after_completed = [dut_job])
 
-    print "Scheduling xCORE analyzer jobs"
     analysis1_job = xmostest.run_on_xcore(resources['analysis_device_1'],
                                           analyser_binary,
                                           tester = ctester[2],

@@ -193,7 +193,6 @@ def do_dfu_test(testlevel, board, app_name, pid, app_config, os):
                                       pid)
     ctester.set_min_testlevel(testlevel)
 
-    print ("Starting DFU test on %s:%s under %s" % (app_name, app_config, os))
     resources = xmostest.request_resource("uac2_%s_testrig_%s" % (board, os),
                                           ctester)
 
@@ -201,7 +200,6 @@ def do_dfu_test(testlevel, board, app_name, pid, app_config, os):
     dut_binary = ('%s/bin/%s/%s_%s.xe' %
                   (dut_app_path, app_config, app_name, app_config))
 
-    print "Scheduling DUT flashing job"
     dut_job = xmostest.flash_xcore(resources['dut'], dut_binary,
                                    tester = ctester[0])
 
@@ -224,7 +222,6 @@ def do_dfu_test(testlevel, board, app_name, pid, app_config, os):
                                    timeout_msg = "Building upgrade images timed out",
                                    start_after_completed = [dut_job])
 
-    print "Scheduling PC DFU job"
     if os.startswith('os_x'):
         host_dfu_path = "../../../../usb_audio_testing/dfu/OSX/testdfu.sh"
     elif os.startswith('win_'):

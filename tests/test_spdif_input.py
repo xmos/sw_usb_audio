@@ -81,8 +81,6 @@ def do_spdif_input_test(testlevel, board, app_name, app_config, spdif_base_chan,
                                             duration, os, use_wdm))
     ctester.set_min_testlevel(testlevel)
 
-    print ("Starting S/PDIF input test at %d on %s:%s under %s" %
-           (sample_rate, app_name, app_config, os))
     resources = xmostest.request_resource("uac2_%s_testrig_%s" % (board, os),
                                           ctester)
 
@@ -92,16 +90,13 @@ def do_spdif_input_test(testlevel, board, app_name, app_config, spdif_base_chan,
     analyser_binary = '../../sw_audio_analyzer/app_audio_analyzer_mc/bin/spdif_in/app_audio_analyzer_mc_spdif_in.xe'
 
     if xmostest.testlevel_is_at_least(testlevel, 'nightly'):
-        print "Scheduling DUT flashing job"
         dut_job = xmostest.flash_xcore(resources['dut'], dut_binary,
                                          tester = ctester[0])
     else:
-        print "Scheduling DUT xrun job"
         dut_job = xmostest.run_on_xcore(resources['dut'], dut_binary,
                                         tester = ctester[0],
                                         disable_debug_io = True)
 
-    print "Scheduling xCORE signal generator job"
     sig_gen_job = xmostest.run_on_xcore(resources['analysis_device_1'],
                                          analyser_binary,
                                          tester = ctester[1],
@@ -109,7 +104,6 @@ def do_spdif_input_test(testlevel, board, app_name, app_config, spdif_base_chan,
                                          timeout = duration + 10, # Ensure signal generator runs for longer than audio analyzer
                                          start_after_completed = [dut_job])
 
-    print "Scheduling PC analyzer job"
     run_xsig_path = "../../../../xsig/xsig/bin/"
     xsig_configs_path = "../../../../usb_audio_testing/xsig_configs/"
     if os.startswith('os_x'):

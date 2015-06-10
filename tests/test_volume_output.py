@@ -156,13 +156,6 @@ def do_volume_output_test(testlevel, board, app_name, app_config, num_chans,
 
     duration = 20
 
-    if channel is 'master':
-        print ("Starting master volume output test on %s:%s under %s" %
-               (app_name, app_config, os))
-    else:
-        print ("Starting volume output test of channel %d on %s:%s under %s" %
-           (channel, app_name, app_config, os))
-
     resources = xmostest.request_resource("uac2_%s_testrig_%s" % (board, os),
                                           ctester)
 
@@ -172,16 +165,13 @@ def do_volume_output_test(testlevel, board, app_name, app_config, num_chans,
     analyser_binary = '../../sw_audio_analyzer/app_audio_analyzer_mc/bin/app_audio_analyzer_mc.xe'
 
     if xmostest.testlevel_is_at_least(testlevel, 'nightly'):
-        print "Scheduling DUT flashing job"
         dut_job = xmostest.flash_xcore(resources['dut'], dut_binary,
                                        tester = ctester[0])
     else:
-        print "Scheduling DUT xrun job"
         dut_job = xmostest.run_on_xcore(resources['dut'], dut_binary,
                                         tester = ctester[0],
                                         disable_debug_io = True)
 
-    print "Scheduling PC signal generator job"
     run_xsig_path = "../../../../xsig/xsig/bin/"
     xsig_configs_path = "../../../../usb_audio_testing/xsig_configs/"
     if os.startswith('os_x'):
@@ -203,7 +193,6 @@ def do_volume_output_test(testlevel, board, app_name, app_config, num_chans,
                                      initial_delay = 5,
                                      start_after_completed = [dut_job])
 
-    print "Scheduling xCORE analyzer jobs"
     (analysis1_debugger_addr, analysis1_debugger_port) = resources['analysis_device_1'].get_xscope_port().split(':')
     analysis1_xscope_host_cmd = ['../../sw_audio_analyzer/host_xscope_controller/bin/xscope_controller',
                                  analysis1_debugger_addr,
@@ -249,7 +238,6 @@ def do_volume_output_test(testlevel, board, app_name, app_config, num_chans,
                                           xscope_host_timeout = duration + 60, # Host app should stop itself gracefully
                                           xscope_host_initial_delay = 5)
 
-    print "Scheduling PC volume control job"
     if os.startswith('os_x'):
         host_vol_ctrl_path = "../../../../usb_audio_testing/volcontrol/OSX/testvol_out.sh"
     elif os.startswith('win_'):
