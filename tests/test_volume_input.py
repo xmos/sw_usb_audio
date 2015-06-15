@@ -6,7 +6,7 @@ import ntpath
 class VolumeChangeChecker(object):
     def __init__(self):
         self.initial_change = 0
-        
+
     def initial_decrease(self, failure_reporter, output):
         m = re.match('.*Volume change by -([\d]*)', output)
         try:
@@ -54,7 +54,7 @@ class VolumeInputTester(xmostest.Tester):
         EXPECTED_NUM_CHANGES = 5
         EXPECTED_INITIAL_VOL = 63
         chan_output = []
-        
+
         for line in analyzer_output:
             if line.startswith('Channel %d:' % chan):
                 chan_output.append(line)
@@ -238,31 +238,31 @@ def runtest():
         {'board':'l2','app':'app_usb_aud_l2','app_configs':[
             {'config':'1ioxx','chan_count':2,
                 'max_sample_rate':48000,'testlevel':'nightly'},
-            
+
             {'config':'2io_adatin','chan_count':6,
                 'max_sample_rate':96000,'testlevel':'nightly'},
-            
+
             {'config':'2io_adatout','chan_count':6,
                 'max_sample_rate':96000,'testlevel':'nightly'},
-            
+
             {'config':'2io_spdifout_adatout','chan_count':6,
                 'max_sample_rate':96000,'testlevel':'nightly'},
-            
+
             {'config':'2io_spdifout_spdifin','chan_count':6,
                 'max_sample_rate':192000,'testlevel':'nightly'},
-            
+
             {'config':'2io_spdifout_spdifin_mix8','chan_count':6,
                 'max_sample_rate':192000,'testlevel':'nightly'},
-            
+
             {'config':'2io_tdm8','chan_count':6,
                 'max_sample_rate':96000,'testlevel':'nightly'},
-            
+
             {'config':'2iomx','chan_count':6,
                 'max_sample_rate':192000,'testlevel':'smoke'},
-            
+
             {'config':'2ioxs','chan_count':6,
                 'max_sample_rate':192000,'testlevel':'smoke'},
-            
+
             {'config':'2ioxx','chan_count':6,
                 'max_sample_rate':192000,'testlevel':'smoke'}
             ]

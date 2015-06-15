@@ -211,7 +211,7 @@ def do_dfu_test(testlevel, board, app_name, pid, app_config, os):
                    'xmake CONFIG=%s TEST_DFU_2=1;' % app_config,
                    'xflash --factory-version 13.2 --upgrade 2 bin/%s/%s_%s.xe 0x10000 -o upgrade2.bin --verbose' % (app_config, app_name, app_config)]
     cmd_string = " ".join([x for x in xflash_cmds])
-    
+
     # Scheduled as a job to delay building upgrades until dut_job has completed
     upgrade_job = []
     if xmostest.testrun_is_required(ctester[1]):
@@ -239,7 +239,7 @@ def do_dfu_test(testlevel, board, app_name, pid, app_config, os):
                     'rm upgrade1.bin upgrade2.bin;',
                     'xmake CONFIG=%s' % app_config]
     cmd_string = " ".join([x for x in cleanup_cmds])
-    
+
     if xmostest.testrun_is_required(ctester[3]):
         ctester[3].start_run()
         cleanup_job = schedule_job(cmd = ['bash', '-c', "%s" % cmd_string],
