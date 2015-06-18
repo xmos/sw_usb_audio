@@ -7,117 +7,119 @@ class VolumeChangeChecker(object):
     def __init__(self):
         self.initial_change = 0
 
-    def initial_decrease(self, output):
+    def initial_decrease(self, failure_reporter, output):
         m = re.match('.*Volume change by -([\d]*)', output)
-        self.initial_change = int(m.groups(0)[0])
-        return True
+        try:
+            self.initial_change = int(m.groups(0)[0])
+        except AttributeError, ValueError:
+            failure_reporter("Cannot interpret initial volume decrease")
 
-    def check_change(self, output, expected_ratio):
+    def check_change(self, failure_reporter, output, expected_ratio):
         if  expected_ratio > 0:
             r = '.*Volume change by ([\d]*)'
         else:
             r = '.*Volume change by -([\d]*)'
             expected_ratio = -expected_ratio
         m = re.match(r, output)
-        if not m:
-            print "Failure reason: Cannot interpret volume change"
-            return False
-        v = int(m.groups(0)[0])
+        try:
+            v = int(m.groups(0)[0])
+        except AttributeError, ValueError:
+            failure_reporter("Cannot interpret volume change")
+            return
         ratio = float(v)/float(self.initial_change)
         # Test within 15% tolerance
         if (ratio < expected_ratio - 0.15 or ratio > expected_ratio + 0.15):
-            print "Failure reason: Volume change not as expected"
-            return False
-        return True
+            failure_reporter("Volume change not as expected")
 
 class VolumeOutputTester(xmostest.Tester):
 
-    def __init__(self):
+    def __init__(self, app_name, app_config, num_chans, channel, os):
             super(VolumeOutputTester, self).__init__()
+            self.product = "sw_usb_audio"
+            self.group = "analogue_hw_tests"
+            self.test = "volume_output_test"
+            self.config = {'app_name':app_name,
+                           'app_config':app_config,
+                           'num_chans':num_chans,
+                           'channel':channel,
+                           'os':os}
+            self.register_test(self.product, self.group, self.test, self.config)
+
+    def record_failure(self, failure_reason):
+        self.failures.append(failure_reason)
+        print "Failure reason: %s" % failure_reason
+        self.result = False
 
     def check_channel(self, analyzer_output, chan):
         EXPECTED_NUM_CHANGES = 6
         EXPECTED_INITIAL_VOL = 84
-        result = True
         chan_output = []
 
         for line in analyzer_output:
             if line.startswith('Channel %d:' % chan):
                 chan_output.append(line)
         if len(chan_output) != EXPECTED_NUM_CHANGES:
-            print ("Failure reason: Unexpected number of lines of output seen for channel %d"
-                   % chan)
-            result = False
+            self.record_failure("Unexpected number of lines of output seen for channel %d"
+                                % chan)
         else:
             volume_checker = VolumeChangeChecker()
             if not chan_output[0].startswith('Channel %d: Set mode to volume check' % chan):
-                print ("Failure reason: Channel %d not set to volume check mode" % chan)
-                result = False
+                self.record_failure("Channel %d not set to volume check mode" % chan)
             if not chan_output[1].startswith('Channel %d: Volume change by %d'
                                              % (chan, EXPECTED_INITIAL_VOL)):
-                print ("Failure reason: Initial volume level of channel %d was not %ddb"
-                       % (chan, EXPECTED_INITIAL_VOL))
-                print chan_output[1]
-                result = False
-            if not volume_checker.initial_decrease(chan_output[2]):
-                result = False
-            if not volume_checker.check_change(chan_output[3], 1.0):
-                result = False
-            if not volume_checker.check_change(chan_output[4], -0.5):
-                result = False
-            if not volume_checker.check_change(chan_output[5], 0.5):
-                result = False
-        return result
+                self.record_failure("Initial volume level of channel %d was not %ddb"
+                                    % (chan, EXPECTED_INITIAL_VOL))
+            volume_checker.initial_decrease(self.record_failure, chan_output[2])
+            volume_checker.check_change(self.record_failure, chan_output[3], 1.0)
+            volume_checker.check_change(self.record_failure, chan_output[4], -0.5)
+            volume_checker.check_change(self.record_failure, chan_output[5], 0.5)
 
     def run(self, dut_programming_output, sig_gen_output, analyzer1_output,
             analyzer1_host_xscope_output, analyzer2_output,
-            analyzer2_host_xscope_output, vol_ctrl_output,
-            os, app_name, app_config, num_chans, channel):
-        result = True
+            analyzer2_host_xscope_output, vol_ctrl_output):
+        self.result = True
+        self.failures = []
 
         # Check for any errors
         for line in (dut_programming_output + sig_gen_output +
                      analyzer1_output + analyzer1_host_xscope_output +
                      analyzer2_output + analyzer2_host_xscope_output):
             if re.match('.*ERROR|.*error|.*Error|.*Problem', line):
-                print "Failure reason: Error message seen"
-                result = False
+                self.record_failure(line)
 
-        if xmostest.get_testlevel() != 'smoke':
+        if xmostest.testlevel_is_at_least(xmostest.get_testlevel(), 'nightly'):
             # Check DUT was flashed correctly
             found = False
             for line in dut_programming_output:
                 if re.match('.*Site 0 has finished.*', line):
                     found = True
             if not found:
-                print "Failure reason: Expected xFLASH success message not seen"
-                result = False
+                self.record_failure("Expected xFLASH success message not seen")
 
         # Check that the signals were never lost
         for line in (analyzer1_output + analyzer1_host_xscope_output +
                      analyzer2_output + analyzer2_host_xscope_output):
             if re.match('Channel [0-9]*: Lost signal', line):
-                print "Failure reason: Signal lost detected"
-                result = False
+                self.record_failure(line)
 
         # Check each channel transitions through the expected changes of volume
-        if channel is 'master':
-            for chan in range(num_chans):
-                if not self.check_channel((analyzer1_output +
-                                          analyzer1_host_xscope_output +
-                                          analyzer2_output +
-                                          analyzer2_host_xscope_output), chan):
-                    result = False
+        if self.config['channel'] is 'master':
+            for chan in range(self.config['num_chans']):
+                self.check_channel((analyzer1_output +
+                                    analyzer1_host_xscope_output +
+                                    analyzer2_output +
+                                    analyzer2_host_xscope_output),
+                                   chan)
         else:
             # Check channel transitions through the expected changes of volume
-            if not self.check_channel((analyzer1_output +
-                                      analyzer1_host_xscope_output +
-                                      analyzer2_output +
-                                      analyzer2_host_xscope_output), channel):
-                result = False
+            self.check_channel((analyzer1_output +
+                                analyzer1_host_xscope_output +
+                                analyzer2_output +
+                                analyzer2_host_xscope_output),
+                               self.config['channel'])
             # Check all other channels have expected frequency
-            for i in range(num_chans):
-                if i == channel:
+            for i in range(self.config['num_chans']):
+                if i == self.config['channel']:
                     continue # Skip the channel having its volume changed
                 found = False
                 expected_freq = ((i+1) * 1000) + 500
@@ -127,58 +129,49 @@ class VolumeOutputTester(xmostest.Tester):
                     if line.startswith(expected_line):
                         found = True
                 if not found:
-                    print ("Failure reason: Expected frequency of %d not seen on channel %d"
-                           % (expected_freq, i))
-                    result = False
+                    self.record_failure("Expected frequency of %d not seen on channel %d"
+                                        % (expected_freq, i))
 
-        xmostest.set_test_result("sw_usb_audio",
-                                 "analogue_hw_tests",
-                                 "volume_output_test",
-                                 config={'app_name':app_name,
-                                        'num_chans':num_chans,
-                                        'os':os,
-                                        'app_config':app_config,
-                                        'channel':channel},
-                                 result=result,
+        output = {'sig_gen_output':''.join(sig_gen_output),
+                  'analyzer1_output':''.join(analyzer1_output),
+                  'analyzer1_host_xscope_output':''.join(analyzer1_host_xscope_output),
+                  'analyzer2_output':''.join(analyzer2_output),
+                  'analyzer2_host_xscope_output':''.join(analyzer2_host_xscope_output)}
+        if not self.result:
+            output['failures'] = ''.join(self.failures)
+        xmostest.set_test_result(self.product,
+                                 self.group,
+                                 self.test,
+                                 self.config,
+                                 self.result,
                                  env={},
-                                 output={'sig_gen_output':''.join(sig_gen_output),
-                                         'analyzer1_output':''.join(analyzer1_output),
-                                         'analyzer1_host_xscope_output':''.join(analyzer1_host_xscope_output),
-                                         'analyzer2_output':''.join(analyzer2_output),
-                                         'analyzer2_host_xscope_output':''.join(analyzer2_host_xscope_output)})
+                                 output=output)
 
-def do_volume_output_test(board, os, app_name, app_config, freq, num_chans,
-                          channel):
+def do_volume_output_test(testlevel, board, app_name, app_config, num_chans,
+                          sample_rate, channel, os):
+
+    ctester = xmostest.CombinedTester(7, VolumeOutputTester(app_name, app_config,
+                                      num_chans, channel, os))
+    ctester.set_min_testlevel(testlevel)
+
     duration = 20
 
-    if channel is 'master':
-        print ("Starting master volume output test on %s:%s under %s" %
-               (app_name, app_config, os))
-    else:
-        print ("Starting volume output test of channel %d on %s:%s under %s" %
-           (channel, app_name, app_config, os))
-
-    resources = xmostest.request_resource("uac2_%s_testrig_%s" % (board, os))
+    resources = xmostest.request_resource("uac2_%s_testrig_%s" % (board, os),
+                                          ctester)
 
     dut_binary = ('../%s/bin/%s/%s_%s.xe' %
                   (app_name, app_config, app_name, app_config))
 
     analyser_binary = '../../sw_audio_analyzer/app_audio_analyzer_mc/bin/app_audio_analyzer_mc.xe'
 
-    ctester = xmostest.CombinedTester(7, VolumeOutputTester(),
-                                      os, app_name, app_config, num_chans, channel)
-
-    if xmostest.get_testlevel() != 'smoke':
-        print "Scheduling DUT flashing job"
+    if xmostest.testlevel_is_at_least(testlevel, 'nightly'):
         dut_job = xmostest.flash_xcore(resources['dut'], dut_binary,
                                        tester = ctester[0])
     else:
-        print "Scheduling DUT xrun job"
         dut_job = xmostest.run_on_xcore(resources['dut'], dut_binary,
                                         tester = ctester[0],
                                         disable_debug_io = True)
 
-    print "Scheduling PC signal generator job"
     run_xsig_path = "../../../../xsig/xsig/bin/"
     xsig_configs_path = "../../../../usb_audio_testing/xsig_configs/"
     if os.startswith('os_x'):
@@ -192,7 +185,7 @@ def do_volume_output_test(board, os, app_name, app_config, freq, num_chans,
         xsig_config_file = "mc_analogue_output.json"
     sig_gen_job = xmostest.run_on_pc(resources['host'],
                                      [run_xsig_path,
-                                     "%d" % (freq),
+                                     "%d" % (sample_rate),
                                      "%d" % ((duration + 10) * 1000), # Ensure signal generator runs for longer than audio analyzer, xsig expects duration in ms
                                      "%s%s" % (xsig_configs_path, xsig_config_file)],
                                      tester = ctester[1],
@@ -200,7 +193,6 @@ def do_volume_output_test(board, os, app_name, app_config, freq, num_chans,
                                      initial_delay = 5,
                                      start_after_completed = [dut_job])
 
-    print "Scheduling xCORE analyzer jobs"
     (analysis1_debugger_addr, analysis1_debugger_port) = resources['analysis_device_1'].get_xscope_port().split(':')
     analysis1_xscope_host_cmd = ['../../sw_audio_analyzer/host_xscope_controller/bin/xscope_controller',
                                  analysis1_debugger_addr,
@@ -246,7 +238,6 @@ def do_volume_output_test(board, os, app_name, app_config, freq, num_chans,
                                           xscope_host_timeout = duration + 60, # Host app should stop itself gracefully
                                           xscope_host_initial_delay = 5)
 
-    print "Scheduling PC volume control job"
     if os.startswith('os_x'):
         host_vol_ctrl_path = "../../../../usb_audio_testing/volcontrol/OSX/testvol_out.sh"
     elif os.startswith('win_'):
@@ -271,64 +262,66 @@ def do_volume_output_test(board, os, app_name, app_config, freq, num_chans,
                                         )
 
 def runtest():
-    # key = friendly board name : values = 'app name', [(app config, output chan count, max sample freq, test level)...]...
-    APP_NAME_OFFSET = 0
-    CONFIG_LIST_OFFSET = 1
-    CONFIG_NAME_OFFSET = 0
-    CONFIG_CHAN_COUNT_OFFSET = 1
-    CONFIG_MAX_SAMPLE_FREQ_OFFSET = 2
-    CONFIG_TEST_LEVEL_OFFSET = 3
-    tests = {
-             'l2' : ('app_usb_aud_l2', [#('1ioxx', 2, 48000,
-                                            #'nightly'), # FIXME: Doesn't work with Class 1.0 (no master vol, host app chan 0 usage...)
-                                        #('1xoxx', 2, 48000,
-                                            #'nightly'), # FIXME: Doesn't work with Class 1.0 (no master vol, host app chan 0 usage...)
-                                        ('2io_adatin', 8, 96000,
-                                            'nightly'),
-                                        ('2io_adatout', 8, 96000,
-                                            'nightly'),
-                                        ('2io_spdifout_adatout', 8, 96000,
-                                            'nightly'),
-                                        ('2io_spdifout_spdifin', 8, 192000,
-                                            'nightly'),
-                                        ('2io_spdifout_spdifin_mix8', 8, 192000,
-                                            'nightly'),
-                                        ('2io_tdm8', 8, 96000,
-                                            'nightly'),
-                                        ('2iomx', 8, 192000,
-                                            'smoke'),
-                                        ('2ioxs', 8, 192000,
-                                            'smoke'),
-                                        ('2ioxx', 8, 192000,
-                                            'smoke'),
-                                        ('2xoxs', 8, 192000,
-                                            'smoke')])
-            }
+    test_configs = [
+        {'board':'l2','app':'app_usb_aud_l2','app_configs':[
+            {'config':'1ioxx','chan_count':2,
+                'max_sample_rate':48000,'testlevel':'nightly'},
 
-    if xmostest.get_testlevel() != 'smoke':
-        audio_boards = ['l2']
-        host_oss = ['os_x', 'win_vista', 'win_7', 'win_8']
-    else:
-        # Smoke test only
-        audio_boards = ['l2']
-        host_oss = ['os_x']
+            {'config':'1xoxx','chan_count':2,
+                'max_sample_rate':48000,'testlevel':'nightly'},
 
-    for board in audio_boards:
-        app = tests[board][APP_NAME_OFFSET]
+            {'config':'2io_adatin','chan_count':8,
+                'max_sample_rate':96000,'testlevel':'nightly'},
+
+            {'config':'2io_adatout','chan_count':8,
+                'max_sample_rate':96000,'testlevel':'nightly'},
+
+            {'config':'2io_spdifout_adatout','chan_count':8,
+                'max_sample_rate':96000,'testlevel':'nightly'},
+
+            {'config':'2io_spdifout_spdifin','chan_count':8,
+                'max_sample_rate':192000,'testlevel':'nightly'},
+
+            {'config':'2io_spdifout_spdifin_mix8','chan_count':8,
+                'max_sample_rate':192000,'testlevel':'nightly'},
+
+            {'config':'2io_tdm8','chan_count':8,
+                'max_sample_rate':96000,'testlevel':'nightly'},
+
+            {'config':'2iomx','chan_count':8,
+                'max_sample_rate':192000,'testlevel':'nightly'},
+
+            {'config':'2ioxs','chan_count':8,
+                'max_sample_rate':192000,'testlevel':'smoke'},
+
+            {'config':'2ioxx','chan_count':8,
+                'max_sample_rate':192000,'testlevel':'smoke'},
+
+            {'config':'2xoxs','chan_count':8,
+                'max_sample_rate':192000,'testlevel':'smoke'}
+            ]
+        }
+    ]
+
+    host_oss = ['os_x', 'win_vista', 'win_7', 'win_8']
+
+    for test in test_configs:
+        board = test['board']
+        app = test['app']
         for os in host_oss:
-            for config in tests[board][CONFIG_LIST_OFFSET]:
-                required_testlevel = config[CONFIG_TEST_LEVEL_OFFSET]
-                if xmostest.testlevel_is_at_least(xmostest.get_testlevel(),
-                                                  required_testlevel):
-                    config_name = config[CONFIG_NAME_OFFSET]
-                    num_chans = config[CONFIG_CHAN_COUNT_OFFSET]
-                    max_freq = config[CONFIG_MAX_SAMPLE_FREQ_OFFSET]
+            for config in test['app_configs']:
+                config_name = config['config']
+                num_chans = config['chan_count']
+                max_sample_rate = config['max_sample_rate']
+                testlevel = config['testlevel']
 
-                    # Test the master volume control
-                    do_volume_output_test(board, os, app, config_name,
-                                          max_freq, num_chans, 'master')
+                # Test the master volume control
+                do_volume_output_test(testlevel, board, app, config_name,
+                                      num_chans, max_sample_rate, 'master',
+                                      os)
 
-                    # Test the volume control of each channel
-                    for chan in range(num_chans):
-                        do_volume_output_test(board, os, app, config_name,
-                                              max_freq, num_chans, chan)
+                # Test the volume control of each channel
+                for chan in range(num_chans):
+                    do_volume_output_test(testlevel, board, app, config_name,
+                                          num_chans, max_sample_rate, chan,
+                                          os)
