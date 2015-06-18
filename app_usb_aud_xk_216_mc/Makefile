@@ -104,8 +104,8 @@ INCLUDE_ONLY_IN_20i10oxsxxxxd_mfi =
 
 #Audio Class 2, iAP enabled, EA Protocol (Native Transport), Input, Output, No MIDI, No SPDIF Tx. i
 # Hid controls disabled (buttons used for EA)
-XCC_FLAGS_210i10oxxxxx_mfi_n = $(BUILD_FLAGS) -DIAP=1 -DIAP_EA_NATIVE_TRANS=1 -DMIDI=0 -DSPDIF_TX=0 -DHID_CONTROLS=0
-INCLUDE_ONLY_IN_210i10oxxxxx_mfi_n =
+# XCC_FLAGS_210i10oxxxxx_mfi_n = $(BUILD_FLAGS) -DIAP=1 -DIAP_EA_NATIVE_TRANS=1 -DMIDI=0 -DSPDIF_TX=0 -DHID_CONTROLS=0
+# INCLUDE_ONLY_IN_210i10oxxxxx_mfi_n =
 
 #Audio Class 2, iAP enabled, Input, Output, No,  No SPDIF Tx. Select USB A port. Ignore VBUS.
 #Note, this is the config used for Apple role-switch
