@@ -10,7 +10,7 @@
 #include "user_main.h"
 
 /*
- * Device configuration option defines to override default defines found devicedefines.h  
+ * Device configuration option defines to override default defines found devicedefines.h
  *
  * Build can be customised but changing and adding defines here
  *
