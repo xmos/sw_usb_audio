@@ -1,6 +1,10 @@
 sw_usb_audio Change Log
 =======================
 
+6.12.5
+------
+    - RESOLVED:   Enabled DFU support (and quad-SPI flash) support in xCORE-200 application.
+
 6.12.4
 ------
     - RESOLVED:   (Minor) Fixed build issue with iAP EA Native Transport endpoints example code in
