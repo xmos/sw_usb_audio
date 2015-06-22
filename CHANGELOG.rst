@@ -4,15 +4,16 @@ sw_usb_audio Change Log
 6.12.5
 ------
     - RESOLVED:   Enabled DFU support (and quad-SPI flash) support in xCORE-200 application.
-    - RESOLVED:   Link names updated in xCORE-200 XN file 
+    - RESOLVED:   Link names updated in xCORE-200 XN file
 
   * Changes to dependencies:
 
-    - sc_usb_audio: 6.12.1alpha0 -> 6.12.2rc0
+    - sc_usb_audio: 6.12.1alpha0 -> 6.12.2rc1
 
       + RESOLVED:   Reboot code (used for DFU) failure in tools versions > 14.0.2 (xCORE-200 only)
       + RESOLVED:   Run-time exception in mixer when MAX_MIX_COUNT > 0 (xCORE-200 only)
       + RESOLVED:   DFU now operational on xCORE-200 MC Audio board
+      + RESOLVED:   MAX_MIX_COUNT checked properly for mix strings in string table
       + CHANGE:     DFU code re-written to use an XC interface. The flash-part may now be connected
         to a separate tile to the tile running USB code
       + CHANGE:     DFU code can now used quad-SPI flash
