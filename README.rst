@@ -10,8 +10,6 @@ Please note, Alpha and Beta releases may not accurately reflect the final releas
 
 Welcome to version 6 of the XMOS USB Audio Software Framework.
 
-The main feature of version 6 over previous versions of the XMOS USB Audio software framework and associated applications is the added support for U series devices.
-
 Please see CHANGELOG.rst for detailed change listing.
 
 For full software documentation please see the USB Audio Design Guide document.
@@ -21,19 +19,21 @@ This release is built and tested using version 14 of the XMOS tool set.  Build o
 This repository contains applications (or instances) of the XMOS USB Audio Reference Design framework.  These applications
 typically relate to a specific board.  This repository contains the following:
 
-+----------------------+--------------------------+------------------------------------------------------------+
-|    App Name          |     Relevant Board(s)    | Description                                                |
-+======================+==========================+============================================================+
-| app_usb_aud_l1       | xr-usb-audio-2.0         | XMOS XS1-L8 USB Audio Reference Design                     |
-+----------------------+--------------------------+------------------------------------------------------------+
-| app_usb_aud_skc_su1  | xp-skc-su1 & xa-sk-audio | XMOS XS1-U8 USB Audio Kit                                  |
-+----------------------+--------------------------+------------------------------------------------------------+
-| app_usb_aud_xk_u8_2c | xk-usb-audio-u8-2c       | XMOS XS1-U8 Multi-Function Audio Board                     |
-+----------------------+--------------------------+------------------------------------------------------------+
-| app_usb_aud_l2       | xk-usb-audio-2.0-mc      | XMOS XS1-L16 USB Audio Reference Design                    |
-+----------------------+--------------------------+------------------------------------------------------------+
-| app_usb_aud_u16      | xp-skc-u16 & xa-sk-audio | XMOS XS1-U16 sliceKIT Core Board and Audio Slice           |
-+----------------------+--------------------------+------------------------------------------------------------+
++-----------------------+--------------------------+------------------------------------------------------------+
+|    App Name           |     Relevant Board(s)    | Description                                                |
++=======================+==========================+============================================================+
+| app_usb_aud_xk_216_mc | xk-audio-216-mc          | xCORE-200 Multi-channel Audio Board                                   |
++-----------------------+--------------------------+------------------------------------------------------------+
+| app_usb_aud_l1        | xr-usb-audio-2.0         | XMOS XS1-L8 USB Audio Reference Design                     |
++-----------------------+--------------------------+------------------------------------------------------------+
+| app_usb_aud_skc_su1   | xp-skc-su1 & xa-sk-audio | XMOS XS1-U8 USB Audio Kit                                  |
++-----------------------+--------------------------+------------------------------------------------------------+
+| app_usb_aud_xk_u8_2c  | xk-usb-audio-u8-2c       | XMOS XS1-U8 Multi-Function Audio Board                     |
++-----------------------+--------------------------+------------------------------------------------------------+
+| app_usb_aud_l2        | xk-usb-audio-2.0-mc      | XMOS XS1-L16 USB Audio Reference Design                    |
++-----------------------+--------------------------+------------------------------------------------------------+
+| app_usb_aud_u16       | xp-skc-u16 & xa-sk-audio | XMOS XS1-U16 sliceKIT Core Board and Audio Slice           |
++-----------------------+--------------------------+------------------------------------------------------------+
 
 Please refer to individual README files in these apps for more detailed information.
 
@@ -90,9 +90,7 @@ Known Issues
 
 General known issues with this release are listed below.  For board/application specific known issues please see README in relevant app directory
 
-- DFU for Quad-SPI flash currently not supported
-
-- DFU for xCORE-200 currently not supported
+- Quad-SPI DFU will corrupt the factory image with tools version < 14.0.4 due to an issue with libquadflash 
 
 - (#14762) When in DSD mode with S/PDIF output enabled, DSD samples are transmitted over S/PDIF if the DSD and S/PDIF channels are shared, this may or may not be desired
 
