@@ -5,7 +5,7 @@ XMOS xCORE-200 USB Audio
 :scope: Example
 :description: USB Audio application for xCORE-200 MC Audio
 :keywords: USB,
-:boards: XCORE-200 MC AUDIO (rev 1)
+:boards: XCORE-200 MC AUDIO (rev 2.0)
 
 Overview
 ........

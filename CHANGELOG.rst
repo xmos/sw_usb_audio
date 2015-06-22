@@ -4,6 +4,7 @@ sw_usb_audio Change Log
 6.12.5
 ------
     - RESOLVED:   Enabled DFU support (and quad-SPI flash) support in xCORE-200 application.
+    - RESOLVED:   Link names updated in xCORE-200 XN file 
 
   * Changes to dependencies:
 
