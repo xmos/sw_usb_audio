@@ -251,8 +251,12 @@ def do_dfu_test(testlevel, board, app_name, pid, app_config, os):
                                    timeout_msg = "Removing upgrade images timed out",
                                    start_after_completed = [dfu_job])
 
+        if os.startswith('os_x'):
+            remote_cleanup_cmd = ["rm", "upload.bin"]
+        elif os.startswith('win_'):
+            remote_cleanup_cmd = ["del", "upload.bin"]
         remote_cleanup_job = xmostest.run_on_pc(resources['host'],
-                                                ["rm", "upload.bin"],
+                                                remote_cleanup_cmd,
                                                 # tester = ctester[4], # FIXME: locks up when output passed to tester
                                                 timeout = 600,
                                                 start_after_completed = [dfu_job])
