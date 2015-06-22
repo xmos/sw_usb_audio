@@ -64,7 +64,7 @@
       <Links>
         <Link Encoding="5wire">
           <LinkEndpoint NodeId="0" Link="8" Delays="52clk,52clk"/>
-          <LinkEndpoint NodeId="1" Link="XLC" Delays="1clk,1clk"/>
+          <LinkEndpoint NodeId="1" Link="XL0" Delays="1clk,1clk"/>
         </Link>
       </Links>
     </Package>
@@ -78,7 +78,7 @@
   </Nodes>
   <Links>
     <Link Encoding="2wire" Delays="4,4" Flags="XSCOPE">
-      <LinkEndpoint NodeId="0" Link="X0LC"/>
+      <LinkEndpoint NodeId="0" Link="XL0"/>
       <LinkEndpoint NodeId="2" Chanend="1"/>
     </Link>
   </Links>
