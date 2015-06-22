@@ -46,8 +46,11 @@ class VolumeInputTester(xmostest.Tester):
             self.register_test(self.product, self.group, self.test, self.config)
 
     def record_failure(self, failure_reason):
+        # Append a newline if there isn't one already
+        if re.match('.*\n', failure_reason) is None:
+            failure_reason += '\n'
         self.failures.append(failure_reason)
-        print "Failure reason: %s" % failure_reason
+        print ("Failure reason: %s" % failure_reason), # Print without newline
         self.result = False
 
     def check_channel(self, analyzer_output, chan):
