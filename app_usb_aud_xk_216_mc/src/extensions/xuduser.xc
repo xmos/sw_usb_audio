@@ -17,9 +17,9 @@ void HandleRebootTimeout(timer t)
 
     /* Reset device */
     read_sswitch_reg(get_local_tile_id(), 6, pll_ctrl_val);
+    pll_ctrl_val &= 0x7FFFFFFF;
     write_sswitch_reg_no_ack(get_local_tile_id(), 6, pll_ctrl_val);
     while(1);
-
 }
 
 #define REBOOT_TIMEOUT 20000000
