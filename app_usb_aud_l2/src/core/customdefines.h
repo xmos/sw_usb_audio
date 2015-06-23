@@ -90,9 +90,6 @@
 #define PID_AUDIO_1        (0x0005)
 #define PID_AUDIO_2        (0x0004)
 
-/* Enable DFU interface, Note, requires a driver for Windows */
-#define DFU                (1)
-
 /* Flash device for DFU.  Device supported by tools so no need to spec */
 #define DFU_FLASH_DEVICE FL_DEVICE_ATMEL_AT25DF041A
 
