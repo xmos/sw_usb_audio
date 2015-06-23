@@ -3,39 +3,39 @@
     <components>
         <component description = "USB Audio for L1 USB Audio board" type = "demoCode" scope = "General Use" path = "app_usb_aud_l1" local = "false" id = "app_usb_aud_l1" name = "XMOS XS1-L8 USB Audio 2.0 Reference Design (app_usb_aud_l1)">
             <board>XR-USB-AUDIO-2.0</board>
-            <componentDependency version = "1.0.4">module_usb_shared</componentDependency>
-            <componentDependency repo = "git://github.com/xcore/sc_util" version = "1.0.5">module_xassert</componentDependency>
-            <componentDependency repo = "git://github.com/xcore/sc_usb_device" version = "1.3.7">module_usb_device</componentDependency>
-            <componentDependency version = "2.3.2">module_xud</componentDependency>
-            <componentDependency version = "6.12.2">module_usb_audio</componentDependency>
-            <componentDependency version = "1.0.4">module_usb_shared</componentDependency>
-            <componentDependency version = "6.12.2">module_usb_midi</componentDependency>
-            <componentDependency repo = "git://github.com/xcore/sc_spdif" version = "1.3.4">module_spdif_rx</componentDependency>
             <componentDependency version = "2.3.2">module_xud</componentDependency>
             <componentDependency version = "6.12.2">module_queue</componentDependency>
-            <componentDependency repo = "git://github.com/xcore/sc_spdif" version = "1.3.4">module_spdif_tx</componentDependency>
+            <componentDependency version = "2.3.2">module_xud</componentDependency>
+            <componentDependency repo = "git://github.com/xcore/sc_usb_device" version = "1.3.7">module_usb_device</componentDependency>
+            <componentDependency version = "6.12.2">module_usb_audio</componentDependency>
+            <componentDependency repo = "git://github.com/xcore/sc_spdif" version = "1.3.4">module_spdif_rx</componentDependency>
+            <componentDependency version = "6.12.2">module_usb_midi</componentDependency>
             <componentDependency version = "6.12.2">module_dfu</componentDependency>
+            <componentDependency repo = "git://github.com/xcore/sc_util" version = "1.0.5">module_xassert</componentDependency>
+            <componentDependency version = "1.0.4">module_usb_shared</componentDependency>
+            <componentDependency repo = "git://github.com/xcore/sc_spdif" version = "1.3.4">module_spdif_tx</componentDependency>
+            <componentDependency version = "1.0.4">module_usb_shared</componentDependency>
             <keyword>USB</keyword>
             <keyword>Audio</keyword>
             <keyword>MFA</keyword>
         </component>
         <component description = "USB Audio for L2 USB Audio" type = "demoCode" scope = "General Use" path = "app_usb_aud_l2" local = "false" id = "app_usb_aud_l2" name = "XMOS XS1-L2 USB Audio 2.0 Reference Design (app_usb_aud_l2)">
             <board>XR-USB-AUDIO-2.0-MC</board>
-            <componentDependency version = "6.12.2">module_dfu</componentDependency>
             <componentDependency version = "1.0.4">module_usb_shared</componentDependency>
+            <componentDependency repo = "git://github.com/xcore/sc_adat.git" version = "1.0.0">module_adat_rx</componentDependency>
+            <componentDependency repo = "git://github.com/xcore/sc_adat.git" version = "1.0.0">module_adat_tx</componentDependency>
+            <componentDependency repo = "git://github.com/xcore/sc_spdif" version = "1.3.4">module_spdif_rx</componentDependency>
+            <componentDependency version = "6.12.2">module_queue</componentDependency>
+            <componentDependency repo = "git://github.com/xcore/sc_usb_device" version = "1.3.7">module_usb_device</componentDependency>
+            <componentDependency version = "2.3.2">module_xud</componentDependency>
             <componentDependency repo = "git://github.com/xcore/sc_i2c" version = "3.0.0">module_i2c_simple</componentDependency>
             <componentDependency version = "2.3.2">module_xud</componentDependency>
-            <componentDependency repo = "git://github.com/xcore/sc_adat.git" version = "1.0.0">module_adat_tx</componentDependency>
-            <componentDependency repo = "git://github.com/xcore/sc_spdif" version = "1.3.4">module_spdif_tx</componentDependency>
-            <componentDependency version = "1.0.4">module_usb_shared</componentDependency>
-            <componentDependency repo = "git://github.com/xcore/sc_usb_device" version = "1.3.7">module_usb_device</componentDependency>
-            <componentDependency repo = "git://github.com/xcore/sc_adat.git" version = "1.0.0">module_adat_rx</componentDependency>
-            <componentDependency repo = "git://github.com/xcore/sc_spdif" version = "1.3.4">module_spdif_rx</componentDependency>
-            <componentDependency version = "2.3.2">module_xud</componentDependency>
             <componentDependency version = "6.12.2">module_usb_audio</componentDependency>
-            <componentDependency version = "6.12.2">module_usb_midi</componentDependency>
-            <componentDependency version = "6.12.2">module_queue</componentDependency>
             <componentDependency repo = "git://github.com/xcore/sc_util" version = "1.0.5">module_xassert</componentDependency>
+            <componentDependency version = "6.12.2">module_usb_midi</componentDependency>
+            <componentDependency version = "6.12.2">module_dfu</componentDependency>
+            <componentDependency version = "1.0.4">module_usb_shared</componentDependency>
+            <componentDependency repo = "git://github.com/xcore/sc_spdif" version = "1.3.4">module_spdif_tx</componentDependency>
             <keyword>USB</keyword>
             <keyword>Audio</keyword>
             <keyword>L2</keyword>
@@ -43,19 +43,19 @@
         <component description = "USB Audio application for XP-SKC-SU1 and XA-SK-AUDIO (1v1)" type = "demoCode" scope = "General Use" path = "app_usb_aud_skc_su1" local = "false" id = "app_usb_aud_skc_su1" name = "XMOS XS1-U8 USB Audio">
             <board>XP-SKC-SU1</board>
             <board>XA-SK-AUDIO (1v1)</board>
-            <componentDependency version = "2.3.2">module_xud</componentDependency>
-            <componentDependency repo = "git://github.com/xcore/sc_spdif" version = "1.3.4">module_spdif_rx</componentDependency>
-            <componentDependency version = "1.0.4">module_usb_shared</componentDependency>
-            <componentDependency version = "6.12.2">module_usb_midi</componentDependency>
             <componentDependency repo = "git://github.com/xcore/sc_util" version = "1.0.5">module_xassert</componentDependency>
-            <componentDependency repo = "git://github.com/xcore/sc_i2c" version = "3.0.0">module_i2c_single_port</componentDependency>
-            <componentDependency version = "1.0.4">module_usb_shared</componentDependency>
-            <componentDependency repo = "git://github.com/xcore/sc_usb_device" version = "1.3.7">module_usb_device</componentDependency>
-            <componentDependency version = "2.3.2">module_xud</componentDependency>
             <componentDependency repo = "git://github.com/xcore/sc_spdif" version = "1.3.4">module_spdif_tx</componentDependency>
             <componentDependency version = "6.12.2">module_usb_audio</componentDependency>
-            <componentDependency version = "6.12.2">module_queue</componentDependency>
+            <componentDependency version = "2.3.2">module_xud</componentDependency>
+            <componentDependency version = "6.12.2">module_usb_midi</componentDependency>
+            <componentDependency repo = "git://github.com/xcore/sc_usb_device" version = "1.3.7">module_usb_device</componentDependency>
+            <componentDependency repo = "git://github.com/xcore/sc_i2c" version = "3.0.0">module_i2c_single_port</componentDependency>
             <componentDependency version = "6.12.2">module_dfu</componentDependency>
+            <componentDependency repo = "git://github.com/xcore/sc_spdif" version = "1.3.4">module_spdif_rx</componentDependency>
+            <componentDependency version = "2.3.2">module_xud</componentDependency>
+            <componentDependency version = "6.12.2">module_queue</componentDependency>
+            <componentDependency version = "1.0.4">module_usb_shared</componentDependency>
+            <componentDependency version = "1.0.4">module_usb_shared</componentDependency>
             <keyword>USB</keyword>
             <keyword>audio</keyword>
             <keyword>U8</keyword>
@@ -63,41 +63,41 @@
         <component description = "USB Audio application for XP-SKC-U16 (2v0) and XA-SK-AUDIO (1v1)" type = "demoCode" scope = "Example" path = "app_usb_aud_skc_u16" local = "false" id = "app_usb_aud_skc_u16" name = "XMOS XS1-U16 USB Audio">
             <board>XP-SKC-U16 (2v0)</board>
             <board>XA-SK-AUDIO (1v1)</board>
-            <componentDependency version = "2.3.2">module_xud</componentDependency>
-            <componentDependency version = "1.0.4">module_usb_shared</componentDependency>
-            <componentDependency version = "2.3.2">module_xud</componentDependency>
             <componentDependency version = "6.12.2">module_usb_midi</componentDependency>
             <componentDependency repo = "git://github.com/xcore/sc_util" version = "1.0.5">module_xassert</componentDependency>
-            <componentDependency repo = "git://github.com/xcore/sc_spdif" version = "1.3.4">module_spdif_rx</componentDependency>
             <componentDependency repo = "git://github.com/xcore/sc_i2c" version = "3.0.0">module_i2c_single_port</componentDependency>
-            <componentDependency version = "1.0.4">module_usb_shared</componentDependency>
             <componentDependency repo = "git://github.com/xcore/sc_spdif" version = "1.3.4">module_spdif_tx</componentDependency>
-            <componentDependency repo = "git://github.com/xcore/sc_usb_device" version = "1.3.7">module_usb_device</componentDependency>
-            <componentDependency version = "6.12.2">module_queue</componentDependency>
+            <componentDependency version = "1.0.4">module_usb_shared</componentDependency>
+            <componentDependency version = "2.3.2">module_xud</componentDependency>
             <componentDependency version = "6.12.2">module_dfu</componentDependency>
+            <componentDependency repo = "git://github.com/xcore/sc_usb_device" version = "1.3.7">module_usb_device</componentDependency>
+            <componentDependency version = "1.0.4">module_usb_shared</componentDependency>
+            <componentDependency version = "2.3.2">module_xud</componentDependency>
             <componentDependency version = "6.12.2">module_usb_audio</componentDependency>
+            <componentDependency version = "6.12.2">module_queue</componentDependency>
+            <componentDependency repo = "git://github.com/xcore/sc_spdif" version = "1.3.4">module_spdif_rx</componentDependency>
             <keyword>USB</keyword>
             <keyword></keyword>
         </component>
         <component description = "USB Audio application for XP-SKC-U16 (2v0) and XA-SK-AUDIO8 (1v1)" type = "demoCode" scope = "General Use" path = "app_usb_aud_skc_u16_audio8" local = "false" id = "app_usb_aud_skc_u16_audio8" name = "XMOS XS1-U16 USB Audio">
             <board>XP-SKC-U16 (2v0)</board>
             <board>XA-SK-AUDIO8 (1v1)</board>
-            <componentDependency repo = "git://github.com/xcore/sc_adat.git" version = "1.0.0">module_adat_rx</componentDependency>
-            <componentDependency version = "6.12.2">module_dfu</componentDependency>
-            <componentDependency version = "1.0.4">module_usb_shared</componentDependency>
-            <componentDependency repo = "git://github.com/xcore/sc_usb_device" version = "1.3.7">module_usb_device</componentDependency>
-            <componentDependency version = "2.3.2">module_xud</componentDependency>
-            <componentDependency repo = "git://github.com/xcore/sc_util" version = "1.0.5">module_xassert</componentDependency>
-            <componentDependency repo = "git://github.com/xcore/sc_adat.git" version = "1.0.0">module_adat_tx</componentDependency>
-            <componentDependency version = "1.0.4">module_usb_shared</componentDependency>
             <componentDependency repo = "git://github.com/xcore/sc_spdif" version = "1.3.4">module_spdif_rx</componentDependency>
+            <componentDependency repo = "git://github.com/xcore/sc_util" version = "1.0.5">module_xassert</componentDependency>
+            <componentDependency version = "6.12.2">module_dfu</componentDependency>
             <componentDependency repo = "git://github.com/xcore/sc_i2c" version = "3.0.0">module_i2c_simple</componentDependency>
-            <componentDependency version = "6.12.2">module_usb_audio</componentDependency>
-            <componentDependency version = "2.3.2">module_xud</componentDependency>
             <componentDependency version = "6.12.2">module_usb_midi</componentDependency>
+            <componentDependency version = "2.3.2">module_xud</componentDependency>
             <componentDependency repo = "git://github.com/xcore/sc_spdif" version = "1.3.4">module_spdif_tx</componentDependency>
-            <componentDependency version = "6.12.2">module_queue</componentDependency>
+            <componentDependency version = "2.3.2">module_xud</componentDependency>
+            <componentDependency version = "1.0.4">module_usb_shared</componentDependency>
             <componentDependency repo = "git://github.com/xcore/sc_util" version = "1.0.5">module_locks</componentDependency>
+            <componentDependency version = "6.12.2">module_usb_audio</componentDependency>
+            <componentDependency repo = "git://github.com/xcore/sc_adat.git" version = "1.0.0">module_adat_rx</componentDependency>
+            <componentDependency version = "6.12.2">module_queue</componentDependency>
+            <componentDependency repo = "git://github.com/xcore/sc_usb_device" version = "1.3.7">module_usb_device</componentDependency>
+            <componentDependency version = "1.0.4">module_usb_shared</componentDependency>
+            <componentDependency repo = "git://github.com/xcore/sc_adat.git" version = "1.0.0">module_adat_tx</componentDependency>
             <keyword>USB</keyword>
             <keyword>Audio</keyword>
             <keyword>I2S</keyword>
@@ -105,44 +105,44 @@
         </component>
         <component description = "USB Audio application for xCORE-200 MC Audio" type = "demoCode" scope = "Example" path = "app_usb_aud_xk_216_mc" local = "false" id = "app_usb_aud_xk_216_mc" name = "XMOS xCORE-200 USB Audio">
             <board>XCORE-200 MC AUDIO (rev 2.0)</board>
-            <componentDependency version = "1.0.4">module_usb_shared</componentDependency>
-            <componentDependency version = "1.0.4">module_usb_shared</componentDependency>
-            <componentDependency repo = "git://github.com/xcore/sc_i2c" version = "3.0.0">module_i2c_shared</componentDependency>
+            <componentDependency version = "6.12.2">module_queue</componentDependency>
+            <componentDependency version = "6.12.2">module_usb_midi</componentDependency>
+            <componentDependency repo = "git://github.com/xcore/sc_util" version = "1.0.5">module_xassert</componentDependency>
+            <componentDependency version = "6.12.2">module_usb_audio</componentDependency>
+            <componentDependency repo = "git://github.com/xcore/sc_util" version = "1.0.5">module_locks</componentDependency>
             <componentDependency version = "2.3.2">module_xud</componentDependency>
             <componentDependency version = "6.12.2">module_dfu</componentDependency>
-            <componentDependency repo = "git://github.com/xcore/sc_util" version = "1.0.5">module_locks</componentDependency>
-            <componentDependency repo = "git://github.com/xcore/sc_i2c" version = "3.0.0">module_i2c_single_port</componentDependency>
-            <componentDependency repo = "git://github.com/xcore/sc_util" version = "1.0.5">module_xassert</componentDependency>
+            <componentDependency repo = "git://github.com/xcore/sc_usb_device" version = "1.3.7">module_usb_device</componentDependency>
+            <componentDependency repo = "git://github.com/xcore/sc_i2c" version = "3.0.0">module_i2c_shared</componentDependency>
+            <componentDependency repo = "git://github.com/xcore/sc_adat.git" version = "1.0.0">module_adat_tx</componentDependency>
+            <componentDependency repo = "git://github.com/xcore/sc_adat.git" version = "1.0.0">module_adat_rx</componentDependency>
             <componentDependency repo = "git://github.com/xcore/sc_spdif" version = "1.3.4">module_spdif_rx</componentDependency>
             <componentDependency repo = "git://github.com/xcore/sc_spdif" version = "1.3.4">module_spdif_tx</componentDependency>
-            <componentDependency repo = "git://github.com/xcore/sc_adat.git" version = "1.0.0">module_adat_tx</componentDependency>
-            <componentDependency repo = "git://github.com/xcore/sc_usb_device" version = "1.3.7">module_usb_device</componentDependency>
-            <componentDependency version = "6.12.2">module_usb_midi</componentDependency>
             <componentDependency version = "2.3.2">module_xud</componentDependency>
-            <componentDependency version = "6.12.2">module_queue</componentDependency>
-            <componentDependency repo = "git://github.com/xcore/sc_adat.git" version = "1.0.0">module_adat_rx</componentDependency>
-            <componentDependency version = "6.12.2">module_usb_audio</componentDependency>
+            <componentDependency version = "1.0.4">module_usb_shared</componentDependency>
+            <componentDependency version = "1.0.4">module_usb_shared</componentDependency>
+            <componentDependency repo = "git://github.com/xcore/sc_i2c" version = "3.0.0">module_i2c_single_port</componentDependency>
             <keyword>USB</keyword>
             <keyword></keyword>
         </component>
         <component description = "USB Audio for XK-USB-AUDIO-U8-2C board" type = "demoCode" scope = "General Use" path = "app_usb_aud_xk_u8_2c" local = "false" id = "app_usb_aud_xk_u8_2c" name = "XMOS XK-USB-AUDIO-U8-2C USB Audio (app_usb_aud_xk_u8_2c)">
             <board>XK-USB-AUDIO-U8-2C (2v0)</board>
-            <componentDependency version = "1.0.4">module_usb_shared</componentDependency>
-            <componentDependency version = "6.12.2">module_usb_audio</componentDependency>
-            <componentDependency version = "2.3.2">module_xud</componentDependency>
-            <componentDependency repo = "git://github.com/xcore/sc_util" version = "1.0.5">module_locks</componentDependency>
-            <componentDependency repo = "git://github.com/xcore/sc_i2c" version = "3.0.0">module_i2c_shared</componentDependency>
-            <componentDependency repo = "git://github.com/xcore/sc_spdif" version = "1.3.4">module_spdif_rx</componentDependency>
-            <componentDependency repo = "git://github.com/xcore/sc_spdif" version = "1.3.4">module_spdif_tx</componentDependency>
-            <componentDependency version = "1.0.4">module_usb_shared</componentDependency>
-            <componentDependency repo = "git://github.com/xcore/sc_usb_device" version = "1.3.7">module_usb_device</componentDependency>
-            <componentDependency repo = "git://github.com/xcore/sc_i2c" version = "3.0.0">module_i2c_simple</componentDependency>
-            <componentDependency version = "6.12.2">module_dfu</componentDependency>
-            <componentDependency repo = "git://github.com/xcore/sc_util" version = "1.0.5">module_locks</componentDependency>
-            <componentDependency version = "6.12.2">module_usb_midi</componentDependency>
-            <componentDependency version = "2.3.2">module_xud</componentDependency>
             <componentDependency version = "6.12.2">module_queue</componentDependency>
             <componentDependency repo = "git://github.com/xcore/sc_util" version = "1.0.5">module_xassert</componentDependency>
+            <componentDependency repo = "git://github.com/xcore/sc_spdif" version = "1.3.4">module_spdif_rx</componentDependency>
+            <componentDependency repo = "git://github.com/xcore/sc_spdif" version = "1.3.4">module_spdif_tx</componentDependency>
+            <componentDependency version = "6.12.2">module_usb_midi</componentDependency>
+            <componentDependency version = "2.3.2">module_xud</componentDependency>
+            <componentDependency repo = "git://github.com/xcore/sc_util" version = "1.0.5">module_locks</componentDependency>
+            <componentDependency version = "6.12.2">module_usb_audio</componentDependency>
+            <componentDependency version = "2.3.2">module_xud</componentDependency>
+            <componentDependency version = "6.12.2">module_dfu</componentDependency>
+            <componentDependency repo = "git://github.com/xcore/sc_i2c" version = "3.0.0">module_i2c_simple</componentDependency>
+            <componentDependency repo = "git://github.com/xcore/sc_usb_device" version = "1.3.7">module_usb_device</componentDependency>
+            <componentDependency repo = "git://github.com/xcore/sc_util" version = "1.0.5">module_locks</componentDependency>
+            <componentDependency version = "1.0.4">module_usb_shared</componentDependency>
+            <componentDependency version = "1.0.4">module_usb_shared</componentDependency>
+            <componentDependency repo = "git://github.com/xcore/sc_i2c" version = "3.0.0">module_i2c_shared</componentDependency>
             <keyword>USB</keyword>
             <keyword>Audio</keyword>
             <keyword>MFA</keyword>
@@ -162,9 +162,9 @@
     </dependency>
     <dependency repo = "sc_usb_audio">
         <gitbranch>master</gitbranch>
-        <githash>346f5a704f1130274b88cf742de73239e54b3c7d</githash>
+        <githash>d43c17a5c81724f880a001701669c5a00808a4e0</githash>
         <uri>git://git/apps/sc_usb_audio</uri>
-        <version>6.12.2rc2</version>
+        <version>6.12.2rc3</version>
     </dependency>
     <dependency repo = "sc_xud">
         <gitbranch>master</gitbranch>
@@ -337,7 +337,8 @@
     <release parenthash = "64f183aa00fa4b9021efb9a8574a2b071d54d691" version = "6.12.5rc0" githash = "bae96f195257ad52537885c2be9fe7f46302e689"></release>
     <release parenthash = "607373b4d3c3371dd67c7c7f92cd3f812a5235d0" version = "6.12.5rc1" githash = "b5b481a7adb4cd0dee65c522cc6047b43b1f5363"></release>
     <release parenthash = "16fb77fba5e98b7f2a08f357f8dac8bb92cc7b29" version = "6.12.5rc2" githash = "360e994fa299f68e7628124eb04df5d277aa0e91"></release>
-    <release parenthash = "3c958c500e993420143c379832058b73a98b2537" version = "6.12.5rc3"></release>
+    <release parenthash = "3c958c500e993420143c379832058b73a98b2537" version = "6.12.5rc3" githash = "62a80b942ce0151a784d2f761eed31f41054fd8d"></release>
+    <release parenthash = "ff581a7585377d2c4c7fed3bec02c48620493282" version = "6.12.5rc4"></release>
     <subpartnumber>XM-002775-SM</subpartnumber>
     <vendor>XMOS</vendor>
     <version_defines></version_defines>
