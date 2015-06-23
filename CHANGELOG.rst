@@ -9,15 +9,14 @@ sw_usb_audio Change Log
 
   * Changes to dependencies:
 
-    - sc_usb_audio: 6.12.1alpha0 -> 6.12.2rc1
+    - sc_usb_audio: 6.12.1alpha0 -> 6.12.2rc2
 
       + RESOLVED:   Reboot code (used for DFU) failure in tools versions > 14.0.2 (xCORE-200 only)
       + RESOLVED:   Run-time exception in mixer when MAX_MIX_COUNT > 0 (xCORE-200 only)
-      + RESOLVED:   DFU now operational on xCORE-200 MC Audio board
       + RESOLVED:   MAX_MIX_COUNT checked properly for mix strings in string table
       + CHANGE:     DFU code re-written to use an XC interface. The flash-part may now be connected
         to a separate tile to the tile running USB code
-      + CHANGE:     DFU code can now used quad-SPI flash
+      + CHANGE:     DFU code can now use quad-SPI flash
       + CHANGE:     Example xmos_dfu application now uses a list of PIDs to allow adding PIDs easier.
         --listdevices command also added.
       + CHANGE:     I2S_CHANS_PER_FRAME and I2S_WIRES_xxx defines tidied
