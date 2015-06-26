@@ -27,15 +27,15 @@ XCC_FLAGS_2ioxs = $(BUILD_FLAGS)
 INCLUDE_ONLY_IN_2ioxs = 
 
 # Audio Class 2, No Input, Output, No Midi, No SPDIF, DSD
-XCC_FLAGS_2xoxxd = $(BUILD_FLAGS) -DNUM_USB_CHAN_IN=0 -DI2S_CHANS_ADC=0 -DSPDIF=0 -DDSD_CHANS_DAC=2 -DCHAN_BUFF_CTRL=1
+XCC_FLAGS_2xoxxd = $(BUILD_FLAGS) -DNUM_USB_CHAN_IN=0 -DI2S_CHANS_ADC=0 -DSPDIF_TX=0 -DDSD_CHANS_DAC=2 -DCHAN_BUFF_CTRL=1
 INCLUDE_ONLY_IN_2xoxxd = 
 
 # Audio Class 2, Input, Output, No Midi, SPDIF, DSD
-XCC_FLAGS_2ioxsd = $(BUILD_FLAGS) -DSPDIF=1 -DDSD_CHANS_DAC=2
+XCC_FLAGS_2ioxsd = $(BUILD_FLAGS) -DSPDIF_TX=1 -DDSD_CHANS_DAC=2
 INCLUDE_ONLY_IN_2ioxsd = 
 
 # Audio Class 2, No Input, Output, No Midi, SPDIF, DSD
-XCC_FLAGS_2xoxsd = $(BUILD_FLAGS) -DNUM_USB_CHAN_IN=0 -DI2S_CHANS_ADC=0 -DSPDIF=1 -DDSD_CHANS_DAC=2
+XCC_FLAGS_2xoxsd = $(BUILD_FLAGS) -DNUM_USB_CHAN_IN=0 -DI2S_CHANS_ADC=0 -DSPDIF_TX=1 -DDSD_CHANS_DAC=2
 INCLUDE_ONLY_IN_2xoxsd = 
 
 # Audio Class 2, No Input, Output, No MIDI, SPDIF
@@ -43,23 +43,23 @@ XCC_FLAGS_2xoxs = $(BUILD_FLAGS) -DNUM_USB_CHAN_IN=0 -DI2S_CHANS_ADC=0
 INCLUDE_ONLY_IN_2xoxs = 
 
 # Audio Class 2, No Input, Output, No MIDI, No SPDIF
-XCC_FLAGS_2xoxx = $(BUILD_FLAGS) -DNUM_USB_CHAN_IN=0 -DI2S_CHANS_ADC=0 -DSPDIF=0
+XCC_FLAGS_2xoxx = $(BUILD_FLAGS) -DNUM_USB_CHAN_IN=0 -DI2S_CHANS_ADC=0 -DSPDIF_TX=0
 INCLUDE_ONLY_IN_2xoxx = 
 
 # Audio Class 2, No Input, Output, No MIDI, No SPDIF, power-save featured enabled
-XCC_FLAGS_2xoxx_lp = $(BUILD_FLAGS) -DNUM_USB_CHAN_IN=0 -DI2S_CHANS_ADC=0 -DSPDIF=0 -DCHAN_BUFF_CTRL
+XCC_FLAGS_2xoxx_lp = $(BUILD_FLAGS) -DNUM_USB_CHAN_IN=0 -DI2S_CHANS_ADC=0 -DSPDIF_TX=0 -DCHAN_BUFF_CTRL
 INCLUDE_ONLY_IN_2xoxx_lp = ./src/extensions/powersave
 
 #Audio Class 2, Input, Output, MIDI, No SPDIF
-XCC_FLAGS_2iomx = $(BUILD_FLAGS) -DMIDI=1 -DSPDIF=0
+XCC_FLAGS_2iomx = $(BUILD_FLAGS) -DMIDI=1 -DSPDIF_TX=0
 INCLUDE_ONLY_IN_2iomx = 
 
 #Audio Class 2, Input, Output, No MIDI, No SPDIF
-XCC_FLAGS_2ioxx = $(BUILD_FLAGS) -DSPDIF=0
+XCC_FLAGS_2ioxx = $(BUILD_FLAGS) -DSPDIF_TX=0
 INCLUDE_ONLY_IN_2ioxx = 
 
 #Audio Class 2, Input, no Output, no MIDI, No SPDIF
-XCC_FLAGS_2ixxx = $(BUILD_FLAGS) -DNUM_USB_CHAN_OUT=0 -DI2S_CHANS_DAC=0 -DSPDIF=0
+XCC_FLAGS_2ixxx = $(BUILD_FLAGS) -DNUM_USB_CHAN_OUT=0 -DI2S_CHANS_DAC=0 -DSPDIF_TX=0
 INCLUDE_ONLY_IN_2ixxx = 
 
 # Audio Class 1, Input, Output, No MIDI, SPDIF, 2in/2out
@@ -100,31 +100,31 @@ XCC_FLAGS_2xoxs_16b4pcm_32b4dsd_24b4pcm = $(BUILD_FLAGS) -DOUTPUT_FORMAT_COUNT=3
 INCLUDE_ONLY_IN_2xoxs_16b4pcm_32b4dsd_24b4pcm =
 
 #Audio Class 2, Input, Output, MIDI, No SPDIF, reboot interrupt handler based on switch
-XCC_FLAGS_2iomx_reboot = $(BUILD_FLAGS) -DMIDI=1 -DSPDIF=0 -DSW_INT_HANDLER=1
+XCC_FLAGS_2iomx_reboot = $(BUILD_FLAGS) -DMIDI=1 -DSPDIF_TX=0 -DSW_INT_HANDLER=1
 INCLUDE_ONLY_IN_2iomx_reboot = 
 
 else
 # MFi test build configs - iAP support enabled
 
 # Audio Class 2, iAP enabled, No Input, Output, No MIDI, No SPDIF
-XCC_FLAGS_2xoxx_mfi = $(BUILD_FLAGS) -DIAP=1 -DNUM_USB_CHAN_IN=0 -DI2S_CHANS_ADC=0 -DSPDIF=0
+XCC_FLAGS_2xoxx_mfi = $(BUILD_FLAGS) -DIAP=1 -DNUM_USB_CHAN_IN=0 -DI2S_CHANS_ADC=0 -DSPDIF_TX=0
 INCLUDE_ONLY_IN_2xoxx_mfi = 
 
 # Audio Class 2, iAP enabled, No Input, Output, No MIDI, No SPDIF, power-save featured enabled
-XCC_FLAGS_2xoxx_mfi_lp = $(BUILD_FLAGS) -DIAP=1 -DNUM_USB_CHAN_IN=0 -DI2S_CHANS_ADC=0 -DSPDIF=0
+XCC_FLAGS_2xoxx_mfi_lp = $(BUILD_FLAGS) -DIAP=1 -DNUM_USB_CHAN_IN=0 -DI2S_CHANS_ADC=0 -DSPDIF_TX=0
 INCLUDE_ONLY_IN_2xoxx_mfi_lp = ./src/extensions/powersave
 
 #Audio Class 2, iAP enabled, Input, Output, No MIDI, No SPDIF
-XCC_FLAGS_2ioxx_mfi = $(BUILD_FLAGS) -DIAP=1 -DSPDIF=0
+XCC_FLAGS_2ioxx_mfi = $(BUILD_FLAGS) -DIAP=1 -DSPDIF_TX=0
 INCLUDE_ONLY_IN_2ioxx_mfi = 
 
 #Audio Class 2, iAP enabled, Input, Output, MIDI, No SPDIF
-XCC_FLAGS_2iomx_mfi = $(BUILD_FLAGS) -DIAP=1 -DMIDI=1 -DSPDIF=0
+XCC_FLAGS_2iomx_mfi = $(BUILD_FLAGS) -DIAP=1 -DMIDI=1 -DSPDIF_TX=0
 INCLUDE_ONLY_IN_2iomx_mfi = 
 
 #Audio Class 2, iAP enabled, Input, Output, MIDI, No SPDIF. Select USB A port. Turn on reboot based on switch. Ignore VBUS.
 #Note, this is the config used for Apple role-switch
-XCC_FLAGS_2iomx_usba_reboot_mfi = $(BUILD_FLAGS) -DIAP=1 -DMIDI=1 -DSPDIF=0 -DUSB_SEL_A=1 -DSW_INT_HANDLER=1 -DSWITCH_VAL=0b1000 -DXUD_PWR_CFG=0
+XCC_FLAGS_2iomx_usba_reboot_mfi = $(BUILD_FLAGS) -DIAP=1 -DMIDI=1 -DSPDIF_TX=0 -DUSB_SEL_A=1 -DSW_INT_HANDLER=1 -DSWITCH_VAL=0b1000 -DXUD_PWR_CFG=0
 INCLUDE_ONLY_IN_2iomx_usba_reboot_mfi = 
 
 include mfi.mk
