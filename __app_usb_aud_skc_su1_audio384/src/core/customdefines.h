@@ -21,8 +21,8 @@
 #define NUM_USB_CHAN_OUT  (2)         /* Host to Device */
 #endif
 
-#ifndef SPDIF
-#define SPDIF 0
+#ifndef SPDIF_TX
+#define SPDIF_TX 0
 #endif
 
 /* Number of IS2 chans to DAC..*/

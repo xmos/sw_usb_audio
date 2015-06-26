@@ -15,8 +15,8 @@
 #endif
 
 /* Enable/Disable SPDIF output - Default is SPDIF on */
-#ifndef SPDIF
-#define SPDIF              (1)
+#ifndef SPDIF_TX
+#define SPDIF_TX           (1)
 #endif
 
 /* Audio Class Version.  Note we run in FS when in Audio Class 1.0 mode */

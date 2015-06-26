@@ -19,8 +19,8 @@
 #endif
 
 /* Enable/Disable SPDIF output - Default is S/PDIF on */
-#ifndef SPDIF
-#define SPDIF		1
+#ifndef SPDIF_TX
+#define SPDIF_TX	1
 #endif
 
 /* Audio class version to run in - Default is 2.0 */
