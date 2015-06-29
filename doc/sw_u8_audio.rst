@@ -103,9 +103,9 @@ Configuration 2iomx
 
 This configuration disables S/PDIF and enables MIDI.
 
-This configuration can be achieved by in the Makefile by defining ``SPDIF`` as zero::
+This configuration can be achieved by in the Makefile by defining ``SPDIF_TX`` as zero::
     
-    -DSPDIF=0
+    -DSPDIF_TX=0
 
 and ``MIDI`` as 1::
 

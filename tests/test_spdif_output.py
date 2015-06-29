@@ -92,7 +92,7 @@ def do_spdif_output_test(testlevel, board, app_name, app_config, spdif_base_chan
 
     analyser_binary = '../../sw_audio_analyzer/app_audio_analyzer_mc/bin/spdif_out/app_audio_analyzer_mc_spdif_out.xe'
 
-    if xmostest.get_testlevel() != 'smoke':
+    if xmostest.testlevel_is_at_least(testlevel, 'nightly'):
         dut_job = xmostest.flash_xcore(resources['dut'], dut_binary,
                                          tester = ctester[0],
                                          initial_delay = None)
