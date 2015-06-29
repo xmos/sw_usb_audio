@@ -94,7 +94,7 @@ def do_spdif_input_test(testlevel, board, app_name, app_config, spdif_base_chan,
 
     if xmostest.testlevel_is_at_least(testlevel, 'nightly'):
         dut_job = xmostest.flash_xcore(resources['dut'], dut_binary,
-                                         tester = ctester[0])
+                                       tester = ctester[0])
     else:
         dut_job = xmostest.run_on_xcore(resources['dut'], dut_binary,
                                         tester = ctester[0],
@@ -170,6 +170,7 @@ def runtest():
 
                     # Special case to test WDM on Windows
                     # TODO: confirm WDM values are correct
+                    # FIXME: PortAudio error if WDM channel count is lower than spdif_base_chan
                     WDM_SAMPLE_RATE = 44100
                     if os.startswith('win_') and WDM_SAMPLE_RATE in sample_rates:
                         do_spdif_input_test(testlevel, board, app, config_name,
