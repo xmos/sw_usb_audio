@@ -7,9 +7,10 @@ sw_usb_audio Change Log
 
   * Changes to dependencies:
 
-    - sc_usb_audio: 6.12.2rc3 -> 6.12.3rc0
+    - sc_usb_audio: 6.12.2rc3 -> 6.12.3rc1
 
-      + RESOLVED:   Method for storing persistent state over a DFU reboot modified                  to improve resilience against code-base and tools changes
+      + RESOLVED:   Method for storing persistent state over a DFU reboot modified to improve resilience
+        against code-base and tools changes
 
 6.12.5
 ------
