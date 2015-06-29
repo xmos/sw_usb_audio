@@ -1,6 +1,10 @@
 sw_usb_audio Change Log
 =======================
 
+6.12.6
+------
+
+
 6.12.5
 ------
     - RESOLVED:   Enabled DFU support (and quad-SPI flash) support in xCORE-200 application.
@@ -11,7 +15,6 @@ sw_usb_audio Change Log
 
     - sc_usb_audio: 6.12.1alpha0 -> 6.12.3rc0
 
-      + RESOLVED:   Method for storing persistent state over a DFU reboot modified                  to improve resilience against code-base and tools changes
       + RESOLVED:   Reboot code (used for DFU) failure in tools versions > 14.0.2 (xCORE-200 only)
       + RESOLVED:   Run-time exception in mixer when MAX_MIX_COUNT > 0 (xCORE-200 only)
       + RESOLVED:   MAX_MIX_COUNT checked properly for mix strings in string table
