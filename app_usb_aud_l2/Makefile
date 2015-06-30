@@ -76,6 +76,12 @@ ifeq ($(TEST_CONFIGS),1)
 XCC_FLAGS_2ioxs_codec_master = $(BUILD_FLAGS) -DCODEC_MASTER=1
 endif
 
+ifeq ($(TEST_CONFIGS),1)
+	XCC_FLAGS_upgrade1 = $(BUILD_FLAGS) -DBCD_DEVICE_J=0x99 -DBCD_DEVICE_M=0x0 -DBCD_DEVICE_N=0x1
+	XCC_FLAGS_upgrade2 = $(BUILD_FLAGS) -DBCD_DEVICE_J=0x99 -DBCD_DEVICE_M=0x0 -DBCD_DEVICE_N=0x2
+endif
+
+
 # The USED_MODULES variable lists other module used by the application. These
 # modules will extend the SOURCE_DIRS, INCLUDE_DIRS and LIB_DIRS variables. 
 # Modules are expected to be in the directory above the BASE_DIR directory.
