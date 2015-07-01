@@ -7,8 +7,9 @@ sw_usb_audio Change Log
 
   * Changes to dependencies:
 
-    - sc_usb_audio: 6.12.2rc3 -> 6.12.3rc3
+    - sc_usb_audio: 6.12.2rc3 -> 6.12.4rc0
 
+      + RESOLVED:   DFU fail when DSD enabled and USB library not running on tile[0]
       + RESOLVED:   Method for storing persistent state over a DFU reboot modified to improve resilience
         against code-base and tools changes
 
