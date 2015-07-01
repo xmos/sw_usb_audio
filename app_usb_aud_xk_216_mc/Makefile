@@ -64,6 +64,14 @@ INCLUDE_ONLY_IN_2i32o32xsxxx_tdm8  =
 XCC_FLAGS_2i10o10msxxxx = $(BUILD_FLAGS) -DMIDI=1 -DSPDIF_TX=1
 INCLUDE_ONLY_IN_2i10o10msxxxx = 
 
+# Audio Class 2, Input, Output, MIDI, SPDIF, DSD
+XCC_FLAGS_2i10o10xxxxxd = $(BUILD_FLAGS) -DMIDI=0 -DSPDIF_TX=0 -DDSD_CHANS_DAC=2
+INCLUDE_ONLY_IN_2i10o10xxxxxd = 
+
+# Audio Class 2, Input, Output, no MIDI, no SPDIF
+XCC_FLAGS_2i10o10xxxxxx = $(BUILD_FLAGS) -DMIDI=0 -DSPDIF_TX=0
+INCLUDE_ONLY_IN_2i10o10xxxxxx = 
+
 # Audio Class 2, Input, Output, no MIDI, SPDIF
 XCC_FLAGS_2i10o10xsxxxx = $(BUILD_FLAGS) -DMIDI=0 -DSPDIF_TX=1
 INCLUDE_ONLY_IN_2i10o10xsxxxx = 
