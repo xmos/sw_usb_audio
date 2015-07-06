@@ -7,8 +7,9 @@ sw_usb_audio Change Log
 
   * Changes to dependencies:
 
-    - sc_usb_audio: 6.12.2rc3 -> 6.12.4rc1
+    - sc_usb_audio: 6.12.2rc3 -> 6.12.5rc0
 
+      + RESOLVED:   Stream issue when NUM_USB_CHAN_IN < I2S_CHANS_ADC
       + RESOLVED:   DFU fail when DSD enabled and USB library not running on tile[0]
       + RESOLVED:   Method for storing persistent state over a DFU reboot modified to improve resilience
         against code-base and tools changes
