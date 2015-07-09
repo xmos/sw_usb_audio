@@ -110,7 +110,7 @@ def do_analogue_output_test(testlevel, board, app_name, app_config, num_chans,
 
     if xmostest.testlevel_is_at_least(testlevel, 'nightly'):
         dut_job = xmostest.flash_xcore(resources['dut'], dut_binary,
-                                         tester = ctester[0])
+                                       tester = ctester[0])
     else:
         dut_job = xmostest.run_on_xcore(resources['dut'], dut_binary,
                                         tester = ctester[0],
