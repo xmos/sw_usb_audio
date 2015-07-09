@@ -92,13 +92,13 @@ class AnalogueOutputTester(xmostest.Tester):
                                  env={},
                                  output=output)
 
-def do_analogue_output_test(testlevel, board, app_name, app_config, num_chans,
-                            sample_rate, duration, os, use_wdm=False):
+def do_analogue_output_test(min_testlevel, board, app_name, app_config,
+                            num_chans, sample_rate, duration, os, use_wdm=False):
 
     ctester = xmostest.CombinedTester(5, AnalogueOutputTester(app_name,
                                             app_config, num_chans, sample_rate,
                                             duration, os, use_wdm))
-    ctester.set_min_testlevel(testlevel)
+    ctester.set_min_testlevel(min_testlevel)
 
     resources = xmostest.request_resource("uac2_%s_testrig_%s" % (board, os),
                                           ctester)
@@ -108,7 +108,7 @@ def do_analogue_output_test(testlevel, board, app_name, app_config, num_chans,
 
     analyser_binary = '../../sw_audio_analyzer/app_audio_analyzer_mc/bin/app_audio_analyzer_mc.xe'
 
-    if xmostest.testlevel_is_at_least(testlevel, 'nightly'):
+    if xmostest.testlevel_is_at_least(xmostest.get_testlevel(), 'nightly'):
         dut_job = xmostest.flash_xcore(resources['dut'], dut_binary,
                                        tester = ctester[0])
     else:
@@ -230,10 +230,10 @@ def runtest():
                 config_name = config['config']
                 num_chans = config['chan_count']
                 for run_type in config['testlevels']:
-                    testlevel = run_type['level']
+                    min_testlevel = run_type['level']
                     sample_rates = run_type['sample_rates']
                     for sample_rate in sample_rates:
-                        do_analogue_output_test(testlevel, board, app,
+                        do_analogue_output_test(min_testlevel, board, app,
                                                 config_name, num_chans,
                                                 sample_rate, duration, os)
 
@@ -242,7 +242,7 @@ def runtest():
                     WDM_SAMPLE_RATE = 44100
                     WDM_MAX_NUM_CHANS = 2
                     if os.startswith('win_') and (WDM_SAMPLE_RATE in sample_rates):
-                        do_analogue_output_test(testlevel, board, app,
+                        do_analogue_output_test(min_testlevel, board, app,
                                                 config_name, WDM_MAX_NUM_CHANS,
-                                                WDM_SAMPLE_RATE, duration,
-                                                os, use_wdm=True)
+                                                WDM_SAMPLE_RATE, duration, os,
+                                                use_wdm=True)

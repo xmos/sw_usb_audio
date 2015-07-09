@@ -76,13 +76,14 @@ class SPDIFOutputTester(xmostest.Tester):
                                  env={},
                                  output=output)
 
-def do_spdif_output_test(testlevel, board, app_name, app_config, spdif_base_chan,
-                         sample_rate, duration, os, use_wdm=False):
+def do_spdif_output_test(min_testlevel, board, app_name, app_config,
+                         spdif_base_chan, sample_rate, duration, os,
+                         use_wdm=False):
 
     ctester = xmostest.CombinedTester(3, SPDIFOutputTester(app_name, app_config,
                                             spdif_base_chan, sample_rate,
                                             duration, os, use_wdm))
-    ctester.set_min_testlevel(testlevel)
+    ctester.set_min_testlevel(min_testlevel)
 
     resources = xmostest.request_resource("uac2_%s_testrig_%s" % (board, os),
                                           ctester)
@@ -92,7 +93,7 @@ def do_spdif_output_test(testlevel, board, app_name, app_config, spdif_base_chan
 
     analyser_binary = '../../sw_audio_analyzer/app_audio_analyzer_mc/bin/spdif_out/app_audio_analyzer_mc_spdif_out.xe'
 
-    if xmostest.testlevel_is_at_least(testlevel, 'nightly'):
+    if xmostest.testlevel_is_at_least(xmostest.get_testlevel(), 'nightly'):
         dut_job = xmostest.flash_xcore(resources['dut'], dut_binary,
                                        tester = ctester[0])
     else:
@@ -171,18 +172,19 @@ def runtest():
                 config_name = config['config']
                 spdif_base_chan = config['spdif_base_chan']
                 for run_type in config['testlevels']:
-                    testlevel = run_type['level']
+                    min_testlevel = run_type['level']
                     sample_rates = run_type['sample_rates']
                     for sample_rate in sample_rates:
-                        do_spdif_output_test(testlevel, board, app, config_name,
-                                             spdif_base_chan, sample_rate,
-                                             duration, os)
+                        do_spdif_output_test(min_testlevel, board, app,
+                                             config_name, spdif_base_chan,
+                                             sample_rate, duration, os)
 
                     # Special case to test WDM on Windows
                     # TODO: confirm WDM values are correct
                     # FIXME: PortAudio error if WDM channel count is lower than spdif_base_chan
                     WDM_SAMPLE_RATE = 44100
                     if os.startswith('win_') and WDM_SAMPLE_RATE in sample_rates:
-                        do_spdif_output_test(testlevel, board, app, config_name,
-                                             spdif_base_chan, WDM_SAMPLE_RATE,
-                                             duration, os, use_wdm=True)
+                        do_spdif_output_test(min_testlevel, board, app,
+                                             config_name, spdif_base_chan,
+                                             WDM_SAMPLE_RATE, duration, os,
+                                             use_wdm=True)

@@ -190,11 +190,11 @@ class DFUTester(xmostest.Tester):
                                  env={},
                                  output=output)
 
-def do_dfu_test(testlevel, board, app_name, pid, app_config, os):
+def do_dfu_test(min_testlevel, board, app_name, pid, app_config, os):
 
     ctester = xmostest.CombinedTester(4, DFUTester(app_name, app_config, os),
                                       pid)
-    ctester.set_min_testlevel(testlevel)
+    ctester.set_min_testlevel(min_testlevel)
 
     resources = xmostest.request_resource("uac2_%s_testrig_%s" % (board, os),
                                           ctester)
@@ -287,5 +287,5 @@ def runtest():
         for os in host_oss:
             for config in test['app_configs']:
                 config_name = config['config']
-                testlevel = config['testlevel']
-                do_dfu_test(testlevel, board, app, pid, config_name, os)
+                min_testlevel = config['testlevel']
+                do_dfu_test(min_testlevel, board, app, pid, config_name, os)
