@@ -150,12 +150,12 @@ class VolumeOutputTester(xmostest.Tester):
                                  env={},
                                  output=output)
 
-def do_volume_output_test(testlevel, board, app_name, app_config, num_chans,
+def do_volume_output_test(min_testlevel, board, app_name, app_config, num_chans,
                           sample_rate, channel, os):
 
     ctester = xmostest.CombinedTester(7, VolumeOutputTester(app_name, app_config,
                                       num_chans, channel, os))
-    ctester.set_min_testlevel(testlevel)
+    ctester.set_min_testlevel(min_testlevel)
 
     duration = 20
 
@@ -167,7 +167,7 @@ def do_volume_output_test(testlevel, board, app_name, app_config, num_chans,
 
     analyser_binary = '../../sw_audio_analyzer/app_audio_analyzer_mc/bin/app_audio_analyzer_mc.xe'
 
-    if xmostest.testlevel_is_at_least(testlevel, 'nightly'):
+    if xmostest.testlevel_is_at_least(xmostest.get_testlevel(), 'nightly'):
         dut_job = xmostest.flash_xcore(resources['dut'], dut_binary,
                                        tester = ctester[0])
     else:
@@ -316,15 +316,15 @@ def runtest():
                 config_name = config['config']
                 num_chans = config['chan_count']
                 max_sample_rate = config['max_sample_rate']
-                testlevel = config['testlevel']
+                min_testlevel = config['testlevel']
 
                 # Test the master volume control
-                do_volume_output_test(testlevel, board, app, config_name,
+                do_volume_output_test(min_testlevel, board, app, config_name,
                                       num_chans, max_sample_rate, 'master',
                                       os)
 
                 # Test the volume control of each channel
                 for chan in range(num_chans):
-                    do_volume_output_test(testlevel, board, app, config_name,
+                    do_volume_output_test(min_testlevel, board, app, config_name,
                                           num_chans, max_sample_rate, chan,
                                           os)
