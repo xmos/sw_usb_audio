@@ -11,7 +11,7 @@ class VolumeChangeChecker(object):
         m = re.match('.*Volume change by -([\d]*)', output)
         try:
             self.initial_change = int(m.groups(0)[0])
-        except AttributeError, ValueError:
+        except (AttributeError, ValueError):
             failure_reporter("Cannot interpret initial volume decrease")
 
     def check_change(self, failure_reporter, output, expected_ratio):
@@ -23,7 +23,7 @@ class VolumeChangeChecker(object):
         m = re.match(r, output)
         try:
             v = int(m.groups(0)[0])
-        except AttributeError, ValueError:
+        except (AttributeError, ValueError):
             failure_reporter("Cannot interpret volume change")
             return
         ratio = float(v)/float(self.initial_change)
