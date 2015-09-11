@@ -207,7 +207,7 @@ def runtest():
         }
     ]
 
-    host_oss = ['os_x', 'win_vista', 'win_7', 'win_8']
+    host_oss = ['os_x_10', 'os_x_11', 'win_vista', 'win_7', 'win_8', 'win_10']
     duration = 30
 
     if xmostest.testlevel_is_at_least(xmostest.get_testlevel(), 'nightly'):
