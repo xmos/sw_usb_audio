@@ -6,7 +6,7 @@
 #include "descriptor_defs.h"
 
 /***** Defines relating to iOS identification *****/
-#define ACCESSORY_MODEL_NUMBER   "XK-USB-AUDIO-U8-2C"
+#define ACCESSORY_MODEL_NUMBER   "xCORE-200 MC AUDIO"
 
 #define ACCESSORY_HARDWARE_MAJOR 2
 #define ACCESSORY_HARDWARE_MINOR 0
