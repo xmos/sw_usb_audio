@@ -58,6 +58,9 @@ expected_win32 = [
     # Check initial version
     (['f','x'], "00\s+(0x20B1)\s+{pid_str}\s+(0x[0-9a-fA-F]{{1,4}}).*"),
 
+    # Capture driver version to report in test results
+    (['x'], "(Driver Version): (\d+.\d+.\d+)"),
+
     # First upgrade
     ('r', "Downloading .* to target \d+ \.\.\."),
     ('l', "Firmware download succeeded."),
@@ -142,6 +145,7 @@ class DFUTester(xmostest.Tester):
             expected_result = expected_win32
 
         starting_version = ''
+        driver_version = ''
 
         for expected in expected_result:
             line_mode = expected[0]
@@ -165,6 +169,11 @@ class DFUTester(xmostest.Tester):
                         starting_version = extracted_vals[2]
                         found = True
                         break
+                    elif (len(extracted_vals) == 4 and
+                          (extracted_vals[1] == 'Driver Version'):
+                        driver_version = extracted_vals[2]
+                        found = True
+                        break
                 elif line_mode.count('r'):
                     # Match line as regex
                     if re.match(expected_line, dfu_line):
@@ -180,6 +189,8 @@ class DFUTester(xmostest.Tester):
                                     % expected_line)
 
         output = {'dfu_output':''.join(dfu_output)}
+        if driver_version is not '':
+            output['driver_version'] = driver_version
         if not self.result:
             output['failures'] = ''.join(self.failures)
         xmostest.set_test_result(self.product,
