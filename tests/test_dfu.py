@@ -170,7 +170,7 @@ class DFUTester(xmostest.Tester):
                         found = True
                         break
                     elif (len(extracted_vals) == 4 and
-                          (extracted_vals[1] == 'Driver Version'):
+                          (extracted_vals[1] == 'Driver Version')):
                         driver_version = extracted_vals[2]
                         found = True
                         break
