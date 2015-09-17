@@ -59,12 +59,12 @@ expected_win32 = [
     (['f','x'], "00\s+(0x20B1)\s+{pid_str}\s+(0x[0-9a-fA-F]{{1,4}}).*"),
 
     # First upgrade
-    ('r', "Firmware file '.*' successfully loaded\."),
+    ('r', "Downloading .* to target \d+ \.\.\."),
     ('l', "Firmware download succeeded."),
     ('f', "00      0x20B1  {pid_str}  0x9901"),
 
     # Second upgrade
-    ('r', "Firmware file '.*' successfully loaded\."),
+    ('r', "Downloading .* to target \d+ \.\.\."),
     ('l', "Firmware download succeeded."),
     ('f', "00      0x20B1  {pid_str}  0x9902"),
 
@@ -79,7 +79,7 @@ expected_win32 = [
     ('f', "00      0x20B1  {pid_str}  {version_str}"),
 
     # Download the uploaded image back to the device
-    ('r', "Firmware file 'upload\.bin' successfully loaded\."),
+    ('r', "Downloading upload.bin to target \d+ \.\.\."),
     ('l', "Firmware download succeeded."),
     ('f', "00      0x20B1  {pid_str}  0x9902"),
 
