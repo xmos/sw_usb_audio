@@ -11,7 +11,7 @@ class VolumeChangeChecker(object):
         m = re.match('.*Volume change by -([\d]*)', output)
         try:
             self.initial_change = int(m.groups(0)[0])
-        except AttributeError, ValueError:
+        except (AttributeError, ValueError):
             failure_reporter("Cannot interpret initial volume decrease")
 
     def check_change(self, failure_reporter, output, expected_ratio):
@@ -23,7 +23,7 @@ class VolumeChangeChecker(object):
         m = re.match(r, output)
         try:
             v = int(m.groups(0)[0])
-        except AttributeError, ValueError:
+        except (AttributeError, ValueError):
             failure_reporter("Cannot interpret volume change")
             return
         ratio = float(v)/float(self.initial_change)
@@ -135,12 +135,12 @@ class VolumeInputTester(xmostest.Tester):
                                  env={},
                                  output=output)
 
-def do_volume_input_test(testlevel, board, app_name, app_config, num_chans,
+def do_volume_input_test(min_testlevel, board, app_name, app_config, num_chans,
                          sample_rate, channel, os):
 
     ctester = xmostest.CombinedTester(6, VolumeInputTester(app_name, app_config,
                                             num_chans, channel, os))
-    ctester.set_min_testlevel(testlevel)
+    ctester.set_min_testlevel(min_testlevel)
 
     duration = 20
 
@@ -152,7 +152,7 @@ def do_volume_input_test(testlevel, board, app_name, app_config, num_chans,
 
     analyser_binary = '../../sw_audio_analyzer/app_audio_analyzer_mc/bin/app_audio_analyzer_mc.xe'
 
-    if xmostest.testlevel_is_at_least(testlevel, 'nightly'):
+    if xmostest.testlevel_is_at_least(xmostest.get_testlevel(), 'nightly'):
         dut_job = xmostest.flash_xcore(resources['dut'], dut_binary,
                                        tester = ctester[0])
     else:
@@ -272,7 +272,7 @@ def runtest():
         }
     ]
 
-    host_oss = ['os_x', 'win_vista', 'win_7', 'win_8']
+    host_oss = ['os_x_10', 'os_x_11', 'win_7', 'win_8', 'win_10']
 
     for test in test_configs:
         board = test['board']
@@ -282,13 +282,13 @@ def runtest():
                 config_name = config['config']
                 num_chans = config['chan_count']
                 max_sample_rate = config['max_sample_rate']
-                testlevel = config['testlevel']
+                min_testlevel = config['testlevel']
 
                 # Test the master volume control
-                do_volume_input_test(testlevel, board, app, config_name,
+                do_volume_input_test(min_testlevel, board, app, config_name,
                                      num_chans, max_sample_rate, 'master', os)
 
                 # Test the volume control of each channel
                 for chan in range(num_chans):
-                    do_volume_input_test(testlevel, board, app, config_name,
+                    do_volume_input_test(min_testlevel, board, app, config_name,
                                          num_chans, max_sample_rate, chan, os)

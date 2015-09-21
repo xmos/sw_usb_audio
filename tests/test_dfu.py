@@ -58,13 +58,16 @@ expected_win32 = [
     # Check initial version
     (['f','x'], "00\s+(0x20B1)\s+{pid_str}\s+(0x[0-9a-fA-F]{{1,4}}).*"),
 
+    # Capture driver version to report in test results
+    (['x'], "(Driver Version): (\d+.\d+.\d+)"),
+
     # First upgrade
-    ('r', "Firmware file '.*' successfully loaded\."),
+    ('r', "Downloading .* to target \d+ \.\.\."),
     ('l', "Firmware download succeeded."),
     ('f', "00      0x20B1  {pid_str}  0x9901"),
 
     # Second upgrade
-    ('r', "Firmware file '.*' successfully loaded\."),
+    ('r', "Downloading .* to target \d+ \.\.\."),
     ('l', "Firmware download succeeded."),
     ('f', "00      0x20B1  {pid_str}  0x9902"),
 
@@ -79,7 +82,7 @@ expected_win32 = [
     ('f', "00      0x20B1  {pid_str}  {version_str}"),
 
     # Download the uploaded image back to the device
-    ('r', "Firmware file 'upload\.bin' successfully loaded\."),
+    ('r', "Downloading upload.bin to target \d+ \.\.\."),
     ('l', "Firmware download succeeded."),
     ('f', "00      0x20B1  {pid_str}  0x9902"),
 
@@ -142,6 +145,7 @@ class DFUTester(xmostest.Tester):
             expected_result = expected_win32
 
         starting_version = ''
+        driver_version = ''
 
         for expected in expected_result:
             line_mode = expected[0]
@@ -165,6 +169,11 @@ class DFUTester(xmostest.Tester):
                         starting_version = extracted_vals[2]
                         found = True
                         break
+                    elif (len(extracted_vals) == 4 and
+                          (extracted_vals[1] == 'Driver Version')):
+                        driver_version = extracted_vals[2]
+                        found = True
+                        break
                 elif line_mode.count('r'):
                     # Match line as regex
                     if re.match(expected_line, dfu_line):
@@ -180,6 +189,8 @@ class DFUTester(xmostest.Tester):
                                     % expected_line)
 
         output = {'dfu_output':''.join(dfu_output)}
+        if driver_version is not '':
+            output['driver_version'] = driver_version
         if not self.result:
             output['failures'] = ''.join(self.failures)
         xmostest.set_test_result(self.product,
@@ -190,11 +201,11 @@ class DFUTester(xmostest.Tester):
                                  env={},
                                  output=output)
 
-def do_dfu_test(testlevel, board, app_name, pid, app_config, os):
+def do_dfu_test(min_testlevel, board, app_name, pid, app_config, os):
 
     ctester = xmostest.CombinedTester(4, DFUTester(app_name, app_config, os),
                                       pid)
-    ctester.set_min_testlevel(testlevel)
+    ctester.set_min_testlevel(min_testlevel)
 
     resources = xmostest.request_resource("uac2_%s_testrig_%s" % (board, os),
                                           ctester)
@@ -278,7 +289,7 @@ def runtest():
         }
     ]
 
-    host_oss = ['os_x', 'win_vista', 'win_7', 'win_8']
+    host_oss = ['os_x_10', 'os_x_11', 'win_7', 'win_8', 'win_10']
 
     for test in test_configs:
         board = test['board']
@@ -287,5 +298,5 @@ def runtest():
         for os in host_oss:
             for config in test['app_configs']:
                 config_name = config['config']
-                testlevel = config['testlevel']
-                do_dfu_test(testlevel, board, app, pid, config_name, os)
+                min_testlevel = config['testlevel']
+                do_dfu_test(min_testlevel, board, app, pid, config_name, os)

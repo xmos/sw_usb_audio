@@ -27,8 +27,8 @@ void AudioHwInit(chanend ?c_codec)
 
 
 /* Audio slice uses I2C configured CODECs*/
-#define CODEC1_I2C_DEVICE_ADDR       (0x90)
-#define CODEC2_I2C_DEVICE_ADDR       (0x92)
+#define CODEC1_I2C_DEVICE_ADDR       (0x90>>1)
+#define CODEC2_I2C_DEVICE_ADDR       (0x92>>1)
 
 #define CODEC_DEV_ID_ADDR           0x01
 #define CODEC_PWR_CTRL_ADDR         0x02
