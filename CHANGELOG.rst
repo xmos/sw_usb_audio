@@ -1,6 +1,10 @@
 sw_usb_audio Change Log
 =======================
 
+6.13.0
+------
+CURRENTLY UNRELEASED
+
 6.12.6
 ------
 
