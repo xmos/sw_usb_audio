@@ -288,4 +288,4 @@ def runtest():
             for config in test['app_configs']:
                 config_name = config['config']
                 min_testlevel = config['testlevel']
-                do_dfu_test(min_testlevel, board, app, pid, config_name, os)
+                #do_dfu_test(min_testlevel, board, app, pid, config_name, os)
