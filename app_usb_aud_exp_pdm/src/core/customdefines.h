@@ -17,21 +17,12 @@
  * Note, we check if they are already defined in Makefile
  */
 
-/* Default to board version version 2.0 */
-#ifndef XCORE_200_MC_AUDIO_HW_VERSION
-#define XCORE_200_MC_AUDIO_HW_VERSION 2
-#endif
+//#define CODEC_MASTER 1
+
 
 /* Tile defines */
-#define AUDIO_IO_TILE      0
+#define AUDIO_IO_TILE      1
 #define XUD_TILE           1
-
-/* SPDIF Tx i/o moved tile between board versions 1.0 -> 2.0 */
-#if XCORE_200_MC_AUDIO_HW_VERSION < 2
-#define SPDIF_TX_TILE      1
-#endif
-
-#define MIDI_TILE          1
 
 /* Mixer core enabled by default */
 #ifndef MIXER
@@ -60,7 +51,7 @@
 //:audio_defs
 /* Number of USB streaming channels - Default is 4 in 4 out */
 #ifndef NUM_USB_CHAN_IN
-#define NUM_USB_CHAN_IN    (2)         /* Device to Host */
+#define NUM_USB_CHAN_IN    (0)         /* Device to Host */
 #endif
 #ifndef NUM_USB_CHAN_OUT
 #define NUM_USB_CHAN_OUT   (2)         /* Host to Device */
@@ -73,7 +64,7 @@
 
 /* Number of I2S chans from ADC */
 #ifndef I2S_CHANS_ADC
-#define I2S_CHANS_ADC      (2)
+#define I2S_CHANS_ADC      (0)
 #endif
 
 /* Channel index of SPDIF Rx channels (duplicated DAC channels 1/2 when index is 0) */
@@ -98,7 +89,7 @@
 
 /* Master clock defines (in Hz) */
 #define MCLK_441           (512*44100)   /* 44.1, 88.2 etc */
-#define MCLK_48            (512*48000)   /* 48, 96 etc */
+#define MCLK_48            (256*48000)   /* 48, 96 etc */
 
 #ifndef MIN_FREQ
 #define MIN_FREQ           (48000)

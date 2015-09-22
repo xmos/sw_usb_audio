@@ -3,21 +3,24 @@
 #include <assert.h>
 #include "devicedefines.h"
 #include <platform.h>
-#include "gpio_access.h"
 #include "i2c_shared.h"
 #include "cs2100.h"
 #include "print.h"
 
 on tile[AUDIO_IO_TILE] : out port p_pll_clk                 = PORT_PLL_REF;
 
-on tile[0] : out port p_gpio = XS1_PORT_8C;
+on tile[1] : out port p_gpio = XS1_PORT_4F;
 
-on tile [0] : struct r_i2c r_i2c = {XS1_PORT_1F, XS1_PORT_1E};
-
-
+on tile [1] : struct r_i2c r_i2c = {XS1_PORT_4E};
+ 
 #define CS2100_REGREAD(reg, data)  {data[0] = 0xAA; i2c_master_read_reg(CS2100_I2C_DEVICE_ADDR, reg, data, 1, r_i2c);}
 #define CS2100_REGREAD_ASSERT(reg, data, expected)  {data[0] = 0xAA; i2c_master_read_reg(CS2100_I2C_DEVICE_ADDR, reg, data, 1, r_i2c); assert(data[0] == expected);}
 #define CS2100_REGWRITE(reg, val) {data[0] = val; i2c_master_write_reg(CS2100_I2C_DEVICE_ADDR, reg, data, 1, r_i2c);}
+
+
+#define DAC_REGWRITE(reg, val) {data[0] = val; i2c_master_write_reg(0x4a, reg, data, 1, r_i2c);}
+#define DAC_REGREAD_ASSERT(reg, data, expected)  {data[0] = 0xAA; i2c_master_read_reg(0x4a, reg, data, 1, r_i2c); assert(data[0] == expected);}
+
 
 /* The number of timer ticks to wait for the audio PLL to lock */
 /* CS2100 lists typical lock time as 100 * input period */
@@ -96,11 +99,39 @@ void wait_us(int microseconds)
 
 void AudioHwInit(chanend ?c_codec)
 {
+    unsigned char data[1] = {0};
+    
     /* Init the i2c module */
     i2c_shared_master_init(r_i2c);
 
-     /* Initialise external PLL */
+    /* Initialise external PLL */
     PllInit();
+    
+    /* Configure external fractional-n clock multiplier for 300Hz -> mClkFreq */
+    PllMult(DEFAULT_MCLK_FREQ/300);
+
+    /* Allow some time for mclk to lock and MCLK to stabilise - this is important to avoid glitches at start of stream */
+    {
+        timer t;
+        unsigned time;
+        t :> time;
+        t when timerafter(time+AUDIO_PLL_LOCK_DELAY) :> void;
+    }
+
+    /* DAC out of reset */
+    p_gpio <: 0xf;
+
+{
+        timer t;
+        unsigned time;
+        t :> time;
+        t when timerafter(time+AUDIO_PLL_LOCK_DELAY) :> void;
+    }
+
+    /* Put DAC into slave mode  */
+    unsigned char val = 0b00001000;
+    DAC_REGWRITE(4, val);
+    DAC_REGREAD_ASSERT(4, data, val);
 }
 
 /* Configures the external audio hardware for the required sample frequency.
