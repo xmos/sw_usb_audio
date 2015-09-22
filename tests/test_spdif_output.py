@@ -148,12 +148,11 @@ def runtest():
                 {'level':'nightly','sample_rates':[44100, 48000, 88200, 96000, 176400, 192000]}]},
 
             {'config':'2ioxs','spdif_base_chan':8,'testlevels':[
-                {'level':'smoke','sample_rates':[44100, 192000]},
-                {'level':'nightly','sample_rates':[48000, 88200, 96000, 176400]}]},
+                {'level':'nightly','sample_rates':[44100, 48000, 88200, 96000, 176400, 192000]}]},
 
             {'config':'2xoxs','spdif_base_chan':8,'testlevels':[
-                {'level':'smoke','sample_rates':[44100, 192000]},
-                {'level':'nightly','sample_rates':[48000, 88200, 96000, 176400]}]},
+                {'level':'smoke','sample_rates':[192000]},
+                {'level':'nightly','sample_rates':[44100, 48000, 88200, 96000, 176400]}]},
             ]
         }
     ]
