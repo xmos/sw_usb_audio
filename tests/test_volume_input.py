@@ -264,10 +264,10 @@ def runtest():
                 'max_sample_rate':192000,'testlevel':'smoke'},
 
             {'config':'2ioxs','chan_count':6,
-                'max_sample_rate':192000,'testlevel':'smoke'},
+                'max_sample_rate':192000,'testlevel':'nightly'},
 
             {'config':'2ioxx','chan_count':6,
-                'max_sample_rate':192000,'testlevel':'smoke'}
+                'max_sample_rate':192000,'testlevel':'nightly'}
             ]
         }
     ]

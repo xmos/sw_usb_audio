@@ -270,9 +270,9 @@ def runtest():
             {'config':'2io_spdifout_spdifin','testlevel':'nightly'},
             {'config':'2io_spdifout_spdifin_mix8','testlevel':'nightly'},
             {'config':'2io_tdm8','testlevel':'nightly'},
-            {'config':'2iomx','testlevel':'smoke'},
-            {'config':'2ioxs','testlevel':'smoke'},
-            {'config':'2ioxx','testlevel':'smoke'},
+            {'config':'2iomx','testlevel':'nightly'},
+            {'config':'2ioxs','testlevel':'nightly'},
+            {'config':'2ioxx','testlevel':'nightly'},
             {'config':'2xoxs','testlevel':'smoke'}
             ]
         }
