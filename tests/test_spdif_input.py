@@ -152,7 +152,7 @@ def runtest():
     duration = 30
 
     if xmostest.testlevel_is_at_least(xmostest.get_testlevel(), 'nightly'):
-        duration = 60 # TODO: set test time for nightlies
+        duration = 30 # TODO: set test time for nightlies
 
     for test in test_configs:
         board = test['board']
