@@ -51,7 +51,7 @@
 //:audio_defs
 /* Number of USB streaming channels - Default is 4 in 4 out */
 #ifndef NUM_USB_CHAN_IN
-#define NUM_USB_CHAN_IN    (2)         /* Device to Host */
+#define NUM_USB_CHAN_IN    (8)         /* Device to Host */
 #endif
 #ifndef NUM_USB_CHAN_OUT
 #define NUM_USB_CHAN_OUT   (2)         /* Host to Device */
