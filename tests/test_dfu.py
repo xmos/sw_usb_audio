@@ -204,7 +204,7 @@ def do_dfu_test(min_testlevel, board, app_name, pid, app_config, os):
                   (dut_app_path, app_config, app_name, app_config))
 
     dut_job = xmostest.flash_xcore(resources['dut'], dut_binary,
-                                   tester = ctester[0])
+                                   tester = ctester[0], do_xe_prebuild = True)
 
     xflash_cmds = ['cd %s;' % dut_app_path,
                    'xmake clean CONFIG=%s;' % app_config,
