@@ -3,7 +3,8 @@ sw_usb_audio Change Log
 
 6.13.0
 ------
-CURRENTLY UNRELEASED
+    - RESOLVED:   Channel string error & ADAT tx channel offset issue in app_usb_aud_l2 due to 
+                  SPDIF define typo in customdefines.h (should have been SPDIF_TX)
 
 6.12.6
 ------
