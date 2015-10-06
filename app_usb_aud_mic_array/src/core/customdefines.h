@@ -17,12 +17,11 @@
  * Note, we check if they are already defined in Makefile
  */
 
-//#define CODEC_MASTER 1
-
 
 /* Tile defines */
 #define AUDIO_IO_TILE      1
 #define XUD_TILE           1
+#define PDM_TILE           0
 
 /* Mixer core enabled by default */
 #ifndef MIXER
@@ -33,6 +32,7 @@
 #ifndef MAX_MIX_COUNT
 #define MAX_MIX_COUNT      0
 #endif
+
 
 /* Board is self-powered i.e. not USB bus-powered */
 #define SELF_POWERED       1
@@ -46,6 +46,9 @@
 #ifndef SPDIF_TX
 #define SPDIF_TX	       0
 #endif
+
+/* Enable PDM and PDM->PCM conversion code */
+#define NUM_PDM_MICS       8
 
 /* Defines relating to channel count and channel arrangement (Set to 0 for disable) */
 //:audio_defs
