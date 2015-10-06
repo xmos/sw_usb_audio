@@ -2,7 +2,7 @@
 # compiled for. It either refers to an XN file in the source directories
 # or a valid argument for the --target option when compiling.
 
-TARGET = xk-audio-216-mc.xn
+TARGET = mic_array_ref.xn
 APP_NAME = 
 
 # The flags passed to xcc when building the application
@@ -11,7 +11,7 @@ BUILD_FLAGS     = -DFLASH_MAX_UPGRADE_SIZE=64*1024 -fcomment-asm -Xmapper --map 
 # The USED_MODULES variable lists other module used by the application. These
 # modules will extend the SOURCE_DIRS, INCLUDE_DIRS and LIB_DIRS variables.
 # Modules are expected to be in the directory above the BASE_DIR directory.
-USED_MODULES = lib_beam lib_logging module_dfu module_i2c_shared module_i2c_single_port module_usb_audio module_usb_device module_usb_midi module_usb_shared module_xud
+USED_MODULES = lib_mic_array lib_mic_array_support lib_logging module_dfu module_i2c_shared module_i2c_single_port module_usb_audio module_usb_device module_usb_midi module_usb_shared module_xud
 
 # Build config naming scheme:
 
