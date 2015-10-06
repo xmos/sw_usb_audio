@@ -17,6 +17,12 @@
             <Port Location="XS1_PORT_1B" Name="PORT_SQI_CS"/>
             <Port Location="XS1_PORT_1C" Name="PORT_SQI_SCLK"/>
             <Port Location="XS1_PORT_4B" Name="PORT_SQI_SIO"/>
+
+            <!-- Mic related ports -->
+            <Port Location="XS1_PORT_1E" Name="PORT_PDM_CLK"/>
+            <Port Location="XS1_PORT_8B" Name="PORT_PDM_DATA"/>
+            <Port Location="XS1_PORT_1F" Name="PORT_PDM_MCLK"/>
+
           </Tile>
           
           <Tile Number="1" Reference="tile[1]">
