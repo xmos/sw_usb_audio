@@ -3,9 +3,41 @@ sw_usb_audio Change Log
 
 6.13.0
 ------
-    - RESOLVED:   Channel string error & ADAT tx channel offset issue in app_usb_aud_l2 due to 
+    - RESOLVED:   Channel string error & ADAT tx channel offset issue in app_usb_aud_l2 due to
                   SPDIF define typo in customdefines.h (should have been SPDIF_TX)
     - RESOLVED:   Incorrect I2C addresses of CODECs in app_usb_aud_skc_u16
+
+  * Changes to dependencies:
+
+    - sc_xud: 2.3.2rc0 -> 2.4.0beta0
+
+      + RESOLVED:   Intermittent initialisation issues with xCORE-200.
+      + RESOLVED:   SETUP transaction data CRC not properly checked
+      + RESOLVED:   RxError line from phy handled
+      + RESOLVED:   Isochronous IN endpoints now send an 0-length packet if not ready rather than
+        an (invalid) NAK.
+
+    - sc_usb_audio: 6.12.5rc0 -> 6.13.0beta1
+
+      + ADDED:      Device now uses implicit feedback when input stream is available (previously explicit
+        feedback pipe always used). This saves chanend/EP resources and means less processing
+        burden for the host. Previous behaviour available by enabling UAC_FORCE_FEEDBACK_EP
+      + RESOLVED:   Exception when SPDIF_TX and ADAT_TX both enabled due to clock-block being configured
+        after already started. Caused by SPDIF_TX define check typo
+      + RESOLVED:   DFU flag address changed to properly conform to memory address range allocated to
+        apps by tools
+      + RESOLVED:   Build failure when DFU disabled
+      + RESOLVED:   Build issue when I2S_CHANS_ADC/DAC set to 0 and CODEC_MASTER enabled
+      + RESOLVED:   Typo in MCLK_441 checking for MIN_FREQ define
+      + CHANGE:     Mixer and non-mixer channel comms scheme (decouple <-> audio path) now identical
+      + CHANGE:     Input stream buffering modified such that during overflow older samples are removed
+        rather than ignoring most recent samples. Removes any chance of stale input packets
+        being sent to host.
+      + RESOLVED:   Build error when DFU is disabled
+      + RESOLVED:   Build error when I2S_CHANS_ADC or I2S_CHANS_DAC set to 0 and CODEC_MASTER enabled
+
+    - sc_usb_device: 1.3.7rc0 -> 1.3.8beta0
+
 
 6.12.6
 ------
