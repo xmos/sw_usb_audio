@@ -5,6 +5,7 @@ sw_usb_audio Change Log
 ------
     - RESOLVED:   Channel string error & ADAT tx channel offset issue in app_usb_aud_l2 due to 
                   SPDIF define typo in customdefines.h (should have been SPDIF_TX)
+    - RESOLVED:   Incorrect I2C addresses of CODECs in app_usb_aud_skc_u16
 
 6.12.6
 ------
