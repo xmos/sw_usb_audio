@@ -2,6 +2,7 @@
 import xmostest
 import re
 import ntpath
+import time
 
 class SPDIFOutputTester(xmostest.Tester):
 
@@ -77,63 +78,84 @@ class SPDIFOutputTester(xmostest.Tester):
                                  output=output)
 
 def do_spdif_output_test(min_testlevel, board, app_name, app_config,
-                         spdif_base_chan, sample_rate, duration, os,
+                         spdif_base_chan, sample_rate, duration, host_oss,
                          use_wdm=False):
+    
+    ctester = {}
+    dut_job = {}
+    resources = {}
+    sig_gen_job = {}
+    analysis_job = {}
 
-    ctester = xmostest.CombinedTester(3, SPDIFOutputTester(app_name, app_config,
-                                            spdif_base_chan, sample_rate,
-                                            duration, os, use_wdm))
-    ctester.set_min_testlevel(min_testlevel)
+    for os in host_oss:
 
-    resources = xmostest.request_resource("uac2_%s_testrig_%s" % (board, os),
-                                          ctester)
+        ctester[os] = xmostest.CombinedTester(3, SPDIFOutputTester(app_name, app_config,
+                                                spdif_base_chan, sample_rate,
+                                                duration, os, use_wdm))
+        ctester[os].set_min_testlevel(min_testlevel)
+
+        resources[os] = xmostest.request_resource("uac2_%s_testrig_%s" % (board, os),
+                                                  ctester[os])
+
+        time.sleep(0.01)
 
     dut_binary = ('../%s/bin/%s/%s_%s.xe' %
                   (app_name, app_config, app_name, app_config))
 
     analyser_binary = '../../sw_audio_analyzer/app_audio_analyzer_mc/bin/spdif_out/app_audio_analyzer_mc_spdif_out.xe'
 
-    if xmostest.testlevel_is_at_least(xmostest.get_testlevel(), 'nightly'):
-        dut_job = xmostest.flash_xcore(resources['dut'], dut_binary,
-                                       tester = ctester[0])
-    else:
-        dut_job = xmostest.run_on_xcore(resources['dut'], dut_binary,
-                                        tester = ctester[0],
-                                        disable_debug_io = True)
+    dep_dut_job = []
 
-    run_xsig_path = "../../../../xsig/xsig/bin/"
-    xsig_configs_path = "../../../../usb_audio_testing/xsig_configs/"
-    if os.startswith('os_x'):
-        run_xsig_path += "run_xsig"
-    elif os.startswith('win_'):
-        run_xsig_path = ntpath.normpath(run_xsig_path) + "\\xsig"
-        xsig_configs_path = ntpath.normpath(xsig_configs_path) + "\\"
-    if spdif_base_chan is 0:
-        xsig_config_file = "stereo_digital_output.json"
-    else:
-        xsig_config_file = "mc_digital_output.json"
-    if use_wdm:
-        wdm_arg = "--wdm"
-    else:
-        wdm_arg = ""
-    sig_gen_job = xmostest.run_on_pc(resources['host'],
-                                     [run_xsig_path,
-                                     "%d" % (sample_rate),
-                                     "%d" % ((duration + 10) * 1000), # Ensure signal generator runs for longer than audio analyzer, xsig expects duration in ms
-                                     "%s%s" % (xsig_configs_path, xsig_config_file),
-                                     wdm_arg],
-                                     tester = ctester[1],
-                                     timeout = duration + 60, # xsig should stop itself gracefully
-                                     initial_delay = 5,
-                                     start_after_completed = [dut_job])
+    for os in host_oss:
 
-    analysis_job = xmostest.run_on_xcore(resources['analysis_device_1'],
-                                          analyser_binary,
-                                          tester = ctester[2],
-                                          enable_xscope = True,
-                                          timeout = duration,
-                                          start_after_completed = [dut_job],
-                                          start_after_started = [sig_gen_job])
+        if xmostest.testlevel_is_at_least(xmostest.get_testlevel(), 'nightly'):
+            dut_job[os] = xmostest.flash_xcore(resources[os]['dut'], dut_binary,
+                                              tester = ctester[os][0],
+                                              start_after_completed = dep_dut_job)
+            dep_dut_job.append(dut_job[os])
+        else:
+            dut_job[os] = xmostest.run_on_xcore(resources[os]['dut'], dut_binary,
+                                                tester = ctester[os][0],
+                                                disable_debug_io = True)
+
+        run_xsig_path = "../../../../xsig/xsig/bin/"
+        xsig_configs_path = "../../../../usb_audio_testing/xsig_configs/"
+        if os.startswith('os_x'):
+            run_xsig_path += "run_xsig"
+        elif os.startswith('win_'):
+            run_xsig_path = ntpath.normpath(run_xsig_path) + "\\xsig"
+            xsig_configs_path = ntpath.normpath(xsig_configs_path) + "\\"
+        if spdif_base_chan is 0:
+            xsig_config_file = "stereo_digital_output.json"
+        else:
+            xsig_config_file = "mc_digital_output.json"
+        if use_wdm:
+            wdm_arg = "--wdm"
+        else:
+            wdm_arg = ""
+
+        sig_gen_job[os] = xmostest.run_on_pc(resources[os]['host'],
+                                             [run_xsig_path,
+                                             "%d" % (sample_rate),
+                                             "%d" % ((duration + 10) * 1000), # Ensure signal generator runs for longer than audio analyzer, xsig expects duration in ms
+                                             "%s%s" % (xsig_configs_path, xsig_config_file),
+                                             wdm_arg],
+                                             tester = ctester[os][1],
+                                             timeout = duration + 60, # xsig should stop itself gracefully
+                                             initial_delay = 5,
+                                             start_after_completed = [dut_job[os]])
+
+        analysis_job[os] = xmostest.run_on_xcore(resources[os]['analysis_device_1'],
+                                                analyser_binary,
+                                                tester = ctester[os][2],
+                                                enable_xscope = True,
+                                                timeout = duration,
+                                                start_after_completed = [dut_job[os]],
+                                                start_after_started = [sig_gen_job[os]])
+
+        time.sleep(0.1)
+
+    xmostest.complete_all_jobs()
 
 def runtest():
     test_configs = [
@@ -166,24 +188,26 @@ def runtest():
     for test in test_configs:
         board = test['board']
         app = test['app']
-        for os in host_oss:
-            for config in test['app_configs']:
-                config_name = config['config']
-                spdif_base_chan = config['spdif_base_chan']
-                for run_type in config['testlevels']:
-                    min_testlevel = run_type['level']
-                    sample_rates = run_type['sample_rates']
-                    for sample_rate in sample_rates:
-                        do_spdif_output_test(min_testlevel, board, app,
-                                             config_name, spdif_base_chan,
-                                             sample_rate, duration, os)
-
+        for config in test['app_configs']:
+            config_name = config['config']
+            spdif_base_chan = config['spdif_base_chan']
+            for run_type in config['testlevels']:
+                min_testlevel = run_type['level']
+                sample_rates = run_type['sample_rates']
+                for sample_rate in sample_rates:
+                    do_spdif_output_test(min_testlevel, board, app,
+                                         config_name, spdif_base_chan,
+                                         sample_rate, duration, host_oss)
+                win_oss = []
+                for os in host_oss:
                     # Special case to test WDM on Windows
                     # TODO: confirm WDM values are correct
                     # FIXME: PortAudio error if WDM channel count is lower than spdif_base_chan
                     WDM_SAMPLE_RATE = 44100
                     if os.startswith('win_') and WDM_SAMPLE_RATE in sample_rates:
-                        do_spdif_output_test(min_testlevel, board, app,
-                                             config_name, spdif_base_chan,
-                                             WDM_SAMPLE_RATE, duration, os,
-                                             use_wdm=True)
+                        win_oss.append(os)
+
+                do_spdif_output_test(min_testlevel, board, app,
+                                     config_name, spdif_base_chan,
+                                     WDM_SAMPLE_RATE, duration, win_oss,
+                                     use_wdm=True)

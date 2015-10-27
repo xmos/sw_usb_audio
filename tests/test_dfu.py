@@ -260,6 +260,9 @@ def do_dfu_test(min_testlevel, board, app_name, pid, app_config, os):
                                                 # tester = ctester[4], # FIXME: locks up when output passed to tester
                                                 timeout = 600,
                                                 start_after_completed = [dfu_job])
+    # Wait for all jobs to complete
+    xmostest.complete_all_jobs()
+    
 
 def runtest():
     test_configs = [
