@@ -296,15 +296,15 @@ def do_dfu_test(min_testlevel, board, app_name, pid, app_config, host_oss):
                                        timeout_msg = "Removing upgrade images timed out",
                                        start_after_completed = dep_dfu_job)
 
-        if os.startswith('os_x'):
-            remote_cleanup_cmd = ["rm", "upload.bin"]
-        elif os.startswith('win_'):
-            remote_cleanup_cmd = ["del", "upload.bin"]
-        remote_cleanup_job[os] = xmostest.run_on_pc(resources[os]['host'],
-                                                remote_cleanup_cmd,
-                                                # tester = ctester[os][4], # FIXME: locks up when output passed to tester
-                                                timeout = 600,
-                                                start_after_completed = dep_dfu_job)
+            if os.startswith('os_x'):
+                remote_cleanup_cmd = ["rm", "upload.bin"]
+            elif os.startswith('win_'):
+                remote_cleanup_cmd = ["del", "upload.bin"]
+            remote_cleanup_job[os] = xmostest.run_on_pc(resources[os]['host'],
+                                                    remote_cleanup_cmd,
+                                                    # tester = ctester[os][4], # FIXME: locks up when output passed to tester
+                                                    timeout = 600,
+                                                    start_after_completed = dep_dfu_job)
         time.sleep(0.1)
     # Wait for all jobs to complete
     xmostest.complete_all_jobs()
