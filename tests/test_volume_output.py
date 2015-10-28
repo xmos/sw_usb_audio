@@ -161,7 +161,7 @@ def do_volume_output_test(min_testlevel, board, app_name, app_config, num_chans,
     analysis1_job = {}
     analysis2_job = {}
     volcontrol_job = {}
-    duration = 25
+    duration = 26
 
     for os in host_oss:
 
@@ -185,7 +185,7 @@ def do_volume_output_test(min_testlevel, board, app_name, app_config, num_chans,
         if xmostest.testlevel_is_at_least(xmostest.get_testlevel(), 'nightly'):
             dut_job[os] = xmostest.flash_xcore(resources[os]['dut'], dut_binary,
                                            tester = ctester[os][0],
-                                           start_after_completed = dep_dut_job)
+                                           start_after_completed = dep_dut_job[:])
             dep_dut_job.append(dut_job[os])
         else:
             dut_job[os] = xmostest.run_on_xcore(resources[os]['dut'], dut_binary,
@@ -207,11 +207,11 @@ def do_volume_output_test(min_testlevel, board, app_name, app_config, num_chans,
         sig_gen_job[os] = xmostest.run_on_pc(resources[os]['host'],
                                          [run_xsig_path,
                                          "%d" % (sample_rate),
-                                         "%d" % ((duration + 18) * 1000), # Ensure signal generator runs for longer than audio analyzer, xsig expects duration in ms
+                                         "%d" % ((duration + 10) * 1000), # Ensure signal generator runs for longer than audio analyzer, xsig expects duration in ms
                                          "%s%s" % (xsig_configs_path, xsig_config_file)],
                                          tester = ctester[os][1],
                                          timeout = duration + 60, # xsig should stop itself gracefully
-                                         initial_delay = 10,
+                                         initial_delay = 8,
                                          start_after_completed = [dut_job[os]])
 
         (analysis1_debugger_addr, analysis1_debugger_port) = resources[os]['analysis_device_1'].get_xscope_port().split(':')
@@ -233,7 +233,7 @@ def do_volume_output_test(min_testlevel, board, app_name, app_config, num_chans,
                                               xscope_host_cmd = analysis1_xscope_host_cmd,
                                               xscope_host_tester = ctester[os][3],
                                               xscope_host_timeout = duration + 60, # Host app should stop itself gracefully
-                                              xscope_host_initial_delay = 10)
+                                              xscope_host_initial_delay = 8)
 
         (analysis2_debugger_addr, analysis2_debugger_port) = resources[os]['analysis_device_2'].get_xscope_port().split(':')
         analysis2_xscope_host_cmd = ['../../sw_audio_analyzer/host_xscope_controller/bin/xscope_controller',
@@ -250,14 +250,14 @@ def do_volume_output_test(min_testlevel, board, app_name, app_config, num_chans,
                                               tester = ctester[os][4],
                                               enable_xscope = True,
                                               timeout = duration,
-                                              initial_delay = 2, # Avoid accessing both xTAGs together
+                                              initial_delay = 1, # Avoid accessing both xTAGs together
                                               start_after_completed = [dut_job[os]],
                                               start_after_started = [sig_gen_job[os],
                                                                      analysis1_job[os]],
                                               xscope_host_cmd = analysis2_xscope_host_cmd,
                                               xscope_host_tester = ctester[os][5],
                                               xscope_host_timeout = duration + 60, # Host app should stop itself gracefully
-                                              xscope_host_initial_delay = 10)
+                                              xscope_host_initial_delay = 8)
 
         if os.startswith('os_x'):
             host_vol_ctrl_path = "../../../../usb_audio_testing/volcontrol/OSX/testvol_out.sh"
@@ -273,7 +273,7 @@ def do_volume_output_test(min_testlevel, board, app_name, app_config, num_chans,
                                             "%d" % (num_chans+1)],
                                             tester = ctester[os][6],
                                             timeout = duration + 60, # testvol should stop itself
-                                            initial_delay = 16,
+                                            initial_delay = 14,
                                             # start_after_started = [sig_gen_job[os],
                                             #                        analysis1_job[os],
                                             #                        analysis2_job[os]],

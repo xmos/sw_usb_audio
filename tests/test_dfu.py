@@ -2,6 +2,7 @@
 import xmostest
 import re
 from xmostest.jobs import schedule_job
+import time
 
 # Matching modes:
 # l = Match line with string compare
@@ -190,79 +191,123 @@ class DFUTester(xmostest.Tester):
                                  env={},
                                  output=output)
 
-def do_dfu_test(min_testlevel, board, app_name, pid, app_config, os):
+def do_dfu_test(min_testlevel, board, app_name, pid, app_config, host_oss):
 
-    ctester = xmostest.CombinedTester(4, DFUTester(app_name, app_config, os),
-                                      pid)
-    ctester.set_min_testlevel(min_testlevel)
+    ctester = {}
+    resources = {}
+    dut_job = {}
+    upgrade_job = {}
+    dfu_job = {}
+    cleanup_job = {}
+    remote_cleanup_job = {}
 
-    resources = xmostest.request_resource("uac2_%s_testrig_%s" % (board, os),
-                                          ctester)
+    for os in host_oss:
+
+        ctester[os] = xmostest.CombinedTester(4, DFUTester(app_name, app_config, os),
+                                            pid)
+        ctester[os].set_min_testlevel(min_testlevel)
+
+        resources[os] = xmostest.request_resource("uac2_%s_testrig_%s" % (board, os),
+                                                ctester[os])
+        time.sleep(0.01)
 
     dut_app_path = "../%s" % app_name
     dut_binary = ('%s/bin/%s/%s_%s.xe' %
                   (dut_app_path, app_config, app_name, app_config))
 
-    dut_job = xmostest.flash_xcore(resources['dut'], dut_binary,
-                                   tester = ctester[0], do_xe_prebuild = True)
+    dep_dut_job = []
 
-    xflash_cmds = ['cd %s;' % dut_app_path,
-                   'xmake clean CONFIG=%s;' % app_config,
-                   'xmake CONFIG=%s TEST_DFU_1=1;' % app_config,
-                   'xflash --factory-version 14.0 --upgrade 1 bin/%s/%s_%s.xe 0x10000 -o upgrade1.bin --verbose;' % (app_config, app_name, app_config),
-                   'xmake clean CONFIG=%s;' % app_config,
-                   'xmake CONFIG=%s TEST_DFU_2=1;' % app_config,
-                   'xflash --factory-version 14.0 --upgrade 2 bin/%s/%s_%s.xe 0x10000 -o upgrade2.bin --verbose' % (app_config, app_name, app_config)]
-    cmd_string = " ".join([x for x in xflash_cmds])
+    for os in host_oss:
 
-    # Scheduled as a job to delay building upgrades until dut_job has completed
-    upgrade_job = []
-    if xmostest.testrun_is_required(ctester[1]):
-        ctester[1].start_run()
-        upgrade_job = schedule_job(cmd = ['bash', '-c', "%s" % cmd_string],
-                                   tester = ctester[1],
-                                   timeout = 600,
-                                   timeout_msg = "Building upgrade images timed out",
-                                   start_after_completed = [dut_job])
+        dut_job[os] = xmostest.flash_xcore(resources[os]['dut'], dut_binary,
+                                            tester = ctester[os][0], do_xe_prebuild = True,
+                                            start_after_completed = dep_dut_job)
+        dep_dut_job.append(dut_job[os])
 
-    if os.startswith('os_x'):
-        host_dfu_path = "../../../../usb_audio_testing/dfu/OSX/testdfu.sh"
-    elif os.startswith('win_'):
-        host_dfu_path = '"..\\..\\..\\..\\usb_audio_testing\\dfu\\win32\\testdfu.bat "C:\\Program Files\\Thesycon\\TUSBAudio_Driver\\dfucons.exe""'
-    dfu_job = xmostest.run_on_pc(resources['host'],
-                                 ["%s" % host_dfu_path, "<remote_file>", "<remote_file>"],
-                                 files_used_as_args = ['%s/upgrade1.bin' % dut_app_path, '%s/upgrade2.bin' % dut_app_path],
-                                 tester = ctester[2],
-                                 timeout = 600,
-                                 start_after_completed = [dut_job, upgrade_job])
+    build_once = True
+    dep_build_job = []
 
-    # Clean up upgrade images created
-    cleanup_cmds = ['cd %s;' % dut_app_path,
-                    'xmake clean CONFIG=%s;' % app_config,
-                    'rm upgrade1.bin upgrade2.bin;',
-                    'xmake CONFIG=%s' % app_config]
-    cmd_string = " ".join([x for x in cleanup_cmds])
+    for os in host_oss:
+        cmd_string = ''
+        if build_once:
+            build_once = False
+            xflash_cmds = ['cd %s;' % dut_app_path,
+                           'xmake clean CONFIG=%s;' % app_config,
+                           'xmake CONFIG=%s TEST_DFU_1=1;' % app_config,
+                           'xflash --factory-version 14.0 --upgrade 1 bin/%s/%s_%s.xe 0x10000 -o upgrade1.bin --verbose;' % (app_config, app_name, app_config),
+                           'xmake clean CONFIG=%s;' % app_config,
+                           'xmake CONFIG=%s TEST_DFU_2=1;' % app_config,
+                           'xflash --factory-version 14.0 --upgrade 2 bin/%s/%s_%s.xe 0x10000 -o upgrade2.bin --verbose' % (app_config, app_name, app_config)]
+            cmd_string = " ".join([x for x in xflash_cmds])
+        else:
+            cmds = ['echo "Building upgrade images in other process"',]
+            cmd_string = " ".join([x for x in cmds])
 
-    if xmostest.testrun_is_required(ctester[3]):
-        ctester[3].start_run()
-        cleanup_job = schedule_job(cmd = ['bash', '-c', "%s" % cmd_string],
-                                   tester = ctester[3],
-                                   timeout = 600,
-                                   timeout_msg = "Removing upgrade images timed out",
-                                   start_after_completed = [dfu_job])
+        # Scheduled as a job to delay building upgrades until all dut_job has completed
+        upgrade_job[os] = []
+        if xmostest.testrun_is_required(ctester[os][1]):
+            ctester[os][1].start_run()
+            upgrade_job[os] = schedule_job(cmd = ['bash', '-c', "%s" % cmd_string],
+                                       tester = ctester[os][1],
+                                       timeout = 600,
+                                       timeout_msg = "Building upgrade images timed out",
+                                       start_after_completed = dep_dut_job)
+            dep_build_job.append(upgrade_job[os])
+
+        time.sleep(0.01)
+
+    dep_dfu_job = []
+
+    for os in host_oss:
+        if os.startswith('os_x'):
+            host_dfu_path = "../../../../usb_audio_testing/dfu/OSX/testdfu.sh"
+        elif os.startswith('win_'):
+            host_dfu_path = '"..\\..\\..\\..\\usb_audio_testing\\dfu\\win32\\testdfu.bat "C:\\Program Files\\Thesycon\\TUSBAudio_Driver\\dfucons.exe""'
+        dfu_job[os] = xmostest.run_on_pc(resources[os]['host'],
+                                     ["%s" % host_dfu_path, "<remote_file>", "<remote_file>"],
+                                     files_used_as_args = ['%s/upgrade1.bin' % dut_app_path, '%s/upgrade2.bin' % dut_app_path],
+                                     tester = ctester[os][2],
+                                     timeout = 600,
+                                     start_after_completed = dep_build_job)
+        dep_dfu_job.append(dfu_job[os])
+
+        time.sleep(0.1)
+
+    clean_once = True
+
+    for os in host_oss:
+        cmd_string = ''
+        if clean_once:
+            clean_once = False
+            # Clean up upgrade images created
+            cleanup_cmds = ['cd %s;' % dut_app_path,
+                            'xmake clean CONFIG=%s;' % app_config,
+                            'rm upgrade1.bin upgrade2.bin;',
+                            'xmake CONFIG=%s' % app_config]
+            cmd_string = " ".join([x for x in cleanup_cmds])
+        else:
+            cmd_string = 'echo Cleaning up upgrade images in other process'
+
+        if xmostest.testrun_is_required(ctester[os][3]):
+            ctester[os][3].start_run()
+            cleanup_job[os] = schedule_job(cmd = ['bash', '-c', "%s" % cmd_string],
+                                       tester = ctester[os][3],
+                                       timeout = 600,
+                                       timeout_msg = "Removing upgrade images timed out",
+                                       start_after_completed = dep_dfu_job)
 
         if os.startswith('os_x'):
             remote_cleanup_cmd = ["rm", "upload.bin"]
         elif os.startswith('win_'):
             remote_cleanup_cmd = ["del", "upload.bin"]
-        remote_cleanup_job = xmostest.run_on_pc(resources['host'],
+        remote_cleanup_job[os] = xmostest.run_on_pc(resources[os]['host'],
                                                 remote_cleanup_cmd,
-                                                # tester = ctester[4], # FIXME: locks up when output passed to tester
+                                                # tester = ctester[os][4], # FIXME: locks up when output passed to tester
                                                 timeout = 600,
-                                                start_after_completed = [dfu_job])
+                                                start_after_completed = dep_dfu_job)
+        time.sleep(0.1)
     # Wait for all jobs to complete
     xmostest.complete_all_jobs()
-    
 
 def runtest():
     test_configs = [
@@ -287,8 +332,7 @@ def runtest():
         board = test['board']
         app = test['app']
         pid = test['pid']
-        for os in host_oss:
-            for config in test['app_configs']:
-                config_name = config['config']
-                min_testlevel = config['testlevel']
-                do_dfu_test(min_testlevel, board, app, pid, config_name, os)
+        for config in test['app_configs']:
+            config_name = config['config']
+            min_testlevel = config['testlevel']
+            do_dfu_test(min_testlevel, board, app, pid, config_name, host_oss)

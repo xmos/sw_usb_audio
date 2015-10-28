@@ -144,8 +144,9 @@ def do_volume_input_test(min_testlevel, board, app_name, app_config, num_chans,
     dut_job = {}
     sig_gen1_job = {}
     sig_gen2_job = {}
+    analysis_job = {}
     volcontrol_job = {}
-    duration = 20
+    duration = 25
 
     for os in host_oss:
 
@@ -194,13 +195,13 @@ def do_volume_input_test(min_testlevel, board, app_name, app_config, num_chans,
                                              xscope_host_cmd = ['../../sw_audio_analyzer/host_xscope_controller/bin/xscope_controller',
                                              analysis2_debugger_addr,
                                              analysis2_debugger_port,
-                                             "%d" % (duration + 10), # Ensure host app runs for longer than xCORE app (started with delay)
+                                             "%d" % (duration + 15), # Ensure host app runs for longer than xCORE app (started with delay)
                                              "b 4",
                                              "c 4 5000 0 0 0",
                                              "c 5 6000 0 0 0"],
                                              xscope_host_tester = ctester[os][3],
                                              xscope_host_timeout = duration + 60, # Host app should stop itself gracefully
-                                             xscope_host_initial_delay = 10)
+                                             xscope_host_initial_delay = 8)
 
         run_xsig_path = "../../../../xsig/xsig/bin/"
         xsig_configs_path = "../../../../usb_audio_testing/xsig_configs/"
@@ -226,7 +227,7 @@ def do_volume_input_test(min_testlevel, board, app_name, app_config, num_chans,
                                           "%s%s" % (xsig_configs_path, xsig_config_file)],
                                           tester = ctester[os][4],
                                           timeout = duration + 60, # xsig should stop itself gracefully
-                                          initial_delay = 12,
+                                          initial_delay = 10,
                                           start_after_started = [sig_gen1_job[os], sig_gen2_job[os]],
                                           start_after_completed = [dut_job[os]])
 
@@ -244,7 +245,7 @@ def do_volume_input_test(min_testlevel, board, app_name, app_config, num_chans,
                                             "%d" % (num_chans+1)],
                                             tester = ctester[os][5],
                                             timeout = duration + 60, # testvol should stop itself
-                                            initial_delay = 12,
+                                            initial_delay = 10,
                                             # start_after_started = [sig_gen1_job[os],
                                             #                        sig_gen2_job[os],
                                             #                        analysis_job[os]],
