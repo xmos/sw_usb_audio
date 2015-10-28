@@ -2,6 +2,7 @@
 import xmostest
 import re
 import ntpath
+import time
 
 class VolumeChangeChecker(object):
     def __init__(self):
@@ -151,118 +152,138 @@ class VolumeOutputTester(xmostest.Tester):
                                  output=output)
 
 def do_volume_output_test(min_testlevel, board, app_name, app_config, num_chans,
-                          sample_rate, channel, os):
+                          sample_rate, channel, host_oss):
 
-    ctester = xmostest.CombinedTester(7, VolumeOutputTester(app_name, app_config,
-                                      num_chans, channel, os))
-    ctester.set_min_testlevel(min_testlevel)
+    ctester = {}
+    resources = {}
+    dut_job = {}
+    sig_gen_job = {}
+    analysis1_job = {}
+    analysis2_job = {}
+    volcontrol_job = {}
+    duration = 25
 
-    duration = 20
+    for os in host_oss:
 
-    resources = xmostest.request_resource("uac2_%s_testrig_%s" % (board, os),
-                                          ctester)
+        ctester[os] = xmostest.CombinedTester(7, VolumeOutputTester(app_name, app_config,
+                                          num_chans, channel, os))
+        ctester[os].set_min_testlevel(min_testlevel)
+
+        resources[os] = xmostest.request_resource("uac2_%s_testrig_%s" % (board, os),
+                                              ctester[os])
+        time.sleep(0.01)
 
     dut_binary = ('../%s/bin/%s/%s_%s.xe' %
                   (app_name, app_config, app_name, app_config))
 
     analyser_binary = '../../sw_audio_analyzer/app_audio_analyzer_mc/bin/app_audio_analyzer_mc.xe'
 
-    if xmostest.testlevel_is_at_least(xmostest.get_testlevel(), 'nightly'):
-        dut_job = xmostest.flash_xcore(resources['dut'], dut_binary,
-                                       tester = ctester[0])
-    else:
-        dut_job = xmostest.run_on_xcore(resources['dut'], dut_binary,
-                                        tester = ctester[0],
-                                        disable_debug_io = True)
+    dep_dut_job = []
 
-    run_xsig_path = "../../../../xsig/xsig/bin/"
-    xsig_configs_path = "../../../../usb_audio_testing/xsig_configs/"
-    if os.startswith('os_x'):
-        run_xsig_path += "run_xsig"
-    elif os.startswith('win_'):
-        run_xsig_path = ntpath.normpath(run_xsig_path) + "\\xsig"
-        xsig_configs_path = ntpath.normpath(xsig_configs_path) + "\\"
-    if num_chans is 2:
-        xsig_config_file = "stereo_analogue_output.json"
-    else:
-        xsig_config_file = "mc_analogue_output.json"
-    sig_gen_job = xmostest.run_on_pc(resources['host'],
-                                     [run_xsig_path,
-                                     "%d" % (sample_rate),
-                                     "%d" % ((duration + 10) * 1000), # Ensure signal generator runs for longer than audio analyzer, xsig expects duration in ms
-                                     "%s%s" % (xsig_configs_path, xsig_config_file)],
-                                     tester = ctester[1],
-                                     timeout = duration + 60, # xsig should stop itself gracefully
-                                     initial_delay = 5,
-                                     start_after_completed = [dut_job])
+    for os in host_oss:
 
-    (analysis1_debugger_addr, analysis1_debugger_port) = resources['analysis_device_1'].get_xscope_port().split(':')
-    analysis1_xscope_host_cmd = ['../../sw_audio_analyzer/host_xscope_controller/bin/xscope_controller',
-                                 analysis1_debugger_addr,
-                                 analysis1_debugger_port,
-                                 "%d" % duration]
-    if channel is 'master':
-        analysis1_xscope_host_cmd.extend("m %d v" % chan for chan in range(4))
-    elif channel < 4:
-        analysis1_xscope_host_cmd.append("m %d v" % channel)
-    analysis1_job = xmostest.run_on_xcore(resources['analysis_device_1'],
-                                          analyser_binary,
-                                          tester = ctester[2],
-                                          enable_xscope = True,
-                                          timeout = duration,
-                                          start_after_completed = [dut_job],
-                                          start_after_started = [sig_gen_job],
-                                          xscope_host_cmd = analysis1_xscope_host_cmd,
-                                          xscope_host_tester = ctester[3],
-                                          xscope_host_timeout = duration + 60, # Host app should stop itself gracefully
-                                          xscope_host_initial_delay = 5)
+        if xmostest.testlevel_is_at_least(xmostest.get_testlevel(), 'nightly'):
+            dut_job[os] = xmostest.flash_xcore(resources[os]['dut'], dut_binary,
+                                           tester = ctester[os][0],
+                                           start_after_completed = dep_dut_job)
+            dep_dut_job.append(dut_job[os])
+        else:
+            dut_job[os] = xmostest.run_on_xcore(resources[os]['dut'], dut_binary,
+                                            tester = ctester[os][0],
+                                            disable_debug_io = True)
 
-    (analysis2_debugger_addr, analysis2_debugger_port) = resources['analysis_device_2'].get_xscope_port().split(':')
-    analysis2_xscope_host_cmd = ['../../sw_audio_analyzer/host_xscope_controller/bin/xscope_controller',
-                                 analysis2_debugger_addr,
-                                 analysis2_debugger_port,
-                                 "%d" % duration,
-                                 "b 4"]
-    if channel is 'master':
-        analysis2_xscope_host_cmd.extend("m %d v" % chan for chan in range(4, num_chans))
-    elif channel >= 4:
-        analysis2_xscope_host_cmd.append("m %d v" % channel)
-    analysis2_job = xmostest.run_on_xcore(resources['analysis_device_2'],
-                                          analyser_binary,
-                                          tester = ctester[4],
-                                          enable_xscope = True,
-                                          timeout = duration,
-                                          initial_delay = 1, # Avoid accessing both xTAGs together
-                                          start_after_completed = [dut_job],
-                                          start_after_started = [sig_gen_job,
-                                                                 analysis1_job],
-                                          xscope_host_cmd = analysis2_xscope_host_cmd,
-                                          xscope_host_tester = ctester[5],
-                                          xscope_host_timeout = duration + 60, # Host app should stop itself gracefully
-                                          xscope_host_initial_delay = 5)
+        run_xsig_path = "../../../../xsig/xsig/bin/"
+        xsig_configs_path = "../../../../usb_audio_testing/xsig_configs/"
+        if os.startswith('os_x'):
+            run_xsig_path += "run_xsig"
+        elif os.startswith('win_'):
+            run_xsig_path = ntpath.normpath(run_xsig_path) + "\\xsig"
+            xsig_configs_path = ntpath.normpath(xsig_configs_path) + "\\"
+        if num_chans is 2:
+            xsig_config_file = "stereo_analogue_output.json"
+        else:
+            xsig_config_file = "mc_analogue_output.json"
 
-    if os.startswith('os_x'):
-        host_vol_ctrl_path = "../../../../usb_audio_testing/volcontrol/OSX/testvol_out.sh"
-    elif os.startswith('win_'):
-        host_vol_ctrl_path = "..\\..\\..\\..\\usb_audio_testing\\volcontrol\\win32\\testvol_out.bat"
-    if channel is 'master':
-        channel_number = 0
-    else:
-        channel_number = channel + 1
-    volcontrol_job = xmostest.run_on_pc(resources['host_secondary'],
-                                        [host_vol_ctrl_path,
-                                        "%d" % (channel_number),
-                                        "%d" % (num_chans+1)],
-                                        tester = ctester[6],
-                                        timeout = duration + 60, # testvol should stop itself
-                                        initial_delay = 10,
-                                        # start_after_started = [sig_gen_job,
-                                        #                        analysis1_job,
-                                        #                        analysis2_job],
-                                        start_after_started = [analysis1_job,
-                                                               analysis2_job]
-                                        # start_after_completed = [dut_job]
-                                        )
+        sig_gen_job[os] = xmostest.run_on_pc(resources[os]['host'],
+                                         [run_xsig_path,
+                                         "%d" % (sample_rate),
+                                         "%d" % ((duration + 18) * 1000), # Ensure signal generator runs for longer than audio analyzer, xsig expects duration in ms
+                                         "%s%s" % (xsig_configs_path, xsig_config_file)],
+                                         tester = ctester[os][1],
+                                         timeout = duration + 60, # xsig should stop itself gracefully
+                                         initial_delay = 10,
+                                         start_after_completed = [dut_job[os]])
+
+        (analysis1_debugger_addr, analysis1_debugger_port) = resources[os]['analysis_device_1'].get_xscope_port().split(':')
+        analysis1_xscope_host_cmd = ['../../sw_audio_analyzer/host_xscope_controller/bin/xscope_controller',
+                                     analysis1_debugger_addr,
+                                     analysis1_debugger_port,
+                                     "%d" % duration]
+        if channel is 'master':
+            analysis1_xscope_host_cmd.extend("m %d v" % chan for chan in range(4))
+        elif channel < 4:
+            analysis1_xscope_host_cmd.append("m %d v" % channel)
+        analysis1_job[os] = xmostest.run_on_xcore(resources[os]['analysis_device_1'],
+                                              analyser_binary,
+                                              tester = ctester[os][2],
+                                              enable_xscope = True,
+                                              timeout = duration,
+                                              start_after_completed = [dut_job[os]],
+                                              start_after_started = [sig_gen_job[os]],
+                                              xscope_host_cmd = analysis1_xscope_host_cmd,
+                                              xscope_host_tester = ctester[os][3],
+                                              xscope_host_timeout = duration + 60, # Host app should stop itself gracefully
+                                              xscope_host_initial_delay = 10)
+
+        (analysis2_debugger_addr, analysis2_debugger_port) = resources[os]['analysis_device_2'].get_xscope_port().split(':')
+        analysis2_xscope_host_cmd = ['../../sw_audio_analyzer/host_xscope_controller/bin/xscope_controller',
+                                     analysis2_debugger_addr,
+                                     analysis2_debugger_port,
+                                     "%d" % duration,
+                                     "b 4"]
+        if channel is 'master':
+            analysis2_xscope_host_cmd.extend("m %d v" % chan for chan in range(4, num_chans))
+        elif channel >= 4:
+            analysis2_xscope_host_cmd.append("m %d v" % channel)
+        analysis2_job[os] = xmostest.run_on_xcore(resources[os]['analysis_device_2'],
+                                              analyser_binary,
+                                              tester = ctester[os][4],
+                                              enable_xscope = True,
+                                              timeout = duration,
+                                              initial_delay = 2, # Avoid accessing both xTAGs together
+                                              start_after_completed = [dut_job[os]],
+                                              start_after_started = [sig_gen_job[os],
+                                                                     analysis1_job[os]],
+                                              xscope_host_cmd = analysis2_xscope_host_cmd,
+                                              xscope_host_tester = ctester[os][5],
+                                              xscope_host_timeout = duration + 60, # Host app should stop itself gracefully
+                                              xscope_host_initial_delay = 10)
+
+        if os.startswith('os_x'):
+            host_vol_ctrl_path = "../../../../usb_audio_testing/volcontrol/OSX/testvol_out.sh"
+        elif os.startswith('win_'):
+            host_vol_ctrl_path = "..\\..\\..\\..\\usb_audio_testing\\volcontrol\\win32\\testvol_out.bat"
+        if channel is 'master':
+            channel_number = 0
+        else:
+            channel_number = channel + 1
+        volcontrol_job[os] = xmostest.run_on_pc(resources[os]['host_secondary'],
+                                            [host_vol_ctrl_path,
+                                            "%d" % (channel_number),
+                                            "%d" % (num_chans+1)],
+                                            tester = ctester[os][6],
+                                            timeout = duration + 60, # testvol should stop itself
+                                            initial_delay = 16,
+                                            # start_after_started = [sig_gen_job[os],
+                                            #                        analysis1_job[os],
+                                            #                        analysis2_job[os]],
+                                            start_after_started = [analysis1_job[os],
+                                                                   analysis2_job[os]]
+                                            # start_after_completed = [dut_job[os]]
+                                            )
+        time.sleep(0.1)
+
+    xmostest.complete_all_jobs()
 
 def runtest():
     test_configs = [
@@ -311,20 +332,19 @@ def runtest():
     for test in test_configs:
         board = test['board']
         app = test['app']
-        for os in host_oss:
-            for config in test['app_configs']:
-                config_name = config['config']
-                num_chans = config['chan_count']
-                max_sample_rate = config['max_sample_rate']
-                min_testlevel = config['testlevel']
+        for config in test['app_configs']:
+            config_name = config['config']
+            num_chans = config['chan_count']
+            max_sample_rate = config['max_sample_rate']
+            min_testlevel = config['testlevel']
 
-                # Test the master volume control
+            # Test the master volume control
+            do_volume_output_test(min_testlevel, board, app, config_name,
+                                  num_chans, max_sample_rate, 'master',
+                                  host_oss)
+
+            # Test the volume control of each channel
+            for chan in range(num_chans):
                 do_volume_output_test(min_testlevel, board, app, config_name,
-                                      num_chans, max_sample_rate, 'master',
-                                      os)
-
-                # Test the volume control of each channel
-                for chan in range(num_chans):
-                    do_volume_output_test(min_testlevel, board, app, config_name,
-                                          num_chans, max_sample_rate, chan,
-                                          os)
+                                      num_chans, max_sample_rate, chan,
+                                      host_oss)
