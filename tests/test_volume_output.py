@@ -182,7 +182,7 @@ def do_volume_output_test(min_testlevel, board, app_name, app_config, num_chans,
 
     for os in host_oss:
 
-        if xmostest.testlevel_is_at_least(xmostest.get_testlevel(), 'nightly'):
+        if xmostest.testlevel_is_at_least(xmostest.get_testlevel(), 'weekend'):
             dut_job[os] = xmostest.flash_xcore(resources[os]['dut'], dut_binary,
                                            tester = ctester[os][0],
                                            start_after_completed = dep_dut_job[:])
