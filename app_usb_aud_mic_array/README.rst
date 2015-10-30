@@ -28,6 +28,8 @@ The app_usb_aud_mic_array application is designed to run on the xCORE Microphone
 Known Issues
 ............
 
+- Sample rate currently fixed at 48kHz due to limitations of lib_mic_array
+
 See README in sw_usb_audio for general issues.
 
 Support
