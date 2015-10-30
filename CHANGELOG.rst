@@ -1,6 +1,11 @@
 sw_usb_audio Change Log
 =======================
 
+6.14.0
+------   
+    - ADDED:      app_usb_aud_mic_array for xCORE Microphone Array board. Includes example usage
+                  of PDM microphone integration.
+
 6.13.0
 ------
     - RESOLVED:   Channel string error & ADAT tx channel offset issue in app_usb_aud_l2 due to
