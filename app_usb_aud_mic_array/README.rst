@@ -1,11 +1,11 @@
-XMOS xCORE-200 USB Audio
+XMOS xCORE-200 Mic Array
 ========================
 
 :maintainer: Ross Owen
 :scope: Example
-:description: USB Audio application for xCORE-200 MC Audio
-:keywords: USB,
-:boards: XCORE-200 MC AUDIO (rev 2.0)
+:description: USB Audio application for xCORE Microphone Array board
+:keywords: USB, Mic, PDM, UAC
+:boards: XCORE-200 Microphone Array Ref Design (1v0)
 
 Overview
 ........
@@ -15,19 +15,15 @@ The firmware provides a high-speed USB Audio device designed to be compliant to 
 Key Features
 ............
 
-The app_usb_aud_x200 application is designed to run on the xCORE 200 MC Audio Board in. It uses the XMOS USB Audio framework to implement a USB Audio device with the following key features:
+The app_usb_aud_mic_array application is designed to run on the xCORE Microphone Array board. It uses the XMOS USB Audio framework to implement a USB Audio device with the following key features:
 
 - USB Audio Class 2.0 Compliant
 
 - Fully Asynchronous operation
 
-- 4 channels analogue input and 4 channels analogue output (Via I2S to 2 x Stereo CODECs)
-
-- S/PDIF output (via COAX connector)
-
-- Supports for the following sample frequencies: 44.1, 48, 88.2, 96, 176.4, 192kHz
-
-- MIDI input and output
+- 7 channels input from 7 PDM mics (including PDM to PCM conversion)
+  
+- 2 channels analogue output (Via I2S to a stereo DAC)
 
 Known Issues
 ............
