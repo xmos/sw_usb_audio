@@ -52,7 +52,7 @@
 
 /* Defines relating to channel count and channel arrangement (Set to 0 for disable) */
 //:audio_defs
-/* Number of USB streaming channels - Default is 4 in 4 out */
+/* Number of USB streaming channels - Default is 8 in 2 out */
 #ifndef NUM_USB_CHAN_IN
 #define NUM_USB_CHAN_IN    (8)         /* Device to Host */
 #endif
