@@ -38,7 +38,7 @@ class SPDIFOutputTester(xmostest.Tester):
             if re.match('.*ERROR|.*error|.*Error|.*Problem', line):
                 self.record_failure(line)
 
-        if xmostest.testlevel_is_at_least(xmostest.get_testlevel(), 'nightly'):
+        if xmostest.testlevel_is_at_least(xmostest.get_testlevel(), 'weekend'):
             # Check DUT was flashed correctly
             found = False
             for line in dut_programming_output:
