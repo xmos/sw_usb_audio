@@ -292,19 +292,19 @@ def runtest():
                 'max_sample_rate':48000,'testlevel':'nightly'},
 
             {'config':'1xoxx','chan_count':2,
-                'max_sample_rate':48000,'testlevel':'nightly'},
+                'max_sample_rate':48000,'testlevel':'weekend'},
 
             {'config':'2io_adatin','chan_count':8,
                 'max_sample_rate':96000,'testlevel':'nightly'},
 
             {'config':'2io_adatout','chan_count':8,
-                'max_sample_rate':96000,'testlevel':'nightly'},
+                'max_sample_rate':96000,'testlevel':'weekend'},
 
             {'config':'2io_spdifout_adatout','chan_count':8,
                 'max_sample_rate':96000,'testlevel':'nightly'},
 
             {'config':'2io_spdifout_spdifin','chan_count':8,
-                'max_sample_rate':192000,'testlevel':'nightly'},
+                'max_sample_rate':192000,'testlevel':'weekend'},
 
             {'config':'2io_spdifout_spdifin_mix8','chan_count':8,
                 'max_sample_rate':192000,'testlevel':'nightly'},
@@ -319,7 +319,7 @@ def runtest():
                 'max_sample_rate':192000,'testlevel':'smoke'},
 
             {'config':'2ioxx','chan_count':8,
-                'max_sample_rate':192000,'testlevel':'nightly'},
+                'max_sample_rate':192000,'testlevel':'weekend'},
 
             {'config':'2xoxs','chan_count':8,
                 'max_sample_rate':192000,'testlevel':'nightly'}

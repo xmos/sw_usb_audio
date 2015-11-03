@@ -80,7 +80,7 @@ class SPDIFOutputTester(xmostest.Tester):
 def do_spdif_output_test(min_testlevel, board, app_name, app_config,
                          spdif_base_chan, sample_rate, duration, host_oss,
                          use_wdm=False):
-    
+
     ctester = {}
     dut_job = {}
     resources = {}
@@ -161,20 +161,25 @@ def runtest():
     test_configs = [
         {'board':'l2','app':'app_usb_aud_l2','app_configs':[
             {'config':'2io_spdifout_adatout','spdif_base_chan':8,'testlevels':[
-                {'level':'nightly','sample_rates':[44100, 48000, 88200, 96000, 176400, 192000]}]},
+                {'level':'nightly','sample_rates':[192000]},
+                {'level':'weekend','sample_rates':[44100, 48000, 88200, 96000, 176400]}]},
 
             {'config':'2io_spdifout_spdifin','spdif_base_chan':8,'testlevels':[
-                {'level':'nightly','sample_rates':[44100, 48000, 88200, 96000, 176400, 192000]}]},
+                {'level':'nightly','sample_rates':[192000]},
+                {'level':'weekend','sample_rates':[44100, 48000, 88200, 96000, 176400]}]},
 
             {'config':'2io_spdifout_spdifin_mix8','spdif_base_chan':8,'testlevels':[
-                {'level':'nightly','sample_rates':[44100, 48000, 88200, 96000, 176400, 192000]}]},
+                {'level':'nightly','sample_rates':[192000]},
+                {'level':'weekend','sample_rates':[44100, 48000, 88200, 96000, 176400]}]},
 
             {'config':'2ioxs','spdif_base_chan':8,'testlevels':[
-                {'level':'nightly','sample_rates':[44100, 48000, 88200, 96000, 176400, 192000]}]},
+                {'level':'nightly','sample_rates':[192000]},
+                {'level':'weekend','sample_rates':[44100, 48000, 88200, 96000, 176400]}]},
 
             {'config':'2xoxs','spdif_base_chan':8,'testlevels':[
                 {'level':'smoke','sample_rates':[192000]},
-                {'level':'nightly','sample_rates':[44100, 48000, 88200, 96000, 176400]}]},
+                {'level':'nightly','sample_rates':[176400]},
+                {'level':'weekend','sample_rates':[44100, 48000, 88200, 96000]}]},
             ]
         }
     ]
