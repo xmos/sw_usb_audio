@@ -192,35 +192,45 @@ def runtest():
     test_configs = [
         {'board':'l2','app':'app_usb_aud_l2','app_configs':[
             {'config':'1ioxx','chan_count':2,'testlevels':[
-                {'level':'nightly','sample_rates':[44100, 48000]}]},
+                {'level':'nightly','sample_rates':[48000]},
+                {'level':'weekend','sample_rates':[44100]}]},
 
             {'config':'2io_adatin','chan_count':6,'testlevels':[
-                {'level':'nightly','sample_rates':[44100, 48000, 88200, 96000, 176400, 192000]}]},
+                {'level':'nightly','sample_rates':[192000]},
+                {'level':'weekend','sample_rates':[44100, 48000, 88200, 96000, 176400]}]},
 
             {'config':'2io_adatout','chan_count':6,'testlevels':[
-                {'level':'nightly','sample_rates':[44100, 48000, 88200, 96000]}]},
+                {'level':'nightly','sample_rates':[96000]},
+                {'level':'weekend','sample_rates':[44100, 48000, 88200]}]},
 
             {'config':'2io_spdifout_adatout','chan_count':6,'testlevels':[
-                {'level':'nightly','sample_rates':[44100, 48000, 88200, 96000]}]},
+                {'level':'nightly','sample_rates':[96000]},
+                {'level':'weekend','sample_rates':[44100, 48000, 88200]}]},
 
             {'config':'2io_spdifout_spdifin','chan_count':6,'testlevels':[
-                {'level':'nightly','sample_rates':[44100, 48000, 88200, 96000, 176400, 192000]}]},
+                {'level':'nightly','sample_rates':[192000]},
+                {'level':'weekend','sample_rates':[44100, 48000, 88200, 96000, 176400]}]},
 
             {'config':'2io_spdifout_spdifin_mix8','chan_count':6,'testlevels':[
-                {'level':'nightly','sample_rates':[44100, 48000, 88200, 96000, 176400, 192000]}]},
+                {'level':'nightly','sample_rates':[192000]},
+                {'level':'weekend','sample_rates':[44100, 48000, 88200, 96000, 176400]}]},
 
             {'config':'2io_tdm8','chan_count':6,'testlevels':[
-                {'level':'nightly','sample_rates':[44100, 48000, 88200, 96000]}]},
+                {'level':'nightly','sample_rates':[96000]},
+                {'level':'weekend','sample_rates':[44100, 48000, 88200]}]},
 
             {'config':'2iomx','chan_count':6,'testlevels':[
                 {'level':'smoke','sample_rates':[192000]},
-                {'level':'nightly','sample_rates':[44100, 48000, 88200, 96000, 176400]}]},
+                {'level':'nightly','sample_rates':[176400]},
+                {'level':'weekend','sample_rates':[44100, 48000, 88200, 96000]}]},
 
             {'config':'2ioxs','chan_count':6,'testlevels':[
-                {'level':'nightly','sample_rates':[44100, 48000, 88200, 96000, 176400, 192000]}]},
+                {'level':'nightly','sample_rates':[192000]},
+                {'level':'weekend','sample_rates':[44100, 48000, 88200, 96000, 176400]}]},
 
             {'config':'2ioxx','chan_count':6,'testlevels':[
-                {'level':'nightly','sample_rates':[44100, 48000, 88200, 96000, 176400, 192000]}]}
+                {'level':'nightly','sample_rates':[192000]},
+                {'level':'weekend','sample_rates':[44100, 48000, 88200, 96000, 176400]}]}
             ]
         }
     ]

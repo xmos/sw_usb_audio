@@ -312,14 +312,14 @@ def do_dfu_test(min_testlevel, board, app_name, pid, app_config, host_oss):
 def runtest():
     test_configs = [
         {'board':'l2','app':'app_usb_aud_l2','pid':'0x0004','app_configs':[
-            {'config':'2io_adatin','testlevel':'nightly'},
+            {'config':'2io_adatin','testlevel':'weekend'},
             {'config':'2io_adatout','testlevel':'nightly'},
-            {'config':'2io_spdifout_adatout','testlevel':'nightly'},
+            {'config':'2io_spdifout_adatout','testlevel':'weekend'},
             {'config':'2io_spdifout_spdifin','testlevel':'nightly'},
-            {'config':'2io_spdifout_spdifin_mix8','testlevel':'nightly'},
+            {'config':'2io_spdifout_spdifin_mix8','testlevel':'weekend'},
             {'config':'2io_tdm8','testlevel':'nightly'},
             {'config':'2iomx','testlevel':'nightly'},
-            {'config':'2ioxs','testlevel':'nightly'},
+            {'config':'2ioxs','testlevel':'weekend'},
             {'config':'2ioxx','testlevel':'nightly'},
             {'config':'2xoxs','testlevel':'smoke'}
             ]

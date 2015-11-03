@@ -159,10 +159,12 @@ def runtest():
         {'board':'l2','app':'app_usb_aud_l2','app_configs':[
             {'config':'2io_spdifout_spdifin','spdif_base_chan':6,'testlevels':[
                 {'level':'smoke','sample_rates':[192000]},
-                {'level':'nightly','sample_rates':[44100, 48000, 88200, 96000, 176400]}]},
+                {'level':'nightly','sample_rates':[176400]},
+                {'level':'weekend','sample_rates':[44100, 48000, 88200, 96000]}]},
 
             {'config':'2io_spdifout_spdifin_mix8','spdif_base_chan':6,'testlevels':[
-                {'level':'nightly','sample_rates':[44100, 48000, 88200, 96000, 176400, 192000]}]},
+                {'level':'nightly','sample_rates':[192000]},
+                {'level':'weekend','sample_rates':[44100, 48000, 88200, 96000, 176400]}]},
             ]
         }
     ]
