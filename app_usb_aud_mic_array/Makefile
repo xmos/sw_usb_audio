@@ -18,6 +18,9 @@ USED_MODULES = lib_mic_array lib_mic_array_board_support lib_logging module_dfu 
 XCC_FLAGS_demo = $(BUILD_FLAGS) 
 INCLUDE_ONLY_IN_demo =
 
+XCC_FLAGS_demo_uac1 = $(BUILD_FLAGS) -DAUDIO_CLASS=1 -DNUM_USB_CHAN_IN_FS=8 -DNUM_USB_CHAN_OUT_FS=2 -DSTREAM_FORMAT_INPUT_1_RESOLUTION_BITS=16
+INCLUDE_ONLY_IN_demo_uac1 = 
+
 XCC_FLAGS_demo_tdm = $(BUILD_FLAGS) -DI2S_MODE_TDM=1 -DI2S_CHANS_DAC=8
 INCLUDE_ONLY_IN_demo_tdm =
 
