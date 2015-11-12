@@ -71,12 +71,12 @@ void genclock();
 #endif
 
 /* Master clock defines (in Hz) */
-#define MCLK_441           (512*44100)   /* 44.1, 88.2 etc */
+#define MCLK_441           (256*44100)   /* 44.1, 88.2 etc */
 #define MCLK_48            (256*48000)   /* 48, 96 etc */
 
 /* Maximum frequency device runs at */
 #ifndef MIN_FREQ
-#define MIN_FREQ           (48000)
+#define MIN_FREQ           (11025)
 #endif
 
 /* Maximum frequency device runs at */
