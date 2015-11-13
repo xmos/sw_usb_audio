@@ -29,12 +29,12 @@ class SPDIFInputTester(xmostest.Tester):
         print ("Failure reason: %s" % failure_reason), # Print without newline
         self.result = False
 
-    def run(self, dut_programming_output, sig_gen_output, analyzer_output):
+    def run(self, dut_programming_output, sig_gen_output, analyzer_output, clock_set_output):
         self.result = True
         self.failures = []
 
         # Check for any errors
-        for line in (dut_programming_output + sig_gen_output + analyzer_output):
+        for line in (dut_programming_output + sig_gen_output + analyzer_output + clock_set_output):
             if re.match('.*ERROR|.*error|.*Error|.*Problem', line):
                 self.record_failure(line)
 
@@ -84,12 +84,13 @@ def do_spdif_input_test(min_testlevel, board, app_name, app_config,
     ctester = {}
     resources = {}
     dut_job = {}
+    clock_select_job = {}
     sig_gen_job = {}
     analysis_job = {}
 
     for os in host_oss:
 
-        ctester[os] = xmostest.CombinedTester(3, SPDIFInputTester(app_name, app_config,
+        ctester[os] = xmostest.CombinedTester(4, SPDIFInputTester(app_name, app_config,
                                                 spdif_base_chan, sample_rate,
                                                 duration, os, use_wdm))
         ctester[os].set_min_testlevel(min_testlevel)
@@ -117,12 +118,26 @@ def do_spdif_input_test(min_testlevel, board, app_name, app_config,
                                             tester = ctester[os][0],
                                             disable_debug_io = True)
 
+        if os.startswith('os_x'):
+            host_vol_ctrl_path = "../../../../usb_audio_testing/volcontrol/volcontrol"
+        elif os.startswith('win_'):
+            host_vol_ctrl_path = "..\\..\\..\\..\\usb_audio_testing\\volcontrol\\win32\\volcontrol.bat"
+
         sig_gen_job[os] = xmostest.run_on_xcore(resources[os]['analysis_device_1'],
                                              analyser_binary,
                                              tester = ctester[os][1],
                                              enable_xscope = True,
-                                             timeout = duration + 15, # Ensure signal generator runs for longer than audio analyzer
+                                             timeout = duration + 20, # Ensure signal generator runs for longer than audio analyzer
                                              start_after_completed = [dut_job[os]])
+
+        # Signal generator should run, to have a valid SPDIF signal
+        clock_select_job[os] = xmostest.run_on_pc(resources[os]['host_secondary'],
+                                                [host_vol_ctrl_path, '--clock','SPDIF'],
+                                                tester=ctester[os][3],
+                                                timeout = 10,
+                                                start_after_started = [sig_gen_job[os]],
+                                                initial_delay = 4,
+                                                )
 
         run_xsig_path = "../../../../xsig/xsig/bin/"
         xsig_configs_path = "../../../../usb_audio_testing/xsig_configs/"
@@ -149,7 +164,7 @@ def do_spdif_input_test(min_testlevel, board, app_name, app_config,
                                           timeout = duration + 60, # xsig should stop itself gracefully
                                           initial_delay = 5,
                                           start_after_started = [sig_gen_job[os]],
-                                          start_after_completed = [dut_job[os]])
+                                          start_after_completed = [dut_job[os], clock_select_job[os]])
         time.sleep(0.1)
 
     xmostest.complete_all_jobs()
