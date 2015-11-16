@@ -14,7 +14,7 @@ Please see CHANGELOG.rst for detailed change listing.
 
 For full software documentation please see the USB Audio Design Guide document.
 
-This release is built and tested using version 14 of the XMOS tool set.  Build or functionality issues could be experienced with any other version.
+This release is built and tested using version 14.1 of the XMOS tool set.  Build or functionality issues could be experienced with any other version.
 
 This repository contains applications (or instances) of the XMOS USB Audio Reference Design framework.  These applications
 typically relate to a specific board.  This repository contains the following:
@@ -94,7 +94,7 @@ General known issues with this release are listed below.  For board/application 
 
 - (#14762) When in DSD mode with S/PDIF output enabled, DSD samples are transmitted over S/PDIF if the DSD and S/PDIF channels are shared, this may or may not be desired
 
-- (#14173) I2S input is completely disabled when DSD output is active - the input stream to the host will contain 0 samples
+- (#14173) I2S input is completely disabled when DSD output is active - any input stream to the host will contain 0 samples
 
 - (#14780) Modifying the design to operate at a sample rate of 8kHz may expose a corner case relating to 0 length packet handling
 
@@ -113,9 +113,9 @@ Host System Requirements
 
 - Mac OSX version 10.6 or later
 
-- Windows XP, Vista, 7 or 8, with Thesycon Audio Class 2.0 driver for Windows (Tested against version 2.19). Please contact XMOS for details.
+- Windows XP, Vista, 7, 8 or 10 with Thesycon Audio Class 2.0 driver for Windows (Tested against version 3.20). Please contact XMOS for details.
  
-- Windows XP, Vista, 7 or 8 with built-in USB Audio Class 1.0 driver.
+- Windows XP, Vista, 7, 8 or 10 with built-in USB Audio Class 1.0 driver.
 
 In Field Firmware Upgrade
 =========================
