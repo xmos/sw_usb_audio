@@ -9,6 +9,9 @@
 
 on tile[AUDIO_IO_TILE] : out port p_pll_clk                 = PORT_PLL_REF;
 
+
+/* 0: DAC reset */
+/* 1: Ethernet Phy reset */
 on tile[1] : out port p_gpio = XS1_PORT_4F;
 
 on tile [1] : struct r_i2c r_i2c = {XS1_PORT_4E};
@@ -100,6 +103,9 @@ void wait_us(int microseconds)
 void AudioHwInit(chanend ?c_codec)
 {
     unsigned char data[1] = {0};
+ 
+    /* DAC in reset */
+    p_gpio <: 0;
     
     /* Init the i2c module */
     i2c_shared_master_init(r_i2c);
@@ -119,20 +125,15 @@ void AudioHwInit(chanend ?c_codec)
     }
 
 #ifndef I2S_MODE_TDM
-    /* DAC out of reset */
-    p_gpio <: 0xf;
 
-{
+    {
         timer t;
         unsigned time;
         t :> time;
         t when timerafter(time+AUDIO_PLL_LOCK_DELAY) :> void;
     }
 
-    /* Put DAC into slave mode  */
-    unsigned char val = 0b00001000;
-    DAC_REGWRITE(4, val);
-    DAC_REGREAD_ASSERT(4, data, val);
+   
 #endif
 }
 
@@ -143,6 +144,9 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
     unsigned sampRes_DAC, unsigned sampRes_ADC)
 {
 	unsigned char data[1] = {0};
+
+    /* DAC in reset */
+    p_gpio <: 0;
 
     /* Configure external fractional-n clock multiplier for 300Hz -> mClkFreq */
     PllMult(mClk/300);
@@ -164,6 +168,20 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
             break;
         }
     }
+
+    /* DAC out of reset */
+    p_gpio <: 1;
+    {
+       
+        timer t;
+        unsigned time;
+        t :> time;
+        t when timerafter(time+100000) :> void;
+    } 
+     /* Put DAC into slave mode  */
+    unsigned char val = 0b00001000;
+    DAC_REGWRITE(4, val);
+    DAC_REGREAD_ASSERT(4, data, val);
     
     return;
 }
