@@ -178,10 +178,21 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
         t :> time;
         t when timerafter(time+100000) :> void;
     } 
-     /* Put DAC into slave mode  */
-    unsigned char val = 0b00001000;
+
+    /* Write to PDN bit 1 in under 10ms or DAC will enter HW mode */
+    unsigned char val = 0b00000001;
+    DAC_REGWRITE(2, val);
+    DAC_REGREAD_ASSERT(2, data, val);
+
+    /* Put DAC into slave mode  */
+    val = 0b00001000;
     DAC_REGWRITE(4, val);
     DAC_REGREAD_ASSERT(4, data, val);
+
+    /* Set PDN bit low */
+    val = 0b00000000;
+    DAC_REGWRITE(2, val);
+    DAC_REGREAD_ASSERT(2, data, val);
     
     return;
 }
