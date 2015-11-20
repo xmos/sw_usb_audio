@@ -93,6 +93,14 @@ class AnalogueOutputTester(xmostest.Tester):
                                  env={},
                                  output=output)
 
+class XS2AnalogueOutputTester(AnalogueOutputTester):
+
+    # xCORE-200 MC tests uses only one "analyzer" device and doesn't
+    # require xscope controller too.
+    def run(self, dut_programming_output, sig_gen_output, analyzer1_output):
+        return super(XS2AnalogueOutputTester, self).run(dut_programming_output, sig_gen_output,
+                                                        analyzer1_output, [], [])
+
 def do_analogue_output_test(min_testlevel, board, app_name, app_config,
                             num_chans, sample_rate, duration, host_oss, use_wdm=False):
 
@@ -102,12 +110,21 @@ def do_analogue_output_test(min_testlevel, board, app_name, app_config,
     sig_gen_job = {}
     analysis1_job = {}
     analysis2_job = {}
+    tester_count = 5
+    if board == 'xcore200_mc':
+        # Just three tester instances
+        tester_count = 3
 
     for os in host_oss:
 
-        ctester[os] = xmostest.CombinedTester(5, AnalogueOutputTester(app_name,
-                                            app_config, num_chans, sample_rate,
-                                            duration, os, use_wdm))
+        if board == 'xcore200_mc':
+            ctester[os] = xmostest.CombinedTester(tester_count, XS2AnalogueOutputTester(app_name,
+                                                  app_config, num_chans, sample_rate,
+                                                  duration, os, use_wdm))
+        else:
+            ctester[os] = xmostest.CombinedTester(tester_count, AnalogueOutputTester(app_name,
+                                                  app_config, num_chans, sample_rate,
+                                                  duration, os, use_wdm))
         ctester[os].set_min_testlevel(min_testlevel)
 
         resources[os] = xmostest.request_resource("uac2_%s_testrig_%s" % (board, os),
@@ -118,7 +135,9 @@ def do_analogue_output_test(min_testlevel, board, app_name, app_config,
                   (app_name, app_config, app_name, app_config))
 
     analyser_binary = '../../sw_audio_analyzer/app_audio_analyzer_mc/bin/app_audio_analyzer_mc.xe'
-
+    if board == 'xcore200_mc':
+        analyser_binary = '../../sw_audio_analyzer/app_audio_analyzer_xcore200_mc/bin/app_audio_analyzer_xcore200_mc.xe'
+    
     dep_dut_job = []
 
     for os in host_oss:
@@ -141,6 +160,10 @@ def do_analogue_output_test(min_testlevel, board, app_name, app_config,
         elif os.startswith('win_'):
             run_xsig_path = ntpath.normpath(run_xsig_path) + "\\xsig"
             xsig_configs_path = ntpath.normpath(xsig_configs_path) + "\\"
+        elif os.startswith('lin'):
+            run_xsig_path += 'xsig'
+
+        # TODO: xsig should distinguish between L2 and xCORE-200 MC boards
         if num_chans is 2:
             xsig_config_file = "stereo_analogue_output.json"
         else:
@@ -169,25 +192,25 @@ def do_analogue_output_test(min_testlevel, board, app_name, app_config,
                                               start_after_completed = [dut_job[os]],
                                               start_after_started = [sig_gen_job[os]])
 
-        (analysis2_debugger_addr, analysis2_debugger_port) = resources[os]['analysis_device_2'].get_xscope_port().split(':')
-        analysis2_job[os] = xmostest.run_on_xcore(resources[os]['analysis_device_2'],
-                                              analyser_binary,
-                                              tester = ctester[os][3],
-                                              enable_xscope = True,
-                                              timeout = duration,
-                                              initial_delay = 1, # Avoid accessing both xTAGs together
-                                              start_after_completed = [dut_job[os]],
-                                              start_after_started = [sig_gen_job[os]],
-                                              xscope_host_cmd = ['../../sw_audio_analyzer/host_xscope_controller/bin/xscope_controller',
-                                              analysis2_debugger_addr,
-                                              analysis2_debugger_port,
-                                              "%d" % duration,
-                                              "b 4"],
-                                              xscope_host_tester = ctester[os][4],
-                                              xscope_host_timeout = duration + 60, # Host app should stop itself gracefully
-                                              xscope_host_initial_delay = 7)
+        if board != 'xcore200_mc':
+            (analysis2_debugger_addr, analysis2_debugger_port) = resources[os]['analysis_device_2'].get_xscope_port().split(':')
+            analysis2_job[os] = xmostest.run_on_xcore(resources[os]['analysis_device_2'],
+                                                  analyser_binary,
+                                                  tester = ctester[os][3],
+                                                  enable_xscope = True,
+                                                  timeout = duration,
+                                                  initial_delay = 1, # Avoid accessing both xTAGs together
+                                                  start_after_completed = [dut_job[os]],
+                                                  start_after_started = [sig_gen_job[os]],
+                                                  xscope_host_cmd = ['../../sw_audio_analyzer/host_xscope_controller/bin/xscope_controller',
+                                                  analysis2_debugger_addr,
+                                                  analysis2_debugger_port,
+                                                  "%d" % duration,
+                                                  "b 4"],
+                                                  xscope_host_tester = ctester[os][4],
+                                                  xscope_host_timeout = duration + 60, # Host app should stop itself gracefully
+                                                  xscope_host_initial_delay = 7)
         time.sleep(0.1)
-
     xmostest.complete_all_jobs()
 
 def runtest():
@@ -242,9 +265,37 @@ def runtest():
                 {'level':'nightly','sample_rates':[192000]},
                 {'level':'weekend','sample_rates':[44100, 48000, 88200, 96000, 176400]}]}
             ]
+        },
+        # xCORE-200 MC board test configs
+        {'board':'xcore200_mc','app':'app_usb_aud_xk_216_mc','app_configs':[
+            {'config':'2i8o8xxxxx_tdm8','chan_count':8,'testlevels':[
+                {'level':'nightly','sample_rates':[44100]},
+                {'level':'weekend','sample_rates':[48000, 88200, 96000]}]},
+
+            {'config':'2i10o10xxxxxx','chan_count':8,'testlevels':[
+                {'level':'nightly','sample_rates':[48000]},
+                {'level':'weekend','sample_rates':[44100, 88200, 96000, 176400]},
+                {'level':'smoke','sample_rates':[192000]}]},
+
+            {'config':'2i10o10msxxxx','chan_count':8,'testlevels':[
+                {'level':'nightly','sample_rates':[48000]},
+                {'level':'weekend','sample_rates':[44100, 88200, 96000, 176400]},
+                {'level':'smoke','sample_rates':[192000]}]},
+
+            {'config':'2i10o10xsxxxx_mix8','chan_count':8,'testlevels':[
+                {'level':'nightly','sample_rates':[48000]},
+                {'level':'weekend','sample_rates':[44100, 88200, 96000, 176400]},
+                {'level':'smoke','sample_rates':[192000]}]},
+
+            {'config':'2i10o10xssxxx','chan_count':8,'testlevels':[
+                {'level':'nightly','sample_rates':[48000]},
+                {'level':'weekend','sample_rates':[44100, 88200, 96000, 176400]},
+                {'level':'smoke','sample_rates':[192000]}]},
+            ]
         }
     ]
 
+    #host_oss = ['win_7',]
     host_oss = ['os_x_10', 'os_x_11', 'win_7', 'win_8', 'win_10']
     duration = 30
 
