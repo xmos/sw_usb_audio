@@ -224,80 +224,80 @@ def do_analogue_input_test(min_testlevel, board, app_name, app_config,
 
 def runtest():
     test_configs = [
-        {'board':'l2','app':'app_usb_aud_l2','app_configs':[
-            {'config':'1ioxx','chan_count':2,'testlevels':[
-                {'level':'nightly','sample_rates':[48000]},
-                {'level':'weekend','sample_rates':[44100]}]},
+        # {'board':'l2','app':'app_usb_aud_l2','app_configs':[
+        #     {'config':'1ioxx','chan_count':2,'testlevels':[
+        #         {'level':'nightly','sample_rates':[48000]},
+        #         {'level':'weekend','sample_rates':[44100]}]},
 
-            {'config':'2io_adatin','chan_count':6,'testlevels':[
-                {'level':'nightly','sample_rates':[192000]},
-                {'level':'weekend','sample_rates':[44100, 48000, 88200, 96000, 176400]}]},
+        #     {'config':'2io_adatin','chan_count':6,'testlevels':[
+        #         {'level':'nightly','sample_rates':[192000]},
+        #         {'level':'weekend','sample_rates':[44100, 48000, 88200, 96000, 176400]}]},
 
-            {'config':'2io_adatout','chan_count':6,'testlevels':[
-                {'level':'nightly','sample_rates':[96000]},
-                {'level':'weekend','sample_rates':[44100, 48000, 88200]}]},
+        #     {'config':'2io_adatout','chan_count':6,'testlevels':[
+        #         {'level':'nightly','sample_rates':[96000]},
+        #         {'level':'weekend','sample_rates':[44100, 48000, 88200]}]},
 
-            {'config':'2io_spdifout_adatout','chan_count':6,'testlevels':[
-                {'level':'nightly','sample_rates':[96000]},
-                {'level':'weekend','sample_rates':[44100, 48000, 88200]}]},
+        #     {'config':'2io_spdifout_adatout','chan_count':6,'testlevels':[
+        #         {'level':'nightly','sample_rates':[96000]},
+        #         {'level':'weekend','sample_rates':[44100, 48000, 88200]}]},
 
-            {'config':'2io_spdifout_spdifin','chan_count':6,'testlevels':[
-                {'level':'nightly','sample_rates':[192000]},
-                {'level':'weekend','sample_rates':[44100, 48000, 88200, 96000, 176400]}]},
+        #     {'config':'2io_spdifout_spdifin','chan_count':6,'testlevels':[
+        #         {'level':'nightly','sample_rates':[192000]},
+        #         {'level':'weekend','sample_rates':[44100, 48000, 88200, 96000, 176400]}]},
 
-            {'config':'2io_spdifout_spdifin_mix8','chan_count':6,'testlevels':[
-                {'level':'nightly','sample_rates':[192000]},
-                {'level':'weekend','sample_rates':[44100, 48000, 88200, 96000, 176400]}]},
+        #     {'config':'2io_spdifout_spdifin_mix8','chan_count':6,'testlevels':[
+        #         {'level':'nightly','sample_rates':[192000]},
+        #         {'level':'weekend','sample_rates':[44100, 48000, 88200, 96000, 176400]}]},
 
-            {'config':'2io_tdm8','chan_count':6,'testlevels':[
-                {'level':'nightly','sample_rates':[96000]},
-                {'level':'weekend','sample_rates':[44100, 48000, 88200]}]},
+        #     {'config':'2io_tdm8','chan_count':6,'testlevels':[
+        #         {'level':'nightly','sample_rates':[96000]},
+        #         {'level':'weekend','sample_rates':[44100, 48000, 88200]}]},
 
-            {'config':'2iomx','chan_count':6,'testlevels':[
-                {'level':'smoke','sample_rates':[192000]},
-                {'level':'nightly','sample_rates':[176400]},
-                {'level':'weekend','sample_rates':[44100, 48000, 88200, 96000]}]},
+        #     {'config':'2iomx','chan_count':6,'testlevels':[
+        #         {'level':'smoke','sample_rates':[192000]},
+        #         {'level':'nightly','sample_rates':[176400]},
+        #         {'level':'weekend','sample_rates':[44100, 48000, 88200, 96000]}]},
 
-            {'config':'2ioxs','chan_count':6,'testlevels':[
-                {'level':'nightly','sample_rates':[192000]},
-                {'level':'weekend','sample_rates':[44100, 48000, 88200, 96000, 176400]}]},
+        #     {'config':'2ioxs','chan_count':6,'testlevels':[
+        #         {'level':'nightly','sample_rates':[192000]},
+        #         {'level':'weekend','sample_rates':[44100, 48000, 88200, 96000, 176400]}]},
 
-            {'config':'2ioxx','chan_count':6,'testlevels':[
-                {'level':'nightly','sample_rates':[192000]},
-                {'level':'weekend','sample_rates':[44100, 48000, 88200, 96000, 176400]}]}
-            ]
-        },
+        #     {'config':'2ioxx','chan_count':6,'testlevels':[
+        #         {'level':'nightly','sample_rates':[192000]},
+        #         {'level':'weekend','sample_rates':[44100, 48000, 88200, 96000, 176400]}]}
+        #     ]
+        # },
         # xCORE-200 MC board test configs
         {'board':'xcore200_mc','app':'app_usb_aud_xk_216_mc','app_configs':[
-            {'config':'2i8o8xxxxx_tdm8','chan_count':8,'testlevels':[
-                {'level':'nightly','sample_rates':[44100]},
-                {'level':'weekend','sample_rates':[48000, 88200, 96000]}]},
+            # {'config':'2i8o8xxxxx_tdm8','chan_count':8,'testlevels':[
+            #     {'level':'nightly','sample_rates':[44100]},
+            #     {'level':'weekend','sample_rates':[48000, 88200, 96000]}]},
 
-            {'config':'2i10o10xxxxxx','chan_count':8,'testlevels':[
-                {'level':'nightly','sample_rates':[48000]},
-                {'level':'weekend','sample_rates':[44100, 88200, 96000, 176400]},
-                {'level':'smoke','sample_rates':[192000]}]},
+            # {'config':'2i10o10xxxxxx','chan_count':8,'testlevels':[
+            #     {'level':'nightly','sample_rates':[48000]},
+            #     {'level':'weekend','sample_rates':[44100, 88200, 96000, 176400]},
+            #     {'level':'smoke','sample_rates':[192000]}]},
 
             {'config':'2i10o10msxxxx','chan_count':8,'testlevels':[
                 {'level':'nightly','sample_rates':[48000]},
                 {'level':'weekend','sample_rates':[44100, 88200, 96000, 176400]},
                 {'level':'smoke','sample_rates':[192000]}]},
 
-            {'config':'2i10o10xsxxxx_mix8','chan_count':8,'testlevels':[
-                {'level':'nightly','sample_rates':[48000]},
-                {'level':'weekend','sample_rates':[44100, 88200, 96000, 176400]},
-                {'level':'smoke','sample_rates':[192000]}]},
+            # {'config':'2i10o10xsxxxx_mix8','chan_count':8,'testlevels':[
+            #     {'level':'nightly','sample_rates':[48000]},
+            #     {'level':'weekend','sample_rates':[44100, 88200, 96000, 176400]},
+            #     {'level':'smoke','sample_rates':[192000]}]},
 
-            {'config':'2i10o10xssxxx','chan_count':8,'testlevels':[
-                {'level':'nightly','sample_rates':[48000]},
-                {'level':'weekend','sample_rates':[44100, 88200, 96000, 176400]},
-                {'level':'smoke','sample_rates':[192000]}]},
-            ]
+            # {'config':'2i10o10xssxxx','chan_count':8,'testlevels':[
+            #     {'level':'nightly','sample_rates':[48000]},
+            #     {'level':'weekend','sample_rates':[44100, 88200, 96000, 176400]},
+            #     {'level':'smoke','sample_rates':[192000]}]},
+             ]
         },
     ]
 
-    #host_oss = ['win_7']
-    host_oss = ['os_x_10', 'os_x_11', 'win_7', 'win_8', 'win_10']
+    host_oss = ['win_7']
+    #host_oss = ['os_x_10', 'os_x_11', 'win_7', 'win_8', 'win_10']
     duration = 30
 
     if xmostest.testlevel_is_at_least(xmostest.get_testlevel(), 'nightly'):
