@@ -6,6 +6,7 @@
  */
 #ifndef _CUSTOMDEFINES_H_
 #define _CUSTOMDEFINES_H_
+#endif
 
 /* Prototype for our custom genclock() task */
 void genclock();
@@ -21,31 +22,10 @@ void genclock();
  * Note, we check if they are already defined in Makefile
  */
 
-
 /* Tile defines */
 #define AUDIO_IO_TILE      1
 #define XUD_TILE           1
 #define PDM_TILE           0
-
-/* Mixer core enabled by default */
-#ifndef MIXER
-#define MIXER              0
-#endif
-
-/* Mixing disabled by default */
-#ifndef MAX_MIX_COUNT
-#define MAX_MIX_COUNT      0
-#endif
-
-/* Enable/Disable MIDI - Default is MIDI off */
-#ifndef MIDI
-#define MIDI 		       0
-#endif
-
-/* Enable/Disable SPDIF output - Default is S/PDIF on */
-#ifndef SPDIF_TX
-#define SPDIF_TX	       0
-#endif
 
 /* Enable PDM and PDM->PCM conversion code */
 #define NUM_PDM_MICS       8
@@ -96,10 +76,5 @@ void genclock();
 #define PRODUCT_STR_A2     "XMOS Microphone Array UAC2.0"
 #define PRODUCT_STR_A1     "XMOS Microphone Array UAC1.0"
 //:
-
-/* Enable/Disable example HID code */
-#ifndef HID_CONTROLS
-#define HID_CONTROLS       0
-#endif
 
 #endif
