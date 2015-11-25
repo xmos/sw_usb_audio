@@ -67,6 +67,11 @@ void genclock();
 #define MAX_FREQ           (48000)
 #endif
 
+/* Maximum frequency in full-speed mode */
+#ifndef MAX_FREQ_FS
+#define MAX_FREQ_FS        (44100)  /* FS can't handle 8in2out at 48000 */
+#endif
+
 //:
 /***** Defines relating to USB descriptors etc *****/
 //:usb_defs
