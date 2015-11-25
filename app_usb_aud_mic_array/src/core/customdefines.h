@@ -76,7 +76,7 @@ void genclock();
 
 /* Maximum frequency device runs at */
 #ifndef MIN_FREQ
-#define MIN_FREQ           (11025)
+#define MIN_FREQ           (8000)
 #endif
 
 /* Maximum frequency device runs at */
