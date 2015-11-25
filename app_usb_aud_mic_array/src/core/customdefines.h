@@ -76,7 +76,10 @@ void genclock();
 
 /* Maximum frequency device runs at */
 #ifndef MIN_FREQ
+#if(AUDIO_CLASS == 1)
 #define MIN_FREQ           (8000)
+#else
+#define MIN_FREQ           (11025)
 #endif
 
 /* Maximum frequency device runs at */
