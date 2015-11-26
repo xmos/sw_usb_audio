@@ -162,15 +162,14 @@
     </dependency>
     <dependency repo = "sc_usb_audio">
         <gitbranch>master</gitbranch>
-        <githash>55f20f68aef5887daab829d3bea5eb6d5fadecab</githash>
+        <githash>89f43fabd1c510947e00954f607e8af79976cf33</githash>
         <uri>git://git/apps/sc_usb_audio</uri>
-        <version>6.13.0beta2</version>
     </dependency>
     <dependency repo = "sc_xud">
         <gitbranch>master</gitbranch>
-        <githash>539396a017e1798e378e029671c51570a0892cfc</githash>
+        <githash>12a7c443c8f7f78fc316ac53b7ac344c828bcdc6</githash>
         <uri>git://git/apps/sc_xud</uri>
-        <version>2.4.0beta1</version>
+        <version>2.4.0beta3</version>
     </dependency>
     <dependency repo = "sc_i2c">
         <gitbranch>master</gitbranch>
@@ -195,6 +194,18 @@
         <githash>204d3d7b5528c2e97a0d87ea9ecbd57c04b217cd</githash>
         <uri>git@github.com:xcore/sc_adat.git</uri>
         <version>1.0.0rc0</version>
+    </dependency>
+    <dependency repo = "lib_logging">
+        <githash>d11a3a9a0da09d6aee0acc55fe2881398ae0523e</githash>
+        <uri>git@github.com:xmos/lib_logging.git</uri>
+    </dependency>
+    <dependency repo = "lib_mic_array_board_support">
+        <githash>f39b4c6b9e56e7736fa7a47eff51eb3c366e1c11</githash>
+        <uri>git@github.com:xmos/lib_mic_array_board_support.git</uri>
+    </dependency>
+    <dependency repo = "lib_mic_array">
+        <githash>4ef969202707205b00863830df7266c2d7f021d8</githash>
+        <uri>git@github.com:xross/lib_mic_array.git</uri>
     </dependency>
     <description>USB Audio Applications</description>
     <docdir>doc</docdir>
@@ -345,7 +356,7 @@
     <release parenthash = "9b60cb576fc6f2fe60a7780d27119ad1b83ff750" version = "6.12.6rc3" githash = "6002cfe335488bd91984c7784296aedbf0ed7cba"></release>
     <release parenthash = "8578a979a8b9935facfee440002c07370fda366b" version = "6.13.0beta0" githash = "04b9ae667599362f6c86a937f623824128302603"></release>
     <release parenthash = "04b9ae667599362f6c86a937f623824128302603" version = "6.13.0beta1" githash = "99b3034c856760f6da923d7f09a19da2f077e39d"></release>
-    <release parenthash = "247f7ee40ae66589c68af6daf60ec586bf2343bc" version = "6.13.0beta2"></release>
+    <release parenthash = "247f7ee40ae66589c68af6daf60ec586bf2343bc" version = "6.13.0beta2" githash = "7e845e86a48073c09f8963e2bf78b64a237fd59f"></release>
     <subpartnumber>XM-002775-SM</subpartnumber>
     <vendor>XMOS</vendor>
     <version_defines></version_defines>
