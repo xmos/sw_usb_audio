@@ -133,7 +133,7 @@ def do_spdif_input_test(min_testlevel, board, app_name, app_config,
                                              analyser_binary,
                                              tester = ctester[os][1],
                                              enable_xscope = True,
-                                             timeout = duration + 20, # Ensure signal generator runs for longer than audio analyzer
+                                             timeout = duration + 23, # Ensure signal generator runs for longer than audio analyzer
                                              start_after_completed = [dut_job[os]],
                                              xscope_host_cmd = ['../../sw_audio_analyzer/host_xscope_controller/bin/xscope_controller',
                                              analysis1_debugger_addr,
@@ -209,8 +209,10 @@ def runtest():
         }, 
     ]
 
-    #host_oss = ['win_7',]
-    host_oss = ['os_x_10', 'os_x_11', 'win_7', 'win_8', 'win_10']
+    args = xmostest.getargs()
+
+    host_oss = ['win_7',]
+    #host_oss = ['os_x_10', 'os_x_11', 'win_7', 'win_8', 'win_10']
     duration = 20
 
     if xmostest.testlevel_is_at_least(xmostest.get_testlevel(), 'nightly'):
@@ -218,6 +220,10 @@ def runtest():
 
     for test in test_configs:
         board = test['board']
+        # Run tests only on requested board
+        if args.board:
+            if args.board != board:
+                continue
         app = test['app']
         for config in test['app_configs']:
             config_name = config['config']
