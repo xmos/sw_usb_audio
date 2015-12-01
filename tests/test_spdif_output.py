@@ -212,6 +212,7 @@ def runtest():
         },       
     ]
 
+    args = xmostest.getargs()
     #host_oss = ['win_7',]
     host_oss = ['os_x_10', 'os_x_11', 'win_7', 'win_8', 'win_10']
     duration = 30
@@ -221,6 +222,10 @@ def runtest():
 
     for test in test_configs:
         board = test['board']
+        # Run tests only on requested board
+        if args.board:
+            if args.board != board:
+                continue
         app = test['app']
         for config in test['app_configs']:
             config_name = config['config']
