@@ -45,6 +45,8 @@ class VolumeOutputTester(xmostest.Tester):
                            'channel':channel,
                            'os':os}
             self.register_test(self.product, self.group, self.test, self.config)
+            self.EXPECTED_NUM_CHANGES = 6
+            self.EXPECTED_INITIAL_VOL = 84
 
     def record_failure(self, failure_reason):
         # Append a newline if there isn't one already
@@ -55,14 +57,12 @@ class VolumeOutputTester(xmostest.Tester):
         self.result = False
 
     def check_channel(self, analyzer_output, chan):
-        EXPECTED_NUM_CHANGES = 6
-        EXPECTED_INITIAL_VOL = 84
         chan_output = []
 
         for line in analyzer_output:
             if line.startswith('Channel %d:' % chan):
                 chan_output.append(line)
-        if len(chan_output) != EXPECTED_NUM_CHANGES:
+        if len(chan_output) != self.EXPECTED_NUM_CHANGES:
             self.record_failure("Unexpected number of lines of output seen for channel %d"
                                 % chan)
         else:
@@ -70,9 +70,9 @@ class VolumeOutputTester(xmostest.Tester):
             if not chan_output[0].startswith('Channel %d: Set mode to volume check' % chan):
                 self.record_failure("Channel %d not set to volume check mode" % chan)
             if not chan_output[1].startswith('Channel %d: Volume change by %d'
-                                             % (chan, EXPECTED_INITIAL_VOL)):
+                                             % (chan, self.EXPECTED_INITIAL_VOL)):
                 self.record_failure("Initial volume level of channel %d was not %ddb"
-                                    % (chan, EXPECTED_INITIAL_VOL))
+                                    % (chan, self.EXPECTED_INITIAL_VOL))
             volume_checker.initial_decrease(self.record_failure, chan_output[2])
             volume_checker.check_change(self.record_failure, chan_output[3], 1.0)
             volume_checker.check_change(self.record_failure, chan_output[4], -0.5)
@@ -151,6 +151,17 @@ class VolumeOutputTester(xmostest.Tester):
                                  env={},
                                  output=output)
 
+class XS2VolumeOutputTester(VolumeOutputTester):
+
+    def __init__(self, *args, **kwargs):
+        super(XS2VolumeOutputTester, self).__init__(*args, **kwargs)
+        self.EXPECTED_INITIAL_VOL = 87
+
+    def run(self, dut_programming_output, sig_gen_output, analyzer1_output,
+            analyzer1_host_xscope_output, vol_ctrl_output):
+        super(XS2VolumeOutputTester, self).run(dut_programming_output, sig_gen_output, analyzer1_output,
+                                              analyzer1_host_xscope_output, [], [], vol_ctrl_output)
+
 def do_volume_output_test(min_testlevel, board, app_name, app_config, num_chans,
                           sample_rate, channel, host_oss):
 
@@ -165,8 +176,13 @@ def do_volume_output_test(min_testlevel, board, app_name, app_config, num_chans,
 
     for os in host_oss:
 
-        ctester[os] = xmostest.CombinedTester(7, VolumeOutputTester(app_name, app_config,
-                                          num_chans, channel, os))
+        if board == 'xcore200_mc':
+            # Get all testers and resources
+            ctester[os] = xmostest.CombinedTester(5, XS2VolumeOutputTester(app_name, app_config,
+                                              num_chans, channel, os))
+        else:
+            ctester[os] = xmostest.CombinedTester(7, VolumeOutputTester(app_name, app_config,
+                                  num_chans, channel, os))
         ctester[os].set_min_testlevel(min_testlevel)
 
         resources[os] = xmostest.request_resource("uac2_%s_testrig_%s" % (board, os),
@@ -177,6 +193,8 @@ def do_volume_output_test(min_testlevel, board, app_name, app_config, num_chans,
                   (app_name, app_config, app_name, app_config))
 
     analyser_binary = '../../sw_audio_analyzer/app_audio_analyzer_mc/bin/app_audio_analyzer_mc.xe'
+    if board == 'xcore200_mc':
+        analyser_binary = '../../sw_audio_analyzer/app_audio_analyzer_xcore200_mc/bin/app_audio_analyzer_xcore200_mc.xe'
 
     dep_dut_job = []
 
@@ -219,9 +237,14 @@ def do_volume_output_test(min_testlevel, board, app_name, app_config, num_chans,
                                      analysis1_debugger_addr,
                                      analysis1_debugger_port,
                                      "%d" % duration]
+
+        max_channel = 4 
+        if (board == 'xcore200_mc'):
+            max_channel = 8
+
         if channel is 'master':
-            analysis1_xscope_host_cmd.extend("m %d v" % chan for chan in range(4))
-        elif channel < 4:
+            analysis1_xscope_host_cmd.extend("m %d v" % chan for chan in range(max_channel))
+        elif channel < max_channel:
             analysis1_xscope_host_cmd.append("m %d v" % channel)
         analysis1_job[os] = xmostest.run_on_xcore(resources[os]['analysis_device_1'],
                                               analyser_binary,
@@ -234,30 +257,36 @@ def do_volume_output_test(min_testlevel, board, app_name, app_config, num_chans,
                                               xscope_host_tester = ctester[os][3],
                                               xscope_host_timeout = duration + 60, # Host app should stop itself gracefully
                                               xscope_host_initial_delay = 8)
-
-        (analysis2_debugger_addr, analysis2_debugger_port) = resources[os]['analysis_device_2'].get_xscope_port().split(':')
-        analysis2_xscope_host_cmd = ['../../sw_audio_analyzer/host_xscope_controller/bin/xscope_controller',
-                                     analysis2_debugger_addr,
-                                     analysis2_debugger_port,
-                                     "%d" % duration,
-                                     "b 4"]
-        if channel is 'master':
-            analysis2_xscope_host_cmd.extend("m %d v" % chan for chan in range(4, num_chans))
-        elif channel >= 4:
-            analysis2_xscope_host_cmd.append("m %d v" % channel)
-        analysis2_job[os] = xmostest.run_on_xcore(resources[os]['analysis_device_2'],
-                                              analyser_binary,
-                                              tester = ctester[os][4],
-                                              enable_xscope = True,
-                                              timeout = duration,
-                                              initial_delay = 1, # Avoid accessing both xTAGs together
-                                              start_after_completed = [dut_job[os]],
-                                              start_after_started = [sig_gen_job[os],
-                                                                     analysis1_job[os]],
-                                              xscope_host_cmd = analysis2_xscope_host_cmd,
-                                              xscope_host_tester = ctester[os][5],
-                                              xscope_host_timeout = duration + 60, # Host app should stop itself gracefully
-                                              xscope_host_initial_delay = 8)
+        i_ctester = 4
+        dep_analysis_job = []
+        dep_analysis_job.append(analysis1_job[os])
+        # xCORE-200 MC tester uses only one 'analysis_device'
+        if board != 'xcore200_mc':
+            (analysis2_debugger_addr, analysis2_debugger_port) = resources[os]['analysis_device_2'].get_xscope_port().split(':')
+            analysis2_xscope_host_cmd = ['../../sw_audio_analyzer/host_xscope_controller/bin/xscope_controller',
+                                         analysis2_debugger_addr,
+                                         analysis2_debugger_port,
+                                         "%d" % duration,
+                                         "b 4"]
+            if channel is 'master':
+                analysis2_xscope_host_cmd.extend("m %d v" % chan for chan in range(4, num_chans))
+            elif channel >= 4:
+                analysis2_xscope_host_cmd.append("m %d v" % channel)
+            analysis2_job[os] = xmostest.run_on_xcore(resources[os]['analysis_device_2'],
+                                                  analyser_binary,
+                                                  tester = ctester[os][i_ctester],
+                                                  enable_xscope = True,
+                                                  timeout = duration,
+                                                  initial_delay = 1, # Avoid accessing both xTAGs together
+                                                  start_after_completed = [dut_job[os]],
+                                                  start_after_started = [sig_gen_job[os],
+                                                                         analysis1_job[os]],
+                                                  xscope_host_cmd = analysis2_xscope_host_cmd,
+                                                  xscope_host_tester = ctester[os][i_ctester + 1],
+                                                  xscope_host_timeout = duration + 60, # Host app should stop itself gracefully
+                                                  xscope_host_initial_delay = 8)
+            i_ctester += 2
+            dep_analysis_job.append(analysis2_job[os])
 
         if os.startswith('os_x'):
             host_vol_ctrl_path = "../../../../usb_audio_testing/volcontrol/OSX/testvol_out.sh"
@@ -267,18 +296,18 @@ def do_volume_output_test(min_testlevel, board, app_name, app_config, num_chans,
             channel_number = 0
         else:
             channel_number = channel + 1
+
         volcontrol_job[os] = xmostest.run_on_pc(resources[os]['host_secondary'],
                                             [host_vol_ctrl_path,
                                             "%d" % (channel_number),
                                             "%d" % (num_chans+1)],
-                                            tester = ctester[os][6],
+                                            tester = ctester[os][i_ctester],
                                             timeout = duration + 60, # testvol should stop itself
                                             initial_delay = 14,
                                             # start_after_started = [sig_gen_job[os],
                                             #                        analysis1_job[os],
                                             #                        analysis2_job[os]],
-                                            start_after_started = [analysis1_job[os],
-                                                                   analysis2_job[os]]
+                                            start_after_started = dep_analysis_job,
                                             # start_after_completed = [dut_job[os]]
                                             )
         time.sleep(0.1)
@@ -324,13 +353,33 @@ def runtest():
             {'config':'2xoxs','chan_count':8,
                 'max_sample_rate':192000,'testlevel':'nightly'}
             ]
-        }
+        },
+        {'board':'xcore200_mc','app':'app_usb_aud_xk_216_mc','app_configs':[
+
+            {'config':'2i8o8xxxxx_tdm8','chan_count':8,
+                  'max_sample_rate':48000, 'testlevel':'nightly'},
+            {'config':'2i10o10xxxxxx','chan_count':8,
+                  'max_sample_rate':96000, 'testlevel':'smoke'},
+            {'config':'2i10o10msxxxx','chan_count':8,
+                  'max_sample_rate':192000, 'testlevel':'nightly'},
+            {'config':'2i10o10xsxxxx_mix8','chan_count':8,
+                  'max_sample_rate':44100, 'testlevel':'weekend'},
+            {'config':'2i10o10xssxxx','chan_count':8,
+                  'max_sample_rate':176400, 'testlevel':'weekend'},
+            ]
+        },
     ]
 
+    args = xmostest.getargs()
+    #host_oss = ['win_7',]
     host_oss = ['os_x_10', 'os_x_11', 'win_7', 'win_8', 'win_10']
 
     for test in test_configs:
         board = test['board']
+        # Run tests only on requested board
+        if args.board:
+            if args.board != board:
+                continue
         app = test['app']
         for config in test['app_configs']:
             config_name = config['config']

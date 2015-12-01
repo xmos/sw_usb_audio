@@ -323,13 +323,32 @@ def runtest():
             {'config':'2ioxx','testlevel':'nightly'},
             {'config':'2xoxs','testlevel':'smoke'}
             ]
-        }
+        },
+        {'board':'xcore200_mc','app':'app_usb_aud_xk_216_mc', 'pid': '0x0008', 'app_configs':[
+            {'config':'2i8o8xxxxx_tdm8','testlevel':'weekend'},
+            {'config':'2i10o10msxxxx','testlevel':'nightly'},
+            {'config':'2i10o10xxxxxd','testlevel':'weekend'},
+            {'config':'2i10o10xxxxxx','testlevel':'nightly'},
+            {'config':'2i10o10xsxxxx','testlevel':'weekend'},
+            {'config':'2i10o10xsxxxx_mix8','testlevel':'nightly'},
+            {'config':'2i10o10xsxxxd','testlevel':'nightly'},
+            {'config':'2i10o16xxxaxx','testlevel':'weekend'},
+            {'config':'2i16o16xxxaax','testlevel':'nightly'},
+            {'config':'2i10o10xssxxx','testlevel':'smoke'}
+            ]
+        },
     ]
 
+    args = xmostest.getargs()
+    #host_oss = ['win_7',]
     host_oss = ['os_x_10', 'os_x_11', 'win_7', 'win_8', 'win_10']
 
     for test in test_configs:
         board = test['board']
+        # Run tests only on requested board
+        if args.board:
+            if args.board != board:
+                continue
         app = test['app']
         pid = test['pid']
         for config in test['app_configs']:

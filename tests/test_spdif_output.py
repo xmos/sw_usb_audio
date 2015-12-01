@@ -103,6 +103,8 @@ def do_spdif_output_test(min_testlevel, board, app_name, app_config,
                   (app_name, app_config, app_name, app_config))
 
     analyser_binary = '../../sw_audio_analyzer/app_audio_analyzer_mc/bin/spdif_out/app_audio_analyzer_mc_spdif_out.xe'
+    if board == 'xcore200_mc':
+        analyser_binary = '../../sw_audio_analyzer/app_audio_analyzer_xcore200_mc/bin/spdif_test/app_audio_analyzer_xcore200_mc_spdif_test.xe'
 
     dep_dut_job = []
 
@@ -181,9 +183,37 @@ def runtest():
                 {'level':'nightly','sample_rates':[176400]},
                 {'level':'weekend','sample_rates':[44100, 48000, 88200, 96000]}]},
             ]
-        }
+        },
+        {'board':'xcore200_mc','app':'app_usb_aud_xk_216_mc','app_configs':[
+            {'config':'2i10o10msxxxx','spdif_base_chan':8, 'testlevels': [
+                {'level':'nightly','sample_rates':[192000]},
+                {'level':'smoke','sample_rates':[44100]},
+                {'level':'weekend','sample_rates':[44100, 48000, 88200, 96000, 176400]}]},
+
+            {'config':'2i10o10xssxxx','spdif_base_chan':8,'testlevels':[
+                {'level':'nightly','sample_rates':[48000]},
+                {'level':'smoke','sample_rates':[176400]},
+                {'level':'weekend','sample_rates':[44100, 88200, 96000, 176400]}]},
+
+            {'config':'2i10o10xsxxxd','spdif_base_chan':8,'testlevels':[
+                {'level':'nightly','sample_rates':[192000]},
+                #{'level':'smoke','sample_rates':[48000]},
+                {'level':'weekend','sample_rates':[44100, 48000, 88200, 96000, 176400]}]},
+
+            {'config':'2i10o10xsxxxx','spdif_base_chan':8,'testlevels':[
+                {'level':'nightly','sample_rates':[192000]},
+                #{'level':'smoke','sample_rates':[48000]},
+                {'level':'weekend','sample_rates':[44100, 48000, 88200, 96000, 176400]}]},
+
+            {'config':'2i10o10xsxxxx_mix8','spdif_base_chan':8,'testlevels':[
+                {'level':'nightly','sample_rates':[192000]},
+                {'level':'weekend','sample_rates':[44100, 48000, 88200, 96000, 176400]}]},
+            ]
+        },       
     ]
 
+    args = xmostest.getargs()
+    #host_oss = ['win_7',]
     host_oss = ['os_x_10', 'os_x_11', 'win_7', 'win_8', 'win_10']
     duration = 30
 
@@ -192,6 +222,10 @@ def runtest():
 
     for test in test_configs:
         board = test['board']
+        # Run tests only on requested board
+        if args.board:
+            if args.board != board:
+                continue
         app = test['app']
         for config in test['app_configs']:
             config_name = config['config']
