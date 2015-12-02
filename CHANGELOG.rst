@@ -3,8 +3,6 @@ sw_usb_audio Change Log
 
 6.14.0
 ------   
-    - ADDED:      app_usb_aud_mic_array for xCORE Microphone Array board. Includes example usage
-                  of PDM microphone integration.
     - ADDED:      UAC 1.0 build config to app_usb_aud_xk_216_mc
 
 6.13.0
