@@ -1,8 +1,14 @@
 #!/usr/bin/env python
 import xmostest
+import argparse
 
 if __name__ == "__main__":
-    xmostest.init()
+
+    # Argument to choose the board
+    argparser = argparse.ArgumentParser(description = "USB Audio test script")
+    argparser.add_argument ('--board', help ='DUT board to run the tests [xcore200_mc | l2]')
+
+    xmostest.init(argparser)
 
     xmostest.register_group("sw_usb_audio",
                             "analogue_hw_tests",

@@ -26,6 +26,15 @@ USED_MODULES = module_usb_shared module_xud module_usb_audio module_spdif_tx mod
 # DSD out	enabled: d, disabled: x
 # e.g. 2i10o10xsxxx: Audio class 2.0, input and output enabled (10 channels each), SPDIF output, no SPDIF input, no ADAT
 
+TEST_DFU_1 ?= 0
+ifeq ($(TEST_DFU_1),1)
+BUILD_FLAGS += -DBCD_DEVICE=0x9901
+endif
+TEST_DFU_2 ?= 0
+ifeq ($(TEST_DFU_2),1)
+BUILD_FLAGS += -DBCD_DEVICE=0x9902
+endif
+
 MFI ?= 0
 
 ifeq ($(MFI), 0)
