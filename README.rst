@@ -1,10 +1,8 @@
 XMOS USB Audio 2.0 Reference Design README
 ..........................................
 
-:Latest release: 6.12.6rc3
 :Maintainer: Ross Owen
 :Description: USB Audio Applications
-
 
 Please note, Alpha and Beta releases may not accurately reflect the final release and documentation may not be complete. These early releases are not suitable for a production context, and are provided for evaluation purposes only.
 
@@ -14,7 +12,7 @@ Please see CHANGELOG.rst for detailed change listing.
 
 For full software documentation please see the USB Audio Design Guide document.
 
-This release is built and tested using version 14 of the XMOS tool set.  Build or functionality issues could be experienced with any other version.
+This release is built and tested using version 14.1 of the XMOS tool set.  Build or functionality issues could be experienced with any other version.
 
 This repository contains applications (or instances) of the XMOS USB Audio Reference Design framework.  These applications
 typically relate to a specific board.  This repository contains the following:
@@ -22,7 +20,9 @@ typically relate to a specific board.  This repository contains the following:
 +-----------------------+--------------------------+------------------------------------------------------------+
 |    App Name           |     Relevant Board(s)    | Description                                                |
 +=======================+==========================+============================================================+
-| app_usb_aud_xk_216_mc | xk-audio-216-mc          | xCORE-200 Multi-channel Audio Board                                   |
+| app_usb_aud_xk_216_mc | xk-audio-216-mc          | xCORE-200 Multi-channel Audio Board                        |
++-----------------------+--------------------------+------------------------------------------------------------+
+| app_usb_aud_mic_array |                          | xCORE-200 Mic Array Reference Board
 +-----------------------+--------------------------+------------------------------------------------------------+
 | app_usb_aud_l1        | xr-usb-audio-2.0         | XMOS XS1-L8 USB Audio Reference Design                     |
 +-----------------------+--------------------------+------------------------------------------------------------+
@@ -57,7 +57,7 @@ Key features of the various applications in this repository are as follow.  Plea
 
 - Fully Asynchronous operation
 
-- Support for the following sample frequencies: 44.1, 48, 88.2, 96, 176.4, 192, 352.8, 384kHz
+- Support for the following sample frequencies: 8, 11.025, 12, 16, 32, 44.1, 48, 88.2, 96, 176.4, 192, 352.8, 384kHz
 
 - Input/output channel and individual volume/mute controls supported
 
@@ -94,11 +94,9 @@ General known issues with this release are listed below.  For board/application 
 
 - (#14762) When in DSD mode with S/PDIF output enabled, DSD samples are transmitted over S/PDIF if the DSD and S/PDIF channels are shared, this may or may not be desired
 
-- (#14173) I2S input is completely disabled when DSD output is active - the input stream to the host will contain 0 samples
+- (#14173) I2S input is completely disabled when DSD output is active - any input stream to the host will contain 0 samples
 
-- (#14780) Modifying the design to operate at a sample rate of 8kHz may expose a corner case relating to 0 length packet handling
-
-- (#13893) 1024x Sample Rate master clocks are currently not supported (e.g. 49.152Mhz for Sample Rates below 96kHz)
+- (#14780) Operating the design at a sample rate of less than or equal to the SOF rate (i.e. 8kHz at HS, 1kHz at FS) may expose a corner case relating to 0 length packet handling in both the driver and device and should be considered un-supported at this time.
 
 - (#14883) Before DoP mode is detected a small number of DSD samples will be played out as PCM via I2S
 
@@ -113,9 +111,9 @@ Host System Requirements
 
 - Mac OSX version 10.6 or later
 
-- Windows XP, Vista, 7 or 8, with Thesycon Audio Class 2.0 driver for Windows (Tested against version 2.19). Please contact XMOS for details.
+- Windows XP, Vista, 7, 8 or 10 with Thesycon Audio Class 2.0 driver for Windows (Tested against version 3.20). Please contact XMOS for details.
  
-- Windows XP, Vista, 7 or 8 with built-in USB Audio Class 1.0 driver.
+- Windows XP, Vista, 7, 8 or 10 with built-in USB Audio Class 1.0 driver.
 
 In Field Firmware Upgrade
 =========================
@@ -135,6 +133,7 @@ Required software (dependencies)
   * sc_u_series_support (git@github.com:xcore/sc_u_series_support.git)
   * sc_usb (git://git/apps/sc_usb)
   * sc_spdif (git://github.com/xcore/sc_spdif)
+  * lib_xassert (git@github.com:xmos/lib_xassert.git)
   * sc_usb_audio (git://git/apps/sc_usb_audio)
   * sc_usb_device (git://github.com/xcore/sc_usb_device)
   * sc_util (git://github.com/xcore/sc_util)

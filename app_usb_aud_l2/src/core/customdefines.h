@@ -70,7 +70,7 @@
 #define ADAT_RX_INDEX      (8)
 #define SPDIF_TX_INDEX     (I2S_CHANS_DAC)
 
-#if defined(SPDIF) && (SPDIF==1)
+#if defined(SPDIF_TX) && (SPDIF_TX==1)
 #define ADAT_TX_INDEX      (SPDIF_TX_INDEX+2)
 #else
 #define ADAT_TX_INDEX      (I2S_CHANS_DAC)
