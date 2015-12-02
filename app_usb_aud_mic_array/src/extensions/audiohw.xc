@@ -102,8 +102,6 @@ void wait_us(int microseconds)
 
 void AudioHwInit(chanend ?c_codec)
 {
-    unsigned char data[1] = {0};
- 
     /* DAC in reset */
     p_gpio <: 0;
     
@@ -123,18 +121,6 @@ void AudioHwInit(chanend ?c_codec)
         t :> time;
         t when timerafter(time+AUDIO_PLL_LOCK_DELAY) :> void;
     }
-
-#ifndef I2S_MODE_TDM
-
-    {
-        timer t;
-        unsigned time;
-        t :> time;
-        t when timerafter(time+AUDIO_PLL_LOCK_DELAY) :> void;
-    }
-
-   
-#endif
 }
 
 /* Configures the external audio hardware for the required sample frequency.
@@ -169,10 +155,10 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
         }
     }
 
+#ifndef I2S_MODE_TDM          /* Hold the DAC in reset when in TDM mode */
     /* DAC out of reset */
     p_gpio <: 1;
     {
-       
         timer t;
         unsigned time;
         t :> time;
@@ -193,6 +179,8 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
     val = 0b00000000;
     DAC_REGWRITE(2, val);
     DAC_REGREAD_ASSERT(2, data, val);
+   
+#endif 
     
     return;
 }
