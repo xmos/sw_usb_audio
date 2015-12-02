@@ -292,6 +292,10 @@ def runtest():
                 {'level':'nightly','sample_rates':[48000]},
                 {'level':'weekend','sample_rates':[44100, 88200, 96000, 176400]},
                 {'level':'smoke','sample_rates':[192000]}]},
+
+            {'config':'2i10o10xsxxxd','chan_count':8,'testlevels':[
+                {'level':'nightly','sample_rates':[48000, 192000]},
+                {'level':'weekend','sample_rates':[44100, 88200, 96000, 176400]},]},
              ]
         },
     ]
