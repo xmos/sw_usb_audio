@@ -246,7 +246,9 @@ def runtest():
                     if os.startswith('win_') and WDM_SAMPLE_RATE in sample_rates:
                         win_oss.append(os)
 
-                do_spdif_output_test(min_testlevel, board, app,
-                                     config_name, spdif_base_chan,
-                                     WDM_SAMPLE_RATE, duration, win_oss,
-                                     use_wdm=True)
+                # MME supports only two channels. PortAudio should be compiled with
+                # WASAPI to use more than two channels and higher sample rates.
+                # do_spdif_output_test(min_testlevel, board, app,
+                #                      config_name, spdif_base_chan,
+                #                      WDM_SAMPLE_RATE, duration, win_oss,
+                #                      use_wdm=True)
