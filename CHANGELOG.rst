@@ -2,8 +2,28 @@ sw_usb_audio Change Log
 =======================
 
 6.14.0
-------   
+------
     - ADDED:      UAC 1.0 build configs to app_usb_aud_xk_216_mc
+
+  * Changes to dependencies:
+
+    - sc_usb_audio: 6.13.0beta2 -> 6.14.0beta0
+
+      + ADDED:      Support for various "low" sample rates (i.e. < 44100) into UAC2 sample rate list
+        and UAC1 descriptors
+      + ADDED:      Support for for master-clock/sample-rate divides that are not a power of 2
+        (i.e. 32kHz from 24.567MHz)
+      + ADDED:      Support for the use and integration of PDM microphones (including PDM to PCM
+        conversion) via lib_mic_array
+      + ADDED:      Extended available sample-rate/master-clock ratios. Previous restriction was <=
+        512x (i.e. could not support 1024x and above e.g. 49.152MHz MCLK for Sample Rates
+        below 96kHz) (#13893)
+      + RESOLVED:   MIDI data not accepted after "sleep" in OSX 10.11 (El Capitan) - related to sc_xud
+        bug #17092
+      + CHANGE:     Asynchronous feedback system re-implemented to allow the previous two changelog
+        items
+      + CHANGE:     Hardware divider used to generate bit-clock from master clock (xCORE-200 only).
+        Allows easy support for greater number of master-clock to sample-rate ratios.
 
 6.13.0
 ------
