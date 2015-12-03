@@ -50,7 +50,7 @@ class VolumeOutputTester(xmostest.Tester):
 
     def record_failure(self, failure_reason):
         # Append a newline if there isn't one already
-        if re.match('.*\n', failure_reason) is None:
+        if not failure_reason.endswith('\n'):
             failure_reason += '\n'
         self.failures.append(failure_reason)
         print ("Failure reason: %s" % failure_reason), # Print without newline
