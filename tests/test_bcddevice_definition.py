@@ -46,28 +46,33 @@ def runtest():
         for filename in files:
             with open(os.path.join(dirpath, filename), 'r') as f:
                 for line in f:
-                    m = re.match('\s*#define\s+BCD_DEVICE_(J|M|N)\s+(\d+)', line)
+                    m = re.match('\s*#define\s+BCD_DEVICE_(J|M|N)\s+(\d+)',
+                                 line)
                     if m:
                         # Found a line containing a bcdDevice define
                         define_name = m.group(1)
                         define_value = m.group(2)
 
                         # Record the value found
-                        bcdDevice_search_results[define_name]['Values'].append(define_value)
-                        bcdDevice_search_results[define_name]['Files'].append(os.path.abspath(os.path.join(dirpath, filename)))
+                        bcdDevice_search_results[define_name]['Values'].append(
+                            define_value)
+                        bcdDevice_search_results[define_name]['Files'].append(
+                            os.path.abspath(os.path.join(dirpath, filename)))
 
     # Format the recorded values in the required test output
     test_output = []
     for name in bcdDevice_search_results:
         count = len(bcdDevice_search_results[name]['Values'])
         if count is 1:
-            test_output.append("BCD_DEVICE_"+name+" defined as "+str(bcdDevice_search_results[name]['Values'][0]))
+            test_output.append("BCD_DEVICE_"+name+" defined as "+
+                               str(bcdDevice_search_results[name]['Values'][0]))
         elif count > 1:
             failures = ["Found multiple defines for BCD_DEVICE_"+name]
             for i in range(0, count):
                 value = str(bcdDevice_search_results[name]['Values'][i])
                 filepath = bcdDevice_search_results[name]['Files'][i]
-                failures.append("\nBCD_DEVICE_"+name+" defined as "+value+" in "+filepath)
+                failures.append("\nBCD_DEVICE_"+name+" defined as "+value+
+                                " in "+filepath)
             test_output.append(''.join(failures))
 
     # Test for a match
