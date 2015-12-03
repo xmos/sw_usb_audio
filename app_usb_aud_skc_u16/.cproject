@@ -43,7 +43,7 @@
                                 </outputEntries>
                             </builder>
                             <tool id = "com.xmos.cdt.xc.compiler.92296056" name="com.xmos.cdt.xc.compiler" superClass="com.xmos.cdt.xc.compiler">
-                                <option id = "com.xmos.c.compiler.option.defined.symbols.2478375" name="com.xmos.c.compiler.option.defined.symbols" superClass="com.xmos.c.compiler.option.defined.symbols" valueType="definedSymbols">
+                                <option id = "com.xmos.xc.compiler.option.defined.symbols.2478375" name="com.xmos.xc.compiler.option.defined.symbols" superClass="com.xmos.xc.compiler.option.defined.symbols" valueType="definedSymbols">
                                     <listOptionValue builtIn="false" value="__SHRT_MAX__=32767"/>
                                     <listOptionValue builtIn="false" value="__SCHAR_MAX__=127"/>
                                     <listOptionValue builtIn="false" value="__SIZE_TYPE__=unsigned"/>
@@ -160,9 +160,6 @@
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/api}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources/DWARF}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents}&quot;' />
@@ -323,9 +320,6 @@
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/api}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources/DWARF}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents}&quot;' />
@@ -492,9 +486,6 @@
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/api}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources/DWARF}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents/Resources}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_dfu/host/xmos_dfu_osx/xmosdfu.dSYM/Contents}&quot;' />

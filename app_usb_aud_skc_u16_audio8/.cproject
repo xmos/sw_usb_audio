@@ -43,7 +43,7 @@
                                 </outputEntries>
                             </builder>
                             <tool id = "com.xmos.cdt.xc.compiler.14967706" name="com.xmos.cdt.xc.compiler" superClass="com.xmos.cdt.xc.compiler">
-                                <option id = "com.xmos.c.compiler.option.defined.symbols.10266749" name="com.xmos.c.compiler.option.defined.symbols" superClass="com.xmos.c.compiler.option.defined.symbols" valueType="definedSymbols">
+                                <option id = "com.xmos.xc.compiler.option.defined.symbols.10266749" name="com.xmos.xc.compiler.option.defined.symbols" superClass="com.xmos.xc.compiler.option.defined.symbols" valueType="definedSymbols">
                                     <listOptionValue builtIn="false" value="__SHRT_MAX__=32767"/>
                                     <listOptionValue builtIn="false" value="__SCHAR_MAX__=127"/>
                                     <listOptionValue builtIn="false" value="__SIZE_TYPE__=unsigned"/>
@@ -161,9 +161,6 @@
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/api}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_tx/src}&quot;' />
@@ -331,9 +328,6 @@
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/api}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_tx/src}&quot;' />
@@ -507,9 +501,6 @@
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/api}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_tx/src}&quot;' />
@@ -701,7 +692,7 @@
                                 </outputEntries>
                             </builder>
                             <tool id = "com.xmos.cdt.xc.compiler.75753138" name="com.xmos.cdt.xc.compiler" superClass="com.xmos.cdt.xc.compiler">
-                                <option id = "com.xmos.c.compiler.option.defined.symbols.59192117" name="com.xmos.c.compiler.option.defined.symbols" superClass="com.xmos.c.compiler.option.defined.symbols" valueType="definedSymbols">
+                                <option id = "com.xmos.xc.compiler.option.defined.symbols.59192117" name="com.xmos.xc.compiler.option.defined.symbols" superClass="com.xmos.xc.compiler.option.defined.symbols" valueType="definedSymbols">
                                     <listOptionValue builtIn="false" value="__SHRT_MAX__=32767"/>
                                     <listOptionValue builtIn="false" value="__SCHAR_MAX__=127"/>
                                     <listOptionValue builtIn="false" value="__SIZE_TYPE__=unsigned"/>
@@ -819,9 +810,6 @@
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/api}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_tx/src}&quot;' />
@@ -989,9 +977,6 @@
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/api}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_tx/src}&quot;' />
@@ -1165,9 +1150,6 @@
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/api}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_tx/src}&quot;' />
@@ -1359,7 +1341,7 @@
                                 </outputEntries>
                             </builder>
                             <tool id = "com.xmos.cdt.xc.compiler.11948734" name="com.xmos.cdt.xc.compiler" superClass="com.xmos.cdt.xc.compiler">
-                                <option id = "com.xmos.c.compiler.option.defined.symbols.65103498" name="com.xmos.c.compiler.option.defined.symbols" superClass="com.xmos.c.compiler.option.defined.symbols" valueType="definedSymbols">
+                                <option id = "com.xmos.xc.compiler.option.defined.symbols.65103498" name="com.xmos.xc.compiler.option.defined.symbols" superClass="com.xmos.xc.compiler.option.defined.symbols" valueType="definedSymbols">
                                     <listOptionValue builtIn="false" value="__SHRT_MAX__=32767"/>
                                     <listOptionValue builtIn="false" value="__SCHAR_MAX__=127"/>
                                     <listOptionValue builtIn="false" value="__SIZE_TYPE__=unsigned"/>
@@ -1477,9 +1459,6 @@
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/api}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_tx/src}&quot;' />
@@ -1647,9 +1626,6 @@
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/api}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_tx/src}&quot;' />
@@ -1823,9 +1799,6 @@
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/api}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_tx/src}&quot;' />
@@ -2017,7 +1990,7 @@
                                 </outputEntries>
                             </builder>
                             <tool id = "com.xmos.cdt.xc.compiler.97768482" name="com.xmos.cdt.xc.compiler" superClass="com.xmos.cdt.xc.compiler">
-                                <option id = "com.xmos.c.compiler.option.defined.symbols.66182209" name="com.xmos.c.compiler.option.defined.symbols" superClass="com.xmos.c.compiler.option.defined.symbols" valueType="definedSymbols">
+                                <option id = "com.xmos.xc.compiler.option.defined.symbols.66182209" name="com.xmos.xc.compiler.option.defined.symbols" superClass="com.xmos.xc.compiler.option.defined.symbols" valueType="definedSymbols">
                                     <listOptionValue builtIn="false" value="__SHRT_MAX__=32767"/>
                                     <listOptionValue builtIn="false" value="__SCHAR_MAX__=127"/>
                                     <listOptionValue builtIn="false" value="__SIZE_TYPE__=unsigned"/>
@@ -2135,9 +2108,6 @@
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/api}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_tx/src}&quot;' />
@@ -2305,9 +2275,6 @@
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/api}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_tx/src}&quot;' />
@@ -2481,9 +2448,6 @@
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/api}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_tx/src}&quot;' />
@@ -2675,7 +2639,7 @@
                                 </outputEntries>
                             </builder>
                             <tool id = "com.xmos.cdt.xc.compiler.49746973" name="com.xmos.cdt.xc.compiler" superClass="com.xmos.cdt.xc.compiler">
-                                <option id = "com.xmos.c.compiler.option.defined.symbols.1570195" name="com.xmos.c.compiler.option.defined.symbols" superClass="com.xmos.c.compiler.option.defined.symbols" valueType="definedSymbols">
+                                <option id = "com.xmos.xc.compiler.option.defined.symbols.1570195" name="com.xmos.xc.compiler.option.defined.symbols" superClass="com.xmos.xc.compiler.option.defined.symbols" valueType="definedSymbols">
                                     <listOptionValue builtIn="false" value="__SHRT_MAX__=32767"/>
                                     <listOptionValue builtIn="false" value="__SCHAR_MAX__=127"/>
                                     <listOptionValue builtIn="false" value="__SIZE_TYPE__=unsigned"/>
@@ -2793,9 +2757,6 @@
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/api}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_tx/src}&quot;' />
@@ -2963,9 +2924,6 @@
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/api}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_tx/src}&quot;' />
@@ -3139,9 +3097,6 @@
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/api}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_tx/src}&quot;' />
@@ -3333,7 +3288,7 @@
                                 </outputEntries>
                             </builder>
                             <tool id = "com.xmos.cdt.xc.compiler.38585591" name="com.xmos.cdt.xc.compiler" superClass="com.xmos.cdt.xc.compiler">
-                                <option id = "com.xmos.c.compiler.option.defined.symbols.58839485" name="com.xmos.c.compiler.option.defined.symbols" superClass="com.xmos.c.compiler.option.defined.symbols" valueType="definedSymbols">
+                                <option id = "com.xmos.xc.compiler.option.defined.symbols.58839485" name="com.xmos.xc.compiler.option.defined.symbols" superClass="com.xmos.xc.compiler.option.defined.symbols" valueType="definedSymbols">
                                     <listOptionValue builtIn="false" value="__SHRT_MAX__=32767"/>
                                     <listOptionValue builtIn="false" value="__SCHAR_MAX__=127"/>
                                     <listOptionValue builtIn="false" value="__SIZE_TYPE__=unsigned"/>
@@ -3451,9 +3406,6 @@
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/api}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_tx/src}&quot;' />
@@ -3621,9 +3573,6 @@
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/api}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_tx/src}&quot;' />
@@ -3797,9 +3746,6 @@
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/api}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_tx/src}&quot;' />
@@ -3991,7 +3937,7 @@
                                 </outputEntries>
                             </builder>
                             <tool id = "com.xmos.cdt.xc.compiler.95730511" name="com.xmos.cdt.xc.compiler" superClass="com.xmos.cdt.xc.compiler">
-                                <option id = "com.xmos.c.compiler.option.defined.symbols.708216" name="com.xmos.c.compiler.option.defined.symbols" superClass="com.xmos.c.compiler.option.defined.symbols" valueType="definedSymbols">
+                                <option id = "com.xmos.xc.compiler.option.defined.symbols.708216" name="com.xmos.xc.compiler.option.defined.symbols" superClass="com.xmos.xc.compiler.option.defined.symbols" valueType="definedSymbols">
                                     <listOptionValue builtIn="false" value="__SHRT_MAX__=32767"/>
                                     <listOptionValue builtIn="false" value="__SCHAR_MAX__=127"/>
                                     <listOptionValue builtIn="false" value="__SIZE_TYPE__=unsigned"/>
@@ -4109,9 +4055,6 @@
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/api}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_tx/src}&quot;' />
@@ -4279,9 +4222,6 @@
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/api}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_tx/src}&quot;' />
@@ -4455,9 +4395,6 @@
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/api}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_tx/src}&quot;' />
@@ -4649,7 +4586,7 @@
                                 </outputEntries>
                             </builder>
                             <tool id = "com.xmos.cdt.xc.compiler.88245964" name="com.xmos.cdt.xc.compiler" superClass="com.xmos.cdt.xc.compiler">
-                                <option id = "com.xmos.c.compiler.option.defined.symbols.54591599" name="com.xmos.c.compiler.option.defined.symbols" superClass="com.xmos.c.compiler.option.defined.symbols" valueType="definedSymbols">
+                                <option id = "com.xmos.xc.compiler.option.defined.symbols.54591599" name="com.xmos.xc.compiler.option.defined.symbols" superClass="com.xmos.xc.compiler.option.defined.symbols" valueType="definedSymbols">
                                     <listOptionValue builtIn="false" value="__SHRT_MAX__=32767"/>
                                     <listOptionValue builtIn="false" value="__SCHAR_MAX__=127"/>
                                     <listOptionValue builtIn="false" value="__SIZE_TYPE__=unsigned"/>
@@ -4767,9 +4704,6 @@
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/api}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_tx/src}&quot;' />
@@ -4937,9 +4871,6 @@
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/api}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_tx/src}&quot;' />
@@ -5113,9 +5044,6 @@
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/api}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_tx/src}&quot;' />
@@ -5307,7 +5235,7 @@
                                 </outputEntries>
                             </builder>
                             <tool id = "com.xmos.cdt.xc.compiler.48927875" name="com.xmos.cdt.xc.compiler" superClass="com.xmos.cdt.xc.compiler">
-                                <option id = "com.xmos.c.compiler.option.defined.symbols.87327860" name="com.xmos.c.compiler.option.defined.symbols" superClass="com.xmos.c.compiler.option.defined.symbols" valueType="definedSymbols">
+                                <option id = "com.xmos.xc.compiler.option.defined.symbols.87327860" name="com.xmos.xc.compiler.option.defined.symbols" superClass="com.xmos.xc.compiler.option.defined.symbols" valueType="definedSymbols">
                                     <listOptionValue builtIn="false" value="__SHRT_MAX__=32767"/>
                                     <listOptionValue builtIn="false" value="__SCHAR_MAX__=127"/>
                                     <listOptionValue builtIn="false" value="__SIZE_TYPE__=unsigned"/>
@@ -5425,9 +5353,6 @@
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/api}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_tx/src}&quot;' />
@@ -5595,9 +5520,6 @@
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/api}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_tx/src}&quot;' />
@@ -5771,9 +5693,6 @@
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/api}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_tx/src}&quot;' />
@@ -5965,7 +5884,7 @@
                                 </outputEntries>
                             </builder>
                             <tool id = "com.xmos.cdt.xc.compiler.44000383" name="com.xmos.cdt.xc.compiler" superClass="com.xmos.cdt.xc.compiler">
-                                <option id = "com.xmos.c.compiler.option.defined.symbols.33921865" name="com.xmos.c.compiler.option.defined.symbols" superClass="com.xmos.c.compiler.option.defined.symbols" valueType="definedSymbols">
+                                <option id = "com.xmos.xc.compiler.option.defined.symbols.33921865" name="com.xmos.xc.compiler.option.defined.symbols" superClass="com.xmos.xc.compiler.option.defined.symbols" valueType="definedSymbols">
                                     <listOptionValue builtIn="false" value="__SHRT_MAX__=32767"/>
                                     <listOptionValue builtIn="false" value="__SCHAR_MAX__=127"/>
                                     <listOptionValue builtIn="false" value="__SIZE_TYPE__=unsigned"/>
@@ -6083,9 +6002,6 @@
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/api}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_tx/src}&quot;' />
@@ -6253,9 +6169,6 @@
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/api}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_tx/src}&quot;' />
@@ -6429,9 +6342,6 @@
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/api}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_tx/src}&quot;' />
@@ -6623,7 +6533,7 @@
                                 </outputEntries>
                             </builder>
                             <tool id = "com.xmos.cdt.xc.compiler.41271666" name="com.xmos.cdt.xc.compiler" superClass="com.xmos.cdt.xc.compiler">
-                                <option id = "com.xmos.c.compiler.option.defined.symbols.86471158" name="com.xmos.c.compiler.option.defined.symbols" superClass="com.xmos.c.compiler.option.defined.symbols" valueType="definedSymbols">
+                                <option id = "com.xmos.xc.compiler.option.defined.symbols.86471158" name="com.xmos.xc.compiler.option.defined.symbols" superClass="com.xmos.xc.compiler.option.defined.symbols" valueType="definedSymbols">
                                     <listOptionValue builtIn="false" value="__SHRT_MAX__=32767"/>
                                     <listOptionValue builtIn="false" value="__SCHAR_MAX__=127"/>
                                     <listOptionValue builtIn="false" value="__SIZE_TYPE__=unsigned"/>
@@ -6741,9 +6651,6 @@
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/api}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_tx/src}&quot;' />
@@ -6911,9 +6818,6 @@
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/api}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_tx/src}&quot;' />
@@ -7087,9 +6991,6 @@
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/api}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_tx/src}&quot;' />
@@ -7281,7 +7182,7 @@
                                 </outputEntries>
                             </builder>
                             <tool id = "com.xmos.cdt.xc.compiler.61112166" name="com.xmos.cdt.xc.compiler" superClass="com.xmos.cdt.xc.compiler">
-                                <option id = "com.xmos.c.compiler.option.defined.symbols.76883113" name="com.xmos.c.compiler.option.defined.symbols" superClass="com.xmos.c.compiler.option.defined.symbols" valueType="definedSymbols">
+                                <option id = "com.xmos.xc.compiler.option.defined.symbols.76883113" name="com.xmos.xc.compiler.option.defined.symbols" superClass="com.xmos.xc.compiler.option.defined.symbols" valueType="definedSymbols">
                                     <listOptionValue builtIn="false" value="__SHRT_MAX__=32767"/>
                                     <listOptionValue builtIn="false" value="__SCHAR_MAX__=127"/>
                                     <listOptionValue builtIn="false" value="__SIZE_TYPE__=unsigned"/>
@@ -7399,9 +7300,6 @@
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/api}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_tx/src}&quot;' />
@@ -7569,9 +7467,6 @@
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/api}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_tx/src}&quot;' />
@@ -7745,9 +7640,6 @@
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/api}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_tx/src}&quot;' />
@@ -7939,7 +7831,7 @@
                                 </outputEntries>
                             </builder>
                             <tool id = "com.xmos.cdt.xc.compiler.22508896" name="com.xmos.cdt.xc.compiler" superClass="com.xmos.cdt.xc.compiler">
-                                <option id = "com.xmos.c.compiler.option.defined.symbols.28095131" name="com.xmos.c.compiler.option.defined.symbols" superClass="com.xmos.c.compiler.option.defined.symbols" valueType="definedSymbols">
+                                <option id = "com.xmos.xc.compiler.option.defined.symbols.28095131" name="com.xmos.xc.compiler.option.defined.symbols" superClass="com.xmos.xc.compiler.option.defined.symbols" valueType="definedSymbols">
                                     <listOptionValue builtIn="false" value="__SHRT_MAX__=32767"/>
                                     <listOptionValue builtIn="false" value="__SCHAR_MAX__=127"/>
                                     <listOptionValue builtIn="false" value="__SIZE_TYPE__=unsigned"/>
@@ -8057,9 +7949,6 @@
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/api}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_tx/src}&quot;' />
@@ -8227,9 +8116,6 @@
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/api}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_tx/src}&quot;' />
@@ -8403,9 +8289,6 @@
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/api}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_tx/src}&quot;' />
@@ -8597,7 +8480,7 @@
                                 </outputEntries>
                             </builder>
                             <tool id = "com.xmos.cdt.xc.compiler.23642110" name="com.xmos.cdt.xc.compiler" superClass="com.xmos.cdt.xc.compiler">
-                                <option id = "com.xmos.c.compiler.option.defined.symbols.35168235" name="com.xmos.c.compiler.option.defined.symbols" superClass="com.xmos.c.compiler.option.defined.symbols" valueType="definedSymbols">
+                                <option id = "com.xmos.xc.compiler.option.defined.symbols.35168235" name="com.xmos.xc.compiler.option.defined.symbols" superClass="com.xmos.xc.compiler.option.defined.symbols" valueType="definedSymbols">
                                     <listOptionValue builtIn="false" value="__SHRT_MAX__=32767"/>
                                     <listOptionValue builtIn="false" value="__SCHAR_MAX__=127"/>
                                     <listOptionValue builtIn="false" value="__SIZE_TYPE__=unsigned"/>
@@ -8715,9 +8598,6 @@
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/api}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_tx/src}&quot;' />
@@ -8885,9 +8765,6 @@
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/api}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_tx/src}&quot;' />
@@ -9061,9 +8938,6 @@
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/api}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_tx/src}&quot;' />
@@ -9255,7 +9129,7 @@
                                 </outputEntries>
                             </builder>
                             <tool id = "com.xmos.cdt.xc.compiler.19266107" name="com.xmos.cdt.xc.compiler" superClass="com.xmos.cdt.xc.compiler">
-                                <option id = "com.xmos.c.compiler.option.defined.symbols.22047435" name="com.xmos.c.compiler.option.defined.symbols" superClass="com.xmos.c.compiler.option.defined.symbols" valueType="definedSymbols">
+                                <option id = "com.xmos.xc.compiler.option.defined.symbols.22047435" name="com.xmos.xc.compiler.option.defined.symbols" superClass="com.xmos.xc.compiler.option.defined.symbols" valueType="definedSymbols">
                                     <listOptionValue builtIn="false" value="__SHRT_MAX__=32767"/>
                                     <listOptionValue builtIn="false" value="__SCHAR_MAX__=127"/>
                                     <listOptionValue builtIn="false" value="__SIZE_TYPE__=unsigned"/>
@@ -9373,9 +9247,6 @@
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/api}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_tx/src}&quot;' />
@@ -9543,9 +9414,6 @@
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/api}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_tx/src}&quot;' />
@@ -9719,9 +9587,6 @@
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/api}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_tx/src}&quot;' />
@@ -9913,7 +9778,7 @@
                                 </outputEntries>
                             </builder>
                             <tool id = "com.xmos.cdt.xc.compiler.66054648" name="com.xmos.cdt.xc.compiler" superClass="com.xmos.cdt.xc.compiler">
-                                <option id = "com.xmos.c.compiler.option.defined.symbols.87008212" name="com.xmos.c.compiler.option.defined.symbols" superClass="com.xmos.c.compiler.option.defined.symbols" valueType="definedSymbols">
+                                <option id = "com.xmos.xc.compiler.option.defined.symbols.87008212" name="com.xmos.xc.compiler.option.defined.symbols" superClass="com.xmos.xc.compiler.option.defined.symbols" valueType="definedSymbols">
                                     <listOptionValue builtIn="false" value="__SHRT_MAX__=32767"/>
                                     <listOptionValue builtIn="false" value="__SCHAR_MAX__=127"/>
                                     <listOptionValue builtIn="false" value="__SIZE_TYPE__=unsigned"/>
@@ -10031,9 +9896,6 @@
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/api}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_tx/src}&quot;' />
@@ -10201,9 +10063,6 @@
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/api}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_tx/src}&quot;' />
@@ -10377,9 +10236,6 @@
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/api}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_tx/src}&quot;' />
@@ -10571,7 +10427,7 @@
                                 </outputEntries>
                             </builder>
                             <tool id = "com.xmos.cdt.xc.compiler.24599502" name="com.xmos.cdt.xc.compiler" superClass="com.xmos.cdt.xc.compiler">
-                                <option id = "com.xmos.c.compiler.option.defined.symbols.1273491" name="com.xmos.c.compiler.option.defined.symbols" superClass="com.xmos.c.compiler.option.defined.symbols" valueType="definedSymbols">
+                                <option id = "com.xmos.xc.compiler.option.defined.symbols.1273491" name="com.xmos.xc.compiler.option.defined.symbols" superClass="com.xmos.xc.compiler.option.defined.symbols" valueType="definedSymbols">
                                     <listOptionValue builtIn="false" value="__SHRT_MAX__=32767"/>
                                     <listOptionValue builtIn="false" value="__SCHAR_MAX__=127"/>
                                     <listOptionValue builtIn="false" value="__SIZE_TYPE__=unsigned"/>
@@ -10689,9 +10545,6 @@
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/api}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_tx/src}&quot;' />
@@ -10859,9 +10712,6 @@
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/api}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_tx/src}&quot;' />
@@ -11035,9 +10885,6 @@
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src/extensions}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/app_usb_aud_skc_u16_audio8}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/api}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert/src}&quot;' />
-<listOptionValue builtIn="false" value='&quot;${workspace_loc:/lib_xassert}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx/src}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_rx}&quot;' />
 <listOptionValue builtIn="false" value='&quot;${workspace_loc:/module_adat_tx/src}&quot;' />
