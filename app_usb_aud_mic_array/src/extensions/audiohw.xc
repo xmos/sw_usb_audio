@@ -9,7 +9,6 @@
 
 on tile[AUDIO_IO_TILE] : out port p_pll_clk                 = PORT_PLL_REF;
 
-
 /* 0: DAC reset */
 /* 1: Ethernet Phy reset */
 on tile[1] : out port p_gpio = XS1_PORT_4F;
@@ -34,22 +33,14 @@ void PllInit(void)
 {
     unsigned char data[1] = {0};
 
-#if XCORE_200_MC_AUDIO_HW_VERSION < 2
     /* Enable init */
-    CS2100_REGWRITE(CS2100_DEVICE_CONFIG_1, 0x05);
-#else
-    CS2100_REGWRITE(CS2100_DEVICE_CONFIG_1, 0x07);
-#endif
+    CS2100_REGWRITE(CS2100_DEVICE_CONFIG_1, 0x01);
     CS2100_REGWRITE(CS2100_GLOBAL_CONFIG, 0x01);
     CS2100_REGWRITE(CS2100_FUNC_CONFIG_1, 0x08);
     CS2100_REGWRITE(CS2100_FUNC_CONFIG_2, 0x00); //0x10 for always gen clock even when unlocked
 
     /* Read back and check */
-#if XCORE_200_MC_AUDIO_HW_VERSION < 2
-    CS2100_REGREAD_ASSERT(CS2100_DEVICE_CONFIG_1, data, 0x05);
-#else
-    CS2100_REGREAD_ASSERT(CS2100_DEVICE_CONFIG_1, data, 0x07);
-#endif
+    CS2100_REGREAD_ASSERT(CS2100_DEVICE_CONFIG_1, data, 0x01);
     CS2100_REGREAD_ASSERT(CS2100_GLOBAL_CONFIG, data, 0x01);
     CS2100_REGREAD_ASSERT(CS2100_FUNC_CONFIG_1, data, 0x08);
     CS2100_REGREAD_ASSERT(CS2100_FUNC_CONFIG_2, data, 0x00);
