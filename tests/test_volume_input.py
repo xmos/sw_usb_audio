@@ -338,7 +338,7 @@ def runtest():
 
     args = xmostest.getargs()
 
-    host_oss = ['os_x_10', 'os_x_11', 'win_7', 'win_8', 'win_10']
+    host_oss = ['os_x_11', 'win_7', 'win_8', 'win_10']
 
     for test in test_configs:
         board = test['board']
