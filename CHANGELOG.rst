@@ -456,12 +456,6 @@ sw_usb_audio Change Log
 
     - sc_usb_device: 1.1.0beta0 -> 1.2.2rc4
 
-      + sc_util: 1.0.3rc0 -> 1.0.4rc0
-      + module_logging now compiled at -Os
-      + debug_printf in module_logging uses a buffer to deliver messages unfragmented
-      + Fix thread local storage calculation bug in libtrycatch
-      + Fix debug_printf itoa to work for unsigned values > 0x80000000
-
     - sc_util: 1.0.3rc0 -> 1.0.4rc0
 
       + module_logging now compiled at -Os
