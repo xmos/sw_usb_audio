@@ -445,7 +445,7 @@ sw_usb_audio Change Log
 
 
     - sc_i2c: 2.4.0beta1 -> 2.4.1rc1
-.
+
       + module_i2c_simple header-file comments updated to correctly reflect API
 
     - sc_usb_audio: 6.5.0beta2 -> 6.5.1rc4
@@ -453,12 +453,6 @@ sw_usb_audio Change Log
       + see sw_usb_audio for changelog
 
     - sc_usb_device: 1.1.0beta0 -> 1.2.2rc4
-
-      + sc_util: 1.0.3rc0 -> 1.0.4rc0
-      + module_logging now compiled at -Os
-      + debug_printf in module_logging uses a buffer to deliver messages unfragmented
-      + Fix thread local storage calculation bug in libtrycatch
-      + Fix debug_printf itoa to work for unsigned values > 0x80000000
 
     - sc_util: 1.0.3rc0 -> 1.0.4rc0
 
@@ -674,6 +668,23 @@ sw_usb_audio Change Log
     - RESOLVED:   (Minor) Fixed issue where buffering can lock up on sample frequency change if in overflow (#10897)
     - RESOLVED:   (Minor) XN files updated to avoid deprecation warnings from tools
     - RESOLVED:   (Major) Fixed issue where installation of the first upgrade image is successful but subsequent upgrades fail (Design Advisory X2035A)
+
+  * Changes to dependencies:
+
+    - sc_adat: Added dependency 1.0.0
+
+    - sc_i2c: Added dependency 1.0.0
+
+    - sc_spdif: Added dependency 1.0.0
+
+    - sc_usb: Added dependency 1.0.0
+
+    - sc_usb_audio: Added dependency 1.0.0
+
+    - sc_xud: Added dependency 1.0.0
+
+Legacy release history
+----------------------
 
 (Note: USB Audio version numbers unified across all products at this point)
 
