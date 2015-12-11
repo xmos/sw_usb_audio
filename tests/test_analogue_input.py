@@ -318,7 +318,7 @@ def runtest():
         for config in test['app_configs']:
             config_name = config['config']
             num_chans = config['chan_count']
-            do_wdm = config.get('wdm', False)
+            do_wdm = config.get('wdm', True)
             for run_type in config['testlevels']:
                 min_testlevel = run_type['level']
                 sample_rates = run_type['sample_rates']
