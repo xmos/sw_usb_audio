@@ -269,7 +269,7 @@ def runtest():
         },
         # xCORE-200 MC board test configs
         {'board':'xcore200_mc','app':'app_usb_aud_xk_216_mc','app_configs':[
-            {'config':'2i8o8xxxxx_tdm8','chan_count':8,'testlevels':[
+            {'config':'2i8o8xxxxx_tdm8','chan_count':8, 'wdm': False, 'testlevels':[
                 {'level':'nightly','sample_rates':[44100]},
                 {'level':'weekend','sample_rates':[48000, 88200, 96000]}]},
 
@@ -318,6 +318,7 @@ def runtest():
         for config in test['app_configs']:
             config_name = config['config']
             num_chans = config['chan_count']
+            do_wdm = config.get('wdm', True)
             for run_type in config['testlevels']:
                 min_testlevel = run_type['level']
                 sample_rates = run_type['sample_rates']
@@ -335,7 +336,8 @@ def runtest():
                     if os.startswith('win_') and (WDM_SAMPLE_RATE in sample_rates):
                         win_oss.append(os)
 
-                do_analogue_input_test(min_testlevel, board, app,
-                                       config_name, WDM_MAX_NUM_CHANS,
-                                       WDM_SAMPLE_RATE, duration, win_oss,
-                                       use_wdm=True)
+                if do_wdm:
+                    do_analogue_input_test(min_testlevel, board, app,
+                                           config_name, WDM_MAX_NUM_CHANS,
+                                           WDM_SAMPLE_RATE, duration, win_oss,
+                                           use_wdm=True)
