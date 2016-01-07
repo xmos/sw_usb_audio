@@ -9,9 +9,9 @@ sw_usb_audio Change Log
 
   * Changes to dependencies:
 
-    - lib_mic_array_board_support: Added dependency 0.2.1
+    - lib_mic_array_board_support: Added dependency 0.2.2
 
-    - lib_xassert: Added dependency 2.0.0
+    - lib_xassert: Added dependency 2.0.1
 
     - sc_usb_audio: 6.14.0 -> 6.15.0
 
@@ -21,7 +21,7 @@ sw_usb_audio Change Log
       + RESOLVED:   UAC 1.0 descriptors now support multi-channel volume control
         (previously were hard-coded as stereo)
 
-    - lib_logging: Added dependency 2.0.0
+    - lib_logging: Added dependency 2.0.1
 
     - lib_mic_array: Added dependency 0.0.2
 
