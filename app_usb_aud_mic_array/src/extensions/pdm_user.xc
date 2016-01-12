@@ -12,7 +12,7 @@
 on tile[0] : in port p_buttons = XS1_PORT_4A;
 on tile[0]:p_leds leds = DEFAULT_INIT;
 
-unsigned gain = 4*4096;
+unsigned gain = 1;
 
 void set_led_brightness(unsigned ledNo, unsigned ledVal)
 {
@@ -35,7 +35,6 @@ void set_led_brightness(unsigned ledNo, unsigned ledVal)
         d |= ((ledVals[i] == 0) << (i-10));
     }         
     leds.p_led10to12 <: d;
- 
 }
 
 #define BUTTON_COUNT 1000
@@ -53,7 +52,6 @@ void user_pdm_init()
     
     leds.p_leds_oen <: 1;
     leds.p_leds_oen <: 0;
-
 }
 
 unsafe void user_pdm_process(frame_audio * unsafe audio, int output[])
@@ -91,12 +89,12 @@ unsafe void user_pdm_process(frame_audio * unsafe audio, int output[])
                     break;
 
                 case 0xD:  /* Button B */
-                    gain = ((gain<<3) + gain)>>3;
+                    gain++;
                     printf("Gain Up: %d\n", gain);
                     break;
 
                 case 0xB:  /* Button C */
-                    gain = ((gain<<3) - gain)>>3;
+                    gain--;
                     printf("Gain Down: %d\n", gain);
                     break;
 
@@ -117,13 +115,13 @@ unsafe void user_pdm_process(frame_audio * unsafe audio, int output[])
         }
 
         /* Apply gain to sum */
-        output[0] = ((uint64_t)output[0] * gain)>>8;
+        output[0] *= gain;
 
         /* Apply gain to individual mics */
         for(unsigned i=0; i<7; i++)
         {
             int x = audio->data[i][0];
-            x = ((uint64_t)x*gain)>>8;
+            x*=gain;
             output[i+1] = x;
         }
     }
@@ -133,8 +131,8 @@ unsafe void user_pdm_process(frame_audio * unsafe audio, int output[])
         for(unsigned i=0; i<8; i++)
         {
             int x = audio->data[0][0];
-            x = ((uint64_t)x*gain)>>8;
-            output[i] = x << 2;  /* Bump up the gain of the single mic a bit to match summed version a little better */
+            x *=gain;
+            output[i] = x;
         }
     }
 }
