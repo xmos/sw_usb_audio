@@ -23,7 +23,7 @@ sw_usb_audio Change Log
 
     - lib_logging: Added dependency 2.0.1
 
-    - lib_mic_array: Added dependency 0.0.2
+    - lib_mic_array: Added dependency 0.0.3
 
     - sc_util: 1.0.5 -> 1.0.6
 
