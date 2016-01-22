@@ -9,7 +9,7 @@ sw_usb_audio Change Log
 
   * Changes to dependencies:
 
-    - lib_mic_array_board_support: Added dependency 0.2.2
+    - lib_mic_array_board_support: Added dependency 1.0.0
 
     - lib_xassert: Added dependency 2.0.1
 
@@ -23,7 +23,7 @@ sw_usb_audio Change Log
 
     - lib_logging: Added dependency 2.0.1
 
-    - lib_mic_array: Added dependency 0.0.3
+    - lib_mic_array: Added dependency 1.0.0
 
     - sc_util: 1.0.5 -> 1.0.6
 
