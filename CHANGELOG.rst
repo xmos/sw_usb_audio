@@ -1,6 +1,11 @@
 sw_usb_audio Change Log
 =======================
 
+6.15.1
+------
+
+  * RESOLVED:    DAC channel ordering issue in TDM slave mode in app_usb_aud_xk_216_mc. Resolved by
+                 defining an appropriate I2S_ADC_TO_DAC_SAMP_OFFSET (when CODEC_MASTER) 
 6.15.0
 ------
 

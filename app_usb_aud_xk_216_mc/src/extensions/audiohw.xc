@@ -84,7 +84,7 @@ void PllMult(unsigned mult)
 #endif
 
 #if !(defined(SPDIF_RX) || defined(ADAT_RX)) && defined(USE_FRACTIONAL_N)
-extern out port p_pll_clk;
+on tile[AUDIO_IO_TILE] : out port p_pll_clk = PORT_PLL_REF;
 /* Core to generate 300Hz reference to CS2100 PLL */
 void genclock()
 {
