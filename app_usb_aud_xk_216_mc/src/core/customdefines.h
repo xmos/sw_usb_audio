@@ -118,4 +118,9 @@
 #define HID_CONTROLS       1
 #endif
 
+#ifdef CODEC_MASTER
+/*In master mode DAC based on failing edge, ADC based on rising edge of "LR" clock */
+#define I2S_ADC_TO_DAC_SAMP_OFFSET 4
+#endif
+
 #endif
