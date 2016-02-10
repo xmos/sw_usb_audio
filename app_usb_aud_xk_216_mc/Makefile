@@ -53,6 +53,15 @@ XCC_FLAGS_2i8o8xxxxx_tdm8_slave  = $(BUILD_FLAGS) -DI2S_CHANS_DAC=8 -DI2S_CHANS_
 								-DI2S_MODE_TDM=1 -DMAX_FREQ=96000 -DMIXER=0 -DCODEC_MASTER=1
 INCLUDE_ONLY_IN_2i8o8xxxxx_tdm8_slave =
 
+
+# Audio Class 2, Input (0), Output (8), No MIDI, No SPDIF i/o, No ADAT i/o, TDM slave mode
+XCC_FLAGS_2i0o8xxxxx_tdm8_slave  = $(BUILD_FLAGS) -DI2S_CHANS_DAC=8 -DI2S_CHANS_ADC=0 -DNUM_USB_CHAN_OUT=8 -DNUM_USB_CHAN_IN=0 \
+								-DMIDI=0 -DSPDIF_TX=0 -DSPDIF_RX=0 -DADAT_TX=0 -DADAT_RX=0 -DDSD_CHANS_DAC=0 \
+								-DI2S_MODE_TDM=1 -DMAX_FREQ=96000 -DMIXER=0 -DCODEC_MASTER=1
+INCLUDE_ONLY_IN_2i0o8xxxxx_tdm8_slave =
+
+
+
 # Audio Class 2, Input (16), Output (16), No MIDI, No SPDIF i/o, No ADAT i/o, No DSD, TDM mode
 # Note: sample rate restricted to 96K to fit in USB bandwidth
 XCC_FLAGS_2i16o16xxxxx_tdm8  = $(BUILD_FLAGS) -DI2S_CHANS_DAC=16 -DI2S_CHANS_ADC=16 -DNUM_USB_CHAN_OUT=16 -DNUM_USB_CHAN_IN=16 \
