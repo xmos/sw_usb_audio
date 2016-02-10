@@ -11,6 +11,10 @@
 #include "print.h"
 #include "dsd_support.h"
 
+/* The number of timer ticks to wait for the audio PLL to lock */
+/* CS2100 lists typical lock time as 100 * input period */
+#define     AUDIO_PLL_LOCK_DELAY     (40000000)
+
 #if defined(SPDIF_RX) || defined(ADAT_RX)
 #define USE_FRACTIONAL_N 1
 #endif
@@ -34,9 +38,7 @@ extern struct r_i2c r_i2c;
 #define CS2100_REGREAD_ASSERT(reg, data, expected)  {data[0] = 0xAA; i2c_master_read_reg(CS2100_I2C_DEVICE_ADDR, reg, data, 1, r_i2c); assert(data[0] == expected);}
 #define CS2100_REGWRITE(reg, val) {data[0] = val; i2c_master_write_reg(CS2100_I2C_DEVICE_ADDR, reg, data, 1, r_i2c);}
 
-/* The number of timer ticks to wait for the audio PLL to lock */
-/* CS2100 lists typical lock time as 100 * input period */
-#define     AUDIO_PLL_LOCK_DELAY     (40000000)
+
 
 /* Init of CS2100 */
 void PllInit(void)
@@ -163,6 +165,7 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
     /* Configure external fractional-n clock multiplier for 300Hz -> mClkFreq */
     PllMult(mClk/300);
 
+#endif
     /* Allow some time for mclk to lock and MCLK to stabilise - this is important to avoid glitches at start of stream */
     {
         timer t;
@@ -171,6 +174,7 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
         t when timerafter(time+AUDIO_PLL_LOCK_DELAY) :> void;
     }
 
+#if defined(USE_FRACTIONAL_N)
     while(1)
     {
         /* Read Unlock Indicator in PLL as sanity check... */
@@ -226,7 +230,6 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
              * bit[0] : DSD Phase Modulation Enable
              */
             DAC_REGWRITE(CS4384_DSD_CTRL, 0b11001100);
-            //set_led_array(LED_SQUARE_BIG);
         }
         else
         {
@@ -240,7 +243,6 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
              * bit[0] : DSD Phase Modulation Enable
              */
             DAC_REGWRITE(CS4384_DSD_CTRL, 0b01001100);
-            //set_led_array(LED_SQUARE_SML);
         }
 
         /* Mode Control 1 (Address: 0x02) */
@@ -259,6 +261,49 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
         /* dsdMode == 0 */
         /* Set MUX to PCM mode (muxes ADC I2S data lines) */
         set_gpio(P_GPIO_DSD_MODE, 0);
+
+
+        /* Take ADC out of reset */
+        set_gpio(P_GPIO_ADC_RST_N, 1);
+
+        {
+            unsigned dif = 0, mode = 0;
+#ifdef I2S_MODE_TDM
+            dif = 0x02;   /* TDM */
+#else
+            dif = 0x01;   /* I2S */
+#endif
+
+#ifdef CODEC_MASTER
+            /* Note, only the ADC device supports being I2S master.
+             * Set ADC as master and run DAC as slave */
+            if(samFreq < 54000)
+                mode = 0x00;     /* Single-speed Mode Master */
+            else if(samFreq < 108000)
+                mode = 0x01;     /* Double-speed Mode Master */
+            else if(samFreq < 216000)
+                mode = 0x02;     /* Quad-speed Mode Master */
+#else
+            mode = 0x03;    /* Slave mode all speeds */
+#endif
+
+            /* Reg 0x01: (GCTL) Global Mode Control Register */
+            /* Bit[7]: CP-EN: Manages control-port mode
+            * Bit[6]: CLKMODE: Setting puts part in 384x mode
+            * Bit[5:4]: MDIV[1:0]: Set to 01 for /2
+            * Bit[3:2]: DIF[1:0]: Data Format: 0x01 for I2S, 0x02 for TDM
+            * Bit[1:0]: MODE[1:0]: Mode: 0x11 for slave mode
+            */
+            ADC_REGWRITE(CS5368_GCTL_MDE, 0b10010000 | (dif << 2) | mode);
+        }
+
+        /* Reg 0x06: (PDN) Power Down Register */
+        /* Bit[7:6]: Reserved
+         * Bit[5]: PDN-BG: When set, this bit powers-own the bandgap reference
+         * Bit[4]: PDM-OSC: Controls power to internal oscillator core
+         * Bit[3:0]: PDN: When any bit is set all clocks going to that channel pair are turned off
+         */
+        ADC_REGWRITE(CS5368_PWR_DN, 0b00000000);
 
         /* Configure DAC with PCM values. Note 2 writes to mode control to enable/disable freeze/power down */
         set_gpio(P_GPIO_DAC_RST_N, 1);//De-assert DAC reset
@@ -309,49 +354,6 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
          * bit[0] : Power Down (PDN)               : Not powered down
          */
         DAC_REGWRITE(CS4384_MODE_CTRL, 0b10000000);
-
-        /* Take ADC out of reset */
-        set_gpio(P_GPIO_ADC_RST_N, 1);
-
-        {
-            unsigned dif = 0, mode = 0;
-#ifdef I2S_MODE_TDM
-            dif = 0x02;   /* TDM */
-#else
-            dif = 0x01;   /* I2S */
-#endif
-
-#ifdef CODEC_MASTER
-            /* Note, only the ADC device supports being I2S master.
-             * Set ADC as master and run DAC as slave */
-            if(samFreq < 54000)
-                mode = 0x00;     /* Single-speed Mode Master */
-            else if(samFreq < 108000)
-                mode = 0x01;     /* Double-speed Mode Master */
-            else if(samFreq < 216000)
-                mode = 0x02;     /* Quad-speed Mode Master */
-#else
-            mode = 0x03;    /* Slave mode all speeds */
-#endif
-
-            /* Reg 0x01: (GCTL) Global Mode Control Register */
-            /* Bit[7]: CP-EN: Manages control-port mode
-            * Bit[6]: CLKMODE: Setting puts part in 384x mode
-            * Bit[5:4]: MDIV[1:0]: Set to 01 for /2
-            * Bit[3:2]: DIF[1:0]: Data Format: 0x01 for I2S, 0x02 for TDM
-            * Bit[1:0]: MODE[1:0]: Mode: 0x11 for slave mode
-            */
-            ADC_REGWRITE(CS5368_GCTL_MDE, 0b10010000 | (dif << 2) | mode);
-        }
-
-        /* Reg 0x06: (PDN) Power Down Register */
-        /* Bit[7:6]: Reserved
-         * Bit[5]: PDN-BG: When set, this bit powers-own the bandgap reference
-         * Bit[4]: PDM-OSC: Controls power to internal oscillator core
-         * Bit[3:0]: PDN: When any bit is set all clocks going to that channel pair are turned off
-         */
-        ADC_REGWRITE(CS5368_PWR_DN, 0b00000000);
-
     }
 #endif
     return;
