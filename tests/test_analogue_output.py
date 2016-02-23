@@ -270,7 +270,13 @@ def runtest():
         {'board':'xcore200_mc','app':'app_usb_aud_xk_216_mc','app_configs':[
             {'config':'2i8o8xxxxx_tdm8','chan_count':8,'testlevels':[
                 {'level':'nightly','sample_rates':[44100]},
-                {'level':'weekend','sample_rates':[48000, 88200, 96000]}]},
+                {'level':'weekend','sample_rates':[48000, 88200, 96000]},
+                {'level':'smoke','sample_rates':[96000]}]},
+            
+            {'config':'2i8o8xxxxx_tdm8_slave','chan_count':8,'testlevels':[
+                {'level':'nightly','sample_rates':[44100]},
+                {'level':'weekend','sample_rates':[48000, 88200, 96000]},
+                {'level':'smoke','sample_rates':[96000]}]},
 
             {'config':'2i10o10xxxxxx','chan_count':8,'testlevels':[
                 {'level':'nightly','sample_rates':[48000]},
