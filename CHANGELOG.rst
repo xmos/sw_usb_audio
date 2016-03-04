@@ -3,7 +3,16 @@ sw_usb_audio Change Log
 
 6.14.2
 ------
-    
+
+  * Changes to dependencies:
+
+    - sc_usb_audio: 6.14.1 -> 6.14.2
+
+      + RESOLVED:   DAC data mis-alignment issue in TDM slave mode
+
+    - sc_xud: 2.4.0 -> 2.4.1
+
+      + RESOLVED:   Initialisation failure on U-series devices
 
 6.14.1
 ------
@@ -58,7 +67,7 @@ sw_usb_audio Change Log
 
     - sc_xud: 2.3.2rc0 -> 2.4.0beta0
 
-      + RESOLVED:   Intermittent initialisation issues with xCORE-200.
+      + RESOLVED:   Intermittent initialisation issues with xCORE-200
       + RESOLVED:   SETUP transaction data CRC not properly checked
       + RESOLVED:   RxError line from phy handled
       + RESOLVED:   Isochronous IN endpoints now send an 0-length packet if not
