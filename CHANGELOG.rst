@@ -1,7 +1,7 @@
 sw_usb_audio Change Log
 =======================
 
-6.14.2
+6.15.1
 ------
 
   * Changes to dependencies:
@@ -14,15 +14,29 @@ sw_usb_audio Change Log
 
       + RESOLVED:   Initialisation failure on U-series devices
 
-6.14.1
+6.15.0
 ------
+
+  * ADDED:      app_usb_aud_mic_array for xCORE Microphone Array board. Includes
+    example usage of PDM microphone integration.
 
   * Changes to dependencies:
 
-    - sc_usb_audio: 6.14.0 -> 6.14.1
+    - lib_mic_array_board_support: Added dependency 1.0.0
 
+    - lib_xassert: Added dependency 2.0.1
+
+    - sc_usb_audio: 6.14.0 -> 6.15.0
+
+      + CHANGE:     Removed 32kHz sample-rate support when PDM microphones
+        enabled (lib_mic_array currently does not support non-integer decimation
+        factors)
       + RESOLVED:   UAC 1.0 descriptors now support multi-channel volume control
         (previously were hard-coded as stereo)
+
+    - lib_logging: Added dependency 2.0.1
+
+    - lib_mic_array: Added dependency 1.0.1
 
     - sc_util: 1.0.5 -> 1.0.6
 
