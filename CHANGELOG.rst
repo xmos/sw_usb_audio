@@ -6,9 +6,23 @@ sw_usb_audio Change Log
 
   * Changes to dependencies:
 
-    - sc_usb_audio: 6.14.1 -> 6.14.2
+    - sc_usb_audio: 6.15.0 -> 6.15.1
 
       + RESOLVED:   DAC data mis-alignment issue in TDM slave mode
+      + CHANGE:     Updates to support API changes in lib_mic_array version 2.0
+
+    - lib_logging: 2.0.1 -> 2.0.0
+
+    - lib_mic_array: 1.0.1 -> 2.0.0
+
+      + Renamed all functions to match library structure
+      + Decimator interface functions now take the array of
+        mic_array_decimator_config structure rather than
+        mic_array_decimator_config_common
+      + All defines renames to match library naming policy
+      + DC offset simplified
+      + Added optional MIC_ARRAY_NUM_MICS define to save memory when using less
+        than 16 microphones
 
     - sc_xud: 2.4.0 -> 2.4.1
 
@@ -26,11 +40,11 @@ sw_usb_audio Change Log
 
     - sc_usb_audio: 6.14.0 -> 6.15.0
 
+      + RESOLVED:   UAC 1.0 descriptors now support multi-channel volume control
+        (previously were hard-coded as stereo)
       + CHANGE:     Removed 32kHz sample-rate support when PDM microphones
         enabled (lib_mic_array currently does not support non-integer decimation
         factors)
-      + RESOLVED:   UAC 1.0 descriptors now support multi-channel volume control
-        (previously were hard-coded as stereo)
 
     - lib_logging: Added dependency 2.0.1
 
