@@ -4,6 +4,8 @@ sw_usb_audio Change Log
 6.15.1
 ------
 
+  * ADDED:      Added build config to use TDM slave (2i8o8xxxxx_tdm8_slave) to app_usb_aud_xk_216_mc
+                
   * Changes to dependencies:
 
     - sc_usb_audio: 6.15.0 -> 6.15.1
