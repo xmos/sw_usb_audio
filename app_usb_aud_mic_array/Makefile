@@ -11,7 +11,7 @@ BUILD_FLAGS     = -DFLASH_MAX_UPGRADE_SIZE=64*1024 -fcomment-asm -Xmapper --map 
 # The USED_MODULES variable lists other module used by the application. These
 # modules will extend the SOURCE_DIRS, INCLUDE_DIRS and LIB_DIRS variables.
 # Modules are expected to be in the directory above the BASE_DIR directory.
-USED_MODULES = lib_mic_array lib_logging module_dfu module_i2c_shared module_i2c_single_port module_usb_audio module_usb_device module_usb_midi module_usb_shared module_xud
+USED_MODULES = lib_mic_array lib_logging module_dfu module_i2c_shared module_i2c_single_port module_usb_audio module_usb_device module_usb_midi module_usb_shared module_xud lib_mic_array_board_support
 
 # Build config naming scheme:
 #

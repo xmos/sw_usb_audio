@@ -3,9 +3,8 @@
 #include <xs1.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include "mic_array_board_support.h"
-#include "fir_decimator.h"
 #include "mic_array.h"
+#include "mic_array_board_support.h"
 
 #define LED_COUNT 13
 
@@ -54,7 +53,7 @@ void user_pdm_init()
     leds.p_leds_oen <: 0;
 }
 
-unsafe void user_pdm_process(frame_audio * unsafe audio, int output[])
+unsafe void user_pdm_process(mic_array_frame_time_domain * unsafe audio, int output[])
 {
     /* Very simple button control code for example */
     static unsigned count = BUTTON_COUNT;
