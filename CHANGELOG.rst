@@ -31,6 +31,8 @@ sw_usb_audio Change Log
 
       + RESOLVED:   Initialisation failure on U-series devices
 
+    - lib_mic_array_board_support: Added dependency 1.0.0
+
 6.15.0
 ------
 
