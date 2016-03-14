@@ -14,8 +14,6 @@ sw_usb_audio Change Log
       + RESOLVED:   DAC data mis-alignment issue in TDM slave mode
       + CHANGE:     Updates to support API changes in lib_mic_array version 2.0
 
-    - lib_logging: 2.0.1 -> 2.0.0
-
     - lib_mic_array: 1.0.1 -> 2.0.0
 
       + Renamed all functions to match library structure
