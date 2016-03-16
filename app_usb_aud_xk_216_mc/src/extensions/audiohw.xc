@@ -262,7 +262,6 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
         /* Set MUX to PCM mode (muxes ADC I2S data lines) */
         set_gpio(P_GPIO_DSD_MODE, 0);
 
-
         /* Take ADC out of reset */
         set_gpio(P_GPIO_ADC_RST_N, 1);
 
@@ -307,6 +306,8 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
 
         /* Configure DAC with PCM values. Note 2 writes to mode control to enable/disable freeze/power down */
         set_gpio(P_GPIO_DAC_RST_N, 1);//De-assert DAC reset
+
+        wait_us(500);
 
         /* Mode Control 1 (Address: 0x02) */
         /* bit[7] : Control Port Enable (CPEN)     : Set to 1 for enable
