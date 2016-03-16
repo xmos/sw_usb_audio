@@ -323,7 +323,7 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
          * bit[3:2] : Reserved
          * bit[1:0] : Functional Mode (FM) : 0x11 for auto-speed detect (32 to 200kHz)
         */
-        DAC_REGWRITE(CS4384_PCM_CTRL, 0b11000111);
+        DAC_REGWRITE(CS4384_PCM_CTRL, 0b11000011);
 #else
         /* PCM Control (Address: 0x03) */
         /* bit[7:4] : Digital Interface Format (DIF) : 0b0001 for I2S up to 24bit
