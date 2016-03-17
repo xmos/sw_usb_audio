@@ -157,8 +157,8 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
 	unsigned char data[1] = {0};
 
     /* Put ADC and DAC into reset */
-	set_gpio(P_GPIO_DAC_RST_N, 0);
 	set_gpio(P_GPIO_ADC_RST_N, 0);
+	set_gpio(P_GPIO_DAC_RST_N, 0);
 
     /* Set master clock select appropriately */
 #if defined(USE_FRACTIONAL_N)
@@ -195,7 +195,7 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
     }
 
     /* Allow MCLK to settle */
-    wait_us(2000);
+    wait_us(20000);
 #endif
 
 #if 1
@@ -303,6 +303,11 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
          * Bit[3:0]: PDN: When any bit is set all clocks going to that channel pair are turned off
          */
         ADC_REGWRITE(CS5368_PWR_DN, 0b00000000);
+
+#ifdef CODEC_MASTER
+        /* Allow some time for clocks from ADC to become stable */
+        wait_us(500);
+#endif
 
         /* Configure DAC with PCM values. Note 2 writes to mode control to enable/disable freeze/power down */
         set_gpio(P_GPIO_DAC_RST_N, 1);//De-assert DAC reset
