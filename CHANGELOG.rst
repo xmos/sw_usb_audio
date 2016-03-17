@@ -4,6 +4,12 @@ sw_usb_audio Change Log
 6.16.0
 ------
 
+  * Changes to dependencies:
+
+    - lib_logging: 2.0.0 -> 2.0.1
+
+      + Update to source code license and copyright
+
 6.15.1
 ------
 
