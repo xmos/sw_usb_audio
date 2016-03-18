@@ -4,12 +4,12 @@
 USB Audio 2.0 Reference Design
 ------------------------------
 
-The `USB Audio 2.0 Reference Design <http://www.xmos.com/products/development-kits/usbaudio2>`_ is a
-stereo hardware reference design available from XMOS based on an XMOS L8 device.  The diagram in  
-:ref:`usb_audio_l1_hw_diagram` shows the block layout of the USB Audio
+The `USB Audio 2.0 Reference Design <https://www.xmos.com/support/boards?product=14772>`_ is a
+stereo hardware reference design available from XMOS based on an XMOS L8 device (previously named L1).  
+The diagram in  :ref:`usb_audio_l1_hw_diagram` shows the block layout of the USB Audio
 2.0 Reference Design board. The main purpose of the XS1 L-Series device is to
 provide a USB Audio interface to the USB PHY and route the audio to
-the audio CODEC and S/PDIF output. Note that although the software
+the audio CODEC and S/PDIF output. Note, although the software
 supports MIDI, there are no MIDI connectors on the board. 
 
 For full hardware details please refer to the `USB Audio 2.0 Ref Design XS1-L1 Hardware Manual 

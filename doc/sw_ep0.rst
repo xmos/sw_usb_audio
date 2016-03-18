@@ -29,7 +29,7 @@ There are many mandatory requests that a USB Device must support as required by 
 For more information and full documentation, including full worked examples of simple devices, please refer the `XMOS USB Device Design Guide <https://www.xmos.com/zh/node/17007?page=9>`_
 
 The ``USB_StandardRequests()`` function takes the devices various descriptors as parameters, these are passed from data structures found in the ``descriptors.h`` file. 
-These data structures are fully customised based on the how the design is configured using various defines (see :ref:`usb_audio_sec_custom_defines_api`).
+These data structures are fully customised based on the how the design is configured using various defines (see :ref:`sec_custom_defines_api`).
 
 The ``USB_StandardRequests()`` functions returns a ``XUD_Result_t``. ``XUD_RESULT_OKAY`` indicates that the request was fully handled without error and no further action is required
 - The device should move to receiving the next request from the host (via ``USB_GetSetupPacket()``).
@@ -49,14 +49,14 @@ Class Requests
 ~~~~~~~~~~~~~~
 Before making the call to ``USB_StandardRequests()`` the setup packet is parsed for Class requests. These are handled in functions such as ``AudioClasRequests_2()``, ``AudioClassRequests_2``, ``DFUDeviceRequests()`` etc depending on the type of request.
 
-Any device specific requests are handled - in this case audio class, MIDI class, DFU requests etc.  
+Any device specific requests are handled - in this case Audio Class, MIDI class, DFU requests etc.  
 
 Some of the common Audio Class requests and their associated behaviour will now be examined. 
 
 Audio Requests
 ++++++++++++++
 
-When the host issues an audio request (e.g. sample rate or volume change), it sends a command to Endpoint 0. Like all requests this is returned from ``USB_GetSetupPacker()``. After some parsing (namely as Class Request to an Audio Interface) the request is handled by either the ``AudioClassRequests_1()`` or ``AudioClassRequests_2()`` function (based on whether the device is running in Audio Class 1.0 or 2.0 mode).
+When the host issues an audio request (e.g. sample rate or volume change), it sends a command to Endpoint 0. Like all requests this is returned from ``USB_GetSetupPacket()``. After some parsing (namely as Class Request to an Audio Interface) the request is handled by either the ``AudioClassRequests_1()`` or ``AudioClassRequests_2()`` function (based on whether the device is running in Audio Class 1.0 or 2.0 mode).
 
 Note, Audio Class 1.0 Sample rate changes are send to the relevant endpoint, rather than the interface - this is handled as a special case in he endpoint 0 request parsing where ``AudioEndpointRequests_1()`` is called.
 
@@ -95,7 +95,7 @@ manner, since only Endpoint 0 can write to the array, word update
 is atomic between cores and the decoupler core only reads from
 the array (ordering between writes and reads is unimportant in this
 case). Inline assembly is used by the decoupler core to access
-the array, avoiding the parallel usage checks in XC.
+the array, avoiding the parallel usage checks of XC.
 
 If volume control is implemented in the mixer, Endpoint 0 sends a mixer command to the mixer to change the volume. Mixer commands
 are described in :ref:`usb_audio_sec_mixer`.
@@ -171,8 +171,8 @@ used:
    samples to the audio core by reading samples out of the FIFO.
 
 
-Decoupler/Audio core interaction
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Decoupler/Audio Core interaction
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 To meet timing requirements of the audio system, the decoupler
 core must respond to requests from the audio system to
@@ -237,10 +237,10 @@ frequency change case):
  +-----------------+-----------------+-----------------------------------------+
 
 .. note::
-    The acknowledgement sent from Decouple to the Audio System is an "output underflow flag"
-    if set to 1 the subsequent host to device sample transfer does not take place. This allows
-    the Audio subsystem to implement a suitable underflow behaviour based on the current audio 
-    format. 
+    The request and acknowledgement sent to/from Decouple to the Audio System is an "output underflow" sample 
+    value.  If in PCM mode it will be 0, in DSD mode it will be DSD silence.
+    This allows the buffering system to output a suitable underflow value without knowing the format of the stream
+    (this is especially advantageous in the DSD over PCM (DoP) case) 
 
 Asynchronous Feedback
 +++++++++++++++++++++
@@ -258,8 +258,9 @@ clock ticks since the last SOF is calculated. From this the number of samples (a
 point number) between SOFs can be calculated.
 This count is aggregated over 128 SOFs and used as a basis for the feedback value.
 
-The sending of feedback to the host is also handled in the USB buffering core via the feedback 
-IN endpoint.
+The sending of feedback to the host is also handled in the USB buffering core via an explicit feedback 
+IN endpoint. If both input and output is enabled then the feedback is implicit based on the audio stream 
+sent to the host.
 
 USB Rate Control
 ++++++++++++++++

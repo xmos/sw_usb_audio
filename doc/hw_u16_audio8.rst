@@ -1,7 +1,7 @@
 .. _usb_audio_sec_hw_u16_audio8:
 
 
-U16 Mult-Channel USB Audio Kit
+U16 Multi-Channel USB Audio Kit
 ------------------------------
 `The XMOS U16 Multi-Channel USB Audio kit <http://www.xmos.com/usbaudio16mc>`_ is a hardware
 development platform available from XMOS based on a dual tile XMOS U-series device.

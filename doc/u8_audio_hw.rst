@@ -1,8 +1,8 @@
 .. _usb_audio_sec_u8_audio_hw:
 
 
-USB Multi-function Audio Kit
-----------------------------
+USB Multi-function Audio (MFA) Kit
+----------------------------------
 
 `The XMOS Multi-function Audio kit <http://www.xmos.com/products/reference-designs/mfa>`_ 
 (XK-USB-AUDIO-U8-2C-AB) is a hardware reference design available from XMOS based on a single 
