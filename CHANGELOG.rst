@@ -10,6 +10,10 @@ sw_usb_audio Change Log
 
       + Update to source code license and copyright
 
+    - lib_mic_array: 2.0.0 -> 2.0.1
+
+      + Updated AN00221 to use new lib_dsp API for FFTs.
+
 6.15.1
 ------
 
