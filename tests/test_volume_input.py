@@ -28,10 +28,16 @@ class VolumeChangeChecker(object):
         except (AttributeError, ValueError):
             failure_reporter("Cannot interpret volume change")
             return
-        ratio = float(v)/float(self.initial_change)
+
+        expected_vol = float(expected_ratio) * float(self.initial_change)
+
+        if (v < expected_vol - 2 or v > expected_vol + 2)
+            failure_reporter("Volume change not as expected %d %d" % (expected_vol, self.initial_change))
+
+        #ratio = float(v)/float(self.initial_change)
         # Test within 15% tolerance
-        if (ratio < expected_ratio - 0.15 or ratio > expected_ratio + 0.15):
-            failure_reporter("Volume change not as expected")
+        #if (ratio < expected_ratio - 0.15 or ratio > expected_ratio + 0.15):
+          #  failure_reporter("Volume change not as expected")
 
 class VolumeInputTester(xmostest.Tester):
 
@@ -69,10 +75,8 @@ class VolumeInputTester(xmostest.Tester):
                                 % chan)
         else:
             volume_checker = VolumeChangeChecker()
-            if not chan_output[0].startswith('Channel %d: Volume change by %d dB'
-                                             % (chan, self.EXPECTED_INITIAL_VOL)):
-                self.record_failure("Initial volume level of channel %d was not %ddB"
-                                    % (chan, self.EXPECTED_INITIAL_VOL))
+            if not chan_output[0].startswith('Channel %d: Volume change by %d dB' % (chan, self.EXPECTED_INITIAL_VOL)):
+                self.record_failure("Initial volume level of channel %d was not %ddB" % (chan, self.EXPECTED_INITIAL_VOL))
             volume_checker.initial_decrease(self.record_failure, chan_output[1])
             volume_checker.check_change(self.record_failure, chan_output[2], 1.0)
             volume_checker.check_change(self.record_failure, chan_output[3], -0.5)
