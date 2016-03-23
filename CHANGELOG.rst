@@ -9,11 +9,6 @@ sw_usb_audio Change Log
 
   * Changes to dependencies:
 
-    - sc_usb_audio: 6.15.0 -> 6.15.1
-
-      + RESOLVED:   DAC data mis-alignment issue in TDM slave mode
-      + CHANGE:     Updates to support API changes in lib_mic_array version 2.0
-
     - lib_mic_array: 1.0.1 -> 2.0.0
 
       + Renamed all functions to match library structure
@@ -24,6 +19,11 @@ sw_usb_audio Change Log
       + DC offset simplified
       + Added optional MIC_ARRAY_NUM_MICS define to save memory when using less
         than 16 microphones
+
+    - sc_usb_audio: 6.15.0 -> 6.15.1
+
+      + RESOLVED:   DAC data mis-alignment issue in TDM slave mode
+      + CHANGE:     Updates to support API changes in lib_mic_array version 2.0
 
     - sc_xud: 2.4.0 -> 2.4.1
 
@@ -37,6 +37,10 @@ sw_usb_audio Change Log
 
   * Changes to dependencies:
 
+    - lib_logging: Added dependency 2.0.1
+
+    - lib_mic_array: Added dependency 1.0.1
+
     - lib_xassert: Added dependency 2.0.1
 
     - sc_usb_audio: 6.14.0 -> 6.15.0
@@ -46,10 +50,6 @@ sw_usb_audio Change Log
       + CHANGE:     Removed 32kHz sample-rate support when PDM microphones
         enabled (lib_mic_array currently does not support non-integer decimation
         factors)
-
-    - lib_logging: Added dependency 2.0.1
-
-    - lib_mic_array: Added dependency 1.0.1
 
     - sc_util: 1.0.5 -> 1.0.6
 
@@ -92,17 +92,6 @@ sw_usb_audio Change Log
 
   * Changes to dependencies:
 
-    - sc_xud: 2.3.2rc0 -> 2.4.0beta0
-
-      + RESOLVED:   Intermittent initialisation issues with xCORE-200
-      + RESOLVED:   SETUP transaction data CRC not properly checked
-      + RESOLVED:   RxError line from phy handled
-      + RESOLVED:   Isochronous IN endpoints now send an 0-length packet if not
-        ready rather than an (invalid) NAK.
-      + RESOLVED:   Receive of short packets sometimes prematurely ended
-      + RESOLVED:   Data PID not reset to DATA0 in ClearStallByAddr() (used on
-        ClearFeature(HALT) request from host) (#17092)
-
     - sc_usb_audio: 6.12.5rc0 -> 6.13.0beta2
 
       + ADDED:      Device now uses implicit feedback when input stream is
@@ -130,6 +119,17 @@ sw_usb_audio Change Log
         CODEC_MASTER enabled
 
     - sc_usb_device: 1.3.7rc0 -> 1.3.8beta0
+
+    - sc_xud: 2.3.2rc0 -> 2.4.0beta0
+
+      + RESOLVED:   Intermittent initialisation issues with xCORE-200
+      + RESOLVED:   SETUP transaction data CRC not properly checked
+      + RESOLVED:   RxError line from phy handled
+      + RESOLVED:   Isochronous IN endpoints now send an 0-length packet if not
+        ready rather than an (invalid) NAK.
+      + RESOLVED:   Receive of short packets sometimes prematurely ended
+      + RESOLVED:   Data PID not reset to DATA0 in ClearStallByAddr() (used on
+        ClearFeature(HALT) request from host) (#17092)
 
 6.12.6
 ------
@@ -207,13 +207,13 @@ sw_usb_audio Change Log
 
   * Changes to dependencies:
 
+    - sc_usb_device: 1.3.6alpha0 -> 1.3.7alpha0
+
     - sc_xud: 2.3.1alpha0 -> 2.3.2alpha0
 
       + CHANGE:     Interrupts disabled during any access to usb_tile. Allows
         greater reliability if user suspend/resume functions enabled interrupts
         e.g. for role-switch
-
-    - sc_usb_device: 1.3.6alpha0 -> 1.3.7alpha0
 
 6.12.2
 ------
@@ -239,8 +239,6 @@ sw_usb_audio Change Log
 
   * Changes to dependencies:
 
-    - sc_spdif: 1.3.2rc2 -> 1.3.3alpha2
-
     - sc_i2c: 2.4.1rc1 -> 3.0.0alpha1
 
       + Read support added to module_i2c_single_port (xCORE 200 only)
@@ -252,6 +250,8 @@ sw_usb_audio Change Log
         use with other i2c modules. It is now the applications responsibilty to
         include the desired i2c module as a depenancy.
       + Data arrays passed to write_reg functions now marked const
+
+    - sc_spdif: 1.3.2rc2 -> 1.3.3alpha2
 
     - sc_usb_audio: 6.11.2rc2 -> 6.12.0alpha1
 
@@ -365,12 +365,6 @@ sw_usb_audio Change Log
 
   * Changes to dependencies:
 
-    - sc_xud: 2.2.3rc0 -> 2.2.4rc3
-
-      + RESOLVED:   (Minor) Potential for lock-up when waiting for USB clock on
-        startup. This is is avoided by enabling port buffering on the USB clock
-        port. Affects L/G series only.
-
     - sc_usb_audio: 6.9.0alpha0 -> 6.10.0alpha2
 
       + CHANGE:     Endpoint management for iAP EA Native Transport now merged
@@ -381,18 +375,18 @@ sw_usb_audio Change Log
 
       + RESOLVED:   (Minor) Design Guide documentation build errors
 
+    - sc_xud: 2.2.3rc0 -> 2.2.4rc3
+
+      + RESOLVED:   (Minor) Potential for lock-up when waiting for USB clock on
+        startup. This is is avoided by enabling port buffering on the USB clock
+        port. Affects L/G series only.
+
 6.9.0
 -----
 
   * ADDED:    Added ADAT Rx enabled build config in app_usb_aud_l2
 
   * Changes to dependencies:
-
-    - sc_xud: 2.2.2alpha0 -> 2.2.3rc0
-
-      + RESOLVED:   (Minor) XUD_ResetEpStateByAddr() could operate on
-        corresponding OUT endpoint instead of the desired IN endpoint address as
-        passed into the function (and vice versa)
 
     - sc_usb_audio: 6.8.0alpha2 -> 6.9.0alpha0
 
@@ -416,6 +410,12 @@ sw_usb_audio Change Log
 
     - sc_usb_device: 1.3.3alpha0 -> 1.3.4rc0
 
+    - sc_xud: 2.2.2alpha0 -> 2.2.3rc0
+
+      + RESOLVED:   (Minor) XUD_ResetEpStateByAddr() could operate on
+        corresponding OUT endpoint instead of the desired IN endpoint address as
+        passed into the function (and vice versa)
+
 6.8.0
 -----
 
@@ -426,11 +426,9 @@ sw_usb_audio Change Log
 
   * Changes to dependencies:
 
-    - sc_usb_device: 1.3.2rc0 -> 1.3.3alpha0
+    - sc_usb: 1.0.3rc0 -> 1.0.4alpha0
 
-    - sc_xud: 2.2.1rc0 -> 2.2.2alpha0
-
-      + CHANGE:     Header file comment clarification only
+      + ADDED:      Structs for Audio Class 2.0 Mixer and Extension Units
 
     - sc_usb_audio: 6.7.0alpha0 -> 6.8.0alpha2
 
@@ -452,9 +450,11 @@ sw_usb_audio Change Log
         stream from host were swapped)
       + CHANGE:     Level meter buffer naming now resemble functionality
 
-    - sc_usb: 1.0.3rc0 -> 1.0.4alpha0
+    - sc_usb_device: 1.3.2rc0 -> 1.3.3alpha0
 
-      + ADDED:      Structs for Audio Class 2.0 Mixer and Extension Units
+    - sc_xud: 2.2.1rc0 -> 2.2.2alpha0
+
+      + CHANGE:     Header file comment clarification only
 
 6.7.0
 -----
@@ -481,6 +481,10 @@ sw_usb_audio Change Log
 
   * Changes to dependencies:
 
+    - sc_usb_audio: 6.6.0rc2 -> 6.6.1rc1
+
+    - sc_usb_device: 1.3.0rc0 -> 1.3.2rc0
+
     - sc_xud: 2.1.1rc0 -> 2.2.1rc0
 
       + RESOLVED:   Slight optimisations (long jumps replaced with short) to aid
@@ -488,10 +492,6 @@ sw_usb_audio Change Log
       + CHANGE:     Timer usage optimisation - usage reduced by one.
       + CHANGE:     OTG Flags register explicitly cleared at start up - useful
         if previously running in host mode after a soft-reboot.
-
-    - sc_usb_audio: 6.6.0rc2 -> 6.6.1rc1
-
-    - sc_usb_device: 1.3.0rc0 -> 1.3.2rc0
 
 6.6.0
 -----
@@ -513,6 +513,13 @@ sw_usb_audio Change Log
 
   * Changes to dependencies:
 
+    - sc_usb_audio: 6.5.1rc4 -> 6.6.0rc2
+
+    - sc_usb_device: 1.2.2rc4 -> 1.3.0rc0
+
+      + CHANGE:  Required updates for XUD API change relating to USB
+        test-mode-support
+
     - sc_xud: 2.0.1rc3 -> 2.1.1rc0
 
       + ADDED:      Warning emitted when number of cores is greater than 6
@@ -520,13 +527,6 @@ sw_usb_audio Change Log
         enabling USB test-modes. Test-modes are now enabled via a
         XUD_SetTestMode() function using a chanend relating to Endpoint 0. This
         change was made to reduce chanend usage only.
-
-    - sc_usb_audio: 6.5.1rc4 -> 6.6.0rc2
-
-    - sc_usb_device: 1.2.2rc4 -> 1.3.0rc0
-
-      + CHANGE:  Required updates for XUD API change relating to USB
-        test-mode-support
 
 6.5.1
 -----
@@ -566,11 +566,11 @@ sw_usb_audio Change Log
 
   * Changes to dependencies:
 
-    - sc_spdif: 1.3.1beta3 -> 1.3.2rc2
-
     - sc_i2c: 2.4.0beta1 -> 2.4.1rc1
 
       + module_i2c_simple header-file comments updated to correctly reflect API
+
+    - sc_spdif: 1.3.1beta3 -> 1.3.2rc2
 
     - sc_usb_audio: 6.5.0beta2 -> 6.5.1rc4
 
@@ -709,6 +709,11 @@ sw_usb_audio Change Log
 
   * Changes to dependencies:
 
+    - sc_usb: 1.0.1beta1 -> 1.0.2beta1
+
+      + ADDED:      USB_BMREQ_D2H_VENDOR_DEV and USB_BMREQ_D2H_VENDOR_DEV
+        defines for vendor device requests
+
     - sc_usb_device: 1.0.3beta0 -> 1.0.4beta5
 
       + CHANGE:     devDesc_hs and cfgDesc_hs params to USB_StandardRequests()
@@ -734,11 +739,6 @@ sw_usb_audio Change Log
         communicating with the USB tile rather than custom implementation
         (affects U-series lib only).
 
-    - sc_usb: 1.0.1beta1 -> 1.0.2beta1
-
-      + ADDED:      USB_BMREQ_D2H_VENDOR_DEV and USB_BMREQ_D2H_VENDOR_DEV
-        defines for vendor device requests
-
 6.3.2
 -----
 
@@ -753,11 +753,11 @@ sw_usb_audio Change Log
 
   * Changes to dependencies:
 
+    - sc_usb_device: 1.0.2beta0 -> 1.0.3beta0
+
     - sc_xud: 1.0.1beta3 -> 1.0.2alpha1
 
       + ADDED:      Re-instated support for G devices (xud_g library)
-
-    - sc_usb_device: 1.0.2beta0 -> 1.0.3beta0
 
 6.3.1
 -----
