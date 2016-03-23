@@ -4,12 +4,23 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "mic_array.h"
-#include "mic_array_board_support.h"
+
+/** Structure to describe the LED ports*/
+typedef struct {
+    out port p_led0to7;     /**<LED 0 to 7. */
+    out port p_led8;        /**<LED 8. */
+    out port p_led9;        /**<LED 9. */
+    out port p_led10to12;   /**<LED 10 to 12. */
+    out port p_leds_oen;    /**<LED Output enable (active low). */
+} led_ports_t;
+
 
 #define LED_COUNT 13
+#define BUTTON_PORTS  PORT_BUT_A_TO_D
+#define LED_PORTS     {PORT_LED0_TO_7, PORT_LED8, PORT_LED9, PORT_LED10_TO_12, PORT_LED_OEN}
 
-on tile[0] : in port p_buttons     = MIC_BOARD_SUPPORT_BUTTON_PORTS;
-on tile[0] : mabs_led_ports_t leds = MIC_BOARD_SUPPORT_LED_PORTS;
+on tile[0] : in port p_buttons     = BUTTON_PORTS;
+on tile[0] : led_ports_t leds = LED_PORTS;
 
 unsigned gain = 1;
 
