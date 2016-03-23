@@ -8,8 +8,8 @@
 
 #define LED_COUNT 13
 
-on tile[0] : in port p_buttons = XS1_PORT_4A;
-on tile[0]:p_leds leds = DEFAULT_INIT;
+on tile[0] : in port p_buttons     = MIC_BOARD_SUPPORT_BUTTON_PORTS;
+on tile[0] : mabs_led_ports_t leds = MIC_BOARD_SUPPORT_LED_PORTS;
 
 unsigned gain = 1;
 
