@@ -1,15 +1,19 @@
 
-.. _usb_audio_sec_216_sw:
+.. _usb_audio_sec_216_audio_sw:
 
-The U-Series Multi-Channel USB Audio Kit
-----------------------------------------
+
+The xCORE-200 Multi-Channel Audio Board
+---------------------------------------
 
 An application of the USB audio framework is provideed specifically for the hardware described in
-:ref:`usb_audio_sec_hw_u16_audio8` and is implemented on the U-Series dual tile device (1000MIPS).  
-The application assumes a standard USB B socket (i.e. USB device) is provided as the USB connectivity
-method.  The related code can be found in `app_usb_aud_u16_audio8`.
+:ref:`usb_audio_sec_hw_216_mc` and is implemented on an xCORE-200-series dual tile device.  
 
-The design supports 10 channels channels of audio input and output at sample frequencies up to
+The application assumes a standard USB B socket (i.e. USB device) is provided as the USB connectivity
+method.  The related code can be found in `app_usb_aud_xk_216_mc`.
+
+The design supports upto 8 channels of analogue audio input/output at sample-rates up to 192kHz
+
+channels of audio input and output at sample frequencies up to
 192kHz and uses the following components:
 
  * XMOS USB Device Driver (XUD)

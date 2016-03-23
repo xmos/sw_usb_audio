@@ -19,5 +19,6 @@ reference hardware platform.
    sw_adat
    sw_clocking
    sw_midi
+   sw_pdm
    sw_resource
 
