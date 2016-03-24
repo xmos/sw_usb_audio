@@ -31,7 +31,7 @@ class VolumeChangeChecker(object):
 
         expected_vol = float(expected_ratio) * float(self.initial_change)
 
-        if (v < expected_vol - 2 or v > expected_vol + 2)
+        if (v < expected_vol - 2 or v > expected_vol + 2):
             failure_reporter("Volume change not as expected %d %d" % (expected_vol, self.initial_change))
 
         #ratio = float(v)/float(self.initial_change)
