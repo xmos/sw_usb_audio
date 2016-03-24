@@ -14,6 +14,8 @@ sw_usb_audio Change Log
 
       + Updated AN00221 to use new lib_dsp API for FFTs.
 
+    - lib_mic_array_board_support: Removed dependency
+
 6.15.1
 ------
 
