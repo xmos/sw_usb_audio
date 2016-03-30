@@ -2,7 +2,7 @@
 
 
 xCORE-200 Multi-Channel Audio Board
-----------------------------------
+-----------------------------------
 
 `The XMOS xCORE-200 Multi-channel Audio board <https://www.xmos.com/support/boards?product=18334>`_ 
 (XK-AUDIO-216-MC) is a hardware reference design available from XMOS based on a dual- 

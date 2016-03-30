@@ -7,8 +7,9 @@ development with the XMOS USB Audio software platform.
 .. toctree::
 
    hw_216_mc
-   l1_audio_hw
-   l2_audio_hw
-   su1_audio_hw
+   hw_mic_array
    u8_audio_hw
    hw_u16_audio8
+   su1_audio_hw
+   l1_audio_hw
+   l2_audio_hw

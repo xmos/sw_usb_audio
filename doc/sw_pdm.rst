@@ -99,4 +99,12 @@ It then runs the various cores required for the PDM interface and PDM to PCM con
         pdm_process(c_ds_output, c_pcm_out);
     }
 
+The ``pdm_process()`` task includes the main integration code, it takes audio from the ``lib_mic_array`` cores, buffers 
+it, performs optional local processing and outputs it to the audio driver (TDM/I2S core).
 
+This function simply makes a call to ``mic_array_get_next_time_domain_frame()`` in order to get a frame of PCM audio 
+from the microphones.  It then waits for an requestion for audio samples from the audio/I2S/TDM core via a channel an
+sends the frame of audio back over this channel.
+
+Note, it is assumed that the system shares a global master-clock, therefore no additional buffering or rate-matching/coversion
+is required.
