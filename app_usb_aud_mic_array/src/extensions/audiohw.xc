@@ -8,7 +8,6 @@
 #include "print.h"
 
 on tile[AUDIO_IO_TILE] : out port p_pll_clk = PORT_PLL_REF;
-on tile[AUDIO_IO_TILE] : clock clk_pll_sync = XS1_CLKBLK_1;
 
 /* 0: DAC reset */
 /* 1: Ethernet Phy reset */
@@ -70,6 +69,23 @@ void PllMult(unsigned output, unsigned ref)
     CS2100_REGREAD_ASSERT(CS2100_RATIO_4, data, (mult & 0xFF));
 }
 
+/* Core to generate 300Hz reference to CS2100 PLL */
+void genclock()
+{
+    timer t;
+    unsigned time;
+    unsigned pinVal = 0;
+
+    t :> time;
+    while(1)
+    {
+        p_pll_clk <: pinVal;
+        pinVal = ~pinVal;
+        time += (XS1_TIMER_HZ/PLL_SYNC_FREQ/2); // E.g. 166667 for 300Hz;
+        t when timerafter(time) :> void;
+    }
+}
+
 void wait_us(int microseconds)
 {
     timer t;
@@ -81,13 +97,6 @@ void wait_us(int microseconds)
 
 void AudioHwInit(chanend ?c_codec)
 {
-    unsigned char data[1] = {0};
-
-    /* Output a fixed sync clock to the pll */
-    configure_clock_rate(clk_pll_sync, 100, 100/(PLL_SYNC_FREQ/1000000));
-    configure_port_clock_output(p_pll_clk, clk_pll_sync);
-    start_clock(clk_pll_sync);
- 
     /* DAC in reset */
     p_gpio <: 0;
     
@@ -122,7 +131,7 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
     p_gpio <: 0;
 
     /* Configure external fractional-n clock multiplier for 300Hz -> mClkFreq */
-    PllMult(PLL_SYNC_FREQ, mClk);
+    PllMult(mClk, PLL_SYNC_FREQ);
 
     /* Allow some time for mclk to lock and MCLK to stabilise - this is important to avoid glitches at start of stream */
     {

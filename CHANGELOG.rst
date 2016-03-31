@@ -5,8 +5,6 @@ sw_usb_audio Change Log
 ------
 
   * CHANGE:    Design Guide updated for xCORE-200 MC Audio and xCORE Microphone array boards
-  * CHANGE:    app_usb_aud_mic_array no longer uses a separate core to generare the reference
-               clock to the CS2100 part. Instead a clock is generated via a clock-block.
 
   * Changes to dependencies:
 
