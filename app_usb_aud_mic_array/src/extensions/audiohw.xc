@@ -145,7 +145,6 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
     /* DAC out of reset */
     p_gpio <: 1;
     {
-       
         timer t;
         unsigned time;
         t :> time;

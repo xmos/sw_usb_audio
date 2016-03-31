@@ -47,66 +47,40 @@ from some external source e.g. an incoming digital steam.
     The system wide audio master-clock is connected to the AUX output of the CS2100 part. By default, without configuration, 
     the CS2100 part outputs the 24.576 REF input to this output.
 
-The master clock source is controlled by a mux which, in turn, is controlled by bit 5 of `PORT 8C`:
+The clock multiply ratio is programmed into the CS2100 via the I2C bus.
 
-.. list-table:: Master Clock Source Selection
-   :header-rows: 1
-   :widths: 20 80
-  
-   * - Value
-     - Source
-   * - 0 
-     - Master clock is sourced from PhaseLink PLL
-   * - 1     
-     - Master clock is source from Cirrus Clock Multiplier
 
-The clock-select from the phaselink part is controlled via bit 7 of `PORT 8C`:
+DAC Configuration
++++++++++++++++++
 
-.. list-table:: Master Clock Frequency Select
-   :header-rows: 1
-   :widths: 20 80
-  
-   * - Value
-     - Frequency
-   * - 0 
-     - 24.576MHz
-   * - 1     
-     - 22.579MHz
+The board is equipped with a single stereo audio DAC with integrated headphone amplifier (Cirrus Logic CS43L21)
 
-DAC and ADC Configuration
-+++++++++++++++++++++++++
-
-The board is equipped with a single multi-channel audio DAC (Cirrus Logic CS4384) and a single
-multi-channel ADC (Cirrus Logic CS5368) giving 8 channels of analogue output and 8 channels of 
-analogue input.
-
-Configuration of both the DAC and ADC takes place using I2C.  The design uses the I2C component
+Configuration of both the DAC takes place using I2C.  The design uses the I2C component
 `sc_i2c <http://www.github.com/xcore/sc_i2c>`_.
 
-The reset lines of the DAC and ADC are connected to bits 1 and 6 of `PORT 8C` respectively.
+The reset lines of the DAC is connected to bits 0 `PORT 4F`.
 
 AudioHwInit()
 +++++++++++++
 
-The :c:func:`AudioHwInit()` function is implemented to perform the following: 
+The :c:func:`AudioHwInit()` function is called on power up and is implemented to perform the following: 
 
+    * Configures a port to drive a fixed clock to the CS2100 `CLK_IN` input
+    * Puts the DAC into reset
     * Initialise the I2C master software module
-    * Puts the audio hardware into reset
-    * Enables the power to the audio hardware
-    * Select the PhaseLink PLL as the audio master clock source.
+    * Initialises the CS2100 part over I2C
+    * Configures the CS2100 part to output a ratio for a suitable initial master clock frequency (`DEFAULT_MCLK_FREQ`)
 
 AudioHwConfig()
 +++++++++++++++
 
 The :c:func:`AudioHwConfig()` function is called on every sample frequency change. 
 
-The :c:func:`AudioHwConfig` function first puts the both the DAC and ADC into reset by
-setting *P8C[1]* and *P8C[6]* low. It then selects the required master clock and keeps both the
-DAC and ADC in reset for a period in order allow the clocks to stabilize.
+The :c:func:`AudioHwConfig` function first puts the both the DAC/headphone-amp and into reset by writing to `PORT 4F`. 
 
-The DAC and ADC are brought out of reset by setting *P8C[1]* and *P8C[6]* back high.
-
-Various registers are then written to the ADC and DAC as required.
+It then sets the required ratio in the CS2100 via I2C based on the ``mClk`` parameter. After a delay, in order to allow 
+the master clock from the CS2100 to settle the DAC is take out of reset.  The DAC is then configured via I2C, this primarily involves
+switching the DAC into I2S slave mode
 
 |newpage|
 
