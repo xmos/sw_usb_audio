@@ -1,16 +1,16 @@
 
-.. _usb_audio_sec_216_audio_sw:
+.. _usb_audio_sec_mic_arr_audio_sw:
 
 
-The xCORE-200 Multi-Channel Audio Board
----------------------------------------
+The xCORE-200 Array Microphone Board
+------------------------------------
 
 An application of the USB audio framework is provided specifically for the hardware described in
-:ref:`usb_audio_sec_hw_216_mc` and is implemented on an xCORE-200-series dual tile device.  The 
-related code can be found in `app_usb_aud_xk_216_mc`.
+:ref:`usb_audio_sec_hw_arr_mic` and is implemented on an xCORE-200-series dual tile device.  The 
+related code can be found in `app_usb_aud_array_mic`.
 
-The design supports upto 10 channels of analogue audio input/output at sample-rates up to 192kHz
-assuming the use of I2S. This can be further increased by utilising TDM.
+The design supports upto 2 channels of analogue audio output at sample-rates from the
+on-board DAC. The design also supports input from the 7 PDM microphones.
 
 The design uses the following components:
 
@@ -20,8 +20,7 @@ The design uses the following components:
  * Decoupler
  * Audio Driver
  * Device Firmware Upgrade (DFU)
- * S/PDIF Transmitter
- * MIDI
+ * PDM Microphone integration
 
 The software layout is the identical to the dual tile L-Series Multi-channel Reference Design 
 and therefore the diagram :ref:`usb_audio_l2_threads` shows the software arrangement of the code 
@@ -33,12 +32,20 @@ lines show the communication between each functional unit.
 Clocking and Clock Selection
 +++++++++++++++++++++++++++++
 
-The board includes two options for master clock generation:
+The board includes an external fractional-N clock multiplier (Cirrus Logic CS2100) for audio clock generation.
 
-    * A single oscillator with a Phaselink PLL to generate fixed 24.576MHz and 22.5792MHz 
-      master-clocks
-    * A Cirrus Logic CS2100 clock multiplier allowing the master clock to be generated from a
-      XCore derived reference.
+This allows the audio master clock to be generated from an reference clock provided by the xCORE, optionally derived
+from some external source e.g. an incoming digital steam.
+
+.. note::
+
+    This functionality is primarily included on the board to allow for Ethernet AVB, where syncing to an external lock 
+    is required. In the USB audio design the IC is simply used for master clock generation.
+
+.. note::
+
+    The system wide audio master-clock is connected to the AUX output of the CS2100 part. By default, without configuration, 
+    the CS2100 part outputs the 24.576 REF input to this output.
 
 The master clock source is controlled by a mux which, in turn, is controlled by bit 5 of `PORT 8C`:
 

@@ -1,6 +1,19 @@
 sw_usb_audio Change Log
 =======================
 
+6.15.2
+------
+
+  * CHANGE:     Design Guide updated for xCORE-200 MC Audio and xCORE Microphone
+    array boards
+
+  * Changes to dependencies:
+
+    - sc_usb_audio: 6.15.1 -> 6.15.2
+
+      + RESOLVED:  interrupt.h (used in audio buffering) now compatible with
+        xCORE-200 ABI
+
 6.15.1
 ------
 
