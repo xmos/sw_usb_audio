@@ -17,15 +17,11 @@
  * Note, we check if they are already defined in Makefile
  */
 
+
+
 /* Default to board version version 2.0 */
 #ifndef XCORE_200_MC_AUDIO_HW_VERSION
 #define XCORE_200_MC_AUDIO_HW_VERSION 2
-#endif
-
-#ifdef USE_FRACTIONAL_N 
-void genclock();
-#define USER_MAIN_CORES \
-    on tile[AUDIO_IO_TILE] : genclock(); 
 #endif
 
 /* Tile defines */

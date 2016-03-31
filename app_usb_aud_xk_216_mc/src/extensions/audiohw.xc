@@ -34,11 +34,16 @@ extern struct r_i2c r_i2c;
 
 #ifdef USE_FRACTIONAL_N
 
+#if !(defined(SPDIF_RX) || defined(ADAT_RX))
+/* Choose a frequency the xcore can easily generate internally */
+#define PLL_SYNC_FREQ 1000000
+#else
+#define PLL_SYNC_FREQ 300
+#endif
+
 #define CS2100_REGREAD(reg, data)  {data[0] = 0xAA; i2c_master_read_reg(CS2100_I2C_DEVICE_ADDR, reg, data, 1, r_i2c);}
 #define CS2100_REGREAD_ASSERT(reg, data, expected)  {data[0] = 0xAA; i2c_master_read_reg(CS2100_I2C_DEVICE_ADDR, reg, data, 1, r_i2c); assert(data[0] == expected);}
 #define CS2100_REGWRITE(reg, val) {data[0] = val; i2c_master_write_reg(CS2100_I2C_DEVICE_ADDR, reg, data, 1, r_i2c);}
-
-
 
 /* Init of CS2100 */
 void PllInit(void)
@@ -67,42 +72,30 @@ void PllInit(void)
 }
 
 /* Setup PLL multiplier */
-void PllMult(unsigned mult)
+void PllMult(unsigned output, unsigned ref)
 {
     unsigned char data[1] = {0};
 
-    /* Multiplier is translated to 20.12 format by shifting left by 12 */
-    CS2100_REGWRITE(CS2100_RATIO_1, (mult >> 12) & 0xFF);
-    CS2100_REGWRITE(CS2100_RATIO_2, (mult >> 4) & 0xFF);
-    CS2100_REGWRITE(CS2100_RATIO_3, (mult << 4) & 0xFF);
-    CS2100_REGWRITE(CS2100_RATIO_4, 0x00);
+    /* PLL expects 12:20 format, convert output and ref to 12:20 */
+    /* Shift up the dividend by 12 to retain format... */
+    unsigned mult = (unsigned) ((((unsigned long long)output) << 32) / (((unsigned long long)ref) << 20));
+
+    CS2100_REGWRITE(CS2100_RATIO_1, (mult >> 24) & 0xFF);
+    CS2100_REGWRITE(CS2100_RATIO_2, (mult >> 16) & 0xFF);
+    CS2100_REGWRITE(CS2100_RATIO_3, (mult >> 8) & 0xFF);
+    CS2100_REGWRITE(CS2100_RATIO_4, (mult & 0xFF));
 
 	/* Read back and check */
-    CS2100_REGREAD_ASSERT(CS2100_RATIO_1, data, ((mult >> 12) & 0xFF));
-    CS2100_REGREAD_ASSERT(CS2100_RATIO_2, data, ((mult >> 4) & 0xFF));
-    CS2100_REGREAD_ASSERT(CS2100_RATIO_3, data, ((mult << 4) & 0xFF));
-    CS2100_REGREAD_ASSERT(CS2100_RATIO_4, data, 0x00);
+    CS2100_REGREAD_ASSERT(CS2100_RATIO_1, data, ((mult >> 24) & 0xFF));
+    CS2100_REGREAD_ASSERT(CS2100_RATIO_2, data, ((mult >> 16) & 0xFF));
+    CS2100_REGREAD_ASSERT(CS2100_RATIO_3, data, ((mult >> 8) & 0xFF));
+    CS2100_REGREAD_ASSERT(CS2100_RATIO_4, data, (mult & 0xFF));
 }
 #endif
 
 #if !(defined(SPDIF_RX) || defined(ADAT_RX)) && defined(USE_FRACTIONAL_N)
 on tile[AUDIO_IO_TILE] : out port p_pll_clk = PORT_PLL_REF;
-/* Core to generate 300Hz reference to CS2100 PLL */
-void genclock()
-{
-    timer t;
-    unsigned time;
-    unsigned pinVal = 0;
-
-    t :> time;
-    while(1)
-    {
-        p_pll_clk <: pinVal;
-        pinVal = ~pinVal;
-        time += 166667;
-        t when timerafter(time) :> void;
-    }
-}
+on tile[AUDIO_IO_TILE] : clock clk_pll_sync = XS1_CLKBLK_5;
 #endif
 
 void wait_us(int microseconds)
@@ -116,6 +109,13 @@ void wait_us(int microseconds)
 
 void AudioHwInit(chanend ?c_codec)
 {
+#if !(defined(SPDIF_RX) || defined(ADAT_RX)) && defined(USE_FRACTIONAL_N)
+    /* Output a fixed sync clock to the pll */
+    configure_clock_rate(clk_pll_sync, 100, 100/(PLL_SYNC_FREQ/1000000));
+    configure_port_clock_output(p_pll_clk, clk_pll_sync);
+    start_clock(clk_pll_sync);
+#endif
+
     /* Init the i2c module */
     i2c_shared_master_init(r_i2c);
 
@@ -163,8 +163,7 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
     /* Set master clock select appropriately */
 #if defined(USE_FRACTIONAL_N)
     /* Configure external fractional-n clock multiplier for 300Hz -> mClkFreq */
-    PllMult(mClk/300);
-
+    PllMult(mClk, PLL_SYNC_FREQ);
 #endif
     /* Allow some time for mclk to lock and MCLK to stabilise - this is important to avoid glitches at start of stream */
     {
