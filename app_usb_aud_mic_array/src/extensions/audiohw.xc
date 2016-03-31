@@ -7,7 +7,8 @@
 #include "cs2100.h"
 #include "print.h"
 
-on tile[AUDIO_IO_TILE] : out port p_pll_clk                 = PORT_PLL_REF;
+on tile[AUDIO_IO_TILE] : out port p_pll_clk = PORT_PLL_REF;
+on tile[AUDIO_IO_TILE] : clock clk_pll_sync = XS1_CLKBLK_1;
 
 /* 0: DAC reset */
 /* 1: Ethernet Phy reset */
@@ -19,14 +20,16 @@ on tile [1] : struct r_i2c r_i2c = {XS1_PORT_4E};
 #define CS2100_REGREAD_ASSERT(reg, data, expected)  {data[0] = 0xAA; i2c_master_read_reg(CS2100_I2C_DEVICE_ADDR, reg, data, 1, r_i2c); assert(data[0] == expected);}
 #define CS2100_REGWRITE(reg, val) {data[0] = val; i2c_master_write_reg(CS2100_I2C_DEVICE_ADDR, reg, data, 1, r_i2c);}
 
-
 #define DAC_REGWRITE(reg, val) {data[0] = val; i2c_master_write_reg(0x4a, reg, data, 1, r_i2c);}
 #define DAC_REGREAD_ASSERT(reg, data, expected)  {data[0] = 0xAA; i2c_master_read_reg(0x4a, reg, data, 1, r_i2c); assert(data[0] == expected);}
 
 
 /* The number of timer ticks to wait for the audio PLL to lock */
 /* CS2100 lists typical lock time as 100 * input period */
-#define     AUDIO_PLL_LOCK_DELAY     (40000000)
+#define AUDIO_PLL_LOCK_DELAY     (40000000)
+
+/* Frequency (in Hz) of the sync clock the xCORE drives to the external PLL */
+#define PLL_SYNC_FREQ            (1000000)
 
 /* Init of CS2100 */
 void PllInit(void)
@@ -46,40 +49,25 @@ void PllInit(void)
     CS2100_REGREAD_ASSERT(CS2100_FUNC_CONFIG_2, data, 0x00);
 }
 
-/* Setup PLL multiplier */
-void PllMult(unsigned mult)
+/* Setup ratio in external PLL */
+void PllMult(unsigned output, unsigned ref)
 {
     unsigned char data[1] = {0};
 
-    /* Multiplier is translated to 20.12 format by shifting left by 12 */
-    CS2100_REGWRITE(CS2100_RATIO_1, (mult >> 12) & 0xFF);
-    CS2100_REGWRITE(CS2100_RATIO_2, (mult >> 4) & 0xFF);
-    CS2100_REGWRITE(CS2100_RATIO_3, (mult << 4) & 0xFF);
-    CS2100_REGWRITE(CS2100_RATIO_4, 0x00);
+    /* PLL expects 12:20 format, convert output and ref to 12:20 */
+    /* Shift up the dividend by 12 to retain format... */
+    unsigned mult = (unsigned) ((((unsigned long long)output) << 32) / (((unsigned long long)ref) << 20));
+
+    CS2100_REGWRITE(CS2100_RATIO_1, (mult >> 24) & 0xFF);
+    CS2100_REGWRITE(CS2100_RATIO_2, (mult >> 16) & 0xFF);
+    CS2100_REGWRITE(CS2100_RATIO_3, (mult >> 8) & 0xFF);
+    CS2100_REGWRITE(CS2100_RATIO_4, (mult & 0xFF));
 
 	/* Read back and check */
-    CS2100_REGREAD_ASSERT(CS2100_RATIO_1, data, ((mult >> 12) & 0xFF));
-    CS2100_REGREAD_ASSERT(CS2100_RATIO_2, data, ((mult >> 4) & 0xFF));
-    CS2100_REGREAD_ASSERT(CS2100_RATIO_3, data, ((mult << 4) & 0xFF));
-    CS2100_REGREAD_ASSERT(CS2100_RATIO_4, data, 0x00);
-}
-
-extern out port p_pll_clk;
-/* Core to generate 300Hz reference to CS2100 PLL */
-void genclock()
-{
-    timer t;
-    unsigned time;
-    unsigned pinVal = 0;
-
-    t :> time;
-    while(1)
-    {
-        p_pll_clk <: pinVal;
-        pinVal = ~pinVal;
-        time += 166667;
-        t when timerafter(time) :> void;
-    }
+    CS2100_REGREAD_ASSERT(CS2100_RATIO_1, data, ((mult >> 24) & 0xFF));
+    CS2100_REGREAD_ASSERT(CS2100_RATIO_2, data, ((mult >> 16) & 0xFF));
+    CS2100_REGREAD_ASSERT(CS2100_RATIO_3, data, ((mult >> 8) & 0xFF));
+    CS2100_REGREAD_ASSERT(CS2100_RATIO_4, data, (mult & 0xFF));
 }
 
 void wait_us(int microseconds)
@@ -94,6 +82,11 @@ void wait_us(int microseconds)
 void AudioHwInit(chanend ?c_codec)
 {
     unsigned char data[1] = {0};
+
+    /* Output a fixed sync clock to the pll */
+    configure_clock_rate(clk_pll_sync, 100, 100/(PLL_SYNC_FREQ/1000000));
+    configure_port_clock_output(p_pll_clk, clk_pll_sync);
+    start_clock(clk_pll_sync);
  
     /* DAC in reset */
     p_gpio <: 0;
@@ -104,8 +97,8 @@ void AudioHwInit(chanend ?c_codec)
     /* Initialise external PLL */
     PllInit();
     
-    /* Configure external fractional-n clock multiplier for 300Hz -> mClkFreq */
-    PllMult(DEFAULT_MCLK_FREQ/300);
+    /* Configure external fractional-n clock multiplier for PLL_SYNC_FREQ Hz -> mClkFreq */
+    PllMult(DEFAULT_MCLK_FREQ, PLL_SYNC_FREQ);
 
     /* Allow some time for mclk to lock and MCLK to stabilise - this is important to avoid glitches at start of stream */
     {
@@ -115,17 +108,6 @@ void AudioHwInit(chanend ?c_codec)
         t when timerafter(time+AUDIO_PLL_LOCK_DELAY) :> void;
     }
 
-#ifndef I2S_MODE_TDM
-
-    {
-        timer t;
-        unsigned time;
-        t :> time;
-        t when timerafter(time+AUDIO_PLL_LOCK_DELAY) :> void;
-    }
-
-   
-#endif
 }
 
 /* Configures the external audio hardware for the required sample frequency.
@@ -140,7 +122,7 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
     p_gpio <: 0;
 
     /* Configure external fractional-n clock multiplier for 300Hz -> mClkFreq */
-    PllMult(mClk/300);
+    PllMult(PLL_SYNC_FREQ, mClk);
 
     /* Allow some time for mclk to lock and MCLK to stabilise - this is important to avoid glitches at start of stream */
     {
