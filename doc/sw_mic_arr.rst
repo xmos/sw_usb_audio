@@ -124,25 +124,6 @@ The build configuration naming scheme employed in the makefile is as follows:
    * - Output
      - enabled: i (channel count)
      - disabled: x
-   * - MIDI
-     - enabled: m
-     - disabled: x
-   * - SPDIF output
-     - enabled: s
-     - disabled: x
-   * - SPDIF input
-     - enabled: s
-     - disabled: x
-   * - ADAT output
-     - enabled: a
-     - disabled: x
-   * - ADAT input
-     - enabled: a
-     - disabled: x
-   * - DSD output
-     - enabled: d
-     - disabled: x
 
-e.g. A build config named 2i10o10xsxxx would signify: Audio class 2.0, input and output enabled (10 channels each), no MIDI SPDIF output, no SPDIF input, no ADAT or DSD
+e.g. A build config named 2i8o2 would signify: Audio class 2.0, input and output enabled (8 in, 2 out).
 
-In addition to this the terms `tdm` or `slave` may be appended to the build configuration name to indicate the I2S mode employed.

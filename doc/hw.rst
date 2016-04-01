@@ -2,7 +2,7 @@ USB Audio Hardware Platforms
 ============================
 
 The following sections describe the hardware platforms that support
-development with the XMOS USB Audio software platform.
+development with the XMOS USB Audio software framework.
 
 .. toctree::
 
