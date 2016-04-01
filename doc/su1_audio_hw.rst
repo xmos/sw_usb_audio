@@ -4,6 +4,9 @@
 USB Audio 2.0 DJ Kit
 --------------------
 
+.. note::
+        This hardware should not be used for the basis of a new design.
+
 `The XMOS USB Audio 2.0 DJ kit (XR-USB-AUDIO-2.0-4C) <https://www.xmos.com/support/boards?product=15404>`_ is a
 hardware reference design available from XMOS based on the XMOS U8 device. 
 

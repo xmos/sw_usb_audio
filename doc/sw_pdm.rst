@@ -5,18 +5,22 @@ Overview of PDM implemention
 ----------------------------
 
 The design is capable of integrating PDM microphones. The PDM stream from the microphones is converted
-to PCM and outpu to a host via USB. 
+to PCM and output to the host via USB. 
 
-Interfacing to the PDM micrphones is done using the XMOS microphone array library (``lib_mic_array``).
+Interfacing to the PDM microphones is done using the XMOS microphone array library (``lib_mic_array``).
 ``lib_mic_array`` is designed to allow interfacing to PDM microphones coupled with efficient decimation
 to user selectable output sample rates. 
 
-Note, the ``lib_mic_array`` library is only avaliable for xCORE-200 series devices.
+.. note:: 
+    The ``lib_mic_array`` library is only available for xCORE-200 series devices.
 
 The following components of the library are used:
 
  * PDM interface
  * Four channel decimators
+
+|newpage|
+
 
 Up to sixteen PDM microphones can be attached to each high channel count PDM interface (``mic_array_pdm_rx()``). 
 One to four processing tasks, ``mic_array_decimate_to_pcm_4ch()``, each process up to four channels. For 1-4 
@@ -103,8 +107,8 @@ The ``pdm_process()`` task includes the main integration code, it takes audio fr
 it, performs optional local processing and outputs it to the audio driver (TDM/I2S core).
 
 This function simply makes a call to ``mic_array_get_next_time_domain_frame()`` in order to get a frame of PCM audio 
-from the microphones.  It then waits for an requestion for audio samples from the audio/I2S/TDM core via a channel an
+from the microphones.  It then waits for an request for audio samples from the audio/I2S/TDM core via a channel and
 sends the frame of audio back over this channel.
 
-Note, it is assumed that the system shares a global master-clock, therefore no additional buffering or rate-matching/coversion
+Note, it is assumed that the system shares a global master-clock, therefore no additional buffering or rate-matching/conversion
 is required.

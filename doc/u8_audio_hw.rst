@@ -4,6 +4,9 @@
 USB Multi-function Audio (MFA) Kit
 ----------------------------------
 
+.. note::
+        It is not recommended to use this hardware as a basic for a new design
+
 `The XMOS Multi-function Audio kit <http://www.xmos.com/products/reference-designs/mfa>`_ 
 (XK-USB-AUDIO-U8-2C-AB) is a hardware reference design available from XMOS based on a single 
 tile XMOS U-series device.

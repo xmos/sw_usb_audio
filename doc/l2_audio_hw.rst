@@ -1,7 +1,8 @@
 USB Audio 2.0 Multichannel Reference Design Board
 -------------------------------------------------
 
-Note, this hardware should not be used for the basis of a new design.
+.. note::
+        This hardware should not be used for the basis of a new design.
 
 The `USB Audio 2.0 Multichannel Reference Design (XR-USB-AUDIO-2.0-MC) <https://www.xmos.com/support/boards?product=14771>`_ is a hardware reference design available from XMOS based on the XMOS L16 device (previously named L2) 
  
