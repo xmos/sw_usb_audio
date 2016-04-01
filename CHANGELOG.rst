@@ -4,7 +4,8 @@ sw_usb_audio Change Log
 6.15.2
 ------
 
-  * CHANGE:    Design Guide updated for xCORE-200 MC Audio and xCORE Microphone array boards
+  * CHANGE:    Design Guide updated for xCORE-200 MC Audio and xCORE Microphone
+    array boards
 
   * Changes to dependencies:
 
