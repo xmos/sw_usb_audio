@@ -11,10 +11,10 @@ be built within the xTIMEComposer GUI or via the command like as follows::
 
     xmake CONFIG=<config name>
 
-When a reference design application is compiled using "build all" (`xmake all` on commane line) all
+When a reference design application is compiled using "build all" (`xmake all` on command line) all
 configurations are automatically built.  
 
-A naming scheme is employed to link a feature set to build config/binaries.  This scheme is described
+A naming scheme is employed in each application to link a feature set to a build configuration/binary.  This scheme is described
 in the next section.
 
 .. _usb_audio_sec_valbuild:

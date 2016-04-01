@@ -6,7 +6,7 @@ The xCORE-200 Array Microphone Board
 ------------------------------------
 
 An application of the USB audio framework is provided specifically for the hardware described in
-:ref:`usb_audio_sec_hw_arr_mic` and is implemented on an xCORE-200-series dual tile device.  The 
+:ref:`usb_audio_sec_hw_mic_arr` and is implemented on an xCORE-200-series dual tile device.  The 
 related code can be found in `app_usb_aud_array_mic`.
 
 The design supports upto 2 channels of analogue audio output at sample-rates from the
@@ -39,16 +39,25 @@ from some external source e.g. an incoming digital steam.
 
 .. note::
 
-    This functionality is primarily included on the board to allow for Ethernet AVB, where syncing to an external lock 
-    is required. In the USB audio design the IC is simply used for master clock generation.
+    This functionality is primarily included on the board to allow for Ethernet AVB, where syncing to an external clock 
+    is required. In the USB audio design the IC is simply used for static master clock generation.
 
 .. note::
 
     The system wide audio master-clock is connected to the AUX output of the CS2100 part. By default, without configuration, 
-    the CS2100 part outputs the 24.576 REF input to this output.
+    the CS2100 part outputs the 24.576MHz REF input to this output.
 
 The clock multiply ratio is programmed into the CS2100 via the I2C bus.
 
+By default a core is used to drive a fixed reference to the CS2100 part using a timer and port I/O.  Since this I/O is located on a 4-bit port
+it cannot be directly output from a clock-block (which would save a core). 
+
+In order to reduce core count the following could be done:
+
+   * Move the I/O to a 1-bit port and drive the clock directly from a clock-block
+   * Combine this (computationally simple) task into another task
+   * Use a clocking methodology that does not require this REF signal as previously explained, it is unlikely the clocking methodology would be 
+     employed in a production environment if locking to an external clock is not required.
 
 DAC Configuration
 +++++++++++++++++
@@ -65,7 +74,6 @@ AudioHwInit()
 
 The :c:func:`AudioHwInit()` function is called on power up and is implemented to perform the following: 
 
-    * Configures a port to drive a fixed clock to the CS2100 `CLK_IN` input
     * Puts the DAC into reset
     * Initialise the I2C master software module
     * Initialises the CS2100 part over I2C
@@ -91,7 +99,7 @@ The reference design can be built in several ways by changing the
 build options.  These are described in :ref:`sec_custom_defines_api`. 
 
 The design has only been fully validated against the build options as set in the
-application as distributed in the Makefile.  See :ref:`usb_audio_sec_valbuild` for details and binary naming scheme.
+application as distributed in the Makefile.  See :ref:`usb_audio_sec_valbuild` for details and binary naming schemes.
 
 These fully validated build configurations are enumerated in the supplied Makefile
 
