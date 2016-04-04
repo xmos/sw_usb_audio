@@ -137,10 +137,10 @@ unsafe void user_pdm_process(mic_array_frame_time_domain * unsafe audio, int out
     }
     else
     {
-        /* Send the middle mic out 8 times */        
-        for(unsigned i=0; i<8; i++)
+        /* Send individual mics (with gain applied) */        
+        for(unsigned i=0; i<7; i++)
         {
-            int x = audio->data[0][0];
+            int x = audio->data[i][0];
             x *=gain;
             output[i] = x;
         }
