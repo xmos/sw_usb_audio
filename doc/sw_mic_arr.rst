@@ -95,18 +95,16 @@ switching the DAC into I2S slave mode
 Mic Processing Example
 ++++++++++++++++++++++
 
-The provided example includes a basic example of processing the data from the PDM microphones.
+The provided application includes a basic example of processing the data from the PDM microphones.
 This basic processing example is located in ``user_pdm_process()``. It takes a block of PCM microphone samples
 as an input and writes processed samples into the ``output`` array parameter.
 
-The processing involves a simple gain being applied globally to all microphones. 
+The processing involves applying a simple gain globally to all of the microphones. 
 Normal operation sees this gain applied to the data from the 7 microphones and then written to ``output[0-6]``. 
 The gain is increased and decreased by pressing buttons B and C respectively. 
 
 The example also provides a simple summing example, where all 7 microphones are summed into ``output[0]`` with the original microphone signals output to
 ``output[1..7]``. This functionality is enabled and disabled using Button A.
-
-|newpage|
 
 Validated Build Options
 +++++++++++++++++++++++
