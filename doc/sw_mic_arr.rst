@@ -29,6 +29,8 @@ running on the xCORE-200 device.
 As with the L/U-Series, each unit runs in a single core concurrently with the others units. The 
 lines show the communication between each functional unit. 
 
+The provided application also includes an example of basic microphone data processing.
+
 Clocking and Clock Selection
 +++++++++++++++++++++++++++++
 
@@ -89,6 +91,20 @@ The :c:func:`AudioHwConfig` function first puts the both the DAC/headphone-amp a
 It then sets the required ratio in the CS2100 via I2C based on the ``mClk`` parameter. After a delay, in order to allow 
 the master clock from the CS2100 to settle the DAC is take out of reset.  The DAC is then configured via I2C, this primarily involves
 switching the DAC into I2S slave mode
+
+Mic Processing Example
+++++++++++++++++++++++
+
+The provided example includes a basic example of processing the data from the PDM microphones.
+This basic processing example is located in ``user_pdm_process()``. It takes a block of PCM microphone samples
+as an input and writes processed samples into the ``output`` array parameter.
+
+The processing involves a simple gain being applied globally to all microphones. 
+Normal operation sees this gain applied to the data from the 7 microphones and then written to ``output[0-6]``. 
+The gain is increased and decreased by pressing buttons B and C respectively. 
+
+The example also provides a simple summing example, where all 7 microphones are summed into ``output[0]`` with the original microphone signals output to
+``output[1..7]``. This functionality is enabled and disabled using Button A.
 
 |newpage|
 
