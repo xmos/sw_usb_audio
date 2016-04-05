@@ -89,6 +89,10 @@ INCLUDE_ONLY_IN_2i10o10xxxxxd =
 XCC_FLAGS_2i10o10xxxxxx = $(BUILD_FLAGS) -DMIDI=0 -DSPDIF_TX=0
 INCLUDE_ONLY_IN_2i10o10xxxxxx = 
 
+# Audio Class 2, Input, Output, no MIDI, no SPDIF
+XCC_FLAGS_2i10o10xxxxxx_slave = $(BUILD_FLAGS) -DMIDI=0 -DSPDIF_TX=0 -DCODEC_MASTER=1
+INCLUDE_ONLY_IN_2i10o10xxxxxx_slave = 
+
 # Audio Class 2, Input, Output, no MIDI, SPDIF
 XCC_FLAGS_2i10o10xsxxxx = $(BUILD_FLAGS) -DMIDI=0 -DSPDIF_TX=1
 INCLUDE_ONLY_IN_2i10o10xsxxxx = 

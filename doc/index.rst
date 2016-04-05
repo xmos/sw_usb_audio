@@ -14,10 +14,10 @@ multi-core micro-controller devices allow the implementer to select the exact mi
 and processing required.
 
 The XMOS USB Audio solution is deployed as a framework with reference design applications extending
-and customising this framework. These reference designs have particular qualified feature set and 
+and customising this framework. These reference designs have particular qualified feature sets and 
 an accompanying reference hardware platform.
 
-This software design guide assumes the reader is familiar with the XC language and XCORE devices. 
+This software design guide assumes the reader is familiar with the XC language and xCORE devices. 
 For more information see `XMOS Programming Guide 
 <https://www.xmos.com/published/xmos-programming-guide>`_.
 

@@ -16,6 +16,19 @@ sw_usb_audio Change Log
 
     - lib_mic_array_board_support: Removed dependency
 
+6.15.2
+------
+
+  * CHANGE:    Design Guide updated for xCORE-200 MC Audio and xCORE Microphone
+    array boards
+
+  * Changes to dependencies:
+
+    - sc_usb_audio: 6.15.1 -> 6.15.2
+
+      + RESOLVED:  interrupt.h (used in audio buffering) now compatible with
+        xCORE-200 ABI
+
 6.15.1
 ------
 
@@ -23,8 +36,6 @@ sw_usb_audio Change Log
     app_usb_aud_xk_216_mc
 
   * Changes to dependencies:
-
-    - lib_logging: 2.0.1 -> 2.0.0
 
     - lib_mic_array: 1.0.1 -> 2.0.0
 
@@ -36,8 +47,6 @@ sw_usb_audio Change Log
       + DC offset simplified
       + Added optional MIC_ARRAY_NUM_MICS define to save memory when using less
         than 16 microphones
-
-    - lib_mic_array_board_support: Added dependency 1.0.0
 
     - sc_usb_audio: 6.15.0 -> 6.15.1
 

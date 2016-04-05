@@ -58,6 +58,8 @@ In addition :ref:`usb_audio_optional_components` shows components that can be ad
      from digital input.
  * - MIDI
    - Outputs and inputs MIDI over a serial UART interface.
+ * - PDM Microphones
+   - Receives PDM data from microphones and performs PDM to PCM conversion
 
 .. _usb_audio_threads:
 

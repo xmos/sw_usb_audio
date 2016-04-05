@@ -14,3 +14,5 @@ framework.
     sw_l2_audio
     sw_u8_audio
     sw_u16_audio8
+    sw_216_mc
+    sw_mic_arr

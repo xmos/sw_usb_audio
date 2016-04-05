@@ -3,8 +3,8 @@
 Digital Mixer
 -------------
 
-The mixer core(s) take outgoing audio from the decoupler and incoming
-audio from the audio driver. It then applies the volume to each
+The mixer core(s) take outgoing audio from the decoupler core and incoming
+audio from the audio driver core. It then applies the volume to each
 channel and passes incoming audio on to the decoupler and outgoing
 audio to the audio driver. The volume update is achieved using the
 built-in 32bit to 64bit signed multiply-accumulate function
@@ -81,39 +81,38 @@ Host Control
 The mixer can be controlled from a host PC by sending requests to Endpoint 0. XMOS provides a simple 
 command line based sample application demonstrating how the mixer can be controlled. 
 
-For details, consult the README in the host_usb_mixer_control directory.
+For details, consult the README file in the host_usb_mixer_control directory.
 
 The main requirements of this control are to
 
   * Set the mapping of input channels into the mixer
-  * Set the Coefficients for each mixer output of each input
+  * Set the coefficients for each mixer output of each input
   * Set the mapping for physical outputs which can either come
     directly from the inputs or via the mixer.
 
-There is enough flexibility within this configuration there will often
+There is enough flexibility within this configuration that there will often
 be multiple ways of creating the required solution.
 
-Using the XMOS Host control example application, consider setting the
-mixer to perform a loopback from analogue inputs 1 and 2 to analogue
-outputs 1 and 2. This must be run with the MultiChannel Audio device
-connected to the host you run the mixer app from.
+Whilst using the XMOS Host control example application, consider setting the
+mixer to perform a loop-back from analogue inputs 1 and 2 to analogue
+outputs 1 and 2. 
 
 First consider the inputs to the mixer::
 
   ./xmos_mixer --display-aud-channel-map 0
 
-shows which channels are mapped to which mixer inputs::
+displays which channels are mapped to which mixer inputs::
 
   ./xmos_mixer --display-aud-channel-map-sources 0
 
-shows which channels could possibly be mapped to mixer inputs. Notice
+displays which channels could possibly be mapped to mixer inputs. Notice
 that analogue inputs 1 and 2 are on mixer inputs 10 and 11.
 
 Now examine the audio output mapping::
 
   ./xmos_mixer --display-aud-channel-map 0
 
-This shows which channels are mapped to which outputs. By default all
+displays which channels are mapped to which outputs. By default all
 of these bypass the mixer. We can also see what all the possible
 mappings are::
 
@@ -173,10 +172,9 @@ If you rerun::
 
   ./xmos_mixer --display-mixer-nodes 0
 
-the first column now has AUD - Analogue 1 and 2 rather than DAW -
-Analogue 1 and 2 confirming the new mapping. Again, by playing audio
-into analogue inputs 1/2 this can be heard looped through to analogue
-outputs 1/2.
+the first column now has AUD - Analogue 1 and 2 rather than DAW (Digital Audio Workstation i.e. the
+host) - Analogue 1 and 2 confirming the new mapping. Again, by playing audio into analogue inputs 
+1/2 this can be heard looped through to analogue outputs 1/2.
 
 
 

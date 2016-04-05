@@ -12,7 +12,7 @@
 void genclock();
 
 #define USER_MAIN_CORES \
-    on tile[1] : genclock();
+            on tile[1] : genclock();
 
 /*
  * Device configuration option defines to override default defines found devicedefines.h

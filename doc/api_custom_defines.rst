@@ -58,7 +58,7 @@ MIDI
 S/PDIF
 ......
 
-.. doxygendefine:: SPDIF
+.. doxygendefine:: SPDIF_TX
 .. doxygendefine:: SPDIF_TX_INDEX
 .. doxygendefine:: SPDIF_RX
 .. doxygendefine:: SPDIF_RX_INDEX
@@ -68,6 +68,11 @@ ADAT
 
 .. doxygendefine:: ADAT_RX
 .. doxygendefine:: ADAT_RX_INDEX
+
+PDM Microphones
+...............
+
+.. doxygendefine:: NUM_PDM_MICS
 
 DFU
 ...
@@ -80,6 +85,7 @@ HID
 ...
 
 .. doxygendefine:: HID_CONTROLS
+
 
 CODEC Interface
 ...............

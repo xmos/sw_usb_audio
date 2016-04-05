@@ -1,4 +1,6 @@
 
+.. _usb_audio_sec_valbuild:
+
 Build Configurations
 --------------------
 
@@ -11,21 +13,29 @@ be built within the xTIMEComposer GUI or via the command like as follows::
 
     xmake CONFIG=<config name>
 
-When a reference design application is compiled using "build all" (`xmake all` on commane line) all
+When a reference design application is compiled using "build all" (`xmake all` on command line) all
 configurations are automatically built.  
 
-A naming scheme is employed to link a feature set to build config/binaries.  This scheme is described
-in the next section.
+A naming scheme is employed in each application to link a feature set to a build configuration/binary.  
+Different variations of the same basic scheme are used. This scheme is described in the next section.
 
-.. _usb_audio_sec_valbuild:
+Validated Build Configurations
+------------------------------
+
+It is not possible for all build configuration permutations to be exhaustively tested.
+XMOS therefore test a subset of build configurations for proper behaviour, these are based on
+popular device configurations.
+
+The presence of a build configuration in an application signifies it as a Validated Build Configuration
+and should be considered supported.
 
 Configuration Naming Scheme
 ----------------------------
 
-This section describes the naming scheme for the default configurations (and therefore binaries) 
+This section describes the naming scheme for the provided build configurations (and therefore binaries) 
 generated for each build configuration
 
-Each relevant build option is assigned a position in the string, with a character denoting the
+Each relevant build option is assigned a position in the configuration name, with a character denoting the
 options value (normally 'x' is used to denote "off" or "disabled")
 
 For example, :ref:`l1_build_options` lists the build options for the single tile L-Series Reference
@@ -52,12 +62,6 @@ Design.
 For example a binary named 2ioxs would indicate Audio Class 2.0 with input and output enabled, MIDI
 disabled, SPDIF output enabled.
 
-Validated Build Options
------------------------
 
-It is not possible for all possible build configuration permutations to be exhaustively tested.
-XMOS therefore test a subset of build configurations for proper behaviour, these are based on
-popular device configurations.
 
-Please see the various reference design sections for relevant validated build configurations.
 
