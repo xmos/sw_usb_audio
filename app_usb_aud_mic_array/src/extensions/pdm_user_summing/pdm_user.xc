@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "mic_array.h"
+#include "pcm_pdm_mic.h"
 
 /** Structure to describe the LED ports*/
 typedef struct {
@@ -64,12 +65,30 @@ void user_pdm_init()
     leds.p_leds_oen <: 0;
 }
 
+
+#ifdef MIC_PROCESSING_USE_INTERFACE
+[[distributable]]
+unsafe void user_pdm_process(server mic_process_if i_mic_data)
+#else
 unsafe void user_pdm_process(mic_array_frame_time_domain * unsafe audio, int output[])
+#endif
 {
     /* Very simple button control code for example */
     static unsigned count = BUTTON_COUNT;
     static unsigned oldButtonVal = 0;
-     
+    
+#ifdef MIC_PROCESSING_USE_INTERFACE
+while(1)
+{
+select
+{
+    case i_mic_data.init():
+        user_pdm_init();
+        break;
+
+    case i_mic_data.transfer_buffers(mic_array_frame_time_domain * unsafe audio, int output[]):
+#endif
+ 
     count--;
     if(count == 0)
     {
@@ -145,5 +164,11 @@ unsafe void user_pdm_process(mic_array_frame_time_domain * unsafe audio, int out
             output[i] = x;
         }
     }
+
+#ifdef MIC_PROCESSING_USE_INTERFACE
+    break;
+    }// select{}
+}// while(1)
+#endif
 }
 
