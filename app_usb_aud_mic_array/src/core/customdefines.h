@@ -90,7 +90,7 @@ void genclock();
 
 #define USER_MAIN_CORES \
             on tile[1] : genclock(); \
-            on tile[PDM_TILE] : unsafe{user_pdm_process(i_mic_process);} 
+            on tile[PDM_TILE] : [[distribute]]user_pdm_process(i_mic_process); 
 
 #endif
 

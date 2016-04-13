@@ -65,18 +65,18 @@ void user_pdm_init()
     leds.p_leds_oen <: 0;
 }
 
+/* Very simple button control code for example */
+unsigned count = BUTTON_COUNT;
+unsigned oldButtonVal = 0;
 
 #ifdef MIC_PROCESSING_USE_INTERFACE
 [[distributable]]
-unsafe void user_pdm_process(server mic_process_if i_mic_data)
+void user_pdm_process(server mic_process_if i_mic_data)
 #else
 unsafe void user_pdm_process(mic_array_frame_time_domain * unsafe audio, int output[])
 #endif
 {
-    /* Very simple button control code for example */
-    static unsigned count = BUTTON_COUNT;
-    static unsigned oldButtonVal = 0;
-    
+   
 #ifdef MIC_PROCESSING_USE_INTERFACE
 while(1)
 {
@@ -88,7 +88,7 @@ select
 
     case i_mic_data.transfer_buffers(mic_array_frame_time_domain * unsafe audio, int output[]):
 #endif
- 
+
     count--;
     if(count == 0)
     {
@@ -134,8 +134,10 @@ select
         }
     }
 
+unsafe{
     if(summed)
     {
+        
         /* Sum up all the mics */
         output[0] = 0;
         for(unsigned i=0; i<7; i++)
@@ -163,6 +165,7 @@ select
             x *=gain;
             output[i] = x;
         }
+    }
     }
 
 #ifdef MIC_PROCESSING_USE_INTERFACE
