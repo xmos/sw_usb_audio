@@ -8,11 +8,7 @@
 #define _CUSTOMDEFINES_H_
 #endif
 
-/* Prototype for our custom genclock() task */
-void genclock();
 
-#define USER_MAIN_CORES \
-            on tile[1] : genclock();
 
 /*
  * Device configuration option defines to override default defines found devicedefines.h
@@ -81,5 +77,22 @@ void genclock();
 #define PRODUCT_STR_A2     "XMOS Microphone Array UAC2.0"
 #define PRODUCT_STR_A1     "XMOS Microphone Array UAC1.0"
 //:
+
+/* Prototype for our custom genclock() task */
+void genclock();
+
+
+
+#if (NUM_PDM_MICS == 0)
+#define USER_MAIN_CORES \
+            on tile[1] : genclock();
+#else
+
+#define USER_MAIN_CORES \
+            on tile[1] : genclock(); \
+            on tile[PDM_TILE] : unsafe{user_pdm_process(i_mic_process);} 
+
+#endif
+
 
 #endif
