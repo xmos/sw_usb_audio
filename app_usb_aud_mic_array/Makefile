@@ -29,6 +29,13 @@ INCLUDE_ONLY_IN_1i8o2 = ./src/extensions/pdm_user_simple
 XCC_FLAGS_1i8o2_summing = $(BUILD_FLAGS) -DAUDIO_CLASS=1 -DNUM_USB_CHAN_IN_FS=8 -DNUM_USB_CHAN_OUT_FS=2 -DSTREAM_FORMAT_INPUT_1_RESOLUTION_BITS=16 -DMIC_PROCESSING_USE_INTERFACE=1
 INCLUDE_ONLY_IN_1i8o2_summing = ./src/extensions/pdm_user_summing
 
+XCC_FLAGS_1i8o2_xsvm2000 = $(BUILD_FLAGS) -DAUDIO_CLASS=1 -DNUM_USB_CHAN_IN_FS=8 -DNUM_USB_CHAN_OUT_FS=2 -DSTREAM_FORMAT_INPUT_1_RESOLUTION_BITS=16 -DMIC_PROCESSING_USE_INTERFACE=1
+INCLUDE_ONLY_IN_1i8o2_xsvm2000 = ./src/extensions/xsvm2000
+
+ifeq ($(CONFIG),1i8o2_xsvm2000)
+	USED_MODULES += lib_il_voice lib_xvsm_support
+endif
+
 MODULE_LIBRARIES = xud_x200
 
 #=============================================================================
