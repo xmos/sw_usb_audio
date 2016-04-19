@@ -8,6 +8,8 @@
 #define _CUSTOMDEFINES_H_
 #endif
 
+#define RUN_DSP_TASK 1
+
 
 
 /*
@@ -78,21 +80,6 @@
 #define PRODUCT_STR_A1     "XMOS Microphone Array UAC1.0"
 //:
 
-/* Prototype for our custom genclock() task */
-void genclock();
-
-
-
-#if (NUM_PDM_MICS == 0)
-#define USER_MAIN_CORES \
-            on tile[1] : genclock();
-#else
-
-#define USER_MAIN_CORES \
-            on tile[1] : genclock(); \
-            on tile[PDM_TILE] : [[distribute]]user_pdm_process(i_mic_process); 
-
-#endif
-
+#include "usercode.h"
 
 #endif
