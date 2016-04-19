@@ -21,9 +21,7 @@ typedef struct {
 #define LED_PORTS     {PORT_LED0_TO_7, PORT_LED8, PORT_LED9, PORT_LED10_TO_12, PORT_LED_OEN}
 
 on tile[0] : in port p_buttons     = BUTTON_PORTS;
-on tile[0] : led_ports_t leds = LED_PORTS;
-
-unsigned gain = 1;
+on tile[0] : led_ports_t leds      = LED_PORTS;
 
 void set_led_brightness(unsigned ledNo, unsigned ledVal)
 {
@@ -48,10 +46,6 @@ void set_led_brightness(unsigned ledNo, unsigned ledVal)
     leds.p_led10to12 <: d;
 }
 
-#define BUTTON_COUNT 1000
-
-unsigned summed = 0;
-
 void user_pdm_init()
 {
 
@@ -65,18 +59,27 @@ void user_pdm_init()
     leds.p_leds_oen <: 0;
 }
 
-/* Very simple button control code for example */
-unsigned count = BUTTON_COUNT;
-unsigned oldButtonVal = 0;
+#define BUTTON_COUNT 1000
 
 #ifdef MIC_PROCESSING_USE_INTERFACE
 [[distributable]]
 void user_pdm_process(server mic_process_if i_mic_data)
+{
+    /* Very simple button control code for example */
+    unsigned count = 0;
+    unsigned oldButtonVal = 0;
+    unsigned summed = 0;
+    unsigned gain = 1;
 #else
 unsafe void user_pdm_process(mic_array_frame_time_domain * unsafe audio, int output[])
-#endif
 {
-   
+    /* Very simple button control code for example */
+    static unsigned count = 0;
+    static unsigned oldButtonVal = 0;
+    static unsigned summed = 0;
+    static unsigned gain = 1;
+#endif
+  
 #ifdef MIC_PROCESSING_USE_INTERFACE
 while(1)
 {
@@ -89,10 +92,10 @@ select
     case i_mic_data.transfer_buffers(mic_array_frame_time_domain * unsafe audio, int output[]):
 #endif
 
-    count--;
-    if(count == 0)
+    count++;
+    if(count == BUTTON_COUNT)
     {
-        count = BUTTON_COUNT;
+        count = 0;
         unsigned char buttonVal;
         p_buttons :> buttonVal;
 
@@ -124,6 +127,8 @@ select
 
                 case 0xB:  /* Button C */
                     gain--;
+                    if(gain < 0)
+                        gain = 0;
                     printf("Gain Down: %d\n", gain);
                     break;
 
@@ -134,14 +139,13 @@ select
         }
     }
 
-unsafe{
     if(summed)
     {
         
         /* Sum up all the mics */
         output[0] = 0;
         for(unsigned i=0; i<7; i++)
-        {
+        unsafe{
             output[0] += audio->data[i][0];
         }
 
@@ -150,7 +154,7 @@ unsafe{
 
         /* Apply gain to individual mics */
         for(unsigned i=0; i<7; i++)
-        {
+        unsafe{
             int x = audio->data[i][0];
             x*=gain;
             output[i+1] = x;
@@ -160,12 +164,11 @@ unsafe{
     {
         /* Send individual mics (with gain applied) */        
         for(unsigned i=0; i<7; i++)
-        {
+        unsafe{
             int x = audio->data[i][0];
             x *=gain;
             output[i] = x;
         }
-    }
     }
 
 #ifdef MIC_PROCESSING_USE_INTERFACE
