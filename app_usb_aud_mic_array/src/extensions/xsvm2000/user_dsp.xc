@@ -34,10 +34,15 @@ void UserBufferManagement(unsigned sampsFromUsbToAudio[], unsigned sampsFromAudi
     }
     dspBuffer_in_usb[dspBufferNo][dspSampleCount] = 0; // TODO
    
+#ifdef LOOPBACK_MIC
     /* Read out of DSP buffer */
     sampsFromUsbToAudio[0] = dspBuffer_out_usb[dspBufferNo][dspSampleCount];
     sampsFromUsbToAudio[1] = dspBuffer_out_usb[dspBufferNo][dspSampleCount];
-  
+#endif    
+    /* Read out of DSP buffer */
+    sampsFromAudioToUsb[0] = dspBuffer_out_usb[dspBufferNo][dspSampleCount];
+    sampsFromAudioToUsb[1] = dspBuffer_out_usb[dspBufferNo][dspSampleCount];
+
     dspSampleCount++; 
    if(dspSampleCount >= ILV_FRAMESIZE)
     unsafe{
