@@ -3,7 +3,7 @@
 #define _USERCODE_H_
 
 #ifndef __STDC__
-#include "dsp.h"
+#include "xua_dsp.h"
 
 [[combinable]]
 void dsp_control(client dsp_ctrl_if i_dsp_ctrl);
@@ -18,7 +18,8 @@ void genclock();
 
 #define USER_MAIN_CORES \
             on tile[1] : genclock(); \
-            on tile[PDM_TILE] : [[combine]]par{[[distribute]]user_pdm_process(i_mic_process); dsp_control(i_dsp_ctrl[0]);}
+            on tile[PDM_TILE].core[0]: user_pdm_process(i_mic_process); \
+            on tile[PDM_TILE].core[0]: dsp_control(i_dsp_ctrl[0]);
 
 #endif
 #endif

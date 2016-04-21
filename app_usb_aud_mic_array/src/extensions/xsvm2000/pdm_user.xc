@@ -4,9 +4,11 @@
 #include <xs1.h>
 #include <stdio.h>
 #include "mic_array.h"
-#include "pcm_pdm_mic.h"
+#include "xua_pdm_mic.h"
 #include <print.h>
 #include "xvsm_support.h"
+#include "usr_dsp_cmd.h"
+#include "lib_voice_doa_naive.h"
 
 /** Structure to describe the LED ports*/
 typedef struct {
@@ -25,28 +27,72 @@ typedef struct {
 on tile[0] : in port p_buttons     = BUTTON_PORTS;
 on tile[0] : led_ports_t leds      = LED_PORTS;
 
-
-/* Most basic processing example */
-#ifndef MIC_PROCESSING_USE_INTERACE
-void user_pdm_init()
+void set_led(unsigned ledNo, unsigned ledVal)
 {
-    /* do nothing */
+    static int ledVals[LED_COUNT] = {0};
+   
+    //printint(ledNo);
+    //printchar(':');
+    //printintln(ledVal);
+ 
+    ledVals[ledNo] = ledVal;
+
+    unsigned d = 0;
+    for(int i = 0; i < 8; i++)
+    {
+        d |= ((ledVals[i] == 0) << i);
+    }   
+    leds.p_led0to7 <: d;
+    leds.p_led8 <: (ledVals[8] == 0);
+    leds.p_led9 <: (ledVals[9] == 0);
+ 
+    d = 0;
+    for(int i = 10; i < 13; i++)
+    {
+        d |= ((ledVals[i] == 0) << (i-10));
+    }         
+    leds.p_led10to12 <: d;
 }
-#endif
 
 /* Offsetof currently only provided for C/C++ */
 #define myoffsetof(st, m) \
         ((size_t) ( (char * unsafe)&((st * unsafe)(0))->m - (char * unsafe)0 ))
 
+void SetMicLeds(int micNum, int val)
+{
+    int ledNum1 = micNum*2-2;
+    int ledNum2 = micNum*2-1;
+
+    if(ledNum2 < 0)
+        ledNum2 = 11;
+    
+    if(ledNum1 < 0)
+        ledNum1 = 11;
+
+    set_led(ledNum1, val);
+    set_led(ledNum2, val);
+}
+
+/* Global processing state */
+unsigned g_doDoa = 0;
+unsigned char g_micNum = 1;
+unsigned g_processingBypassed = 0;
+unsafe
+{
+    unsigned * unsafe doDoa = &g_doDoa;
+    unsigned char * unsafe micNum = &g_micNum;
+    unsigned * unsafe processingBypassed = &g_processingBypassed;
+}
+
 [[combinable]]
 void dsp_control(client dsp_ctrl_if i_dsp_ctrl)
 {
-    int buttonVal, newButtonVal;
+    int buttonVal;
     p_buttons :> buttonVal;
     timer t;
     unsigned time;
     int debouncing = 0;
-    
+
     while(1)
     {
         select
@@ -54,28 +100,52 @@ void dsp_control(client dsp_ctrl_if i_dsp_ctrl)
             case !debouncing => p_buttons when pinsneq(buttonVal) :> buttonVal:
             {
                 t :> time;
-                time += 100000;
+                time += 1000000;
                 debouncing = 1;
                 switch(buttonVal)
                 {
-                    case 0xE:
+                    case 0xE: /* Button A */
                     unsafe
                     { 
-                        int handled = i_dsp_ctrl.setControl(myoffsetof(il_voice_rtcfg_t, bypass_on)/sizeof(char *), XVSM_BYPASS_MODE_ON, 0);
-                        printstr("BYPASS ON"); 
+                        //int handled = i_dsp_ctrl.setControl(CMD_DSP_RTCFG, myoffsetof(il_voice_rtcfg_t, bypass_on)/sizeof(char *), IL_BYPASS_MODE_ON);
+                        printstr("Processing bypassed\n"); 
+                        int handled = i_dsp_ctrl.setControl(CMD_DSP_FULLBYPASS, 0, 1);
+                        
+                        *processingBypassed = 1;
                         break;
                     }                    
                         
-                    case 0xD: 
+                    case 0xD: /* Button B */
                     unsafe
                     {
-                        int handled = i_dsp_ctrl.setControl(myoffsetof(il_voice_rtcfg_t, bypass_on)/sizeof(char *), XVSM_BYPASS_MODE_OFF, 0);
-                        printstr("BYPASS OFF"); 
+                        //int handled = i_dsp_ctrl.setControl(CMD_DSP_RTCFG, myoffsetof(il_voice_rtcfg_t, bypass_on)/sizeof(char *), IL_BYPASS_MODE_OFF);
+                        printstr("Processing enabled\n"); 
+                        int handled = i_dsp_ctrl.setControl(CMD_DSP_FULLBYPASS, 0, 0);
+                       
+                        *processingBypassed = 0;
+ 
                         break;
                     }
+                    case 0xB: /* Button C */
+                       
+                        unsafe{ 
+                        if(!*processingBypassed)
+                        {    /* Use tmp variable to avoid race */
+                            unsigned char tmp = (*micNum)+1;
+                            if(tmp == 7)
+                                tmp = 1;
+                            *micNum = tmp;
+                        }
+                        }
+                        break;
 
+                     case 0x7: /* Button D */
+                        unsafe{
+                            *doDoa = !(*doDoa);
+                            printstr("DOA status; ");printintln(*doDoa);
+                        }                    
+                        break;
                     default:
-                        printhexln(buttonVal);
                         break;
                 }
                 break;
@@ -88,31 +158,69 @@ void dsp_control(client dsp_ctrl_if i_dsp_ctrl)
     }
 }
 
+struct lib_voice_doa doaState;
 
 #ifdef MIC_PROCESSING_USE_INTERFACE
-[[distributable]]
+[[combinable]]
 void user_pdm_process(server mic_process_if i_mic_data)
 {
+    lib_voice_doa_naive_init(doaState);
+
 #else
 void user_pdm_process(mic_array_frame_time_domain * unsafe audio, int output[])
 {
 #endif
 #ifdef MIC_PROCESSING_USE_INTERFACE
+    /* Turn center LED on */
+    for(int i = 0; i < 12; i++)
+        set_led(i, 0);
+
+    set_led(12, 255);
+    
+    /* Enable LED's */
+    leds.p_leds_oen <: 1;
+    leds.p_leds_oen <: 0;
+
     while(1)
     {
         select
         {
             case i_mic_data.init():
-                /* Do nothing */
                 break;
 
             case i_mic_data.transfer_buffers(mic_array_frame_time_domain * unsafe audio, int output[]):
 #endif
+           
+            /* Light the LEDs */
+            /* TODO ideally we don't want to do this every processing loop */
+            unsafe
+            { 
+                for(int i = 1; i < 7; i++)
+                {
+                    if((i == *micNum) && !(*processingBypassed))
+                        SetMicLeds(i, 255); 
+                    else
+                        SetMicLeds(i, 0); 
+                }
+                
                 for(unsigned i=0; i<8; i++)
-                unsafe {
+                {
                     /* Simply copy input buffer to output buffer unmodified */
                     output[i] = audio->data[i][0];
                 }
+                
+                if(*doDoa)
+                {   
+                    int doaDir =  lib_voice_doa_naive_incorporate(doaState, output[1], output[2], output[3], output[4], 
+                        output[5], output[6]);
+
+                    if(doaDir > 0)
+                    {
+                        *micNum = 6 - (doaDir / 60);
+                    }
+                }
+                output[1] = audio->data[*micNum][0];
+            }
 
 #ifdef MIC_PROCESSING_USE_INTERFACE
             break;

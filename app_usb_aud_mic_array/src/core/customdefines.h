@@ -6,7 +6,6 @@
  */
 #ifndef _CUSTOMDEFINES_H_
 #define _CUSTOMDEFINES_H_
-#endif
 
 #define RUN_DSP_TASK 1
 
@@ -58,6 +57,7 @@
 #define MIN_FREQ           (8000)
 #else
 #define MIN_FREQ           (11025)
+#endif
 #endif
 
 /* Maximum frequency device runs at */
