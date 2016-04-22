@@ -80,6 +80,6 @@
 #define PRODUCT_STR_A1     "XMOS Microphone Array UAC1.0"
 //:
 
-#include "usercode.h"
+#include "usermain.h"
 
 #endif

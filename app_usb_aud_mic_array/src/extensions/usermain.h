@@ -11,13 +11,16 @@ void dsp_control(client dsp_ctrl_if i_dsp_ctrl);
 /* Prototype for our custom genclock() task */
 void genclock();
 
-#if (NUM_PDM_MICS == 0)
+// TODO User NUM_DSP_CTRL_INTS
+
+#ifndef XVSM 
 #define USER_MAIN_CORES \
             on tile[1] : genclock();
 #else
 
 #define USER_MAIN_CORES \
             on tile[1] : genclock(); \
+            on stdcore[AUDIO_IO_TILE] : dsp_process(i_dsp, i_dsp_ctrl, 1); \
             on tile[PDM_TILE].core[0]: user_pdm_process(i_mic_process); \
             on tile[PDM_TILE].core[0]: dsp_control(i_dsp_ctrl[0]);
 

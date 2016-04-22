@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "mic_array.h"
-#include "pcm_pdm_mic.h"
+#include "xua_pdm_mic.h"
 
 /** Structure to describe the LED ports*/
 typedef struct {
@@ -62,7 +62,7 @@ void user_pdm_init()
 #define BUTTON_COUNT 1000
 
 #ifdef MIC_PROCESSING_USE_INTERFACE
-[[distributable]]
+[[combinable]]
 void user_pdm_process(server mic_process_if i_mic_data)
 {
     /* Very simple button control code for example */
