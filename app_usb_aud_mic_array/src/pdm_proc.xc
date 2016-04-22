@@ -6,9 +6,6 @@
 #include "mic_array.h"
 #include "xua_pdm_mic.h"
 #include <print.h>
-#include "xvsm_support.h"
-#include "usr_dsp_cmd.h"
-#include "lib_voice_doa_naive.h"
 
 /** Structure to describe the LED ports*/
 typedef struct {
@@ -68,6 +65,193 @@ void SetMicLeds(int micNum, int val)
     set_led(ledNum1, val);
     set_led(ledNum2, val);
 }
+
+
+#ifdef PDM_PROC_SIMPLE
+
+/* Most basic processing example */
+#ifndef MIC_PROCESSING_USE_INTERACE
+void user_pdm_init()
+{
+    /* do nothing */
+}
+#endif
+
+#ifdef MIC_PROCESSING_USE_INTERFACE
+[[combinable]]
+void user_pdm_process(server mic_process_if i_mic_data)
+#else
+void user_pdm_process(mic_array_frame_time_domain * unsafe audio, int output[])
+#endif
+{
+#ifdef MIC_PROCESSING_USE_INTERFACE
+    while(1)
+    {
+        select
+        {
+            case i_mic_data.init():
+                /* Do nothing */
+                break;
+
+            case i_mic_data.transfer_buffers(mic_array_frame_time_domain * unsafe audio, int output[]):
+#endif
+            for(unsigned i=0; i<7; i++)
+            unsafe{
+                /* Simply copy input buffer to output buffer unmodified */
+                output[i] += audio->data[i][0];
+            }
+#ifdef MIC_PROCESSING_USE_INTERFACE
+            break;
+        } // select{}
+    }  // while(1)
+#endif
+}
+
+
+
+
+
+#elif PDM_PROC_SUMMING
+void user_pdm_init()
+{
+
+    /* Turn center LED on */
+    for(int i = 0; i < 12; i++)
+        set_led(i, 0);
+
+    set_led(12, 255);
+    
+    leds.p_leds_oen <: 1;
+    leds.p_leds_oen <: 0;
+}
+
+#define BUTTON_COUNT 1000
+
+#ifdef MIC_PROCESSING_USE_INTERFACE
+[[combinable]]
+void user_pdm_process(server mic_process_if i_mic_data)
+{
+    /* Very simple button control code for example */
+    unsigned count = 0;
+    unsigned oldButtonVal = 0;
+    unsigned summed = 0;
+    unsigned gain = 1;
+#else
+void user_pdm_process(mic_array_frame_time_domain * unsafe audio, int output[])
+{
+    /* Very simple button control code for example */
+    static unsigned count = 0;
+    static unsigned oldButtonVal = 0;
+    static unsigned summed = 0;
+    static unsigned gain = 1;
+#endif
+  
+#ifdef MIC_PROCESSING_USE_INTERFACE
+while(1)
+{
+select
+{
+    case i_mic_data.init():
+        user_pdm_init();
+        break;
+
+    case i_mic_data.transfer_buffers(mic_array_frame_time_domain * unsafe audio, int output[]):
+#endif
+
+    count++;
+    if(count == BUTTON_COUNT)
+    {
+        count = 0;
+        unsigned char buttonVal;
+        p_buttons :> buttonVal;
+
+        if(oldButtonVal != buttonVal)
+        {
+            switch (buttonVal)  
+            {
+                case 0xE:  /* Button A */
+
+                    summed = !summed;
+                
+                    if(summed)  
+                    {
+                        for(int i = 0; i < 13; i++)
+                            set_led(i, 255);
+                    }
+                    else
+                    {
+                         /* Keep center LED on */
+                         for(int i = 0; i < 12; i++)
+                            set_led(i, 0);
+                    }
+                    break;
+
+                case 0xD:  /* Button B */
+                    gain++;
+                    printf("Gain Up: %d\n", gain);
+                    break;
+
+                case 0xB:  /* Button C */
+                    gain--;
+                    if(gain < 0)
+                        gain = 0;
+                    printf("Gain Down: %d\n", gain);
+                    break;
+
+                case 0x7:  /* Button D */
+                    break;
+            }
+            oldButtonVal = buttonVal;
+        }
+    }
+
+    if(summed)
+    {
+        
+        /* Sum up all the mics */
+        output[0] = 0;
+        for(unsigned i=0; i<7; i++)
+        unsafe{
+            output[0] += audio->data[i][0];
+        }
+
+        /* Apply gain to sum */
+        output[0] *= gain;
+
+        /* Apply gain to individual mics */
+        for(unsigned i=0; i<7; i++)
+        unsafe{
+            int x = audio->data[i][0];
+            x*=gain;
+            output[i+1] = x;
+        }
+    }
+    else
+    {
+        /* Send individual mics (with gain applied) */        
+        for(unsigned i=0; i<7; i++)
+        unsafe{
+            int x = audio->data[i][0];
+            x *=gain;
+            output[i] = x;
+        }
+    }
+
+#ifdef MIC_PROCESSING_USE_INTERFACE
+    break;
+    }// select{}
+}// while(1)
+#endif
+}
+
+
+
+#else
+
+
+#include "usr_dsp_cmd.h"
+#include "xvsm_support.h"
+#include "lib_voice_doa_naive.h"
 
 /* Global processing state */
 unsigned g_doDoa = 0;
@@ -231,4 +415,4 @@ void user_pdm_process(mic_array_frame_time_domain * unsafe audio, int output[])
     }  // while(1)
 #endif
 }
-
+#endif
