@@ -3,9 +3,28 @@ sw_usb_audio Change Log
 
 6.16.0
 ------
-    * ADDED:   XVSM enabled build config added to app_usb_mic_array. Includes example usage of 
-               UserBufferManagement() and i_dsp interface.
-    * CHANGE:  PDM Microphone processing examples use new interface (previously functional call)
+
+  * ADDED:   XVSM enabled build config added to app_usb_mic_array. Includes
+    example usage of UserBufferManagement() and i_dsp interface.
+  * CHANGE:  PDM Microphone processing examples use new interface (previously
+    functional call)
+
+  * Changes to dependencies:
+
+    - sc_usb_audio: 6.15.2 -> 6.16.0
+
+      + ADDED:      Call to UserBufferManagement()
+      + ADDED:      PDM_MIC_INDEX in devicedefines.h and usage
+      + CHANGE:     pdm_buffer() task now combinable
+      + CHANGE:     Audio I/O task now takes i_dsp interface as a parameter
+      + CHANGE:     Removed built-in support for A/U series internal ADC
+      + CHANGE:     User PDM Microphone processing now uses an interface
+        (previously function call)
+
+    - sc_usb_device: 1.3.8 -> 1.3.9
+
+      + RESOLVED:   Value from HS config descriptor used for FS GET_STATUS
+        request. Causes USB CV test fail.
 
 6.15.2
 ------
@@ -17,7 +36,7 @@ sw_usb_audio Change Log
 
     - sc_usb_audio: 6.15.1 -> 6.15.2
 
-      + RESOLVED:  interrupt.h (used in audio buffering) now compatible with
+      + RESOLVED:   interrupt.h (used in audio buffering) now compatible with
         xCORE-200 ABI
 
 6.15.1
