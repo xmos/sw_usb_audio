@@ -33,7 +33,7 @@ XCC_FLAGS_1i8o2_xvsm2000 = $(BUILD_FLAGS) -DAUDIO_CLASS=1 -DNUM_USB_CHAN_IN=2 -D
 INCLUDE_ONLY_IN_1i8o2_xvsm2000 = ./src/extensions/xsvm2000
 
 ifeq ($(CONFIG),1i8o2_xvsm2000)
-	USED_MODULES += lib_il_voice lib_xvsm_support lib_voice
+	USED_MODULES += lib_xvsm_support lib_voice 
 endif
 
 MODULE_LIBRARIES = xud_x200

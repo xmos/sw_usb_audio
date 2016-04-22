@@ -9,7 +9,7 @@
 #include "devicedefines.h"
 #include "xua_dsp.h"
 #include "print.h"
-#include "il_voice.h"
+#include "xvsm_support.h"
 #include "usr_dsp_cmd.h"
 
 /* DSP data double buffered */
