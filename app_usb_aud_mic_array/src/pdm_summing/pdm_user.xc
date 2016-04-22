@@ -71,7 +71,7 @@ void user_pdm_process(server mic_process_if i_mic_data)
     unsigned summed = 0;
     unsigned gain = 1;
 #else
-unsafe void user_pdm_process(mic_array_frame_time_domain * unsafe audio, int output[])
+void user_pdm_process(mic_array_frame_time_domain * unsafe audio, int output[])
 {
     /* Very simple button control code for example */
     static unsigned count = 0;
