@@ -31,10 +31,6 @@ void set_led(unsigned ledNo, unsigned ledVal)
 {
     static int ledVals[LED_COUNT] = {0};
    
-    //printint(ledNo);
-    //printchar(':');
-    //printintln(ledVal);
- 
     ledVals[ledNo] = ledVal;
 
     unsigned d = 0;
@@ -92,6 +88,7 @@ void dsp_control(client dsp_ctrl_if i_dsp_ctrl)
     timer t;
     unsigned time;
     int debouncing = 0;
+    int loopback = 0;
 
     while(1)
     {
@@ -107,28 +104,33 @@ void dsp_control(client dsp_ctrl_if i_dsp_ctrl)
                     case 0xE: /* Button A */
                     unsafe
                     { 
-                        //int handled = i_dsp_ctrl.setControl(CMD_DSP_RTCFG, myoffsetof(il_voice_rtcfg_t, bypass_on)/sizeof(char *), IL_BYPASS_MODE_ON);
-                        printstr("Processing bypassed\n"); 
-                        int handled = i_dsp_ctrl.setControl(CMD_DSP_FULLBYPASS, 0, 1);
+                        *processingBypassed = !(*processingBypassed);
+
+                        int handled = i_dsp_ctrl.setControl(CMD_DSP_FULLBYPASS, 0, *processingBypassed);
+                       
+                        if(*processingBypassed)
+                            printstr("Processing bypassed\n");
+                        else
+                            printstr("Processing active\n");
                         
-                        *processingBypassed = 1;
                         break;
                     }                    
                         
                     case 0xD: /* Button B */
                     unsafe
-                    {
-                        //int handled = i_dsp_ctrl.setControl(CMD_DSP_RTCFG, myoffsetof(il_voice_rtcfg_t, bypass_on)/sizeof(char *), IL_BYPASS_MODE_OFF);
-                        printstr("Processing enabled\n"); 
-                        int handled = i_dsp_ctrl.setControl(CMD_DSP_FULLBYPASS, 0, 0);
-                       
-                        *processingBypassed = 0;
- 
+                    { 
+                        loopback = !loopback;
+                        int handled = i_dsp_ctrl.setControl(CMD_DSP_LOOPBACK, 0, loopback);
+                        if(loopback)
+                            printstr("Loopback enabled\n");
+                        else
+                            printstr("Loopback disabled\n");
                         break;
                     }
+
                     case 0xB: /* Button C */
-                       
-                        unsafe{ 
+                    unsafe
+                    { 
                         if(!*processingBypassed)
                         {    /* Use tmp variable to avoid race */
                             unsigned char tmp = (*micNum)+1;
@@ -136,15 +138,16 @@ void dsp_control(client dsp_ctrl_if i_dsp_ctrl)
                                 tmp = 1;
                             *micNum = tmp;
                         }
-                        }
                         break;
+                    }
 
-                     case 0x7: /* Button D */
-                        unsafe{
-                            *doDoa = !(*doDoa);
-                            printstr("DOA status; ");printintln(*doDoa);
-                        }                    
+                    case 0x7: /* Button D */
+                    unsafe
+                    {
+                        *doDoa = !(*doDoa);
+                        printstr("DOA status: ");printintln(*doDoa);
                         break;
+                    }
                     default:
                         break;
                 }

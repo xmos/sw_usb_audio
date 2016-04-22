@@ -18,6 +18,12 @@ int dspBuffer_in_usb[2][ILV_FRAMESIZE];
 int dspBuffer_out_usb[2][ILV_FRAMESIZE]; 
 int dspBuffer_out_dac[2][ILV_FRAMESIZE]; 
 
+unsigned g_loopback = 0;
+unsafe
+{
+    unsigned * unsafe loopback = &g_loopback;
+}
+
 /* sampsFromUsbToAudio: The sample frame the device has recived from the host and is going to play to the output audio interfaces */
 /* sampsFromAudioToUsb: The sample frame that was received from the audio interfaces and that the device is going to send to the host */
 #pragma unsafe arrays
@@ -30,15 +36,17 @@ void UserBufferManagement(unsigned sampsFromUsbToAudio[], unsigned sampsFromAudi
     dspBuffer_in_adc[dspBufferNo][(dspSampleCount * ILV_NCHAN_MIC_IN)+1] = sampsFromAudioToUsb[PDM_MIC_INDEX];
     unsafe
     {
-    dspBuffer_in_adc[dspBufferNo][(dspSampleCount * ILV_NCHAN_MIC_IN)] = sampsFromAudioToUsb[PDM_MIC_INDEX+1];
+        dspBuffer_in_adc[dspBufferNo][(dspSampleCount * ILV_NCHAN_MIC_IN)] = sampsFromAudioToUsb[PDM_MIC_INDEX+1];
+        dspBuffer_in_usb[dspBufferNo][dspSampleCount] = 0; // TODO
+  
+        if(*loopback)
+        {
+            /* Read out of DSP buffer */
+            sampsFromUsbToAudio[0] = dspBuffer_out_usb[dspBufferNo][dspSampleCount];
+            sampsFromUsbToAudio[1] = dspBuffer_out_usb[dspBufferNo][dspSampleCount];
+        }
     }
-    dspBuffer_in_usb[dspBufferNo][dspSampleCount] = 0; // TODO
-   
-#ifdef LOOPBACK_MIC
-    /* Read out of DSP buffer */
-    sampsFromUsbToAudio[0] = dspBuffer_out_usb[dspBufferNo][dspSampleCount];
-    sampsFromUsbToAudio[1] = dspBuffer_out_usb[dspBufferNo][dspSampleCount];
-#endif    
+    
     /* Read out of DSP buffer */
     sampsFromAudioToUsb[0] = dspBuffer_out_usb[dspBufferNo][dspSampleCount];
     sampsFromAudioToUsb[1] = dspBuffer_out_usb[dspBufferNo][dspSampleCount];
@@ -97,6 +105,9 @@ void dsp_process(server dsp_if i_dsp, server dsp_ctrl_if ?i_dsp_ctrl[numDspCtrlI
                             break;
                         case CMD_DSP_FULLBYPASS:
                             fullBypass = value;
+                            break;
+                        case CMD_DSP_LOOPBACK:
+                            *loopback = value;
                             break;
                         default:
                             break;
