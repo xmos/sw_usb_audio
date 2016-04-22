@@ -109,7 +109,6 @@ void user_pdm_process(mic_array_frame_time_domain * unsafe audio, int output[])
 
 void user_pdm_init()
 {
-
     /* Turn center LED on */
     for(int i = 0; i < 12; i++)
         set_led(i, 0);
@@ -202,7 +201,6 @@ select
 
     if(summed)
     {
-        
         /* Sum up all the mics */
         output[0] = 0;
         for(unsigned i=0; i<7; i++)
