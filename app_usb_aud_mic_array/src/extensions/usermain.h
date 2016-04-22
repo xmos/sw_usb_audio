@@ -15,7 +15,8 @@ void genclock();
 
 #ifndef XVSM 
 #define USER_MAIN_CORES \
-            on tile[1] : genclock();
+            on tile[1] : genclock(); \
+            on tile[PDM_TILE].core[0]: user_pdm_process(i_mic_process); 
 #else
 
 #define USER_MAIN_CORES \
