@@ -7,10 +7,6 @@
 #ifndef _CUSTOMDEFINES_H_
 #define _CUSTOMDEFINES_H_
 
-#define RUN_DSP_TASK 1
-
-
-
 /*
  * Device configuration option defines to override default defines found devicedefines.h
  *
