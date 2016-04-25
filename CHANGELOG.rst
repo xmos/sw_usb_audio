@@ -5,7 +5,7 @@ sw_usb_audio Change Log
 ------
 
   * ADDED:   XVSM enabled build config added to app_usb_mic_array. Includes
-    example usage of UserBufferManagement() and i_dsp interface.
+    example usage of UserBufferManagement() and i_dsp interface
   * CHANGE:  PDM Microphone processing examples use new interface (previously
     functional call)
 
