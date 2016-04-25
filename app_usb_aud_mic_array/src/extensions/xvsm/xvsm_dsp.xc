@@ -62,7 +62,7 @@ void UserBufferManagement(unsigned sampsFromUsbToAudio[], unsigned sampsFromAudi
 } 
 
 #pragma unsafe arrays
-void dsp_process(server dsp_if i_dsp, server dsp_ctrl_if ?i_dsp_ctrl[numDspCtrlInts], unsigned numDspCtrlInts)
+void dsp_process(server dsp_if i_dsp, server dsp_ctrl_if i_dsp_ctrl[numDspCtrlInts], unsigned numDspCtrlInts)
 {
     il_voice_cfg_t          ilv_cfg;
     il_voice_rtcfg_t        ilv_rtcfg;
