@@ -16,6 +16,10 @@ sw_usb_audio Change Log
       + Updated AN00221 to use new lib_dsp API for FFTs
       + Updates required for latest lib_mic_array_board_support API
 
+    - lib_voice: Added dependency 0.0.1
+
+    - lib_xvsm_support: Added dependency 0.1.0
+
     - sc_usb_audio: 6.15.2 -> 6.16.0
 
       + ADDED:      Call to UserBufferManagement()
