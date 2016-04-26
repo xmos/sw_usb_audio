@@ -8,7 +8,13 @@ sw_usb_audio Change Log
 
     - lib_mic_array: 2.0.0 -> 2.0.1
 
-      + Updated AN00221 to use new lib_dsp API for FFTs.
+      + Updated AN00221 to use new lib_dsp API for FFTs
+      + Updates required for latest lib_mic_array_board_support API
+
+    - sc_usb_device: 1.3.8 -> 1.3.9
+
+      + RESOLVED:   Value from HS config descriptor used for FS GET_STATUS
+        request. Causes USB CV test fail.
 
 6.15.2
 ------
