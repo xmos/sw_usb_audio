@@ -1,3 +1,5 @@
+#ifdef XVSM
+
 #include "customdefines.h"
 #include <platform.h>
 #include <xs1.h>
@@ -235,5 +237,4 @@ void user_pdm_process(mic_array_frame_time_domain * unsafe audio, int output[])
     }  // while(1)
 #endif
 }    
-                    
-                                  
+#endif

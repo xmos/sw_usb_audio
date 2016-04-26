@@ -1,4 +1,4 @@
-
+#ifdef XVSM
 #include <platform.h>
 #include <xs1.h>
 #include <stdlib.h>
@@ -154,5 +154,4 @@ void dsp_process(server dsp_if i_dsp, server dsp_ctrl_if i_dsp_ctrl[numDspCtrlIn
         }
     }
 }
-
-
+#endif
