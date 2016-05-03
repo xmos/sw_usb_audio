@@ -87,7 +87,11 @@ unsafe
 }
 
 [[combinable]]
-void dsp_control(client dsp_ctrl_if i_dsp_ctrl)
+void dsp_control(client dsp_ctrl_if i_dsp_ctrl
+#if CONTROL
+    , server interface control i_modules[num_modules], const size_t num_modules
+#endif
+    )
 {
     int buttonVal;
     p_buttons :> buttonVal;

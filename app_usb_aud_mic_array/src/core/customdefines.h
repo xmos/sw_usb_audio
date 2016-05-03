@@ -23,6 +23,13 @@
 /* Enable PDM and PDM->PCM conversion code */
 #define NUM_PDM_MICS       8
 
+/* Enable control path from USB host */
+#define CONTROL            0
+#if CONTROL
+#define VENDOR_AUDIO_REQS  1
+#endif
+
+
 /* Defines relating to channel count and channel arrangement (Set to 0 for disable) */
 //:audio_defs
 /* Number of USB streaming channels - Default is 8 in 2 out */
