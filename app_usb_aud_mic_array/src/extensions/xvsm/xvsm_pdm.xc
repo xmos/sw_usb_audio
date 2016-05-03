@@ -11,6 +11,11 @@
 #include "xvsm_support.h"
 #include "lib_voice_doa_naive.h"
 
+#if CONTROL
+#include "stdio.h"
+#warning "DEV using stdio/printf - remove me"
+#endif
+
 /** Structure to describe the LED ports*/
 typedef struct {
     out port p_led0to7;     /**<LED 0 to 7. */
@@ -166,6 +171,32 @@ void dsp_control(client dsp_ctrl_if i_dsp_ctrl
             case debouncing => t  when timerafter(time) :> int _:
                 debouncing = 0;
                 break;
+
+#if CONTROL
+            case i_modules[int i].set(int address, size_t payload_length, const uint8_t payload[]):
+                unsigned num_commands = 0;
+                //Test reception of command and print
+                printf("%u: received SET: 0x%06x %d,", num_commands, address, payload_length);
+                for (int p = 0; p < payload_length; p++) {
+                  printf(" %02x", payload[p]);
+                }
+                printf("\n");
+                num_commands++;
+                break;
+
+            case i_modules[int i].get(int address, size_t payload_length, uint8_t payload[]):
+                unsigned num_commands = 0;
+                //Send some test bytes
+                payload[0] = 0x12;
+                payload[1] = 0x34;
+                payload[2] = 0x56;
+                payload[3] = 0x78;
+                printf("%u: received GET: 0x%06x %d,", num_commands, address, payload_length);
+                printf(" returned %d bytes", payload_length);
+                printf("\n");
+                num_commands++;
+                break;
+#endif
 
         }
     }

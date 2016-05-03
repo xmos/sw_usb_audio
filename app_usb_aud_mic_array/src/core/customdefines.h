@@ -24,7 +24,7 @@
 #define NUM_PDM_MICS       8
 
 /* Enable control path from USB host */
-#define CONTROL            0
+#define CONTROL            1
 #if CONTROL
 #define VENDOR_AUDIO_REQS  1
 #endif
