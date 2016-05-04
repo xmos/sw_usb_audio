@@ -11,6 +11,10 @@
 #include "xvsm_support.h"
 #include "lib_voice_doa_naive.h"
 
+#include "xassert.h"
+#include "control_module_ids.h"
+#include <stdlib.h>
+
 #if CONTROL
 #include "stdio.h"
 #warning "DEV using stdio/printf - remove me"
@@ -92,11 +96,7 @@ unsafe
 }
 
 [[combinable]]
-void dsp_control(client dsp_ctrl_if i_dsp_ctrl
-#if CONTROL
-    , server interface control i_modules[num_modules], const size_t num_modules
-#endif
-    )
+void dsp_control(client dsp_ctrl_if i_dsp_ctrl)
 {
     int buttonVal;
     p_buttons :> buttonVal;
@@ -172,35 +172,38 @@ void dsp_control(client dsp_ctrl_if i_dsp_ctrl
                 debouncing = 0;
                 break;
 
-#if CONTROL
-            case i_modules[int i].set(int address, size_t payload_length, const uint8_t payload[]):
-                unsigned num_commands = 0;
-                //Test reception of command and print
-                printf("%u: received SET: 0x%06x %d,", num_commands, address, payload_length);
-                for (int p = 0; p < payload_length; p++) {
-                  printf(" %02x", payload[p]);
-                }
-                printf("\n");
-                num_commands++;
-                break;
-
-            case i_modules[int i].get(int address, size_t payload_length, uint8_t payload[]):
-                unsigned num_commands = 0;
-                //Send some test bytes
-                payload[0] = 0x12;
-                payload[1] = 0x34;
-                payload[2] = 0x56;
-                payload[3] = 0x78;
-                printf("%u: received GET: 0x%06x %d,", num_commands, address, payload_length);
-                printf(" returned %d bytes", payload_length);
-                printf("\n");
-                num_commands++;
-                break;
-#endif
-
         }
     }
 }
+
+[[combinable]]
+void xscope_server(chanend c_xscope, client interface control i_modules[1])
+{
+  uint8_t bytes[512];
+  int num_bytes_read;
+  size_t return_size;
+
+  xscope_connect_data_from_host(c_xscope);
+
+
+  while (1) {
+    select {
+      /* tools_xtrace/xscope_api/xcore_shared/xscope_shared_xc.xc */
+      case xscope_data_from_host(c_xscope, bytes, num_bytes_read):
+        assert(num_bytes_read <= sizeof(bytes));
+
+        //For the old demo, we want to pass the raw data across
+        //control_handle_message_xscope(bytes, return_size, i_modules, 1);
+        i_modules[0].set(0, num_bytes_read, bytes);
+        if (return_size > 0) {
+          //xscope_core_bytes(0, return_size, bytes);
+        }
+        /* xTAG adapter should defer further calls by NAKing USB transactions */
+        break;
+    }
+  }
+}
+
 
 struct lib_voice_doa doaState;
 

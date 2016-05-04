@@ -12,6 +12,8 @@
 #include "xvsm_support.h"
 #include "usr_dsp_cmd.h"
 
+#include "parse_command_ill.h"
+
 /* DSP data double buffered */
 int dspBuffer_in_adc[2][ILV_FRAMESIZE * ILV_NCHAN_MIC_IN]; 
 int dspBuffer_in_usb[2][ILV_FRAMESIZE]; 
@@ -62,7 +64,11 @@ void UserBufferManagement(unsigned sampsFromUsbToAudio[], unsigned sampsFromAudi
 } 
 
 #pragma unsafe arrays
-void dsp_process(server dsp_if i_dsp, server dsp_ctrl_if i_dsp_ctrl[numDspCtrlInts], unsigned numDspCtrlInts)
+void dsp_process(server dsp_if i_dsp, server dsp_ctrl_if i_dsp_ctrl[numDspCtrlInts], unsigned numDspCtrlInts
+#if CONTROL
+        , server interface control i_modules[num_modules], const size_t num_modules
+#endif
+        )
 {
     il_voice_cfg_t          ilv_cfg;
     il_voice_rtcfg_t        ilv_rtcfg;
@@ -118,6 +124,28 @@ void dsp_process(server dsp_if i_dsp, server dsp_ctrl_if i_dsp_ctrl[numDspCtrlIn
                     }
                     
                     break;
+
+#if CONTROL
+                case i_modules[int i].set(int address, size_t payload_length, const uint8_t payload[]):
+                    uint8_t buffer[MAX_XSCOPE_PAYLOAD];
+                    memcpy(buffer, payload, payload_length);    //Remote references cannot be passed to functions
+
+                    int argc, argv[IVL_MAX_NUM_MODULE_ARGS];    //Use old command protocol
+                    asciify(buffer, payload_length, argc, argv);
+                    if(!cntrlAudioProcess(ilv_rtcfg, ilv_cfg, ilv_diag, argc, argv))
+                    {
+                        printf("Control command process error\n");
+                    }
+                    else
+                    {
+                        printf("Command success\n");
+                    }
+                    break;
+
+                case i_modules[int i].get(int address, size_t payload_length, uint8_t payload[]):
+                    //Get not supported on the old protocol
+                    break;
+#endif
             
                 /* Client wants a processed block. Also gives us input samples */
                 case !processingBlock => i_dsp.transfer_buffers(int * unsafe in_mic_buf, int * unsafe in_spk_buf,

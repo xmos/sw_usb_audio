@@ -1,7 +1,7 @@
 #include <xccompat.h>
 #include <stdint.h>
 #include <stdio.h>
-#define DEBUG_PRINT_ENABLE  1
+#define DEBUG_PRINT_ENABLE  0
 #include "debug_print.h"
 #include "xud.h"
 #include "usb_std_requests.h"
@@ -23,7 +23,7 @@ void VendorAudioRequestsInit(chanend c_audioControl, CLIENT_INTERFACE(control, i
  *
  * */
 
-#define EP0_MAX_PACKET_SIZE     512
+#define EP0_MAX_PACKET_SIZE     64
 
 int VendorAudioRequests(XUD_ep ep0_out, XUD_ep ep0_in, REFERENCE_PARAM(USB_SetupPacket_t, sp), CLIENT_INTERFACE(control, i_modules[]), size_t num_modules)
 {
