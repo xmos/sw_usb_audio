@@ -23,7 +23,7 @@ void genclock();
             on tile[1] : genclock(); \
             on stdcore[AUDIO_IO_TILE] : dsp_process(i_dsp, i_dsp_ctrl, 1); \
             on tile[PDM_TILE].core[0]: user_pdm_process(i_mic_process); \
-            on tile[PDM_TILE].core[0]: dsp_control(i_dsp_ctrl[0]);
+            on tile[PDM_TILE]: dsp_control(i_dsp_ctrl[0]);
 
 #endif
 #endif
