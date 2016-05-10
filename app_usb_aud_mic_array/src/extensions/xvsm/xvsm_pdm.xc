@@ -95,7 +95,9 @@ void dsp_control(client dsp_ctrl_if i_dsp_ctrl)
     unsigned time;
     int debouncing = 0;
     int loopback = 0;
-
+    int ns = 0;
+    int aec = 0;
+    
     while(1)
     {
         select
@@ -137,23 +139,27 @@ void dsp_control(client dsp_ctrl_if i_dsp_ctrl)
                     case 0xB: /* Button C */
                     unsafe
                     { 
-                        if(!*processingBypassed)
-                        {    /* Use tmp variable to avoid race */
-                            unsigned char tmp = (*micNum)+1;
-                            if(tmp == 7)
-                                tmp = 1;
-                            *micNum = tmp;
-                        }
+                        ns = !ns;
+                        if(ns)
+                            printstr("NS enabled\n");
+                        else
+                            printstr("NS disabled\n");
+                        int handled = i_dsp_ctrl.setControl(CMD_DSP_RTCFG, myoffsetof(il_voice_rtcfg_t, ns_on), ns ); //TODO NS
                         break;
                     }
 
                     case 0x7: /* Button D */
                     unsafe
-                    {
-                        *doDoa = !(*doDoa);
-                        printstr("DOA status: ");printintln(*doDoa);
+                    { 
+                        aec = !aec;
+                        if(aec)
+                            printstr("AEC enabled\n");
+                        else
+                            printstr("AEC disabled\n");
+                        int handled = i_dsp_ctrl.setControl(CMD_DSP_RTCFG, myoffsetof(il_voice_rtcfg_t, aec_on), aec);
                         break;
                     }
+
                     default:
                         break;
                 }

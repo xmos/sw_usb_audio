@@ -12,6 +12,7 @@
 #include "xvsm_support.h"
 #include "usr_dsp_cmd.h"
 
+#if 0
 /* DSP data double buffered */
 int dspBuffer_in_adc[2][ILV_FRAMESIZE * ILV_NCHAN_MIC_IN]; 
 int dspBuffer_in_usb[2][ILV_FRAMESIZE]; 
@@ -23,6 +24,14 @@ unsafe
 {
     unsigned * unsafe loopback = &g_loopback;
 }
+#endif
+
+
+int dspBuffer_in_adc[ILV_NCHAN_MIC_IN]; 
+int dspBuffer_in_usb[1]; 
+int dspBuffer_out_usb[1]; 
+int dspBuffer_out_dac[1]; 
+
 
 /* sampsFromUsbToAudio: The sample frame the device has recived from the host and is going to play to the output audio interfaces */
 /* sampsFromAudioToUsb: The sample frame that was received from the audio interfaces and that the device is going to send to the host */
@@ -31,7 +40,9 @@ void UserBufferManagement(unsigned sampsFromUsbToAudio[], unsigned sampsFromAudi
 {
     static unsigned dspSampleCount = 0;
     static unsigned dspBufferNo = 0;
-    
+
+
+#if 0 
     /* Add samples to DSP buffers */
     dspBuffer_in_adc[dspBufferNo][(dspSampleCount * ILV_NCHAN_MIC_IN)+1] = sampsFromAudioToUsb[PDM_MIC_INDEX]*12;
     dspBuffer_in_adc[dspBufferNo][(dspSampleCount * ILV_NCHAN_MIC_IN)] = sampsFromAudioToUsb[PDM_MIC_INDEX+1]*12;
@@ -59,6 +70,16 @@ void UserBufferManagement(unsigned sampsFromUsbToAudio[], unsigned sampsFromAudi
         dspSampleCount = 0;
         dspBufferNo = 1 - dspBufferNo;
     }
+#else
+   
+    dspBuffer_in_adc[0] = samplesFromAudioToUsb[PDM_MIC_INDEX] * 12; // TODO
+    dspBuffer_in_adc[1] = samplesFromAudioToUsb[PDM_MIC_INDEX+1] * 12; // TODO
+    dspBuffer_in_usb[0] = samplesFromUsbToAudio[0];
+    
+    i_dsp.transfer_samples(dspBuffer_in_adc, dspBuffer_in_usb, dspBuffer_out_usb, dspBuffer_out_dac);
+
+#endif
+
 } 
 
 #pragma unsafe arrays
@@ -71,7 +92,7 @@ void dsp_process(server dsp_if i_dsp, server dsp_ctrl_if i_dsp_ctrl[numDspCtrlIn
     int * unsafe in_mic = NULL, * unsafe in_spk = NULL;
     int * unsafe out_mic = NULL, * unsafe out_spk = NULL;
     
-    int processingBlock = 0;
+    int processingBlock = 1;
     int fullBypass = 0;
     int err;
 
@@ -119,7 +140,7 @@ void dsp_process(server dsp_if i_dsp, server dsp_ctrl_if i_dsp_ctrl[numDspCtrlIn
                     handled = 1;
                     
                     break;
-            
+           #if 0 
                 /* Client wants a processed block. Also gives us input samples */
                 case !processingBlock => i_dsp.transfer_buffers(int * unsafe in_mic_buf, int * unsafe in_spk_buf,
                                                    int * unsafe out_mic_buf, int * unsafe out_spk_buf):
@@ -129,6 +150,12 @@ void dsp_process(server dsp_if i_dsp, server dsp_ctrl_if i_dsp_ctrl[numDspCtrlIn
                     out_spk = out_spk_buf;
                     processingBlock = 1;
                     break;
+            #endif
+
+                case i_dsp.transfer_samples(int in_mic_buf[], int in_spk_buf[], int out_mic_buf[], int out_spk_buf[]):
+                
+                
+                    break; 
 
                 /* Guarded default case */
                 processingBlock => default:
