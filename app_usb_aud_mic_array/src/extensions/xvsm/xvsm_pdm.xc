@@ -152,6 +152,12 @@ void dsp_control(client dsp_ctrl_if i_dsp_ctrl)
                             if(tmp == 7)
                                 tmp = 1;
                             *micNum = tmp;
+                            printstr("MIC number: ");
+                            printintln(*micNum);
+                        }
+                        else
+                        {
+
                         }
                         break;
                     }
