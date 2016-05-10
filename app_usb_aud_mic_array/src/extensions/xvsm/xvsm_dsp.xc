@@ -112,8 +112,7 @@ void dsp_process(server dsp_if i_dsp, server dsp_ctrl_if i_dsp_ctrl[numDspCtrlIn
                         default:
                             break;
                     }
-                    
-                    if(il_voice_update_cfg(ilv_rtcfg))
+                    if((err = il_voice_update_cfg(ilv_rtcfg)) != 0)
                     {
                         printstr("cntrlAudioProcess:: ERROR il_voice_update_cfg(). Error Code = "); printintln(err);
                     }
