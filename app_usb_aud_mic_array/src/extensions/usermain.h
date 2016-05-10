@@ -17,7 +17,7 @@ void dsp_control(client dsp_ctrl_if i_dsp_ctrl);
 [[combinable]]
 void xscope_server(chanend c_xscope, client interface control i_module[1]);
 
-#define DSP_CONTROL_TASK    on tile[PDM_TILE].core[0]: dsp_control(i_dsp_ctrl[0]);
+#define DSP_CONTROL_TASK    on tile[PDM_TILE]: dsp_control(i_dsp_ctrl[0]);
 
 /* Prototype for our custom genclock() task */
 void genclock();

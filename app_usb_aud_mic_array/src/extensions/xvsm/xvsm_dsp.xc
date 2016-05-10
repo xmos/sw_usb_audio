@@ -120,7 +120,7 @@ void dsp_process(server dsp_if i_dsp, server dsp_ctrl_if i_dsp_ctrl[numDspCtrlIn
                     }
                     if(il_voice_update_cfg(ilv_rtcfg))
                     {
-                        printstr("cntrlAudioProcess:: ERROR il_voice_update_cfg(). Error Code = "); printintln(err);
+                        //printstr("cntrlAudioProcess:: ERROR il_voice_update_cfg(). Error Code = "); printintln(err);
                     }
                     
                     break;
@@ -134,11 +134,11 @@ void dsp_process(server dsp_if i_dsp, server dsp_ctrl_if i_dsp_ctrl[numDspCtrlIn
                     asciify(buffer, payload_length, argc, argv);
                     if(!cntrlAudioProcess(ilv_rtcfg, ilv_cfg, ilv_diag, argc, argv))
                     {
-                        printf("Control command process error\n");
+                        //printf("Control command process error\n");
                     }
                     else
                     {
-                        printf("Command success\n");
+                        //printf("Command success\n");
                     }
                     break;
 

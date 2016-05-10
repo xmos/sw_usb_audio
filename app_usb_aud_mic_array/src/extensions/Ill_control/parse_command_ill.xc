@@ -12,7 +12,7 @@
 
 #define debug_printf(x) printf(x)
 
-/* Old Illusonic control protocol is ASCII based so do conversion first */
+/* Old control protocol is ASCII based so do conversion first */
 void asciify(uint8_t buffer[], int num_bytes_read, int &argc, int argv[IVL_MAX_NUM_MODULE_ARGS])
 {
     DBG(printstr("control : ("); printint(num_bytes_read); printstr(") :");printstrln(buffer);)
