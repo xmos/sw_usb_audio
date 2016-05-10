@@ -499,14 +499,14 @@ int cntrlAudioProcess(il_voice_rtcfg_t &ilv_rtcfg, il_voice_cfg_t &ilv_cfg,  il_
   }
   else if (argv[0] == IVL_DIAG_MODULE_ID) {
     il_voice_get_diagnostics(ilv_diag);
-    printf("%20s = %-10d (%s)\n", "mic_in_peak", ilv_diag.mic_in_peak, "Peak value of microphone input [dBfs]");
-    printf("%20s = %-10d (%s)\n", "mic_pre_aec_peak", ilv_diag.mic_pre_aec_peak, "Peak value of microphone signal before AEC [dBfs]");
-    printf("%20s = %-10d (%s)\n", "mic_out_peak", ilv_diag.mic_out_peak, "Peak value of microphone output [dBfs]");
-    printf("%20s = %-10d (%s)\n", "spk_in_peak", ilv_diag.spk_in_peak, "Peak value of loudspeaker input [dBfs]");
-    printf("%20s = %-10d (%s)\n", "spk_out_peak", ilv_diag.spk_out_peak, "Peak value of loudspeaker output [dBfs]");
-    printf("%20s = %-10d (%s)\n", "aec_delay_ms", ilv_diag.aec_delay_ms, "AEC delay estimation [ms]");
-    printf("%20s = %-10d (%s)\n", "aec_erle_dB", ilv_diag.aec_erle_dB, "AEC ERLE estimation [dB]");
-    printf("%20s = %-10d (%s)\n", "mic_out_vad", ilv_diag.mic_out_vad, "microphone output vad (0..32767)");
+    printf("%20s = %-6d %s\n", "mic_in_peak", ilv_diag.mic_in_peak, "Peak value of microphone input [dBfs]");
+    printf("%20s = %-6d %s\n", "mic_pre_aec_peak", ilv_diag.mic_pre_aec_peak, "Peak value of microphone signal before AEC [dBfs]");
+    printf("%20s = %-6d %s\n", "mic_out_peak", ilv_diag.mic_out_peak, "Peak value of microphone output [dBfs]");
+    printf("%20s = %-6d %s\n", "spk_in_peak", ilv_diag.spk_in_peak, "Peak value of loudspeaker input [dBfs]");
+    printf("%20s = %-6d %s\n", "spk_out_peak", ilv_diag.spk_out_peak, "Peak value of loudspeaker output [dBfs]");
+    printf("%20s = %-6d %s\n", "aec_delay_ms", ilv_diag.aec_delay_ms, "AEC delay estimation [ms]");
+    printf("%20s = %-6d %s\n", "aec_erle_dB", ilv_diag.aec_erle_dB, "AEC ERLE estimation [dB]");
+    printf("%20s = %-6d %s\n", "mic_out_vad", ilv_diag.mic_out_vad, "microphone output vad (0..32767)");
 
     int         mic_in_peak;        /* Peak value of microphone input [dBfs] */
     int         mic_pre_aec_peak;   /* Peak value of microphone signal before AEC [dBfs] */
@@ -519,43 +519,47 @@ int cntrlAudioProcess(il_voice_rtcfg_t &ilv_rtcfg, il_voice_cfg_t &ilv_cfg,  il_
 
     printstrln("");
 
-    printf("%20s = %-10d (%s)\n", "spk_input_gain_dB", ilv_cfg.spk_input_gain_dB, "initial loudspeaker signal input gain [-100..100 dB]");
-    printf("%20s = %-10d (%s)\n", "mic_gain_dB", ilv_cfg.mic_gain_dB, "initial microphone signal gain [-100..36 dB] (off if AGC is on)");
-    printf("%20s = %-10d (%s)\n", "sfreq_spk", ilv_cfg.sfreq_spk, "sampling rate");
-    printf("%20s = %-10d (%s)\n", "sfreq_mic", ilv_cfg.sfreq_mic, "sampling rate");
-    printf("%20s = %-10d (%s)\n", "bypass_on", ilv_rtcfg.bypass_on, "0:normal operation, 1: bypass with spk processing, 2: pure bypass");
-    printf("%20s = %-10d (%s)\n", "mic_shift", ilv_rtcfg.mic_shift, "left shift of microphone input signal [0..4]");
-    printf("%20s = %-10d (%s)\n", "bf_on", ilv_rtcfg.bf_on, "Beamforming 0: off, 1: on ");
-    printf("%20s = %-10d (%s)\n", "bf_direction", ilv_rtcfg.bf_direction, "0:360 degree, 1: end-fire 1, 2: end-fire 2, 3: line array ");
-    printf("%20s = %-10d (%s)\n", "bf_focus", ilv_rtcfg.bf_focus, "beamformer focus [0..10]");
-    printf("%20s = %-10d (%s)\n", "bf_diffgain_dB", ilv_rtcfg.bf_diffgain_dB, "diffuse sound gain [dB] [-20..0]");
-    printf("%20s = %-10d (%s)\n", "ns_on", ilv_rtcfg.ns_on, "noise suppression 0: off, 1: on");
-    printf("%20s = %-10d (%s)\n", "ns_attlimit_dB", ilv_rtcfg.ns_attlimit_dB, "noise attenuation in dB [-20..0]");
-    printf("%20s = %-10d (%s)\n", "rvb_on", ilv_rtcfg.rvb_on, "dereverb 0: off, 1: on");
-    printf("%20s = %-10d (%s)\n", "rvb_attlimit_dB", ilv_rtcfg.rvb_attlimit_dB, "reverb attenuation in dB [-20..0]");
-    printf("%20s = %-10d (%s)\n", "aec_on", ilv_rtcfg.aec_on, "AEC 0: off, 1: on ");
-    printf("%20s = %-10d (%s)\n", "aec_delay_ms", ilv_rtcfg.aec_delay_ms, "delay [-1: auto, 0..30]  ms ");
-    printf("%20s = %-10d (%s)\n", "aec_strength", ilv_rtcfg.aec_strength, "echo suppression strength [0..10]");
-    printf("%20s = %-10d (%s)\n", "aec_nonlin", ilv_rtcfg.aec_nonlin, "non-linearity modeling [0..10]");
-    printf("%20s = %-10d (%s)\n", "aec_lecho_offset_dB", ilv_rtcfg.aec_lecho_offset_dB, "late echo estimation offset [dB] [-80..0]");
-    printf("%20s = %-10d (%s)\n", "aec_lecho_len_ms", ilv_rtcfg.aec_lecho_len_ms, "late echo length time constant [ms] [0..400]");
-    printf("%20s = %-10d (%s)\n", "aec_force_thr_dB", ilv_rtcfg.aec_force_thr_dB, "threshold below which echo removal is put to maximum [-80..0]");
-    printf("%20s = %-10d (%s)\n", "aec_noise_thr_dB", ilv_rtcfg.aec_noise_thr_dB, "when ERLE < aec_noise_thr, then noise echo is not cancelled [0..40]");
-    printf("%20s = %-10d (%s)\n", "aec_dt_thr_dB", ilv_rtcfg.aec_dt_thr_dB, "when ERLE > aec_dt_thr in dB, then doubletalk release will be disabled [0..40]");
-    printf("%20s = %-10d (%s)\n", "aec_dt_release_dB", ilv_rtcfg.aec_dt_release_dB, "during near-end and doubletalk echo removal is released [dB] [0..24]");
-    printf("%20s = %-10d (%s)\n", "aec_dt_att_limit_dB", ilv_rtcfg.aec_dt_att_limit_dB, "maximum echo attenuation when ERLE < aec_dt_thr [dB] [-80..0]");
-    printf("%20s = %-10d (%s)\n", "aec_no_adapt", ilv_rtcfg.aec_no_adapt, "0: aec echo path estimation on, 1: set echo path to aec_gain");
-    printf("%20s = %-10d (%s)\n", "aec_init_gain_dB", ilv_rtcfg.aec_init_gain_dB, "echo path initial gain (if aec_noadapt then update aec gains to aec_gain) [dB] [-60..20]");
-    printf("%20s = %-10d (%s)\n", "agc_on", ilv_rtcfg.agc_on, "0: off, 1: on");
-    printf("%20s = %-10d (%s)\n", "agc_target_dB", ilv_rtcfg.agc_target_dB, "agc target [dB] [-30..-10]");
-    printf("%20s = %-10d (%s)\n", "mic_eq_index", ilv_rtcfg.mic_eq_index, "mic EQ preset index [0..2]");
-    printf("%20s = %-10d (%s)\n", "spk_eq_index", ilv_rtcfg.spk_eq_index, "spk EQ preset index [0..2]");
-    printf("%20s = %-10d (%s)\n", "spk_limiter_on", ilv_rtcfg.spk_limiter_on, "0: audio gain control off, 1: audio gain control on");
-    printf("%20s = %-10d (%s)\n", "spk_limiter_thr_dB", ilv_rtcfg.spk_limiter_thr_dB, "limiter threshold [dB] [-20..0]");
-    printf("%20s = %-10d (%s)\n", "spk_compr_on", ilv_rtcfg.spk_compr_on, "0: audio gain control off, 1: audio gain control on");
-    printf("%20s = %-10d (%s)\n", "spk_compr_thr_dB", ilv_rtcfg.spk_compr_thr_dB, "compressor threshold [dB] [-30..0]");
-    printf("%20s = %-10d (%s)\n", "spk_compr_gain_dB", ilv_rtcfg.spk_compr_gain_dB, "compressor makeup gain [dB] [0..12]");
-    printf("%20s = %-10d (%s)\n", "spk_compr_ratio", ilv_rtcfg.spk_compr_ratio, "compressor ratio [index]");
+    printf("%20s = %-6d %s\n", "spk_input_gain_dB", ilv_cfg.spk_input_gain_dB, "initial loudspeaker signal input gain [-100..100 dB]");
+    printf("%20s = %-6d %s\n", "mic_gain_dB", ilv_cfg.mic_gain_dB, "initial microphone signal gain [-100..36 dB] (off if AGC is on)");
+    printf("%20s = %-6d %s\n", "sfreq_spk", ilv_cfg.sfreq_spk, "sampling rate");
+    printf("%20s = %-6d %s\n", "sfreq_mic", ilv_cfg.sfreq_mic, "sampling rate");
+    printf("%20s = %-6d %s\n", "bypass_on", ilv_rtcfg.bypass_on, "0: normal operation, 1: bypass with spk processing, 2: pure bypass");
+    printf("%20s = %-6d %s\n", "mic_shift", ilv_rtcfg.mic_shift, "left shift of microphone input signal [0..4]");
+    printstrln("");
+    printf("%20s = %-6d %s\n", "bf_on", ilv_rtcfg.bf_on, "Beamforming 0: off, 1: on ");
+    printf("%20s = %-6d %s\n", "bf_focus", ilv_rtcfg.bf_focus, "beamformer focus [0..10]");
+    printf("%20s = %-6d %s\n", "bf_diffgain_dB", ilv_rtcfg.bf_diffgain_dB, "diffuse sound gain [dB] [-20..0]");
+    printstrln("");
+    printf("%20s = %-6d %s\n", "ns_on", ilv_rtcfg.ns_on, "noise suppression 0: off, 1: on");
+    printf("%20s = %-6d %s\n", "ns_attlimit_dB", ilv_rtcfg.ns_attlimit_dB, "noise attenuation in dB [-20..0]");
+    printstrln("");
+    printf("%20s = %-6d %s\n", "rvb_on", ilv_rtcfg.rvb_on, "dereverb 0: off, 1: on");
+    printf("%20s = %-6d %s\n", "rvb_attlimit_dB", ilv_rtcfg.rvb_attlimit_dB, "reverb attenuation in dB [-20..0]");
+    printstrln("");
+    printf("%20s = %-6d %s\n", "aec_on", ilv_rtcfg.aec_on, "AEC 0: off, 1: on ");
+    printf("%20s = %-6d %s\n", "aec_delay_ms", ilv_rtcfg.aec_delay_ms, "delay [-1: auto, 0..30]  ms ");
+    printf("%20s = %-6d %s\n", "aec_strength", ilv_rtcfg.aec_strength, "echo suppression strength [0..10]");
+    printf("%20s = %-6d %s\n", "aec_nonlin", ilv_rtcfg.aec_nonlin, "non-linearity modeling [0..10]");
+    printf("%20s = %-6d %s\n", "aec_lecho_offset_dB", ilv_rtcfg.aec_lecho_offset_dB, "late echo estimation offset [dB] [-80..0]");
+    printf("%20s = %-6d %s\n", "aec_lecho_len_ms", ilv_rtcfg.aec_lecho_len_ms, "late echo length time constant [ms] [0..400]");
+    printf("%20s = %-6d %s\n", "aec_force_thr_dB", ilv_rtcfg.aec_force_thr_dB, "threshold below which echo removal is put to maximum [-80..0]");
+    printf("%20s = %-6d %s\n", "aec_noise_thr_dB", ilv_rtcfg.aec_noise_thr_dB, "when ERLE < aec_noise_thr, then noise echo is not cancelled [0..40]");
+    printf("%20s = %-6d %s\n", "aec_dt_thr_dB", ilv_rtcfg.aec_dt_thr_dB, "when ERLE > aec_dt_thr in dB, then doubletalk release will be disabled [0..40]");
+    printf("%20s = %-6d %s\n", "aec_dt_release_dB", ilv_rtcfg.aec_dt_release_dB, "during near-end and doubletalk echo removal is released [dB] [0..24]");
+    printf("%20s = %-6d %s\n", "aec_dt_att_limit_dB", ilv_rtcfg.aec_dt_att_limit_dB, "maximum echo attenuation when ERLE < aec_dt_thr [dB] [-80..0]");
+    printf("%20s = %-6d %s\n", "aec_no_adapt", ilv_rtcfg.aec_no_adapt, "0: aec echo path estimation on, 1: set echo path to aec_gain");
+    printf("%20s = %-6d %s\n", "aec_init_gain_dB", ilv_rtcfg.aec_init_gain_dB, "echo path initial gain (if aec_noadapt then update aec gains to aec_gain) [dB] [-60..20]");
+    printstrln("");
+    printf("%20s = %-6d %s\n", "agc_on", ilv_rtcfg.agc_on, "0: off, 1: on");
+    printf("%20s = %-6d %s\n", "agc_init_gain_dB", ilv_rtcfg.agc_init_gain_dB, "gain when AGC starts [dB][0..36]");
+    printf("%20s = %-6d %s\n", "agc_target_dB", ilv_rtcfg.agc_target_dB, "agc target [dB] [-30..-10]");
+    printstrln("");
+    printf("%20s = %-6d %s\n", "spk_limiter_on", ilv_rtcfg.spk_limiter_on, "0: audio gain control off, 1: audio gain control on");
+    printf("%20s = %-6d %s\n", "spk_limiter_thr_dB", ilv_rtcfg.spk_limiter_thr_dB, "limiter threshold [dB] [-20..0]");
+    printf("%20s = %-6d %s\n", "spk_compr_on", ilv_rtcfg.spk_compr_on, "0: audio gain control off, 1: audio gain control on");
+    printf("%20s = %-6d %s\n", "spk_compr_thr_dB", ilv_rtcfg.spk_compr_thr_dB, "compressor threshold [dB] [-30..0]");
+    printf("%20s = %-6d %s\n", "spk_compr_gain_dB", ilv_rtcfg.spk_compr_gain_dB, "compressor makeup gain [dB] [0..12]");
+    printf("%20s = %-6d %s\n", "spk_compr_ratio", ilv_rtcfg.spk_compr_ratio, "compressor ratio [index]");
     printstr("\n");
   }
 
