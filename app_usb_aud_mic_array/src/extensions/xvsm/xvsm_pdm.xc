@@ -181,23 +181,17 @@ void xscope_server(chanend c_xscope, client interface control i_modules[1])
 {
   uint8_t bytes[512];
   int num_bytes_read;
-  size_t return_size;
 
   xscope_connect_data_from_host(c_xscope);
-
-
   while (1) {
     select {
       /* tools_xtrace/xscope_api/xcore_shared/xscope_shared_xc.xc */
       case xscope_data_from_host(c_xscope, bytes, num_bytes_read):
         assert(num_bytes_read <= sizeof(bytes));
-
         //For the old demo, we want to pass the raw data across
         //control_handle_message_xscope(bytes, return_size, i_modules, 1);
         i_modules[0].set(0, num_bytes_read, bytes);
-        if (return_size > 0) {
-          //xscope_core_bytes(0, return_size, bytes);
-        }
+        xscope_int(ACK, 1); //Send ACK
         /* xTAG adapter should defer further calls by NAKing USB transactions */
         break;
     }
