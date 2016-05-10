@@ -33,9 +33,9 @@ void UserBufferManagement(unsigned sampsFromUsbToAudio[], unsigned sampsFromAudi
     static unsigned dspBufferNo = 0;
     
     /* Add samples to DSP buffers */
-    dspBuffer_in_adc[dspBufferNo][(dspSampleCount * ILV_NCHAN_MIC_IN)+1] = sampsFromAudioToUsb[PDM_MIC_INDEX];
-    dspBuffer_in_adc[dspBufferNo][(dspSampleCount * ILV_NCHAN_MIC_IN)] = sampsFromAudioToUsb[PDM_MIC_INDEX+1];
-    dspBuffer_in_usb[dspBufferNo][dspSampleCount] = 0; // TODO
+    dspBuffer_in_adc[dspBufferNo][(dspSampleCount * ILV_NCHAN_MIC_IN)+1] = sampsFromAudioToUsb[PDM_MIC_INDEX]*12;
+    dspBuffer_in_adc[dspBufferNo][(dspSampleCount * ILV_NCHAN_MIC_IN)] = sampsFromAudioToUsb[PDM_MIC_INDEX+1]*12;
+    dspBuffer_in_usb[dspBufferNo][dspSampleCount] = sampsFromUsbToAudio[0];
  
     unsafe
     { 
