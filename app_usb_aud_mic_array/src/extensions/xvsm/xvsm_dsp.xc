@@ -90,6 +90,7 @@ void dsp_process(server dsp_if i_dsp, server dsp_ctrl_if i_dsp_ctrl[numDspCtrlIn
     ilv_rtcfg.rvb_on = 1;
     ilv_rtcfg.bypass_on = 0;
     ilv_rtcfg.bf_on = 1;
+    ilv_rtcfg.mic_shift = 2;
     
     /* Initialize XSVSM block */
     err = il_voice_init(ilv_cfg, ilv_rtcfg);
