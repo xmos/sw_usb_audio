@@ -35,12 +35,12 @@ void UserBufferManagement(unsigned sampsFromUsbToAudio[], unsigned sampsFromAudi
     static unsigned dspBufferNo = 0;
     
     /* Add samples to DSP buffers */
-    dspBuffer_in_adc[dspBufferNo][(dspSampleCount * ILV_NCHAN_MIC_IN)+1] = sampsFromAudioToUsb[PDM_MIC_INDEX];
+    dspBuffer_in_adc[dspBufferNo][(dspSampleCount * ILV_NCHAN_MIC_IN)+1] = sampsFromAudioToUsb[PDM_MIC_INDEX]*12;
+    dspBuffer_in_adc[dspBufferNo][(dspSampleCount * ILV_NCHAN_MIC_IN)] = sampsFromAudioToUsb[PDM_MIC_INDEX+1]*12;
+    dspBuffer_in_usb[dspBufferNo][dspSampleCount] = sampsFromUsbToAudio[0];
+ 
     unsafe
-    {
-        dspBuffer_in_adc[dspBufferNo][(dspSampleCount * ILV_NCHAN_MIC_IN)] = sampsFromAudioToUsb[PDM_MIC_INDEX+1];
-        dspBuffer_in_usb[dspBufferNo][dspSampleCount] = 0; // TODO
-  
+    { 
         if(*loopback)
         {
             /* Read out of DSP buffer */
@@ -119,10 +119,11 @@ void dsp_process(server dsp_if i_dsp, server dsp_ctrl_if i_dsp_ctrl[numDspCtrlIn
                         default:
                             break;
                     }
-                    if(il_voice_update_cfg(ilv_rtcfg))
+                    if((err = il_voice_update_cfg(ilv_rtcfg)) != 0)
                     {
                         //printstr("cntrlAudioProcess:: ERROR il_voice_update_cfg(). Error Code = "); printintln(err);
                     }
+                    handled = 1;
                     
                     break;
 

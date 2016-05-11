@@ -17,8 +17,6 @@ void dsp_control(client dsp_ctrl_if i_dsp_ctrl);
 [[combinable]]
 void xscope_server(chanend c_xscope, client interface control i_module[1]);
 
-#define DSP_CONTROL_TASK    on tile[PDM_TILE]: dsp_control(i_dsp_ctrl[0]);
-
 /* Prototype for our custom genclock() task */
 void genclock();
 
@@ -41,7 +39,7 @@ void genclock();
             on tile[PDM_TILE].core[0]:  user_pdm_process(i_mic_process); \
             xscope_host_data(c_xscope); \
             on tile[PDM_TILE]:  xscope_server(c_xscope, i_modules); \
-            DSP_CONTROL_TASK
+            on tile[PDM_TILE]: dsp_control(i_dsp_ctrl[0]);
 /* xgdb -ex 'conn --xscope-realtime --xscope-port 127.0.0.1:10101' */
 
 #endif
