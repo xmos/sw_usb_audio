@@ -35,8 +35,8 @@ void UserBufferManagement(unsigned sampsFromUsbToAudio[], unsigned sampsFromAudi
     static unsigned dspBufferNo = 0;
     
     /* Add samples to DSP buffers */
-    dspBuffer_in_adc[dspBufferNo][(dspSampleCount * ILV_NCHAN_MIC_IN)+1] = sampsFromAudioToUsb[PDM_MIC_INDEX]*12;
-    dspBuffer_in_adc[dspBufferNo][(dspSampleCount * ILV_NCHAN_MIC_IN)] = sampsFromAudioToUsb[PDM_MIC_INDEX+1]*12;
+    dspBuffer_in_adc[dspBufferNo][(dspSampleCount * ILV_NCHAN_MIC_IN)+1] = sampsFromAudioToUsb[PDM_MIC_INDEX];
+    dspBuffer_in_adc[dspBufferNo][(dspSampleCount * ILV_NCHAN_MIC_IN)] = sampsFromAudioToUsb[PDM_MIC_INDEX+1];
     dspBuffer_in_usb[dspBufferNo][dspSampleCount] = sampsFromUsbToAudio[0];
  
     unsafe
@@ -86,8 +86,9 @@ void dsp_process(server dsp_if i_dsp, server dsp_ctrl_if i_dsp_ctrl[numDspCtrlIn
 
     /* Setup parameters in config structure */
     ilv_rtcfg.agc_on = 1;
-    ilv_rtcfg.aec_on = 0;
+    ilv_rtcfg.aec_on = 1;
     ilv_rtcfg.rvb_on = 1;
+    ilv_rtcfg.ns_on = 1;
     ilv_rtcfg.bypass_on = 0;
     ilv_rtcfg.bf_on = 1;
     ilv_rtcfg.mic_shift = 2;
