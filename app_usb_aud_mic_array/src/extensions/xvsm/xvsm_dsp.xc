@@ -101,10 +101,12 @@ void dsp_process(server dsp_if i_dsp, server dsp_ctrl_if i_dsp_ctrl[numDspCtrlIn
 
     /* Setup parameters in config structure */
     ilv_rtcfg.agc_on = 1;
-    ilv_rtcfg.aec_on = 0;
+    ilv_rtcfg.aec_on = 1;
     ilv_rtcfg.rvb_on = 1;
+    ilv_rtcfg.ns_on = 1;
     ilv_rtcfg.bypass_on = 0;
     ilv_rtcfg.bf_on = 1;
+    ilv_rtcfg.mic_shift = 2; 
     
     /* Initialize XSVSM block */
     err = il_voice_init(ilv_cfg, ilv_rtcfg);
