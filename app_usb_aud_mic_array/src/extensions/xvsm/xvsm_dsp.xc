@@ -63,7 +63,7 @@ void UserBufferManagement(unsigned sampsFromUsbToAudio[], unsigned sampsFromAudi
     }
 } 
 
-void il_voice_get_default_cfg_xmos(il_voice_cfg_t ilv_cfg, il_voice_rtcfg_t ilv_rtcfg)
+void il_voice_get_default_cfg_xmos(il_voice_cfg_t &ilv_cfg, il_voice_rtcfg_t &ilv_rtcfg)
 {
     /* Initialize config structures to viable default values */
     il_voice_get_default_cfg(ilv_cfg, ilv_rtcfg);   
