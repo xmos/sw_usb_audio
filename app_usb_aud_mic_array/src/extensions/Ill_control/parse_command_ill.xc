@@ -57,7 +57,7 @@ int cntrlAudioProcess(il_voice_rtcfg_t &ilv_rtcfg, il_voice_cfg_t &ilv_cfg,  il_
     switch (argv[1]) {
       case 'R':
         il_voice_reset_audio();
-        il_voice_get_default_cfg(ilv_cfg, ilv_rtcfg);
+        il_voice_get_default_cfg_xmos(ilv_cfg, ilv_rtcfg);
         err = il_voice_init(ilv_cfg, ilv_rtcfg);
         if (err) {
             debug_printf("cntrlAudioProcess:: Error: Failed to initialize voice engine\n");

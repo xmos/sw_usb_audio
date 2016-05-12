@@ -63,6 +63,23 @@ void UserBufferManagement(unsigned sampsFromUsbToAudio[], unsigned sampsFromAudi
     }
 } 
 
+void il_voice_get_default_cfg_xmos(il_voice_cfg_t ilv_cfg, il_voice_rtcfg_t ilv_rtcfg)
+{
+    /* Initialize config structures to viable default values */
+    il_voice_get_default_cfg(ilv_cfg, ilv_rtcfg);   
+
+    /* Setup parameters in config structure */
+    ilv_rtcfg.agc_on = 1;
+    ilv_rtcfg.aec_on = 1;
+    ilv_rtcfg.rvb_on = 1;
+    ilv_rtcfg.ns_on = 1;
+    ilv_rtcfg.bypass_on = 0;
+    ilv_rtcfg.bf_on = 1;
+    ilv_rtcfg.mic_shift = 2;
+
+}
+
+
 #pragma unsafe arrays
 void dsp_process(server dsp_if i_dsp, server dsp_ctrl_if i_dsp_ctrl[numDspCtrlInts], unsigned numDspCtrlInts
 #if CONTROL
@@ -82,16 +99,7 @@ void dsp_process(server dsp_if i_dsp, server dsp_ctrl_if i_dsp_ctrl[numDspCtrlIn
     int err;
 
     /* Initialize config structures to viable default values */
-    il_voice_get_default_cfg(ilv_cfg, ilv_rtcfg);   
-
-    /* Setup parameters in config structure */
-    ilv_rtcfg.agc_on = 1;
-    ilv_rtcfg.aec_on = 1;
-    ilv_rtcfg.rvb_on = 1;
-    ilv_rtcfg.ns_on = 1;
-    ilv_rtcfg.bypass_on = 0;
-    ilv_rtcfg.bf_on = 1;
-    ilv_rtcfg.mic_shift = 2;
+    il_voice_get_default_cfg_xmos(ilv_cfg, ilv_rtcfg);   
     
     /* Initialize XSVSM block */
     err = il_voice_init(ilv_cfg, ilv_rtcfg);
