@@ -5,7 +5,7 @@ sw_usb_audio Change Log
 ------
 
   * CHANGE:    Feedback endpoint forcefully enabled in UAC1 build configs of
-    app_usb_aud_mic array (works around Windows issue)
+    app_usb_aud_mic array (workaround for Windows issue)
   * CHANGE:    XVSM processing has AEC enabled by default.
   * CHANGE:    Default gain increased for processed microphone data
 
