@@ -89,6 +89,7 @@ int cntrlAudioProcess(il_voice_rtcfg_t &ilv_rtcfg, il_voice_cfg_t &ilv_cfg,  il_
         param = argv[2];
         if ((param >= MIC_GAIN_MIN) && (param <= MIC_GAIN_MAX)) {
           il_voice_update_mic_gain(param);
+          ilv_cfg.mic_gain_dB=param;
           DBG(printstr("cntrlAudioProcess:: il_voice_update_mic_gain : "); printintln(param);)
         }
         else {              // Invalid parameter
@@ -99,6 +100,7 @@ int cntrlAudioProcess(il_voice_rtcfg_t &ilv_rtcfg, il_voice_cfg_t &ilv_cfg,  il_
         param = argv[2];
         if ((param >= SPK_GAIN_MIN) && (param <= SPK_GAIN_MAX)) {
           il_voice_update_spk_gain(param);
+          ilv_cfg.spk_input_gain_dB=param;
           DBG(printstr("cntrlAudioProcess:: il_voice_update_spk_gain : "); printintln(param);)
         }
         else {              // Invalid parameter
