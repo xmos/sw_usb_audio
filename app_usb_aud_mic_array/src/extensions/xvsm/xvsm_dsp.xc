@@ -27,8 +27,14 @@ unsafe
 /* sampsFromUsbToAudio: The sample frame the device has recived from the host and is going to play to the output audio interfaces */
 /* sampsFromAudioToUsb: The sample frame that was received from the audio interfaces and that the device is going to send to the host */
 #pragma unsafe arrays
-void UserBufferManagement(unsigned sampsFromUsbToAudio[], unsigned sampsFromAudioToUsb[], client dsp_if i_dsp)
+void UserBufferManagement(unsigned sampsFromUsbToAudio[], unsigned sampsFromAudioToUsb[], client audManage_if i_audMan)
 {
+    int dspBuffer_in_adc2[2];
+    int dspBuffer_in_usb2[1]; // TODO rename
+    int dspBuffer_out_usb2[1]; // TODO rename
+    int dspBuffer_out_dac2[1]; // TODO rename
+
+#if 0
     static unsigned dspSampleCount = 0;
     static unsigned dspBufferNo = 0;
     
@@ -59,7 +65,57 @@ void UserBufferManagement(unsigned sampsFromUsbToAudio[], unsigned sampsFromAudi
         dspSampleCount = 0;
         dspBufferNo = 1 - dspBufferNo;
     }
+#else
+    dspBuffer_in_adc2[0] = sampsFromAudioToUsb[PDM_MIC_INDEX];
+    dspBuffer_in_adc2[1] = sampsFromAudioToUsb[PDM_MIC_INDEX+1];
+    dspBuffer_in_usb2[0] = sampsFromUsbToAudio[0];
+    
+    i_audMan.transfer_samples(dspBuffer_in_adc2, dspBuffer_in_usb2, dspBuffer_out_usb2, dspBuffer_out_dac2);
+   
+    /* Read out of DSP buffer */
+    sampsFromAudioToUsb[0] = dspBuffer_out_usb2[0];
+    sampsFromAudioToUsb[1] = dspBuffer_out_usb2[0];
+#endif
+
 } 
+
+
+void dsp_buff(server audManage_if i_audMan, client dsp_if i_dsp)
+{
+    unsigned dspBufferNo = 0;
+    unsigned dspSampleCount = 0;
+    while(1)
+    {
+        select
+        {
+            case i_audMan.transfer_samples(int in_mic_buf[], int in_spk_buf[], int out_mic_buf[], int out_spk_buf[]):
+                 
+                /* Add samples to DSP buffers */
+                dspBuffer_in_adc[dspBufferNo][(dspSampleCount * ILV_NCHAN_MIC_IN)+1] = in_mic_buf[0];
+                dspBuffer_in_adc[dspBufferNo][(dspSampleCount * ILV_NCHAN_MIC_IN)] = in_mic_buf[1];
+                dspBuffer_in_usb[dspBufferNo][dspSampleCount] = in_spk_buf[0];
+
+                /* Read out of DSP buffer */
+                out_mic_buf[0] = dspBuffer_out_usb[dspBufferNo][dspSampleCount];
+                out_mic_buf[1] = dspBuffer_out_usb[dspBufferNo][dspSampleCount];
+
+                dspSampleCount++; 
+                if(dspSampleCount >= ILV_FRAMESIZE)
+                {
+                    dspSampleCount = 0;
+                    dspBufferNo = 1 - dspBufferNo;  
+                    
+                    i_dsp.transfer_buffers((int * unsafe) dspBuffer_in_adc[dspBufferNo], (int * unsafe) dspBuffer_in_usb[dspBufferNo], 
+                                    (int * unsafe) dspBuffer_out_usb[dspBufferNo], (int * unsafe) dspBuffer_out_dac[dspBufferNo]);
+                }
+             
+                break; 
+        }
+    }
+}
+
+
+
 
 #pragma unsafe arrays
 void dsp_process(server dsp_if i_dsp, server dsp_ctrl_if i_dsp_ctrl[numDspCtrlInts], unsigned numDspCtrlInts)
@@ -67,7 +123,7 @@ void dsp_process(server dsp_if i_dsp, server dsp_ctrl_if i_dsp_ctrl[numDspCtrlIn
     il_voice_cfg_t          ilv_cfg;
     il_voice_rtcfg_t        ilv_rtcfg;
     il_voice_diagnostics_t  ilv_diag;
-
+    
     int * unsafe in_mic = NULL, * unsafe in_spk = NULL;
     int * unsafe out_mic = NULL, * unsafe out_spk = NULL;
     
@@ -121,7 +177,7 @@ void dsp_process(server dsp_if i_dsp, server dsp_ctrl_if i_dsp_ctrl[numDspCtrlIn
                     handled = 1;
                     
                     break;
-            
+           
                 /* Client wants a processed block. Also gives us input samples */
                 case !processingBlock => i_dsp.transfer_buffers(int * unsafe in_mic_buf, int * unsafe in_spk_buf,
                                                    int * unsafe out_mic_buf, int * unsafe out_spk_buf):
