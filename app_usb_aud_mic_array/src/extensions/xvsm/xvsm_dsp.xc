@@ -101,7 +101,7 @@ void dsp_buff(server audManage_if i_audMan, client dsp_if i_dsp)
 
                 dspSampleCount++; 
                 if(dspSampleCount >= ILV_FRAMESIZE)
-                {
+                unsafe{
                     dspSampleCount = 0;
                     dspBufferNo = 1 - dspBufferNo;  
                     
