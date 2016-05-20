@@ -95,7 +95,6 @@ void dsp_control(client dsp_ctrl_if i_dsp_ctrl)
     timer t;
     unsigned time;
     int debouncing = 0;
-    int loopback = 0;
 
     while(1)
     {
@@ -124,8 +123,8 @@ void dsp_control(client dsp_ctrl_if i_dsp_ctrl)
                     case 0xD: /* Button B */
                     unsafe
                     { 
-                        loopback = !loopback;
-                        if(loopback)
+                        *loopback = !(*loopback);
+                        if(*loopback)
                             printstr("Loopback enabled\n");
                         else
                             printstr("Loopback disabled\n");
@@ -187,9 +186,13 @@ void UserBufferManagement(unsigned sampsFromUsbToAudio[], unsigned sampsFromAudi
     
     i_audMan.transfer_samples(dspBuffer_in_adc_local, dspBuffer_in_usb_local, dspBuffer_out_usb_local, dspBuffer_out_dac_local);
    
-    /* Read out of DSP buffer */
+    /* Read out of DSP buffer - samples for USB */
     sampsFromAudioToUsb[0] = dspBuffer_out_usb_local[0];
     sampsFromAudioToUsb[1] = dspBuffer_out_usb_local[0];
+
+    /* Read out of DSP buffer - samples for I2S */
+    sampsFromUsbToAudio[0] = dspBuffer_out_dac_local[0];
+    sampsFromUsbToAudio[1] = dspBuffer_out_dac_local[0];
 } 
 
 /* TODO This task could be combined */
@@ -210,7 +213,19 @@ void dsp_buff(server audManage_if i_audMan, client dsp_if i_dsp)
 
                 /* Read out of DSP buffer */
                 out_mic_buf[0] = dspBuffer_out_usb[dspBufferNo][dspSampleCount];
-                out_mic_buf[1] = dspBuffer_out_usb[dspBufferNo][dspSampleCount];
+
+                unsafe
+                {
+                    if(*loopback)
+                    {
+                        out_spk_buf[0] = dspBuffer_out_usb[dspBufferNo][dspSampleCount]; 
+                    }
+                    else
+                    {
+                        out_spk_buf[0] = dspBuffer_out_dac[dspBufferNo][dspSampleCount]; 
+                    }
+                }   
+
 
                 dspSampleCount++; 
                 if(dspSampleCount >= ILV_FRAMESIZE)
@@ -252,6 +267,9 @@ void dsp_process(server dsp_if i_dsp, server dsp_ctrl_if i_dsp_ctrl[numDspCtrlIn
 
     /* Initialize config structures to viable default values */
     il_voice_get_default_cfg(ilv_cfg, ilv_rtcfg);   
+
+    ilv_cfg.spk_eq = NULL;
+    ilv_cfg.mic_eq = NULL;
 
     /* Setup parameters in config structure */
     ilv_rtcfg.agc_on = 1;
@@ -309,7 +327,6 @@ void dsp_process(server dsp_if i_dsp, server dsp_ctrl_if i_dsp_ctrl[numDspCtrlIn
                     if(!(*procBypassed))
                     {
                         il_voice_process((int *) in_mic, (int *) in_spk, (int *) out_mic, (int *) out_spk);
-                            
                         il_voice_get_diagnostics(ilv_diag);
 
                         for(int i = 1; i < 7; i++)
