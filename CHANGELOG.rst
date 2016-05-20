@@ -1,6 +1,11 @@
 sw_usb_audio Change Log
 =======================
 
+6.16.2
+------
+
+  * CHANGE:    Modifications to XVSM processing integration
+
 6.16.1
 ------
 
