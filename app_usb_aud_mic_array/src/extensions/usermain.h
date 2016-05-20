@@ -19,18 +19,26 @@ void genclock();
 // TODO User NUM_DSP_CTRL_INTS
 
 #ifndef XVSM 
-#define USER_MAIN_CORES \
+    #define USER_MAIN_CORES \
             on tile[1] : genclock(); \
             on tile[PDM_TILE].core[0]: user_pdm_process(i_mic_process); 
 #else
 
-#define USER_MAIN_CORES \
+    #ifdef MIC_PROCESSING_USE_INTERFACE
+        #define USER_MAIN_CORES \
             on tile[1] : genclock(); \
-            on tile[PDM_TILE] : dsp_process(i_dsp, i_dsp_ctrl, 1); \
-            on tile[PDM_TILE] : dsp_buff(i_audMan, i_dsp); \
+            on tile[PDM_TILE]: dsp_process(i_dsp, i_dsp_ctrl, 1); \
+            on tile[PDM_TILE]: dsp_buff(i_audMan, i_dsp); \
             on tile[PDM_TILE]: dsp_control(i_dsp_ctrl[0]); \
             on tile[PDM_TILE].core[0]: user_pdm_process(i_mic_process); 
-
+    #else
+        #define USER_MAIN_CORES \
+            on tile[1] : genclock(); \
+            on tile[PDM_TILE]: dsp_process(i_dsp, i_dsp_ctrl, 1); \
+            on tile[PDM_TILE]: dsp_buff(i_audMan, i_dsp); \
+            on tile[PDM_TILE]: dsp_control(i_dsp_ctrl[0]); 
+    #endif
 #endif
+
 #endif
 #endif
