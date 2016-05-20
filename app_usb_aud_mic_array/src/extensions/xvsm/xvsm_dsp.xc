@@ -12,6 +12,20 @@
 #include "xvsm_support.h"
 #include "usr_dsp_cmd.h"
 
+/** Structure to describe the LED ports*/
+typedef struct {
+    out port p_led0to7;     /**<LED 0 to 7. */
+    out port p_led8;        /**<LED 8. */
+    out port p_led9;        /**<LED 9. */
+    out port p_led10to12;   /**<LED 10 to 12. */
+    out port p_leds_oen;    /**<LED Output enable (active low). */
+} led_ports_t;
+
+#define LED_COUNT 13
+#define LED_PORTS     {PORT_LED0_TO_7, PORT_LED8, PORT_LED9, PORT_LED10_TO_12, PORT_LED_OEN}
+
+on tile[0] : led_ports_t leds      = LED_PORTS;
+
 /* DSP data double buffered */
 int dspBuffer_in_adc[2][ILV_FRAMESIZE * ILV_NCHAN_MIC_IN]; 
 int dspBuffer_in_usb[2][ILV_FRAMESIZE]; 
@@ -19,10 +33,59 @@ int dspBuffer_out_usb[2][ILV_FRAMESIZE];
 int dspBuffer_out_dac[2][ILV_FRAMESIZE]; 
 
 unsigned g_loopback = 0;
+    
+unsafe
+{
+   extern unsigned char * unsafe micNum;
+}
+
 unsafe
 {
     unsigned * unsafe loopback = &g_loopback;
 }
+
+void set_led(unsigned ledNo, unsigned ledVal)
+{
+    static int ledVals[LED_COUNT] = {0};
+   
+    ledVals[ledNo] = ledVal;
+
+    unsigned d = 0;
+    for(int i = 0; i < 8; i++)
+    {
+        d |= ((ledVals[i] == 0) << i);
+    }   
+    leds.p_led0to7 <: d;
+    leds.p_led8 <: (ledVals[8] == 0);
+    leds.p_led9 <: (ledVals[9] == 0);
+ 
+    d = 0;
+    for(int i = 10; i < 13; i++)
+    {
+        d |= ((ledVals[i] == 0) << (i-10));
+    }         
+    leds.p_led10to12 <: d;
+}
+
+void SetMicLeds(int micNum, int val)
+{
+    int ledNum1 = micNum*2-2;
+    int ledNum2 = micNum*2-1;
+
+    if(ledNum2 < 0)
+        ledNum2 = 11;
+    
+    if(ledNum1 < 0)
+        ledNum1 = 11;
+
+    set_led(ledNum1, val);
+    set_led(ledNum2, val);
+}
+
+
+
+
+
 
 /* sampsFromUsbToAudio: The sample frame the device has recived from the host and is going to play to the output audio interfaces */
 /* sampsFromAudioToUsb: The sample frame that was received from the audio interfaces and that the device is going to send to the host */
@@ -34,38 +97,6 @@ void UserBufferManagement(unsigned sampsFromUsbToAudio[], unsigned sampsFromAudi
     int dspBuffer_out_usb2[1]; // TODO rename
     int dspBuffer_out_dac2[1]; // TODO rename
 
-#if 0
-    static unsigned dspSampleCount = 0;
-    static unsigned dspBufferNo = 0;
-    
-    /* Add samples to DSP buffers */
-    dspBuffer_in_adc[dspBufferNo][(dspSampleCount * ILV_NCHAN_MIC_IN)+1] = sampsFromAudioToUsb[PDM_MIC_INDEX];
-    dspBuffer_in_adc[dspBufferNo][(dspSampleCount * ILV_NCHAN_MIC_IN)] = sampsFromAudioToUsb[PDM_MIC_INDEX+1];
-    dspBuffer_in_usb[dspBufferNo][dspSampleCount] = sampsFromUsbToAudio[0];
- 
-    unsafe
-    { 
-        if(*loopback)
-        {
-            /* Read out of DSP buffer */
-            sampsFromUsbToAudio[0] = dspBuffer_out_usb[dspBufferNo][dspSampleCount];
-            sampsFromUsbToAudio[1] = dspBuffer_out_usb[dspBufferNo][dspSampleCount];
-        }
-    }
-    
-    /* Read out of DSP buffer */
-    sampsFromAudioToUsb[0] = dspBuffer_out_usb[dspBufferNo][dspSampleCount];
-    sampsFromAudioToUsb[1] = dspBuffer_out_usb[dspBufferNo][dspSampleCount];
-
-    dspSampleCount++; 
-   if(dspSampleCount >= ILV_FRAMESIZE)
-    unsafe{
-        i_dsp.transfer_buffers((int * unsafe) dspBuffer_in_adc[dspBufferNo], (int * unsafe) dspBuffer_in_usb[dspBufferNo], 
-                                    (int * unsafe) dspBuffer_out_usb[dspBufferNo], (int * unsafe) dspBuffer_out_dac[dspBufferNo]);
-        dspSampleCount = 0;
-        dspBufferNo = 1 - dspBufferNo;
-    }
-#else
     dspBuffer_in_adc2[0] = sampsFromAudioToUsb[PDM_MIC_INDEX];
     dspBuffer_in_adc2[1] = sampsFromAudioToUsb[PDM_MIC_INDEX+1];
     dspBuffer_in_usb2[0] = sampsFromUsbToAudio[0];
@@ -75,11 +106,9 @@ void UserBufferManagement(unsigned sampsFromUsbToAudio[], unsigned sampsFromAudi
     /* Read out of DSP buffer */
     sampsFromAudioToUsb[0] = dspBuffer_out_usb2[0];
     sampsFromAudioToUsb[1] = dspBuffer_out_usb2[0];
-#endif
-
 } 
 
-
+/* TODO This task could be combined */
 void dsp_buff(server audManage_if i_audMan, client dsp_if i_dsp)
 {
     unsigned dspBufferNo = 0;
@@ -114,9 +143,6 @@ void dsp_buff(server audManage_if i_audMan, client dsp_if i_dsp)
     }
 }
 
-
-
-
 #pragma unsafe arrays
 void dsp_process(server dsp_if i_dsp, server dsp_ctrl_if i_dsp_ctrl[numDspCtrlInts], unsigned numDspCtrlInts)
 {
@@ -130,6 +156,16 @@ void dsp_process(server dsp_if i_dsp, server dsp_ctrl_if i_dsp_ctrl[numDspCtrlIn
     int processingBlock = 0;
     int fullBypass = 0;
     int err;
+
+    /* Turn center LED on */
+    for(int i = 0; i < 12; i++)
+        set_led(i, 0);
+
+    set_led(12, 255);
+    
+    /* Enable LED's */
+    leds.p_leds_oen <: 1;
+    leds.p_leds_oen <: 0;
 
     /* Initialize config structures to viable default values */
     il_voice_get_default_cfg(ilv_cfg, ilv_rtcfg);   
@@ -198,6 +234,15 @@ void dsp_process(server dsp_if i_dsp, server dsp_ctrl_if i_dsp_ctrl[numDspCtrlIn
                         il_voice_process((int *) in_mic, (int *) in_spk, (int *) out_mic, (int *) out_spk);
                             
                         il_voice_get_diagnostics(ilv_diag);
+
+                        for(int i = 1; i < 7; i++)
+                        unsafe
+                        {
+                            if(i == *micNum) 
+                                SetMicLeds(i, 255); 
+                            else
+                                SetMicLeds(i, 0); 
+                        }
                     }
                     else
                     {
