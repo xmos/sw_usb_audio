@@ -5,6 +5,7 @@ sw_usb_audio Change Log
 ------
 
   * CHANGE:    Modifications to XVSM processing integration
+  * CHANGE:    AEC and NS enabled
 
 6.16.1
 ------
