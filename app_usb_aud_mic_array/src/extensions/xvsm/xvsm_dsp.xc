@@ -7,7 +7,7 @@
 #include <xclib.h>
 #include <stdint.h>
 #include "devicedefines.h"
-#include "xua_dsp.h"
+#include "xvsm_dsp.h"
 #include "print.h"
 #include "xvsm_support.h"
 #include "usr_dsp_cmd.h"
@@ -26,21 +26,26 @@ typedef struct {
 
 on tile[0] : led_ports_t leds      = LED_PORTS;
 
+#define BUTTON_PORTS  PORT_BUT_A_TO_D
+on tile[0] : in port p_buttons     = BUTTON_PORTS;
+
 /* DSP data double buffered */
 int dspBuffer_in_adc[2][ILV_FRAMESIZE * ILV_NCHAN_MIC_IN]; 
 int dspBuffer_in_usb[2][ILV_FRAMESIZE]; 
 int dspBuffer_out_usb[2][ILV_FRAMESIZE]; 
 int dspBuffer_out_dac[2][ILV_FRAMESIZE]; 
 
+/* Global DSP state/settings */
+unsigned g_doDoa = 0;
+unsigned char g_micNum = 1;
+unsigned g_procBypassed = 0;
 unsigned g_loopback = 0;
-    
-unsafe
-{
-   extern unsigned char * unsafe micNum;
-}
 
 unsafe
 {
+    unsigned char * unsafe micNum = &g_micNum;
+    unsigned * unsafe doDoa = &g_doDoa;
+    unsigned * unsafe procBypassed = &g_procBypassed;
     unsigned * unsafe loopback = &g_loopback;
 }
 
@@ -82,30 +87,109 @@ void SetMicLeds(int micNum, int val)
     set_led(ledNum2, val);
 }
 
+[[combinable]]
+void dsp_control(client dsp_ctrl_if i_dsp_ctrl)
+{
+    int buttonVal;
+    p_buttons :> buttonVal;
+    timer t;
+    unsigned time;
+    int debouncing = 0;
+    int loopback = 0;
 
+    while(1)
+    {
+        select
+        {
+            case !debouncing => p_buttons when pinsneq(buttonVal) :> buttonVal:
+            {
+                t :> time;
+                time += 1000000;
+                debouncing = 1;
+                switch(buttonVal)
+                {
+                    case 0xE: /* Button A */
+                    unsafe
+                    { 
+                        *procBypassed = !(*procBypassed);
+
+                        if(*procBypassed)
+                            printstr("Processing bypassed\n");
+                        else
+                            printstr("Processing active\n");
+                        
+                        break;
+                    }  
+
+                    case 0xD: /* Button B */
+                    unsafe
+                    { 
+                        loopback = !loopback;
+                        if(loopback)
+                            printstr("Loopback enabled\n");
+                        else
+                            printstr("Loopback disabled\n");
+                        break;
+                    }
+
+                    case 0xB: /* Button C */
+                    unsafe
+                    { 
+                        if(!*procBypassed)
+                        {    /* Use tmp variable to avoid race */
+                            unsigned char * unsafe micNum = &g_micNum;
+
+                            unsigned char tmp = (*micNum)+1;
+                            if(tmp == 7)
+                                tmp = 1;
+                            *micNum = tmp;
+                        }
+                        break;
+                    }
+
+                    case 0x7: /* Button D */
+                    unsafe
+                    {
+                        *doDoa = !(*doDoa);
+                        printstr("DOA status: ");printintln(*doDoa);
+                        break;
+                    }
+                    default:
+                        break;
+                }
+                break;
+            }
+            case debouncing => t  when timerafter(time) :> int _:
+                debouncing = 0;
+                break;
+
+        }
+    }
+}
 
 
 
 
 /* sampsFromUsbToAudio: The sample frame the device has recived from the host and is going to play to the output audio interfaces */
 /* sampsFromAudioToUsb: The sample frame that was received from the audio interfaces and that the device is going to send to the host */
+/* Note: this is called from audio_io() */
 #pragma unsafe arrays
 void UserBufferManagement(unsigned sampsFromUsbToAudio[], unsigned sampsFromAudioToUsb[], client audManage_if i_audMan)
 {
-    int dspBuffer_in_adc2[2];
-    int dspBuffer_in_usb2[1]; // TODO rename
-    int dspBuffer_out_usb2[1]; // TODO rename
-    int dspBuffer_out_dac2[1]; // TODO rename
+    int dspBuffer_in_adc_local[2];
+    int dspBuffer_in_usb_local[1]; 
+    int dspBuffer_out_usb_local[1]; 
+    int dspBuffer_out_dac_local[1];
 
-    dspBuffer_in_adc2[0] = sampsFromAudioToUsb[PDM_MIC_INDEX];
-    dspBuffer_in_adc2[1] = sampsFromAudioToUsb[PDM_MIC_INDEX+1];
-    dspBuffer_in_usb2[0] = sampsFromUsbToAudio[0];
+    dspBuffer_in_adc_local[0] = sampsFromAudioToUsb[PDM_MIC_INDEX];
+    dspBuffer_in_adc_local[1] = sampsFromAudioToUsb[PDM_MIC_INDEX+1];
+    dspBuffer_in_usb_local[0] = sampsFromUsbToAudio[0];
     
-    i_audMan.transfer_samples(dspBuffer_in_adc2, dspBuffer_in_usb2, dspBuffer_out_usb2, dspBuffer_out_dac2);
+    i_audMan.transfer_samples(dspBuffer_in_adc_local, dspBuffer_in_usb_local, dspBuffer_out_usb_local, dspBuffer_out_dac_local);
    
     /* Read out of DSP buffer */
-    sampsFromAudioToUsb[0] = dspBuffer_out_usb2[0];
-    sampsFromAudioToUsb[1] = dspBuffer_out_usb2[0];
+    sampsFromAudioToUsb[0] = dspBuffer_out_usb_local[0];
+    sampsFromAudioToUsb[1] = dspBuffer_out_usb_local[0];
 } 
 
 /* TODO This task could be combined */
@@ -131,13 +215,13 @@ void dsp_buff(server audManage_if i_audMan, client dsp_if i_dsp)
                 dspSampleCount++; 
                 if(dspSampleCount >= ILV_FRAMESIZE)
                 unsafe{
-                    dspSampleCount = 0;
-                    dspBufferNo = 1 - dspBufferNo;  
                     
                     i_dsp.transfer_buffers((int * unsafe) dspBuffer_in_adc[dspBufferNo], (int * unsafe) dspBuffer_in_usb[dspBufferNo], 
                                     (int * unsafe) dspBuffer_out_usb[dspBufferNo], (int * unsafe) dspBuffer_out_dac[dspBufferNo]);
+               
+                    dspSampleCount = 0;
+                    dspBufferNo = 1 - dspBufferNo;  
                 }
-             
                 break; 
         }
     }
@@ -154,7 +238,6 @@ void dsp_process(server dsp_if i_dsp, server dsp_ctrl_if i_dsp_ctrl[numDspCtrlIn
     int * unsafe out_mic = NULL, * unsafe out_spk = NULL;
     
     int processingBlock = 0;
-    int fullBypass = 0;
     int err;
 
     /* Turn center LED on */
@@ -197,12 +280,6 @@ void dsp_process(server dsp_if i_dsp, server dsp_ctrl_if i_dsp_ctrl[numDspCtrlIn
                             base = (char *) &ilv_rtcfg;
                             *(base+offset) = value;
                             break;
-                        case CMD_DSP_FULLBYPASS:
-                            fullBypass = value;
-                            break;
-                        case CMD_DSP_LOOPBACK:
-                            *loopback = value;
-                            break;
                         default:
                             break;
                     }
@@ -229,14 +306,13 @@ void dsp_process(server dsp_if i_dsp, server dsp_ctrl_if i_dsp_ctrl[numDspCtrlIn
 
                     processingBlock = 0;
             
-                    if(!fullBypass)
+                    if(!(*procBypassed))
                     {
                         il_voice_process((int *) in_mic, (int *) in_spk, (int *) out_mic, (int *) out_spk);
                             
                         il_voice_get_diagnostics(ilv_diag);
 
                         for(int i = 1; i < 7; i++)
-                        unsafe
                         {
                             if(i == *micNum) 
                                 SetMicLeds(i, 255); 
