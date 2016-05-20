@@ -246,6 +246,8 @@ void dsp_process(server dsp_if i_dsp, server dsp_ctrl_if i_dsp_ctrl[numDspCtrlIn
                     }
                     else
                     {
+                        SetMicLeds(*micNum, 0);            
+
                         /* Loopback the blocks without processing */
                         for(int i = 0; i < ILV_FRAMESIZE; i++) 
                         {
