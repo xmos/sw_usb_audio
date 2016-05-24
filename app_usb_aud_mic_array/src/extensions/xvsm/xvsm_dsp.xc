@@ -49,7 +49,7 @@ unsafe
     unsigned * unsafe loopback = &g_loopback;
 }
 
-void set_led(unsigned ledNo, unsigned ledVal)
+void SetLed(unsigned ledNo, unsigned ledVal)
 {
     static int ledVals[LED_COUNT] = {0};
    
@@ -83,8 +83,8 @@ void SetMicLeds(int micNum, int val)
     if(ledNum1 < 0)
         ledNum1 = 11;
 
-    set_led(ledNum1, val);
-    set_led(ledNum2, val);
+    SetLed(ledNum1, val);
+    SetLed(ledNum2, val);
 }
 
 [[combinable]]
@@ -166,9 +166,6 @@ void dsp_control(client dsp_ctrl_if i_dsp_ctrl)
     }
 }
 
-
-
-
 /* sampsFromUsbToAudio: The sample frame the device has recived from the host and is going to play to the output audio interfaces */
 /* sampsFromAudioToUsb: The sample frame that was received from the audio interfaces and that the device is going to send to the host */
 /* Note: this is called from audio_io() */
@@ -242,6 +239,18 @@ void dsp_buff(server audManage_if i_audMan, client dsp_if i_dsp)
     }
 }
 
+
+
+static unsigned g_vadThresh_entry = 2700;
+static unsigned g_vadThresh_cont = 1000;
+static unsigned g_vadTimeout = 50;
+vadState_t g_vadState = VAD_IDLE;
+
+unsafe
+{
+    vadState_t * unsafe vadState = &g_vadState;
+}
+
 #pragma unsafe arrays
 void dsp_process(server dsp_if i_dsp, server dsp_ctrl_if i_dsp_ctrl[numDspCtrlInts], unsigned numDspCtrlInts)
 {
@@ -255,11 +264,13 @@ void dsp_process(server dsp_if i_dsp, server dsp_ctrl_if i_dsp_ctrl[numDspCtrlIn
     int processingBlock = 0;
     int err;
 
+    int vadTimeout = 0;
+
     /* Turn center LED on */
     for(int i = 0; i < 12; i++)
-        set_led(i, 0);
+        SetLed(i, 0);
 
-    set_led(12, 255);
+    SetLed(12, 255);
     
     /* Enable LED's */
     leds.p_leds_oen <: 1;
@@ -328,6 +339,50 @@ void dsp_process(server dsp_if i_dsp, server dsp_ctrl_if i_dsp_ctrl[numDspCtrlIn
                     {
                         il_voice_process((int *) in_mic, (int *) in_spk, (int *) out_mic, (int *) out_spk);
                         il_voice_get_diagnostics(ilv_diag);
+
+                        switch(*vadState)
+                        {
+                            case VAD_IDLE:
+                                
+                                if(ilv_diag.mic_out_vad > g_vadThresh_entry)
+                                {
+                                    *vadState = VAD_INVOICE;
+                                }
+
+                                break;
+
+                            case VAD_INVOICE:
+                                
+                                if(ilv_diag.mic_out_vad > g_vadThresh_cont)
+                                {
+                                    *vadState = VAD_INVOICE;
+                                }
+                                else
+                                {
+                                    *vadState = VAD_TIMEOUT; 
+                                    vadTimeout = g_vadTimeout;
+                                }
+                                break;
+
+                            case VAD_TIMEOUT:
+                                
+                                if(ilv_diag.mic_out_vad > g_vadThresh_cont)
+                                {
+                                    *vadState = VAD_INVOICE;
+                                }
+                                
+                                vadTimeout--;
+
+                                if(vadTimeout == 0)
+                                {
+                                   *vadState = VAD_IDLE; 
+                                }  
+
+                                break;
+
+                        }
+
+                        SetLed(12, *vadState != VAD_IDLE);
 
                         for(int i = 1; i < 7; i++)
                         {

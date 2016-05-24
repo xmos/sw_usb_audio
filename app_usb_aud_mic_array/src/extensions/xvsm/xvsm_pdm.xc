@@ -15,6 +15,7 @@ unsafe
 {
     extern unsigned char * unsafe micNum;
     extern unsigned * unsafe doDoa;
+    extern vadState_t * unsafe vadState;
 }
 
 struct lib_voice_doa doaState;
@@ -54,7 +55,7 @@ void user_pdm_process(mic_array_frame_time_domain * unsafe audio, int output[])
                 for(int i = 0; i < 8; i++) 
                     output[i] = audio->data[i][0];
                  
-                if(*doDoa)
+                if(*doDoa && (*vadState == VAD_IDLE))
                 {   
                     int doaDir = lib_voice_doa_naive_incorporate(doaState, output[1], output[2], output[3], output[4], output[5], output[6]);
 
