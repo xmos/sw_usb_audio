@@ -4,8 +4,9 @@ sw_usb_audio Change Log
 6.16.2
 ------
 
-  * CHANGE:    Modifications to XVSM processing integration
-  * CHANGE:    AEC and NS enabled
+  * CHANGE:    app_usb_aud_mic array: Modifications to XVSM processing integration
+  * CHANGE:    app_usb_aud_mic_array: AEC and NS enabled by default 
+  * CHANGE:    app_usb_aud_mic_array: XVSM VAD output used when DOA enabled
 
 6.16.1
 ------
