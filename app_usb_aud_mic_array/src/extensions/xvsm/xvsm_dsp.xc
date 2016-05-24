@@ -241,7 +241,7 @@ void dsp_buff(server audManage_if i_audMan, client dsp_if i_dsp)
 
 
 
-static unsigned g_vadThresh_entry = 2700;
+static unsigned g_vadThresh_entry = 2500;
 static unsigned g_vadThresh_cont = 1000;
 static unsigned g_vadTimeout = 50;
 vadState_t g_vadState = VAD_IDLE;
