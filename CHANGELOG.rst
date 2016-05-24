@@ -1,7 +1,7 @@
 sw_usb_audio Change Log
 =======================
 
-6.16.2
+6.17.0
 ------
 
   * CHANGE:    app_usb_aud_mic array: Modifications to XVSM processing
