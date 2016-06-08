@@ -166,6 +166,7 @@ void dsp_control(client dsp_ctrl_if i_dsp_ctrl)
     }
 }
 
+
 /* sampsFromUsbToAudio: The sample frame the device has recived from the host and is going to play to the output audio interfaces */
 /* sampsFromAudioToUsb: The sample frame that was received from the audio interfaces and that the device is going to send to the host */
 /* Note: this is called from audio_io() */
@@ -177,8 +178,26 @@ void UserBufferManagement(unsigned sampsFromUsbToAudio[], unsigned sampsFromAudi
     int dspBuffer_out_usb_local[1]; 
     int dspBuffer_out_dac_local[1];
 
-    dspBuffer_in_adc_local[0] = sampsFromAudioToUsb[PDM_MIC_INDEX];
-    dspBuffer_in_adc_local[1] = sampsFromAudioToUsb[PDM_MIC_INDEX+1];
+#if 0
+    static int testsamplecount = 0;
+    int testsamples[] = {0x00000000, 0xf0000000,
+    0x0b504f33, 0xf4afb0cd,
+    0x10000000, 0x00000000,
+    0x0b504f33, 0x0b504f33,
+    0x00000000, 0x10000000,
+    0xf4afb0cd, 0x0b504f33,
+    0xf0000000, 0x00000000,
+    0xf4afb0cd, 0xf4afb0cd};
+
+    dspBuffer_in_adc_local[0] = testsamples[testsamplecount+0];
+    dspBuffer_in_adc_local[1] = testsamples[testsamplecount+1];
+    testsamplecount+=2;
+    if(testsamplecount >= 16)
+        testsamplecount = 0;
+    
+#endif
+    dspBuffer_in_adc_local[0] = sampsFromAudioToUsb[PDM_MIC_INDEX]<<4;
+    dspBuffer_in_adc_local[1] = sampsFromAudioToUsb[PDM_MIC_INDEX+1]<<4;
     dspBuffer_in_usb_local[0] = sampsFromUsbToAudio[0];
     
     i_audMan.transfer_samples(dspBuffer_in_adc_local, dspBuffer_in_usb_local, dspBuffer_out_usb_local, dspBuffer_out_dac_local);
@@ -240,8 +259,8 @@ void dsp_buff(server audManage_if i_audMan, client dsp_if i_dsp)
 }
 
 
-
-static unsigned g_vadThresh_entry = 2500;
+static unsigned g_vadThresh_detectTime = 2;
+static unsigned g_vadThresh_entry = 6000;
 static unsigned g_vadThresh_cont = 1000;
 static unsigned g_vadTimeout = 50;
 vadState_t g_vadState = VAD_IDLE;
@@ -265,6 +284,7 @@ void dsp_process(server dsp_if i_dsp, server dsp_ctrl_if i_dsp_ctrl[numDspCtrlIn
     int err;
 
     int vadTimeout = 0;
+    int vadDetectTime = 0;
 
     /* Turn center LED on */
     for(int i = 0; i < 12; i++)
@@ -289,7 +309,7 @@ void dsp_process(server dsp_if i_dsp, server dsp_ctrl_if i_dsp_ctrl[numDspCtrlIn
     ilv_rtcfg.ns_on = 1;
     ilv_rtcfg.bypass_on = 0;
     ilv_rtcfg.bf_on = 1;
-    ilv_rtcfg.mic_shift = 2; 
+    ilv_rtcfg.mic_shift = 1; 
     
     /* Initialize XSVSM block */
     err = il_voice_init(ilv_cfg, ilv_rtcfg);
@@ -346,9 +366,31 @@ void dsp_process(server dsp_if i_dsp, server dsp_ctrl_if i_dsp_ctrl[numDspCtrlIn
                                 
                                 if(ilv_diag.mic_out_vad > g_vadThresh_entry)
                                 {
-                                    *vadState = VAD_INVOICE;
+                                    *vadState = VAD_DETECT;
+                                    vadDetectTime = g_vadThresh_detectTime;
                                 }
 
+                                break;
+
+                            
+                            case VAD_DETECT:
+
+                                if(ilv_diag.mic_out_vad > g_vadThresh_entry)
+                                {
+                                    if(vadDetectTime == 0)
+                                    {
+                                        *vadState = VAD_INVOICE;
+                                    } 
+                                    else 
+                                    {
+                                        vadDetectTime--;
+                                    }
+                                }
+                                else
+                                {
+                                    *vadState = VAD_IDLE;
+                                    vadTimeout = g_vadTimeout;
+                                }
                                 break;
 
                             case VAD_INVOICE:
@@ -382,7 +424,7 @@ void dsp_process(server dsp_if i_dsp, server dsp_ctrl_if i_dsp_ctrl[numDspCtrlIn
 
                         }
 
-                        SetLed(12, *vadState != VAD_IDLE);
+                        SetLed(12, (*vadState == VAD_INVOICE) || (*vadState == VAD_TIMEOUT));
 
                         for(int i = 1; i < 7; i++)
                         {
