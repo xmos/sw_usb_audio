@@ -6,11 +6,19 @@
 #include <string.h>
 #include <xclib.h>
 #include <stdint.h>
+
 #include "devicedefines.h"
 #include "xvsm_dsp.h"
 #include "print.h"
 #include "xvsm_support.h"
-#include "usr_dsp_cmd.h"
+#include "usr_dsp_cmd.h"  //TODO required?
+#include "control.h"
+
+
+/* TODO these need to be derived from some place.. */
+#define CONTROL_ENTITY_XVSM           0 //Index of control entity
+#define CONTROL_ENTITY_DOA            1 //Index of control entity
+
 
 /** Structure to describe the LED ports*/
 typedef struct {
@@ -88,7 +96,7 @@ void SetMicLeds(int micNum, int val)
 }
 
 [[combinable]]
-void dsp_control(client dsp_ctrl_if i_dsp_ctrl)
+void dsp_control(/*client dsp_ctrl_if i_dsp_ctrl*/)
 {
     int buttonVal;
     p_buttons :> buttonVal;
@@ -270,8 +278,25 @@ unsafe
     vadState_t * unsafe vadState = &g_vadState;
 }
 
+
+/* TODO this needs to be called on reset */
+void il_voice_get_default_cfg_xmos(il_voice_cfg_t &ilv_cfg, il_voice_rtcfg_t &ilv_rtcfg)
+{
+    /* Initialize config structures to viable default values */
+    il_voice_get_default_cfg(ilv_cfg, ilv_rtcfg);   
+
+    /* Setup parameters in config structure */
+    ilv_rtcfg.agc_on = 1;
+    ilv_rtcfg.aec_on = 1;
+    ilv_rtcfg.rvb_on = 1;
+    ilv_rtcfg.ns_on = 1;
+    ilv_rtcfg.bypass_on = 0;
+    ilv_rtcfg.bf_on = 1;
+    ilv_rtcfg.mic_shift = 2;
+}
+
 #pragma unsafe arrays
-void dsp_process(server dsp_if i_dsp, server dsp_ctrl_if i_dsp_ctrl[numDspCtrlInts], unsigned numDspCtrlInts)
+void dsp_process(server dsp_if i_dsp, server interface control i_control[num_modules], const size_t num_modules)
 {
     il_voice_cfg_t          ilv_cfg;
     il_voice_rtcfg_t        ilv_rtcfg;
@@ -297,20 +322,11 @@ void dsp_process(server dsp_if i_dsp, server dsp_ctrl_if i_dsp_ctrl[numDspCtrlIn
     leds.p_leds_oen <: 0;
 
     /* Initialize config structures to viable default values */
-    il_voice_get_default_cfg(ilv_cfg, ilv_rtcfg);   
+    il_voice_get_default_cfg_xmos(ilv_cfg, ilv_rtcfg);   
 
     ilv_cfg.spk_eq = NULL;
     ilv_cfg.mic_eq = NULL;
 
-    /* Setup parameters in config structure */
-    ilv_rtcfg.agc_on = 1;
-    ilv_rtcfg.aec_on = 1;
-    ilv_rtcfg.rvb_on = 1;
-    ilv_rtcfg.ns_on = 1;
-    ilv_rtcfg.bypass_on = 0;
-    ilv_rtcfg.bf_on = 1;
-    ilv_rtcfg.mic_shift = 1; 
-    
     /* Initialize XSVSM block */
     err = il_voice_init(ilv_cfg, ilv_rtcfg);
 
@@ -320,6 +336,7 @@ void dsp_process(server dsp_if i_dsp, server dsp_ctrl_if i_dsp_ctrl[numDspCtrlIn
         {
             select
             {
+#if 0
                 case i_dsp_ctrl[int ctrlInt].setControl(unsigned cmd, unsigned offset, unsigned value) -> int handled:
 
                     switch(cmd)
@@ -339,7 +356,105 @@ void dsp_process(server dsp_if i_dsp, server dsp_ctrl_if i_dsp_ctrl[numDspCtrlIn
                     handled = 1;
                     
                     break;
-           
+#endif     
+                case i_control[size_t module_num].register_resources(control_resid_t resources[MAX_RESOURCES_PER_INTERFACE], unsigned &num_resources):
+                    unsigned i = 0;
+                    //debug_printf("register module_num=%d\n",module_num);
+                    switch (module_num)
+                    {
+                        case CONTROL_ENTITY_XVSM:
+                            resources[i++] = IVL_BASE_MODULE_ID;
+                            resources[i++] = IVL_INIT_MODULE_ID;
+                            resources[i++] = IVL_BYPASS_MODULE_ID;
+                            resources[i++] = IVL_MIC_MODULE_ID;
+                            resources[i++] = IVL_BEAM_MODULE_ID;
+                            resources[i++] = IVL_NOISE_MODULE_ID;
+                            resources[i++] = IVL_DEREV_MODULE_ID;
+                            resources[i++] = IVL_AEC_MODULE_ID;
+                            resources[i++] = IVL_AGC_MODULE_ID;
+                            resources[i++] = IVL_EQ_MODULE_ID;
+                            resources[i++] = IVL_SPK_LIM_MODULE_ID;
+                            resources[i++] = IVL_SPK_CMP_MODULE_ID;
+                            resources[i++] = IVL_DIAG_MODULE_ID;
+                            break;
+
+                        case CONTROL_ENTITY_DOA:
+                            resources[i++] = 0x10;
+                            break;
+                    }
+
+                    num_resources = i;
+                    break;
+
+                case i_control[size_t module_num].write_command(control_resid_t r, control_cmd_t c, const uint8_t data[n], unsigned n) -> control_resid_t res:
+                    res = CONTROL_SUCCESS;
+                    
+                    //debug_printf("%u: W %d %d %d\n", num_commands, r, c, n);
+
+                    switch (module_num)
+                    {
+                        case CONTROL_ENTITY_XVSM:
+                            if (n != 4) 
+                            {
+                                res = CONTROL_ERROR;
+                                break;
+                            }
+
+                            int param = data[0] | data[1] << 8 | data[2] << 16 | data[3] << 24;
+                            unsafe
+                            {
+                                // TODO re-enable
+                                //res = cntrlAudioProcess(ilv_rtcfg, ilv_cfg, ilv_diag, r, c, param);
+                            }
+                            break;
+
+                        case CONTROL_ENTITY_DOA:
+                            //No checking for read/write or command/data, as we are in read case and entity can only toggle
+                            unsafe
+                            {
+                                *doDoa = !(*doDoa);
+                                printstr("DOA status: ");printintln(*doDoa);
+                            }
+                            break;
+                    }
+
+                    break;
+
+                case i_control[size_t module_num].read_command(control_resid_t r, control_cmd_t c, uint8_t data[n], unsigned n) -> control_resid_t res:
+                    res = CONTROL_SUCCESS;
+                    //debug_printf("%u: R %d %d %d\n", 0, r, c & ~0x80, n);
+
+                    switch (module_num)
+                    {
+                        case CONTROL_ENTITY_XVSM:
+                            if (n != 4)
+                            {
+                                res = CONTROL_ERROR;
+                                break;
+                            }
+
+                            int param = 0;
+                            unsafe{
+                                // TODO re-enable me!
+                                //res = cntrlAudioProcess(ilv_rtcfg, ilv_cfg, ilv_diag, r, c, param);
+                            }
+
+                            data[0] = param;
+                            data[1] = param >> 8;
+                            data[2] = param >> 16;
+                            data[3] = param >> 24;
+                            break;
+
+                        case CONTROL_ENTITY_DOA:
+                            //No checking for read/write or command/data, as we are in read and entity only toggled
+                            unsafe
+                            {
+                                data[0] = *doDoa;
+                            }
+                            break;
+                    }
+                    break;
+      
                 /* Client wants a processed block. Also gives us input samples */
                 case !processingBlock => i_dsp.transfer_buffers(int * unsafe in_mic_buf, int * unsafe in_spk_buf,
                                                    int * unsafe out_mic_buf, int * unsafe out_spk_buf):
