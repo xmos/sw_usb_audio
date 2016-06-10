@@ -28,6 +28,7 @@ void dsp_process(server dsp_if i_dsp, server dsp_ctrl_if i_dsp_ctrl[numDspCtrlIn
 typedef enum vadStatet
 {
     VAD_IDLE,
+    VAD_DETECT,
     VAD_INVOICE,
     VAD_TIMEOUT
 } vadState_t;
