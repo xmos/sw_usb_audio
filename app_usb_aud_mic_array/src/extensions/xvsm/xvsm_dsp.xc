@@ -278,6 +278,11 @@ unsafe
     vadState_t * unsafe vadState = &g_vadState;
 }
 
+int cntrlAudioProcess(il_voice_rtcfg_t &ilv_rtcfg, il_voice_cfg_t &ilv_cfg, il_voice_diagnostics_t &ilv_diag,
+  control_resid_t res, control_cmd_t cmd, int &param);
+
+
+
 
 /* TODO this needs to be called on reset */
 void il_voice_get_default_cfg_xmos(il_voice_cfg_t &ilv_cfg, il_voice_rtcfg_t &ilv_rtcfg)
@@ -359,10 +364,11 @@ void dsp_process(server dsp_if i_dsp, server interface control i_control[num_mod
 #endif     
                 case i_control[size_t module_num].register_resources(control_resid_t resources[MAX_RESOURCES_PER_INTERFACE], unsigned &num_resources):
                     unsigned i = 0;
-                    //debug_printf("register module_num=%d\n",module_num);
+                    printf("register module_num=%d\n",module_num);
                     switch (module_num)
                     {
                         case CONTROL_ENTITY_XVSM:
+                            printstr("REGISTER XVSM\n");
                             resources[i++] = IVL_BASE_MODULE_ID;
                             resources[i++] = IVL_INIT_MODULE_ID;
                             resources[i++] = IVL_BYPASS_MODULE_ID;
@@ -379,7 +385,12 @@ void dsp_process(server dsp_if i_dsp, server interface control i_control[num_mod
                             break;
 
                         case CONTROL_ENTITY_DOA:
+                            printstr("REGISTER DOA\n");
                             resources[i++] = 0x10;
+                            break;
+
+                        default:
+                            printstr("BAD entity in reg\n");
                             break;
                     }
 
@@ -391,6 +402,7 @@ void dsp_process(server dsp_if i_dsp, server interface control i_control[num_mod
                     
                     //debug_printf("%u: W %d %d %d\n", num_commands, r, c, n);
 
+                    printstr("write command");
                     switch (module_num)
                     {
                         case CONTROL_ENTITY_XVSM:
@@ -403,8 +415,7 @@ void dsp_process(server dsp_if i_dsp, server interface control i_control[num_mod
                             int param = data[0] | data[1] << 8 | data[2] << 16 | data[3] << 24;
                             unsafe
                             {
-                                // TODO re-enable
-                                //res = cntrlAudioProcess(ilv_rtcfg, ilv_cfg, ilv_diag, r, c, param);
+                                res = cntrlAudioProcess(ilv_rtcfg, ilv_cfg, ilv_diag, r, c, param);
                             }
                             break;
 
@@ -415,6 +426,11 @@ void dsp_process(server dsp_if i_dsp, server interface control i_control[num_mod
                                 *doDoa = !(*doDoa);
                                 printstr("DOA status: ");printintln(*doDoa);
                             }
+
+                            break;
+
+                        default:    
+                            printf("Unknown entity\n");
                             break;
                     }
 

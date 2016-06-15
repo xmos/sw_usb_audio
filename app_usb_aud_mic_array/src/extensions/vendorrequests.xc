@@ -13,39 +13,60 @@
 
 #define EP0_MAX_PACKET_SIZE     64
 
+void VendorRequests_Init(VENDOR_REQUESTS_PARAMS_DEC)
+{
+    control_init();
+    control_register_resources(i_control, 1);
+}
+
 int VendorRequests(XUD_ep ep0_out, XUD_ep ep0_in, REFERENCE_PARAM(USB_SetupPacket_t, sp) VENDOR_REQUESTS_PARAMS_DEC_)
 {
     XUD_Result_t result = XUD_RES_ERR;
     unsigned char request_data[EP0_MAX_PACKET_SIZE];
-    unsigned request_data_length = 0;
-    unsigned direction = sp.bmRequestType.Direction;
+    size_t len;
 
-    debug_printf("Vendor request direction=%d\n", direction);
-    switch (direction)
+    switch ((sp.bmRequestType.Direction << 7) | (sp.bmRequestType.Type << 5) | (sp.bmRequestType.Recipient)) 
     {
-        case USB_BM_REQTYPE_DIRECTION_H2D: //0 = SET
-            request_data_length = 0; /* length not required by XUD API coming in */
-            result = XUD_GetBuffer(ep0_out, request_data, request_data_length);
+
+        case USB_BMREQ_H2D_VENDOR_DEV:
+
+            result = XUD_GetBuffer(ep0_out, request_data, len);
+         
             if (result == XUD_RES_OKAY) 
             {
-                 control_process_usb_set_request(sp.wIndex, sp.wValue, request_data_length, request_data, i_control, 1);
-                 result = XUD_DoSetRequestStatus(ep0_in);
-            }
-            break;
+                if (control_process_usb_set_request(sp.wIndex, sp.wValue, sp.wLength, request_data, i_control) == CONTROL_SUCCESS)
+                {
+                    /* zero length data to indicate success
+                    * on control error, go to standard requests, which will issue STALL
+                    */
+                    result = XUD_DoSetRequestStatus(ep0_in);
+                }
+                else
+                {
+                    result = XUD_RES_ERR;
+                }
+          }
+          break;
 
-        case USB_BM_REQTYPE_DIRECTION_D2H: //1 = GET
+        case USB_BMREQ_D2H_VENDOR_DEV:
+
             /* application retrieval latency inside the control library call
-                 * XUD task defers further calls by NAKing USB transactions
-                 */
-            size_t len;
-            control_process_usb_get_request(sp.wIndex, sp.wValue, len, request_data, i_control, 1);
-            result = XUD_DoGetRequest(ep0_out, ep0_in, request_data, len, sp.wLength);
-            break;
+            * XUD task defers further calls by NAKing USB transactions
+            */
+            if (control_process_usb_get_request(sp.wIndex, sp.wValue, sp.wLength, request_data, i_control) == CONTROL_SUCCESS) 
+            {
+                len = sp.wLength;
+                result = XUD_DoGetRequest(ep0_out, ep0_in, request_data, len, len);
+                /* on control error, go to standard requests, which will issue STALL */
+             }
+            else
+            {  
+                result = XUD_RES_ERR;
+            }
 
-        default:
-            __builtin_unreachable();
-            break;
-    }
+          break;
+      }
+
     return result;
 }
 
