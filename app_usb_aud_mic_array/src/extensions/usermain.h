@@ -4,7 +4,7 @@
 
 #ifdef XVSM
     #define VENDOR_REQUESTS_PARAMS     i_control
-    #define VENDOR_REQUESTS_PARAMS_DEC CLIENT_INTERFACE(control, i_control[1])      /* TODO NUM_MODULES */
+    #define VENDOR_REQUESTS_PARAMS_DEC CLIENT_INTERFACE(control, i_control[1])   
 #endif
 
 #ifndef __STDC__
@@ -35,14 +35,14 @@ void genclock();
     #ifdef MIC_PROCESSING_USE_INTERFACE
         #define USER_MAIN_CORES \
             on tile[1]: genclock(); \
-            on tile[PDM_TILE]: dsp_process(i_dsp, i_control, 1); \
+            on tile[PDM_TILE]: dsp_process(i_dsp, i_control[0], 1); \
             on tile[PDM_TILE]: dsp_buff(i_audMan, i_dsp); \
             on tile[PDM_TILE]: dsp_control(/*i_dsp_ctrl[0])*/; \
             on tile[PDM_TILE].core[0]: user_pdm_process(i_mic_process); 
     #else
         #define USER_MAIN_CORES \
             on tile[1]: genclock(); \
-            on tile[PDM_TILE]: dsp_process(i_dsp, i_control, 1); \
+            on tile[PDM_TILE]: dsp_process(i_dsp, i_control[0], 1); \
             on tile[PDM_TILE]: dsp_buff(i_audMan, i_dsp); \
             on tile[PDM_TILE]: dsp_control(); 
     #endif

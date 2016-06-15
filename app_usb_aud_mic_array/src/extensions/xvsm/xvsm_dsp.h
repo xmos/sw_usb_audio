@@ -30,7 +30,7 @@ typedef interface dsp_ctrl_if
 
 void dsp_process(server dsp_if i_dsp
 #if CONTROL
-        , server interface control i_control[num_modules], const size_t num_modules
+        , server interface control i_control, const size_t num_modules
 #endif
 );
 
