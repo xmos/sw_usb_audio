@@ -19,15 +19,6 @@ typedef interface dsp_if
 
 } dsp_if;
 
-
-#if 0
-/* Control interface and task */
-typedef interface dsp_ctrl_if
-{
-    int setControl(unsigned moduleId, unsigned control, unsigned setting);
-} dsp_ctrl_if;
-#endif
-
 void dsp_process(server dsp_if i_dsp
 #if CONTROL
         , server interface control i_control, const size_t num_modules

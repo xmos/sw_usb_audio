@@ -13,12 +13,7 @@
 #include "xvsm_support.h"
 #include "usr_dsp_cmd.h"  //TODO required?
 #include "control.h"
-
-
-/* TODO these need to be derived from some place.. */
-#define CONTROL_ENTITY_XVSM           0 //Index of control entity
-#define CONTROL_ENTITY_DOA            1 //Index of control entity
-
+#include "control_ids.h"
 
 /** Structure to describe the LED ports*/
 typedef struct {
@@ -268,8 +263,8 @@ void dsp_buff(server audManage_if i_audMan, client dsp_if i_dsp)
 
 
 static unsigned g_vadThresh_detectTime = 2;
-static unsigned g_vadThresh_entry = 6000;
-static unsigned g_vadThresh_cont = 1000;
+static unsigned g_vadThresh_entry = 4000;
+static unsigned g_vadThresh_cont = 2000;
 static unsigned g_vadTimeout = 50;
 vadState_t g_vadState = VAD_IDLE;
 
@@ -279,7 +274,7 @@ unsafe
 }
 
 int cntrlAudioProcess(il_voice_rtcfg_t &ilv_rtcfg, il_voice_cfg_t &ilv_cfg, il_voice_diagnostics_t &ilv_diag,
-  control_resid_t res, control_cmd_t cmd, int &param);
+  control_resid_t res, control_cmd_t cmd, int &param, int baseResId);
 
 
 
@@ -364,23 +359,36 @@ void dsp_process(server dsp_if i_dsp, server interface control i_control, const 
 #endif     
                 case i_control.register_resources(control_resid_t resources[MAX_RESOURCES_PER_INTERFACE], unsigned &num_resources):
                     unsigned i = 0;
-                    resources[i++] = IVL_BASE_MODULE_ID;
-                    resources[i++] = IVL_INIT_MODULE_ID;
-                    resources[i++] = IVL_BYPASS_MODULE_ID;
-                    resources[i++] = IVL_MIC_MODULE_ID;
-                    resources[i++] = IVL_BEAM_MODULE_ID;
-                    resources[i++] = IVL_NOISE_MODULE_ID;
-                    resources[i++] = IVL_DEREV_MODULE_ID;
-                    resources[i++] = IVL_AEC_MODULE_ID;
-                    resources[i++] = IVL_AGC_MODULE_ID;
-                    resources[i++] = IVL_EQ_MODULE_ID;
-                    resources[i++] = IVL_SPK_LIM_MODULE_ID;
-                    resources[i++] = IVL_SPK_CMP_MODULE_ID;
-                    resources[i++] = IVL_DIAG_MODULE_ID;
+                
+                    /* XVSM resources */
+                    for(int x = IVL_RESID_BASE; x < (IVL_RESID_BASE + IVL_RESID_COUNT); x++)
+                    {
+                        resources[i++] = x;
+                    }
+            
+                    /* 
+                    resources[i++] = IVL_BASE_RESID + IVL_RESID_BASE;
+                    resources[i++] = IVL_INIT_RESID + IVL_RESID_BASE;
+                    resources[i++] = IVL_BYPASS_RESID + IVL_RESID_BASE;
+                    resources[i++] = IVL_MIC_RESID + IVL_RESID_BASE;
+                    resources[i++] = IVL_BEAM_RESID + IVL_RESID_BASE;
+                    resources[i++] = IVL_NOISE_RESID + IVL_RESID_BASE;
+                    resources[i++] = IVL_DEREV_RESID + IVL_RESID_BASE;
+                    resources[i++] = IVL_AEC_RESID + IVL_RESID_BASE;
+                    resources[i++] = IVL_AGC_RESID + IVL_RESID_BASE;
+                    resources[i++] = IVL_EQ_RESID + IVL_RESID_BASE;
+                    resources[i++] = IVL_SPK_LIM_RESID + IVL_RESID_BASE;
+                    resources[i++] = IVL_SPK_CMP_RESID + IVL_RESID_BASE;
+                    resources[i++] = IVL_DIAG_RESID + IVL_RESID_BASE;
+                    */
+
+                    /* DOA resources */
+                    resources[i++] = DOA_RESID + DOA_RESID_BASE;
+                    
                     num_resources = i;
                     break;
 
-                case i_control.write_command(control_resid_t r, control_cmd_t c, const uint8_t data[n], unsigned n) -> control_resid_t res:
+                case i_control.write_command(control_resid_t resId, control_cmd_t cmd, const uint8_t data[n], unsigned n) -> control_resid_t res:
                     res = CONTROL_SUCCESS;
                     
                     if (n != 4) 
@@ -388,29 +396,32 @@ void dsp_process(server dsp_if i_dsp, server interface control i_control, const 
                         res = CONTROL_ERROR;
                         break;
                     }
-
-                    int param = data[0] | data[1] << 8 | data[2] << 16 | data[3] << 24;
+                    
+                    if((resId >= IVL_RESID_BASE) && (resId < IVL_RESID_COUNT + IVL_RESID_BASE))
                     unsafe
                     {
-                        res = cntrlAudioProcess(ilv_rtcfg, ilv_cfg, ilv_diag, r, c, param);
+                        int param = (data, int);
+                        res = cntrlAudioProcess(ilv_rtcfg, ilv_cfg, ilv_diag, resId, cmd, param, IVL_RESID_BASE);
                     }
-                    break;
-
-#if 0
-                case CONTROL_ENTITY_DOA:
-                    //No checking for read/write or command/data, as we are in read case and entity can only toggle
-                    unsafe
+                    else if((resId >= DOA_RESID_BASE) && (resId < DOA_RESID_COUNT + DOA_RESID_BASE))
                     {
-                        *doDoa = !(*doDoa);
-                        printstr("DOA status: ");printintln(*doDoa);
+                        printintln(cmd);
+                        switch(cmd)
+                        {
+                            case DOA_CMD_EN:
+                                *doDoa = (data, int);
+                                printstr("DOA status: ");printintln(*doDoa);
+                                break;
+                             default:
+                                res = CONTROL_ERROR;
+                                break;
+                        }
                     }
 
                     break;
-#endif
 
-                    break;
+                case i_control.read_command(control_resid_t resId, control_cmd_t cmd, uint8_t data[n], unsigned n) -> control_resid_t res:
 
-                case i_control.read_command(control_resid_t r, control_cmd_t c, uint8_t data[n], unsigned n) -> control_resid_t res:
                     res = CONTROL_SUCCESS;
                         if (n != 4)
                         {
@@ -419,25 +430,27 @@ void dsp_process(server dsp_if i_dsp, server interface control i_control, const 
                         }
 
                         int param = 0;
+                        if((resId >= IVL_RESID_BASE) && (resId < IVL_RESID_COUNT + IVL_RESID_BASE))
                         unsafe
                         {
-                            res = cntrlAudioProcess(ilv_rtcfg, ilv_cfg, ilv_diag, r, c, param);
+                            res = cntrlAudioProcess(ilv_rtcfg, ilv_cfg, ilv_diag, resId, cmd, param, IVL_RESID_BASE);
+                            (data, unsigned[])[0] = param;
                         }
-
-                        data[0] = param;
-                        data[1] = param >> 8;
-                        data[2] = param >> 16;
-                        data[3] = param >> 24;
-#if 0
-                        case CONTROL_ENTITY_DOA:
-                            //No checking for read/write or command/data, as we are in read and entity only toggled
-                            unsafe
+                        else if((resId >= DOA_RESID_BASE) && (resId < DOA_RESID_COUNT + DOA_RESID_BASE))
+                        { 
+                            cmd &=0x7f;
+                            switch(cmd)
                             {
-                                data[0] = *doDoa;
+                                case DOA_CMD_EN:
+                                    printstrln("DOA_CMD_EN");
+                                    data[0] = *doDoa;
+                                    break;
+                                default:
+                                    res = CONTROL_ERROR;
+                                    break;
                             }
-                            break;
-                    }
-#endif
+                        }
+                    
                     break;
       
                 /* Client wants a processed block. Also gives us input samples */
