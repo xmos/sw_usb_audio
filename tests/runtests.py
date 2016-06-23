@@ -89,6 +89,17 @@ Tests are run to check the following features:
     * USB descriptor bcdDevice definition
 """)
 
+    xmostest.register_group("sw_usb_audio",
+                            "smart_mic_tests",
+                            "A collection of tests covering the smart mic features",
+    """
+Tests are performed by running the USB Audio reference design software on
+XMOS Microphone array hardware platforms. The mic array platform under test will
+be connected to a host PC to provide and record audio. Tests are run to test the following features:
+
+    * TODO
+""")
+
     xmostest.runtests()
 
     xmostest.finish()
