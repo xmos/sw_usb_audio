@@ -13,6 +13,7 @@
 
 #define EP0_MAX_PACKET_SIZE     64
 
+#ifdef XVSM
 void VendorRequests_Init(VENDOR_REQUESTS_PARAMS_DEC)
 {
     control_init();
@@ -69,5 +70,5 @@ int VendorRequests(XUD_ep ep0_out, XUD_ep ep0_in, REFERENCE_PARAM(USB_SetupPacke
 
     return result;
 }
-
+#endif
 
