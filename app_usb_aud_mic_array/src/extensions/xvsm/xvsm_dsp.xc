@@ -181,24 +181,6 @@ void UserBufferManagement(unsigned sampsFromUsbToAudio[], unsigned sampsFromAudi
     int dspBuffer_out_usb_local[1]; 
     int dspBuffer_out_dac_local[1];
 
-#if 0
-    static int testsamplecount = 0;
-    int testsamples[] = {0x00000000, 0xf0000000,
-    0x0b504f33, 0xf4afb0cd,
-    0x10000000, 0x00000000,
-    0x0b504f33, 0x0b504f33,
-    0x00000000, 0x10000000,
-    0xf4afb0cd, 0x0b504f33,
-    0xf0000000, 0x00000000,
-    0xf4afb0cd, 0xf4afb0cd};
-
-    dspBuffer_in_adc_local[0] = testsamples[testsamplecount+0];
-    dspBuffer_in_adc_local[1] = testsamples[testsamplecount+1];
-    testsamplecount+=2;
-    if(testsamplecount >= 16)
-        testsamplecount = 0;
-    
-#endif
     dspBuffer_in_adc_local[0] = sampsFromAudioToUsb[PDM_MIC_INDEX]<<4;
     dspBuffer_in_adc_local[1] = sampsFromAudioToUsb[PDM_MIC_INDEX+1]<<4;
     dspBuffer_in_usb_local[0] = sampsFromUsbToAudio[0];
@@ -275,8 +257,6 @@ unsafe
 
 int cntrlAudioProcess(il_voice_rtcfg_t &ilv_rtcfg, il_voice_cfg_t &ilv_cfg, il_voice_diagnostics_t &ilv_diag,
   control_resid_t res, control_cmd_t cmd, int &param, int baseResId);
-
-
 
 
 /* TODO this needs to be called on reset */
@@ -382,8 +362,11 @@ void dsp_process(server dsp_if i_dsp, server interface control i_control, const 
                     resources[i++] = IVL_DIAG_RESID + IVL_RESID_BASE;
                     */
 
-                    /* DOA resources */
+                    /* DOA resource(s) */
                     resources[i++] = DOA_RESID + DOA_RESID_BASE;
+
+                    /* VAD resource(s) */
+                    resources[i++] = VAD_RESID + VAD_RESID_BASE;
                     
                     num_resources = i;
                     break;
@@ -405,18 +388,43 @@ void dsp_process(server dsp_if i_dsp, server interface control i_control, const 
                     }
                     else if((resId >= DOA_RESID_BASE) && (resId < DOA_RESID_COUNT + DOA_RESID_BASE))
                     {
-                        printintln(cmd);
                         switch(cmd)
                         {
                             case DOA_CMD_EN:
                                 *doDoa = (data, int);
-                                printstr("DOA status: ");printintln(*doDoa);
+                                break;
+                            case DOA_CMD_DIR: 
+                                unsigned char * unsafe micNum = &g_micNum;
+                                *micNum = (data, int);
                                 break;
                              default:
                                 res = CONTROL_ERROR;
                                 break;
                         }
                     }
+                    else if((resId >= VAD_RESID_BASE) && (resId < VAD_RESID_COUNT + VAD_RESID_BASE))
+                    {
+                        switch(cmd)
+                        {
+                            case VAD_CMD_THRESH_ENT: 
+                                g_vadThresh_entry = (data, unsigned);
+                                break;
+                            case VAD_CMD_THRESH_EXIT:
+                                g_vadThresh_cont = (data, unsigned);
+                                break;
+                            case VAD_CMD_DETECT_TIME:
+                                g_vadThresh_detectTime = (data, unsigned); 
+                                break;
+                            case VAD_CMD_TIMEOUT:
+                                g_vadTimeout = (data, unsigned); 
+                                break;
+                             default:
+                                res = CONTROL_ERROR;
+                                break;
+                        }
+                    }
+
+
 
                     break;
 
@@ -442,10 +450,37 @@ void dsp_process(server dsp_if i_dsp, server interface control i_control, const 
                             switch(cmd)
                             {
                                 case DOA_CMD_EN:
-                                    printstrln("DOA_CMD_EN");
                                     data[0] = *doDoa;
                                     break;
+                                case DOA_CMD_DIR: 
+                                    unsigned char * unsafe micNum = &g_micNum;
+                                    data[0] = *micNum;
+                                    break;
+
                                 default:
+                                    res = CONTROL_ERROR;
+                                    break;
+                            }
+                        }  
+                        else if((resId >= VAD_RESID_BASE) && (resId < VAD_RESID_COUNT + VAD_RESID_BASE))
+                        {
+                            cmd &=0x7f;
+                            switch(cmd)
+                            {
+                                case VAD_CMD_THRESH_ENT: 
+                                    data[0] = 12;
+                                    (data, unsigned) = g_vadThresh_entry;
+                                    break;
+                                case VAD_CMD_THRESH_EXIT:
+                                    (data, unsigned) = g_vadThresh_cont;
+                                    break;
+                                case VAD_CMD_DETECT_TIME:
+                                    (data, unsigned) = g_vadThresh_detectTime; 
+                                    break;
+                                case VAD_CMD_TIMEOUT:
+                                    (data, unsigned) = g_vadTimeout; 
+                                    break;
+                                 default:
                                     res = CONTROL_ERROR;
                                     break;
                             }
@@ -484,7 +519,6 @@ void dsp_process(server dsp_if i_dsp, server interface control i_control, const 
                                 }
 
                                 break;
-
                             
                             case VAD_DETECT:
 
