@@ -15,6 +15,17 @@
  * Note, we check if they are already defined in Makefile
  */
 
+/* Product String */
+#if (UPGRADE_IMAGE == 1)
+#define PRODUCT_STR        "PIP Bringup upgrade"
+#else
+#define PRODUCT_STR        "PIP Bringup factory"
+#endif
+
+/* Use the 100MHz ref clock (related to MCLK) for ISO feedback calculation*/
+#define FB_USE_REF_CLOCK   1
+
+
 /* Tile defines */
 #define AUDIO_IO_TILE      0
 #define XUD_TILE           0

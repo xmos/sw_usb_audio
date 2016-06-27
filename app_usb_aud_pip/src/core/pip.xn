@@ -1,19 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Network xmlns="http://www.xmos.com"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://www.xmos.com http://www.xmos.com">
-  <Type>Device</Type>
-  <Name>XUF208-256-TQ64-C10 Device</Name>
-
+<Network xmlns="http://www.xmos.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.xmos.com http://www.xmos.com">
+  <Type>Board</Type>
+  <Name>xCORE-200 Explorer Kit</Name>
   <Declarations>
-    <Declaration>tileref tile[1]</Declaration>
+    <Declaration>tileref tile[2]</Declaration>
     <Declaration>tileref usb_tile</Declaration>
   </Declarations>
-
   <Packages>
-    <Package id="0" Type="XS2-UFnA-256-TQ64">
+    <Package id="0" Type="XS2-UEnA-512-FB236">
       <Nodes>
-        <Node Id="0" InPackageId="0" Type="XS2-L8A-256" SystemFrequency="500MHz" Oscillator="24MHz">
+        <Node Id="0" InPackageId="0" Type="XS2-L16A-512" OscillatorSrc="1" SystemFrequency="500MHz" Oscillator="24MHz">
           <Boot>
             <Source Location="bootFlash"/>
           </Boot>
@@ -38,12 +34,10 @@
             <Port Location="XS1_PORT_1G"  Name="PORT_USB_FLAG2"/>
             <Port Location="XS1_PORT_8A"  Name="PORT_USB_TXD"/>
             <Port Location="XS1_PORT_8B"  Name="PORT_USB_RXD"/>
-
-
-
           </Tile>
+          <Tile Number="1" Reference="tile[1]"/>
         </Node>
-        <Node Id="1" InPackageId="1" Type="periph:XS1-SU" Reference="usb_tile">
+        <Node Id="1" InPackageId="1" Type="periph:XS1-SU" Reference="usb_tile" Oscillator="24MHz">
         </Node>
       </Nodes>
       <Links>
@@ -54,7 +48,19 @@
       </Links>
     </Package>
   </Packages>
-
+  <Nodes>
+    <Node Id="2" Type="device:" RoutingId="0x8000">
+      <Service Id="0" Proto="xscope_host_data(chanend c);">
+        <Chanend Identifier="c" end="3"/>
+      </Service>
+    </Node>
+  </Nodes>
+  <Links>
+    <Link Encoding="2wire" Delays="5clk" Flags="XSCOPE">
+      <LinkEndpoint NodeId="0" Link="XL0"/>
+      <LinkEndpoint NodeId="2" Chanend="1"/>
+    </Link>
+  </Links>
   <ExternalDevices>
     <Device NodeId="0" Tile="0" Class="SQIFlash" Name="bootFlash">
       <Attribute Name="PORT_SQI_CS" Value="PORT_SQI_CS"/>
@@ -62,9 +68,7 @@
       <Attribute Name="PORT_SQI_SIO" Value="PORT_SQI_SIO"/>
     </Device>
   </ExternalDevices>
-
   <JTAGChain>
     <JTAGDevice NodeId="0"/>
   </JTAGChain>
-
 </Network>

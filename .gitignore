@@ -24,3 +24,8 @@ log.txt
 *~
 *.DS_Store
 *.pyc
+decompressor*
+spanning*
+target*
+app_usb_aud_pip/.settings
+fr-*
