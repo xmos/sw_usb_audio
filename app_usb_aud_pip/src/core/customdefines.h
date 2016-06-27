@@ -17,9 +17,9 @@
 
 /* Product String */
 #if (UPGRADE_IMAGE == 1)
-#define PRODUCT_STR        "PIP Bringup upgrade"
+#define PRODUCT_STR        "PIP Upgrade"
 #else
-#define PRODUCT_STR        "PIP Bringup factory"
+#define PRODUCT_STR        "PIP Factory w/DFU"
 #endif
 
 /* Use the 100MHz ref clock (related to MCLK) for ISO feedback calculation*/
