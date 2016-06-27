@@ -1,3 +1,5 @@
+
+#ifdef XVSM
 #include <xccompat.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -13,7 +15,6 @@
 
 #define EP0_MAX_PACKET_SIZE     64
 
-#ifdef XVSM
 void VendorRequests_Init(VENDOR_REQUESTS_PARAMS_DEC)
 {
     control_init();
