@@ -6,12 +6,12 @@ TARGET = pip.xn
 APP_NAME =
 
 # The flags passed to xcc when building the application
-BUILD_FLAGS     = -DFLASH_MAX_UPGRADE_SIZE=64*1024 -fcomment-asm -Xmapper --map -Xmapper MAPFILE -Wall -O3 -report -lquadflash -fsubword-select -save-temps -g -DSDA_HIGH=2 -DSCL_HIGH=1 -DXUD_SERIES_SUPPORT=4 -march=xs2a -DUSB_TILE=tile[0] -DADAT_TX_USE_SHARED_BUFF=1 -DQUAD_SPI_FLASH=1
+BUILD_FLAGS     = -DFLASH_MAX_UPGRADE_SIZE=64*1024 -fcomment-asm -Xmapper --map -Xmapper MAPFILE -Wall -Os -report -lquadflash -fsubword-select -save-temps -g -DSDA_HIGH=2 -DSCL_HIGH=1 -DXUD_SERIES_SUPPORT=4 -march=xs2a -DUSB_TILE=tile[0] -DADAT_TX_USE_SHARED_BUFF=1 -DQUAD_SPI_FLASH=1 -mno-dual-issue
 
 # The USED_MODULES variable lists other module used by the application. These
 # modules will extend the SOURCE_DIRS, INCLUDE_DIRS and LIB_DIRS variables. 
 # Modules are expected to be in the directory above the BASE_DIR directory.
-USED_MODULES = module_usb_shared module_xud module_usb_audio module_spdif_tx module_spdif_rx module_usb_midi module_dfu module_usb_device module_i2c_simple module_adat_tx module_adat_rx
+USED_MODULES = module_adat_rx module_adat_tx module_dfu module_i2c_simple module_spdif_rx module_spdif_tx module_usb_audio module_usb_device module_usb_midi module_usb_shared module_xud
 
 # Build config naming scheme:
 

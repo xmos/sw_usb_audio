@@ -25,6 +25,12 @@
 /* Use the 100MHz ref clock (related to MCLK) for ISO feedback calculation*/
 #define FB_USE_REF_CLOCK   1
 
+/* Power optimisations switches. Description, relative power improvement */
+#define DISABLE_OTP        1         //Switches off OTP in both tiles, small
+#define CLOCK_DOWN_TILE_1  1         //Completely removes clock from unsed processor, large
+#define CHAN_BUFF_CTRL     1         //Removes/reduces polling in decouple, medium
+#define SCALE_SSWITCH      1         //Reduces clock to node switch, medium
+#define DAC_LOW_PWR_MODE   1         //LPMODE: DAC & HP-Amp Low Power Mode Setting, medium
 
 /* Tile defines */
 #define AUDIO_IO_TILE      0

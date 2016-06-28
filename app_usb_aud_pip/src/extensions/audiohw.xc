@@ -71,7 +71,11 @@ void DAC_start(void)
   wait_ms(7); // Wait 7ms.
   AK4376_REGWRITE(AK4376_PWR_MGMT2      , 0x31); // Keep charge pump 1 on and turn on LDO1 supply.
   wait_ms(1); // Wait 1ms.
+#ifdef DAC_LOW_PWR_MODE
+  AK4376_REGWRITE(AK4376_PWR_MGMT3      , 0x11); // Power up the DAC. Low power mode bit set
+#else
   AK4376_REGWRITE(AK4376_PWR_MGMT3      , 0x01); // Power up the DAC.
+#endif
   AK4376_REGWRITE(AK4376_PWR_MGMT2      , 0x33); // Keep charge pump 1 and LDO1 on and turn on charge pump 2 supply.
   wait_ms(5); // Wait 5ms.
   AK4376_REGWRITE(AK4376_PWR_MGMT4      , 0x07); // Power up both headphone output channels, no Class-G operation, supplies always at +-VDD.
