@@ -181,8 +181,8 @@ void UserBufferManagement(unsigned sampsFromUsbToAudio[], unsigned sampsFromAudi
     int dspBuffer_out_usb_local[1]; 
     int dspBuffer_out_dac_local[1];
 
-    dspBuffer_in_adc_local[0] = sampsFromAudioToUsb[PDM_MIC_INDEX]<<4;
-    dspBuffer_in_adc_local[1] = sampsFromAudioToUsb[PDM_MIC_INDEX+1]<<4;
+    dspBuffer_in_adc_local[0] = sampsFromAudioToUsb[PDM_MIC_INDEX];
+    dspBuffer_in_adc_local[1] = sampsFromAudioToUsb[PDM_MIC_INDEX+1];
     dspBuffer_in_usb_local[0] = sampsFromUsbToAudio[0];
     
     i_audMan.transfer_samples(dspBuffer_in_adc_local, dspBuffer_in_usb_local, dspBuffer_out_usb_local, dspBuffer_out_dac_local);
