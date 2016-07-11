@@ -59,23 +59,22 @@ void UserReadHIDButtons(unsigned char hidData[])
     static unsigned but_last, but_current;
     static unsigned state_counter_ms = 0;
 
-    p_buttons :> but_now;
+    p_buttons :> but_now;                // Read port
 
     extract_buttons(but_now, but_vol_d, but_pp, but_vol_u);
 
-    if(but_vol_d || but_vol_u || but_pp) // Volume/up down pressed
+    if(but_vol_d || but_vol_u || but_pp) // Any button has been pressed
     {
-        if (but_last != but_now)    // Is it a newly pressed?
+        if (but_last != but_now)         // Is it a newly pressed?
         {
             state_counter_ms = 0;
-            if (state == STATE_FIRST_PRESS)
+            if (state == STATE_FIRST_PRESS) // First time this press has been seen
             {
                 but_current = but_now;
-                //printstrln("new press");
             }
             if (state == STATE_SECOND_PRESS)
             {
-                //printstrln("second press");
+                // Do nothing
             }
         }
         else                        // Has been held for a while
@@ -84,19 +83,15 @@ void UserReadHIDButtons(unsigned char hidData[])
             {
                 but_current = but_now;
                 state++;
-                //printstrln("press thresh");
-                //printintln(state);
-                if (state == (STATE_SECOND_PRESS + 4)) state -= 4;    //Allow third, fourth double tap
-                if (state == STATE_SECOND_PRESS)        // Second tap detected
+                if (state == (STATE_SECOND_PRESS + 4)) state -= 4;    // Allow multiple double taps
+                if (state == STATE_SECOND_PRESS)                      // Second tap detected
                 {
                     hidData[0] = ((but_vol_d << HID_CONTROL_PREV_SHIFT) | (but_vol_u << HID_CONTROL_NEXT_SHIFT) | (but_pp << HID_CONTROL_PLAYPAUSE_SHIFT));
-                    //printstrln("double tap");
                 }
             }
             if (state_counter_ms > LONG_PRESS_THRESHOLD_16MS) // Has been held a while
             {
                 hidData[0] = ((but_vol_d << HID_CONTROL_VOLDN_SHIFT) | (but_vol_u << HID_CONTROL_VOLUP_SHIFT));
-                //printstrln("hold");
                 state = STATE_HOLD;
             }
             state_counter_ms++;
@@ -105,28 +100,23 @@ void UserReadHIDButtons(unsigned char hidData[])
 
     else //Nothing pressed
     {
-        if (but_last != but_now)    // Has button been freshly released?
+        if (but_last != but_now)    // Has button been newly released?
         {
             state++;
-            //printstrln("new release");
             state_counter_ms = 0;
-            //printintln(state);
         }
         else                        // Has been released for a while
         {
             if (state_counter_ms == RELEASED_THRESHOLD_16MS) // Has been released for long enough to count as single tap
             {
-                //printstrln("release thresh");
                 if (state == STATE_FIRST_RELEASE)
                 {
                     extract_buttons(but_current, but_vol_d, but_pp, but_vol_u);
                     hidData[0] = ((but_vol_d << HID_CONTROL_VOLDN_SHIFT) | (but_vol_u << HID_CONTROL_VOLUP_SHIFT) | (but_pp << HID_CONTROL_PLAYPAUSE_SHIFT));
-                    //printstrln("single tap");
                     state = STATE_IDLE;
                 }
                 if (state >= STATE_SECOND_RELEASE)
                 {
-                    //printstrln("second release completed");
                     state = STATE_IDLE;
                 }
             }
