@@ -6,7 +6,7 @@ sw_usb_audio Change Log
 
   * ADDED:     app_usb_aud_mic_array now includes control of XVSM parameters
     (see lib_xvsm_support/host for host control application)
-  * RESOLVED:  Incorrect build configurations in Eclipse project files for
+  * RESOLVED:  Incorrect build configurations in Eclipse project files in
     app_usb_aud_mic_array
 
   * Changes to dependencies:
