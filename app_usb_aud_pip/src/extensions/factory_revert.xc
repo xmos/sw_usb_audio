@@ -1,10 +1,19 @@
 //This is factory reset code execueted at startup by the second stage loader
 //Allows revert to factory image by holding buttons at power on reset
+//Half of this source is compiled into the bootloader and the other half
+//is compiled into the main application. This is guarded by XUD_SERIES_SUPPORT
+
 #include <xs1.h>
 #include <platform.h>
+#include "gpio_defines.h"
 
 #define DBG 0
 
+
+// Defines which button(s) must be pressed to trigger factory revert in bootloader
+// And for how long (seconds)
+#define BUTTON_MASK_REVERT   P_GPIO_VOL_DOWN
+#define BUTTON_HOLD_TIME_S   3
 
 /* Address of flag set by bootloader if factory revert is required */
 /* Note range 0x7FFC8 - 0x7FFFF guarenteed to be untouched by tools */
@@ -31,11 +40,6 @@ on tile[0]: out port p_debug = XS1_PORT_4D;  //Mic ports, used for debug
  * Finally, the loader calls reportSelectedImage to obtain the address
  * of the selected image. */
 
-// Defines which buttons must be pressed to trigger revert
-// Button 0b100 is closest to the USB port
-// Button 0b001 is closest to the headphone jack
-#define BUTTON_MASK_REVERT   0b100
-#define BUTTON_HOLD_TIME_S   3
 
 /* Buttons are on bit 0..2. Active high */
 on tile[0]: in port p_buttons = XS1_PORT_8C;

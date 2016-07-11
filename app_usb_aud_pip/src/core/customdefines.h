@@ -19,7 +19,7 @@
 #if (UPGRADE_IMAGE == 1)
 #define PRODUCT_STR        "PIP Upgrade"
 #else
-#define PRODUCT_STR        "PIP Factory w/DFU"
+#define PRODUCT_STR        "PIP Early Bringup"
 #endif
 
 /* Use the 100MHz ref clock (related to MCLK) for ISO feedback calculation*/
@@ -84,7 +84,7 @@
 
 /* Enable/Disable example HID code */
 #ifndef HID_CONTROLS
-#define HID_CONTROLS       0
+#define HID_CONTROLS       1
 #endif
 
 #endif
