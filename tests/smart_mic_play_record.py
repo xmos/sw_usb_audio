@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+import argparse
 from array import array
 from struct import pack
 from sys import byteorder
@@ -72,9 +74,6 @@ def analyse(data):
         for b in range(start_bin, len(channel_frequencies)):
             energy += abs(channel_frequencies[b])
         print str(chan) +" " + str(energy)
-    
-    
-
     return
 
 def record_to_file(recorded_wav, played_wav):
@@ -91,4 +90,9 @@ def record_to_file(recorded_wav, played_wav):
     wave_file.close()
 
 if __name__ == '__main__':
-    record_to_file('recording.wav', "test_audio/oliver_twist.wav")
+    argparser = argparse.ArgumentParser(description = "Smart mic play/record script")
+    argparser.add_argument('--mic_data', metavar='recording.wav', help ='The file to capture mic data to')
+    argparser.add_argument('--playback_data', metavar='test_audio/oliver_twist.wav', help ='The file to play from')
+    args = argparser.parse_args()
+
+    record_to_file(args.mic_data, args.playback_data)
