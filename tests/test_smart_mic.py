@@ -114,8 +114,8 @@ def do_xvsm_doa_test(min_testlevel, board, app_name, app_config, num_chans,
                                           '--mic_data=../../../../sw_usb_audio/tests/recording.wav',
                                           '--playback_data=../../../../sw_usb_audio/tests/test_audio/oliver_twist.wav'],
                                           tester = tester[2],
-                                          timeout = 1, # TODO: set this
-                                          initial_delay = 0, # TODO: set this
+                                          timeout = 300,
+                                          initial_delay = 5,
                                           start_after_completed = [control_job])
 
     # Once the recording has completed run the analysis application
