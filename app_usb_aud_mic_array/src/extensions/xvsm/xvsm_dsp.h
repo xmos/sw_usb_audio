@@ -1,7 +1,11 @@
 
+#ifndef _XVSM_DSP_H_
+#define _XVSM_DSP_H_
 
-#ifndef _DSP_H_
-#define _DSP_H_
+
+#define CONTROL 1
+#include "control.h"
+
 /* Processing interface and task */
 /* Interface to transfer block of samples to/from DSP task */
 typedef interface dsp_if
@@ -15,16 +19,14 @@ typedef interface dsp_if
 
 } dsp_if;
 
+void dsp_process(server dsp_if i_dsp
+#if CONTROL
+        , server interface control i_control, const size_t num_modules
+#endif
+);
 
-/* Control interface and task */
-typedef interface dsp_ctrl_if
-{
-    int setControl(unsigned moduleId, unsigned control, unsigned setting);
-} dsp_ctrl_if;
 
-
-void dsp_process(server dsp_if i_dsp, server dsp_ctrl_if i_dsp_ctrl[numDspCtrlInts], unsigned numDspCtrlInts);
-
+// TODO move me
 typedef enum vadStatet
 {
     VAD_IDLE,

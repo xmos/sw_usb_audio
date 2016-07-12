@@ -1,6 +1,34 @@
 sw_usb_audio Change Log
 =======================
 
+6.18.0
+------
+
+  * ADDED:     app_usb_aud_mic_array now includes control of XVSM parameters
+    (see lib_xvsm_support/host for host control applications)
+  * RESOLVED:  Incorrect build configurations in Eclipse project files in
+    app_usb_aud_mic_array
+
+  * Changes to dependencies:
+
+    - sc_usb_audio: 6.16.0 -> 6.18.0
+
+      + ADDED:      Call to VendorRequests() and VendorRequests_Init() to
+        Endpoint 0
+      + ADDED:      VENDOR_REQUESTS_PARAMS define to allow for custom parameters
+        to VendorRequest calls
+      + RESOLVED:   FIR gain compensation set appropriately in lib_mic_array
+        usage
+      + CHANGE:     i_dsp interface renamed i_audManage
+
+    - sc_xud: 2.4.1 -> 2.4.2
+
+      + CHANGE:     VBUS connection to xCORE-200 no longer required when using
+        XUD_PWR_BUS i.e. for bus-powered devices. This removes the need to any
+        protection circuitry and allows for a reduced BOM. Note, VBUS should
+        still be present for self powered devices in order to pass USB
+        compliance tests.
+
 6.17.0
 ------
 
