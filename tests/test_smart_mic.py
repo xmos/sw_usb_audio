@@ -6,14 +6,16 @@ class SmartMicTester(xmostest.Tester):
     # The SmartMicTester checks for errors reported by all of the processes run
     # during the test. If no errors are seen the test will be marked as a pass.
 
-    def __init__(self, test, app_name, app_config, num_chans):
+    def __init__(self, test, app_name, app_config, num_chans, doa_dir):
         super(SmartMicTester, self).__init__()
         self.product = "sw_usb_audio"
         self.group = "smart_mic_tests"
         self.test = test
         self.config = {'app_name':app_name,
                        'app_config':app_config,
-                       'num_chans':num_chans}
+                       'num_chans':num_chans,
+                       'doa_dir':doa_dir
+                       }
         self.register_test(self.product, self.group, self.test, self.config)
 
     def run(self,
@@ -60,16 +62,16 @@ class SmartMicTester(xmostest.Tester):
                                  output=output)
 
 # TODO: remove these strings
-path_to_gen_app = path_to_ctrl_app = path_to_ext_player = path_to_mic_player = path_to_analysis_app = 'echo'
-gen_arg1 = gen_arg2 = ctrl_arg1 = ctrl_arg2 = player_arg1 = player_arg2 = analysis_arg1 = analysis_arg2 = 'hello'
+path_to_analysis_app = 'echo'
+analysis_arg1 = analysis_arg2 = 'hello'
 
-# TODO: rename for specific test case
-def do_smart_mic_test(min_testlevel, board, app_name, app_config, num_chans):
+def do_xvsm_doa_test(min_testlevel, board, app_name, app_config, num_chans,
+                     doa_dir):
 
     # Setup the tester which will determine and record the result
     tester = xmostest.CombinedTester(4, SmartMicTester("smart_mic_test", # TODO: rename for specific test case
                                                        app_name, app_config,
-                                                       num_chans))
+                                                       num_chans, doa_dir))
     tester.set_min_testlevel(min_testlevel)
 
     # Get the hardware resources to run the test on
@@ -97,16 +99,20 @@ def do_smart_mic_test(min_testlevel, board, app_name, app_config, num_chans):
                                         # build_env = env) TODO: fix or remove
 
     # Start the control app
+    path_to_ctrl_app = '../../../../lib_xvsm_support/host/bin/xvsm_usb'
     control_job = xmostest.run_on_pc(resources['host_primary'],
-                                     [path_to_ctrl_app, ctrl_arg1, ctrl_arg2],
+                                     [path_to_ctrl_app, 'doa_dir', str(doa_dir)],
                                      tester = tester[1],
                                      timeout = 1, # TODO: set this
                                      initial_delay = 0, # TODO: set this
                                      start_after_completed = [dut_job])
 
     # Start recording (and playback) on DUT
+    path_to_player_recorder = '../../../../sw_usb_audio/tests/smart_mic_play_record.py'
     dut_play_rec_job = xmostest.run_on_pc(resources['host_secondary'],
-                                          [path_to_mic_player, player_arg1, player_arg2],
+                                          ['python', path_to_player_recorder,
+                                          '--mic_data=../../../../sw_usb_audio/tests/recording.wav',
+                                          '--playback_data=../../../../sw_usb_audio/tests/test_audio/oliver_twist.wav'],
                                           tester = tester[2],
                                           timeout = 1, # TODO: set this
                                           initial_delay = 0, # TODO: set this
@@ -126,21 +132,10 @@ def runtest():
         {'board':'mic_array','app':'app_usb_aud_mic_array','app_configs':[
             {'config':'1i2o2_xvsm2000','chan_count':8,'testlevels':[
                 # TODO: Add desired config for each test level to these dictionaries
-                {'level':'smoke'},
-                {'level':'nightly'},
-                {'level':'weekend'}]},
-
-            {'config':'2i8o2','chan_count':8,'testlevels':[
-                # TODO: Add desired config for each test level to these dictionaries
-                {'level':'smoke'},
-                {'level':'nightly'},
-                {'level':'weekend'}]},
-
-            {'config':'1i8o2','chan_count':8,'testlevels':[
-                # TODO: Add desired config for each test level to these dictionaries
-                {'level':'smoke'},
-                {'level':'nightly'},
-                {'level':'weekend'}]}
+                {'level':'smoke', 'doa_dirs':[1,2,3,4,5,6]},
+                # {'level':'nightly'},
+                # {'level':'weekend'}
+                ]},
             ]
         },
     ]
@@ -159,6 +154,8 @@ def runtest():
             num_chans = config['chan_count']
             for run_type in config['testlevels']:
                 min_testlevel = run_type['level']
-                do_smart_mic_test(min_testlevel, board, app, config_name,
-                                  num_chans)
+                doa_dirs = run_type['doa_dirs']
+                for direction in doa_dirs:
+                    do_xvsm_doa_test(min_testlevel, board, app, config_name,
+                                      num_chans, direction)
                 # TODO: run other smart mic tests here
