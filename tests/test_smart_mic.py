@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import xmostest
+import re
 
 class SmartMicTester(xmostest.Tester):
     # The SmartMicTester checks for errors reported by all of the processes run
@@ -17,18 +18,19 @@ class SmartMicTester(xmostest.Tester):
 
     def run(self,
             dut_programming_job_output,
-            generator_job_output,
             control_job_output,
-            extern_sound_job_output,
             dut_playback_record_job_output,
-            result_analysis_job_output):
+            result_analysis_job_output
+            ):
         self.result = True
         self.failures = []
 
         # Check for any errors
-        for line in (dut_programming_job_output + generator_job_output +
-                     control_job_output + extern_sound_job_output +
-                     dut_playback_record_job_output + result_analysis_job_output):
+        for line in (dut_programming_job_output
+                     + control_job_output
+                     + dut_playback_record_job_output
+                     + result_analysis_job_output
+                     ):
             if re.match('.*ERROR|.*error|.*Error|.*Problem', line):
                 self.record_failure(line)
 
@@ -42,12 +44,11 @@ class SmartMicTester(xmostest.Tester):
                 self.record_failure("Expected xFLASH success message not seen")
 
         output = {'dut_programming_job_output':''.join(dut_programming_job_output),
-                  'generator_job_output':''.join(generator_job_output),
                   'control_job_output':''.join(control_job_output),
-                  'extern_sound_job_output':''.join(extern_sound_job_output),
                   'dut_playback_record_job_output':''.join(
                       dut_playback_record_job_output),
-                  'result_analysis_job_output':''.join(result_analysis_job_output)}
+                  'result_analysis_job_output':''.join(result_analysis_job_output)
+                  }
         if not self.result:
             output['failures'] = ''.join(self.failures)
         xmostest.set_test_result(self.product,
@@ -66,7 +67,7 @@ gen_arg1 = gen_arg2 = ctrl_arg1 = ctrl_arg2 = player_arg1 = player_arg2 = analys
 def do_smart_mic_test(min_testlevel, board, app_name, app_config, num_chans):
 
     # Setup the tester which will determine and record the result
-    tester = xmostest.CombinedTester(6, SmartMicTester("smart_mic_test", # TODO: rename for specific test case
+    tester = xmostest.CombinedTester(4, SmartMicTester("smart_mic_test", # TODO: rename for specific test case
                                                        app_name, app_config,
                                                        num_chans))
     tester.set_min_testlevel(min_testlevel)
@@ -95,45 +96,28 @@ def do_smart_mic_test(min_testlevel, board, app_name, app_config, num_chans):
                                         disable_debug_io = True)
                                         # build_env = env) TODO: fix or remove
 
-    # Run sound file generator
-    generator_job = xmostest.run_on_pc(resources['host_primary'],
-                                       [path_to_gen_app, gen_arg1, gen_arg2],
-                                       tester = tester[0],
-                                       timeout = 1, # TODO: set this
-                                       initial_delay = 0) # TODO: set this
-
     # Start the control app
     control_job = xmostest.run_on_pc(resources['host_primary'],
                                      [path_to_ctrl_app, ctrl_arg1, ctrl_arg2],
-                                     tester = tester[0],
+                                     tester = tester[1],
                                      timeout = 1, # TODO: set this
                                      initial_delay = 0, # TODO: set this
-                                     start_after_completed = [dut_job,
-                                                              generator_job])
-
-    # Start the external sound playback
-    ext_player_job = xmostest.run_on_pc(resources['host_secondary'],
-                                        [path_to_ext_player, player_arg1, player_arg2],
-                                        tester = tester[0],
-                                        timeout = 1, # TODO: set this
-                                        initial_delay = 0, # TODO: set this
-                                        start_after_started = [control_job])
+                                     start_after_completed = [dut_job])
 
     # Start recording (and playback) on DUT
-    dut_play_rec_job = xmostest.run_on_pc(resources['host_tertiary'],
+    dut_play_rec_job = xmostest.run_on_pc(resources['host_secondary'],
                                           [path_to_mic_player, player_arg1, player_arg2],
-                                          tester = tester[0],
+                                          tester = tester[2],
                                           timeout = 1, # TODO: set this
                                           initial_delay = 0, # TODO: set this
-                                          start_after_started = [control_job])
+                                          start_after_completed = [control_job])
 
-    # Once all test jobs have completed run the analysis application
-    xmostest.run_on_pc(resources['host_primary'],
+    # Once the recording has completed run the analysis application
+    xmostest.run_on_pc(resources['host_tertiary'],
                        [path_to_analysis_app, analysis_arg1, analysis_arg2],
-                       tester = tester[0],
-                       timeout = 1,
-                       start_after_completed = [control_job, ext_player_job,
-                                                dut_play_rec_job]) # TODO: set this
+                       tester = tester[3],
+                       timeout = 1, # TODO: set this
+                       start_after_completed = [dut_play_rec_job])
 
     xmostest.complete_all_jobs()
 
