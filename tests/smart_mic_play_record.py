@@ -10,7 +10,7 @@ CHUNK_SIZE = 1024
 FORMAT = pyaudio.paInt16
 FRAME_MAX_VALUE = 2 ** 15 - 1
 RATE = 16000
-RECORDING_CHANNELS = 7
+RECORDING_CHANNELS = 1
 PLAYING_CHANNELS = 1
 
 HPF_CUT_OFF_HZ = 50.0
@@ -36,8 +36,8 @@ def play_and_record(played_wav):
        print "Totally runied: Mic array not found"
        return
 
-    out_stream = p.open(format=FORMAT, channels=PLAYING_CHANNELS, rate=RATE, input=False, output=True, frames_per_buffer=CHUNK_SIZE, output_device_index = mic_array_index)
-    in_stream = p.open(format=FORMAT, channels=RECORDING_CHANNELS, rate=RATE, input=True, output=False, frames_per_buffer=CHUNK_SIZE, input_device_index = mic_array_index)
+    out_stream = p.open(format=FORMAT, channels=PLAYING_CHANNELS, rate=RATE, input=True, output=True, frames_per_buffer=CHUNK_SIZE, output_device_index = mic_array_index)
+    #in_stream = p.open(format=FORMAT, channels=RECORDING_CHANNELS, rate=RATE, input=True, output=False, frames_per_buffer=CHUNK_SIZE, input_device_index = mic_array_index)
 
     data_all = array('h')
 
@@ -45,7 +45,7 @@ def play_and_record(played_wav):
 
     for i in range(chunks):
         # little endian, signed short
-        data_chunk = array('h', in_stream.read(CHUNK_SIZE))
+        data_chunk = array('h', out_stream.read(CHUNK_SIZE))
         if byteorder == 'big':
             data_chunk.byteswap()
         data_all.extend(data_chunk)
@@ -56,8 +56,8 @@ def play_and_record(played_wav):
     sample_width = p.get_sample_size(FORMAT)
     out_stream.stop_stream()
     out_stream.close()
-    in_stream.stop_stream()
-    in_stream.close()
+    # # in_stream.stop_stream()
+    # in_stream.close()
     p.terminate()
     return sample_width, data_all
 
