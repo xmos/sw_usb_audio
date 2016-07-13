@@ -72,7 +72,7 @@ def do_xvsm_doa_test(min_testlevel, board, app_name, app_config, num_chans,
                      doa_dir):
 
     # Setup the tester which will determine and record the result
-    tester = xmostest.CombinedTester(4, SmartMicTester("smart_mic_test", # TODO: rename for specific test case
+    tester = xmostest.CombinedTester(4, SmartMicTester("xvsm_doa_test",
                                                        app_name, app_config,
                                                        num_chans, doa_dir))
     tester.set_min_testlevel(min_testlevel)
@@ -107,8 +107,8 @@ def do_xvsm_doa_test(min_testlevel, board, app_name, app_config, num_chans,
     control_job = xmostest.run_on_pc(resources['host_primary'],
                                      [ctrl_app_path, 'doa_dir', str(doa_dir)],
                                      tester = tester[1],
-                                     timeout = 1, # TODO: set this
-                                     initial_delay = 0, # TODO: set this
+                                     timeout = 1,
+                                     initial_delay = 0,
                                      start_after_completed = [dut_job])
 
     # Start recording (and playback) on DUT

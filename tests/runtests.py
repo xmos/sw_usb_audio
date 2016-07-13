@@ -95,9 +95,10 @@ Tests are run to check the following features:
     """
 Tests are performed by running the USB Audio reference design software on
 XMOS Microphone array hardware platforms. The mic array platform under test will
-be connected to a host PC to provide and record audio. Tests are run to test the following features:
+be connected to a host PC to provide and record audio. Tests are run to test the
+following features:
 
-    * TODO
+    * Direction of arrival
 """)
 
     xmostest.runtests()
