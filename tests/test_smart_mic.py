@@ -22,8 +22,7 @@ class SmartMicTester(xmostest.Tester):
     def run(self,
             dut_programming_job_output,
             control_job_output,
-            dut_playback_record_job_output,
-            result_analysis_job_output
+            dut_playback_record_job_output
             ):
         self.result = True
         self.failures = []
@@ -32,7 +31,6 @@ class SmartMicTester(xmostest.Tester):
         for line in (dut_programming_job_output
                      + control_job_output
                      + dut_playback_record_job_output
-                     + result_analysis_job_output
                      ):
             if re.match('.*ERROR|.*error|.*Error|.*Problem|.*ruined', line):
                 self.record_failure(line)
@@ -49,8 +47,7 @@ class SmartMicTester(xmostest.Tester):
         output = {'dut_programming_job_output':''.join(dut_programming_job_output),
                   'control_job_output':''.join(control_job_output),
                   'dut_playback_record_job_output':''.join(
-                      dut_playback_record_job_output),
-                  'result_analysis_job_output':''.join(result_analysis_job_output)
+                      dut_playback_record_job_output)
                   }
         if not self.result:
             output['failures'] = ''.join(self.failures)
@@ -62,17 +59,13 @@ class SmartMicTester(xmostest.Tester):
                                  env={},
                                  output=output)
 
-# TODO: remove these strings
-path_to_analysis_app = 'echo'
-analysis_arg1 = analysis_arg2 = 'hello'
-
 xmostest_to_uac_path = os.path.join('..', '..', '..', '..')
 
 def do_xvsm_doa_test(min_testlevel, board, app_name, app_config, num_chans,
                      doa_dir):
 
     # Setup the tester which will determine and record the result
-    tester = xmostest.CombinedTester(4, SmartMicTester("xvsm_doa_test",
+    tester = xmostest.CombinedTester(3, SmartMicTester("xvsm_doa_test",
                                                        app_name, app_config,
                                                        num_chans, doa_dir))
     tester.set_min_testlevel(min_testlevel)
@@ -133,13 +126,6 @@ def do_xvsm_doa_test(min_testlevel, board, app_name, app_config, num_chans,
                                           timeout = 300,
                                           initial_delay = 5,
                                           start_after_completed = [control_job])
-
-    # Once the recording has completed run the analysis application
-    xmostest.run_on_pc(resources['host_tertiary'],
-                       [path_to_analysis_app, analysis_arg1, analysis_arg2],
-                       tester = tester[3],
-                       timeout = 1, # TODO: set this
-                       start_after_completed = [dut_play_rec_job])
 
     xmostest.complete_all_jobs()
 
