@@ -35,7 +35,7 @@ def play_and_record(played_wav):
           break
 
     if mic_array_found == False:
-       print "Totally runied: Mic array not found"
+       print "Totally ruined: Mic array not found"
        return
 
     out_stream = p.open(format=FORMAT, channels=PLAYING_CHANNELS, rate=RATE, input=True, output=True, frames_per_buffer=CHUNK_SIZE)
