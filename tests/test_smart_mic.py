@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import xmostest
 import re
+import os.path
 
 class SmartMicTester(xmostest.Tester):
     # The SmartMicTester checks for errors reported by all of the processes run
@@ -65,6 +66,8 @@ class SmartMicTester(xmostest.Tester):
 path_to_analysis_app = 'echo'
 analysis_arg1 = analysis_arg2 = 'hello'
 
+xmostest_to_uac_path = os.path.join('..', '..', '..', '..')
+
 def do_xvsm_doa_test(min_testlevel, board, app_name, app_config, num_chans,
                      doa_dir):
 
@@ -80,8 +83,8 @@ def do_xvsm_doa_test(min_testlevel, board, app_name, app_config, num_chans,
     # TODO: run calibration jobs
 
     # Start the xCORE DUT
-    dut_binary = ('../%s/bin/%s/%s_%s.xe' %
-                  (app_name, app_config, app_name, app_config))
+    dut_binary = os.path.join('..', app_name, 'bin', app_config, '%s_%s.xe' %
+                              (app_name, app_config))
     # FIXME: DUT binary must currently be built before running tests
     # if app_config.endswith('_xvsm2000'):
     #     env = {'XVSM':'1'}
@@ -99,20 +102,27 @@ def do_xvsm_doa_test(min_testlevel, board, app_name, app_config, num_chans,
                                         # build_env = env) TODO: fix or remove
 
     # Start the control app
-    path_to_ctrl_app = '../../../../lib_xvsm_support/host/bin/xvsm_usb'
+    ctrl_app_path = os.path.join(xmostest_to_uac_path, 'lib_xvsm_support',
+                                 'host', 'bin', 'xvsm_usb')
     control_job = xmostest.run_on_pc(resources['host_primary'],
-                                     [path_to_ctrl_app, 'doa_dir', str(doa_dir)],
+                                     [ctrl_app_path, 'doa_dir', str(doa_dir)],
                                      tester = tester[1],
                                      timeout = 1, # TODO: set this
                                      initial_delay = 0, # TODO: set this
                                      start_after_completed = [dut_job])
 
     # Start recording (and playback) on DUT
-    path_to_player_recorder = '../../../../sw_usb_audio/tests/smart_mic_play_record.py'
+    uac_test_dir_path  = os.path.join(xmostest_to_uac_path, 'sw_usb_audio',
+                                      'tests')
+    player_recorder_path = os.path.join(uac_test_dir_path,
+                                        'smart_mic_play_record.py')
+    mic_data_path = os.path.join(uac_test_dir_path, 'recording.wav')
+    playback_data_path = os.path.join(uac_test_dir_path, 'test_audio',
+                                      'oliver_twist.wav')
     dut_play_rec_job = xmostest.run_on_pc(resources['host_secondary'],
-                                          ['python', path_to_player_recorder,
-                                          '--mic_data=../../../../sw_usb_audio/tests/recording.wav',
-                                          '--playback_data=../../../../sw_usb_audio/tests/test_audio/oliver_twist.wav'],
+                                          ['python', player_recorder_path,
+                                          '--mic_data', mic_data_path,
+                                          '--playback_data', playback_data_path],
                                           tester = tester[2],
                                           timeout = 300,
                                           initial_delay = 5,
