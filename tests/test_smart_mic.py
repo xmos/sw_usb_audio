@@ -78,7 +78,13 @@ def do_xvsm_doa_test(min_testlevel, board, app_name, app_config, num_chans,
     tester.set_min_testlevel(min_testlevel)
 
     # Get the hardware resources to run the test on
-    resources = xmostest.request_resource("%s_testrig" % board, tester)
+    resources = None
+    try:
+        resources = xmostest.request_resource("%s_testrig" % board, tester)
+    except xmostest.XmosTestError:
+        print "Unable to find required resources required to run test"
+        tester.shutdown()
+        return
 
     # TODO: run calibration jobs
 
