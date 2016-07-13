@@ -139,14 +139,16 @@ def do_xvsm_doa_test(min_testlevel, board, app_name, app_config, num_chans,
 
 def runtest():
     test_configs = [
-        {'board':'mic_array','app':'app_usb_aud_mic_array','app_configs':[
-            {'config':'1i2o2_xvsm2000','chan_count':8,'testlevels':[
-                # TODO: Add desired config for each test level to these dictionaries
-                {'level':'smoke', 'doa_dirs':[1,2,3,4,5,6]},
-                # {'level':'nightly'},
-                # {'level':'weekend'}
-                ]},
-            ]
+        {'board':'mic_array', 'app':'app_usb_aud_mic_array',
+         'app_configs':[
+            {'config':'1i2o2_xvsm2000', 'chan_count':8,
+             'testlevels':[
+                {'level':'smoke', 'doa_dirs':[3]},
+                {'level':'nightly', 'doa_dirs':[1, 2, 3, 4, 5, 6]},
+                {'level':'weekend', 'doa_dirs':[1, 2, 3, 4, 5, 6]}
+             ]
+            },
+         ]
         },
     ]
 
