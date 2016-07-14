@@ -70,8 +70,8 @@
 /***** Defines relating to USB descriptors etc *****/
 //:usb_defs
 #define VENDOR_ID          (0x20B1) /* XMOS VID */
-#define PID_AUDIO_2        (0x0008) 
-#define PID_AUDIO_1        (0x0009) 
+#define PID_AUDIO_2        (0x0010)
+#define PID_AUDIO_1        (0x0011)
 #define PRODUCT_STR_A2     "XMOS Microphone Array UAC2.0"
 #define PRODUCT_STR_A1     "XMOS Microphone Array UAC1.0"
 //:
