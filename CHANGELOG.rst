@@ -5,11 +5,15 @@ sw_usb_audio Change Log
 ------
 
   * ADDED:     app_usb_aud_mic_array now includes control of XVSM parameters
-    (see lib_xvsm_support /host for host control application)
-  * RESOLVED:  Incorrect build configurations in Eclipse project files for
+    (see lib_xvsm_support/host for host control applications)
+  * RESOLVED:  Incorrect build configurations in Eclipse project files in
     app_usb_aud_mic_array
 
   * Changes to dependencies:
+
+    - lib_voice: 0.0.2 -> 0.0.3
+
+      + Added DOA_NAIVE_DONT_THRESH to disable thresholding code
 
     - sc_usb_audio: 6.16.0 -> 6.18.0
 
@@ -117,7 +121,7 @@ sw_usb_audio Change Log
 
     - sc_usb_audio: 6.15.0 -> 6.15.1
 
-      + RESOLVED:   DAC data mis-alignment issue in TDM slave mode
+      + RESOLVED:   DAC data mis-alignment issue in TDM/I2S slave mode
       + CHANGE:     Updates to support API changes in lib_mic_array version 2.0
 
     - sc_xud: 2.4.0 -> 2.4.1
