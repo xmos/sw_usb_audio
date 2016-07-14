@@ -110,10 +110,12 @@ def do_xvsm_doa_test(min_testlevel, board, app_name, app_config, num_chans,
                                         # build_env = env) TODO: fix or remove
 
     # Start the control app
-    ctrl_app_path = os.path.join(xmostest_to_uac_path, 'lib_xvsm_support',
-                                 'host', 'bin', 'xvsm_usb')
+    ctrl_app_path = os.path.join(xmostest_to_uac_path, 'sw_usb_audio', 'tests',
+                                 'smart_mic_config.py')
     control_job = xmostest.run_on_pc(resources['host_primary'],
-                                     [ctrl_app_path, 'doa_dir', str(doa_dir)],
+                                     ['python', ctrl_app_path,
+                                      'agc_on', '0',
+                                      'doa_dir', str(doa_dir)],
                                      tester = tester[1],
                                      timeout = 1,
                                      initial_delay = 5,
