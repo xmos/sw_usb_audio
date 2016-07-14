@@ -135,9 +135,8 @@ def runtest():
          'app_configs':[
             {'config':'1i2o2_xvsm2000', 'chan_count':8,
              'testlevels':[
-                {'level':'smoke', 'doa_dirs':[3]},
-                {'level':'nightly', 'doa_dirs':[1, 2, 3, 4, 5, 6]},
-                {'level':'weekend', 'doa_dirs':[1, 2, 3, 4, 5, 6]}
+                {'level':'smoke', 'doa_dirs':[1]},
+                {'level':'nightly', 'doa_dirs':[2, 3, 4, 5, 6]}
              ]
             },
          ]
