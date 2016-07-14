@@ -10,6 +10,11 @@ sw_usb_audio Change Log
 
     - lib_device_control: Added dependency 2.0.0
 
+    - sc_usb_audio: 6.18.0 -> 6.18.1
+
+      + ADDED:      Vendor Specific control interface added to UAC1 descriptors
+        to allow control of XVSM params from Windows (via lib_usb)
+
 6.18.0
 ------
 
