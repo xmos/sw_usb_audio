@@ -4,6 +4,8 @@ sw_usb_audio Change Log
 6.18.1
 ------
 
+  * CHANGE:    Updated PIDs in app_usb_aud_mic_array
+
   * Changes to dependencies:
 
     - lib_device_control: Added dependency 2.0.0
