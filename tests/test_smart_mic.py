@@ -19,6 +19,14 @@ class SmartMicTester(xmostest.Tester):
                        }
         self.register_test(self.product, self.group, self.test, self.config)
 
+    def record_failure(self, failure_reason):
+        # Append a newline if there isn't one already
+        if not failure_reason.endswith('\n'):
+            failure_reason += '\n'
+        self.failures.append(failure_reason)
+        print ("Failure reason: %s" % failure_reason), # Print without newline
+        self.result = False
+
     def run(self,
             dut_programming_job_output,
             control_job_output,
