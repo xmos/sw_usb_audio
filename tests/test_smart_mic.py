@@ -116,7 +116,7 @@ def do_xvsm_doa_test(min_testlevel, board, app_name, app_config, num_chans,
                                      [ctrl_app_path, 'doa_dir', str(doa_dir)],
                                      tester = tester[1],
                                      timeout = 1,
-                                     initial_delay = 0,
+                                     initial_delay = 5,
                                      start_after_completed = [dut_job])
 
     # Start recording (and playback) on DUT
