@@ -4,6 +4,10 @@ sw_usb_audio Change Log
 6.18.1
 ------
 
+  * Changes to dependencies:
+
+    - lib_device_control: Added dependency 2.0.0
+
 6.18.0
 ------
 
