@@ -93,21 +93,21 @@ def do_xvsm_doa_test(min_testlevel, board, app_name, app_config, num_chans,
     # Start the xCORE DUT
     dut_binary = os.path.join('..', app_name, 'bin', app_config, '%s_%s.xe' %
                               (app_name, app_config))
-    # FIXME: DUT binary must currently be built before running tests
-    # if app_config.endswith('_xvsm2000'):
-    #     env = {'XVSM':'1'}
-    # else:
-    #     env = {}
+    if app_config.endswith('_xvsm2000'):
+        env = {'XVSM':'1'}
+    else:
+        env = {}
     if xmostest.testlevel_is_at_least(xmostest.get_testlevel(), 'weekend'):
         dut_job = xmostest.flash_xcore(resources['dut'], dut_binary,
-                                       do_xe_prebuild = False, # FIXME
-                                       tester = tester[0])
+                                       do_xe_prebuild = True,
+                                       tester = tester[0],
+                                       build_env = env)
     else:
         dut_job = xmostest.run_on_xcore(resources['dut'], dut_binary,
-                                        do_xe_prebuild = False, # FIXME
+                                        do_xe_prebuild = True,
                                         tester = tester[0],
-                                        disable_debug_io = True)
-                                        # build_env = env) TODO: fix or remove
+                                        disable_debug_io = True,
+                                        build_env = env)
 
     # Start the control app
     ctrl_app_path = os.path.join(xmostest_to_uac_path, 'sw_usb_audio', 'tests',
