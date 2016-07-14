@@ -88,8 +88,6 @@ def do_xvsm_doa_test(min_testlevel, board, app_name, app_config, num_chans,
         tester.shutdown()
         return
 
-    # TODO: run calibration jobs
-
     # Start the xCORE DUT
     dut_binary = os.path.join('..', app_name, 'bin', app_config, '%s_%s.xe' %
                               (app_name, app_config))
@@ -172,4 +170,3 @@ def runtest():
                 for direction in doa_dirs:
                     do_xvsm_doa_test(min_testlevel, board, app, config_name,
                                       num_chans, direction)
-                # TODO: run other smart mic tests here
