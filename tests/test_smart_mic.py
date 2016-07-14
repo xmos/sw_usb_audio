@@ -40,7 +40,8 @@ class SmartMicTester(xmostest.Tester):
                      + control_job_output
                      + dut_playback_record_job_output
                      ):
-            if re.match('.*ERROR|.*error|.*Error|.*Problem|.*ruined', line):
+            if re.match('.*ERROR|.*error|.*Error|.*Problem|.*ruined|could not',
+                        line):
                 self.record_failure(line)
 
         if xmostest.testlevel_is_at_least(xmostest.get_testlevel(), 'weekend'):
