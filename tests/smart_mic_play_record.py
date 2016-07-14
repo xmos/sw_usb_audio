@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 import argparse
+import os.path
+import time
 from array import array
 from struct import pack
 from sys import byteorder
@@ -91,8 +93,14 @@ def record_to_file(recorded_wav, played_wav):
 
 if __name__ == '__main__':
     argparser = argparse.ArgumentParser(description = "Smart mic play/record script")
-    argparser.add_argument('--mic_data', metavar='recording.wav', help ='The file to capture mic data to')
-    argparser.add_argument('--playback_data', metavar='test_audio/oliver_twist.wav', help ='The file to play from')
+    argparser.add_argument('--mic_data',
+                           metavar='recording.wav',
+                           default='%s_%s.wav' % ('recording', time.strftime("%Y%m%d-%H%M%S")),
+                           help ='The file to capture mic data to')
+    argparser.add_argument('--playback_data',
+                           metavar=os.path.join('test_audio','audio_book.wav'),
+                           default=os.path.join('test_audio','oliver_twist.wav'),
+                           help ='The file to play from')
     args = argparser.parse_args()
 
     record_to_file(args.mic_data, args.playback_data)
