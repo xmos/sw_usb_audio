@@ -191,6 +191,10 @@ void UserBufferManagement(unsigned sampsFromUsbToAudio[], unsigned sampsFromAudi
     sampsFromAudioToUsb[0] = dspBuffer_out_usb_local[0];
     sampsFromAudioToUsb[1] = dspBuffer_out_usb_local[0];
 
+#ifdef XVSM_REF_CHANNEL
+    sampsFromAudioToUsb[XVSM_REF_CHANNEL] = dspBuffer_in_adc_local[0];
+#endif
+
     /* Read out of DSP buffer - samples for I2S */
     sampsFromUsbToAudio[0] = dspBuffer_out_dac_local[0];
     sampsFromUsbToAudio[1] = dspBuffer_out_dac_local[0];
