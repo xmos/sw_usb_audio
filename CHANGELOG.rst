@@ -1,6 +1,20 @@
 sw_usb_audio Change Log
 =======================
 
+6.18.1
+------
+
+  * CHANGE:    Updated PIDs in app_usb_aud_mic_array
+
+  * Changes to dependencies:
+
+    - lib_device_control: Added dependency 2.0.0
+
+    - sc_usb_audio: 6.18.0 -> 6.18.1
+
+      + ADDED:      Vendor Specific control interface added to UAC1 descriptors
+        to allow control of XVSM params from Windows (via lib_usb)
+
 6.18.0
 ------
 
@@ -10,6 +24,10 @@ sw_usb_audio Change Log
     app_usb_aud_mic_array
 
   * Changes to dependencies:
+
+    - lib_voice: 0.0.2 -> 0.0.3
+
+      + Added DOA_NAIVE_DONT_THRESH to disable thresholding code
 
     - sc_usb_audio: 6.16.0 -> 6.18.0
 
@@ -117,7 +135,7 @@ sw_usb_audio Change Log
 
     - sc_usb_audio: 6.15.0 -> 6.15.1
 
-      + RESOLVED:   DAC data mis-alignment issue in TDM slave mode
+      + RESOLVED:   DAC data mis-alignment issue in TDM/I2S slave mode
       + CHANGE:     Updates to support API changes in lib_mic_array version 2.0
 
     - sc_xud: 2.4.0 -> 2.4.1
