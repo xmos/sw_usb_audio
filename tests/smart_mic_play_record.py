@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 import argparse
-import os.path
-import time
 from array import array
 from struct import pack
 from sys import byteorder
@@ -9,6 +7,7 @@ import copy
 import pyaudio
 import wave
 import numpy as np
+import datetime
 
 CHUNK_SIZE = 1024
 FORMAT = pyaudio.paInt16
@@ -78,13 +77,18 @@ def analyse(data):
         print str(chan) +" " + str(energy)
     return
 
-def record_to_file(recorded_wav, played_wav):
+def record_to_file(test_dir_path, output_file_name, played_wav):
     sample_width, data = play_and_record(played_wav)
 
     analyse(data)
+    
+    ts = datetime.now().strftime('%Y-%m-%d-%H-%M-%S')
+    
+    output_file_name = output_file_name + str(ts) + '.wav'
+    mic_data_path = os.path.join(test_dir_path, output_file_name)
 
     data = pack('<' + ('h' * len(data)), *data)
-    wave_file = wave.open(recorded_wav, 'wb')
+    wave_file = wave.open(mic_data_path, 'wb')
     wave_file.setnchannels(RECORDING_CHANNELS)
     wave_file.setsampwidth(sample_width)
     wave_file.setframerate(RATE)
@@ -93,14 +97,9 @@ def record_to_file(recorded_wav, played_wav):
 
 if __name__ == '__main__':
     argparser = argparse.ArgumentParser(description = "Smart mic play/record script")
-    argparser.add_argument('--mic_data',
-                           metavar='recording.wav',
-                           default='%s_%s.wav' % ('recording', time.strftime("%Y%m%d-%H%M%S")),
-                           help ='The file to capture mic data to')
-    argparser.add_argument('--playback_data',
-                           metavar=os.path.join('test_audio','audio_book.wav'),
-                           default=os.path.join('test_audio','oliver_twist.wav'),
-                           help ='The file to play from')
+    argparser.add_argument('--test_dir_path', metavar='.', help ='Path to where the recording output should go')
+    argparser.add_argument('--output_file_name', metavar='recording.wav', help ='The file name to capture mic data to')
+    argparser.add_argument('--playback_file', metavar='test_audio/oliver_twist.wav', help ='The file to play from')
     args = argparser.parse_args()
 
-    record_to_file(args.mic_data, args.playback_data)
+    record_to_file(args.test_dir_path, args.output_file_name, args.playback_file)

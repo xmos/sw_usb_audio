@@ -124,13 +124,17 @@ def do_xvsm_doa_test(min_testlevel, board, app_name, app_config, num_chans,
                                       'tests')
     player_recorder_path = os.path.join(uac_test_dir_path,
                                         'smart_mic_play_record.py')
-    mic_data_path = os.path.join(uac_test_dir_path, 'recording.wav')
-    playback_data_path = os.path.join(uac_test_dir_path, 'test_audio',
+    
+    #TODO The file name should describe the test
+    mic_data_file_name = 'recording.wav'   
+              
+    playback_file_path = os.path.join(uac_test_dir_path, 'test_audio',
                                       'oliver_twist.wav')
     dut_play_rec_job = xmostest.run_on_pc(resources['host_secondary'],
                                           ['python', player_recorder_path,
-                                          '--mic_data', mic_data_path,
-                                          '--playback_data', playback_data_path],
+                                          '--output_path', uac_test_dir_path,
+                                          '--output_file_name',mic_data_file_name,
+                                          '--playback_file', playback_file_path],
                                           tester = tester[2],
                                           timeout = 300,
                                           initial_delay = 5,
