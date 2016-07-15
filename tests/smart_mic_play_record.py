@@ -40,8 +40,8 @@ def play_and_record(played_wav):
        print "Totally ruined: Mic array not found"
        return
 
-    out_stream = p.open(format=FORMAT, channels=PLAYING_CHANNELS, rate=RATE, input=True, output=True, frames_per_buffer=CHUNK_SIZE)
     in_stream = p.open(format=FORMAT, channels=RECORDING_CHANNELS, rate=RATE, input=True, output=False, frames_per_buffer=CHUNK_SIZE, input_device_index = mic_array_index)
+    out_stream = p.open(format=FORMAT, channels=PLAYING_CHANNELS, rate=RATE, input=True, output=True, frames_per_buffer=CHUNK_SIZE)
 
     data_all = array('h')
 
