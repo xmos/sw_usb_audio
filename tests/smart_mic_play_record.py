@@ -8,7 +8,7 @@ import copy
 import pyaudio
 import wave
 import numpy as np
-import datetime
+from datetime import datetime
 
 CHUNK_SIZE = 1024
 FORMAT = pyaudio.paInt16
