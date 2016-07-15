@@ -132,7 +132,7 @@ def do_xvsm_doa_test(min_testlevel, board, app_name, app_config, num_chans,
                                       'oliver_twist.wav')
     dut_play_rec_job = xmostest.run_on_pc(resources['host_secondary'],
                                           ['python', player_recorder_path,
-                                          '--output_path', uac_test_dir_path,
+                                          '--test_dir_path', uac_test_dir_path,
                                           '--output_file_name',mic_data_file_name,
                                           '--playback_file', playback_file_path],
                                           tester = tester[2],
