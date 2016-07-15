@@ -11,7 +11,7 @@ BUILD_FLAGS     = -DFLASH_MAX_UPGRADE_SIZE=64*1024 -fcomment-asm -Xmapper --map 
 # The USED_MODULES variable lists other module used by the application. These
 # modules will extend the SOURCE_DIRS, INCLUDE_DIRS and LIB_DIRS variables.
 # Modules are expected to be in the directory above the BASE_DIR directory.
-USED_MODULES = lib_mic_array lib_logging module_dfu module_i2c_shared module_i2c_single_port module_usb_audio module_usb_device module_usb_midi module_usb_shared module_xud 
+USED_MODULES = lib_mic_array lib_logging module_dfu module_i2c_shared module_i2c_single_port module_usb_audio module_usb_device module_usb_midi module_usb_shared module_xud lib_voice lib_device_control
 
 XVSM ?= 0
 
@@ -36,10 +36,10 @@ INCLUDE_ONLY_IN_1i8o2_summing =
 
 ifeq ($(XVSM), 1)
 
-XCC_FLAGS_1i2o2_xvsm2000 = $(BUILD_FLAGS) -DAUDIO_CLASS=1 -DNUM_USB_CHAN_IN=2 -DNUM_USB_CHAN_OUT=2 -DNUM_USB_CHAN_IN_FS=2 -DNUM_USB_CHAN_OUT_FS=2 -DSTREAM_FORMAT_INPUT_1_RESOLUTION_BITS=16 -DMAX_FREQ=16000 -DMAX_FREQ_FS=16000 -DMIN_FREQ=16000 -DRUN_DSP_TASK=1 -DXVSM=1 -DUAC_FORCE_FEEDBACK_EP=1
+XCC_FLAGS_1i2o2_xvsm2000 = $(BUILD_FLAGS) -DAUDIO_CLASS=1 -DNUM_USB_CHAN_IN=2 -DNUM_USB_CHAN_OUT=2 -DNUM_USB_CHAN_IN_FS=2 -DNUM_USB_CHAN_OUT_FS=2 -DSTREAM_FORMAT_INPUT_1_RESOLUTION_BITS=16 -DMAX_FREQ=16000 -DMAX_FREQ_FS=16000 -DMIN_FREQ=16000 -DRUN_DSP_TASK=1 -DXVSM=1 -DUAC_FORCE_FEEDBACK_EP=1 -DDOA_NAIVE_DONT_THRESH=1
 INCLUDE_ONLY_IN_1i2o2_xvsm2000 = 
 
-USED_MODULES += lib_xvsm_support lib_device_control
+USED_MODULES += lib_xvsm_support
 endif
 
 MODULE_LIBRARIES = xud_x200
