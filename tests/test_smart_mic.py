@@ -7,7 +7,8 @@ class SmartMicTester(xmostest.Tester):
     # The SmartMicTester checks for errors reported by all of the processes run
     # during the test. If no errors are seen the test will be marked as a pass.
 
-    def __init__(self, test, app_name, app_config, num_chans, doa_dir):
+    def __init__(self, test, app_name, app_config, num_chans, doa_dir,
+                 playback_file_name):
         super(SmartMicTester, self).__init__()
         self.product = "sw_usb_audio"
         self.group = "smart_mic_tests"
@@ -15,7 +16,8 @@ class SmartMicTester(xmostest.Tester):
         self.config = {'app_name':app_name,
                        'app_config':app_config,
                        'num_chans':num_chans,
-                       'doa_dir':doa_dir
+                       'doa_dir':doa_dir,
+                       'playback_file_name':playback_file_name
                        }
         self.register_test(self.product, self.group, self.test, self.config)
 
@@ -71,12 +73,13 @@ class SmartMicTester(xmostest.Tester):
 xmostest_to_uac_path = os.path.join('..', '..', '..', '..')
 
 def do_xvsm_doa_test(min_testlevel, board, app_name, app_config, num_chans,
-                     doa_dir):
+                     doa_dir, playback_file_name):
 
     # Setup the tester which will determine and record the result
     tester = xmostest.CombinedTester(3, SmartMicTester("xvsm_doa_test",
                                                        app_name, app_config,
-                                                       num_chans, doa_dir))
+                                                       num_chans, doa_dir,
+                                                       playback_file_name))
     tester.set_min_testlevel(min_testlevel)
 
     # Get the hardware resources to run the test on
@@ -128,7 +131,7 @@ def do_xvsm_doa_test(min_testlevel, board, app_name, app_config, num_chans,
     mic_data_file_name = 'recording_doa_dir_%s' % doa_dir
 
     playback_file_path = os.path.join(uac_test_dir_path, 'test_audio',
-                                      'oliver_twist.wav')
+                                      playback_file_name)
     dut_play_rec_job = xmostest.run_on_pc(resources['host_secondary'],
                                           ['python', player_recorder_path,
                                           '--test_dir_path', uac_test_dir_path,
@@ -147,8 +150,10 @@ def runtest():
          'app_configs':[
             {'config':'1i2o2_xvsm2000', 'chan_count':8,
              'testlevels':[
-                {'level':'smoke', 'doa_dirs':[1]},
-                {'level':'nightly', 'doa_dirs':[2, 3, 4, 5, 6]}
+                {'level':'smoke', 'doa_dirs':[1],#, 2, 3, 4, 5, 6],
+                 'playback_files':['oliver_twist.wav']},
+                {'level':'nightly', 'doa_dirs':[1],#, 2, 3, 4, 5, 6],
+                 'playback_files':['two_cities.wav']}
              ]
             },
          ]
@@ -169,7 +174,9 @@ def runtest():
             num_chans = config['chan_count']
             for run_type in config['testlevels']:
                 min_testlevel = run_type['level']
+                playback_files = run_type['playback_files']
                 doa_dirs = run_type['doa_dirs']
-                for direction in doa_dirs:
-                    do_xvsm_doa_test(min_testlevel, board, app, config_name,
-                                      num_chans, direction)
+                for pb_file in playback_files:
+                    for direction in doa_dirs:
+                        do_xvsm_doa_test(min_testlevel, board, app, config_name,
+                                         num_chans, direction, pb_file)
