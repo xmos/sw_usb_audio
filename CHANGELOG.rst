@@ -1,8 +1,63 @@
 sw_usb_audio Change Log
 =======================
 
+6.18.0
+------
+
+  * ADDED:     app_usb_aud_mic_array now includes control of XVSM parameters
+    (see lib_xvsm_support/host for host control applications)
+  * RESOLVED:  Incorrect build configurations in Eclipse project files in
+    app_usb_aud_mic_array
+
+  * Changes to dependencies:
+
+    - sc_usb_audio: 6.16.0 -> 6.18.0
+
+      + ADDED:      Call to VendorRequests() and VendorRequests_Init() to
+        Endpoint 0
+      + ADDED:      VENDOR_REQUESTS_PARAMS define to allow for custom parameters
+        to VendorRequest calls
+      + RESOLVED:   FIR gain compensation set appropriately in lib_mic_array
+        usage
+      + CHANGE:     i_dsp interface renamed i_audManage
+
+    - sc_xud: 2.4.1 -> 2.4.2
+
+      + CHANGE:     VBUS connection to xCORE-200 no longer required when using
+        XUD_PWR_BUS i.e. for bus-powered devices. This removes the need to any
+        protection circuitry and allows for a reduced BOM. Note, VBUS should
+        still be present for self powered devices in order to pass USB
+        compliance tests.
+
+6.17.0
+------
+
+  * CHANGE:    app_usb_aud_mic array: Modifications to XVSM processing
+    integration
+  * CHANGE:    app_usb_aud_mic_array: AEC and NS enabled by default
+  * CHANGE:    app_usb_aud_mic_array: XVSM VAD output used when DOA enabled
+
+  * Changes to dependencies:
+
+    - lib_voice: 0.0.1 -> 0.0.2
+
+      + Simplification/optimisation of Naive DOA
+
+6.16.1
+------
+
+  * CHANGE:    Feedback endpoint forcefully enabled in UAC1 build configs of
+    app_usb_aud_mic array (workaround for Windows issue)
+  * CHANGE:    XVSM processing has AEC enabled by default.
+  * CHANGE:    Default gain increased for processed microphone data
+
 6.16.0
 ------
+
+  * ADDED:   XVSM enabled build config added to app_usb_mic_array. Includes
+    example usage of UserBufferManagement() and i_dsp interface
+  * CHANGE:  PDM Microphone processing examples use new interface (previously
+    functional call)
 
   * Changes to dependencies:
 
@@ -10,6 +65,18 @@ sw_usb_audio Change Log
 
       + Updated AN00221 to use new lib_dsp API for FFTs
       + Updates required for latest lib_mic_array_board_support API
+
+    - lib_voice: Added dependency 0.0.1
+
+    - sc_usb_audio: 6.15.2 -> 6.16.0
+
+      + ADDED:      Call to UserBufferManagement()
+      + ADDED:      PDM_MIC_INDEX in devicedefines.h and usage
+      + CHANGE:     pdm_buffer() task now combinable
+      + CHANGE:     Audio I/O task now takes i_dsp interface as a parameter
+      + CHANGE:     Removed built-in support for A/U series internal ADC
+      + CHANGE:     User PDM Microphone processing now uses an interface
+        (previously function call)
 
     - sc_usb_device: 1.3.8 -> 1.3.9
 
@@ -26,7 +93,7 @@ sw_usb_audio Change Log
 
     - sc_usb_audio: 6.15.1 -> 6.15.2
 
-      + RESOLVED:  interrupt.h (used in audio buffering) now compatible with
+      + RESOLVED:   interrupt.h (used in audio buffering) now compatible with
         xCORE-200 ABI
 
 6.15.1

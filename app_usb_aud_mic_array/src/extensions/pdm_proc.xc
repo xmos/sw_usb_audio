@@ -1,10 +1,13 @@
 
+#include "customdefines.h"
 #include <platform.h>
 #include <xs1.h>
-#include <stdlib.h>
 #include <stdio.h>
 #include "mic_array.h"
+#include "xua_pdm_mic.h"
+#include <print.h>
 
+#if defined(PDM_PROC_SIMPLE) || defined(PDM_PROC_SUMMING)
 /** Structure to describe the LED ports*/
 typedef struct {
     out port p_led0to7;     /**<LED 0 to 7. */
@@ -20,14 +23,12 @@ typedef struct {
 #define LED_PORTS     {PORT_LED0_TO_7, PORT_LED8, PORT_LED9, PORT_LED10_TO_12, PORT_LED_OEN}
 
 on tile[0] : in port p_buttons     = BUTTON_PORTS;
-on tile[0] : led_ports_t leds = LED_PORTS;
+on tile[0] : led_ports_t leds      = LED_PORTS;
 
-unsigned gain = 1;
-
-void set_led_brightness(unsigned ledNo, unsigned ledVal)
+void set_led(unsigned ledNo, unsigned ledVal)
 {
     static int ledVals[LED_COUNT] = {0};
-    
+   
     ledVals[ledNo] = ledVal;
 
     unsigned d = 0;
@@ -47,33 +48,114 @@ void set_led_brightness(unsigned ledNo, unsigned ledVal)
     leds.p_led10to12 <: d;
 }
 
-#define BUTTON_COUNT 1000
+void SetMicLeds(int micNum, int val)
+{
+    int ledNum1 = micNum*2-2;
+    int ledNum2 = micNum*2-1;
 
-unsigned summed = 0;
+    if(ledNum2 < 0)
+        ledNum2 = 11;
+    
+    if(ledNum1 < 0)
+        ledNum1 = 11;
+
+    set_led(ledNum1, val);
+    set_led(ledNum2, val);
+}
+#endif
+
+
+#ifdef PDM_PROC_SIMPLE
+
+/* Most basic processing example */
+#ifndef MIC_PROCESSING_USE_INTERACE
+void user_pdm_init()
+{
+    /* do nothing */
+}
+#endif
+
+#ifdef MIC_PROCESSING_USE_INTERFACE
+[[combinable]]
+void user_pdm_process(server mic_process_if i_mic_data)
+#else
+void user_pdm_process(mic_array_frame_time_domain * unsafe audio, int output[])
+#endif
+{
+#ifdef MIC_PROCESSING_USE_INTERFACE
+    while(1)
+    {
+        select
+        {
+            case i_mic_data.init():
+                /* Do nothing */
+                break;
+
+            case i_mic_data.transfer_buffers(mic_array_frame_time_domain * unsafe audio, int output[]):
+#endif
+            for(unsigned i=0; i<7; i++)
+            unsafe{
+                /* Simply copy input buffer to output buffer unmodified */
+                output[i] += audio->data[i][0];
+            }
+#ifdef MIC_PROCESSING_USE_INTERFACE
+            break;
+        } // select{}
+    }  // while(1)
+#endif
+}
+
+#elif PDM_PROC_SUMMING
 
 void user_pdm_init()
 {
-
     /* Turn center LED on */
     for(int i = 0; i < 12; i++)
-        set_led_brightness(i, 0);
+        set_led(i, 0);
 
-    set_led_brightness(12, 255);
+    set_led(12, 255);
     
     leds.p_leds_oen <: 1;
     leds.p_leds_oen <: 0;
 }
 
-unsafe void user_pdm_process(mic_array_frame_time_domain * unsafe audio, int output[])
+#define BUTTON_COUNT 1000
+
+#ifdef MIC_PROCESSING_USE_INTERFACE
+[[combinable]]
+void user_pdm_process(server mic_process_if i_mic_data)
 {
     /* Very simple button control code for example */
-    static unsigned count = BUTTON_COUNT;
+    unsigned count = 0;
+    unsigned oldButtonVal = 0;
+    unsigned summed = 0;
+    unsigned gain = 1;
+#else
+void user_pdm_process(mic_array_frame_time_domain * unsafe audio, int output[])
+{
+    /* Very simple button control code for example */
+    static unsigned count = 0;
     static unsigned oldButtonVal = 0;
-     
-    count--;
-    if(count == 0)
+    static unsigned summed = 0;
+    static unsigned gain = 1;
+#endif
+  
+#ifdef MIC_PROCESSING_USE_INTERFACE
+while(1)
+{
+select
+{
+    case i_mic_data.init():
+        user_pdm_init();
+        break;
+
+    case i_mic_data.transfer_buffers(mic_array_frame_time_domain * unsafe audio, int output[]):
+#endif
+
+    count++;
+    if(count == BUTTON_COUNT)
     {
-        count = BUTTON_COUNT;
+        count = 0;
         unsigned char buttonVal;
         p_buttons :> buttonVal;
 
@@ -88,13 +170,13 @@ unsafe void user_pdm_process(mic_array_frame_time_domain * unsafe audio, int out
                     if(summed)  
                     {
                         for(int i = 0; i < 13; i++)
-                            set_led_brightness(i, 255);
+                            set_led(i, 255);
                     }
                     else
                     {
                          /* Keep center LED on */
                          for(int i = 0; i < 12; i++)
-                            set_led_brightness(i, 0);
+                            set_led(i, 0);
                     }
                     break;
 
@@ -105,6 +187,8 @@ unsafe void user_pdm_process(mic_array_frame_time_domain * unsafe audio, int out
 
                 case 0xB:  /* Button C */
                     gain--;
+                    if(gain < 0)
+                        gain = 0;
                     printf("Gain Down: %d\n", gain);
                     break;
 
@@ -120,7 +204,7 @@ unsafe void user_pdm_process(mic_array_frame_time_domain * unsafe audio, int out
         /* Sum up all the mics */
         output[0] = 0;
         for(unsigned i=0; i<7; i++)
-        {
+        unsafe{
             output[0] += audio->data[i][0];
         }
 
@@ -129,7 +213,7 @@ unsafe void user_pdm_process(mic_array_frame_time_domain * unsafe audio, int out
 
         /* Apply gain to individual mics */
         for(unsigned i=0; i<7; i++)
-        {
+        unsafe{
             int x = audio->data[i][0];
             x*=gain;
             output[i+1] = x;
@@ -139,11 +223,17 @@ unsafe void user_pdm_process(mic_array_frame_time_domain * unsafe audio, int out
     {
         /* Send individual mics (with gain applied) */        
         for(unsigned i=0; i<7; i++)
-        {
+        unsafe{
             int x = audio->data[i][0];
             x *=gain;
             output[i] = x;
         }
     }
-}
 
+#ifdef MIC_PROCESSING_USE_INTERFACE
+    break;
+    }// select{}
+}// while(1)
+#endif
+}
+#endif

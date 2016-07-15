@@ -6,13 +6,6 @@
  */
 #ifndef _CUSTOMDEFINES_H_
 #define _CUSTOMDEFINES_H_
-#endif
-
-/* Prototype for our custom genclock() task */
-void genclock();
-
-#define USER_MAIN_CORES \
-            on tile[1] : genclock();
 
 /*
  * Device configuration option defines to override default defines found devicedefines.h
@@ -61,6 +54,7 @@ void genclock();
 #else
 #define MIN_FREQ           (11025)
 #endif
+#endif
 
 /* Maximum frequency device runs at */
 #ifndef MAX_FREQ
@@ -81,5 +75,7 @@ void genclock();
 #define PRODUCT_STR_A2     "XMOS Microphone Array UAC2.0"
 #define PRODUCT_STR_A1     "XMOS Microphone Array UAC1.0"
 //:
+
+#include "usermain.h"
 
 #endif
