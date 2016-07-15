@@ -128,8 +128,8 @@ def do_xvsm_doa_test(min_testlevel, board, app_name, app_config, num_chans,
     player_recorder_path = os.path.join(uac_test_dir_path,
                                         'smart_mic_play_record.py')
 
-    mic_data_file_name = 'recording_%s_doa_dir_%s' % (playback_file_name,
-                                                      doa_dir)
+    mic_data_file_name = 'recording_%s_doa_dir_%s_' % (playback_file_name,
+                                                       doa_dir)
 
     playback_file_path = os.path.join(uac_test_dir_path, 'test_audio',
                                       playback_file_name)
