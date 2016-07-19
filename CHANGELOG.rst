@@ -46,6 +46,9 @@ sw_usb_audio Change Log
         protection circuitry and allows for a reduced BOM. Note, VBUS should
         still be present for self powered devices in order to pass USB
         compliance tests.
+      + RESOLVED:   Device might hang during resume if host follows resume
+        signality with activity after a time close to specified minimum of
+        1.33us
 
 6.17.0
 ------
