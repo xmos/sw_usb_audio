@@ -44,7 +44,10 @@ def runtest():
                 dirnames.remove(dir)
         # Search for bcdDevice defines in the source files
         for filename in files:
-            with open(os.path.join(dirpath, filename), 'r') as f:
+            path = os.path.join(dirpath, filename)
+            if os.path.islink(path):
+                continue
+            with open(path, 'r') as f:
                 for line in f:
                     m = re.match('\s*#define\s+BCD_DEVICE_(J|M|N)\s+(\d+)',
                                  line)
