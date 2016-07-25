@@ -77,13 +77,13 @@ def analyse_voice(data, sample_rate):
             energy += abs(channel_frequencies[b])
         print str(chan) +" " + str(energy)
     return
-    
+
 def smooth(y, box_pts):
     box = np.ones(box_pts)/box_pts
     y_smooth = np.convolve(y, box, mode='same')
     return y_smooth
-    
-def analyse_sine(data, sample_rate, test_dir_path):
+
+def analyse_sine(data, sample_rate, test_dir_path, output_file_name):
     #do a real fft
 
     window_length = 4096
@@ -114,20 +114,22 @@ def analyse_sine(data, sample_rate, test_dir_path):
         for i in range(len(max_response)):
            x.append(int(sample_rate*i/window_length))
         plt.plot(x, 20*np.log10(smooth(max_response, 5)/(window_length**2)))
-        plt.savefig(os.path.join(test_dir_path, 'sweep_'+str(sample_rate) +'.jpg'), format='jpg', dpi=400)
+        plt.savefig(os.path.join(test_dir_path, 'plot_' + output_file_name +'.jpg'), format='jpg', dpi=400)
 
     return
 
 def record_to_file(test_dir_path, output_file_name, played_wav, analysis_type, sample_rate):
     sample_width, data = play_and_record(played_wav, sample_rate)
 
+    ts = datetime.now().strftime('%Y-%m-%d-%H-%M-%S')
+    output_file_name = output_file_name + '_' + str(ts)
+
     if analysis_type is 'voice':
         analyse_voice(data, sample_rate)
     else:
-        analyse_sine(data, sample_rate, test_dir_path)
-    ts = datetime.now().strftime('%Y-%m-%d-%H-%M-%S')
+        analyse_sine(data, sample_rate, test_dir_path, output_file_name)
 
-    output_file_name = output_file_name + str(ts) + '.wav'
+    output_file_name = output_file_name + '.wav'
     mic_data_path = os.path.join(test_dir_path, output_file_name)
 
     data = pack('<' + ('h' * len(data)), *data)

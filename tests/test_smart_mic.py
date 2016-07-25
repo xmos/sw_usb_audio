@@ -130,8 +130,9 @@ def do_xvsm_doa_test(min_testlevel, board, app_name, app_config, num_chans,
     player_recorder_path = os.path.join(uac_test_dir_path,
                                         'smart_mic_play_record.py')
 
-    mic_data_file_name = 'recording_%s_doa_dir_%s_' % (playback_file_name,
-                                                       doa_dir)
+    mic_data_file_name = 'recording_%s_%s_doa_dir_%s' % (app_config,
+                                                          playback_file_name,
+                                                          doa_dir)
 
     playback_file_path = os.path.join(uac_test_dir_path, 'test_audio',
                                       playback_file_name)
@@ -214,7 +215,8 @@ def do_frequency_sweep_test(min_testlevel, board, app_name, app_config,
     player_recorder_path = os.path.join(uac_test_dir_path,
                                         'smart_mic_play_record.py')
 
-    mic_data_file_name = 'recording_frequency_sweep_%s_Hz_' % sample_rate
+    mic_data_file_name = 'recording_%s_frequency_sweep_%s_Hz' % (app_config,
+                                                                  sample_rate)
 
     playback_file_path = os.path.join(uac_test_dir_path, 'test_audio',
                                       'sweep_%s.wav' % sample_rate)
