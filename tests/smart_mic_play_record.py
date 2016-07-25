@@ -13,13 +13,12 @@ import datetime
 CHUNK_SIZE = 1024
 FORMAT = pyaudio.paInt16
 FRAME_MAX_VALUE = 2 ** 15 - 1
-RATE = 16000
 RECORDING_CHANNELS = 1
 PLAYING_CHANNELS = 1
 
 HPF_CUT_OFF_HZ = 50.0
 
-def play_and_record(played_wav):
+def play_and_record(played_wav, sample_rate):
 
     wav_to_play = wave.open(played_wav, 'rb')
 
@@ -40,8 +39,8 @@ def play_and_record(played_wav):
        print "Totally ruined: Mic array not found"
        return
 
-    out_stream = p.open(format=FORMAT, channels=PLAYING_CHANNELS, rate=RATE, input=True, output=True, frames_per_buffer=CHUNK_SIZE)
-    in_stream = p.open(format=FORMAT, channels=RECORDING_CHANNELS, rate=RATE, input=True, output=False, frames_per_buffer=CHUNK_SIZE, input_device_index = mic_array_index)
+    out_stream = p.open(format=FORMAT, channels=PLAYING_CHANNELS, rate=sample_rate, input=True, output=True, frames_per_buffer=CHUNK_SIZE)
+    in_stream = p.open(format=FORMAT, channels=RECORDING_CHANNELS, rate=sample_rate, input=True, output=False, frames_per_buffer=CHUNK_SIZE, input_device_index = mic_array_index)
 
     data_all = array('h')
 
@@ -66,23 +65,35 @@ def play_and_record(played_wav):
     return sample_width, data_all
 
 
-def analyse(data):
+def analyse_voice(data, sample_rate):
     #do a real fft
     for chan in range(RECORDING_CHANNELS):
         channel_data = data[chan:-1:RECORDING_CHANNELS]
         channel_frequencies = np.fft.fft(channel_data)
-        start_bin = int(HPF_CUT_OFF_HZ * float(len(channel_frequencies)) / float(RATE))
+        start_bin = int(HPF_CUT_OFF_HZ * float(len(channel_frequencies)) / float(sample_rate))
         energy = 0.0
         for b in range(start_bin, len(channel_frequencies)):
             energy += abs(channel_frequencies[b])
         print str(chan) +" " + str(energy)
     return
+    
+    
+def analyse_sine(data, sample_rate):
+    #do a real fft
+    for chan in range(RECORDING_CHANNELS):
+        channel_data = data[chan:-1:RECORDING_CHANNELS]
+        channel_frequencies = np.fft.fft(channel_data)
+        for f in range(channel_frequencies):
+            print str(sample_rate/len(channel_frequencies)*f) +" "+ str(abs(channel_frequencies[f]))
+    return
 
-def record_to_file(test_dir_path, output_file_name, played_wav):
-    sample_width, data = play_and_record(played_wav)
+def record_to_file(test_dir_path, output_file_name, played_wav, analysis_type, sample_rate):
+    sample_width, data = play_and_record(played_wav, sample_rate)
 
-    analyse(data)
-
+    if analysis_type is 'voice':
+        analyse_voice(data, sample_rate)
+    else:
+        analyse_sine(data, sample_rate)
     ts = datetime.now().strftime('%Y-%m-%d-%H-%M-%S')
 
     output_file_name = output_file_name + str(ts) + '.wav'
@@ -92,7 +103,7 @@ def record_to_file(test_dir_path, output_file_name, played_wav):
     wave_file = wave.open(mic_data_path, 'wb')
     wave_file.setnchannels(RECORDING_CHANNELS)
     wave_file.setsampwidth(sample_width)
-    wave_file.setframerate(RATE)
+    wave_file.setframerate(sample_rate)
     wave_file.writeframes(data)
     wave_file.close()
 
@@ -110,6 +121,17 @@ if __name__ == '__main__':
                            metavar=os.path.join('test_audio','audio_book.wav'),
                            default=os.path.join('test_audio','oliver_twist.wav'),
                            help ='The file to play from')
+    argparser.add_argument('--sample_rate',
+                           metavar='16000',
+                           default='16000',
+                           help ='The play/record sample rate')
+    argparser.add_argument('--analysis_type',
+                           choices=['voice', 'sine'],
+                           metavar='voice',
+                           default='voice',
+                           help ='The type of analysis')
     args = argparser.parse_args()
 
-    record_to_file(args.test_dir_path, args.output_file_name, args.playback_file)
+    sample_rate = int(args.sample_rate)
+    
+    record_to_file(args.test_dir_path, args.output_file_name, args.playback_file, args.analysis_type, sample_rate)
