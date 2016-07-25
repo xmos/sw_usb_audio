@@ -82,7 +82,7 @@ def analyse_sine(data, sample_rate):
     for chan in range(RECORDING_CHANNELS):
         channel_data = data[chan:-1:RECORDING_CHANNELS]
         channel_frequencies = np.fft.fft(channel_data)
-        for f in range(channel_frequencies):
+        for f in range(len(channel_frequencies)):
             print str(sample_rate/len(channel_frequencies)*f) +" "+ str(abs(channel_frequencies[f]))
     return
 
