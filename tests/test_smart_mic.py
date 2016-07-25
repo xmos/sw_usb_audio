@@ -7,8 +7,8 @@ class SmartMicTester(xmostest.Tester):
     # The SmartMicTester checks for errors reported by all of the processes run
     # during the test. If no errors are seen the test will be marked as a pass.
 
-    def __init__(self, test, app_name, app_config, num_chans, doa_dir,
-                 playback_file_name, sample_rate):
+    def __init__(self, test, app_name, app_config, num_chans, doa_dir=None,
+                 playback_file_name=None, sample_rate=None):
         super(SmartMicTester, self).__init__()
         self.product = "sw_usb_audio"
         self.group = "smart_mic_tests"
@@ -16,10 +16,16 @@ class SmartMicTester(xmostest.Tester):
         self.config = {'app_name':app_name,
                        'app_config':app_config,
                        'num_chans':num_chans,
-                       'doa_dir':doa_dir,
-                       'playback_file_name':playback_file_name,
-                       'sample_rate':sample_rate
+                       'doa_dir':'N/A',
+                       'playback_file_name':'N/A',
+                       'sample_rate':'N/A'
                        }
+        if doa_dir:
+            self.config['doa_dir'] = doa_dir
+        if playback_file_name:
+            self.config['playback_file_name'] = playback_file_name
+        if sample_rate:
+            self.config['sample_rate'] = sample_rate
         self.register_test(self.product, self.group, self.test, self.config)
 
     def record_failure(self, failure_reason):
@@ -79,9 +85,9 @@ def do_xvsm_doa_test(min_testlevel, board, app_name, app_config, num_chans,
     # Setup the tester which will determine and record the result
     tester = xmostest.CombinedTester(3, SmartMicTester("xvsm_doa_test",
                                                        app_name, app_config,
-                                                       num_chans, doa_dir,
-                                                       playback_file_name,
-                                                       'N/A'))
+                                                       num_chans,
+                                                       doa_dir=doa_dir,
+                                                       playback_file_name=playback_file_name))
     tester.set_min_testlevel(min_testlevel)
 
     # Get the hardware resources to run the test on
@@ -155,9 +161,8 @@ def do_frequency_sweep_test(min_testlevel, board, app_name, app_config,
     # Setup the tester which will determine and record the result
     tester = xmostest.CombinedTester(3, SmartMicTester("xvsm_frequency_response_test",
                                                        app_name, app_config,
-                                                       num_chans, 'N/A',
-                                                       'N/A',
-                                                       sample_rate))
+                                                       num_chans,
+                                                       sample_rate=sample_rate))
     tester.set_min_testlevel(min_testlevel)
 
     # Get the hardware resources to run the test on
