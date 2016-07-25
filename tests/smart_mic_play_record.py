@@ -77,7 +77,12 @@ def analyse_voice(data, sample_rate):
             energy += abs(channel_frequencies[b])
         print str(chan) +" " + str(energy)
     return
-
+    
+def smooth(y, box_pts):
+    box = np.ones(box_pts)/box_pts
+    y_smooth = np.convolve(y, box, mode='same')
+    return y_smooth
+    
 def analyse_sine(data, sample_rate, test_dir_path):
     #do a real fft
 
@@ -104,12 +109,11 @@ def analyse_sine(data, sample_rate, test_dir_path):
         plt.clf()
         x=[]
         plt.xlabel('Frequency')
-        plt.ylabel('mor POWER')
-        plt.title('Microphone Awesomeness')
+        plt.ylabel('Magnitude')
         plt.grid(True)
         for i in range(len(max_response)):
            x.append(int(sample_rate*i/window_length))
-        plt.plot(max_response, x)
+        plt.plot(x, smooth(max_response, 5))
         plt.savefig(os.path.join(test_dir_path, 'sweep_'+str(sample_rate) +'.jpg'), format='jpg', dpi=400)
 
     return
