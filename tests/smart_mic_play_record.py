@@ -113,7 +113,7 @@ def analyse_sine(data, sample_rate, test_dir_path):
         plt.grid(True)
         for i in range(len(max_response)):
            x.append(int(sample_rate*i/window_length))
-        plt.plot(x, 20*np.log10(smooth(max_response, 5)/(window_size**2)))
+        plt.plot(x, 20*np.log10(smooth(max_response, 5)/(window_length**2)))
         plt.savefig(os.path.join(test_dir_path, 'sweep_'+str(sample_rate) +'.jpg'), format='jpg', dpi=400)
 
     return
