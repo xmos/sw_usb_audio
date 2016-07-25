@@ -102,7 +102,14 @@ def analyse_sine(data, sample_rate, test_dir_path):
                 max_response[i] = max(max_response[i], abs(frame_frequencies[i]))
 
         plt.clf()
-        plt.plot(max_response)
+        x=[]
+        plt.xlabel('Frequency')
+        plt.ylabel('mor POWER')
+        plt.title('Microphone Awesomeness')
+        plt.grid(True)
+        for i in range(len(max_response)):
+           x.append(int(sample_rate*i/window_length))
+        plt.plot(max_response, x)
         plt.savefig(os.path.join(test_dir_path, 'sweep_'+str(sample_rate) +'.jpg'), format='jpg', dpi=400)
 
     return
