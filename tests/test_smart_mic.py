@@ -148,8 +148,8 @@ def do_xvsm_doa_test(min_testlevel, board, app_name, app_config, num_chans,
 
     xmostest.complete_all_jobs()
 
-def do_xvsm_frequency_sweep_test(min_testlevel, board, app_name, app_config,
-                                 num_chans, sample_rate):
+def do_frequency_sweep_test(min_testlevel, board, app_name, app_config,
+                            num_chans, sample_rate):
 
     # Setup the tester which will determine and record the result
     tester = xmostest.CombinedTester(3, SmartMicTester("xvsm_frequency_response_test",
@@ -188,17 +188,21 @@ def do_xvsm_frequency_sweep_test(min_testlevel, board, app_name, app_config,
                                         build_env = env)
 
     # Start the control app
-    ctrl_app_path = os.path.join(xmostest_to_uac_path, 'sw_usb_audio', 'tests',
-                                 'smart_mic_config.py')
+    if app_config.endswith('_xvsm2000'):
+        ctrl_app_path = os.path.join(xmostest_to_uac_path, 'sw_usb_audio', 'tests',
+                                     'smart_mic_config.py')
+        ctrl_cmd = ['python', ctrl_app_path,
+                    'agc_on', '0',
+                    'doa_dir', '0',
+                    'bf_on', '0',
+                    'ns_on', '0',
+                    'rvb_on', '0',
+                    'aec_on', '0',
+                    'bypass_on', '0']
+    else:
+        ctrl_cmd = ['echo', 'skip']
     control_job = xmostest.run_on_pc(resources['host_primary'],
-                                     ['python', ctrl_app_path,
-                                      'agc_on', '0',
-                                      'doa_dir', '0',
-                                      'bf_on', '0',
-                                      'ns_on', '0',
-                                      'rvb_on', '0',
-                                      'aec_on', '0',
-                                      'bypass_on', '0'],
+                                     ctrl_cmd,
                                      tester = tester[1],
                                      timeout = 1,
                                      initial_delay = 5,
@@ -234,14 +238,27 @@ def runtest():
          'app_configs':[
             {'config':'1i2o2_xvsm2000', 'chan_count':8,
              'testlevels':[
-                {'level':'smoke', 'doa_dirs':[1, 2, 3, 4, 5, 6],
+                {'level':'smoke',
+                 'doa_dirs':[1, 2, 3, 4, 5, 6],
                  'playback_files':['oliver_twist.wav'],
                  'sample_rates':[16000]},
-                {'level':'nightly', 'doa_dirs':[1, 2, 3, 4, 5, 6],
+                {'level':'nightly',
+                 'doa_dirs':[1, 2, 3, 4, 5, 6],
                  'playback_files':['two_cities.wav'],
-                 'sample_rates':[44100]}
+                 'sample_rates':[]}
              ]
             },
+            {'config':'1i8o2', 'chan_count':8,
+             'testlevels':[
+                {'level':'smoke',
+                 'doa_dirs':[],
+                 'playback_files':[],
+                 'sample_rates':[16000]},
+                {'level':'nightly',
+                 'doa_dirs':[],
+                 'playback_files':[],
+                 'sample_rates':[44100]}
+             ]},
          ]
         },
     ]
@@ -268,5 +285,5 @@ def runtest():
                                          num_chans, direction, pb_file)
                 sample_rates = run_type['sample_rates']
                 for sr in sample_rates:
-                    do_xvsm_frequency_sweep_test(min_testlevel, board, app,
-                                                 config_name, num_chans, sr)
+                    do_frequency_sweep_test(min_testlevel, board, app,
+                                            config_name, num_chans, sr)
