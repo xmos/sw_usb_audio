@@ -9,6 +9,7 @@ import pyaudio
 import wave
 import numpy as np
 from datetime import datetime
+import matplotlib.pyplot as plt
 
 CHUNK_SIZE = 1024
 FORMAT = pyaudio.paInt16
@@ -79,9 +80,35 @@ def analyse_voice(data, sample_rate):
 
 def analyse_sine(data, sample_rate):
     #do a real fft
+    
+    window_length = 1024
+    windowing_function = np.hanning(window_length)
+    
+    
+    
     for chan in range(RECORDING_CHANNELS):
+        max_response = [0.0]*(window_length/2 + 1)
         channel_data = data[chan:-1:RECORDING_CHANNELS]
-        channel_frequencies = np.fft.fft(channel_data)
+        
+        for frame_start in range(0, len(channel_data), window_length/2):
+            wav_frame = channel_data[frame_start:frame_start + window_length]
+            
+            frame = np.array(wav_frame, dtype=float)
+
+            for i in range(window_length):
+                frame[i] *= windowing_function[i]
+
+            frame_frequencies = np.fft.fft(frame)
+        
+            for i in range(len(frame_frequencies)):
+                max_response[i] = max(max_response[i], abs(frame_frequencies[i]))
+                
+        plt.clf()
+        plt.plot(max_response)
+        plt.savefig('sweep_'+str(sample_rate) +'.jpg', format='jpg', dpi=200)   
+        
+        
+        
         for f in range(len(channel_frequencies)):
             print str(sample_rate/len(channel_frequencies)*f) +" "+ str(abs(channel_frequencies[f]))
     return
