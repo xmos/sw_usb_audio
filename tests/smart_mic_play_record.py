@@ -78,39 +78,33 @@ def analyse_voice(data, sample_rate):
         print str(chan) +" " + str(energy)
     return
 
-def analyse_sine(data, sample_rate):
+def analyse_sine(data, sample_rate, test_dir_path):
     #do a real fft
-    
-    window_length = 1024
+
+    window_length = 4096
     windowing_function = np.hanning(window_length)
-    
-    
-    
+
     for chan in range(RECORDING_CHANNELS):
         max_response = [0.0]*(window_length/2 + 1)
         channel_data = data[chan:-1:RECORDING_CHANNELS]
-        
-        for frame_start in range(0, len(channel_data), window_length/2):
+
+        for frame_start in range(0, len(channel_data)-window_length, window_length/2):
             wav_frame = channel_data[frame_start:frame_start + window_length]
-            
+
             frame = np.array(wav_frame, dtype=float)
 
             for i in range(window_length):
                 frame[i] *= windowing_function[i]
 
-            frame_frequencies = np.fft.fft(frame)
-        
+            frame_frequencies = np.fft.rfft(frame)
+
             for i in range(len(frame_frequencies)):
                 max_response[i] = max(max_response[i], abs(frame_frequencies[i]))
-                
+
         plt.clf()
         plt.plot(max_response)
-        plt.savefig('sweep_'+str(sample_rate) +'.jpg', format='jpg', dpi=200)   
-        
-        
-        
-        for f in range(len(channel_frequencies)):
-            print str(sample_rate/len(channel_frequencies)*f) +" "+ str(abs(channel_frequencies[f]))
+        plt.savefig(os.path.join(test_dir_path, 'sweep_'+str(sample_rate) +'.jpg'), format='jpg', dpi=400)
+
     return
 
 def record_to_file(test_dir_path, output_file_name, played_wav, analysis_type, sample_rate):
@@ -119,7 +113,7 @@ def record_to_file(test_dir_path, output_file_name, played_wav, analysis_type, s
     if analysis_type is 'voice':
         analyse_voice(data, sample_rate)
     else:
-        analyse_sine(data, sample_rate)
+        analyse_sine(data, sample_rate, test_dir_path)
     ts = datetime.now().strftime('%Y-%m-%d-%H-%M-%S')
 
     output_file_name = output_file_name + str(ts) + '.wav'

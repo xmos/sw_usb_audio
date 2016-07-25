@@ -210,7 +210,7 @@ def do_xvsm_frequency_sweep_test(min_testlevel, board, app_name, app_config,
     player_recorder_path = os.path.join(uac_test_dir_path,
                                         'smart_mic_play_record.py')
 
-    mic_data_file_name = 'recording_frequency_sweep_%s_Hz' % sample_rate
+    mic_data_file_name = 'recording_frequency_sweep_%s_Hz_' % sample_rate
 
     playback_file_path = os.path.join(uac_test_dir_path, 'test_audio',
                                       'sweep_%s.wav' % sample_rate)
