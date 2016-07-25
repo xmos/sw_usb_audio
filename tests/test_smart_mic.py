@@ -8,7 +8,7 @@ class SmartMicTester(xmostest.Tester):
     # during the test. If no errors are seen the test will be marked as a pass.
 
     def __init__(self, test, app_name, app_config, num_chans, doa_dir,
-                 playback_file_name):
+                 playback_file_name, sample_rate):
         super(SmartMicTester, self).__init__()
         self.product = "sw_usb_audio"
         self.group = "smart_mic_tests"
@@ -17,7 +17,8 @@ class SmartMicTester(xmostest.Tester):
                        'app_config':app_config,
                        'num_chans':num_chans,
                        'doa_dir':doa_dir,
-                       'playback_file_name':playback_file_name
+                       'playback_file_name':playback_file_name,
+                       'sample_rate':sample_rate
                        }
         self.register_test(self.product, self.group, self.test, self.config)
 
@@ -79,7 +80,8 @@ def do_xvsm_doa_test(min_testlevel, board, app_name, app_config, num_chans,
     tester = xmostest.CombinedTester(3, SmartMicTester("xvsm_doa_test",
                                                        app_name, app_config,
                                                        num_chans, doa_dir,
-                                                       playback_file_name))
+                                                       playback_file_name,
+                                                       'N/A'))
     tester.set_min_testlevel(min_testlevel)
 
     # Get the hardware resources to run the test on
@@ -136,8 +138,89 @@ def do_xvsm_doa_test(min_testlevel, board, app_name, app_config, num_chans,
     dut_play_rec_job = xmostest.run_on_pc(resources['host_secondary'],
                                           ['python', player_recorder_path,
                                           '--test_dir_path', uac_test_dir_path,
-                                          '--output_file_name',mic_data_file_name,
-                                          '--playback_file', playback_file_path],
+                                          '--output_file_name', mic_data_file_name,
+                                          '--playback_file', playback_file_path,
+                                          '--analysis_type', 'voice'],
+                                          tester = tester[2],
+                                          timeout = 300,
+                                          initial_delay = 5,
+                                          start_after_completed = [control_job])
+
+    xmostest.complete_all_jobs()
+
+def do_xvsm_frequency_sweep_test(min_testlevel, board, app_name, app_config,
+                                 num_chans, sample_rate):
+
+    # Setup the tester which will determine and record the result
+    tester = xmostest.CombinedTester(3, SmartMicTester("xvsm_frequency_response_test",
+                                                       app_name, app_config,
+                                                       num_chans, 'N/A',
+                                                       'N/A',
+                                                       sample_rate))
+    tester.set_min_testlevel(min_testlevel)
+
+    # Get the hardware resources to run the test on
+    resources = None
+    try:
+        resources = xmostest.request_resource("%s_testrig" % board, tester)
+    except xmostest.XmosTestError:
+        print "Unable to find required resources required to run test"
+        tester.shutdown()
+        return
+
+    # Start the xCORE DUT
+    dut_binary = os.path.join('..', app_name, 'bin', app_config, '%s_%s.xe' %
+                              (app_name, app_config))
+    if app_config.endswith('_xvsm2000'):
+        env = {'XVSM':'1'}
+    else:
+        env = {}
+    if xmostest.testlevel_is_at_least(xmostest.get_testlevel(), 'weekend'):
+        dut_job = xmostest.flash_xcore(resources['dut'], dut_binary,
+                                       do_xe_prebuild = True,
+                                       tester = tester[0],
+                                       build_env = env)
+    else:
+        dut_job = xmostest.run_on_xcore(resources['dut'], dut_binary,
+                                        do_xe_prebuild = True,
+                                        tester = tester[0],
+                                        disable_debug_io = True,
+                                        build_env = env)
+
+    # Start the control app
+    ctrl_app_path = os.path.join(xmostest_to_uac_path, 'sw_usb_audio', 'tests',
+                                 'smart_mic_config.py')
+    control_job = xmostest.run_on_pc(resources['host_primary'],
+                                     ['python', ctrl_app_path,
+                                      'agc_on', '0',
+                                      'doa_dir', '0',
+                                      'bf_on', '0',
+                                      'ns_on', '0',
+                                      'rvb_on', '0',
+                                      'aec_on', '0',
+                                      'bypass_on', '0'],
+                                     tester = tester[1],
+                                     timeout = 1,
+                                     initial_delay = 5,
+                                     start_after_completed = [dut_job])
+
+    # Start recording (and playback) on DUT
+    uac_test_dir_path  = os.path.join(xmostest_to_uac_path, 'sw_usb_audio',
+                                      'tests')
+    player_recorder_path = os.path.join(uac_test_dir_path,
+                                        'smart_mic_play_record.py')
+
+    mic_data_file_name = 'recording_frequency_sweep_%s_Hz' % sample_rate
+
+    playback_file_path = os.path.join(uac_test_dir_path, 'test_audio',
+                                      'sweep_%s.wav' % sample_rate)
+    dut_play_rec_job = xmostest.run_on_pc(resources['host_secondary'],
+                                          ['python', player_recorder_path,
+                                          '--test_dir_path', uac_test_dir_path,
+                                          '--output_file_name', mic_data_file_name,
+                                          '--playback_file', playback_file_path,
+                                          '--analysis_type', 'sine',
+                                          '--sample_rate', sample_rate],
                                           tester = tester[2],
                                           timeout = 300,
                                           initial_delay = 5,
@@ -152,9 +235,11 @@ def runtest():
             {'config':'1i2o2_xvsm2000', 'chan_count':8,
              'testlevels':[
                 {'level':'smoke', 'doa_dirs':[1, 2, 3, 4, 5, 6],
-                 'playback_files':['oliver_twist.wav']},
+                 'playback_files':['oliver_twist.wav'],
+                 'sample_rates':[16000]},
                 {'level':'nightly', 'doa_dirs':[1, 2, 3, 4, 5, 6],
-                 'playback_files':['two_cities.wav']}
+                 'playback_files':['two_cities.wav'],
+                 'sample_rates':[44100]}
              ]
             },
          ]
@@ -181,3 +266,7 @@ def runtest():
                     for direction in doa_dirs:
                         do_xvsm_doa_test(min_testlevel, board, app, config_name,
                                          num_chans, direction, pb_file)
+                sample_rates = run_type['sample_rates']
+                for sr in sample_rates:
+                    do_xvsm_frequency_sweep_test(min_testlevel, board, app,
+                                                 config_name, num_chans, sr)
