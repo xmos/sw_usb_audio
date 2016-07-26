@@ -22,7 +22,7 @@ XVSM ?= 0
 # Output 	enabled: o (channelcount)
 # e.g. 2i8o8: Audio class 2.0, input and output enabled (8 channels each)
 
-#Note, feedback endpoint forced in UAC1 builds since Windows seems to have an issue with explicit feedback if channel counts differ.
+#Note, feedback endpoint forced in UAC1 builds since Windows seems to have an issue with implicit feedback if channel counts differ.
 
 XCC_FLAGS_2i8o2 = $(BUILD_FLAGS) -DMIC_PROCESSING_USE_INTERFACE=1 -DPDM_PROC_SIMPLE=1
 INCLUDE_ONLY_IN_2i8o2 =  
