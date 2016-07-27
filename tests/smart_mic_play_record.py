@@ -30,15 +30,15 @@ def play_and_record(played_wav, sample_rate):
     mic_array_index = -1
     mic_array_found = False
     for i in range(device_count):
-       if 'XMOS Microphone Array UAC' in p.get_device_info_by_index(i)['name']:
-          print "Selecting device: " + p.get_device_info_by_index(i)['name']
-          mic_array_index = i
-          mic_array_found = True
-          break
+        if 'XMOS Microphone Array UAC' in p.get_device_info_by_index(i)['name']:
+            print "Selecting device: " + p.get_device_info_by_index(i)['name']
+            mic_array_index = i
+            mic_array_found = True
+            break
 
     if mic_array_found == False:
-       print "Totally ruined: Mic array not found"
-       return
+        print "Totally ruined: Mic array not found"
+        return
 
     in_stream = p.open(format=FORMAT, channels=RECORDING_CHANNELS, rate=sample_rate, input=True, output=False, frames_per_buffer=CHUNK_SIZE, input_device_index = mic_array_index)
     out_stream = p.open(format=FORMAT, channels=PLAYING_CHANNELS, rate=sample_rate, input=True, output=True, frames_per_buffer=CHUNK_SIZE)
@@ -112,7 +112,7 @@ def analyse_sine(data, sample_rate, test_dir_path, output_file_name):
         plt.ylabel('Magnitude')
         plt.grid(True)
         for i in range(len(max_response)):
-           x.append(int(sample_rate*i/window_length))
+            x.append(int(sample_rate*i/window_length))
         plt.plot(x, 20*np.log10(smooth(max_response, 5)/(window_length**2)))
         plt.savefig(os.path.join(test_dir_path, 'plot_' + output_file_name +'.jpg'), format='jpg', dpi=400)
 
