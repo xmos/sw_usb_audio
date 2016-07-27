@@ -204,7 +204,7 @@ def do_frequency_sweep_test(min_testlevel, board, app_name, app_config,
                     'ns_on', '0',
                     'rvb_on', '0',
                     'aec_on', '0',
-                    'bypass_on', '0']
+                    'bypass_on', '1']
     else:
         ctrl_cmd = ['echo', 'skip']
     control_job = xmostest.run_on_pc(resources['host_primary'],
