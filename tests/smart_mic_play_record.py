@@ -114,8 +114,8 @@ def analyse_sine(data, sample_rate, test_dir_path, output_file_name):
         for i in range(len(max_response)):
             x.append(int(sample_rate*i/window_length))
         plt.plot(x, 20*np.log10(smooth(max_response, 5)/(window_length**2)))
-        plt.set_ylim([-120, 10] )
-        plt.set_ylim([0, 24000] )
+        plt.ylim([-120, 10] )
+        plt.xlim([0, 24000] )
         plt.savefig(os.path.join(test_dir_path, 'plot_' + output_file_name +'.jpg'), format='jpg', dpi=400)
 
     return
