@@ -28,3 +28,4 @@ log.txt
 *.pyc
 tests/recording*.wav
 tests/plot*.jpg
+tests/test_audio/sweep*.wav
