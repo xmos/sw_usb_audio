@@ -153,14 +153,13 @@ def generate_sine(test_dir_path, output_file_name, played_wav, analysis_type, in
     start_freq = 20
     end_freq = output_sample_rate/2
     theta = 0
-    omega = 2.0*np.pi*start_freq/output_sample_rate
+    omega = 2.0*np.pi*end_freq/output_sample_rate
     delta_omega_per_sample =  2.0*np.pi*(end_freq - start_freq)/(length_in_samples*output_sample_rate)
-    #delta_omega_per_sample =  0
     for i in range(length_in_samples):
         sample = int(np.sin(theta)*(1<<15)-1)
         sine_data.append(sample)
         theta += omega
-        omega += delta_omega_per_sample
+        omega -= delta_omega_per_sample
 
     sine_data = np.array(sine_data, dtype=np.int16)
     sine_data = pack('<' + ('h' * len(sine_data)), *sine_data)
