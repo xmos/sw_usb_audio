@@ -114,20 +114,19 @@ def analyse_sine(data, sample_rate, test_dir_path, output_file_name):
         for i in range(len(max_response)):
             x.append(int(sample_rate*i/window_length))
         plt.plot(x, 20*np.log10(smooth(max_response, 5)/(window_length**2)))
+        plt.set_ylim([-120, 10] )
+        plt.set_ylim([0, 24000] )
         plt.savefig(os.path.join(test_dir_path, 'plot_' + output_file_name +'.jpg'), format='jpg', dpi=400)
 
     return
 
-def record_to_file(test_dir_path, output_file_name, played_wav, analysis_type, sample_rate):
+def play_wav(test_dir_path, output_file_name, played_wav, analysis_type, sample_rate):
     sample_width, data = play_and_record(played_wav, sample_rate)
 
     ts = datetime.now().strftime('%Y-%m-%d-%H-%M-%S')
     output_file_name = output_file_name + '_' + str(ts)
 
-    if analysis_type is 'voice':
-        analyse_voice(data, sample_rate)
-    else:
-        analyse_sine(data, sample_rate, test_dir_path, output_file_name)
+    analyse_voice(data, sample_rate)
 
     output_file_name = output_file_name + '.wav'
     mic_data_path = os.path.join(test_dir_path, output_file_name)
@@ -137,6 +136,54 @@ def record_to_file(test_dir_path, output_file_name, played_wav, analysis_type, s
     wave_file.setnchannels(RECORDING_CHANNELS)
     wave_file.setsampwidth(sample_width)
     wave_file.setframerate(sample_rate)
+    wave_file.writeframes(data)
+    wave_file.close()
+    
+    
+def generate_sine(test_dir_path, output_file_name, played_wav, analysis_type, input_sample_rate):
+
+    output_sample_rate = 16000
+
+    #generate sine wav called played_wav
+    length_in_seconds = 30
+    length_in_samples = length_in_seconds * sample_rate
+    sine_data = []
+    start_freq = 20
+    end_freq = output_sample_rate/2
+    theta = 0
+    omega = 2.0*np.pi*start_freq/output_sample_rate
+    delta_omega_per_sample =  2.0*np.pi*(end_freq - start_freq)/(length_in_samples*output_sample_rate)
+    #delta_omega_per_sample =  0
+    for i in range(length_in_samples):
+        sample = int(np.sin(theta)*(1<<14))
+        sine_data.append(sample)
+        theta += omega
+        omega += delta_omega_per_sample
+        
+    sine_data = np.array(sine_data, dtype=np.int16)
+    sine_data = pack('<' + ('h' * len(sine_data)), *sine_data)
+    sine_wave_file = wave.open(played_wav, 'wb')
+    sine_wave_file.setnchannels(1)
+    sine_wave_file.setsampwidth(2)
+    sine_wave_file.setframerate(output_sample_rate)
+    sine_wave_file.writeframes(sine_data)
+    sine_wave_file.close()
+    
+    sample_width, data = play_and_record(played_wav, input_sample_rate)
+
+    ts = datetime.now().strftime('%Y-%m-%d-%H-%M-%S')
+    output_file_name = output_file_name + '_' + str(ts)
+
+    analyse_sine(data, sample_rate)
+
+    output_file_name = output_file_name + '.wav'
+    mic_data_path = os.path.join(test_dir_path, output_file_name)
+
+    data = pack('<' + ('h' * len(data)), *data)
+    wave_file = wave.open(mic_data_path, 'wb')
+    wave_file.setnchannels(RECORDING_CHANNELS)
+    wave_file.setsampwidth(sample_width)
+    wave_file.setframerate(input_sample_rate)
     wave_file.writeframes(data)
     wave_file.close()
 
@@ -166,5 +213,13 @@ if __name__ == '__main__':
 
     sample_rate = int(args.sample_rate)
 
-    record_to_file(args.test_dir_path, args.output_file_name,
+    print str(args.analysis_type)
+    if str(args.analysis_type) == 'voice':
+        play_wav(args.test_dir_path, args.output_file_name,
                    args.playback_file, args.analysis_type, sample_rate)
+    elif str(args.analysis_type) == 'sine':
+        generate_sine(args.test_dir_path, args.output_file_name,
+                   args.playback_file, args.analysis_type, sample_rate)
+    else:
+        print "error"
+
