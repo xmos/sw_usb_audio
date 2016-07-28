@@ -138,11 +138,10 @@ def play_wav(test_dir_path, output_file_name, played_wav, analysis_type, sample_
     wave_file.setframerate(sample_rate)
     wave_file.writeframes(data)
     wave_file.close()
-    
-    
+
 def generate_sine(test_dir_path, output_file_name, played_wav, analysis_type, input_sample_rate):
 
-    output_sample_rate = 16000
+    output_sample_rate = 48000
 
     #generate sine wav called played_wav
     length_in_seconds = 30
@@ -159,7 +158,7 @@ def generate_sine(test_dir_path, output_file_name, played_wav, analysis_type, in
         sine_data.append(sample)
         theta += omega
         omega += delta_omega_per_sample
-        
+
     sine_data = np.array(sine_data, dtype=np.int16)
     sine_data = pack('<' + ('h' * len(sine_data)), *sine_data)
     sine_wave_file = wave.open(played_wav, 'wb')
@@ -168,7 +167,7 @@ def generate_sine(test_dir_path, output_file_name, played_wav, analysis_type, in
     sine_wave_file.setframerate(output_sample_rate)
     sine_wave_file.writeframes(sine_data)
     sine_wave_file.close()
-    
+
     sample_width, data = play_and_record(played_wav, input_sample_rate)
 
     ts = datetime.now().strftime('%Y-%m-%d-%H-%M-%S')
