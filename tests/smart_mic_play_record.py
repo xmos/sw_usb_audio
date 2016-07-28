@@ -41,21 +41,24 @@ def play_and_record(played_wav, sample_rate):
         return
 
     in_stream = p.open(format=FORMAT, channels=RECORDING_CHANNELS, rate=sample_rate, input=True, output=False, frames_per_buffer=CHUNK_SIZE, input_device_index = mic_array_index)
-    out_stream = p.open(format=FORMAT, channels=PLAYING_CHANNELS, rate=wav_to_play.getframerate(), input=True, output=True, frames_per_buffer=CHUNK_SIZE)
+
+    def out_stream_callback(in_data, frame_count, time_info, status):
+        data = wav_to_play.readframes(frame_count)
+        return (data, pyaudio.paContinue)
+
+    out_stream = p.open(format=FORMAT, channels=PLAYING_CHANNELS, rate=wav_to_play.getframerate(), input=False, output=True, frames_per_buffer=CHUNK_SIZE, stream_callback=out_stream_callback)
 
     data_all = array('h')
 
-    chunks = int(wav_to_play.getnframes()/ CHUNK_SIZE)
+    chunks = int(((wav_to_play.getnframes() * sample_rate) / wav_to_play.getframerate()) / CHUNK_SIZE)
 
+    out_stream.start_stream()
     for i in range(chunks):
         # little endian, signed short
-        data_chunk = array('h', out_stream.read(CHUNK_SIZE))
+        data_chunk = array('h', in_stream.read(CHUNK_SIZE))
         if byteorder == 'big':
             data_chunk.byteswap()
         data_all.extend(data_chunk)
-
-        out_data = wav_to_play.readframes(CHUNK_SIZE)
-        out_stream.write(out_data, CHUNK_SIZE)
 
     sample_width = p.get_sample_size(FORMAT)
     out_stream.stop_stream()
