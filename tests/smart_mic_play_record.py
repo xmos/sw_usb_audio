@@ -154,7 +154,7 @@ def generate_sine(test_dir_path, output_file_name, played_wav, analysis_type, in
     delta_omega_per_sample =  2.0*np.pi*(end_freq - start_freq)/(length_in_samples*output_sample_rate)
     #delta_omega_per_sample =  0
     for i in range(length_in_samples):
-        sample = int(np.sin(theta)*(1<<14))
+        sample = int(np.sin(theta)*(1<<15-1))
         sine_data.append(sample)
         theta += omega
         omega += delta_omega_per_sample
