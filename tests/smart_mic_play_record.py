@@ -41,7 +41,7 @@ def play_and_record(played_wav, sample_rate):
         return
 
     in_stream = p.open(format=FORMAT, channels=RECORDING_CHANNELS, rate=sample_rate, input=True, output=False, frames_per_buffer=CHUNK_SIZE, input_device_index = mic_array_index)
-    out_stream = p.open(format=FORMAT, channels=PLAYING_CHANNELS, rate=sample_rate, input=True, output=True, frames_per_buffer=CHUNK_SIZE)
+    out_stream = p.open(format=FORMAT, channels=PLAYING_CHANNELS, rate=wav_to_play.getframerate(), input=True, output=True, frames_per_buffer=CHUNK_SIZE)
 
     data_all = array('h')
 
