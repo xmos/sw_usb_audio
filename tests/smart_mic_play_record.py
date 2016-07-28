@@ -145,7 +145,7 @@ def generate_sine(test_dir_path, output_file_name, played_wav, analysis_type, in
 
     #generate sine wav called played_wav
     length_in_seconds = 30
-    length_in_samples = length_in_seconds * sample_rate
+    length_in_samples = length_in_seconds * output_sample_rate
     sine_data = []
     start_freq = 20
     end_freq = output_sample_rate/2
