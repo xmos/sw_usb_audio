@@ -212,7 +212,6 @@ if __name__ == '__main__':
 
     sample_rate = int(args.sample_rate)
 
-    print str(args.analysis_type)
     if str(args.analysis_type) == 'voice':
         play_wav(args.test_dir_path, args.output_file_name,
                    args.playback_file, args.analysis_type, sample_rate)
