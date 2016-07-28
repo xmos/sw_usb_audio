@@ -173,7 +173,7 @@ def generate_sine(test_dir_path, output_file_name, played_wav, analysis_type, in
     ts = datetime.now().strftime('%Y-%m-%d-%H-%M-%S')
     output_file_name = output_file_name + '_' + str(ts)
 
-    analyse_sine(data, sample_rate)
+    analyse_sine(data, sample_rate, test_dir_path, output_file_name)
 
     output_file_name = output_file_name + '.wav'
     mic_data_path = os.path.join(test_dir_path, output_file_name)
