@@ -120,7 +120,7 @@ def analyse_sine(data, sample_rate, test_dir_path, output_file_name):
         plt.plot(x, 20*np.log10(smooth(max_response, 5)/(window_length**2)))
         plt.ylim([-120, 10] )
         plt.xlim([0, 24000] )
-        plt.savefig(os.path.join(test_dir_path, 'plot_' + output_file_name +'.jpg'), format='jpg', dpi=400)
+        plt.savefig(os.path.join(test_dir_path, 'plot_' + output_file_name +'.pdf'), format='pdf', dpi=400)
 
     return
 
@@ -188,7 +188,7 @@ def generate_sine(test_dir_path, output_file_name, played_wav, analysis_type, in
     wave_file.setframerate(input_sample_rate)
     wave_file.writeframes(data)
     wave_file.close()
-    
+
 def generate_noise(test_dir_path, output_file_name, played_wav, analysis_type, input_sample_rate):
 
     output_sample_rate = 48000
@@ -197,7 +197,7 @@ def generate_noise(test_dir_path, output_file_name, played_wav, analysis_type, i
     length_in_seconds = 30
     length_in_samples = length_in_seconds * output_sample_rate
     noise_data = []
-    
+
     for i in range(length_in_samples):
         noise_data.append(int(random.random()*(1<<15)-1))
 
