@@ -97,7 +97,7 @@ def analyse_sine(data, sample_rate, test_dir_path, output_file_name):
         max_response = [0.0]*(window_length/2 + 1)
         channel_data = data[chan:-1:RECORDING_CHANNELS]
 
-        for frame_start in range(0, len(channel_data)-window_length, window_length/2):
+        for frame_start in range(0, len(channel_data)-window_length, window_length/16):
             wav_frame = channel_data[frame_start:frame_start + window_length]
 
             frame = np.array(wav_frame, dtype=float)
