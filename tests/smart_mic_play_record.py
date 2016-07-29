@@ -6,6 +6,7 @@ from struct import pack
 from sys import byteorder
 import copy
 import pyaudio
+import random
 import wave
 import numpy as np
 from datetime import datetime
@@ -187,6 +188,45 @@ def generate_sine(test_dir_path, output_file_name, played_wav, analysis_type, in
     wave_file.setframerate(input_sample_rate)
     wave_file.writeframes(data)
     wave_file.close()
+    
+def generate_noise(test_dir_path, output_file_name, played_wav, analysis_type, input_sample_rate):
+
+    output_sample_rate = 48000
+
+    #generate sine wav called played_wav
+    length_in_seconds = 30
+    length_in_samples = length_in_seconds * output_sample_rate
+    noise_data = []
+    
+    for i in range(length_in_samples):
+        noise_data.append(int(random.random()*(1<<15)-1))
+
+    noise_data = np.array(noise_data, dtype=np.int16)
+    noise_data = pack('<' + ('h' * len(noise_data)), *noise_data)
+    noise_file = wave.open(played_wav, 'wb')
+    noise_file.setnchannels(1)
+    noise_file.setsampwidth(2)
+    noise_file.setframerate(output_sample_rate)
+    noise_file.writeframes(noise_data)
+    noise_file.close()
+
+    sample_width, data = play_and_record(played_wav, input_sample_rate)
+
+    ts = datetime.now().strftime('%Y-%m-%d-%H-%M-%S')
+    output_file_name = output_file_name + '_' + str(ts)
+
+    analyse_sine(data, sample_rate, test_dir_path, output_file_name)
+
+    output_file_name = output_file_name + '.wav'
+    mic_data_path = os.path.join(test_dir_path, output_file_name)
+
+    data = pack('<' + ('h' * len(data)), *data)
+    wave_file = wave.open(mic_data_path, 'wb')
+    wave_file.setnchannels(RECORDING_CHANNELS)
+    wave_file.setsampwidth(sample_width)
+    wave_file.setframerate(input_sample_rate)
+    wave_file.writeframes(data)
+    wave_file.close()
 
 if __name__ == '__main__':
     argparser = argparse.ArgumentParser(description = "Smart mic play/record script")
@@ -207,7 +247,7 @@ if __name__ == '__main__':
                            default='16000',
                            help ='The play/record sample rate in Hz')
     argparser.add_argument('--analysis_type',
-                           choices=['voice', 'sine'],
+                           choices=['voice', 'sine', 'noise'],
                            default='voice',
                            help ='The type of analysis')
     args = argparser.parse_args()
@@ -219,6 +259,9 @@ if __name__ == '__main__':
                    args.playback_file, args.analysis_type, sample_rate)
     elif str(args.analysis_type) == 'sine':
         generate_sine(args.test_dir_path, args.output_file_name,
+                   args.playback_file, args.analysis_type, sample_rate)
+    elif str(args.analysis_type) == 'noise':
+        generate_noise(args.test_dir_path, args.output_file_name,
                    args.playback_file, args.analysis_type, sample_rate)
     else:
         print "error"
