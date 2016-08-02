@@ -4,6 +4,14 @@ sw_usb_audio Change Log
 6.19.0
 ------
 
+  * Changes to dependencies:
+
+    - sc_xud: 2.4.2 -> 2.5.0
+
+      + RESOLVED:   xCORE-200 USB phy parameters tuned for optimal Tx
+        performance resulting in much improved TX eye diagram and compliance
+        test results
+
 6.18.1
 ------
 
