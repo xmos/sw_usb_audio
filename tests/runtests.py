@@ -99,6 +99,7 @@ be connected to a host PC to provide and record audio. Tests are run to test the
 following features:
 
     * Direction of arrival
+    * Frequency response of mic array
 """)
 
     xmostest.runtests()

@@ -27,3 +27,5 @@ log.txt
 *.DS_Store
 *.pyc
 tests/recording*.wav
+tests/plot*.pdf
+tests/generated_*.wav

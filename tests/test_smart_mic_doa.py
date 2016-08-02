@@ -3,12 +3,14 @@ import xmostest
 import re
 import os.path
 
+
 class SmartMicTester(xmostest.Tester):
     # The SmartMicTester checks for errors reported by all of the processes run
     # during the test. If no errors are seen the test will be marked as a pass.
 
-    def __init__(self, test, app_name, app_config, num_chans, doa_dir,
-                 playback_file_name):
+
+    def __init__(self, test, app_name, app_config, num_chans, sample_rate,
+                 doa_dir, playback_file_name):
         super(SmartMicTester, self).__init__()
         self.product = "sw_usb_audio"
         self.group = "smart_mic_tests"
@@ -16,10 +18,12 @@ class SmartMicTester(xmostest.Tester):
         self.config = {'app_name':app_name,
                        'app_config':app_config,
                        'num_chans':num_chans,
+                       'sample_rate':sample_rate,
                        'doa_dir':doa_dir,
-                       'playback_file_name':playback_file_name
+                       'playback_file_name':playback_file_name,
                        }
         self.register_test(self.product, self.group, self.test, self.config)
+
 
     def record_failure(self, failure_reason):
         # Append a newline if there isn't one already
@@ -28,6 +32,7 @@ class SmartMicTester(xmostest.Tester):
         self.failures.append(failure_reason)
         print ("Failure reason: %s" % failure_reason), # Print without newline
         self.result = False
+
 
     def run(self,
             dut_programming_job_output,
@@ -70,15 +75,19 @@ class SmartMicTester(xmostest.Tester):
                                  env={},
                                  output=output)
 
+
 xmostest_to_uac_path = os.path.join('..', '..', '..', '..')
 
-def do_xvsm_doa_test(min_testlevel, board, app_name, app_config, num_chans,
-                     doa_dir, playback_file_name):
+
+def do_doa_test(min_testlevel, board, app_name, app_config, num_chans,
+                sample_rate, doa_dir, playback_file_name):
 
     # Setup the tester which will determine and record the result
-    tester = xmostest.CombinedTester(3, SmartMicTester("xvsm_doa_test",
+    tester = xmostest.CombinedTester(3, SmartMicTester("smart_mic_doa_test",
                                                        app_name, app_config,
-                                                       num_chans, doa_dir,
+                                                       num_chans,
+                                                       sample_rate,
+                                                       doa_dir,
                                                        playback_file_name))
     tester.set_min_testlevel(min_testlevel)
 
@@ -122,22 +131,22 @@ def do_xvsm_doa_test(min_testlevel, board, app_name, app_config, num_chans,
                                      initial_delay = 5,
                                      start_after_completed = [dut_job])
 
-    # Start recording (and playback) on DUT
+    # Start recording and playback on DUT
     uac_test_dir_path  = os.path.join(xmostest_to_uac_path, 'sw_usb_audio',
                                       'tests')
     player_recorder_path = os.path.join(uac_test_dir_path,
                                         'smart_mic_play_record.py')
 
-    mic_data_file_name = 'recording_%s_doa_dir_%s_' % (playback_file_name,
-                                                       doa_dir)
+    mic_data_file_name = os.path.join(uac_test_dir_path,
+        'recording_%s_%s_doa_dir_%s.wav' % (app_config, playback_file_name, doa_dir))
 
     playback_file_path = os.path.join(uac_test_dir_path, 'test_audio',
                                       playback_file_name)
     dut_play_rec_job = xmostest.run_on_pc(resources['host_secondary'],
                                           ['python', player_recorder_path,
-                                          '--test_dir_path', uac_test_dir_path,
-                                          '--output_file_name',mic_data_file_name,
-                                          '--playback_file', playback_file_path],
+                                           playback_file_path,
+                                           mic_data_file_name,
+                                           str(sample_rate)],
                                           tester = tester[2],
                                           timeout = 300,
                                           initial_delay = 5,
@@ -145,15 +154,20 @@ def do_xvsm_doa_test(min_testlevel, board, app_name, app_config, num_chans,
 
     xmostest.complete_all_jobs()
 
+
 def runtest():
     test_configs = [
         {'board':'mic_array', 'app':'app_usb_aud_mic_array',
          'app_configs':[
             {'config':'1i2o2_xvsm2000', 'chan_count':8,
              'testlevels':[
-                {'level':'smoke', 'doa_dirs':[1, 2, 3, 4, 5, 6],
+                {'level':'smoke',
+                 'sample_rates':[16000],
+                 'doa_dirs':[1, 2, 3, 4, 5, 6],
                  'playback_files':['oliver_twist.wav']},
-                {'level':'nightly', 'doa_dirs':[1, 2, 3, 4, 5, 6],
+                {'level':'nightly',
+                 'sample_rates':[16000],
+                 'doa_dirs':[1, 2, 3, 4, 5, 6],
                  'playback_files':['two_cities.wav']}
              ]
             },
@@ -177,7 +191,9 @@ def runtest():
                 min_testlevel = run_type['level']
                 playback_files = run_type['playback_files']
                 doa_dirs = run_type['doa_dirs']
+                sample_rates = run_type['sample_rates']
                 for pb_file in playback_files:
                     for direction in doa_dirs:
-                        do_xvsm_doa_test(min_testlevel, board, app, config_name,
-                                         num_chans, direction, pb_file)
+                        for sr in sample_rates:
+                            do_doa_test(min_testlevel, board, app, config_name,
+                                        num_chans, sr, direction, pb_file)
