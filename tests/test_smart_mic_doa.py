@@ -166,7 +166,7 @@ def runtest():
                  'doa_dirs':[1, 2, 3, 4, 5, 6],
                  'playback_files':['oliver_twist.wav']},
                 {'level':'nightly',
-                 'sample_rates':[],
+                 'sample_rates':[16000],
                  'doa_dirs':[1, 2, 3, 4, 5, 6],
                  'playback_files':['two_cities.wav']}
              ]
