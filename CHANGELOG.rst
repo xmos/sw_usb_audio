@@ -6,6 +6,10 @@ sw_usb_audio Change Log
 
   * Changes to dependencies:
 
+    - sc_usb_audio: 6.18.1 -> 6.19.0
+
+      + CHANGE:     BCD_DEVICE version increment only
+
     - sc_xud: 2.4.2 -> 2.5.0
 
       + RESOLVED:   xCORE-200 USB phy parameters tuned for optimal Tx
