@@ -89,6 +89,13 @@ Tests are run to check the following features:
     * USB descriptor bcdDevice definition
 """)
 
+    xmostest.register_group('sc_usb_audio',
+                            'sc_usb_audio_tests',
+                            'USB audio tests',
+    '''
+USB audio tests
+''')
+
     xmostest.runtests()
 
     xmostest.finish()
