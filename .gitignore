@@ -8,6 +8,7 @@ toplevel_doc
 log.txt
 */.build_*/*
 */.build*/*
+**/.build*/*
 */bin/*
 *.bin
 *.zip
