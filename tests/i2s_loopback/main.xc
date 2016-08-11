@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <print.h>
 #include <timer.h>
+#include "devicedefines.h"
 #include "xua_audio.h"
 
 #define DEBUG_UNIT MAIN
