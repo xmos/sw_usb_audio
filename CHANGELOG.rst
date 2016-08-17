@@ -4,6 +4,13 @@ sw_usb_audio Change Log
 6.20.0
 ------
 
+  * Changes to dependencies:
+
+    - sc_usb_audio: 6.19.0 -> 6.20.0
+
+      + RESOLVED:   Intra-frame sample delays of 1/2 samples on input streaming
+        in TDM mode
+
 6.19.0
 ------
 
