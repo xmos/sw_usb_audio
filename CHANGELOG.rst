@@ -10,6 +10,7 @@ sw_usb_audio Change Log
 
       + RESOLVED:   Intra-frame sample delays of 1/2 samples on input streaming
         in TDM mode
+      + RESOLVED:   Build issue with NUM_USB_CHAN_OUT set to 0 and MIXER enabled
 
 6.19.0
 ------
