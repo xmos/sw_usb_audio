@@ -170,6 +170,11 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
     DAC_REGWRITE(4, val);
     DAC_REGREAD_ASSERT(4, data, val);
 
+    /* Disable Signal processing */
+    val = 0b00000000;
+    DAC_REGWRITE(9, val);
+    DAC_REGREAD_ASSERT(9, data, val);
+
     /* Set PDN bit low */
     val = 0b00000000;
     DAC_REGWRITE(2, val);
