@@ -218,11 +218,14 @@ def do_dfu_test(min_testlevel, board, app_name, pid, app_config, host_oss):
     dep_dut_job = []
 
     for os in host_oss:
-
         dut_job[os] = xmostest.flash_xcore(resources[os]['dut'], dut_binary,
                                             tester = ctester[os][0], do_xe_prebuild = True,
                                             start_after_completed = dep_dut_job)
-        dep_dut_job.append(dut_job[os])
+        if dut_job[os]:
+            # A job may not be returned for all OS, e.g. when runtest.py is
+            # started with the --config-filter option. We only want to add real
+            # jobs to this list
+            dep_dut_job.append(dut_job[os])
 
     build_once = True
     dep_build_job = []
@@ -269,7 +272,11 @@ def do_dfu_test(min_testlevel, board, app_name, pid, app_config, host_oss):
                                      tester = ctester[os][2],
                                      timeout = 600,
                                      start_after_completed = dep_build_job)
-        dep_dfu_job.append(dfu_job[os])
+        if dfu_job[os]:
+            # A job may not be returned for all OS, e.g. when runtest.py is
+            # started with the --config-filter option. We only want to add real
+            # jobs to this list
+            dep_dfu_job.append(dfu_job[os])
 
         time.sleep(0.1)
 
