@@ -272,7 +272,7 @@ void il_voice_get_default_cfg_xmos(il_voice_cfg_t &ilv_cfg, il_voice_rtcfg_t &il
     ilv_rtcfg.ns_on = 1;
     ilv_rtcfg.bypass_on = 0;
     ilv_rtcfg.bf_on = 1;
-    ilv_rtcfg.mic_shift = 2;
+    ilv_rtcfg.mic_shift = 4;
 }
 
 #pragma unsafe arrays
