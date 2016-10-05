@@ -187,16 +187,25 @@ void UserBufferManagement(unsigned sampsFromUsbToAudio[], unsigned sampsFromAudi
     
     i_audMan.transfer_samples(dspBuffer_in_adc_local, dspBuffer_in_usb_local, dspBuffer_out_usb_local, dspBuffer_out_dac_local);
    
+#ifndef XVSM_TEST
     /* Read out of DSP buffer - samples for USB */
     sampsFromAudioToUsb[0] = dspBuffer_out_usb_local[0];
     sampsFromAudioToUsb[1] = dspBuffer_out_usb_local[0];
+#else
+
+    sampsFromAudioToUsb[0] = sampsFromAudioToUsb[PDM_MIC_INDEX];     // Mic In 0
+    sampsFromAudioToUsb[1] = sampsFromAudioToUsb[PDM_MIC_INDEX+1];   // Mic In 1
+    sampsFromAudioToUsb[2] = sampsFromUsbToAudio[0];                 // Spk In
+    sampsFromAudioToUsb[3] = dspBuffer_out_usb_local[0];             // Mic Out
+    sampsFromAudioToUsb[4] = dspBuffer_out_dac_local[0];             // Spk Out
+    sampsFromAudioToUsb[5] = 0x7fffffff;                             // Spare
+#endif
 
     /* Read out of DSP buffer - samples for I2S */
     sampsFromUsbToAudio[0] = dspBuffer_out_dac_local[0];
     sampsFromUsbToAudio[1] = dspBuffer_out_dac_local[0];
 } 
 
-/* TODO This task could be combined */
 void dsp_buff(server audManage_if i_audMan, client dsp_if i_dsp)
 {
     unsigned dspBufferNo = 0;
