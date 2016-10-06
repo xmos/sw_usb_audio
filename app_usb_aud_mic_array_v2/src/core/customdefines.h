@@ -21,13 +21,13 @@
 #define PDM_TILE           0
 
 /* Enable PDM and PDM->PCM conversion code */
-#define NUM_PDM_MICS       8
+#define NUM_PDM_MICS       4
 
 /* Defines relating to channel count and channel arrangement (Set to 0 for disable) */
 //:audio_defs
 /* Number of USB streaming channels - Default is 8 in 2 out */
 #ifndef NUM_USB_CHAN_IN
-#define NUM_USB_CHAN_IN    (8)         /* Device to Host */
+#define NUM_USB_CHAN_IN    (4)         /* Device to Host */
 #endif
 #ifndef NUM_USB_CHAN_OUT
 #define NUM_USB_CHAN_OUT   (2)         /* Host to Device */
