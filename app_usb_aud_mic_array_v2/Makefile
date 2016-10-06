@@ -20,7 +20,7 @@ XVSM ?= 0
 # Audio Class:  1 or 2
 # Input 	enabled: i (channelcount)
 # Output 	enabled: o (channelcount)
-# e.g. 2i8o8: Audio class 2.0, input and output enabled (4 channels each)
+# e.g. 2i4o4: Audio class 2.0, input and output enabled (4 channels each)
 
 #Note, feedback endpoint forced in UAC1 builds since Windows seems to have an issue with explicit feedback if channel counts differ.
 
