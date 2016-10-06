@@ -4,10 +4,18 @@ sw_usb_audio Change Log
 6.30.0
 ------
 
-    * ADDED:   app_usb_aud_mic_array_v2 application 
-    * ADDED:   Audio I/O simulator-based unit test
-    * CHANGE:  DAC audio processing disabled in app_usb_aud_mic_array in order to disable automute and soft-ramp
-    * CHANGE:  Default XVSM mic_shift changed from 2 to 4
+  * ADDED:   app_usb_aud_mic_array_v2 application
+  * ADDED:   Audio I/O simulator-based unit test
+  * CHANGE:  DAC audio processing disabled in app_usb_aud_mic_array in order to
+    disable automute and soft-ramp
+  * CHANGE:  Default XVSM mic_shift changed from 2 to 4
+
+  * Changes to dependencies:
+
+    - sc_usb_audio: 6.20.0 -> 6.30.0
+
+      + RESOLVED:   PDM microphone clock divide now based MCLK defines
+        (previously hard-coded)
 
 6.20.0
 ------
@@ -19,6 +27,10 @@ sw_usb_audio Change Log
       + RESOLVED:   Intra-frame sample delays of 1/2 samples on input streaming
         in TDM mode
       + RESOLVED:   Build issue with NUM_USB_CHAN_OUT set to 0 and MIXER enabled
+      + RESOLVED:   SPDIF_TX_INDEX not defined build warning only emitted when
+        SPDIF_TX defined
+      + RESOLVED:   Failure to enter DFU mode when configured without input
+        volume control
 
 6.19.0
 ------
