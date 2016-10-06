@@ -7,7 +7,7 @@ sw_usb_audio Change Log
   * ADDED:   app_usb_aud_mic_array_v2 application
   * ADDED:   Audio I/O simulator-based unit test
   * CHANGE:  DAC audio processing disabled in app_usb_aud_mic_array in order to
-    disable automute and soft-ramp
+    disable automute and soft-ramp functionality
   * CHANGE:  Default XVSM mic_shift changed from 2 to 4
 
   * Changes to dependencies:
