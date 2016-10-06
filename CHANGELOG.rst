@@ -16,6 +16,8 @@ sw_usb_audio Change Log
 
       + RESOLVED:   PDM microphone clock divide now based MCLK defines
         (previously hard-coded)
+      + CHANGE:     Second microphone decimation core only run if NUM_PDM_MICS >
+        4
 
 6.20.0
 ------
