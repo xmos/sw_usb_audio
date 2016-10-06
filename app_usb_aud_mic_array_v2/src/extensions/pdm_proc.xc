@@ -93,7 +93,7 @@ void user_pdm_process(mic_array_frame_time_domain * unsafe audio, int output[])
 
             case i_mic_data.transfer_buffers(mic_array_frame_time_domain * unsafe audio, int output[]):
 #endif
-            for(unsigned i=0; i<8; i++)
+            for(unsigned i=0; i<NUM_PDM_MICS; i++)
             unsafe{
                 /* Simply copy input buffer to output buffer unmodified */
                 output[i] = audio->data[i][0];
@@ -203,7 +203,7 @@ select
     {
         /* Sum up all the mics */
         output[0] = 0;
-        for(unsigned i=0; i<7; i++)
+        for(unsigned i=0; i < NUM_PDM_MICS; i++)
         unsafe{
             output[0] += audio->data[i][0];
         }
@@ -212,7 +212,7 @@ select
         output[0] *= gain;
 
         /* Apply gain to individual mics */
-        for(unsigned i=0; i<7; i++)
+        for(unsigned i=0; i<NUM_PDM_MICS; i++)
         unsafe{
             int x = audio->data[i][0];
             x*=gain;
@@ -222,7 +222,7 @@ select
     else
     {
         /* Send individual mics (with gain applied) */        
-        for(unsigned i=0; i<7; i++)
+        for(unsigned i=0; i<NUM_PDM_MICS; i++)
         unsafe{
             int x = audio->data[i][0];
             x *=gain;
