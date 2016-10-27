@@ -34,6 +34,11 @@ XCC_FLAGS_1i4o2_summing = $(BUILD_FLAGS) -DAUDIO_CLASS=1 -DNUM_USB_CHAN_IN_FS=4 
 
 INCLUDE_ONLY_IN_1i4o2_summing = 
 
+#Build config to generate test patterns for AEC etc
+XCC_FLAGS_1i6o2_testgen = $(BUILD_FLAGS) -DAUDIO_CLASS=1 -DNUM_USB_CHAN_IN=6 -DNUM_USB_CHAN_IN_FS=6 -DNUM_USB_CHAN_OUT_FS=2 -DSTREAM_FORMAT_INPUT_1_RESOLUTION_BITS=16 -DUAC_FORCE_FEEDBACK_EP=1 -DMIC_PROCESSING_USE_INTERFACE=1 -DPDM_PROC_SIMPLE=1 -DTESTGEN=1
+
+INCLUDE_ONLY_IN_1i6o2_testgen = 
+
 MODULE_LIBRARIES = xud_x200
 
 #=============================================================================
