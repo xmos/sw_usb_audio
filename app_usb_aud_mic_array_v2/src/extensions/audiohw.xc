@@ -120,23 +120,6 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
     // Now we write the lower bits of Multisynth Parameter P2. This updates all the divider values into the Multisynth block.
     SI5351A_REGWRITE(SI5351A_MS0_P2_LOWER, 0x00);
 
-    if (samFreq < 50000) // 44.1, 48kHz.
-    {
-        SI5351A_REGWRITE(SI5351A_MS2_R2_DIV, 0x30); // Change R2 divider to divide by 8.
-    }
-    else if (samFreq < 100000) // 88.2, 96kHz.
-    {
-        SI5351A_REGWRITE(SI5351A_MS2_R2_DIV, 0x20); // Change R2 divider to divide by 4.
-    }
-    else if (samFreq < 200000) // 176.4, 192kHz.
-    {
-        SI5351A_REGWRITE(SI5351A_MS2_R2_DIV, 0x10); // Change R2 divider to divide by 2.
-    }
-    else // 352.8, 384kHz.
-    {
-        SI5351A_REGWRITE(SI5351A_MS2_R2_DIV, 0x00); // Change R2 divider to divide by 1.
-    }
-
     // Wait a bit for Multisynth output to settle (how long?)
     t :> time;
     time += 100000; // 1ms
