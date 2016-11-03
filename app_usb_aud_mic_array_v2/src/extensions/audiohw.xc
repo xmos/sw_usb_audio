@@ -99,13 +99,13 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
     SI5351A_REGWRITE(SI5351A_OE_CTRL, 0xFD);
 
     /* Sample frequency dependent register settings */
-    if ((samFreq % 22050) == 0)
+    if ((samFreq % 11025) == 0)
     {
         // MCLK = 22.5792MHz (44.1,88.2,176.4kHz)
         SI5351A_REGWRITE(SI5351A_CLK0_CTRL, 0x6D); // (Sets powered up, integer mode, src PLLB, not inverted, Sel MS0 as src for CLK0 o/p, 4mA drive strength)
         SI5351A_REGWRITE(SI5351A_MS0_P1_UPPER, 0x07); // (Sets relevant bits of P1 divider setting).
     }
-    else if ((samFreq % 24000) == 0)
+    else if ((samFreq % 8000) == 0)
     {
         // MCLK = 24.576MHz (48,96,192kHz)
         SI5351A_REGWRITE(SI5351A_CLK0_CTRL, 0x4D); // (Sets powered up, integer mode, src PLLA, not inverted, Sel MS0 as src for CLK0 o/p, 4mA drive strength)
