@@ -99,13 +99,13 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
     SI5351A_REGWRITE(SI5351A_OE_CTRL, 0xFD);
 
     /* Sample frequency dependent register settings */
-    if ((samFreq % 22050) == 0)
+    if ((samFreq % 11025) == 0)
     {
         // MCLK = 22.5792MHz (44.1,88.2,176.4kHz)
         SI5351A_REGWRITE(SI5351A_CLK0_CTRL, 0x6D); // (Sets powered up, integer mode, src PLLB, not inverted, Sel MS0 as src for CLK0 o/p, 4mA drive strength)
         SI5351A_REGWRITE(SI5351A_MS0_P1_UPPER, 0x07); // (Sets relevant bits of P1 divider setting).
     }
-    else if ((samFreq % 24000) == 0)
+    else if ((samFreq % 8000) == 0)
     {
         // MCLK = 24.576MHz (48,96,192kHz)
         SI5351A_REGWRITE(SI5351A_CLK0_CTRL, 0x4D); // (Sets powered up, integer mode, src PLLA, not inverted, Sel MS0 as src for CLK0 o/p, 4mA drive strength)
@@ -119,23 +119,6 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
 
     // Now we write the lower bits of Multisynth Parameter P2. This updates all the divider values into the Multisynth block.
     SI5351A_REGWRITE(SI5351A_MS0_P2_LOWER, 0x00);
-
-    if (samFreq < 50000) // 44.1, 48kHz.
-    {
-        SI5351A_REGWRITE(SI5351A_MS2_R2_DIV, 0x30); // Change R2 divider to divide by 8.
-    }
-    else if (samFreq < 100000) // 88.2, 96kHz.
-    {
-        SI5351A_REGWRITE(SI5351A_MS2_R2_DIV, 0x20); // Change R2 divider to divide by 4.
-    }
-    else if (samFreq < 200000) // 176.4, 192kHz.
-    {
-        SI5351A_REGWRITE(SI5351A_MS2_R2_DIV, 0x10); // Change R2 divider to divide by 2.
-    }
-    else // 352.8, 384kHz.
-    {
-        SI5351A_REGWRITE(SI5351A_MS2_R2_DIV, 0x00); // Change R2 divider to divide by 1.
-    }
 
     // Wait a bit for Multisynth output to settle (how long?)
     t :> time;
