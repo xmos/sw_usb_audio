@@ -317,6 +317,14 @@ def do_dfu_test(min_testlevel, board, app_name, pid, app_config, host_oss):
     xmostest.complete_all_jobs()
 
 def runtest():
+    # Check if the test is running in an environment with hardware resources
+    # available
+    args = xmostest.getargs()
+    if not args.remote_resourcer:
+        # Abort the test
+        print 'Remote resourcer not available, aborting test!'
+        return
+
     test_configs = [
         {'board':'l2','app':'app_usb_aud_l2','pid':'0x0004','app_configs':[
             {'config':'2io_adatin','testlevel':'weekend'},

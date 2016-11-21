@@ -214,6 +214,14 @@ def do_analogue_output_test(min_testlevel, board, app_name, app_config,
     xmostest.complete_all_jobs()
 
 def runtest():
+    # Check if the test is running in an environment with hardware resources
+    # available
+    args = xmostest.getargs()
+    if not args.remote_resourcer:
+        # Abort the test
+        print 'Remote resourcer not available, aborting test!'
+        return
+
     test_configs = [
         {'board':'l2','app':'app_usb_aud_l2','app_configs':[
             {'config':'1ioxx','chan_count':2,'testlevels':[
