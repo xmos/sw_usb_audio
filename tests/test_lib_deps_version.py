@@ -8,7 +8,7 @@ from xmos_subprocess import call_get_output
 
 def runtest():
     # Get the current version number
-    apps = findXCoreApps("../../sw_usb_audio/", include_tests = False)
+    apps = findXCoreApps("../", include_tests = False)
     deps = []
     msg = ''
     result = 'PASS'
