@@ -34,9 +34,11 @@ void user_pdm_process(server mic_process_if i_mic_data)
 
 #else
 #pragma unsafe arrays
-void user_pdm_process(mic_array_frame_time_domain * unsafe audio, int output[])
+void user_pdm_process(mic_array_frame_time_domain * unsafe audio)
 {
 #endif
+    int output[NUM_PDM_MICS];
+
 #ifdef MIC_PROCESSING_USE_INTERFACE
     user_pdm_init();
 
@@ -64,7 +66,8 @@ void user_pdm_process(mic_array_frame_time_domain * unsafe audio, int output[])
                         *micNum = 6 - (doaDir / 60);
                     }
                 }
-                output[1] = audio->data[*micNum][0];
+               // output[1] = audio->data[*micNum][0];
+                audio->data[1][0] = audio->data[*micNum][0];
             }
 
 #ifdef MIC_PROCESSING_USE_INTERFACE
