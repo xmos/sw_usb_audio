@@ -7,7 +7,7 @@
 #include "xua_pdm_mic.h"
 #include <print.h>
 
-#if defined(PDM_PROC_SIMPLE) || defined(PDM_PROC_SUMMING)
+#if defined(PDM_PROC_SUMMING)
 /** Structure to describe the LED ports*/
 typedef struct {
     out port p_led0to7;     /**<LED 0 to 7. */
@@ -62,50 +62,6 @@ void SetMicLeds(int micNum, int val)
     set_led(ledNum1, val);
     set_led(ledNum2, val);
 }
-#endif
-
-
-#ifdef PDM_PROC_SIMPLE
-
-/* Most basic processing example */
-#ifndef MIC_PROCESSING_USE_INTERACE
-void user_pdm_init()
-{
-    /* do nothing */
-}
-#endif
-
-#ifdef MIC_PROCESSING_USE_INTERFACE
-[[combinable]]
-void user_pdm_process(server mic_process_if i_mic_data)
-#else
-void user_pdm_process(mic_array_frame_time_domain * unsafe audio, int output[])
-#endif
-{
-#ifdef MIC_PROCESSING_USE_INTERFACE
-    while(1)
-    {
-        select
-        {
-            case i_mic_data.init():
-                /* Do nothing */
-                break;
-
-            case i_mic_data.transfer_buffers(mic_array_frame_time_domain * unsafe audio, int output[]):
-#endif
-            for(unsigned i=0; i<7; i++)
-            unsafe{
-                /* Simply copy input buffer to output buffer unmodified */
-                output[i] = audio->data[i][0];
-            }
-#ifdef MIC_PROCESSING_USE_INTERFACE
-            break;
-        } // select{}
-    }  // while(1)
-#endif
-}
-
-#elif PDM_PROC_SUMMING
 
 void user_pdm_init()
 {
@@ -131,7 +87,7 @@ void user_pdm_process(server mic_process_if i_mic_data)
     unsigned summed = 0;
     unsigned gain = 1;
 #else
-void user_pdm_process(mic_array_frame_time_domain * unsafe audio, int output[])
+void user_pdm_process(mic_array_frame_time_domain * unsafe audio)
 {
     /* Very simple button control code for example */
     static unsigned count = 0;
@@ -149,7 +105,7 @@ select
         user_pdm_init();
         break;
 
-    case i_mic_data.transfer_buffers(mic_array_frame_time_domain * unsafe audio, int output[]):
+    case i_mic_data.transfer_buffers(mic_array_frame_time_domain * unsafe audio):
 #endif
 
     count++;
@@ -186,9 +142,8 @@ select
                     break;
 
                 case 0xB:  /* Button C */
-                    gain--;
-                    if(gain < 0)
-                        gain = 0;
+                    if(gain!=0)
+                        gain--;
                     printf("Gain Down: %d\n", gain);
                     break;
 
@@ -202,31 +157,31 @@ select
     if(summed)
     {
         /* Sum up all the mics */
-        output[0] = 0;
-        for(unsigned i=0; i<7; i++)
+        int sum = 0;
+        for(unsigned i=0; i < NUM_PDM_MICS; i++)
         unsafe{
-            output[0] += audio->data[i][0];
+            sum += audio->data[i][0];
         }
 
         /* Apply gain to sum */
-        output[0] *= gain;
+        sum *= gain;
 
         /* Apply gain to individual mics */
-        for(unsigned i=0; i<7; i++)
+        for(unsigned i=0; i<NUM_PDM_MICS; i++)
         unsafe{
             int x = audio->data[i][0];
             x*=gain;
-            output[i+1] = x;
+            audio->data[i][0] = x;
         }
     }
     else
     {
         /* Send individual mics (with gain applied) */        
-        for(unsigned i=0; i<7; i++)
+        for(unsigned i=0; i<NUM_PDM_MICS; i++)
         unsafe{
             int x = audio->data[i][0];
             x *=gain;
-            output[i] = x;
+            audio->data[i][0] = x;
         }
     }
 
@@ -236,4 +191,31 @@ select
 }// while(1)
 #endif
 }
+
+#else /* PDM_PROC_SUMMING */
+
+/* Most basic processing example - does nothing */
+/* No need to provide anything for non-interface verson - default implementation available with weak symbols */
+#ifdef MIC_PROCESSING_USE_INTERFACE
+void user_pdm_process(mic_array_frame_time_domain * unsafe audio)
+{
+    while(1)
+    {
+        select
+        {
+            case i_mic_data.init():
+                /* Do nothing */
+                break;
+
+            case i_mic_data.transfer_buffers(mic_array_frame_time_domain * unsafe audio):
+                for(unsigned i=0; i<NUM_PDM_MICS; i++)
+                unsafe{
+                    /* Do Nothing */
+                }   
+                break;
+        } // select{}
+    }  // while(1)
+}
+#endif
+
 #endif
