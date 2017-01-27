@@ -7,7 +7,7 @@ import collections
 
 def runtest():
     # Get the current version number
-    version = get_lib_version("../../sw_usb_audio/", use_only_changelog=True)
+    version = get_lib_version("../", use_only_changelog=True)
 
     # Decompose version number into J, M, and N values
     j_m_n = version.split('.')

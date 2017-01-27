@@ -197,7 +197,8 @@ select
 /* Most basic processing example - does nothing */
 /* No need to provide anything for non-interface verson - default implementation available with weak symbols */
 #ifdef MIC_PROCESSING_USE_INTERFACE
-void user_pdm_process(mic_array_frame_time_domain * unsafe audio)
+[[combinable]]
+void user_pdm_process(server mic_process_if i_mic_data)
 {
     while(1)
     {
