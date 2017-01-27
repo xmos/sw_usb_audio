@@ -8,12 +8,12 @@ xCORE-200 Microphone Array Board
 (XK-USB-MIC-UF216) is design available from XMOS based on a dual-tile XMOS xCORE-200 device.
 
 The board integrates the following building blocks: multiple omni-directional microphones,
-on-board low-jitter clock sources, configurable user input buttons and a USB2.0 device for connectivity.
-making it an ideal platform for a range of multichannel microphone aggregation products.  
+on-board low-jitter clock sources, configurable user input buttons and a USB for connectivity.
+These features make it an ideal platform for a range of multichannel microphone aggregation products.  
 
 The board is powered by an XUF216-512 xCORE-200 multicore microcontroller. This device has sixteen 
 32bit logical cores that deliver up to 2000MIPS completely deterministically. In addition the 
-XUF216 has powerful DSP properyies with native 32bit/64 instructions delivering up to 1000MMACS. 
+XUF216 has powerful DSP properties with native 32bit/64 instructions delivering up to 1000MMACS. 
 
 :ref:`usb_audio_mic_hw_diagram` shows the block layout of the xCORE-200 Microhone Array board.
 
@@ -48,7 +48,7 @@ The xCORE Microphone Array board features 7 MEMS microphones with PDM (Pulse Den
 Analogue Output
 +++++++++++++++
 
-As well at 7 PDM microphones the board also provides a stereo DAC (CS43L21) with integrated headphone
+As well at 7 PDM microphones the board also provides a stereo DAC (CS43L21) with an integrated headphone
 amplifier. The CS43L21 is connected to the xCORE-200 through an I2S interface and is configured using an I2C interface.
 
 Audio Clocking
