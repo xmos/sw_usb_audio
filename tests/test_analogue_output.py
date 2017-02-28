@@ -127,7 +127,7 @@ def do_analogue_output_test(min_testlevel, board, app_name, app_config,
                                                   duration, os, use_wdm))
         ctester[os].set_min_testlevel(min_testlevel)
 
-        resources[os] = xmostest.request_resource("uac2_%s_testrig_%s" % (board, os),
+        resources[os] = xmostest.request_resource("testrig_%s" % (os),
                                           ctester[os])
         time.sleep(0.01)
 
@@ -143,13 +143,15 @@ def do_analogue_output_test(min_testlevel, board, app_name, app_config,
     for os in host_oss:
 
         if xmostest.testlevel_is_at_least(xmostest.get_testlevel(), 'weekend'):
-            dut_job[os] = xmostest.flash_xcore(resources[os]['dut'], dut_binary,
+            dut_job[os] = xmostest.flash_xcore(resources[os]['uac2_%s_dut' % (board)],
+                                              dut_binary,
                                               tester = ctester[os][0],
                                               start_after_completed = dep_dut_job) # Flash the DUT separately
             dep_dut_job.append(dut_job[os])
             # FIXME: access all XTAG in parallel for flashing the DUT
         else:
-            dut_job[os] = xmostest.run_on_xcore(resources[os]['dut'], dut_binary,
+            dut_job[os] = xmostest.run_on_xcore(resources[os]['uac2_%s_dut' % (board)],
+                                            dut_binary,
                                             tester = ctester[os][0],
                                             disable_debug_io = True)
 
@@ -184,7 +186,7 @@ def do_analogue_output_test(min_testlevel, board, app_name, app_config,
                                          initial_delay = 8,
                                          start_after_completed = [dut_job[os]])
 
-        analysis1_job[os] = xmostest.run_on_xcore(resources[os]['analysis_device_1'],
+        analysis1_job[os] = xmostest.run_on_xcore(resources[os]['uac2_%s_analysis_device_1' % (board)],
                                               analyser_binary,
                                               tester = ctester[os][2],
                                               enable_xscope = True,
@@ -193,8 +195,8 @@ def do_analogue_output_test(min_testlevel, board, app_name, app_config,
                                               start_after_started = [sig_gen_job[os]])
 
         if board != 'xcore200_mc':
-            (analysis2_debugger_addr, analysis2_debugger_port) = resources[os]['analysis_device_2'].get_xscope_port().split(':')
-            analysis2_job[os] = xmostest.run_on_xcore(resources[os]['analysis_device_2'],
+            (analysis2_debugger_addr, analysis2_debugger_port) = resources[os]['uac2_%s_analysis_device_2' % (board)].get_xscope_port().split(':')
+            analysis2_job[os] = xmostest.run_on_xcore(resources[os]['uac2_%s_analysis_device_2' % (board)],
                                                   analyser_binary,
                                                   tester = ctester[os][3],
                                                   enable_xscope = True,

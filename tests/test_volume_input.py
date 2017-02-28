@@ -175,7 +175,7 @@ def do_volume_input_test(min_testlevel, board, app_name, app_config, num_chans,
                                                     num_chans, channel, host_os))
         ctester[host_os].set_min_testlevel(min_testlevel)
 
-        resources[host_os] = xmostest.request_resource("uac2_%s_testrig_%s" % (board, host_os),
+        resources[host_os] = xmostest.request_resource("testrig_%s" % (host_os),
                                               ctester[host_os])
         time.sleep(0.01)
 
@@ -191,16 +191,18 @@ def do_volume_input_test(min_testlevel, board, app_name, app_config, num_chans,
     for host_os in host_oss:
 
         if xmostest.testlevel_is_at_least(xmostest.get_testlevel(), 'weekend'):
-            dut_job[host_os] = xmostest.flash_xcore(resources[host_os]['dut'], dut_binary,
+            dut_job[host_os] = xmostest.flash_xcore(resources[host_os]['uac2_%s_dut' % (board)],
+                                           dut_binary,
                                            tester = ctester[host_os][0],
                                            start_after_completed = dep_dut_job)
             dep_dut_job.append(dut_job[host_os])
         else:
-            dut_job[host_os] = xmostest.run_on_xcore(resources[host_os]['dut'], dut_binary,
+            dut_job[host_os] = xmostest.run_on_xcore(resources[host_os]['uac2_%s_dut' % (board)],
+                                            dut_binary,
                                             tester = ctester[host_os][0],
                                             disable_debug_io = True)
 
-        sig_gen1_job[host_os] = xmostest.run_on_xcore(resources[host_os]['analysis_device_1'],
+        sig_gen1_job[host_os] = xmostest.run_on_xcore(resources[host_os]['uac2_%s_analysis_device_1' % (board)],
                                                  analyser_binary,
                                                  tester = ctester[host_os][1],
                                                  enable_xscope = True,
@@ -211,8 +213,8 @@ def do_volume_input_test(min_testlevel, board, app_name, app_config, num_chans,
         dep_sig_gen_job.append(sig_gen1_job[host_os])
         i_ctester = 2
         if (board != 'xcore200_mc'):
-            (analysis2_debugger_addr, analysis2_debugger_port) = resources[host_os]['analysis_device_2'].get_xscope_port().split(':')
-            sig_gen2_job[host_os] = xmostest.run_on_xcore(resources[host_os]['analysis_device_2'],
+            (analysis2_debugger_addr, analysis2_debugger_port) = resources[host_os]['uac2_%s_analysis_device_2' % (board)].get_xscope_port().split(':')
+            sig_gen2_job[host_os] = xmostest.run_on_xcore(resources[host_os]['uac2_%s_analysis_device_2' % (board)],
                                                  analyser_binary,
                                                  tester = ctester[host_os][i_ctester],
                                                  enable_xscope = True,
