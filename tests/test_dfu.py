@@ -207,7 +207,7 @@ def do_dfu_test(min_testlevel, board, app_name, pid, app_config, host_oss):
                                             pid)
         ctester[os].set_min_testlevel(min_testlevel)
 
-        resources[os] = xmostest.request_resource("uac2_%s_testrig_%s" % (board, os),
+        resources[os] = xmostest.request_resource("testrig_%s" % (os),
                                                 ctester[os])
         time.sleep(0.01)
 
@@ -218,7 +218,7 @@ def do_dfu_test(min_testlevel, board, app_name, pid, app_config, host_oss):
     dep_dut_job = []
 
     for os in host_oss:
-        dut_job[os] = xmostest.flash_xcore(resources[os]['dut'], dut_binary,
+        dut_job[os] = xmostest.flash_xcore(resources[os]['uac2_%s_dut' % (board)], dut_binary,
                                             tester = ctester[os][0], do_xe_prebuild = True,
                                             start_after_completed = dep_dut_job)
         if dut_job[os]:

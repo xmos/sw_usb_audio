@@ -129,7 +129,7 @@ def do_analogue_input_test(min_testlevel, board, app_name, app_config,
                                             duration, os, use_wdm))
         ctester[os].set_min_testlevel(min_testlevel)
 
-        resources[os] = xmostest.request_resource("uac2_%s_testrig_%s" % (board, os),
+        resources[os] = xmostest.request_resource("testrig_%s" % (os),
                                       ctester[os])
         time.sleep(0.01)
 
@@ -144,18 +144,20 @@ def do_analogue_input_test(min_testlevel, board, app_name, app_config,
     for os in host_oss:
         i_ctester = 0
         if xmostest.testlevel_is_at_least(xmostest.get_testlevel(), 'weekend'):
-            dut_job[os] = xmostest.flash_xcore(resources[os]['dut'], dut_binary,
+            dut_job[os] = xmostest.flash_xcore(resources[os]['uac2_%s_dut' % (board)],
+                                           dut_binary,
                                            tester = ctester[os][i_ctester],
                                            start_after_completed = dep_dut_job)
             dep_dut_job.append(dut_job[os])
         else:
-            dut_job[os] = xmostest.run_on_xcore(resources[os]['dut'], dut_binary,
+            dut_job[os] = xmostest.run_on_xcore(resources[os]['uac2_%s_dut' % (board)],
+                                            dut_binary,
                                             tester = ctester[os][i_ctester],
                                             disable_debug_io = True)
         i_ctester += 1
         dep_analysis_job = []
 
-        sig_gen1_job[os] = xmostest.run_on_xcore(resources[os]['analysis_device_1'],
+        sig_gen1_job[os] = xmostest.run_on_xcore(resources[os]['uac2_%s_analysis_device_1' % (board)],
                                              analyser_binary,
                                              tester = ctester[os][i_ctester],
                                              enable_xscope = True,
@@ -165,9 +167,9 @@ def do_analogue_input_test(min_testlevel, board, app_name, app_config,
         dep_analysis_job.append(sig_gen1_job[os])
 
         if board != 'xcore200_mc':
-            (analysis2_debugger_addr, analysis2_debugger_port) = resources[os]['analysis_device_2'].get_xscope_port().split(':')
+            (analysis2_debugger_addr, analysis2_debugger_port) = resources[os]['uac2_%s_analysis_device_2' % (board)].get_xscope_port().split(':')
 
-            sig_gen2_job[os] = xmostest.run_on_xcore(resources[os]['analysis_device_2'],
+            sig_gen2_job[os] = xmostest.run_on_xcore(resources[os]['uac2_%s_analysis_device_2' % (board)],
                                                  analyser_binary,
                                                  tester = ctester[os][i_ctester],
                                                  enable_xscope = True,
