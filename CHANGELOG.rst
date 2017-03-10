@@ -4,6 +4,123 @@ sw_usb_audio Change Log
 99.99.99
 --------
 
+  * Changes to dependencies:
+
+    - lib_device_control: 2.0.0 -> 3.0.1
+
+      + Fixed incorrectly returned read data in xSCOPE example host code
+      + Replace xSCOPE and USB size limits in public API by runtime errors
+      + xSCOPE API change - buffer type from 64 words to 256 bytes
+      + Windows build fixes
+      + xTIMEcomposer project files for AN01034 and xSCOPE examples
+      + Documentation updates
+      + Added AN01034 application note based around USB transport example and
+        xCORE Array Microphone board
+      + Documentation updates
+      + Increased test coverage
+      + Update XE232 XN file in I2C host example for tools version 14.2 (compute
+        nodes numbered 0 and 2 rather than 0 and 1)
+
+    - lib_dsp: Added dependency 3.0.0
+
+      + Added exponential and natural logarithm functions
+      + Added Hyperbolic sine and cosine
+      + Fixed Matrix Multiplication and improved performance
+      + Changed API prefix from ``lib_dsp_`` to ``dsp_``.
+      + Changed lib_dsp_fft_complex_t to dsp_complex_t and
+        lib_dsp_fft_complex_short_t to dsp_complex_short_t
+      + Various fixes in API documentation
+      + Added complex vector multiplication
+      + Added synchronous sample rate conversion (downsample or upsample by
+        factor 3)
+
+    - lib_logging: 2.0.1 -> 2.1.0
+
+      + ADDED:    Now supports the %p format specifier
+      + CHANGE:   Ignore the case of the format specifiers
+      + CHANGE:   Ignore padding and alignment characters
+
+    - lib_mic_array: 2.0.1 -> 3.0.1
+
+      + Filter design script update for usability.
+      + Documentation improvement.
+      + Changed DEBUG_UNIT to XASSERT_UNIT to work with lib_xassert.
+      + Added upgrade advisory.
+      + Added dynamic range subsection to documentation.
+      + Added ability to route internal channels of the output rate of the
+        mic_array to the mic_array so that they can benefit from the post
+        processing of the mic_array.
+      + Enabled the metadata which delivers the frame counter.
+      + Small fix to the filter generator to allow the use of fewer taps in the
+        final stage FIR.
+      + Added significant bits collection to the metadata.
+      + Added fixed gain control through define MIC_ARRAY_FIXED_GAIN.
+      + Tested and enabled the debug mode for detecting frame dropping. Enabled
+        by adding DEBUG_MIC_ARRAY to the Makefile.
+      + Moved to using types from lib_dsp.
+      + Bug fix in python FIR generator script resulting in excessive output
+        ripple.
+      + Default FIR coefficients now optimised for 16kHz output sample rate.
+      + Added ability to remap port pins to channels.
+      + MIC_ARRAY_NUM_MICS is now forced to a multiple of 4 with a warning if it
+        changed.
+      + Corrected MIC_ARRAY_DC_OFFSET_LOG2 default value reporting in
+        documentation.
+
+    - lib_xassert: 2.0.1 -> 3.0.0
+
+      + CHANGE: Renamed DEBUG_UNIT to XASSERT_UNIT to prevent conflict with
+        lib_logging
+
+    - sc_usb_audio: 6.18.1 -> 7.1.0
+
+      + ADDED:      UserBufferManagementInit() to reset any state required in
+        UserBufferManagement()
+      + ADDED:      I2S output up-sampling (enabled when AUD_TO_USB_RATIO is >
+        1)
+      + ADDED:      PDM Mic decimator output rate can now be controlled
+        independently (via AUD_TO_MICS_RATIO)
+      + CHANGE:     Rename I2S input down-sampling (enabled when
+        AUD_TO_USB_RATIO is > 1, rather than via I2S_DOWNSAMPLE_FACTOR)
+      + RESOLVED:   Crosstalk between input channels when I2S input
+        down-sampling is enabled
+      + RESOLVED:   Mic decimation data tables properly sized when mic
+        sample-rate < USB audio sample-rate
+      + RESOLVED:   PDM microphone decimation issue at some sample rates caused
+        by integration
+      + ADDED:      I2S down-sampling (I2S_DOWNSAMPLE_FACTOR)
+      + ADDED:      I2S resynchronisation when in slave mode (CODEC_MASTER=1)
+      + CHANGE:     Various memory optimisations when MAX_FREQ = MIN_FREQ
+      + CHANGE:     Memory optimisations in audio buffering
+      + CHANGE:     Various memory optimisations in UAC1 mode
+      + CHANGE:     user_pdm_process() API change
+      + CHANGE:     PDM Mic decimator table now related to MIN_FREQ (memory
+        optimisation)
+      + RESOLVED:   Audio request interrupt handler properly eliminated
+      + RESOLVED:   Number of PDM microphone channels configured now based on
+        NUM_PDM_MICS define (previously hard-coded)
+      + RESOLVED:   PDM microphone clock divide now based MCLK defines
+        (previously hard-coded)
+      + CHANGE:     Second microphone decimation core only run if NUM_PDM_MICS >
+        4
+      + RESOLVED:   Intra-frame sample delays of 1/2 samples on input streaming
+        in TDM mode
+      + RESOLVED:   Build issue with NUM_USB_CHAN_OUT set to 0 and MIXER enabled
+      + RESOLVED:   SPDIF_TX_INDEX not defined build warning only emitted when
+        SPDIF_TX defined
+      + RESOLVED:   Failure to enter DFU mode when configured without input
+        volume control
+      + RESOLVED:   SPDIF_TX_INDEX not defined build warning only emitted when
+        SPDIF_TX defined
+      + RESOLVED:   Failure to enter DFU mode when configured without input
+        volume control
+
+    - sc_xud: 2.4.2 -> 2.5.0
+
+      + RESOLVED:   xCORE-200 USB phy parameters tuned for optimal Tx
+        performance resulting in much improved TX eye diagram and compliance
+        test results
+
 6.18.1
 ------
 
@@ -12,6 +129,8 @@ sw_usb_audio Change Log
   * Changes to dependencies:
 
     - lib_device_control: Added dependency 2.0.0
+
+      + Added the ability to select USB interface (Allows control from Windows)
 
     - sc_usb_audio: 6.18.0 -> 6.18.1
 
@@ -49,6 +168,9 @@ sw_usb_audio Change Log
         protection circuitry and allows for a reduced BOM. Note, VBUS should
         still be present for self powered devices in order to pass USB
         compliance tests.
+      + RESOLVED:   Device might hang during resume if host follows resume
+        signality with activity after a time close to specified minimum of
+        1.33us (#11813)
 
 6.17.0
 ------
@@ -88,6 +210,8 @@ sw_usb_audio Change Log
       + Updates required for latest lib_mic_array_board_support API
 
     - lib_voice: Added dependency 0.0.1
+
+      + Initial version
 
     - sc_usb_audio: 6.15.2 -> 6.16.0
 
@@ -155,9 +279,22 @@ sw_usb_audio Change Log
 
     - lib_logging: Added dependency 2.0.1
 
+      + CHANGE:   Update to source code license and copyright
+
     - lib_mic_array: Added dependency 1.0.1
 
+      + Added dynamic DC offset removal at startup to eliminate slow convergance
+      + Mute first 32 samples to allow DC offset to adapt before outputting
+        signal
+      + Fixed XTA scripte to ensure timing is being met
+      + Now use a 64-bit accumulator for DC offset removal
+      + Consolidated generators into a single python generator
+      + Produced output frequency response graphs
+      + Added 16 bit output mode
+
     - lib_xassert: Added dependency 2.0.1
+
+      + CHANGE: Update to source code license and copyright
 
     - sc_usb_audio: 6.14.0 -> 6.15.0
 
@@ -1020,15 +1157,21 @@ sw_usb_audio Change Log
 
     - sc_adat: Added dependency 1.0.0
 
+      + Initial release
+
     - sc_i2c: Added dependency 1.0.0
 
     - sc_spdif: Added dependency 1.0.0
 
     - sc_usb: Added dependency 1.0.0
 
+      + Initial release
+
     - sc_usb_audio: Added dependency 1.0.0
 
     - sc_xud: Added dependency 1.0.0
+
+      + Initial stand-alone release
 
 
 Legacy release history
