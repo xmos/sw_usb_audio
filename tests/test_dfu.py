@@ -191,7 +191,7 @@ class DFUTester(xmostest.Tester):
                                  env={},
                                  output=output)
 
-def do_dfu_test(min_testlevel, board, app_name, pid, app_config, host_oss):
+def do_dfu_test(min_testlevel, board, app_name, pid, grep_string, app_config, host_oss):
 
     ctester = {}
     resources = {}
@@ -264,10 +264,11 @@ def do_dfu_test(min_testlevel, board, app_name, pid, app_config, host_oss):
     for os in host_oss:
         if os.startswith('os_x'):
             host_dfu_path = "../../../../usb_audio_testing/dfu/OSX/testdfu.sh"
+            dfu_args = ["%s" % host_dfu_path, pid, grep_string, "<remote_file>", "<remote_file>"],
         elif os.startswith('win_'):
             host_dfu_path = '"..\\..\\..\\..\\usb_audio_testing\\dfu\\win32\\testdfu.bat "C:\\Program Files\\Thesycon\\TUSBAudio_Driver\\dfucons.exe""'
-        dfu_job[os] = xmostest.run_on_pc(resources[os]['host'],
-                                     ["%s" % host_dfu_path, "<remote_file>", "<remote_file>"],
+            dfu_args = ["%s" % host_dfu_path, "<remote_file>", "<remote_file>"],
+        dfu_job[os] = xmostest.run_on_pc(resources[os]['host'], dfu_args,
                                      files_used_as_args = ['%s/upgrade1.bin' % dut_app_path, '%s/upgrade2.bin' % dut_app_path],
                                      tester = ctester[os][2],
                                      timeout = 600,
@@ -326,7 +327,8 @@ def runtest():
         return
 
     test_configs = [
-        {'board':'l2','app':'app_usb_aud_l2','pid':'0x0004','app_configs':[
+        {'board':'l2','app':'app_usb_aud_l2','pid':'0x0004',
+         'grep_string':'xCORE', 'app_configs':[
             {'config':'2io_adatin','testlevel':'weekend'},
             {'config':'2io_adatout','testlevel':'nightly'},
             {'config':'2io_spdifout_adatout','testlevel':'weekend'},
@@ -339,7 +341,8 @@ def runtest():
             {'config':'2xoxs','testlevel':'smoke'}
             ]
         },
-        {'board':'xcore200_mc','app':'app_usb_aud_xk_216_mc', 'pid': '0x0008', 'app_configs':[
+        {'board':'xcore200_mc','app':'app_usb_aud_xk_216_mc', 'pid': '0x0008',
+         'grep_string':'xCORE', 'app_configs':[
             {'config':'2i8o8xxxxx_tdm8','testlevel':'weekend'},
             {'config':'2i10o10msxxxx','testlevel':'nightly'},
             {'config':'2i10o10xxxxxd','testlevel':'weekend'},
@@ -366,7 +369,8 @@ def runtest():
                 continue
         app = test['app']
         pid = test['pid']
+        grep_string = test['grep_string']
         for config in test['app_configs']:
             config_name = config['config']
             min_testlevel = config['testlevel']
-            do_dfu_test(min_testlevel, board, app, pid, config_name, host_oss)
+            do_dfu_test(min_testlevel, board, app, pid, grep_string, config_name, host_oss)
