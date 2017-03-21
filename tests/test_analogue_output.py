@@ -102,7 +102,7 @@ class XS2AnalogueOutputTester(AnalogueOutputTester):
                                                         analyzer1_output, [], [])
 
 def do_analogue_output_test(min_testlevel, board, app_name, app_config,
-                            num_chans, sample_rate, duration, host_oss, use_wdm=False):
+                            num_chans, sample_rate, duration, host_oss, product_string, use_wdm=False):
 
     ctester = {}
     resources = {}
@@ -137,7 +137,7 @@ def do_analogue_output_test(min_testlevel, board, app_name, app_config,
     analyser_binary = '../../sw_audio_analyzer/app_audio_analyzer_mc/bin/app_audio_analyzer_mc.xe'
     if board == 'xcore200_mc':
         analyser_binary = '../../sw_audio_analyzer/app_audio_analyzer_xcore200_mc/bin/app_audio_analyzer_xcore200_mc.xe'
-    
+
     dep_dut_job = []
 
     for os in host_oss:
@@ -180,7 +180,8 @@ def do_analogue_output_test(min_testlevel, board, app_name, app_config,
                                          "%d" % (sample_rate),
                                          "%d" % ((duration + 10) * 1000), # Ensure signal generator runs for longer than audio analyzer, xsig expects duration in ms
                                          "%s%s" % (xsig_configs_path, xsig_config_file),
-                                         wdm_arg],
+                                         wdm_arg,
+                                         "--device", "%s" % product_string],
                                          tester = ctester[os][1],
                                          timeout = duration + 60, # xsig should stop itself gracefully
                                          initial_delay = 8,
@@ -225,7 +226,7 @@ def runtest():
         return
 
     test_configs = [
-        {'board':'l2','app':'app_usb_aud_l2','app_configs':[
+        {'board':'l2','app':'app_usb_aud_l2','productstringbase':'xCORE L2 USB Audio ','app_configs':[
             {'config':'1ioxx','chan_count':2,'testlevels':[
                 {'level':'nightly','sample_rates':[48000]},
                 {'level':'weekend','sample_rates':[44100]}]},
@@ -277,16 +278,11 @@ def runtest():
             ]
         },
         # xCORE-200 MC board test configs
-        {'board':'xcore200_mc','app':'app_usb_aud_xk_216_mc','app_configs':[
+        {'board':'xcore200_mc','app':'app_usb_aud_xk_216_mc','productstringbase':'xCORE MC USB Audio ','app_configs':[
             {'config':'2i8o8xxxxx_tdm8','chan_count':8,'testlevels':[
                 {'level':'nightly','sample_rates':[44100]},
                 {'level':'weekend','sample_rates':[48000, 88200, 96000]},
                 {'level':'smoke','sample_rates':[96000]}]},
-            
-            {'config':'1i2o2xxxxxx','chan_count':2,'testlevels':[
-                {'level':'nightly','sample_rates':[44100, 48000]},
-                {'level':'weekend','sample_rates':[44100, 48000]},
-                {'level':'smoke','sample_rates':[48000]}]},
 
             {'config':'2i8o8xxxxx_tdm8_slave','chan_count':8,'testlevels':[
                 {'level':'nightly','sample_rates':[44100]},
@@ -322,7 +318,7 @@ def runtest():
     ]
 
     args = xmostest.getargs()
-    
+
     host_oss = ['os_x_11', 'os_x_dev', 'win_7', 'win_8', 'win_10']
     duration = 30
 
@@ -338,6 +334,7 @@ def runtest():
         app = test['app']
         for config in test['app_configs']:
             config_name = config['config']
+            product_string = config['productstringbase'] + config_name[0] + '.0'
             num_chans = config['chan_count']
             for run_type in config['testlevels']:
                 min_testlevel = run_type['level']
@@ -345,7 +342,7 @@ def runtest():
                 for sample_rate in sample_rates:
                     do_analogue_output_test(min_testlevel, board, app,
                                             config_name, num_chans,
-                                            sample_rate, duration, host_oss)
+                                            sample_rate, duration, host_oss, product_string)
                 win_oss = []
                 for os in host_oss:
                     # Special case to test WDM on Windows
@@ -357,5 +354,5 @@ def runtest():
 
                 do_analogue_output_test(min_testlevel, board, app,
                                         config_name, WDM_MAX_NUM_CHANS,
-                                        WDM_SAMPLE_RATE, duration, win_oss,
+                                        WDM_SAMPLE_RATE, duration, win_oss, product_string,
                                         use_wdm=True)
