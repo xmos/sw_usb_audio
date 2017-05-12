@@ -6,7 +6,7 @@ TARGET = xr-usb-audio-2.0-mc
 APP_NAME =
 
 # The flags passed to xcc when building the application
-BUILD_FLAGS     =  -DFLASH_MAX_UPGRADE_SIZE=64*1024 -fcomment-asm -Xmapper --map -Xmapper MAPFILE -Wall -O3 -report -lflash -fsubword-select -save-temps -g -DXUD_SERIES_SUPPORT=2 -DXSCOPE=1 -fxscope -DADAT_TX_USE_SHARED_BUFF=1
+BUILD_FLAGS     =  -DFLASH_MAX_UPGRADE_SIZE=64*1024 -fcomment-asm -Xmapper --map -Xmapper MAPFILE -O3 -report -lflash -fsubword-select -save-temps -g -DXUD_SERIES_SUPPORT=2 -DXSCOPE=1 -fxscope -DADAT_TX_USE_SHARED_BUFF=1
 #-fschedule
 
 TEST_DFU_1 ?= 0

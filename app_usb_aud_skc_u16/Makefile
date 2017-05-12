@@ -6,7 +6,7 @@ TARGET = xp-skc-u16-audio.xn
 APP_NAME =
 
 # The flags passed to xcc when building the application
-BUILD_FLAGS     = -DFLASH_MAX_UPGRADE_SIZE=64*1024 -fcomment-asm -Xmapper --map -Xmapper MAPFILE -Wall -O3 -report -lflash -fsubword-select -save-temps -g -fxscope -DXSCOPE -DSDA_HIGH=2 -DSCL_HIGH=1 -DXUD_ON_U_SERIES=1
+BUILD_FLAGS     = -DFLASH_MAX_UPGRADE_SIZE=64*1024 -fcomment-asm -Xmapper --map -Xmapper MAPFILE -O3 -report -lflash -fsubword-select -save-temps -g -fxscope -DXSCOPE -DSDA_HIGH=2 -DSCL_HIGH=1 -DXUD_ON_U_SERIES=1
 
 # Test build configs (Note these make use of the defaults in customdefines.h)
 

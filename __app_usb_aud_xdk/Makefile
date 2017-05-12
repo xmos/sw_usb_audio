@@ -6,7 +6,7 @@ TARGET = xdk
 APP_NAME =
 
 # The flags passed to xcc when building the application
-BUILD_FLAGS     =  -DFLASH_MAX_UPGRADE_SIZE=64*1024 -fcomment-asm -Xmapper --map -Xmapper MAPFILE -Wall -O3 -report -lflash -fsubword-select -save-temps -g -DXUD_SERIES_SUPPORT=3 -march=xs1b
+BUILD_FLAGS     =  -DFLASH_MAX_UPGRADE_SIZE=64*1024 -fcomment-asm -Xmapper --map -Xmapper MAPFILE -O3 -report -lflash -fsubword-select -save-temps -g -DXUD_SERIES_SUPPORT=3 -march=xs1b
 
 #Test build configs (Note these make use of the defaults in customdefines.h)
 

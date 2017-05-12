@@ -6,7 +6,7 @@ TARGET = xk_usb_audio_u8_2c.xn
 APP_NAME =
 
 # The flags passed to xcc when building the application
-BUILD_FLAGS     = -Wall -O3 -report -lflash -g
+BUILD_FLAGS     = -O3 -report -lflash -g
 
 XCC_FLAGS = $(BUILD_FLAGS)
 
