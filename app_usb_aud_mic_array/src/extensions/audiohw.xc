@@ -165,7 +165,7 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned d
     DAC_REGWRITE(2, val);
     DAC_REGREAD_ASSERT(2, data, val);
 
-    /* Put DAC into slave mode  */
+    /* Setup DAC as slave with data in I2S mode, up to 24-bit */
     val = 0b00001000;
     DAC_REGWRITE(4, val);
     DAC_REGREAD_ASSERT(4, data, val);
