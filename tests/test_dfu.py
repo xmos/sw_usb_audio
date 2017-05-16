@@ -95,7 +95,7 @@ class DFUTester(xmostest.Tester):
     def __init__(self, app_name, app_config, os):
         super(DFUTester, self).__init__()
         self.product = "sw_usb_audio"
-        self.group = "non_audio_hw_tests"
+        self.group = "dfu_hw_tests"
         self.test = "dfu_test"
         self.config = {'app_name':app_name,
                        'app_config':app_config,

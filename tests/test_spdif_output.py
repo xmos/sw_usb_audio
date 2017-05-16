@@ -10,7 +10,7 @@ class SPDIFOutputTester(xmostest.Tester):
                  duration, os, use_wdm):
             super(SPDIFOutputTester, self).__init__()
             self.product = "sw_usb_audio"
-            self.group = "digital_hw_tests"
+            self.group = "digital_audio_hw_tests"
             self.test = "spdif_output_test"
             self.config = {'app_name':app_name,
                            'app_config':app_config,

@@ -37,7 +37,7 @@ class VolumeOutputTester(xmostest.Tester):
     def __init__(self, app_name, app_config, num_chans, channel, os):
             super(VolumeOutputTester, self).__init__()
             self.product = "sw_usb_audio"
-            self.group = "analogue_hw_tests"
+            self.group = "analogue_audio_hw_tests"
             self.test = "volume_output_test"
             self.config = {'app_name':app_name,
                            'app_config':app_config,

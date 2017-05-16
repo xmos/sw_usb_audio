@@ -11,7 +11,7 @@ if __name__ == "__main__":
     xmostest.init(argparser)
 
     xmostest.register_group("sw_usb_audio",
-                            "analogue_hw_tests",
+                            "analogue_audio_hw_tests",
                             "Analogue audio hardware tests",
     """
 Tests are performed by running the USB Audio reference design software on
@@ -30,7 +30,7 @@ The tests are run at sample rates of 44.1kHz, 48kHz, 88.2kHz, 96kHz, 176.4kHz an
 """)
 
     xmostest.register_group("sw_usb_audio",
-                            "digital_hw_tests",
+                            "digital_audio_hw_tests",
                             "Digital audio hardware tests",
     """
 Tests are performed by running the USB Audio reference design software on
@@ -48,16 +48,13 @@ The tests are run at sample rates of 44.1kHz, 48kHz, 88.2kHz, 96kHz, 176.4kHz an
 """)
 
     xmostest.register_group("sw_usb_audio",
-                            "non_audio_hw_tests",
+                            "dfu_hw_tests",
                             "A collection of tests covering non audio related features run on hardware",
     """
 Tests are performed by running the USB Audio reference design software on
 XMOS audio hardware platforms. The audio platform under test will be connected
-to both a host PC and set of signal generator and analysis devices to provide
-and record data. Tests are run to test the following features:
+to a host PC. Tests are run to test the following features:
 
-    * MIDI input
-    * MIDI output
     * DFU
 """)
 

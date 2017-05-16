@@ -10,7 +10,7 @@ class AnalogueOutputTester(xmostest.Tester):
                  os, use_wdm):
         super(AnalogueOutputTester, self).__init__()
         self.product = "sw_usb_audio"
-        self.group = "analogue_hw_tests"
+        self.group = "analogue_audio_hw_tests"
         self.test = "analogue_output_test"
         self.config = {'app_name':app_name,
                        'app_config':app_config,
