@@ -21,18 +21,15 @@ sw_usb_audio Change Log
       + Update XE232 XN file in I2C host example for tools version 14.2 (compute
         nodes numbered 0 and 2 rather than 0 and 1)
 
-    - lib_dsp: Added dependency 3.0.0
+    - lib_dsp: Added dependency 3.1.0
 
-      + Added exponential and natural logarithm functions
-      + Added Hyperbolic sine and cosine
-      + Fixed Matrix Multiplication and improved performance
-      + Changed API prefix from ``lib_dsp_`` to ``dsp_``.
-      + Changed lib_dsp_fft_complex_t to dsp_complex_t and
-        lib_dsp_fft_complex_short_t to dsp_complex_short_t
-      + Various fixes in API documentation
-      + Added complex vector multiplication
-      + Added synchronous sample rate conversion (downsample or upsample by
-        factor 3)
+      + Deprecated synchronous sample rate conversion functions - now maintained
+        in lib_src
+      + Added functions to compute a fast fixed point atan2 and hypotenuse
+      + Added Q8 versions of the arc sine and arc cosine functions
+      + Added 16384 point sine table
+      + Improved performance of the forwards FFT function, with small reduction
+        in memory footprint
 
     - lib_logging: 2.0.1 -> 2.1.0
 
@@ -40,8 +37,9 @@ sw_usb_audio Change Log
       + CHANGE:   Ignore the case of the format specifiers
       + CHANGE:   Ignore padding and alignment characters
 
-    - lib_mic_array: 2.0.1 -> 3.0.1
+    - lib_mic_array: 2.0.1 -> 3.0.2
 
+      + Update DAC settings to work for mic array base board as well.
       + Filter design script update for usability.
       + Documentation improvement.
       + Changed DEBUG_UNIT to XASSERT_UNIT to work with lib_xassert.
@@ -72,8 +70,9 @@ sw_usb_audio Change Log
       + CHANGE: Renamed DEBUG_UNIT to XASSERT_UNIT to prevent conflict with
         lib_logging
 
-    - sc_usb_audio: 6.18.1 -> 7.1.0
+    - sc_usb_audio: 6.18.1 -> 7.2.0
 
+      + ADDED:      DFU to UAC1 descriptors (guarded by DFU and FORCE_UAC1_DFU)
       + ADDED:      UserBufferManagementInit() to reset any state required in
         UserBufferManagement()
       + ADDED:      I2S output up-sampling (enabled when AUD_TO_USB_RATIO is >
