@@ -163,7 +163,7 @@ class XS2VolumeOutputTester(VolumeOutputTester):
                                               analyzer1_host_xscope_output, [], [], vol_ctrl_output)
 
 def do_volume_output_test(min_testlevel, board, app_name, app_config, num_chans,
-                          sample_rate, channel, host_oss):
+                          sample_rate, channel, host_oss, product_string):
 
     ctester = {}
     resources = {}
@@ -228,7 +228,8 @@ def do_volume_output_test(min_testlevel, board, app_name, app_config, num_chans,
                                          [run_xsig_path,
                                          "%d" % (sample_rate),
                                          "%d" % ((duration + 10) * 1000), # Ensure signal generator runs for longer than audio analyzer, xsig expects duration in ms
-                                         "%s%s" % (xsig_configs_path, xsig_config_file)],
+                                         "%s%s" % (xsig_configs_path, xsig_config_file),
+                                         "--device", "%s" % product_string],
                                          tester = ctester[os][1],
                                          timeout = duration + 60, # xsig should stop itself gracefully
                                          initial_delay = 8,
@@ -240,7 +241,7 @@ def do_volume_output_test(min_testlevel, board, app_name, app_config, num_chans,
                                      analysis1_debugger_port,
                                      "%d" % duration]
 
-        max_channel = 4 
+        max_channel = 4
         if (board == 'xcore200_mc'):
             max_channel = 8
 
@@ -326,7 +327,7 @@ def runtest():
         return
 
     test_configs = [
-        {'board':'l2','app':'app_usb_aud_l2','app_configs':[
+        {'board':'l2','app':'app_usb_aud_l2','productstringbase':'xCORE L2 USB Audio ','app_configs':[
             {'config':'1ioxx','chan_count':2,
                 'max_sample_rate':48000,'testlevel':'nightly'},
 
@@ -364,7 +365,7 @@ def runtest():
                 'max_sample_rate':192000,'testlevel':'nightly'}
             ]
         },
-        {'board':'xcore200_mc','app':'app_usb_aud_xk_216_mc','app_configs':[
+        {'board':'xcore200_mc','app':'app_usb_aud_xk_216_mc','productstringbase':'xCORE-200 MC USB Audio ','app_configs':[
 
             {'config':'2i8o8xxxxx_tdm8','chan_count':8,
                   'max_sample_rate':48000, 'testlevel':'nightly'},
@@ -393,6 +394,7 @@ def runtest():
         app = test['app']
         for config in test['app_configs']:
             config_name = config['config']
+            product_string = config['productstringbase'] + config_name[0] + '.0'
             num_chans = config['chan_count']
             max_sample_rate = config['max_sample_rate']
             min_testlevel = config['testlevel']
@@ -400,10 +402,10 @@ def runtest():
             # Test the master volume control
             do_volume_output_test(min_testlevel, board, app, config_name,
                                   num_chans, max_sample_rate, 'master',
-                                  host_oss)
+                                  host_oss, product_string)
 
             # Test the volume control of each channel
             for chan in range(num_chans):
                 do_volume_output_test(min_testlevel, board, app, config_name,
                                       num_chans, max_sample_rate, chan,
-                                      host_oss)
+                                      host_oss, product_string)

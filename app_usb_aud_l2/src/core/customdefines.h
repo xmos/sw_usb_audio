@@ -89,6 +89,8 @@
 #define VENDOR_ID          (0x20B1)          /* XMOS VID */
 #define PID_AUDIO_1        (0x0005)
 #define PID_AUDIO_2        (0x0004)
+#define PRODUCT_STR_A2     "xCORE L2 USB Audio 2.0"
+#define PRODUCT_STR_A1     "xCORE L2 USB Audio 1.0"
 
 /* Flash device for DFU.  Device supported by tools so no need to spec */
 #define DFU_FLASH_DEVICE FL_DEVICE_ATMEL_AT25DF041A
