@@ -335,7 +335,7 @@ def runtest():
                 'max_sample_rate':192000,'testlevel':'weekend'}
             ]
         },
-        {'board':'xcore200_mc','app':'app_usb_aud_xk_216_mc','productstringbase':'xCORE MC USB Audio ','app_configs':[
+        {'board':'xcore200_mc','app':'app_usb_aud_xk_216_mc','productstringbase':'xCORE-200 MC USB Audio ','app_configs':[
 
             {'config':'2i8o8xxxxx_tdm8','chan_count':8,
                   'max_sample_rate':48000, 'testlevel':'nightly'},

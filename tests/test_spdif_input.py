@@ -210,7 +210,7 @@ def runtest():
                 {'level':'weekend','sample_rates':[44100, 48000, 88200, 96000, 176400]}]},
             ]
         },
-        {'board':'xcore200_mc','app':'app_usb_aud_xk_216_mc','productstringbase':'xCORE MC USB Audio ','app_configs':[
+        {'board':'xcore200_mc','app':'app_usb_aud_xk_216_mc','productstringbase':'xCORE-200 MC USB Audio ','app_configs':[
 
             {'config':'2i10o10xssxxx','spdif_base_chan':8,'testlevels':[
                 {'level':'nightly','sample_rates':[44100, 48000, 192000]},

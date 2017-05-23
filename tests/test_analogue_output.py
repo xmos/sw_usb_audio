@@ -278,7 +278,7 @@ def runtest():
             ]
         },
         # xCORE-200 MC board test configs
-        {'board':'xcore200_mc','app':'app_usb_aud_xk_216_mc','productstringbase':'xCORE MC USB Audio ','app_configs':[
+        {'board':'xcore200_mc','app':'app_usb_aud_xk_216_mc','productstringbase':'xCORE-200 MC USB Audio ','app_configs':[
             {'config':'2i8o8xxxxx_tdm8','chan_count':8,'testlevels':[
                 {'level':'nightly','sample_rates':[44100]},
                 {'level':'weekend','sample_rates':[48000, 88200, 96000]},
