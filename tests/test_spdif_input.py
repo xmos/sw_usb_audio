@@ -80,7 +80,7 @@ class SPDIFInputTester(xmostest.Tester):
                                  output=output)
 
 def do_spdif_input_test(min_testlevel, board, app_name, app_config,
-                        spdif_base_chan, sample_rate, duration, host_oss, product_string
+                        spdif_base_chan, sample_rate, duration, host_oss, product_string,
                         use_wdm=False):
 
     ctester = {}

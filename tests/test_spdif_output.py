@@ -262,5 +262,5 @@ def runtest():
                 # WASAPI to use more than two channels and higher sample rates.
                 # do_spdif_output_test(min_testlevel, board, app,
                 #                      config_name, spdif_base_chan,
-                #                      WDM_SAMPLE_RATE, duration, win_oss, product_string
+                #                      WDM_SAMPLE_RATE, duration, win_oss, product_string,
                 #                      use_wdm=True)
