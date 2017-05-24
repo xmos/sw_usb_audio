@@ -327,7 +327,7 @@ def runtest():
         return
 
     test_configs = [
-        {'board':'l2','app':'app_usb_aud_l2','productstringbase':'xCORE L2 USB Audio ','app_configs':[
+        {'board':'l2','app':'app_usb_aud_l2','productstringbase':'XMOS xCORE L2 (UAC','app_configs':[
             {'config':'1ioxx','chan_count':2,
                 'max_sample_rate':48000,'testlevel':'nightly'},
 
@@ -365,7 +365,7 @@ def runtest():
                 'max_sample_rate':192000,'testlevel':'nightly'}
             ]
         },
-        {'board':'xcore200_mc','app':'app_usb_aud_xk_216_mc','productstringbase':'xCORE-200 MC USB Audio ','app_configs':[
+        {'board':'xcore200_mc','app':'app_usb_aud_xk_216_mc','productstringbase':'XMOS xCORE-200 MC (UAC','app_configs':[
 
             {'config':'2i8o8xxxxx_tdm8','chan_count':8,
                   'max_sample_rate':48000, 'testlevel':'nightly'},
@@ -394,7 +394,7 @@ def runtest():
         app = test['app']
         for config in test['app_configs']:
             config_name = config['config']
-            product_string = config['productstringbase'] + config_name[0] + '.0'
+            product_string = config['productstringbase'] + config_name[0] + '.0)'
             num_chans = config['chan_count']
             max_sample_rate = config['max_sample_rate']
             min_testlevel = config['testlevel']

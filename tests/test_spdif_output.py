@@ -172,7 +172,7 @@ def runtest():
         return
 
     test_configs = [
-        {'board':'l2','app':'app_usb_aud_l2','productstringbase':'xCORE L2 USB Audio ','app_configs':[
+        {'board':'l2','app':'app_usb_aud_l2','productstringbase':'XMOS xCORE L2 (UAC','app_configs':[
             {'config':'2io_spdifout_adatout','spdif_base_chan':8,'testlevels':[
                 {'level':'nightly','sample_rates':[192000]},
                 {'level':'weekend','sample_rates':[44100, 48000, 88200, 96000, 176400]}]},
@@ -195,7 +195,7 @@ def runtest():
                 {'level':'weekend','sample_rates':[44100, 48000, 88200, 96000]}]},
             ]
         },
-        {'board':'xcore200_mc','app':'app_usb_aud_xk_216_mc','productstringbase':'xCORE-200 MC USB Audio ','app_configs':[
+        {'board':'xcore200_mc','app':'app_usb_aud_xk_216_mc','productstringbase':'XMOS xCORE-200 MC (UAC','app_configs':[
             {'config':'2i10o10msxxxx','spdif_base_chan':8, 'testlevels': [
                 {'level':'nightly','sample_rates':[192000]},
                 {'level':'smoke','sample_rates':[44100]},
@@ -240,7 +240,7 @@ def runtest():
         app = test['app']
         for config in test['app_configs']:
             config_name = config['config']
-            product_string = config['productstringbase'] + config_name[0] + '.0'
+            product_string = config['productstringbase'] + config_name[0] + '.0)'
             spdif_base_chan = config['spdif_base_chan']
             for run_type in config['testlevels']:
                 min_testlevel = run_type['level']
