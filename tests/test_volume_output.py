@@ -392,9 +392,10 @@ def runtest():
             if args.board != board:
                 continue
         app = test['app']
+        productstringbase = test['productstringbase']
         for config in test['app_configs']:
             config_name = config['config']
-            product_string = config['productstringbase'] + config_name[0] + '.0)'
+            product_string = productstringbase + config_name[0] + '.0)'
             num_chans = config['chan_count']
             max_sample_rate = config['max_sample_rate']
             min_testlevel = config['testlevel']

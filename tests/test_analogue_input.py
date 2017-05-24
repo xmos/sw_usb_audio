@@ -337,9 +337,10 @@ def runtest():
             if args.board != board:
                 continue
         app = test['app']
+        productstringbase = test['productstringbase']
         for config in test['app_configs']:
             config_name = config['config']
-            product_string = config['productstringbase'] + config_name[0] + '.0)'
+            product_string = productstringbase + config_name[0] + '.0)'
             num_chans = config['chan_count']
             do_wdm = config.get('wdm', True)
             for run_type in config['testlevels']:

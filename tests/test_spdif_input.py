@@ -235,9 +235,10 @@ def runtest():
             if args.board != board:
                 continue
         app = test['app']
+        productstringbase = test['productstringbase']
         for config in test['app_configs']:
             config_name = config['config']
-            product_string = config['productstringbase'] + config_name[0] + '.0)'
+            product_string = productstringbase + config_name[0] + '.0)'
             spdif_base_chan = config['spdif_base_chan']
             for run_type in config['testlevels']:
                 min_testlevel = run_type['level']
