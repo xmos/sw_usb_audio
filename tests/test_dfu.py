@@ -328,7 +328,7 @@ def runtest():
 
     test_configs = [
         {'board':'l2','app':'app_usb_aud_l2','pid':'0x0004',
-         'grep_string':'xCORE', 'app_configs':[
+         'grep_string':'xCORE L2', 'app_configs':[
             {'config':'2io_adatin','testlevel':'weekend'},
             {'config':'2io_adatout','testlevel':'nightly'},
             {'config':'2io_spdifout_adatout','testlevel':'weekend'},
@@ -342,7 +342,7 @@ def runtest():
             ]
         },
         {'board':'xcore200_mc','app':'app_usb_aud_xk_216_mc', 'pid': '0x0008',
-         'grep_string':'xCORE', 'app_configs':[
+         'grep_string':'xCORE-200 MC', 'app_configs':[
             {'config':'2i8o8xxxxx_tdm8','testlevel':'weekend'},
             {'config':'2i10o10msxxxx','testlevel':'nightly'},
             {'config':'2i10o10xxxxxd','testlevel':'weekend'},
