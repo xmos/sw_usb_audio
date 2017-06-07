@@ -327,7 +327,8 @@ def runtest():
         return
 
     test_configs = [
-        {'board':'l2','app':'app_usb_aud_l2','pid':'0x0004',
+        {'board':'l2','app':'app_usb_aud_l2',
+         'uac1_pid':'0x0005', 'uac2_pid':'0x0004',
          'grep_string':'xCORE L2', 'app_configs':[
             {'config':'2io_adatin','testlevel':'weekend'},
             {'config':'2io_adatout','testlevel':'nightly'},
@@ -341,7 +342,8 @@ def runtest():
             {'config':'2xoxs','testlevel':'smoke'}
             ]
         },
-        {'board':'xcore200_mc','app':'app_usb_aud_xk_216_mc', 'pid': '0x0008',
+        {'board':'xcore200_mc','app':'app_usb_aud_xk_216_mc',
+         'uac1_pid':'0x0009', 'uac2_pid': '0x0008',
          'grep_string':'xCORE-200 MC', 'app_configs':[
             {'config':'2i8o8xxxxx_tdm8','testlevel':'weekend'},
             {'config':'2i10o10msxxxx','testlevel':'nightly'},
@@ -368,9 +370,9 @@ def runtest():
             if args.board != board:
                 continue
         app = test['app']
-        pid = test['pid']
         grep_string = test['grep_string']
         for config in test['app_configs']:
             config_name = config['config']
             min_testlevel = config['testlevel']
+            pid = test['uac1_pid'] if config_name.startswith('1') else test['uac2_pid']
             do_dfu_test(min_testlevel, board, app, pid, grep_string, config_name, host_oss)
