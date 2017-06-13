@@ -76,6 +76,8 @@
 #define PRODUCT_STR_A1     "XMOS Microphone Array UAC1.0"
 //:
 
+#define SELF_POWERED 1
+
 #include "usermain.h"
 
 #endif

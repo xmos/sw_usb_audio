@@ -1,6 +1,11 @@
 sw_usb_audio Change Log
 =======================
 
+6.30.1
+------
+
+  * RESOLVED: app_usb_aud_mic_array now SELF_POWERED (required for 1v4 board)
+
 6.30.0
 ------
 
