@@ -70,9 +70,16 @@ sw_usb_audio Change Log
       + CHANGE: Renamed DEBUG_UNIT to XASSERT_UNIT to prevent conflict with
         lib_logging
 
-    - sc_usb_audio: 6.18.1 -> 7.2.0
+    - sc_usb_audio: 6.18.1 -> 7.3.0
 
+      + CHANGE:     Example OSX DFU host app updated to now can PID as runtime
+        argument. This enabled multiple XMOS devices to be attached to the host
+        during DFU process
       + ADDED:      DFU to UAC1 descriptors (guarded by DFU and FORCE_UAC1_DFU)
+      + RESOLVED:   Removed 'reinterpretation to type of larger alignment'
+        warnings
+      + RESOLVED:   DFU flash code run on tile[0] even if XUD_TILE and
+        AUDIO_IO_TILE are not 0
       + ADDED:      UserBufferManagementInit() to reset any state required in
         UserBufferManagement()
       + ADDED:      I2S output up-sampling (enabled when AUD_TO_USB_RATIO is >
