@@ -263,7 +263,7 @@ def do_dfu_test(min_testlevel, board, app_name, pid, grep_string, app_config, ho
 
     for os in host_oss:
         if os.startswith('os_x'):
-            host_dfu_path = "../../../../sc_usb_audio/module_dfu/host/xmos_dfu_osx/testdfu.sh"
+            host_dfu_path = "../../../../sc_usb_audio/module_dfu/host/xmosdfu/testdfu.sh"
             dfu_args = ["%s" % host_dfu_path, pid, grep_string, "<remote_file>", "<remote_file>"]
         elif os.startswith('win_'):
             host_dfu_path = '"..\\..\\..\\..\\sc_usb_audio\\module_dfu\\host\\windows\\testdfu.bat "C:\\Program Files\\Thesycon\\TUSBAudio_Driver\\dfucons.exe""'
