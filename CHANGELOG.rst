@@ -6,8 +6,11 @@ sw_usb_audio Change Log
 
   * Changes to dependencies:
 
-    - lib_device_control: 2.0.0 -> 3.0.1
+    - lib_device_control: 2.0.0 -> 3.1.1
 
+      + Use Vocal Fusion board XN file in xSCOPE and USB examples
+      + Add SPI support for Raspberry Pi host
+      + No longer down-shift I2C address on Raspberry Pi host
       + Fixed incorrectly returned read data in xSCOPE example host code
       + Replace xSCOPE and USB size limits in public API by runtime errors
       + xSCOPE API change - buffer type from 64 words to 256 bytes
@@ -21,24 +24,37 @@ sw_usb_audio Change Log
       + Update XE232 XN file in I2C host example for tools version 14.2 (compute
         nodes numbered 0 and 2 rather than 0 and 1)
 
-    - lib_dsp: Added dependency 3.1.0
+    - lib_dsp: Added dependency 4.0.0
 
-      + Deprecated synchronous sample rate conversion functions - now maintained
-        in lib_src
-      + Added functions to compute a fast fixed point atan2 and hypotenuse
-      + Added Q8 versions of the arc sine and arc cosine functions
-      + Added 16384 point sine table
-      + Improved performance of the forwards FFT function, with small reduction
-        in memory footprint
+      + Removed synchronous sample rate conversion functions - now maintained in
+        lib_src
+      + Fixed bug in dsp_vector_mulv_addv()
+      + Faster bit reverse and inverse FFT
+      + Added real FFT
+      + Added real reverse FFT
+      + Added FFT with top half blanked
+      + Logistics functions
+      + Block floating point functions
+      + Complex FIR
+      + Complex vector arithmetic, with optional scaling
+      + Added in-place complex vector scaling
+      + Added complex vector magnitude
+      + Added complex vector scaling with arithmetic shift
+      + Added complex negative multiply and accumulate
 
-    - lib_logging: 2.0.1 -> 2.1.0
+    - lib_logging: 2.0.1 -> 2.1.1
 
+      + CHANGE:   Test runner script now terminates correctly on Windows
       + ADDED:    Now supports the %p format specifier
       + CHANGE:   Ignore the case of the format specifiers
       + CHANGE:   Ignore padding and alignment characters
 
-    - lib_mic_array: 2.0.1 -> 3.0.2
+    - lib_mic_array: 2.0.1 -> 3.1.0
 
+      + Modified the FIR designer to increase the first stage stopband
+        attenuation.
+      + Cleaned up some of the code in the FIR designer.
+      + Updated docs to reflect the above.
       + Update DAC settings to work for mic array base board as well.
       + Filter design script update for usability.
       + Documentation improvement.
@@ -65,13 +81,16 @@ sw_usb_audio Change Log
       + Corrected MIC_ARRAY_DC_OFFSET_LOG2 default value reporting in
         documentation.
 
-    - lib_xassert: 2.0.1 -> 3.0.0
+    - lib_xassert: 2.0.1 -> 3.0.1
 
+      + CHANGE: Correct dates in LICENSE.txt files
       + CHANGE: Renamed DEBUG_UNIT to XASSERT_UNIT to prevent conflict with
         lib_logging
 
-    - sc_usb_audio: 6.18.1 -> 7.3.0
+    - sc_usb_audio: 6.18.1 -> 7.4.0
 
+      + RESOLVED:   PID_DFU now based on AUDIO_CLASS. This potentially caused
+        issues with UAC1 DFU
       + CHANGE:     Example OSX DFU host app updated to now can PID as runtime
         argument. This enabled multiple XMOS devices to be attached to the host
         during DFU process
@@ -121,8 +140,13 @@ sw_usb_audio Change Log
       + RESOLVED:   Failure to enter DFU mode when configured without input
         volume control
 
-    - sc_xud: 2.4.2 -> 2.5.0
+    - sc_usb_device: 1.3.9 -> 1.3.10
 
+      + CHANGED:    Module build flags now optimise for small memory footprint
+
+    - sc_xud: 2.4.2 -> 2.6.0
+
+      + RESOLVED    Issue referenced as #11813 in 2.4.2 for XS1 devices
       + RESOLVED:   xCORE-200 USB phy parameters tuned for optimal Tx
         performance resulting in much improved TX eye diagram and compliance
         test results
