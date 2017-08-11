@@ -240,7 +240,7 @@ def do_dfu_test(min_testlevel, board, app_name, pid, grep_string, app_config, ho
                            'xflash --factory-version 14.3 --upgrade 1 bin/%s/%s_%s.xe -o upgrade1.bin --verbose;' % (app_config, app_name, app_config),
                            'xmake clean CONFIG=%s;' % app_config,
                            'xmake CONFIG=%s TEST_DFU_2=1;' % app_config,
-                           'xflash --factory-version 14.3 --upgrade 2 bin/%s/%s_%s.xe -o upgrade2.bin --verbose' % (app_config, app_name, app_config)]
+                           'xflash --factory-version 14.3 --upgrade 1 bin/%s/%s_%s.xe -o upgrade2.bin --verbose' % (app_config, app_name, app_config)]
             cmd_string = " ".join([x for x in xflash_cmds])
         else:
             cmds = ['echo "Building upgrade images in other process"',]
