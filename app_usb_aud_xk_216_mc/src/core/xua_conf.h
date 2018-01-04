@@ -1,13 +1,13 @@
 /**
- * @file       customdefines.h
+ * @file       xua_conf.h
  * @brief      Defines relating to device configuration and customisation.
  *             For xCORE-200 Audio MC Board
  * @author     Ross Owen, XMOS Limited
  */
-#ifndef _CUSTOMDEFINES_H_
-#define _CUSTOMDEFINES_H_
+#ifndef _XUA_CONF_H_
+#define _XUA_CONF_H_
 
-#include "user_main.h"
+#include "app_usb_aud_xk_216_mc.h"
 
 /*
  * Device configuration option defines to override default defines found devicedefines.h
@@ -16,13 +16,6 @@
  *
  * Note, we check if they are already defined in Makefile
  */
-
-
-
-/* Default to board version version 2.0 */
-#ifndef XCORE_200_MC_AUDIO_HW_VERSION
-#define XCORE_200_MC_AUDIO_HW_VERSION 2
-#endif
 
 /* Tile defines */
 #define AUDIO_IO_TILE      0
@@ -54,8 +47,8 @@
 #endif
 
 /* Enable/Disable SPDIF output - Default is S/PDIF on */
-#ifndef SPDIF_TX
-#define SPDIF_TX	       1
+#ifndef XUA_SPDIF_TX_EN
+#define XUA_SPDIF_TX_EN	   (0)
 #endif
 
 /* Defines relating to channel count and channel arrangement (Set to 0 for disable) */
@@ -85,7 +78,7 @@
 #define SPDIF_RX_INDEX     (8)
 
 /* Channel index of ADAT Tx channels */
-#if defined(SPDIF_TX) && (SPDIF_TX==1)
+#if (XUA_SPDIF_TX_EN == 1)
 #define ADAT_TX_INDEX      (SPDIF_TX_INDEX + 2)
 #else
 #define ADAT_TX_INDEX      (I2S_CHANS_DAC)
@@ -121,5 +114,10 @@
 #ifndef HID_CONTROLS
 #define HID_CONTROLS       1
 #endif
+
+/* TODO rm me */
+#define XUA_DFU_EN 0
+
+#include "user_main.h"
 
 #endif

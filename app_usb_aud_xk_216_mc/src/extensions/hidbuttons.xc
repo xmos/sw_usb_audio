@@ -2,7 +2,7 @@
 #include <xs1.h>
 #include <platform.h>
 
-#include "devicedefines.h"
+#include "app_usb_aud_xk_216_mc.h"
 
 #ifdef HID_CONTROLS
 in port p_sw = on tile[1] : XS1_PORT_4B;

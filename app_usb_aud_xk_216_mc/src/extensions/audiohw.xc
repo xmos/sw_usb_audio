@@ -1,14 +1,13 @@
 #include <xs1.h>
-
 #include <assert.h>
-#include "devicedefines.h"
 #include <platform.h>
+#include <print.h>
+
 #include "gpio_access.h"
 #include "i2c_shared.h"
 #include "cs4384.h"
 #include "cs5368.h"
 #include "cs2100.h"
-#include "print.h"
 #include "dsd_support.h"
 
 /* The number of timer ticks to wait for the audio PLL to lock */
@@ -107,7 +106,7 @@ void wait_us(int microseconds)
     t when timerafter(time + (microseconds * 100)) :> void;
 }
 
-void AudioHwInit(chanend ?c_codec)
+void AudioHwInit()
 {
 #if !(defined(SPDIF_RX) || defined(ADAT_RX)) && defined(USE_FRACTIONAL_N)
     /* Output a fixed sync clock to the pll */
@@ -151,7 +150,7 @@ void AudioHwInit(chanend ?c_codec)
 /* Configures the external audio hardware for the required sample frequency.
  * See gpio.h for I2C helper functions and gpio access
  */
-void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned dsdMode,
+void AudioHwConfig(unsigned samFreq, unsigned mClk, unsigned dsdMode,
     unsigned sampRes_DAC, unsigned sampRes_ADC)
 {
 	unsigned char data[1] = {0};

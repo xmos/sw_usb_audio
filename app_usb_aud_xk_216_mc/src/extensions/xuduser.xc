@@ -1,6 +1,6 @@
 #include <platform.h>
 #include <xs1_su.h>
-#include "devicedefines.h"
+#include "app_usb_aud_xk_216_mc.h"
 #include "hostactive.h"
 #include "audiostream.h"
 
