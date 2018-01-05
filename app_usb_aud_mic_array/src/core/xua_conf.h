@@ -1,11 +1,11 @@
 /**
- * @file       customdefines.h
+ * @file       xua_conf.h
  * @brief      Defines relating to device configuration and customisation.
  *             For xCORE-200 Microphone Array board
  * @author     Ross Owen, XMOS Limited
  */
-#ifndef _CUSTOMDEFINES_H_
-#define _CUSTOMDEFINES_H_
+#ifndef _XUA_CONF_H_
+#define _XUA_CONF_H_
 
 /*
  * Device configuration option defines to override default defines found devicedefines.h
