@@ -9,8 +9,6 @@
 
 #ifndef __STDC__
 
-#include "xua_audio.h"
-
 /* Prototype for our custom genclock() task */
 void genclock();
 

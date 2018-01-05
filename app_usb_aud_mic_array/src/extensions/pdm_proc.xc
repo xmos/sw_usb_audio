@@ -1,11 +1,11 @@
 
-#include "customdefines.h"
 #include <platform.h>
 #include <xs1.h>
 #include <stdio.h>
-#include "mic_array.h"
-#include "xua_pdm_mic.h"
 #include <print.h>
+#include "xua.h"
+#include "mic_array.h"  /* lib_mic_array */
+#include "xua_pdm_mic.h"
 
 #if defined(PDM_PROC_SUMMING)
 /** Structure to describe the LED ports*/
