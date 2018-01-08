@@ -21,7 +21,7 @@
 on tile[0] : out port p_gpio = XS1_PORT_8C;
 
 #ifndef IAP
-/* If IAP not enabled, i2c ports not declared - still needs for DAC config */
+/* If IAP not enabled, i2c ports not declared - still needed for DAC config */
 on tile [0] : struct r_i2c r_i2c = {XS1_PORT_4A};
 #else
 extern struct r_i2c r_i2c;
@@ -137,7 +137,7 @@ void AudioHwInit()
     /* If we have any digital input then use the external PLL - selected via MUX */
     set_gpio(P_GPIO_PLL_SEL, 1);
 
-     /* Initialise external PLL */
+    /* Initialise external PLL */
     PllInit();
 #endif
 
