@@ -115,9 +115,6 @@
 #define HID_CONTROLS       1
 #endif
 
-/* TODO rm me */
-#define XUA_DFU_EN 0
-
 #include "user_main.h"
 
 #endif
