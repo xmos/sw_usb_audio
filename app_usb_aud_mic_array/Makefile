@@ -13,8 +13,6 @@ BUILD_FLAGS     = -DFLASH_MAX_UPGRADE_SIZE=64*1024 -fcomment-asm -Xmapper --map 
 # Modules are expected to be in the directory above the BASE_DIR directory.
 USED_MODULES = lib_mic_array lib_logging module_i2c_shared module_i2c_single_port lib_xua lib_xud lib_voice lib_device_control
 
-XVSM ?= 0
-
 # Build config naming scheme:
 #
 # Audio Class:  1 or 2
@@ -24,8 +22,6 @@ XVSM ?= 0
 
 #Note, feedback endpoint forced in UAC1 builds since Windows seems to have an issue with explicit feedback if channel counts differ.
 
-ifeq ($(XVSM), 0)
-
 XCC_FLAGS_2i8o2 = $(BUILD_FLAGS) -DMIC_PROCESSING_USE_INTERFACE=1
 INCLUDE_ONLY_IN_2i8o2 = 
 
@@ -34,18 +30,6 @@ INCLUDE_ONLY_IN_1i8o2 =
 
 XCC_FLAGS_1i8o2_summing = $(BUILD_FLAGS) -DAUDIO_CLASS=1 -DNUM_USB_CHAN_IN_FS=8 -DNUM_USB_CHAN_OUT_FS=2 -DSTREAM_FORMAT_INPUT_1_RESOLUTION_BITS=16 -DMIC_PROCESSING_USE_INTERFACE=1 -DPDM_PROC_SUMMING=1 -DUAC_FORCE_FEEDBACK_EP=1
 INCLUDE_ONLY_IN_1i8o2_summing = 
-
-else
-
-XCC_FLAGS_1i2o2_xvsm2000 = $(BUILD_FLAGS) -DAUDIO_CLASS=1 -DNUM_USB_CHAN_IN=2 -DNUM_USB_CHAN_OUT=2 -DNUM_USB_CHAN_IN_FS=2 -DNUM_USB_CHAN_OUT_FS=2 -DSTREAM_FORMAT_INPUT_1_RESOLUTION_BITS=16 -DMAX_FREQ=16000 -DMAX_FREQ_FS=16000 -DMIN_FREQ=16000 -DRUN_DSP_TASK=1 -DXVSM=1 -DUAC_FORCE_FEEDBACK_EP=1 -DDOA_NAIVE_DONT_THRESH=1
-INCLUDE_ONLY_IN_1i2o2_xvsm2000 = 
-
-#includes pre-DSP reference data on channel[1]
-XCC_FLAGS_1i2o2_xvsm2000_ref = $(BUILD_FLAGS) -DAUDIO_CLASS=1 -DNUM_USB_CHAN_IN=2 -DNUM_USB_CHAN_OUT=2 -DNUM_USB_CHAN_IN_FS=2 -DNUM_USB_CHAN_OUT_FS=2 -DSTREAM_FORMAT_INPUT_1_RESOLUTION_BITS=16 -DMAX_FREQ=16000 -DMAX_FREQ_FS=16000 -DMIN_FREQ=16000 -DRUN_DSP_TASK=1 -DXVSM=1 -DUAC_FORCE_FEEDBACK_EP=1 -DDOA_NAIVE_DONT_THRESH=1 -DXVSM_REF_CHANNEL=1
-INCLUDE_ONLY_IN_1i2o2_xvsm2000_ref = 
-
-USED_MODULES += lib_xvsm_support
-endif
 
 MODULE_LIBRARIES = xud_x200
 
