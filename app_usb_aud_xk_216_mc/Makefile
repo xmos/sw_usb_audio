@@ -35,9 +35,10 @@ ifeq ($(TEST_DFU_2),1)
 BUILD_FLAGS += -DBCD_DEVICE=0x9902
 endif
 
-MFI = 0
+MFI ?= 0
+MFI_ ?= 0
 
-ifeq ($(MFI), 0)
+ifeq ($(MFI_), 0)
 
 # Test build configs (Note these make use of the defaults in customdefines.h)
 
