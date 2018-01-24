@@ -35,7 +35,7 @@ ifeq ($(TEST_DFU_2),1)
 BUILD_FLAGS += -DBCD_DEVICE=0x9902
 endif
 
-MFI ?= 0
+MFI = 0
 
 ifeq ($(MFI), 0)
 
@@ -131,7 +131,7 @@ XCC_FLAGS_upgrade1 = $(BUILD_FLAGS) -DBCD_DEVICE_J=0x99 -DBCD_DEVICE_M=0x0 -DBCD
 XCC_FLAGS_upgrade2 = $(BUILD_FLAGS) -DBCD_DEVICE_J=0x99 -DBCD_DEVICE_M=0x0 -DBCD_DEVICE_N=0x2
 endif
 
-elif 0
+else
 
 # MFi test build configs - iAP support enabled
 	
