@@ -1,13 +1,20 @@
 sw_usb_audio Change Log
 =======================
 
-99.99.99
---------
+7.0.0
+-----
+
+  * CHANGE:    Now uses lib_xua
+  * CHANGE:    Now uses lib_xud
 
   * Changes to dependencies:
 
-    - lib_device_control: 2.0.0 -> 3.1.1
+    - lib_device_control: 2.0.0 -> 3.2.0
 
+      + Updated XSCOPE and USB protocols for host applications
+      + Improved error messages in host applications
+      + Dummy LED OEN port in example applications
+      + Document Windows 10 attestation signing of libusb driver
       + Use Vocal Fusion board XN file in xSCOPE and USB examples
       + Add SPI support for Raspberry Pi host
       + No longer down-shift I2C address on Raspberry Pi host
@@ -42,6 +49,10 @@ sw_usb_audio Change Log
       + Added complex vector scaling with arithmetic shift
       + Added complex negative multiply and accumulate
 
+    - lib_locks: Added dependency 2.0.3
+
+      + RESOLVED: Fixed the software locks when using high priority cores
+
     - lib_logging: 2.0.1 -> 2.1.1
 
       + CHANGE:   Test runner script now terminates correctly on Windows
@@ -49,8 +60,11 @@ sw_usb_audio Change Log
       + CHANGE:   Ignore the case of the format specifiers
       + CHANGE:   Ignore padding and alignment characters
 
-    - lib_mic_array: 2.0.1 -> 3.1.0
+    - lib_mic_array: 2.0.1 -> 3.1.1
 
+      + Cleaned up some of the code in the FIR designer.
+      + Removed fixed gain in examples
+      + Updated lib_dsp dependancy from 3.0.0 to 4.0.0
       + Modified the FIR designer to increase the first stage stopband
         attenuation.
       + Cleaned up some of the code in the FIR designer.
@@ -87,69 +101,22 @@ sw_usb_audio Change Log
       + CHANGE: Renamed DEBUG_UNIT to XASSERT_UNIT to prevent conflict with
         lib_logging
 
-    - sc_usb_audio: 6.18.1 -> 7.4.0
+    - lib_xua: Added dependency 0.1.1
 
-      + RESOLVED:   PID_DFU now based on AUDIO_CLASS. This potentially caused
-        issues with UAC1 DFU
-      + CHANGE:     Example OSX DFU host app updated to now can PID as runtime
-        argument. This enabled multiple XMOS devices to be attached to the host
-        during DFU process
-      + ADDED:      DFU to UAC1 descriptors (guarded by DFU and FORCE_UAC1_DFU)
-      + RESOLVED:   Removed 'reinterpretation to type of larger alignment'
-        warnings
-      + RESOLVED:   DFU flash code run on tile[0] even if XUD_TILE and
-        AUDIO_IO_TILE are not 0
-      + ADDED:      UserBufferManagementInit() to reset any state required in
-        UserBufferManagement()
-      + ADDED:      I2S output up-sampling (enabled when AUD_TO_USB_RATIO is >
-        1)
-      + ADDED:      PDM Mic decimator output rate can now be controlled
-        independently (via AUD_TO_MICS_RATIO)
-      + CHANGE:     Rename I2S input down-sampling (enabled when
-        AUD_TO_USB_RATIO is > 1, rather than via I2S_DOWNSAMPLE_FACTOR)
-      + RESOLVED:   Crosstalk between input channels when I2S input
-        down-sampling is enabled
-      + RESOLVED:   Mic decimation data tables properly sized when mic
-        sample-rate < USB audio sample-rate
-      + RESOLVED:   PDM microphone decimation issue at some sample rates caused
-        by integration
-      + ADDED:      I2S down-sampling (I2S_DOWNSAMPLE_FACTOR)
-      + ADDED:      I2S resynchronisation when in slave mode (CODEC_MASTER=1)
-      + CHANGE:     Various memory optimisations when MAX_FREQ = MIN_FREQ
-      + CHANGE:     Memory optimisations in audio buffering
-      + CHANGE:     Various memory optimisations in UAC1 mode
-      + CHANGE:     user_pdm_process() API change
-      + CHANGE:     PDM Mic decimator table now related to MIN_FREQ (memory
-        optimisation)
-      + RESOLVED:   Audio request interrupt handler properly eliminated
-      + RESOLVED:   Number of PDM microphone channels configured now based on
-        NUM_PDM_MICS define (previously hard-coded)
-      + RESOLVED:   PDM microphone clock divide now based MCLK defines
-        (previously hard-coded)
-      + CHANGE:     Second microphone decimation core only run if NUM_PDM_MICS >
-        4
-      + RESOLVED:   Intra-frame sample delays of 1/2 samples on input streaming
-        in TDM mode
-      + RESOLVED:   Build issue with NUM_USB_CHAN_OUT set to 0 and MIXER enabled
-      + RESOLVED:   SPDIF_TX_INDEX not defined build warning only emitted when
-        SPDIF_TX defined
-      + RESOLVED:   Failure to enter DFU mode when configured without input
-        volume control
-      + RESOLVED:   SPDIF_TX_INDEX not defined build warning only emitted when
-        SPDIF_TX defined
-      + RESOLVED:   Failure to enter DFU mode when configured without input
-        volume control
+      + RESOLVED:   Configurations where I2S_CHANS_DAC and I2S_CHANS_ADC are
+        both 0 now build
 
-    - sc_usb_device: 1.3.9 -> 1.3.10
+    - lib_xud: Added dependency 0.1.0
 
-      + CHANGED:    Module build flags now optimise for small memory footprint
+    - sc_usb: Removed dependency
 
-    - sc_xud: 2.4.2 -> 2.6.0
+    - sc_usb_audio: Removed dependency
 
-      + RESOLVED    Issue referenced as #11813 in 2.4.2 for XS1 devices
-      + RESOLVED:   xCORE-200 USB phy parameters tuned for optimal Tx
-        performance resulting in much improved TX eye diagram and compliance
-        test results
+    - sc_usb_device: Removed dependency
+
+    - sc_util: Removed dependency
+
+    - sc_xud: Removed dependency
 
 6.18.1
 ------
