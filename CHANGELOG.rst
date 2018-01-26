@@ -101,10 +101,35 @@ sw_usb_audio Change Log
       + CHANGE: Renamed DEBUG_UNIT to XASSERT_UNIT to prevent conflict with
         lib_logging
 
-    - lib_xua: Added dependency 0.1.1
+    - lib_xua: Added dependency 0.1.0
 
-      + RESOLVED:   Configurations where I2S_CHANS_DAC and I2S_CHANS_ADC are
-        both 0 now build
+      + ADDED:      FB_USE_REF_CLOCK to allow feedback generation from xCORE
+        internal reference
+      + ADDED:      Linux Makefile for xmosdfu host application
+      + ADDED:      Raspberry Pi Makefile for xmosdfu host application
+      + ADDED:      Documentation of PID argument to xmosdfu
+      + ADDED:      Optional build time microphone delay line (MIC_BUFFER_DEPTH)
+      + CHANGE:     Removal of audManage_if, users should define their own
+        interfaces as required
+      + CHANGE:     Vendor specific control interface in UAC1 descriptor now has
+        a string descriptor so it shows up with a descriptive name in Windows
+        Device Manager
+      + CHANGE:     DFU_BCD_DEVICE removed (now uses BCD_DEVICE)
+      + CHANGE:     Renaming in descriptors.h to avoid clashes with application
+      + CHANGE:     Make device reboot function no-argument (was one channel
+        end)
+      + RESOLVED:   FIR gain compensation for PDM mics set incorrectly for
+        divide of 8
+      + RESOLVED:   Incorrect xmosdfu DYLD path in test script code
+      + RESOLVED:   xmosdfu cannot find XMOS device on modern MacBook Pro
+        (#17897)
+      + RESOLVED:   Issue when feedback is initially incorrect when two SOF's
+        are not yet received
+      + RESOLVED:   AUDIO_TILE and PDM_TILE may now share the same value/tile
+      + RESOLVED:   Cope with out of order interface numbers in xmosdfu
+      + RESOLVED:   DSD playback not functional on xCORE-200 (introduced in
+        sc_usb_audio 6.14)
+      + RESOLVED:   Improvements made to clock sync code in TDM slave mode
 
     - lib_xud: Added dependency 0.1.0
 
