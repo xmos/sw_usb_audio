@@ -1,6 +1,16 @@
 sw_usb_audio Change Log
 =======================
 
+7.0.1
+-----
+
+  * Changes to dependencies:
+
+    - lib_xua: 0.1.0 -> 0.1.1
+
+      + RESOLVED:   Configurations where I2S_CHANS_DAC and I2S_CHANS_ADC are
+        both 0 now build
+
 7.0.0
 -----
 
