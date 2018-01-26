@@ -7,13 +7,13 @@ XMOS USB Audio 2.0 Reference Design README
 
 Please note, Alpha and Beta releases may not accurately reflect the final release and documentation may not be complete. These early releases are not suitable for a production context, and are provided for evaluation purposes only.
 
-Welcome to version 6 of the XMOS USB Audio Software Framework.
+Welcome to version 7 of the XMOS USB Audio Software Framework.
 
 Please see CHANGELOG.rst for detailed change listing.
 
 For full software documentation please see the USB Audio Design Guide document.
 
-This release is built and tested using version 14.1 of the XMOS tool set.  Build or functionality issues could be experienced with any other version.
+This release is built and tested using version 14.3 of the XMOS tool set.  Build or functionality issues could be experienced with any other version.
 
 This repository contains applications (or instances) of the XMOS USB Audio Reference Design framework.  These applications
 typically relate to a specific board.  This repository contains the following:
@@ -25,16 +25,6 @@ typically relate to a specific board.  This repository contains the following:
 +-----------------------+--------------------------+------------------------------------------------------------+
 | app_usb_aud_mic_array |                          | xCORE-200 Mic Array Reference Board
 +-----------------------+--------------------------+------------------------------------------------------------+
-| app_usb_aud_l1        | xr-usb-audio-2.0         | XMOS XS1-L8 USB Audio Reference Design                     |
-+-----------------------+--------------------------+------------------------------------------------------------+
-| app_usb_aud_skc_su1   | xp-skc-su1 & xa-sk-audio | XMOS XS1-U8 USB Audio Kit                                  |
-+-----------------------+--------------------------+------------------------------------------------------------+
-| app_usb_aud_xk_u8_2c  | xk-usb-audio-u8-2c       | XMOS XS1-U8 Multi-Function Audio Board                     |
-+-----------------------+--------------------------+------------------------------------------------------------+
-| app_usb_aud_l2        | xk-usb-audio-2.0-mc      | XMOS XS1-L16 USB Audio Reference Design                    |
-+-----------------------+--------------------------+------------------------------------------------------------+
-| app_usb_aud_u16       | xp-skc-u16 & xa-sk-audio | XMOS XS1-U16 sliceKIT Core Board and Audio Slice           |
-+-----------------------+--------------------------+------------------------------------------------------------+
 
 Please refer to individual README files in these apps for more detailed information.
 
@@ -42,7 +32,7 @@ Each application contains a "core" folder, this folder contains items that are r
 Mandatory files per application include: 
 
 - An XN file describing the board including required port defines. The XN file is referenced in the application makefile.
-- customdefines.h header file containing configuration items such as channel count, strings etc.
+- xua_conf.h header file containing configuration items such as channel count, strings etc.
 
 Each application also contains an "extensions" folder which includes board specific extensions such as CODEC configuration etc.
 
