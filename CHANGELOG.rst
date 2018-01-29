@@ -6,10 +6,16 @@ sw_usb_audio Change Log
 
   * Changes to dependencies:
 
+    - lib_locks: Removed dependency
+
     - lib_xua: 0.1.0 -> 0.1.1
 
       + RESOLVED:   Configurations where I2S_CHANS_DAC and I2S_CHANS_ADC are
         both 0 now build
+
+    - sc_util: Added dependency 1.0.6
+
+      + xCORE-200 compatibility fixes to module_trycatch
 
 7.0.0
 -----
