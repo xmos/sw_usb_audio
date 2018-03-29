@@ -5,7 +5,62 @@ sw_usb_audio Change Log
 -----
 
   * CHANGE:    Now uses lib_spdif
-    
+
+  * Changes to dependencies:
+
+    - lib_device_control: 3.2.0 -> 3.2.2
+
+      + Use -Os for the whole library rather than -O3 (#45)
+      + Fix return code of control_register_resources
+      + Fix an issue on Windows where xSCOPE connection hangs on Windows
+        (#17871)
+      + Fix an issue on Windows where first xSCOPE connection succeeds, but
+        subsequent ones fail with "socket reply error" (#47)
+
+    - lib_spdif: Added dependency 3.0.0
+
+      + spdif_tx() no longer configures port. Additional function
+        spdif_tx_port_config() provided. Allows sharing of clockblock with other
+        tasks
+
+    - lib_xua: 0.1.1 -> 0.2.0
+
+      + ADDED:     Documentation
+      + CHANGE:    I2S hardware resources no longer used globally and must be
+        passed to XUA_AudioHub()
+      + CHANGE:    NO_USB define renamed to XUA_USB_EN
+      + CHANGE:    Moved to lib_spdif (from module_spdif_tx)
+      + ADDED:     Application note AN00246
+      + CHANGE:    xmosdfu emits warning if empty image read via upload
+      + CHANGE:    Simplified mclk port sharing - no longer uses unsafe pointer
+      + RESOLVED:  Runtime exception issues when incorrect feedback calculated
+        (introduced in sc_usb_audio 6.13)
+      + RESOLVED:  Output sample counter reset on stream start. Caused playback
+        issues on some Linux based hosts
+
+    - lib_xud: 0.1.0 -> 0.1.1
+
+      + RESOLVED:   Transmit timing fixes for U-series devices (introduced in
+        sc_xud 2.3.0)
+
+7.0.1
+-----
+
+  * Changes to dependencies:
+
+    - lib_locks: Removed dependency
+
+    - lib_xua: 0.1.0 -> 0.1.1
+
+      + RESOLVED:   Configurations where I2S_CHANS_DAC and I2S_CHANS_ADC are
+        both 0 now build
+      + RESOLVED:   Deadlock in mixer when MAX_MIX_COUNT > 0 for larger channel
+        counts
+
+    - sc_util: Added dependency 1.0.6
+
+      + xCORE-200 compatibility fixes to module_trycatch
+
 7.0.0
 -----
 
@@ -137,6 +192,9 @@ sw_usb_audio Change Log
       + RESOLVED:   Improvements made to clock sync code in TDM slave mode
 
     - lib_xud: Added dependency 0.1.0
+
+      + CHANGE:     Fork from sc_xud to lib_xud
+      + CHANGE:     Documentation updates
 
     - sc_usb: Removed dependency
 
