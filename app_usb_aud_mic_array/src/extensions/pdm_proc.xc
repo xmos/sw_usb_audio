@@ -158,7 +158,7 @@ select
     {
         /* Sum up all the mics */
         int sum = 0;
-        for(unsigned i=0; i < NUM_PDM_MICS; i++)
+        for(unsigned i=0; i < XUA_NUM_PDM_MICS; i++)
         unsafe{
             sum += audio->data[i][0];
         }
@@ -167,7 +167,7 @@ select
         sum *= gain;
 
         /* Apply gain to individual mics */
-        for(unsigned i=0; i<NUM_PDM_MICS; i++)
+        for(unsigned i=0; i<XUA_NUM_PDM_MICS; i++)
         unsafe{
             int x = audio->data[i][0];
             x*=gain;
@@ -177,7 +177,7 @@ select
     else
     {
         /* Send individual mics (with gain applied) */        
-        for(unsigned i=0; i<NUM_PDM_MICS; i++)
+        for(unsigned i=0; i<XUA_NUM_PDM_MICS; i++)
         unsafe{
             int x = audio->data[i][0];
             x *=gain;
@@ -209,7 +209,7 @@ void user_pdm_process(server mic_process_if i_mic_data)
                 break;
 
             case i_mic_data.transfer_buffers(mic_array_frame_time_domain * unsafe audio):
-                for(unsigned i=0; i<NUM_PDM_MICS; i++)
+                for(unsigned i=0; i<XUA_NUM_PDM_MICS; i++)
                 unsafe{
                     /* Do Nothing */
                 }   
