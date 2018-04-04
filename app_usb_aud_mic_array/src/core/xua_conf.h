@@ -25,7 +25,7 @@
 #define BCD_DEVICE_N        1
 
 /* Enable PDM and PDM->PCM conversion code */
-#define NUM_PDM_MICS       8
+#define XUA_NUM_PDM_MICS   8
 
 /* Defines relating to channel count and channel arrangement (Set to 0 for disable) */
 //:audio_defs
