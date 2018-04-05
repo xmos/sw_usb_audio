@@ -8,8 +8,9 @@ sw_usb_audio Change Log
 
   * Changes to dependencies:
 
-    - lib_device_control: 3.2.0 -> 3.2.2
+    - lib_device_control: 3.2.0 -> 3.2.3
 
+      + Preprocessor flag to send channel activity over xSCOPE for debugging
       + Use -Os for the whole library rather than -O3 (#45)
       + Fix return code of control_register_resources
       + Fix an issue on Windows where xSCOPE connection hangs on Windows
