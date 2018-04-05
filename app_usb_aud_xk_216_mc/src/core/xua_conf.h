@@ -21,9 +21,9 @@
 #define AUDIO_IO_TILE      0
 #define XUD_TILE           1
 
-#define BCD_DEVICE_J       (7)
+#define BCD_DEVICE_J       (8)
 #define BCD_DEVICE_M       (0)
-#define BCD_DEVICE_N       (1)
+#define BCD_DEVICE_N       (0)
 
 /* SPDIF Tx i/o moved tile between board versions 1.0 -> 2.0 */
 #if XCORE_200_MC_AUDIO_HW_VERSION < 2

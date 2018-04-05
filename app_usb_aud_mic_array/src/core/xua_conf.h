@@ -20,9 +20,9 @@
 #define XUD_TILE           1
 #define PDM_TILE           0
 
-#define BCD_DEVICE_J        7
-#define BCD_DEVICE_M        0
-#define BCD_DEVICE_N        1
+#define BCD_DEVICE_J       8
+#define BCD_DEVICE_M       0
+#define BCD_DEVICE_N       0
 
 /* Enable PDM and PDM->PCM conversion code */
 #define XUA_NUM_PDM_MICS   8
