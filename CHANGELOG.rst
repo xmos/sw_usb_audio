@@ -5,6 +5,7 @@ sw_usb_audio Change Log
 -----
 
   * CHANGE:    Now uses lib_spdif
+  * RESOLVED:  Need to drive VBUS_OUT low on xCORE-200 MC AUDIO board (#17697)
 
   * Changes to dependencies:
 
