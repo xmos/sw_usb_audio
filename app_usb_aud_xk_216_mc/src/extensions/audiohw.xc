@@ -144,6 +144,9 @@ void AudioHwInit()
 #ifdef IAP
     /* Enable VBUS output */
     set_gpio(P_GPIO_VBUS_EN, 1);
+#else
+    /* Drive low otherwise GPIO peek picks up pull-up resistor */
+    set_gpio(P_GPIO_VBUS_EN, 0);
 #endif
 }
 
