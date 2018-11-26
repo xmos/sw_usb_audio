@@ -6,6 +6,18 @@ sw_usb_audio Change Log
 
   * Placeholder for maintenance release
 
+  * Changes to dependencies:
+
+    - lib_logging: Removed dependency
+
+    - lib_mic_array: Removed dependency
+
+    - lib_xassert: Removed dependency
+
+    - sc_usb_audio: 6.15.2 -> 6.15.3
+
+      + Placeholder for maintenance release
+
 6.15.2
 ------
 
@@ -57,9 +69,22 @@ sw_usb_audio Change Log
 
     - lib_logging: Added dependency 2.0.1
 
+      + Update to source code license and copyright
+
     - lib_mic_array: Added dependency 1.0.1
 
+      + Added dynamic DC offset removal at startup to eliminate slow convergance
+      + Mute first 32 samples to allow DC offset to adapt before outputting
+        signal
+      + Fixed XTA scripte to ensure timing is being met
+      + Now use a 64-bit accumulator for DC offset removal
+      + Consolidated generators into a single python generator
+      + Produced output frequency response graphs
+      + Added 16 bit output mode
+
     - lib_xassert: Added dependency 2.0.1
+
+      + Update to source code license and copyright
 
     - sc_usb_audio: 6.14.0 -> 6.15.0
 
@@ -922,15 +947,21 @@ sw_usb_audio Change Log
 
     - sc_adat: Added dependency 1.0.0
 
+      + Initial release
+
     - sc_i2c: Added dependency 1.0.0
 
     - sc_spdif: Added dependency 1.0.0
 
     - sc_usb: Added dependency 1.0.0
 
+      + Initial release
+
     - sc_usb_audio: Added dependency 1.0.0
 
     - sc_xud: Added dependency 1.0.0
+
+      + Initial stand-alone release
 
 
 Legacy release history
