@@ -1,6 +1,11 @@
 sw_usb_audio Change Log
 =======================
 
+6.15.3
+------
+
+  * Placeholder for maintenance release
+
 6.15.2
 ------
 
