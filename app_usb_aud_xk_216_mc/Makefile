@@ -36,8 +36,11 @@ BUILD_FLAGS += -DBCD_DEVICE=0x9902
 endif
 
 MFI ?= 0
+UNTESTED ?= 0
 
 ifeq ($(MFI), 0)
+
+ifeq ($(UNTESTED), 1)
 
 # Test build configs (Note these make use of the defaults in customdefines.h)
 
@@ -69,9 +72,13 @@ XCC_FLAGS_2i16o16xxxxx_tdm8  = $(BUILD_FLAGS) -DI2S_CHANS_DAC=16 -DI2S_CHANS_ADC
 								-DI2S_MODE_TDM=1 -DMAX_FREQ=96000
 INCLUDE_ONLY_IN_2i16o16xxxxx_tdm8  =
 
+endif
+
 # Audio Class 2, Input, Output, No MIDI, No SPDIF Tx, TDM (32in/32out)
 XCC_FLAGS_2i32o32xxxxx_tdm8  = $(BUILD_FLAGS) -DSPDIF_TX=0 -DI2S_MODE_TDM=1 -DI2S_CHANS_ADC=32 -DMAX_FREQ=48000 -DI2S_CHANS_DAC=32 -DNUM_USB_CHAN_OUT=32 -DNUM_USB_CHAN_IN=32
 INCLUDE_ONLY_IN_2i32o32xxxxx_tdm8 =
+
+ifeq ($(UNTESTED), 1)
 
 # Audio Class 2, Input, Output, No MIDI, SPDIF, TDM (32in/32out)
 XCC_FLAGS_2i32o32xsxxx_tdm8 = $(BUILD_FLAGS) -DSPDIF_TX=1 -DI2S_MODE_TDM=1 -DI2S_CHANS_ADC=32 -DMAX_FREQ=48000 -DI2S_CHANS_DAC=32 -DNUM_USB_CHAN_OUT=32 -DNUM_USB_CHAN_IN=32
@@ -121,6 +128,8 @@ INCLUDE_ONLY_IN_2i10o10xssxxx =
 # Audio Class 1, 2 channels Input, 2 channels Output, no MIDI, no SPDIF
 XCC_FLAGS_1i2o2xxxxxx = $(BUILD_FLAGS) -DAUDIO_CLASS=1
 INCLUDE_ONLY_IN_1i2o2xxxxxx =
+
+endif
 
 # Audio Class 1, 8 channels Input, 2 channels Output, no MIDI, no SPDIF
 XCC_FLAGS_1i8o2xxxxxx = $(BUILD_FLAGS) -DAUDIO_CLASS=1 -DNUM_USB_CHAN_IN_FS=6 -DMAX_FREQ_FS=44100 -DSTREAM_FORMAT_INPUT_1_RESOLUTION_BITS=16
