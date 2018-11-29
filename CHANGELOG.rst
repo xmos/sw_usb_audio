@@ -4,7 +4,9 @@ sw_usb_audio Change Log
 6.15.3
 ------
 
-  * Placeholder for maintenance release
+  * REMOVED:   Application targets other than XK-AUDIO-216-MC (xCORE-200
+    Multichannel Audio)
+  * REMOVED:   Build configurations other than 2i32o32xxxxx_tdm8 and 1i8o2xxxxxx
 
   * Changes to dependencies:
 
@@ -16,7 +18,8 @@ sw_usb_audio Change Log
 
     - sc_usb_audio: 6.15.2 -> 6.15.3
 
-      + Placeholder for maintenance release
+      + RESOLVED:  Failure to enter DFU mode when configured without input
+        volume control (#17473)
 
 6.15.2
 ------
