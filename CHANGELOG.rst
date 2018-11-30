@@ -6,7 +6,8 @@ sw_usb_audio Change Log
 
   * REMOVED:   Application targets other than XK-AUDIO-216-MC (xCORE-200
     Multichannel Audio)
-  * REMOVED:   Build configurations other than 2i32o32xxxxx_tdm8 and 1i8o2xxxxxx
+  * CHANGED:   Build configurations reduced to fully featured I2S slave and TDM,
+               as well as a light-weight 'USB DAC' with DSD
 
   * Changes to dependencies:
 

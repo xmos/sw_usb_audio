@@ -36,11 +36,11 @@ BUILD_FLAGS += -DBCD_DEVICE=0x9902
 endif
 
 MFI ?= 0
-UNTESTED ?= 0
+LEGACY ?= 0
+
+ifeq ($(LEGACY), 1)
 
 ifeq ($(MFI), 0)
-
-ifeq ($(UNTESTED), 1)
 
 # Test build configs (Note these make use of the defaults in customdefines.h)
 
@@ -72,13 +72,9 @@ XCC_FLAGS_2i16o16xxxxx_tdm8  = $(BUILD_FLAGS) -DI2S_CHANS_DAC=16 -DI2S_CHANS_ADC
 								-DI2S_MODE_TDM=1 -DMAX_FREQ=96000
 INCLUDE_ONLY_IN_2i16o16xxxxx_tdm8  =
 
-endif
-
 # Audio Class 2, Input, Output, No MIDI, No SPDIF Tx, TDM (32in/32out)
 XCC_FLAGS_2i32o32xxxxx_tdm8  = $(BUILD_FLAGS) -DSPDIF_TX=0 -DI2S_MODE_TDM=1 -DI2S_CHANS_ADC=32 -DMAX_FREQ=48000 -DI2S_CHANS_DAC=32 -DNUM_USB_CHAN_OUT=32 -DNUM_USB_CHAN_IN=32
 INCLUDE_ONLY_IN_2i32o32xxxxx_tdm8 =
-
-ifeq ($(UNTESTED), 1)
 
 # Audio Class 2, Input, Output, No MIDI, SPDIF, TDM (32in/32out)
 XCC_FLAGS_2i32o32xsxxx_tdm8 = $(BUILD_FLAGS) -DSPDIF_TX=1 -DI2S_MODE_TDM=1 -DI2S_CHANS_ADC=32 -DMAX_FREQ=48000 -DI2S_CHANS_DAC=32 -DNUM_USB_CHAN_OUT=32 -DNUM_USB_CHAN_IN=32
@@ -129,8 +125,6 @@ INCLUDE_ONLY_IN_2i10o10xssxxx =
 XCC_FLAGS_1i2o2xxxxxx = $(BUILD_FLAGS) -DAUDIO_CLASS=1
 INCLUDE_ONLY_IN_1i2o2xxxxxx =
 
-endif
-
 # Audio Class 1, 8 channels Input, 2 channels Output, no MIDI, no SPDIF
 XCC_FLAGS_1i8o2xxxxxx = $(BUILD_FLAGS) -DAUDIO_CLASS=1 -DNUM_USB_CHAN_IN_FS=6 -DMAX_FREQ_FS=44100 -DSTREAM_FORMAT_INPUT_1_RESOLUTION_BITS=16
 INCLUDE_ONLY_IN_1i8o2xxxxxx =
@@ -140,7 +134,7 @@ XCC_FLAGS_upgrade1 = $(BUILD_FLAGS) -DBCD_DEVICE_J=0x99 -DBCD_DEVICE_M=0x0 -DBCD
 XCC_FLAGS_upgrade2 = $(BUILD_FLAGS) -DBCD_DEVICE_J=0x99 -DBCD_DEVICE_M=0x0 -DBCD_DEVICE_N=0x2
 endif
 
-else
+else # MFI
 
 # MFi test build configs - iAP support enabled
 	
@@ -164,8 +158,33 @@ INCLUDE_ONLY_IN_2ioxx_usba_mfi =
 
 include mfi.mk
 
-endif
+endif # MFI
 
+else # LEGACY
+
+# I2S 0in/2out 192kHz with DSD and S/PDIF out
+# Like 2i10o10xsxxxd restricted to 2 channels
+XCC_FLAGS_hifi = $(BUILD_FLAGS) -DI2S_CHANS_DAC=2 -DI2S_CHANS_ADC=0 -DNUM_USB_CHAN_OUT=2 -DNUM_USB_CHAN_IN=0 -DDSD_CHANS_DAC=2
+
+# I2S slave 10in/10out 96kHz with S/PDIF in, S/PDIF out and MIDI
+# Like legacy 2i10o10xxxxxx_slave with S/PDIF and MIDI added, and restricted to 96kHz
+XCC_FLAGS_i2s_slave = $(BUILD_FLAGS) -DMAX_FREQ=96000 -DMIDI=1 -DSPDIF_RX=1 -DCODEC_MASTER=1
+
+# TDM8 16in/16out 96kHz with S/PDIF in, S/PDIF out and MIDI
+# Like legacy 2i16o16xxxxx_tdm8 with S/PDIF and MIDI added
+XCC_FLAGS_tdm = $(BUILD_FLAGS) -DMAX_FREQ=96000 -DMIDI=1 -DSPDIF_RX=1 -DI2S_CHANS_DAC=16 -DI2S_CHANS_ADC=16 -DNUM_USB_CHAN_OUT=18 -DNUM_USB_CHAN_IN=18 -DI2S_MODE_TDM=1
+
+endif # LEGACY
+
+# To compare legacy configuration A and new configuration B, do:
+# \
+  printf '%s\n' `cd sw_usb_audio/app_usb_aud_xk_216_mc ; xmake CONFIG=A LEGACY=1 JUST_PRINT_FLAGS=1 2>&1 | cut -d\* -f4-` | grep -v Stop | sed 's/\.$//' | sort > /tmp/before
+# \
+  printf '%s\n' `cd sw_usb_audio/app_usb_aud_xk_216_mc ; xmake CONFIG=B JUST_PRINT_FLAGS=1 2>&1 | cut -d\* -f4-` | grep -v Stop | sed 's/\.$//' | sort > /tmp/after
+#
+ifeq ($(JUST_PRINT_FLAGS),1)
+$(error ${XCC_FLAGS_${CONFIG}})
+endif
 
 MODULE_LIBRARIES = xud_x200
 
