@@ -1,12 +1,6 @@
 XMOS xCORE-200 USB Audio
 ========================
 
-:maintainer: Ross Owen
-:scope: Example
-:description: USB Audio application for xCORE-200 MC Audio
-:keywords: USB, UAC
-:boards: XCORE-200 MC AUDIO (rev 2.0)
-
 Overview
 ........
 
@@ -29,10 +23,13 @@ The app_usb_aud_xk_216_mc application is designed to run on the xCORE 200 MC Aud
 
 - MIDI input and output
 
+Build configurations
+....................
+
 Known Issues
 ............
 
-- On occasion with the build configuration 2i8o8xxxxx_tdm8_slave (or any configuration where the Cirrus CS5368 ADC is used as clock master and the Cirrus CS4364 DAC slaves to this clock) sample-rate changes can cause a channel swapping issue in the Cirrus DAC. This incompatibility is documented in Cirrus note AN302 (https://www.cirrus.com/en/pubs/appNote/AN302REV1.pdf) 
+- On occasion with the legacy build configuration 2i8o8xxxxx_tdm8_slave (or any configuration where the Cirrus CS5368 ADC is used as clock master and the Cirrus CS4364 DAC slaves to this clock) sample-rate changes can cause a channel swapping issue in the Cirrus DAC. This incompatibility is documented in Cirrus note AN302 (https://www.cirrus.com/en/pubs/appNote/AN302REV1.pdf) 
 
 See README in sw_usb_audio for general issues.
 

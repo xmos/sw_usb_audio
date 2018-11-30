@@ -1,10 +1,6 @@
 XMOS USB Audio 2.0 Reference Design README
 ..........................................
 
-:Maintainer: Ross Owen
-:Description: USB Audio Applications
-
-
 Please note, Alpha and Beta releases may not accurately reflect the final release and documentation may not be complete. These early releases are not suitable for a production context, and are provided for evaluation purposes only.
 
 Welcome to version 6 of the XMOS USB Audio Software Framework.
@@ -13,28 +9,10 @@ Please see CHANGELOG.rst for detailed change listing.
 
 For full software documentation please see the USB Audio Design Guide document.
 
-This release is built and tested using version 14.1 of the XMOS tool set.  Build or functionality issues could be experienced with any other version.
+This release is built and tested using version 14.3.3 of the XMOS tool set.  Build or functionality issues could be experienced with any other version.
 
 This repository contains applications (or instances) of the XMOS USB Audio Reference Design framework.  These applications
-typically relate to a specific board.  This repository contains the following:
-
-+-----------------------+--------------------------+------------------------------------------------------------+
-|    App Name           |     Relevant Board(s)    | Description                                                |
-+=======================+==========================+============================================================+
-| app_usb_aud_xk_216_mc | xk-audio-216-mc          | xCORE-200 Multi-channel Audio Board                        |
-+-----------------------+--------------------------+------------------------------------------------------------+
-| app_usb_aud_mic_array |                          | xCORE-200 Mic Array Reference Board
-+-----------------------+--------------------------+------------------------------------------------------------+
-| app_usb_aud_l1        | xr-usb-audio-2.0         | XMOS XS1-L8 USB Audio Reference Design                     |
-+-----------------------+--------------------------+------------------------------------------------------------+
-| app_usb_aud_skc_su1   | xp-skc-su1 & xa-sk-audio | XMOS XS1-U8 USB Audio Kit                                  |
-+-----------------------+--------------------------+------------------------------------------------------------+
-| app_usb_aud_xk_u8_2c  | xk-usb-audio-u8-2c       | XMOS XS1-U8 Multi-Function Audio Board                     |
-+-----------------------+--------------------------+------------------------------------------------------------+
-| app_usb_aud_l2        | xk-usb-audio-2.0-mc      | XMOS XS1-L16 USB Audio Reference Design                    |
-+-----------------------+--------------------------+------------------------------------------------------------+
-| app_usb_aud_u16       | xp-skc-u16 & xa-sk-audio | XMOS XS1-U16 sliceKIT Core Board and Audio Slice           |
-+-----------------------+--------------------------+------------------------------------------------------------+
+typically relate to a specific board. Currently only board is supported, the xCORE-200 Multi-channel Audio Board (app_usb_aud_xk_216_mc).
 
 Please refer to individual README files in these apps for more detailed information.
 
@@ -91,7 +69,7 @@ Known Issues
 
 General known issues with this release are listed below.  For board/application specific known issues please see README in relevant app directory
 
-- Quad-SPI DFU will corrupt the factory image with tools version < 14.0.4 due to an issue with libquadflash 
+- Quad-SPI DFU will corrupt the factory image with tools version less than 14.0.4 due to an issue with libquadflash 
 
 - (#14762) When in DSD mode with S/PDIF output enabled, DSD samples are transmitted over S/PDIF if the DSD and S/PDIF channels are shared, this may or may not be desired
 
@@ -110,9 +88,9 @@ General known issues with this release are listed below.  For board/application 
 Host System Requirements
 ========================
 
-- Mac OSX version 10.6 or later
+- Mac OS X version 10.6 or later
 
-- Windows XP, Vista, 7, 8 or 10 with Thesycon Audio Class 2.0 driver for Windows (Tested against version 3.20). Please contact XMOS for details.
+- Windows XP, Vista, 7, 8 or 10 with Thesycon Audio Class 2.0 driver for Windows (Tested against version 4.11.0). Please contact XMOS for details.
  
 - Windows XP, Vista, 7, 8 or 10 with built-in USB Audio Class 1.0 driver.
 
