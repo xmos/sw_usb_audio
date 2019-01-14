@@ -79,10 +79,14 @@
 #endif
 
 /* Channel index of SPDIF Rx channels (duplicated DAC channels 1/2 when index is 0) */
+#ifndef SPDIF_TX_INDEX
 #define SPDIF_TX_INDEX     (8)
+#endif
 
 /* Channel index of SPDIF Rx channels */
+#ifndef SPDIF_RX_INDEX
 #define SPDIF_RX_INDEX     (8)
+#endif
 
 /* Channel index of ADAT Tx channels */
 #if defined(SPDIF_TX) && (SPDIF_TX==1)

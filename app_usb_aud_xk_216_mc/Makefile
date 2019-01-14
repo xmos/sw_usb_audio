@@ -164,7 +164,7 @@ else # LEGACY
 
 # I2S 0in/2out 192kHz with DSD and S/PDIF out
 # Like 2i10o10xsxxxd restricted to 2 channels
-XCC_FLAGS_hifi = $(BUILD_FLAGS) -DI2S_CHANS_DAC=2 -DI2S_CHANS_ADC=0 -DNUM_USB_CHAN_OUT=2 -DNUM_USB_CHAN_IN=0 -DDSD_CHANS_DAC=2
+XCC_FLAGS_hifi = $(BUILD_FLAGS) -DSPDIF_TX_INDEX=0 -DI2S_CHANS_DAC=2 -DI2S_CHANS_ADC=0 -DNUM_USB_CHAN_OUT=2 -DNUM_USB_CHAN_IN=0 -DDSD_CHANS_DAC=2
 
 # I2S slave 10in/10out 96kHz with S/PDIF in, S/PDIF out and MIDI
 # Like legacy 2i10o10xxxxxx_slave with S/PDIF and MIDI added, and restricted to 96kHz
