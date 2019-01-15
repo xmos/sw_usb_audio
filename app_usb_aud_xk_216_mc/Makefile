@@ -36,9 +36,9 @@ BUILD_FLAGS += -DBCD_DEVICE=0x9902
 endif
 
 MFI ?= 0
-LEGACY ?= 0
+FULL ?= 0
 
-ifeq ($(LEGACY), 1)
+ifeq ($(FULL), 1)
 
 ifeq ($(MFI), 0)
 
@@ -159,26 +159,23 @@ INCLUDE_ONLY_IN_2ioxx_usba_mfi =
 include mfi.mk
 
 endif # MFI
-
-else # LEGACY
+endif # FULL
 
 # I2S 0in/2out 192kHz with DSD and S/PDIF out
 # Like 2i10o10xsxxxd restricted to 2 channels
 XCC_FLAGS_hifi = $(BUILD_FLAGS) -DSPDIF_TX_INDEX=0 -DI2S_CHANS_DAC=2 -DI2S_CHANS_ADC=0 -DNUM_USB_CHAN_OUT=2 -DNUM_USB_CHAN_IN=0 -DDSD_CHANS_DAC=2
 
 # I2S slave 10in/10out 96kHz with S/PDIF in, S/PDIF out and MIDI
-# Like legacy 2i10o10xxxxxx_slave with S/PDIF and MIDI added, and restricted to 96kHz
+# Like 2i10o10xxxxxx_slave with S/PDIF and MIDI added, and restricted to 96kHz
 XCC_FLAGS_i2s_slave = $(BUILD_FLAGS) -DMAX_FREQ=96000 -DMIDI=1 -DSPDIF_RX=1 -DCODEC_MASTER=1
 
 # TDM8 16in/16out 96kHz with S/PDIF in, S/PDIF out and MIDI
-# Like legacy 2i16o16xxxxx_tdm8 with S/PDIF and MIDI added
+# Like 2i16o16xxxxx_tdm8 with S/PDIF and MIDI added
 XCC_FLAGS_tdm = $(BUILD_FLAGS) -DMAX_FREQ=96000 -DMIDI=1 -DSPDIF_RX=1 -DI2S_CHANS_DAC=16 -DI2S_CHANS_ADC=16 -DNUM_USB_CHAN_OUT=18 -DNUM_USB_CHAN_IN=18 -DI2S_MODE_TDM=1
 
-endif # LEGACY
-
-# To compare legacy configuration A and new configuration B, do:
+# To compare configuration A and configuration B, do:
 # \
-  printf '%s\n' `cd sw_usb_audio/app_usb_aud_xk_216_mc ; xmake CONFIG=A LEGACY=1 JUST_PRINT_FLAGS=1 2>&1 | cut -d\* -f4-` | grep -v Stop | sed 's/\.$//' | sort > /tmp/before
+  printf '%s\n' `cd sw_usb_audio/app_usb_aud_xk_216_mc ; xmake CONFIG=A FULL=1 JUST_PRINT_FLAGS=1 2>&1 | cut -d\* -f4-` | grep -v Stop | sed 's/\.$//' | sort > /tmp/before
 # \
   printf '%s\n' `cd sw_usb_audio/app_usb_aud_xk_216_mc ; xmake CONFIG=B JUST_PRINT_FLAGS=1 2>&1 | cut -d\* -f4-` | grep -v Stop | sed 's/\.$//' | sort > /tmp/after
 #

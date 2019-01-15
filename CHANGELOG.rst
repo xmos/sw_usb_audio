@@ -5,9 +5,9 @@ sw_usb_audio Change Log
 ------
 
   * REMOVED:   Application targets other than XK-AUDIO-216-MC (xCORE-200
-    Multichannel Audio)
+    Multichannel Audio) and XP-USB-MIC-UF216 (xCORE Microphone Array)
   * CHANGED:   Build configurations reduced to fully featured I2S slave and TDM,
-               as well as a light-weight 'USB DAC' with DSD
+    as well as a light-weight 'USB DAC' with DSD
 
   * Changes to dependencies:
 
@@ -21,6 +21,28 @@ sw_usb_audio Change Log
 
       + RESOLVED:  Failure to enter DFU mode when configured without input
         volume control (#17473)
+      + RESOLVED:  Fix DSD clocking on XS2 - superfluous clock outputs as clock
+        is hardware generated on XS2
+      + RESOLVED:  TDM/I2S slave recovers from spurious missed or inserted clock
+        edges
+      + RESOLVED:  Incomplete reset of output audio buffering on stream format
+        change (#39)
+      + CHANGED:   64bit Mac xmosdfu utility (compatibility with macOS 10.14)
+
+    - sc_xud: 2.4.1 -> 2.6.0
+
+      + RESOLVED    Issue referenced as #11813 in 2.4.2 for XS1 devices
+      + RESOLVED:   xCORE-200 USB phy parameters tuned for optimal Tx
+        performance resulting in much improved TX eye diagram and compliance
+        test results
+      + CHANGE:     VBUS connection to xCORE-200 no longer required when using
+        XUD_PWR_BUS i.e. for bus-powered devices. This removes the need to any
+        protection circuitry and allows for a reduced BOM. Note, VBUS should
+        still be present for self powered devices in order to pass USB
+        compliance tests.
+      + RESOLVED:   Device might hang during resume if host follows resume
+        signality with activity after a time close to specified minimum of
+        1.33us (#11813)
 
 6.15.2
 ------

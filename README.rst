@@ -88,7 +88,7 @@ General known issues with this release are listed below.  For board/application 
 Host System Requirements
 ========================
 
-- Mac OS X version 10.6 or later
+- OS X/macOS version 10.6 or later
 
 - Windows XP, Vista, 7, 8 or 10 with Thesycon Audio Class 2.0 driver for Windows (Tested against version 4.11.0). Please contact XMOS for details.
  
@@ -103,17 +103,3 @@ Support
 =======
 
 For all support issues please visit http://www.xmos.com/support
-
-Required software (dependencies)
-================================
-
-  * sc_adat (git@github.com:xcore/sc_adat.git)
-  * sc_i2c (ssh://git@github.com/xcore/sc_i2c)
-  * sc_u_series_support (git@github.com:xcore/sc_u_series_support.git)
-  * sc_usb (git://git/apps/sc_usb)
-  * sc_spdif (git://github.com/xcore/sc_spdif)
-  * sc_usb_audio (git://git/apps/sc_usb_audio)
-  * sc_usb_device (git://github.com/xcore/sc_usb_device)
-  * sc_util (git://github.com/xcore/sc_util)
-  * sc_xud (git://git/apps/sc_xud)
-
