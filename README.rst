@@ -12,7 +12,7 @@ For full software documentation please see the USB Audio Design Guide document.
 This release is built and tested using version 14.3.3 of the XMOS tool set.  Build or functionality issues could be experienced with any other version.
 
 This repository contains applications (or instances) of the XMOS USB Audio Reference Design framework.  These applications
-typically relate to a specific board. Currently only board is supported, the xCORE-200 Multi-channel Audio Board (app_usb_aud_xk_216_mc).
+typically relate to a specific board.
 
 Please refer to individual README files in these apps for more detailed information.
 
