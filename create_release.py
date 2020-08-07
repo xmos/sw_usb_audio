@@ -40,9 +40,9 @@ SCS = [
     "sc_util"
 ]
 
-# List of Software Reference Design repos. Should only contain sw_vocalfusion
+# List of Software Reference Design repos. Should only contain sw_usb_audio
 SW_REFS = [
-    "sw_vocalfusion",
+    "sw_usb_audio",
 ]
 
 
@@ -55,6 +55,51 @@ def pushd(new_dir):
     finally:
         os.chdir(last_dir)
 
+
+def copy_module(module_path, module_release_path):
+    print(f"Processing module: {module_path.name}")
+
+    export_lib_if_needed(module_path)
+
+    print("Export finished")
+
+    export_path = module_path / "export" / module_path.name
+    # Prepare eclipse files (.project, .cproject, .xproject)
+    if (module_path / ".cproject").is_file():
+        # Copy .cproject to the export dir
+        if export_path.is_dir():
+            shutil.copy2(module_path / ".cproject", export_path)
+        #prepare_eclipse_files(module_path)
+        # Copy eclipse files back to the module dir
+        if export_path.is_dir():
+            for p in export_path.iterdir():
+                if p.name.startswith(".") and p.is_file():
+                    shutil.copy2(p, module_path)
+
+    print("Eclipse files prepared")
+
+    ignore_patterns = ["doc*", "*.metainfo", "*.buildinfo", ".build*", "export"]
+    if module_path.name == "module_xud":
+        # Specific rules for this module
+        ignore_patterns += [
+            "Makefile",
+            "README*",
+            "xud_conf_example.h",
+            "libsrc",
+        ]
+
+    shutil.copytree(
+        module_path,
+        module_release_path,
+        ignore=shutil.ignore_patterns(*ignore_patterns),
+    )
+    export_lib_path = module_path / "export" / module_path.name
+    if export_lib_path.is_dir():
+        shutil.copy2(
+            export_lib_path / "module_build_info", module_release_path,
+        )
+
+    print("Module processing complete")
 
 def main():
     try:
@@ -145,56 +190,86 @@ def main():
         print("module : ", modules)
 
         for module_path in modules:
+            copy_module(module_path, sc_release_path / module_path.name)
 
-            print(f"Processing module: {module_path.name}")
+    for sw_name in SW_REFS:
+        print(f"Processing sw: {sw_name}")
 
-            export_lib_if_needed(module_path)
+        sw_path = XMOS_ROOT / sw_name
+        sw_release_path = vf_src_release_path / sw_name
+        sw_release_path.mkdir()
 
-            print("Export finished")
+        # Create PDFs
+        doc_paths = [
+            p for p in sw_path.iterdir() if p.is_dir() and p.name.startswith("doc")
+        ]
+        print_fn = lambda a: print(a, end="")
+        for doc_path in doc_paths:
+            doc_release_path = sw_release_path / doc_path.name
+            out_pdf_path = doc_path / "_build" / "xlatex" / "index.pdf"
+            if not out_pdf_path.is_file():
+                # Run xdoc
+                with pushd(doc_path):
+                    sh.xdoc("xmospdf", _out=print_fn, _err=print_fn)
+            pdf_name = sw_name
+            variant = doc_path.name[len("doc_") :]
+            if len(variant) > 0:
+                pdf_name += "_" + variant
+            pdf_release_path = doc_release_path / (pdf_name + ".pdf")
+            pdf_release_path.parent.mkdir()
+            shutil.copy2(out_pdf_path, pdf_release_path)
 
-            export_path = module_path / "export" / module_path.name
-            # Prepare eclipse files (.project, .cproject, .xproject)
-            if (module_path / ".cproject").is_file():
-                # Copy .cproject to the export dir
-                if export_path.is_dir():
-                    shutil.copy2(module_path / ".cproject", export_path)
-                #Prepare_eclipse_files(module_path)
-                # Copy eclipse files back to the module dir
-                if export_path.is_dir():
-                    for p in export_path.iterdir():
-                        if p.name.startswith(".") and p.is_file():
-                            shutil.copy2(p, module_path)
+        # Prepare eclipse files (.project, .cproject, .xproject)
+        if (sw_path / ".cproject").is_file():
+            prepare_eclipse_files(module_path)
 
-            print("Eclipse files prepared")
+        # Find any app notes
+        app_notes = [p.name for p in sw_path.iterdir() if p.name.startswith("AN")]
+        # Find any excluded apps
+        excluded_apps = [p.name for p in sw_path.iterdir() if p.name.startswith("__")]
+        # Find any doc folder names
+        doc_names = [p.name for p in doc_paths]
 
-            ignore_patterns = ["doc*", "*.metainfo", "*.buildinfo", ".build*", "export"]
-            if module_path.name == "module_xud":
-                # Specific rules for this module
-                ignore_patterns += [
-                    "Makefile",
-                    "README*",
-                    "xud_conf_example.h",
-                    "libsrc",
-                ]
+        excluded_subdirs = (
+            [sw_name, "tests", "examples", ".venv"]
+            + app_notes
+            + excluded_apps
+            + doc_names
+        )
 
-            shutil.copytree(
-                module_path,
-                sc_release_path / module_path.name,
-                ignore=shutil.ignore_patterns(*ignore_patterns),
-            )
-            export_lib_path = module_path / "export" / module_path.name
-            if export_lib_path.is_dir():
-                shutil.copy2(
-                    export_lib_path / "module_build_info",
-                    sc_release_path / module_path.name,
-                )
+        copy_source_tree(
+            sw_path,
+            vf_src_release_path,
+            exclude_subdirs=excluded_subdirs,
+            silent_excludes=[sw_name],
+        )
 
-            print("Module processing complete")
+        # Remove all FILES from the sw release dir
+        for p in sw_release_path.iterdir():
+            if p.is_file():
+                p.unlink()
+        # Copy only the CHANGELOG, Makefile, and README
+        shutil.copy2(
+            str((sw_path / "CHANGELOG.rst").resolve()), str(sw_release_path.resolve()),
+        )
+        shutil.copy2(
+            str((sw_path / "README.rst").resolve()), str(sw_release_path.resolve()),
+        )
+        shutil.copy2(
+            str((sw_path / "Makefile").resolve()), str(sw_release_path.resolve()),
+        )
 
-        # Copy any files in the root
-        for path in sc_path.iterdir():
-            if path.name == "Makefile" or path.suffix in [".rst", ".txt"]:
-                shutil.copy2(path, sc_release_path)
+        ## Copy any files in the root
+        #for path in sw_path.iterdir():
+        #    if path.name == "Makefile" or path.suffix in [".rst", ".txt"]:
+        #        shutil.copy2(path, sw_release_path)
+
+        # Find any modules
+        modules = [p for p in sw_path.iterdir() if p.name.startswith("module")]
+
+        # Prepare eclipse files
+        if (module_path / ".cproject").is_file():
+            prepare_eclipse_files(module_path)
 
     print("Release created.")
 
