@@ -123,6 +123,11 @@ def copy_module(module_path, module_release_path):
     print("Eclipse files prepared")
 
     ignore_patterns = ["doc*", "*.metainfo", "*.buildinfo", ".build*", "export"]
+
+    # specific rules for sc_i2s
+    if module_path.name == "module_i2c_simple" :
+        ignore_patterns.remove("doc*")
+
     if module_path.name == "module_xud":
         # Specific rules for this module
         ignore_patterns += [
@@ -234,6 +239,15 @@ def main():
         # Find any modules
         modules = [p for p in sc_path.iterdir() if p.name.startswith("module")]
 
+        # specific module for sc_util
+        if sc_name == "sc_util" :
+            modules = [sc_path / "module_locks"]
+
+        # specific module for sc_i2c
+        if sc_name == "sc_i2c" :
+            modules.remove(sc_path / "module_i2c")
+            modules.remove(sc_path / "module_i2c_master")
+ 
         print("module : ", modules)
 
         for module_path in modules:
@@ -321,8 +335,8 @@ def main():
         modules = [p for p in sw_path.iterdir() if p.name.startswith("module")]
 
         # Prepare eclipse files
-        if (module_path / ".cproject").is_file():
-            prepare_eclipse_files(module_path)
+        #if (module_path / ".cproject").is_file():
+            #prepare_eclipse_files(module_path)
 
     # Add YAML file to root of source release
     hash_str = get_xgit_hash()[:10]
@@ -353,8 +367,6 @@ def main():
                 for f in files:
                     release_zip.write(os.path.join(root, f))
     print("Created {}".format(zip_name))
-
-
 
 
 if __name__ == "__main__":
