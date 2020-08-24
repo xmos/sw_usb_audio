@@ -192,6 +192,12 @@ def main():
         for module_path in modules:
             copy_module(module_path, sc_release_path / module_path.name)
 
+        # Copy the CHANGELOG, License, and README
+        for p in sc_path.iterdir():
+            if p.name in ["CHANGELOG.rst", "LICENSE.txt", "README.rst"]:
+                shutil.copy2(p, sc_release_path)
+
+
     for sw_name in SW_REFS:
         print(f"Processing sw: {sw_name}")
 
