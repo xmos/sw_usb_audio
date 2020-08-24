@@ -23,7 +23,7 @@ pipeline {
       steps {
         dir("${REPO}") {
           viewEnv() {
-            runPython("python create_release.py")
+            runPython("python create_release.py --view ${VIEW}")
           }
         }
       }

@@ -1,14 +1,14 @@
-""" This script creates a source and binary release of sw_vocalfusion to match the
-structure defined by the releases of VocalFusion Speaker available on xmos.com """
+""" This script creates a source and binary release of sw_usb_audio to match the
+structure defined by the releases of USB Audio available on xmos.com """
 
 import datetime
 import os
 import sys
 import sh
 import shutil
+import yaml
 from contextlib import contextmanager
 from pathlib import Path
-
 from zipfile import ZipFile
 
 from sourcepackaging import (
@@ -45,6 +45,14 @@ SW_REFS = [
     "sw_usb_audio",
 ]
 
+def parse_args():
+    parser = ArgumentParser()
+    parser.add_argument(
+        "--view",
+        help="For CI, specify a viewname rather than reading from viewfile",
+        default=None,
+    )
+    return parser.parse_args()
 
 @contextmanager
 def pushd(new_dir):
@@ -54,6 +62,41 @@ def pushd(new_dir):
         yield
     finally:
         os.chdir(last_dir)
+
+def get_view_name():
+    """ Get the name of the current view """
+    with open(XMOS_ROOT / "viewfile") as f:
+        return f.read().strip()
+
+def get_xgit_hash():
+    """ Get the current xgit hash """
+    # In Jenkins, xgit gets pulled into the current sandbox
+    # If an xgit folder exists, get the hash of that
+    if (XMOS_ROOT / "xgit").is_dir():
+        with pushd(XMOS_ROOT / "xgit"):
+            xgit_hash = sh.git("rev-parse", "HEAD").strip()
+            return xgit_hash
+    # If view.py is on the path, use that
+    view_py_status = sh.Command("view.py").status()
+    for line in view_py_status.split("\n"):
+        if "Current xgit hash" in line:
+            xgit_hash = line[line.index(":") + 1 :].strip()
+            return xgit_hash
+    raise Exception("Could not get the xgit hash")
+
+
+def get_xdoc_version():
+    """ Get xdoc version """
+    xdoc_help = sh.xdoc("-h")
+    for line in xdoc_help.split("\n"):
+        if "XMOS document builder" in line:
+            version = line.split("(")[1].split(")")[0]
+            return version
+
+def get_tools_version():
+    """ Get the tools version from tools_released repo """
+    with open(XMOS_ROOT / "tools_released" / "REQUIRED_TOOLS_VERSION") as f:
+        return f.read().strip()
 
 
 def copy_module(module_path, module_release_path):
@@ -102,6 +145,9 @@ def copy_module(module_path, module_release_path):
     print("Module processing complete")
 
 def main():
+    args = parse_args()
+    viewname = args.view
+
     try:
         RELEASE_FOLDER.mkdir(exist_ok=True)
     except FileExistsError:
@@ -276,6 +322,21 @@ def main():
         # Prepare eclipse files
         if (module_path / ".cproject").is_file():
             prepare_eclipse_files(module_path)
+
+    # Add YAML file to root of source release
+    hash_str = get_xgit_hash()[:10]
+    depinfo = {
+        "viewhash": hash_str,
+        "viewname": viewname or get_view_name(),
+        "xdoc": get_xdoc_version(),
+        "xtimecomposer": get_tools_version(),
+    }
+    depinfo_path = (
+        vf_src_release_path / f"sw_usb_audio_{version}d{hash_str}.depinfo.yml"
+    )
+    with open(depinfo_path, "w") as f:
+        yaml_str = yaml.dump(depinfo)
+        f.write(yaml_str)
 
     print("Release created.")
 
