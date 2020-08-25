@@ -319,16 +319,16 @@ def main():
         for p in sw_release_path.iterdir():
             if p.is_file():
                 p.unlink()
-        # Copy only the CHANGELOG, Makefile, and README
+        # Copy only the CHANGELOG and README
         shutil.copy2(
             str((sw_path / "CHANGELOG.rst").resolve()), str(sw_release_path.resolve()),
         )
         shutil.copy2(
             str((sw_path / "README.rst").resolve()), str(sw_release_path.resolve()),
         )
-        shutil.copy2(
-            str((sw_path / "Makefile").resolve()), str(sw_release_path.resolve()),
-        )
+        #shutil.copy2(
+        #    str((sw_path / "Makefile").resolve()), str(sw_release_path.resolve()),
+        #)
 
         ## Copy any files in the root
         #for path in sw_path.iterdir():
