@@ -165,7 +165,7 @@ def main():
 
     time_str = datetime.datetime.now().strftime("%d_%m_%Y_%H_%M_%S")
 
-    vf_release_path = RELEASE_FOLDER / f"sw_usb_audio-[sw]_{version}"
+    vf_release_path = RELEASE_FOLDER / f"sw_usb_audio-[sw]_{version}_script"
     vf_src_release_path = vf_release_path / "source_release"
     vf_bin_release_path = vf_release_path / "binary_release"
 
@@ -188,17 +188,17 @@ def main():
         lib_release_path = vf_src_release_path / lib_name
         lib_release_path.mkdir()
 
-        ## Create PDF
-        #doc_path = lib_path / lib_name / "doc"
-        #print_fn = lambda a: print(a, end="")
-        #if not "pdf" in [p.name for p in doc_path.iterdir()]:
-        #    # Run xdoc
-        #    with pushd(doc_path):
-        #        sh.xdoc("xmospdf", _out=print_fn, _err=print_fn)
+        # Create PDF
+        doc_path = lib_path / lib_name / "doc"
+        print_fn = lambda a: print(a, end="")
+        if not "pdf" in [p.name for p in doc_path.iterdir()]:
+            # Run xdoc
+            with pushd(doc_path):
+                sh.xdoc("xmospdf", _out=print_fn, _err=print_fn)
 
         # Prepare eclipse files (.project, .cproject, .xproject)
-        if (lib_path / ".cproject").is_file():
-            prepare_eclipse_files(module_path)
+        #if (lib_path / ".cproject").is_file():
+        #    prepare_eclipse_files(module_path)
 
         # Find any app notes
         app_notes = [p.name for p in lib_path.iterdir() if p.name.startswith("AN")]
@@ -287,8 +287,8 @@ def main():
             shutil.copy2(out_pdf_path, pdf_release_path)
 
         # Prepare eclipse files (.project, .cproject, .xproject)
-        if (sw_path / ".cproject").is_file():
-            prepare_eclipse_files(module_path)
+        #if (sw_path / ".cproject").is_file():
+        #    prepare_eclipse_files(module_path)
 
         # Find any app notes
         app_notes = [p.name for p in sw_path.iterdir() if p.name.startswith("AN")]
