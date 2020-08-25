@@ -201,8 +201,8 @@ def main():
                     sh.xdoc("xmospdf", _out=print_fn, _err=print_fn)
 
         # Prepare eclipse files (.project, .cproject, .xproject)
-        #if (lib_path / ".cproject").is_file():
-        #    prepare_eclipse_files(module_path)
+        if (lib_path / ".cproject").is_file():
+            prepare_eclipse_files(module_path)
 
         # Find any app notes
         app_notes = [p.name for p in lib_path.iterdir() if p.name.startswith("AN")]
@@ -291,8 +291,8 @@ def main():
             shutil.copy2(out_pdf_path, pdf_release_path)
 
         # Prepare eclipse files (.project, .cproject, .xproject)
-        #if (sw_path / ".cproject").is_file():
-        #    prepare_eclipse_files(module_path)
+        if (sw_path / ".cproject").is_file():
+            prepare_eclipse_files(module_path)
 
         # Find any app notes
         app_notes = [p.name for p in sw_path.iterdir() if p.name.startswith("AN")]
@@ -339,8 +339,8 @@ def main():
         modules = [p for p in sw_path.iterdir() if p.name.startswith("module")]
 
         # Prepare eclipse files
-        #if (module_path / ".cproject").is_file():
-            #prepare_eclipse_files(module_path)
+        if (module_path / ".cproject").is_file():
+            prepare_eclipse_files(module_path)
 
     # Add YAML file to root of source release
     hash_str = get_xgit_hash()[:10]
