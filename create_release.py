@@ -188,13 +188,17 @@ def main():
         lib_release_path = vf_src_release_path / lib_name
         lib_release_path.mkdir()
 
-        # Create PDF
-        doc_path = lib_path / lib_name / "doc"
-        print_fn = lambda a: print(a, end="")
-        if not "pdf" in [p.name for p in doc_path.iterdir()]:
-            # Run xdoc
-            with pushd(doc_path):
-                sh.xdoc("xmospdf", _out=print_fn, _err=print_fn)
+        if lib_name == "lib_mic_array":
+        # Create PDF only for lib_mic_array
+        #TODO would be maybe better to build the doc every time and add exeption
+        #when we don't want. that way the release on jenkins and the one when we
+        #run on a local machine would be the same.           
+            doc_path = lib_path / lib_name / "doc"
+            print_fn = lambda a: print(a, end="")
+            if not "pdf" in [p.name for p in doc_path.iterdir()]:
+                # Run xdoc
+                with pushd(doc_path):
+                    sh.xdoc("xmospdf", _out=print_fn, _err=print_fn)
 
         # Prepare eclipse files (.project, .cproject, .xproject)
         #if (lib_path / ".cproject").is_file():
