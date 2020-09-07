@@ -1,0 +1,12 @@
+# python_version 3.7
+
+# dependencies
+
+# viewfile dependencies
+-e ../infr_scripts_py
+-e ../lib_logging_py
+-e ../lib_cognidox
+-e ../lib_xmlobject_py
+-e ../lib_subprocess_py
+-e ../lib_docref_py
+-e ../infr_apps
