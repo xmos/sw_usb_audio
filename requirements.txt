@@ -1,6 +1,7 @@
 # python_version 3.7
 
 # dependencies
+sh==1.13.1
 
 # viewfile dependencies
 -e ../infr_scripts_py
