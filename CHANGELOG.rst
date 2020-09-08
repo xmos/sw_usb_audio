@@ -1,6 +1,17 @@
 sw_usb_audio Change Log
 =======================
 
+6.15.4
+------
+
+  * ADDED:     Add support for new integrated flash
+
+  * Changes to dependencies:
+
+    - sc_usb_audio: 6.15.3 -> 6.15.4
+
+      + ADDED:     Support for multiple flash specs defined by DFU_FLASH_DEVICE
+
 6.15.3
 ------
 
