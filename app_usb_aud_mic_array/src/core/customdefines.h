@@ -82,7 +82,7 @@ void genclock();
 #define PRODUCT_STR_A1     "XMOS Microphone Array UAC1.0"
 //:
 
-#define FL_QUADDEVICE_ISSI_IS25LQ016D \
+#define FL_QUADDEVICE_ISSI_IS25LP016D \
 { \
     22,                     /* Enum value to identify the flashspec in a list */ \
     256,                    /* page size */ \
@@ -111,10 +111,10 @@ void genclock();
 
 // DFU_FLASH_DEVICE is a comma-separated list of flash spec structures
 // FL_QUADDEVICE_ISSI_IS25LQ016B: Deprecated integrated flash part
-// FL_QUADDEVICE_ISSI_IS25LQ080D: New integrated flash part
+// FL_QUADDEVICE_ISSI_IS25LP016D: New integrated flash part
 // This define is used in sc_usb_audio/module_usb_audio/flashlib_user.c
 #define DFU_FLASH_DEVICE \
     FL_QUADDEVICE_ISSI_IS25LQ016B, \
-    FL_QUADDEVICE_ISSI_IS25LQ016D,
+    FL_QUADDEVICE_ISSI_IS25LP016D,
 
 #endif
