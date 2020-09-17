@@ -47,6 +47,11 @@ pipeline {
           }
         }
       }
+      post {
+        cleanup {
+          xcoreCleanSandbox()
+        }
+      }
     }
     stage('Regression Test') {
       agent {
@@ -69,8 +74,10 @@ pipeline {
           }
         }
       }
-      cleanup {
-        xcoreCleanSandbox()
+      post {
+        cleanup {
+          xcoreCleanSandbox()
+        }
       }
     }
     stage('Update view files') {
