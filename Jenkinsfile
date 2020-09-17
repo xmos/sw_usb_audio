@@ -1,4 +1,4 @@
-@Library('xmos_jenkins_shared_library@v0.13.0') _
+@Library('xmos_jenkins_shared_library@v0.14.1') _
 
 getApproval()
 
@@ -39,7 +39,7 @@ pipeline {
           steps {
             dir("${REPO}/app_usb_aud_xk_216_mc") {
               viewEnv() {
-                runXmake()
+                runXmake(".")
                 sh "mv bin xk_216_mc_bin"
                 stash includes: 'xk_216_mc_bin/*', name: 'xk_216_mc_bin', useDefaultExcludes: false
               }
