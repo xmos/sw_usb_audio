@@ -41,7 +41,7 @@ pipeline {
               viewEnv() {
                 runXmake(".")
                 sh "mv bin xk_216_mc_bin"
-                stash includes: 'xk_216_mc_bin/*', name: 'xk_216_mc_bin', useDefaultExcludes: false
+                stash includes: 'xk_216_mc_bin/**/*', name: 'xk_216_mc_bin', useDefaultExcludes: false
               }
             }
           }
