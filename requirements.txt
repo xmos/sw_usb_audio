@@ -2,6 +2,7 @@
 
 # dependencies
 sh==1.13.1
+requests==2.24.0
 
 # viewfile dependencies
 -e ../infr_scripts_py

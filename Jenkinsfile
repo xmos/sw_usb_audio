@@ -40,9 +40,10 @@ pipeline {
             dir("${REPO}/app_usb_aud_xk_216_mc") {
               viewEnv() {
                 runXmake(".")
-                sh "mv bin xk_216_mc_bin"
-                stash includes: 'xk_216_mc_bin/**/*', name: 'xk_216_mc_bin', useDefaultExcludes: false
               }
+            }
+            dir("${REPO}") {
+              stash includes: 'app_usb_aud_xk_216_mc/bin/**/*', name: 'xk_216_mc_bin', useDefaultExcludes: false
             }
           }
         }
@@ -65,10 +66,12 @@ pipeline {
         }
         stage('Test') {
           steps {
-            dir("${REPO}/tests") {
-              viewEnv() {
-                unstash 'xk_216_mc_bin'
-                runPytest('--numprocesses=1')
+            dir("${REPO}") {
+              unstash 'xk_216_mc_bin'
+              dir("tests") {
+                viewEnv() {
+                  runPytest('--numprocesses=1')
+                }
               }
             }
           }
