@@ -39,7 +39,7 @@ pipeline {
           steps {
             dir("${REPO}/app_usb_aud_xk_216_mc") {
               viewEnv() {
-                runXmake(".")
+                sh "xmake FULL=1 CONFIG=2i8o8xxxxx_tdm8"
               }
             }
             dir("${REPO}") {
@@ -67,9 +67,7 @@ pipeline {
         stage('Test') {
           steps {
             dir("${REPO}") {
-              sh 'tree'
               unstash 'xk_216_mc_bin'
-              sh 'tree'
               dir("tests") {
                 viewEnv() {
                   runPytest('--numprocesses=1')
