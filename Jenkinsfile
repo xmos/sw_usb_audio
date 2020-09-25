@@ -67,7 +67,9 @@ pipeline {
         stage('Test') {
           steps {
             dir("${REPO}") {
+              sh 'tree'
               unstash 'xk_216_mc_bin'
+              sh 'tree'
               dir("tests") {
                 viewEnv() {
                   runPytest('--numprocesses=1')

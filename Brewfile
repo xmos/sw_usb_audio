@@ -4,6 +4,7 @@ tap 'xmos/tools', 'git@github.com:xmos/homebrew-tools.git'
 brew 'ruby'
 brew 'perl'
 brew 'cpanm'
+brew 'tree'
 
 brew 'python'
 # Build dependencies for Python (when compiled with pyenv)
