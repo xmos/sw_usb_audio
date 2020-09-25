@@ -27,6 +27,20 @@ def get_firmware_path(board, config):
     return firmware_path
 
 
+def get_target_file(board):
+    target_file_dir = (
+        XMOS_ROOT
+        / "sw_usb_audio"
+        / f"app_usb_aud_{board}"
+        / "src"
+        / f"core"
+    )
+    for p in target_file_dir.iterdir():
+        if p.is_file() and p.suffix == ".xn":
+            return p
+    return None
+
+
 @pytest.fixture
 def xsig():
     r = requests.get(XSIG_LINUX_URL)
@@ -87,9 +101,12 @@ def check_xsig_output(xsig_output: List[str], num_chans: int):
 @pytest.mark.parametrize("board_and_config", [("xk_216_mc", "2i8o8xxxxx_tdm8")])
 @pytest.mark.parametrize("num_chans", [8])
 def test_hello_world(xsig, fs, duration_ms, xsig_config, board_and_config, num_chans):
-    # xrun the firmware
-    firmware = get_firmware_path(*board_and_config)
-    sh.xrun(firmware)
+    # xflash the firmware
+    board, config = board_and_config
+    firmware = get_firmware_path(board, config)
+    target_file = get_target_file(board)
+    sh.xflash("--erase-all", "--target-file", target_file)
+    sh.xflash("--no-compression", firmware)
     # Wait for device to enumerate
     time.sleep(10)
     # Run xsig
