@@ -8,3 +8,4 @@ requests==2.24.0
 -e ../infr_scripts_py
 -e ../infr_apps
 -e ../audio_test_tools/python
+-e ../xtagctl
