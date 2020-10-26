@@ -1,3 +1,4 @@
+# Copyright (c) 2020, XMOS Ltd, All rights reserved
 import io
 import os
 from pathlib import Path
@@ -9,12 +10,32 @@ import re
 import requests
 from typing import List
 import xtagctl
+# import hardware_test_tools # Required for SPDIF test
 
 XMOS_ROOT = Path(os.environ["XMOS_ROOT"])
 
 XSIG_LINUX_URL = "http://intranet/projects/usb_audio_regression_files/xsig/linux/xsig"
 XSIG_PATH = Path(__file__).parent / "xsig"
 XSIG_CONFIG_ROOT = XMOS_ROOT / "usb_audio_testing/xsig_configs"
+
+
+def set_clock_source_alsa(card_num, source: str):
+    """ Sets the clock source of the USB audio device """
+
+    if source == "INTERNAL":
+        sh.amixer(
+            f"-c{card_num}",
+            "set",
+            "XMOS Clock Selector Clock Source",
+            "XMOS Internal Clock"
+        )
+    elif source == "SPDIF":
+        sh.amixer(
+            f"-c{card_num}",
+            "set",
+            "XMOS Clock Selector Clock Source",
+            "XMOS S/PDIF Clock"
+        )
 
 
 def get_firmware_path_harness(board, config=None):
@@ -121,19 +142,27 @@ def check_analyzer_output(analyzer_output: List[str], expected_frequencies: int)
 def test_analogue_input(
     xsig, fs, duration_ms, xsig_config, board_and_config, num_chans
 ):
-    with xtagctl.target("usb_audio_mc_xs2_dut") as adapter_id:
-        # xflash the firmware
-        board, config = board_and_config
-        firmware = get_firmware_path(board, config)
-        sh.xrun("--adapter-id", adapter_id, firmware)
-        # Wait for device to enumerate
-        time.sleep(10)
-        # Run xsig
-        xsig_output = sh.Command(xsig)(fs, duration_ms, XSIG_CONFIG_ROOT / xsig_config)
-        xsig_lines = xsig_output.split("\n")
-        # Check output
-        expected_freqs = [(i+1) * 1000 for i in range(num_chans)]
-        assert check_analyzer_output(xsig_lines, expected_freqs)
+    with xtagctl.target("usb_audio_mc_xs2_dut") as adapter_dut:
+        with xtagctl.target("usb_audio_mc_xs2_harness") as adapter_harness:
+            # Reset both xtags
+            xtagctl.reset_adapter(adapter_dut)
+            xtagctl.reset_adapter(adapter_harness)
+            time.sleep(2) # Wait for adapters to enumerate
+            # xrun the harness
+            harness_firmware = get_firmware_path_harness("xcore200_mc")
+            sh.xrun("--adapter-id", adapter_harness, harness_firmware)
+            # xflash the firmware
+            board, config = board_and_config
+            firmware = get_firmware_path(board, config)
+            sh.xrun("--adapter-id", adapter_dut, firmware)
+            # Wait for device to enumerate
+            time.sleep(10)
+            # Run xsig
+            xsig_output = sh.Command(xsig)(fs, duration_ms, XSIG_CONFIG_ROOT / xsig_config)
+            xsig_lines = xsig_output.split("\n")
+            # Check output
+            expected_freqs = [(i+1) * 1000 for i in range(num_chans)]
+            assert check_analyzer_output(xsig_lines, expected_freqs)
 
 
 @pytest.mark.parametrize("fs", [48000])
@@ -147,6 +176,10 @@ def test_analogue_output(
     with xtagctl.target("usb_audio_mc_xs2_dut") as adapter_dut:
         with xtagctl.target("usb_audio_mc_xs2_harness") as adapter_harness:
             print(f"Adapter DUT: {adapter_dut}, Adapter harness: {adapter_harness}")
+            # Reset both xtags
+            xtagctl.reset_adapter(adapter_dut)
+            xtagctl.reset_adapter(adapter_harness)
+            time.sleep(2) # Wait for adapters to enumerate
             # xrun the dut
             board, config = board_and_config
             firmware = get_firmware_path(board, config)
@@ -185,6 +218,41 @@ def test_analogue_output(
             print(xscope_str)
             expected_freqs = [((i+1) * 1000) + 500 for i in range(num_chans)]
             assert check_analyzer_output(xscope_lines, expected_freqs)
+
+
+@pytest.mark.skip(reason="SPDIF test is WIP")
+@pytest.mark.parametrize("fs", [48000])
+@pytest.mark.parametrize("duration_ms", [10000])
+@pytest.mark.parametrize("xsig_config", ["mc_digital_input_8ch.json"])
+@pytest.mark.parametrize("board_and_config", [("xk_216_mc", "2i16o16xxxaax")])
+@pytest.mark.parametrize("num_chans", [10])
+def test_spdif_input(
+    xsig, fs, duration_ms, xsig_config, board_and_config, num_chans
+):
+    with xtagctl.target("usb_audio_mc_xs2_dut") as adapter_dut:
+        with xtagctl.target("usb_audio_mc_xs2_harness") as adapter_harness:
+            # Reset both xtags
+            xtagctl.reset_adapter(adapter_dut)
+            xtagctl.reset_adapter(adapter_harness)
+            time.sleep(2) # Wait for adapters to enumerate
+            # xrun the harness
+            harness_firmware = get_firmware_path_harness("xcore200_mc")
+            sh.xrun("--adapter-id", adapter_harness, harness_firmware)
+            # xflash the firmware
+            board, config = board_and_config
+            firmware = get_firmware_path(board, config)
+            sh.xrun("--adapter-id", adapter_dut, firmware)
+            # Wait for device to enumerate
+            time.sleep(10)
+            # Set the clock source to SPDIF
+            card_num, dev_num = hardware_test_tools.find_aplay_device("xCORE USB Audio")
+            set_clock_source_alsa(card_num, "SPDIF")
+            # Run xsig
+            xsig_output = sh.Command(xsig)(fs, duration_ms, XSIG_CONFIG_ROOT / xsig_config)
+            xsig_lines = xsig_output.split("\n")
+            # Check output
+            #expected_freqs = [(i+1) * 1000 for i in range(num_chans)]
+            #assert check_analyzer_output(xsig_lines, expected_freqs)
 
 
 if __name__ == "__main__":
