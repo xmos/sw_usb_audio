@@ -24,3 +24,9 @@ log.txt
 *~
 *.DS_Store
 *.pyc
+**/*.egg-info/
+**/.venv/*
+
+# Regression test files
+tests/xmosdfu
+tests/xsig
