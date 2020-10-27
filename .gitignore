@@ -26,6 +26,14 @@ log.txt
 *~
 *.DS_Store
 *.pyc
-tests/recording*.wav
-tests/plot*.pdf
-tests/generated_*.wav
+
+legacy_tests/recording*.wav
+legacy_tests/plot*.pdf
+legacy_tests/generated_*.wav
+
+**/*.egg-info/
+**/.venv/*
+
+# Regression test files
+tests/xmosdfu
+tests/xsig

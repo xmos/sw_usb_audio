@@ -17,7 +17,11 @@ import xtagctl
 XMOS_ROOT = Path(os.environ["XMOS_ROOT"])
 
 XSIG_LINUX_URL = "http://intranet/projects/usb_audio_regression_files/xsig/linux/xsig"
+XMOSDFU_LINUX_URL = (
+    "http://intranet/projects/usb_audio_regression_files/xmosdfu/linux/xmosdfu"
+)
 XSIG_PATH = Path(__file__).parent / "xsig"
+XMOSDFU_PATH = Path(__file__).parent / "xmosdfu"
 XSIG_CONFIG_ROOT = XMOS_ROOT / "usb_audio_testing/xsig_configs"
 
 
@@ -48,6 +52,23 @@ def set_clock_source_alsa(card_num, source: str):
             "XMOS Clock Selector Clock Source",
             "XMOS S/PDIF Clock",
         )
+
+
+def get_bcd_version(vid, pid):
+    """Gets the BCD Device version number for a connected USB device with the
+    specified VID and PID
+
+    TODO: Mac and Windows support
+    """
+
+    lsusb_out = sh.lsusb("-v", "-d", f"{vid}:{pid}")
+
+    for line in lsusb_out.split("\n"):
+        if line.strip().startswith("bcdDevice"):
+            version_str = line.split()[1]
+            return version_str.strip()
+
+    raise Exception(f"BCD Device not found: \n{lsusb_out}")
 
 
 def get_firmware_path_harness(board, config=None):
@@ -121,12 +142,30 @@ def get_target_file(board):
 
 @pytest.fixture
 def xsig():
+    """ Gets xsig from projects network drive """
+
     r = requests.get(XSIG_LINUX_URL)
     with open(XSIG_PATH, "wb") as f:
         f.write(r.content)
 
     XSIG_PATH.chmod(stat.S_IREAD | stat.S_IWRITE | stat.S_IEXEC)
     return XSIG_PATH
+
+
+@pytest.fixture
+def xmosdfu():
+    """Gets xmosdfu from projects network drive
+
+    NOTE: This will need tweaking for macOS and Windows where libusb is dynamically
+    linked
+    """
+
+    r = requests.get(XMOSDFU_LINUX_URL)
+    with open(XMOSDFU_PATH, "wb") as f:
+        f.write(r.content)
+
+    XMOSDFU_PATH.chmod(stat.S_IREAD | stat.S_IWRITE | stat.S_IEXEC)
+    return XMOSDFU_PATH
 
 
 def create_dfu_bin(board, config):
@@ -208,17 +247,18 @@ def build_with_dfu_test(request, pytestconfig):
     assert not (build_only and test_only), "Build only and test only cannot both be set"
 
     board, config = request.param[:2]
-    output_name = config + "_dfu"
+    factory_output_name = config
+    dfu_output_name = config + "_dfu"
 
     if test_only:
         # Don't build anything
         # First 3 args specify the dfu/firmware names
-        firmware = get_firmware_path(board, config, output_name)
-        dfu_bin = get_dfu_bin_path(board, config, output_name)
+        firmware = get_firmware_path(board, config, factory_output_name)
+        dfu_bin = get_dfu_bin_path(board, config, dfu_output_name)
     else:
-        firmware, _ = build_board_config(board, config, output_name)
+        firmware, _ = build_board_config(board, config, factory_output_name)
         _, dfu_bin = build_board_config(
-            board, config, output_name, xmake_args=["TEST_DFU_1=1"]
+            board, config, dfu_output_name, xmake_args=["TEST_DFU_1=1"]
         )
 
     if build_only:
@@ -391,6 +431,42 @@ def test_spdif_input(xsig, fs, duration_ms, xsig_config, build, num_chans):
             # Check output
             # expected_freqs = [(i+1) * 1000 for i in range(num_chans)]
             # assert check_analyzer_output(xsig_lines, expected_freqs)
+
+
+@pytest.mark.parametrize(
+    "build_with_dfu_test", [("xk_216_mc", "2i10o10xxxxxx")], indirect=True
+)
+def test_dfu(xmosdfu, build_with_dfu_test):
+    if build_with_dfu_test is None:
+        pytest.skip("Build not present")
+    with xtagctl.target("usb_audio_mc_xs2_dut") as adapter_dut:
+        # Reset both xtags
+        xtagctl.reset_adapter(adapter_dut)
+        time.sleep(2)  # Wait for adapters to enumerate
+        # xflash the firmware
+        firmware, dfu_bin = build_with_dfu_test
+        sh.xflash("--adapter-id", adapter_dut, "--no-compression", firmware)
+        # Wait for device to enumerate
+        time.sleep(10)
+        # Run DFU test procedure
+        initial_version = get_bcd_version("20b1", "8")
+        # Download the new firmware
+        try:
+            sh.Command(xmosdfu)("0x8", "--download", dfu_bin)
+        except sh.ErrorReturnCode as e:
+            print(e.stdout)
+            raise Exception()
+        time.sleep(3)
+        # Check version
+        upgrade_version = get_bcd_version("20b1", "8")
+        # Revert to factory
+        sh.Command(xmosdfu)("0x8", "--revertfactory")
+        time.sleep(3)
+        # Check version
+        reverted_version = get_bcd_version("20b1", "8")
+
+        assert initial_version == reverted_version
+        assert upgrade_version != initial_version
 
 
 # if __name__ == "__main__":
