@@ -361,7 +361,7 @@ def test_analogue_output(xsig, fs, duration_ms, xsig_config, build, num_chans):
 @pytest.mark.parametrize("fs", [48000])
 @pytest.mark.parametrize("duration_ms", [10000])
 @pytest.mark.parametrize("xsig_config", ["mc_digital_input_8ch.json"])
-@pytest.mark.parametrize("build", [("xk_216_mc", "2i16o16xxxaax")])
+@pytest.mark.parametrize("build", [("xk_216_mc", "2i16o16xxxaax")], indirect=True)
 @pytest.mark.parametrize("num_chans", [10])
 def test_spdif_input(xsig, fs, duration_ms, xsig_config, build, num_chans):
     if build is None:
