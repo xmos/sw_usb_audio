@@ -165,6 +165,7 @@ def get_target_file(board):
 @pytest.fixture
 def xsig():
     """ Gets xsig from projects network drive """
+
     XSIG_PATH.parent.mkdir(parents=True, exist_ok=True)
 
     if platform.system() == "Darwin":
@@ -189,11 +190,8 @@ def xsig():
 
 @pytest.fixture
 def xmosdfu():
-    """Gets xmosdfu from projects network drive
+    """Gets xmosdfu from projects network drive """
 
-    NOTE: This will need tweaking for macOS and Windows where libusb is dynamically
-    linked
-    """
     XMOSDFU_PATH.parent.mkdir(parents=True, exist_ok=True)
 
     if platform.system() == "Darwin":
@@ -437,23 +435,25 @@ def test_analogue_output(xsig, fs, duration_ms, xsig_config, build, num_chans):
             )
             # Wait for device(s) to enumerate
             time.sleep(10)
-            # Run xsig
-            xsig_output = sh.Command(xsig)(
-                fs, duration_ms, XSIG_CONFIG_ROOT / xsig_config
+            # Run xsig for duration_ms + 2 seconds
+            xsig_cmd = sh.Command(xsig)(
+                fs, duration_ms + 2000, XSIG_CONFIG_ROOT / xsig_config, _bg=True
             )
-            xsig_lines = xsig_output.split("\n")
-            # Check analyzer output
+            time.sleep(duration_ms / 1000)
+            # Get analyser output
             try:
                 harness_xrun.kill_group()
                 harness_xrun.wait()
             except sh.SignalException:
                 # Killed
                 pass
-
             xscope_str = xscope_out.getvalue()
             xscope_lines = xscope_str.split("\n")
             print("XSCOPE STRING:")
             print(xscope_str)
+            # Wait for xsig to exit (timeout after 5 seconds)
+            xsig_cmd.wait(timeout=5)
+
             expected_freqs = [((i + 1) * 1000) + 500 for i in range(num_chans)]
             assert check_analyzer_output(xscope_lines, expected_freqs)
 
