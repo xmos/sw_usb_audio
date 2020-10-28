@@ -3,6 +3,7 @@ from contextlib import contextmanager
 import io
 import os
 from pathlib import Path
+import platform
 import pytest
 import sh
 import stat
@@ -11,17 +12,21 @@ import re
 import requests
 from typing import List
 import xtagctl
+import zipfile
 
 # import hardware_test_tools # Required for SPDIF test
 
 XMOS_ROOT = Path(os.environ["XMOS_ROOT"])
 
-XSIG_LINUX_URL = "http://intranet/projects/usb_audio_regression_files/xsig/linux/xsig"
+XSIG_LINUX_URL = "http://intranet.xmos.local/projects/usb_audio_regression_files/xsig/linux/xsig"
 XMOSDFU_LINUX_URL = (
-    "http://intranet/projects/usb_audio_regression_files/xmosdfu/linux/xmosdfu"
+    "http://intranet.xmos.local/projects/usb_audio_regression_files/xmosdfu/linux/xmosdfu"
 )
-XSIG_PATH = Path(__file__).parent / "xsig"
-XMOSDFU_PATH = Path(__file__).parent / "xmosdfu"
+XSIG_MACOS_URL = "http://intranet.xmos.local/projects/usb_audio_regression_files/xsig/macos/xsig.zip"
+XMOSDFU_MACOS_URL = "http://intranet.xmos.local/projects/usb_audio_regression_files/xmosdfu/macos/xmosdfu.zip"
+
+XSIG_PATH = Path(__file__).parent / "tools" / "xsig"
+XMOSDFU_PATH = Path(__file__).parent / "tools" / "xmosdfu"
 XSIG_CONFIG_ROOT = XMOS_ROOT / "usb_audio_testing/xsig_configs"
 
 
@@ -54,21 +59,38 @@ def set_clock_source_alsa(card_num, source: str):
         )
 
 
-def get_bcd_version(vid, pid):
+def get_bcd_version(vid: int, pid: int) -> str:
     """Gets the BCD Device version number for a connected USB device with the
     specified VID and PID
 
-    TODO: Mac and Windows support
+    TODO: Windows support
     """
 
-    lsusb_out = sh.lsusb("-v", "-d", f"{vid}:{pid}")
+    if platform.system() == "Darwin":
+        prof_out = sh.system_profiler.SPUSBDataType()
+        prof_lines = prof_out.split("\n")
+        xcore_lines = []
+        current_pid = None
+        current_vid = None
+        for i, line in enumerate(prof_lines):
+            if line.strip().startswith("Product ID:"):
+                current_pid = int(line.split()[2], 16)
+            if line.strip().startswith("Vendor ID:"):
+                current_vid = int(line.split()[2], 16)
+            if line.strip().startswith("Version"):
+                if current_pid == pid and current_vid == vid:
+                    return line.split()[1].strip()
 
-    for line in lsusb_out.split("\n"):
-        if line.strip().startswith("bcdDevice"):
-            version_str = line.split()[1]
-            return version_str.strip()
+        raise Exception(f"BCD Device not found: \n{prof_out}")
+    elif platform.system() == "Linux":
+        lsusb_out = sh.lsusb("-v", "-d", f"{vid}:{pid}")
 
-    raise Exception(f"BCD Device not found: \n{lsusb_out}")
+        for line in lsusb_out.split("\n"):
+            if line.strip().startswith("bcdDevice"):
+                version_str = line.split()[1]
+                return version_str.strip()
+
+        raise Exception(f"BCD Device not found: \n{lsusb_out}")
 
 
 def get_firmware_path_harness(board, config=None):
@@ -143,12 +165,25 @@ def get_target_file(board):
 @pytest.fixture
 def xsig():
     """ Gets xsig from projects network drive """
+    XSIG_PATH.parent.mkdir(parents=True, exist_ok=True)
 
-    r = requests.get(XSIG_LINUX_URL)
-    with open(XSIG_PATH, "wb") as f:
-        f.write(r.content)
+    if platform.system() == "Darwin":
+        r = requests.get(XSIG_MACOS_URL)
+        zip_path = XSIG_PATH.parent / "xsig.zip"
+        with open(zip_path, "wb") as f:
+            f.write(r.content)
 
-    XSIG_PATH.chmod(stat.S_IREAD | stat.S_IWRITE | stat.S_IEXEC)
+        # Unzip
+        with zipfile.ZipFile(zip_path, 'r') as zip_ref:
+            zip_ref.extractall(XSIG_PATH.parent)
+
+        XSIG_PATH.chmod(stat.S_IREAD | stat.S_IWRITE | stat.S_IEXEC)
+    elif platform.system() == "Linux":
+        r = requests.get(XSIG_LINUX_URL)
+        with open(XSIG_PATH, "wb") as f:
+            f.write(r.content)
+
+        XSIG_PATH.chmod(stat.S_IREAD | stat.S_IWRITE | stat.S_IEXEC)
     return XSIG_PATH
 
 
@@ -159,12 +194,27 @@ def xmosdfu():
     NOTE: This will need tweaking for macOS and Windows where libusb is dynamically
     linked
     """
+    XMOSDFU_PATH.parent.mkdir(parents=True, exist_ok=True)
 
-    r = requests.get(XMOSDFU_LINUX_URL)
-    with open(XMOSDFU_PATH, "wb") as f:
-        f.write(r.content)
+    if platform.system() == "Darwin":
+        r = requests.get(XMOSDFU_MACOS_URL)
+        zip_path = XMOSDFU_PATH.parent / "xmosdfu.zip"
+        with open(zip_path, "wb") as f:
+            f.write(r.content)
 
-    XMOSDFU_PATH.chmod(stat.S_IREAD | stat.S_IWRITE | stat.S_IEXEC)
+        # Unzip
+        with zipfile.ZipFile(zip_path, 'r') as zip_ref:
+            zip_ref.extractall(XMOSDFU_PATH.parent)
+
+        XMOSDFU_PATH.chmod(stat.S_IREAD | stat.S_IWRITE | stat.S_IEXEC)
+    elif platform.system() == "Linux":
+
+        r = requests.get(XMOSDFU_LINUX_URL)
+        with open(XMOSDFU_PATH, "wb") as f:
+            f.write(r.content)
+
+        XMOSDFU_PATH.chmod(stat.S_IREAD | stat.S_IWRITE | stat.S_IEXEC)
+
     return XMOSDFU_PATH
 
 
@@ -280,14 +330,24 @@ def check_analyzer_output(analyzer_output: List[str], expected_frequencies: int)
     for i, expected_freq in enumerate(expected_frequencies):
         found = False
         expected_freq = expected_frequencies[i]
+        channel_line = f"Channel {i}: Frequency "
         expected_line = "Channel %d: Frequency %d" % (i, expected_freq)
+        wrong_frequency = None
         for line in analyzer_output:
-            if line.startswith(expected_line):
-                found = True
+            if line.startswith(channel_line):
+                if line.startswith(expected_line):
+                    found = True
+                else:
+                    # Remove the prefix, split by whitespace, take the first element
+                    wrong_frequency = int(line[len(channel_line):].split()[0])
         if not found:
-            failures.append(
-                "Expected frequency of %d not seen on channel %d" % (expected_freq, i)
-            )
+            if wrong_frequency is None:
+                failures.append(f"No signal seen on channel {i}")
+            else:
+                failures.append(
+                    f"Incorrect frequency seen on channel {i}. "
+                    f"Expected {expected_freq}, got {wrong_frequency}."
+                )
 
     for line in analyzer_output:
         # Check that the signals were never lost
@@ -306,6 +366,7 @@ def check_analyzer_output(analyzer_output: List[str], expected_frequencies: int)
                 )
 
     if len(failures) > 0:
+        print("Checking analyser output failed:\n")
         print("\n".join(failures))
         return False
     return True
@@ -449,7 +510,7 @@ def test_dfu(xmosdfu, build_with_dfu_test):
         # Wait for device to enumerate
         time.sleep(10)
         # Run DFU test procedure
-        initial_version = get_bcd_version("20b1", "8")
+        initial_version = get_bcd_version(0x20b1, 0x8)
         # Download the new firmware
         try:
             sh.Command(xmosdfu)("0x8", "--download", dfu_bin)
@@ -458,12 +519,12 @@ def test_dfu(xmosdfu, build_with_dfu_test):
             raise Exception()
         time.sleep(3)
         # Check version
-        upgrade_version = get_bcd_version("20b1", "8")
+        upgrade_version = get_bcd_version(0x20b1, 0x8)
         # Revert to factory
         sh.Command(xmosdfu)("0x8", "--revertfactory")
         time.sleep(3)
         # Check version
-        reverted_version = get_bcd_version("20b1", "8")
+        reverted_version = get_bcd_version(0x20b1, 0x8)
 
         assert initial_version == reverted_version
         assert upgrade_version != initial_version
