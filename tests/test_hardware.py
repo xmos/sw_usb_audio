@@ -18,11 +18,13 @@ import zipfile
 
 XMOS_ROOT = Path(os.environ["XMOS_ROOT"])
 
-XSIG_LINUX_URL = "http://intranet.xmos.local/projects/usb_audio_regression_files/xsig/linux/xsig"
-XMOSDFU_LINUX_URL = (
-    "http://intranet.xmos.local/projects/usb_audio_regression_files/xmosdfu/linux/xmosdfu"
+XSIG_LINUX_URL = (
+    "http://intranet.xmos.local/projects/usb_audio_regression_files/xsig/linux/xsig"
 )
-XSIG_MACOS_URL = "http://intranet.xmos.local/projects/usb_audio_regression_files/xsig/macos/xsig.zip"
+XMOSDFU_LINUX_URL = "http://intranet.xmos.local/projects/usb_audio_regression_files/xmosdfu/linux/xmosdfu"
+XSIG_MACOS_URL = (
+    "http://intranet.xmos.local/projects/usb_audio_regression_files/xsig/macos/xsig.zip"
+)
 XMOSDFU_MACOS_URL = "http://intranet.xmos.local/projects/usb_audio_regression_files/xmosdfu/macos/xmosdfu.zip"
 
 XSIG_PATH = Path(__file__).parent / "tools" / "xsig"
@@ -175,7 +177,7 @@ def xsig():
             f.write(r.content)
 
         # Unzip
-        with zipfile.ZipFile(zip_path, 'r') as zip_ref:
+        with zipfile.ZipFile(zip_path, "r") as zip_ref:
             zip_ref.extractall(XSIG_PATH.parent)
 
         XSIG_PATH.chmod(stat.S_IREAD | stat.S_IWRITE | stat.S_IEXEC)
@@ -201,7 +203,7 @@ def xmosdfu():
             f.write(r.content)
 
         # Unzip
-        with zipfile.ZipFile(zip_path, 'r') as zip_ref:
+        with zipfile.ZipFile(zip_path, "r") as zip_ref:
             zip_ref.extractall(XMOSDFU_PATH.parent)
 
         XMOSDFU_PATH.chmod(stat.S_IREAD | stat.S_IWRITE | stat.S_IEXEC)
@@ -337,7 +339,7 @@ def check_analyzer_output(analyzer_output: List[str], expected_frequencies: int)
                     found = True
                 else:
                     # Remove the prefix, split by whitespace, take the first element
-                    wrong_frequency = int(line[len(channel_line):].split()[0])
+                    wrong_frequency = int(line[len(channel_line) :].split()[0])
         if not found:
             if wrong_frequency is None:
                 failures.append(f"No signal seen on channel {i}")
@@ -510,7 +512,7 @@ def test_dfu(xmosdfu, build_with_dfu_test):
         # Wait for device to enumerate
         time.sleep(10)
         # Run DFU test procedure
-        initial_version = get_bcd_version(0x20b1, 0x8)
+        initial_version = get_bcd_version(0x20B1, 0x8)
         # Download the new firmware
         try:
             sh.Command(xmosdfu)("0x8", "--download", dfu_bin)
@@ -519,12 +521,12 @@ def test_dfu(xmosdfu, build_with_dfu_test):
             raise Exception()
         time.sleep(3)
         # Check version
-        upgrade_version = get_bcd_version(0x20b1, 0x8)
+        upgrade_version = get_bcd_version(0x20B1, 0x8)
         # Revert to factory
         sh.Command(xmosdfu)("0x8", "--revertfactory")
         time.sleep(3)
         # Check version
-        reverted_version = get_bcd_version(0x20b1, 0x8)
+        reverted_version = get_bcd_version(0x20B1, 0x8)
 
         assert initial_version == reverted_version
         assert upgrade_version != initial_version
