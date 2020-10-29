@@ -16,6 +16,7 @@ import zipfile
 
 # import hardware_test_tools # Required for SPDIF test
 
+
 XMOS_ROOT = Path(os.environ["XMOS_ROOT"])
 
 XSIG_LINUX_URL = (
@@ -85,7 +86,7 @@ def get_bcd_version(vid: int, pid: int) -> str:
 
         raise Exception(f"BCD Device not found: \n{prof_out}")
     elif platform.system() == "Linux":
-        lsusb_out = sh.lsusb("-v", "-d", f"{vid}:{pid}")
+        lsusb_out = sh.lsusb("-v", "-d", f"{hex(vid)}:{hex(pid)}")
 
         for line in lsusb_out.split("\n"):
             if line.strip().startswith("bcdDevice"):
@@ -380,28 +381,28 @@ def check_analyzer_output(analyzer_output: List[str], expected_frequencies: int)
 def test_analogue_input(xsig, fs, duration_ms, xsig_config, build, num_chans):
     if build is None:
         pytest.skip("Build not present")
-    with xtagctl.target("usb_audio_mc_xs2_dut") as adapter_dut:
-        with xtagctl.target("usb_audio_mc_xs2_harness") as adapter_harness:
-            # Reset both xtags
-            xtagctl.reset_adapter(adapter_dut)
-            xtagctl.reset_adapter(adapter_harness)
-            time.sleep(2)  # Wait for adapters to enumerate
-            # xrun the harness
-            harness_firmware = get_firmware_path_harness("xcore200_mc")
-            sh.xrun("--adapter-id", adapter_harness, harness_firmware)
-            # xflash the firmware
-            firmware = build
-            sh.xrun("--adapter-id", adapter_dut, firmware)
-            # Wait for device to enumerate
-            time.sleep(10)
-            # Run xsig
-            xsig_output = sh.Command(xsig)(
-                fs, duration_ms, XSIG_CONFIG_ROOT / xsig_config
-            )
-            xsig_lines = xsig_output.split("\n")
-            # Check output
-            expected_freqs = [(i + 1) * 1000 for i in range(num_chans)]
-            assert check_analyzer_output(xsig_lines, expected_freqs)
+    with xtagctl.acquire("usb_audio_mc_xs2_dut", "usb_audio_mc_xs2_harness") as (
+        adapter_dut,
+        adapter_harness,
+    ):
+        # Reset both xtags
+        xtagctl.reset_adapter(adapter_dut)
+        xtagctl.reset_adapter(adapter_harness)
+        time.sleep(2)  # Wait for adapters to enumerate
+        # xrun the harness
+        harness_firmware = get_firmware_path_harness("xcore200_mc")
+        sh.xrun("--adapter-id", adapter_harness, harness_firmware)
+        # xflash the firmware
+        firmware = build
+        sh.xrun("--adapter-id", adapter_dut, firmware)
+        # Wait for device to enumerate
+        time.sleep(10)
+        # Run xsig
+        xsig_output = sh.Command(xsig)(fs, duration_ms, XSIG_CONFIG_ROOT / xsig_config)
+        xsig_lines = xsig_output.split("\n")
+        # Check output
+        expected_freqs = [(i + 1) * 1000 for i in range(num_chans)]
+        assert check_analyzer_output(xsig_lines, expected_freqs)
 
 
 @pytest.mark.parametrize("fs", [48000])
@@ -412,52 +413,54 @@ def test_analogue_input(xsig, fs, duration_ms, xsig_config, build, num_chans):
 def test_analogue_output(xsig, fs, duration_ms, xsig_config, build, num_chans):
     if build is None:
         pytest.skip("Build not present")
-    with xtagctl.target("usb_audio_mc_xs2_dut") as adapter_dut:
-        with xtagctl.target("usb_audio_mc_xs2_harness") as adapter_harness:
-            print(f"Adapter DUT: {adapter_dut}, Adapter harness: {adapter_harness}")
-            # Reset both xtags
-            xtagctl.reset_adapter(adapter_dut)
-            xtagctl.reset_adapter(adapter_harness)
-            time.sleep(2)  # Wait for adapters to enumerate
-            # xrun the dut
-            firmware = build
-            sh.xrun("--adapter-id", adapter_dut, firmware)
-            # xrun --xscope the harness
-            harness_firmware = get_firmware_path_harness("xcore200_mc")
-            xscope_out = io.StringIO()
-            harness_xrun = sh.xrun(
-                "--adapter-id",
-                adapter_harness,
-                "--xscope",
-                harness_firmware,
-                _out=xscope_out,
-                _err_to_out=True,
-                _bg=True,
-                _bg_exc=False,
-            )
-            # Wait for device(s) to enumerate
-            time.sleep(10)
-            # Run xsig for duration_ms + 2 seconds
-            xsig_cmd = sh.Command(xsig)(
-                fs, duration_ms + 2000, XSIG_CONFIG_ROOT / xsig_config, _bg=True
-            )
-            time.sleep(duration_ms / 1000)
-            # Get analyser output
-            try:
-                harness_xrun.kill_group()
-                harness_xrun.wait()
-            except sh.SignalException:
-                # Killed
-                pass
-            xscope_str = xscope_out.getvalue()
-            xscope_lines = xscope_str.split("\n")
-            print("XSCOPE STRING:")
-            print(xscope_str)
-            # Wait for xsig to exit (timeout after 5 seconds)
-            xsig_cmd.wait(timeout=5)
+    with xtagctl.acquire("usb_audio_mc_xs2_dut", "usb_audio_mc_xs2_harness") as (
+        adapter_dut,
+        adapter_harness,
+    ):
+        print(f"Adapter DUT: {adapter_dut}, Adapter harness: {adapter_harness}")
+        # Reset both xtags
+        xtagctl.reset_adapter(adapter_dut)
+        xtagctl.reset_adapter(adapter_harness)
+        time.sleep(2)  # Wait for adapters to enumerate
+        # xrun the dut
+        firmware = build
+        sh.xrun("--adapter-id", adapter_dut, firmware)
+        # xrun --xscope the harness
+        harness_firmware = get_firmware_path_harness("xcore200_mc")
+        xscope_out = io.StringIO()
+        harness_xrun = sh.xrun(
+            "--adapter-id",
+            adapter_harness,
+            "--xscope",
+            harness_firmware,
+            _out=xscope_out,
+            _err_to_out=True,
+            _bg=True,
+            _bg_exc=False,
+        )
+        # Wait for device(s) to enumerate
+        time.sleep(10)
+        # Run xsig for duration_ms + 2 seconds
+        xsig_cmd = sh.Command(xsig)(
+            fs, duration_ms + 2000, XSIG_CONFIG_ROOT / xsig_config, _bg=True
+        )
+        time.sleep(duration_ms / 1000)
+        # Get analyser output
+        try:
+            harness_xrun.kill_group()
+            harness_xrun.wait()
+        except sh.SignalException:
+            # Killed
+            pass
+        xscope_str = xscope_out.getvalue()
+        xscope_lines = xscope_str.split("\n")
+        print("XSCOPE STRING:")
+        print(xscope_str)
+        # Wait for xsig to exit (timeout after 5 seconds)
+        xsig_cmd.wait(timeout=5)
 
-            expected_freqs = [((i + 1) * 1000) + 500 for i in range(num_chans)]
-            assert check_analyzer_output(xscope_lines, expected_freqs)
+        expected_freqs = [((i + 1) * 1000) + 500 for i in range(num_chans)]
+        assert check_analyzer_output(xscope_lines, expected_freqs)
 
 
 @pytest.mark.skip(reason="SPDIF test is WIP")
@@ -469,31 +472,31 @@ def test_analogue_output(xsig, fs, duration_ms, xsig_config, build, num_chans):
 def test_spdif_input(xsig, fs, duration_ms, xsig_config, build, num_chans):
     if build is None:
         pytest.skip("Build not present")
-    with xtagctl.target("usb_audio_mc_xs2_dut") as adapter_dut:
-        with xtagctl.target("usb_audio_mc_xs2_harness") as adapter_harness:
-            # Reset both xtags
-            xtagctl.reset_adapter(adapter_dut)
-            xtagctl.reset_adapter(adapter_harness)
-            time.sleep(2)  # Wait for adapters to enumerate
-            # xrun the harness
-            harness_firmware = get_firmware_path_harness("xcore200_mc")
-            sh.xrun("--adapter-id", adapter_harness, harness_firmware)
-            # xflash the firmware
-            firmware = build
-            sh.xrun("--adapter-id", adapter_dut, firmware)
-            # Wait for device to enumerate
-            time.sleep(10)
-            # Set the clock source to SPDIF
-            card_num, dev_num = hardware_test_tools.find_aplay_device("xCORE USB Audio")
-            set_clock_source_alsa(card_num, "SPDIF")
-            # Run xsig
-            xsig_output = sh.Command(xsig)(
-                fs, duration_ms, XSIG_CONFIG_ROOT / xsig_config
-            )
-            xsig_lines = xsig_output.split("\n")
-            # Check output
-            # expected_freqs = [(i+1) * 1000 for i in range(num_chans)]
-            # assert check_analyzer_output(xsig_lines, expected_freqs)
+    with xtagctl.acquire("usb_audio_mc_xs2_dut", "usb_audio_mc_xs2_harness") as (
+        adapter_dut,
+        adapter_harness,
+    ):
+        # Reset both xtags
+        xtagctl.reset_adapter(adapter_dut)
+        xtagctl.reset_adapter(adapter_harness)
+        time.sleep(2)  # Wait for adapters to enumerate
+        # xrun the harness
+        harness_firmware = get_firmware_path_harness("xcore200_mc")
+        sh.xrun("--adapter-id", adapter_harness, harness_firmware)
+        # xflash the firmware
+        firmware = build
+        sh.xrun("--adapter-id", adapter_dut, firmware)
+        # Wait for device to enumerate
+        time.sleep(10)
+        # Set the clock source to SPDIF
+        card_num, dev_num = hardware_test_tools.find_aplay_device("xCORE USB Audio")
+        set_clock_source_alsa(card_num, "SPDIF")
+        # Run xsig
+        xsig_output = sh.Command(xsig)(fs, duration_ms, XSIG_CONFIG_ROOT / xsig_config)
+        xsig_lines = xsig_output.split("\n")
+        # Check output
+        # expected_freqs = [(i+1) * 1000 for i in range(num_chans)]
+        # assert check_analyzer_output(xsig_lines, expected_freqs)
 
 
 @pytest.mark.parametrize(
@@ -502,7 +505,7 @@ def test_spdif_input(xsig, fs, duration_ms, xsig_config, build, num_chans):
 def test_dfu(xmosdfu, build_with_dfu_test):
     if build_with_dfu_test is None:
         pytest.skip("Build not present")
-    with xtagctl.target("usb_audio_mc_xs2_dut") as adapter_dut:
+    with xtagctl.acquire("usb_audio_mc_xs2_dut") as adapter_dut:
         # Reset both xtags
         xtagctl.reset_adapter(adapter_dut)
         time.sleep(2)  # Wait for adapters to enumerate
