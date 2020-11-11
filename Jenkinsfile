@@ -37,9 +37,20 @@ pipeline {
         }
         stage('Build') {
           steps {
-            dir("${REPO}/app_usb_aud_xk_216_mc") {
+            // We should pull the audio analyzer bin in as a binary dependency
+            // Rather than build here
+            dir("${WORKSPACE}/sw_audio_analyzer/app_audio_analyzer_xcore200_mc") {
               viewEnv() {
-                sh "xmake FULL=1 CONFIG=2i8o8xxxxx_tdm8"
+                runXmake()
+              }
+            }
+            dir("${WORKSPACE}") {
+                stash includes: 'sw_audio_analyzer/app_audio_analyzer_xcore200_mc/bin/**/*', name: 'audio_analyzer_bin', useDefaultExcludes: false
+            }
+            dir("${REPO}/tests") {
+              viewEnv() {
+                // Build all firmware but don't run any tests
+                runPytest('--numprocesses=1 --build-only')
               }
             }
             dir("${REPO}") {
@@ -56,7 +67,7 @@ pipeline {
     }
     stage('Regression Test') {
       agent {
-        label 'usb_audio_hw_linux'
+        label 'usb_audio'
       }
       stages {
         stage('Get view') {
@@ -66,11 +77,14 @@ pipeline {
         }
         stage('Test') {
           steps {
+            dir("${WORKSPACE}") {
+              unstash 'audio_analyzer_bin'
+            }
             dir("${REPO}") {
               unstash 'xk_216_mc_bin'
               dir("tests") {
                 viewEnv() {
-                  runPytest('--numprocesses=1')
+                  runPytest('--numprocesses=1 --test-only')
                 }
               }
             }
