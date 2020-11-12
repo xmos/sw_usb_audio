@@ -1,4 +1,4 @@
-@Library('xmos_jenkins_shared_library@v0.14.1') _
+@Library('xmos_jenkins_shared_library@v0.15.0') _
 
 getApproval()
 
@@ -41,7 +41,7 @@ pipeline {
             // Rather than build here
             dir("${WORKSPACE}/sw_audio_analyzer/app_audio_analyzer_xcore200_mc") {
               viewEnv() {
-                runXmake()
+                runXmake(".")
               }
             }
             dir("${WORKSPACE}") {
