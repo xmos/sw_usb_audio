@@ -24,17 +24,17 @@ pipeline {
             xcorePrepareSandbox("${VIEW}", "${REPO}")
           }
         }
-        stage('Create release') {
-          // This stage has to happen before everything else! It requires a clean
-          // sandbox
-          steps {
-            dir("${REPO}") {
-              viewEnv() {
-                runPython("python create_release.py --view ${VIEW}")
-              }
-            }
-          }
-        }
+        //stage('Create release') {
+        //  // This stage has to happen before everything else! It requires a clean
+        //  // sandbox
+        //  steps {
+        //    dir("${REPO}") {
+        //      viewEnv() {
+        //        runPython("python create_release.py --view ${VIEW}")
+        //      }
+        //    }
+        //  }
+        //}
         stage('Build') {
           steps {
             // We should pull the audio analyzer bin in as a binary dependency
