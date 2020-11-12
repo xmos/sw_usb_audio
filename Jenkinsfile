@@ -3,9 +3,7 @@
 getApproval()
 
 pipeline {
-  agent {
-    label 'macOS&&x86_64&&brew'
-  }
+  agent none
   options {
     skipDefaultCheckout()
   }
@@ -60,6 +58,9 @@ pipeline {
         }
       }
       post {
+        always {
+          archiveArtifacts artifacts: "Release/*.zip", fingerprint: true, allowEmptyArchive: true
+        }
         cleanup {
           xcoreCleanSandbox()
         }
@@ -104,14 +105,6 @@ pipeline {
       steps {
         updateViewfiles()
       }
-    }
-  }
-  post {
-    always {
-      archiveArtifacts artifacts: "Release/*.zip", fingerprint: true, allowEmptyArchive: true
-    }
-    cleanup {
-      xcoreCleanSandbox()
     }
   }
 }
