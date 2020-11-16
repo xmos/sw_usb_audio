@@ -389,10 +389,11 @@ def run_audio_command(runtime, exe, *args):
             # Create a shell script to run the exe
             with tempfile.NamedTemporaryFile("w+", delete=True) as tmpfile:
                 with tempfile.NamedTemporaryFile("w+", delete=True) as script_file:
+                    str_args = [str(a) for a in args]
                     # fmt: off
                     script_text = (
                         "#!/bin/bash\n"
-                        f"{exe} {' '.join(args)} > {tmpfile.name}\n"
+                        f"{exe} {' '.join(str_args)} > {tmpfile.name}\n"
                     )
                     # fmt: on
                     script_file.write(script_text)
