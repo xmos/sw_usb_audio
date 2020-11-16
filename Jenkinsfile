@@ -85,7 +85,9 @@ pipeline {
               unstash 'xk_216_mc_bin'
               dir("tests") {
                 viewEnv() {
-                  runPytest('--numprocesses=1 --test-only')
+                  withEnv(["JENKINS=1"]) {
+                    runPytest('--numprocesses=1 --test-only')
+                  }
                 }
               }
             }

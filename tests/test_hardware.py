@@ -10,6 +10,7 @@ import stat
 import time
 import re
 import requests
+import tempfile
 from typing import List
 import xtagctl
 import zipfile
@@ -373,6 +374,41 @@ def check_analyzer_output(analyzer_output: List[str], expected_frequencies: int)
     return True
 
 
+def run_audio_command(runtime, exe, *args):
+    """ Run any command that needs to capture audio
+
+    NOTE: If running on macOS on Jenkins, the environment WILL NOT be inherited
+    by the child process
+    """
+
+    # If we're running on macOS on Jenkins, we need microphone permissions
+    # To do this, we run the command using iTerm because the iTerm app has been given
+    # microphone permissions
+    if platform.system() == "Darwin":
+        if "JENKINS" in os.environ:
+            # Create a shell script to run the exe
+            with tempfile.NamedTemporaryFile("w+", delete=True) as tmpfile:
+                with tempfile.NamedTemporaryFile("w+", delete=True) as script_file:
+                    # fmt: off
+                    script_text = (
+                        "#!/bin/bash\n"
+                        f"{exe} {' '.join(args)} > {tmpfile.name}\n"
+                    )
+                    # fmt: on
+                    script_file.write(script_text)
+                    script_file.flush()
+                    Path(script_file.name).chmod(
+                        stat.S_IREAD | stat.S_IWRITE | stat.S_IEXEC
+                    )
+                    sh.open("-a", "iTerm", script_file.name)
+                    time.sleep(runtime)
+                    stdout = tmpfile.read()
+                    return stdout
+
+    stdout = sh.Command(exe)(*args, _timeout=runtime)
+    return stdout
+
+
 @pytest.mark.parametrize("fs", [48000])
 @pytest.mark.parametrize("duration_ms", [10000])
 @pytest.mark.parametrize("xsig_config", ["mc_analogue_input_8ch.json"])
@@ -398,7 +434,10 @@ def test_analogue_input(xsig, fs, duration_ms, xsig_config, build, num_chans):
         # Wait for device to enumerate
         time.sleep(10)
         # Run xsig
-        xsig_output = sh.Command(xsig)(fs, duration_ms, XSIG_CONFIG_ROOT / xsig_config)
+        xsig_duration = (duration_ms / 1000) + 5
+        xsig_output = run_audio_command(
+            xsig_duration, xsig, fs, duration_ms, XSIG_CONFIG_ROOT / xsig_config
+        )
         xsig_lines = xsig_output.split("\n")
         # Check output
         expected_freqs = [(i + 1) * 1000 for i in range(num_chans)]
