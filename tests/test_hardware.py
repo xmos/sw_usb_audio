@@ -382,13 +382,13 @@ def run_audio_command(runtime, exe, *args):
     """
 
     # If we're running on macOS on Jenkins, we need microphone permissions
-    # To do this, we run the command using iTerm because the iTerm app has been given
-    # microphone permissions
+    # To do this, we put an executable script in the $HOME/exec_all directory
+    # A script is running on the host machine to execute everything in that dir
     if platform.system() == "Darwin":
         if "JENKINS" in os.environ:
             # Create a shell script to run the exe
             with tempfile.NamedTemporaryFile("w+", delete=True) as tmpfile:
-                with tempfile.NamedTemporaryFile("w+", delete=True) as script_file:
+                with tempfile.NamedTemporaryFile("w+", dir=Path.home() / "exec_all") as script_file:
                     str_args = [str(a) for a in args]
                     # fmt: off
                     script_text = (
@@ -401,8 +401,7 @@ def run_audio_command(runtime, exe, *args):
                     Path(script_file.name).chmod(
                         stat.S_IREAD | stat.S_IWRITE | stat.S_IEXEC
                     )
-                    sh.open("-a", "iTerm", script_file.name)
-                    time.sleep(runtime)
+                    time.sleep(runtime + 2)
                     stdout = tmpfile.read()
                     return stdout
 
