@@ -388,7 +388,7 @@ def run_audio_command(runtime, exe, *args):
         if "JENKINS" in os.environ:
             # Create a shell script to run the exe
             with tempfile.NamedTemporaryFile("w+", delete=True) as tmpfile:
-                with tempfile.NamedTemporaryFile("w+", dir=Path.home() / "exec_all") as script_file:
+                with tempfile.NamedTemporaryFile("w+", delete=False, dir=Path.home() / "exec_all") as script_file:
                     str_args = [str(a) for a in args]
                     # fmt: off
                     script_text = (
