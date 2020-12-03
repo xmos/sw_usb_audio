@@ -85,6 +85,9 @@ pipeline {
               unstash 'xk_216_mc_bin'
               dir("tests") {
                 viewEnv() {
+                  // The JENKINS env var is necessary for macOS catalina
+                  // We have to work around microphone permission issues
+                  // For more info, see the DevOps section of the XMOS wiki
                   withEnv(["JENKINS=1"]) {
                     runPytest('--numprocesses=1 --test-only')
                   }
