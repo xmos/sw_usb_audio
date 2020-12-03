@@ -412,7 +412,7 @@ def run_audio_command(runtime, exe, *args):
 @pytest.mark.parametrize("fs", [48000])
 @pytest.mark.parametrize("duration_ms", [10000])
 @pytest.mark.parametrize("xsig_config", ["mc_analogue_input_8ch.json"])
-@pytest.mark.parametrize("build", [("xk_216_mc", "2i8o8xxxxx_tdm8")], indirect=True)
+@pytest.mark.parametrize("build", [("xk_216_mc", "2i10o10xxxxxx")], indirect=True)
 @pytest.mark.parametrize("num_chans", [8])
 def test_analogue_input(xsig, fs, duration_ms, xsig_config, build, num_chans):
     if build is None:
@@ -447,7 +447,7 @@ def test_analogue_input(xsig, fs, duration_ms, xsig_config, build, num_chans):
 @pytest.mark.parametrize("fs", [48000])
 @pytest.mark.parametrize("duration_ms", [10000])
 @pytest.mark.parametrize("xsig_config", ["mc_analogue_output.json"])
-@pytest.mark.parametrize("build", [("xk_216_mc", "2i8o8xxxxx_tdm8")], indirect=True)
+@pytest.mark.parametrize("build", [("xk_216_mc", "2i10o10xxxxxx")], indirect=True)
 @pytest.mark.parametrize("num_chans", [8])
 def test_analogue_output(xsig, fs, duration_ms, xsig_config, build, num_chans):
     if build is None:
