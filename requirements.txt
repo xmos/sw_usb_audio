@@ -1,0 +1,17 @@
+# python_version 3.7
+
+# dependencies
+sh==1.13.1
+requests==2.24.0
+
+# viewfile dependencies
+-e ../infr_scripts_py
+-e ../infr_apps
+-e ../audio_test_tools/python
+-e ../xtagctl
+
+# dev/test packages
+flake8
+pylint
+pytest
+pytest-xdist
