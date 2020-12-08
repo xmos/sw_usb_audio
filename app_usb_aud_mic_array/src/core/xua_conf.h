@@ -20,7 +20,7 @@
 #define XUD_TILE           1
 #define PDM_TILE           0
 
-#define BCD_DEVICE_J       8
+#define BCD_DEVICE_J       9
 #define BCD_DEVICE_M       0
 #define BCD_DEVICE_N       0
 
