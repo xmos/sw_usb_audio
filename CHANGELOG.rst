@@ -1,6 +1,11 @@
 sw_usb_audio Change Log
 =======================
 
+9.0.0
+-----
+
+  * REMOVED:   Removed remaining apps for unsupported hardware
+
 8.0.0
 -----
 
