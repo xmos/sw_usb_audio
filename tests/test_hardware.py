@@ -16,9 +16,38 @@ import xtagctl
 import zipfile
 
 # import hardware_test_tools # Required for SPDIF test
+# TODO: Use hardware_test_tools!
+# COPIED FROM HARDWARE_TEST_TOOLS:
 
+
+def find_alsa_device(alsa_output, vendor_str_search="XMOS xCORE-200 MC"):
+    """ Looks for the vendor_str_search in aplay or arecord output """
+
+    vendor_str_found = False
+    for line in alsa_output:
+        if vendor_str_search not in line:
+            continue
+        vendor_str_found = True
+        card_num = int(line[len("card ") : line.index(":")])
+        dev_str = line[line.index("device") :]
+        dev_num = int(dev_str[len("device ") : dev_str.index(":")])
+    if not vendor_str_found:
+        raise Exception(
+            f'Could not find "{vendor_str_search}"" in alsa output:\n' f"{alsa_output}"
+        )
+    return card_num, dev_num
+
+
+def find_aplay_device(vendor_str_search="XMOS xCORE-200 MC"):
+    aplay_out = sh.aplay("-l")
+    return find_alsa_device(aplay_out, vendor_str_search)
+
+
+# /END COPIED FROM HARDWARE_TEST_TOOLS:
 
 XMOS_ROOT = Path(os.environ["XMOS_ROOT"])
+
+AUDIO_BASE_URL = "http://intranet.xmos.local/projects/usb_audio_regression_files/audio"
 
 XSIG_LINUX_URL = (
     "http://intranet.xmos.local/projects/usb_audio_regression_files/xsig/linux/xsig"
@@ -31,6 +60,7 @@ XMOSDFU_MACOS_URL = "http://intranet.xmos.local/projects/usb_audio_regression_fi
 
 XSIG_PATH = Path(__file__).parent / "tools" / "xsig"
 XMOSDFU_PATH = Path(__file__).parent / "tools" / "xmosdfu"
+AUDIO_PATH = Path(__file__).parent / "audio"
 XSIG_CONFIG_ROOT = XMOS_ROOT / "usb_audio_testing/xsig_configs"
 
 
@@ -164,6 +194,27 @@ def get_target_file(board):
         if p.is_file() and p.suffix == ".xn":
             return p
     return None
+
+
+@pytest.fixture
+def audio(request, pytestconfig):
+    """ Gets xsig from projects network drive """
+
+    test_only = pytestconfig.getoption("test_only")
+
+    if test_only:
+        return [AUDIO_PATH / f for f in request.param]
+
+    AUDIO_PATH.mkdir(parents=True, exist_ok=True)
+
+    audio_paths = []
+    for filename in request.param:
+        print(filename)
+        r = requests.get(f"{AUDIO_BASE_URL}/{filename}")
+        with open(AUDIO_PATH / filename, "wb") as f:
+            f.write(r.content)
+        audio_paths.append(AUDIO_PATH / filename)
+    return audio_paths
 
 
 @pytest.fixture
@@ -319,14 +370,23 @@ def build_with_dfu_test(request, pytestconfig):
     return firmware, dfu_bin
 
 
-def check_analyzer_output(analyzer_output: List[str], expected_frequencies: int):
+def check_analyzer_output(
+    analyzer_output: List[str], expected_frequencies: int, glitch_tolerance: int = 0
+):
     """ Verify that the output from xsig is correct """
+
+    glitches = [0 for _ in range(len(expected_frequencies))]
 
     failures = []
     # Check for any errors
     for line in analyzer_output:
         if re.match(".*ERROR|.*error|.*Error|.*Problem", line):
-            failures.append(line)
+            if "glitch detected" in line:
+                parse_line = line[len("ERROR: Channel "):]
+                chan = int(parse_line[: parse_line.index(":")])
+                glitches[chan] += 1
+            else:
+                failures.append(line)
 
     # Check that the signals detected are of the correct frequencies
     for i, expected_freq in enumerate(expected_frequencies):
@@ -366,6 +426,13 @@ def check_analyzer_output(analyzer_output: List[str], expected_frequencies: int)
                 failures.append(
                     "Unexpected frequency reported on channel %d" % chan_num
                 )
+    # Check glitches
+    for ch, g in enumerate(glitches):
+        if g > glitch_tolerance:
+            failures.append(
+                f"Glitches on channel {ch} exceed glitch tolerance: "
+                f"{g} > {glitch_tolerance}"
+            )
 
     if len(failures) > 0:
         print("Checking analyser output failed:\n")
@@ -388,7 +455,9 @@ def run_audio_command(runtime, exe, *args):
         if "JENKINS" in os.environ:
             # Create a shell script to run the exe
             with tempfile.NamedTemporaryFile("w+", delete=True) as tmpfile:
-                with tempfile.NamedTemporaryFile("w+", delete=False, dir=Path.home() / "exec_all") as script_file:
+                with tempfile.NamedTemporaryFile(
+                    "w+", delete=False, dir=Path.home() / "exec_all"
+                ) as script_file:
                     str_args = [str(a) for a in args]
                     # fmt: off
                     script_text = (
@@ -442,6 +511,74 @@ def test_analogue_input(xsig, fs, duration_ms, xsig_config, build, num_chans):
         # Check output
         expected_freqs = [(i + 1) * 1000 for i in range(num_chans)]
         assert check_analyzer_output(xsig_lines, expected_freqs)
+
+
+@pytest.mark.parametrize("fs", [48000])
+@pytest.mark.parametrize("duration", [10])
+@pytest.mark.parametrize("xsig_config", ["mc_analogue_output.json"])
+@pytest.mark.parametrize("build", [("xk_216_mc", "2i2o2xxxxxd")], indirect=True)
+@pytest.mark.parametrize("audio", [("two_tones_dop.flac",)], indirect=True)
+@pytest.mark.parametrize("num_chans", [2])
+def test_dsd_over_pcm_output(xsig, fs, duration, xsig_config, build, audio, num_chans):
+    if build is None:
+        pytest.skip("Build not present")
+    with xtagctl.acquire("usb_audio_mc_xs2_dut", "usb_audio_mc_xs2_harness") as (
+        adapter_dut,
+        adapter_harness,
+    ):
+        print(f"Adapter DUT: {adapter_dut}, Adapter harness: {adapter_harness}")
+        # Reset both xtags
+        xtagctl.reset_adapter(adapter_dut)
+        xtagctl.reset_adapter(adapter_harness)
+        time.sleep(2)  # Wait for adapters to enumerate
+        # xrun the dut
+        firmware = build
+        sh.xrun("--adapter-id", adapter_dut, firmware)
+        # xrun --xscope the harness
+        harness_firmware = get_firmware_path_harness("xcore200_mc")
+        xscope_out = io.StringIO()
+        harness_xrun = sh.xrun(
+            "--adapter-id",
+            adapter_harness,
+            "--xscope",
+            harness_firmware,
+            _out=xscope_out,
+            _err_to_out=True,
+            _bg=True,
+            _bg_exc=False,
+        )
+        # Wait for device(s) to enumerate
+        time.sleep(10)
+        # Run ffmpeg for duration + 2 seconds
+        card_num, dev_num = find_aplay_device("XMOS xCORE-200 MC")
+        # fmt: off
+        ffmpeg_cmd = sh.ffmpeg(
+            "-i", audio[0],
+            "-r", "176400",
+            "-c", "pcm_s32le",
+            "-t", duration + 2,
+            "-f", "alsa", f"hw:{card_num},{dev_num}",
+            _bg=True,
+        )
+        # fmt: on
+        time.sleep(duration)
+        # Get analyser output
+        try:
+            harness_xrun.kill_group()
+            harness_xrun.wait()
+        except sh.SignalException:
+            # Killed
+            pass
+        xscope_str = xscope_out.getvalue()
+        xscope_lines = xscope_str.split("\n")
+        print("XSCOPE STRING:")
+        print(xscope_str)
+        # Wait for xsig to exit (timeout after 5 seconds)
+        ffmpeg_cmd.wait(timeout=5)
+
+        expected_freqs = [((i + 1) * 1000) + 500 for i in range(num_chans)]
+        # We expect a single glitch at the start of the stream with DSD over PCM
+        assert check_analyzer_output(xscope_lines, expected_freqs, glitch_tolerance=1)
 
 
 @pytest.mark.parametrize("fs", [48000])
@@ -528,7 +665,7 @@ def test_spdif_input(xsig, fs, duration_ms, xsig_config, build, num_chans):
         # Wait for device to enumerate
         time.sleep(10)
         # Set the clock source to SPDIF
-        card_num, dev_num = hardware_test_tools.find_aplay_device("xCORE USB Audio")
+        card_num, dev_num = find_aplay_device("xCORE USB Audio")
         set_clock_source_alsa(card_num, "SPDIF")
         # Run xsig
         xsig_output = sh.Command(xsig)(fs, duration_ms, XSIG_CONFIG_ROOT / xsig_config)
