@@ -13,11 +13,14 @@ class ConfigDescriptor:
     """
 
     app: str
+    config: str
     chans_in: int
     chans_out: int
+    analogue_input: bool = True
+    analogue_output: bool = True
     dfu: bool = False
+    dsd: bool = False
     spdif: bool = False
-    configs: List[str] = field(default_factory=list)
     rates: List[int] = field(default_factory=list)
 
 
@@ -58,10 +61,11 @@ def unpack_descriptor(desc: ConfigDescriptor):
 
 # The config descriptors
 descriptors = [
-    ConfigDescriptor("hello", 8, 8, configs=["world", "yes"], rates=[16000, 48000]),
+    ConfigDescriptor("xk_216_mc", "2i10o10xxxxxx", 8, 8, rates=[48000]),
+    ConfigDescriptor("xk_216_mc", "2i2o2xxxxxd", 2, 2, rates=[48000], dsd=True),
 ]
 
 configs = list(itertools.chain(*[unpack_descriptor(d) for d in descriptors]))
 
 # Test
-# print(configs)
+print(configs)

@@ -216,6 +216,22 @@ def audio(request, pytestconfig):
     return audio_paths
 
 
+def get_xsig_config(build, in_or_out):
+    xsig_config = None
+    if in_or_out == "in":
+        if build.chans_in == 8:
+            if build.app == "xk_216_mc":
+                xsig_config = "mc_analogue_input_8ch.json"
+        if xsig_config is None:
+            pytest.skip(f"No matching xsig config IN for build: {build}")
+    elif in_or_out == "out":
+        if build.app == "xk_216_mc":
+            xsig_config = "mc_analogue_output.json"
+        if xsig_config is None:
+            pytest.skip(f"No matching xsig config OUT for build: {build}")
+    return xsig_config
+
+
 @pytest.fixture
 def xsig():
     """ Gets xsig from projects network drive """
@@ -323,7 +339,8 @@ def build(request, pytestconfig):
 
     assert not (build_only and test_only), "Build only and test only cannot both be set"
 
-    board, config = request.param[:2]
+    board = request.param.app
+    config = request.param.config
     output_name = config
 
     if test_only:
@@ -334,9 +351,9 @@ def build(request, pytestconfig):
         firmware, _ = build_board_config(board, config, output_name)
 
     if build_only:
-        return None  # Signal to the test to skip
+        pytest.skip("--build-only is set")
 
-    return firmware
+    return firmware, request.param
 
 
 @pytest.fixture
@@ -348,7 +365,8 @@ def build_with_dfu_test(request, pytestconfig):
 
     assert not (build_only and test_only), "Build only and test only cannot both be set"
 
-    board, config = request.param[:2]
+    board = request.param.app
+    config = request.param.config
     factory_output_name = config
     dfu_output_name = config + "_dfu"
 
@@ -364,9 +382,9 @@ def build_with_dfu_test(request, pytestconfig):
         )
 
     if build_only:
-        return None  # Signal to the test to skip
+        pytest.skip("--build-only is set")
 
-    return firmware, dfu_bin
+    return firmware, dfu_bin, request.param
 
 
 def check_analyzer_output(

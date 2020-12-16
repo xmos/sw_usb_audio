@@ -89,7 +89,7 @@ pipeline {
                   // We have to work around microphone permission issues
                   // For more info, see the DevOps section of the XMOS wiki
                   withEnv(["JENKINS=1"]) {
-                    runPytest('--numprocesses=1 --test-only')
+                    runPytest('--numprocesses=1 -v --test-only')
                   }
                 }
               }
