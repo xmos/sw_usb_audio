@@ -37,3 +37,5 @@ legacy_tests/generated_*.wav
 # Regression test files
 tests/xmosdfu
 tests/xsig
+tests/tools
+tests/audio

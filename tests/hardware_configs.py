@@ -61,7 +61,7 @@ def unpack_descriptor(desc: ConfigDescriptor):
 
 # The config descriptors
 descriptors = [
-    ConfigDescriptor("xk_216_mc", "2i10o10xxxxxx", 8, 8, rates=[48000]),
+    ConfigDescriptor("xk_216_mc", "2i10o10xxxxxx", 10, 10, rates=[48000]),
     ConfigDescriptor("xk_216_mc", "2i2o2xxxxxd", 2, 2, rates=[48000], dsd=True),
 ]
 

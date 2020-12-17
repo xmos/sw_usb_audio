@@ -18,15 +18,25 @@ XMOS_ROOT = Path(os.environ["XMOS_ROOT"])
 
 AUDIO_BASE_URL = "http://intranet.xmos.local/projects/usb_audio_regression_files/audio"
 
+# Taken from https://johnvansickle.com/ffmpeg/ and re-zipped
+FFMPEG_LINUX_URL = (
+    "http://intranet.xmos.local/projects/usb_audio_regression_files/ffmpeg/linux/ffmpeg-4.3.1-amd64-static.zip"
+)
 XSIG_LINUX_URL = (
     "http://intranet.xmos.local/projects/usb_audio_regression_files/xsig/linux/xsig"
 )
 XMOSDFU_LINUX_URL = "http://intranet.xmos.local/projects/usb_audio_regression_files/xmosdfu/linux/xmosdfu"
+
+# Taken from https://evermeet.cx/ffmpeg/ and re-zipped
+FFMPEG_MACOS_URL = (
+    "http://intranet.xmos.local/projects/usb_audio_regression_files/ffmpeg/macos/ffmpeg-100411-g32586a42da.zip"
+)
 XSIG_MACOS_URL = (
     "http://intranet.xmos.local/projects/usb_audio_regression_files/xsig/macos/xsig.zip"
 )
 XMOSDFU_MACOS_URL = "http://intranet.xmos.local/projects/usb_audio_regression_files/xmosdfu/macos/xmosdfu.zip"
 
+FFMPEG_PATH = Path(__file__).parent / "tools" / "ffmpeg" / "ffmpeg"
 XSIG_PATH = Path(__file__).parent / "tools" / "xsig"
 XMOSDFU_PATH = Path(__file__).parent / "tools" / "xmosdfu"
 AUDIO_PATH = Path(__file__).parent / "audio"
@@ -216,19 +226,15 @@ def audio(request, pytestconfig):
     return audio_paths
 
 
-def get_xsig_config(build, in_or_out):
+def get_xsig_config(build):
+    """ Gets xsig config for monitoring input signals """
+
     xsig_config = None
-    if in_or_out == "in":
-        if build.chans_in == 8:
-            if build.app == "xk_216_mc":
-                xsig_config = "mc_analogue_input_8ch.json"
-        if xsig_config is None:
-            pytest.skip(f"No matching xsig config IN for build: {build}")
-    elif in_or_out == "out":
+    if build.chans_in == 10:
         if build.app == "xk_216_mc":
-            xsig_config = "mc_analogue_output.json"
-        if xsig_config is None:
-            pytest.skip(f"No matching xsig config OUT for build: {build}")
+            xsig_config = "mc_analogue_input_8ch.json"
+    if xsig_config is None:
+        pytest.skip(f"No matching xsig config IN for build: {build}")
     return xsig_config
 
 
@@ -493,3 +499,69 @@ def run_audio_command(runtime, exe, *args):
 
     stdout = sh.Command(exe)(*args, _timeout=runtime)
     return stdout
+
+
+@pytest.fixture(scope="session")
+def ffmpeg():
+    """Gets ffmpeg from projects network drive """
+
+    FFMPEG_PATH.parent.mkdir(parents=True, exist_ok=True)
+
+    if platform.system() == "Darwin":
+        r = requests.get(FFMPEG_MACOS_URL)
+        zip_path = FFMPEG_PATH.parent / "ffmpeg.zip"
+        with open(zip_path, "wb") as f:
+            f.write(r.content)
+
+        # Unzip
+        with zipfile.ZipFile(zip_path, "r") as zip_ref:
+            zip_ref.extractall(FFMPEG_PATH.parent)
+
+        FFMPEG_PATH.chmod(stat.S_IREAD | stat.S_IWRITE | stat.S_IEXEC)
+    elif platform.system() == "Linux":
+        r = requests.get(FFMPEG_LINUX_URL)
+        zip_path = FFMPEG_PATH.parent / "ffmpeg.zip"
+        with open(zip_path, "wb") as f:
+            f.write(r.content)
+
+        # Unzip
+        with zipfile.ZipFile(zip_path, "r") as zip_ref:
+            zip_ref.extractall(FFMPEG_PATH.parent)
+
+        FFMPEG_PATH.chmod(stat.S_IREAD | stat.S_IWRITE | stat.S_IEXEC)
+
+    return FFMPEG_PATH
+
+
+def find_audiotoolbox_device(device_name="XMOS xCORE-200 MC"):
+    """ Find the audiotoolbox device index for use with ffmpeg """
+    cmd_args = [
+        "-f", "lavfi", "-i", "sine=r=44100:duration=0.01", # Input
+        "-f", "audiotoolbox", "-list_device", "true", "-" # Output
+    ]
+    output = sh.Command(FFMPEG_PATH)(cmd_args)
+    for line in output:
+        if "[AudioToolbox @" in line:
+            if device_name in line:
+                num_text = line[line.index("]"):]
+                return int(num_text[line.index("["):line.index("]")])
+    return None
+
+
+def ffmpeg_output_device_args(device_name="XMOS xCORE-200 MC"):
+    """ Returns a list of arguments to be appended to an ffmpeg command """
+
+    if platform.system() == "Linux":
+        card_num, dev_num = find_aplay_device(device_name)
+        return ["-f", "alsa", f"hw:{card_num},{dev_num}"]
+    elif platform.system() == "Darwin":
+        dev_index = find_audiotoolbox_device(device_name)
+        return ["-f", "audiotoolbox", str(dev_index)]
+
+def ffmpeg_gen_sine_input_args(freqs, duration):
+    """ Returns ffmpeg args for generating multi-channel sines """
+    cmd_args = []
+    for f in freqs:
+        cmd_args += ["-f", "lavfi", "-i", f"sine=frequency={f}:duration={duration}"]
+    cmd_args += ["-filter_complex", f"amerge=inputs={len(freqs)}"]
+    return cmd_args

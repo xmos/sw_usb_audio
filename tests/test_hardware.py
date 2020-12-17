@@ -4,16 +4,23 @@ import sh
 import time
 import xtagctl
 
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
+
 from usb_audio_test_tools import *
 
 from hardware_configs import configs
 
+
 @pytest.mark.parametrize("duration_ms", [10000])
-@pytest.mark.parametrize("build", [c for c in configs if c.analogue_input], indirect=True, ids=str)
+@pytest.mark.parametrize(
+    "build", [c for c in configs if c.analogue_input], indirect=True, ids=str
+)
 def test_analogue_input(xsig, duration_ms, build):
 
     firmware, config = build
-    xsig_config = get_xsig_config(config, "in")
+    xsig_config = get_xsig_config(config)
     with xtagctl.acquire("usb_audio_mc_xs2_dut", "usb_audio_mc_xs2_harness") as (
         adapter_dut,
         adapter_harness,
@@ -32,7 +39,11 @@ def test_analogue_input(xsig, duration_ms, build):
         # Run xsig
         xsig_duration = (duration_ms / 1000) + 5
         xsig_output = run_audio_command(
-            xsig_duration, xsig, config.rate, duration_ms, XSIG_CONFIG_ROOT / xsig_config
+            xsig_duration,
+            xsig,
+            config.rate,
+            duration_ms,
+            XSIG_CONFIG_ROOT / xsig_config,
         )
         xsig_lines = xsig_output.split("\n")
         # Check output
@@ -43,11 +54,10 @@ def test_analogue_input(xsig, duration_ms, build):
 @pytest.mark.parametrize("duration", [10])
 @pytest.mark.parametrize("build", [c for c in configs if c.dsd], indirect=True, ids=str)
 @pytest.mark.parametrize("audio", [("two_tones_dop.flac",)], indirect=True)
-def test_dsd_over_pcm_output(xsig, duration, build, audio):
+def test_dsd_over_pcm_output(ffmpeg, xsig, duration, build, audio):
     if platform.system() == "Darwin":
         pytest.skip("DSD test on macOS is currently unsupported")
     firmware, config = build
-    xsig_config = get_xsig_config(config, "out")
     with xtagctl.acquire("usb_audio_mc_xs2_dut", "usb_audio_mc_xs2_harness") as (
         adapter_dut,
         adapter_harness,
@@ -75,17 +85,11 @@ def test_dsd_over_pcm_output(xsig, duration, build, audio):
         # Wait for device(s) to enumerate
         time.sleep(10)
         # Run ffmpeg for duration + 2 seconds
-        card_num, dev_num = find_aplay_device("XMOS xCORE-200 MC")
-        # fmt: off
-        ffmpeg_cmd = sh.ffmpeg(
-            "-i", audio[0],
-            "-r", "176400",
-            "-c", "pcm_s32le",
-            "-t", duration + 2,
-            "-f", "alsa", f"hw:{card_num},{dev_num}",
+        ffmpeg_cmd = sh.Command(ffmpeg)(
+            ["-i", audio[0], "-r", "176400", "-c", "pcm_s32le", "-t", duration + 2]
+            + ffmpeg_output_device_args(),
             _bg=True,
         )
-        # fmt: on
         time.sleep(duration)
         # Get analyser output
         try:
@@ -106,20 +110,23 @@ def test_dsd_over_pcm_output(xsig, duration, build, audio):
         assert check_analyzer_output(xscope_lines, expected_freqs, glitch_tolerance=1)
 
 
-@pytest.mark.parametrize("duration_ms", [10000])
-@pytest.mark.parametrize("build", [c for c in configs if c.analogue_output], indirect=True, ids=str)
-def test_analogue_output(xsig, duration_ms, build):
+@pytest.mark.parametrize("duration", [10])
+@pytest.mark.parametrize(
+    "build", [c for c in configs if c.analogue_output], indirect=True, ids=str
+)
+def test_analogue_output(request, ffmpeg, xsig, duration, build):
+    log = logging.getLogger(request.node.name)
     firmware, config = build
-    xsig_config = get_xsig_config(config, "out")
     with xtagctl.acquire("usb_audio_mc_xs2_dut", "usb_audio_mc_xs2_harness") as (
         adapter_dut,
         adapter_harness,
     ):
-        print(f"Adapter DUT: {adapter_dut}, Adapter harness: {adapter_harness}")
+        log.debug(f"Adapter DUT: {adapter_dut}, Adapter harness: {adapter_harness}")
         # Reset both xtags
         xtagctl.reset_adapter(adapter_dut)
         xtagctl.reset_adapter(adapter_harness)
         time.sleep(2)  # Wait for adapters to enumerate
+        log.debug("Reset adapters")
         # xrun the dut
         sh.xrun("--adapter-id", adapter_dut, firmware)
         # xrun --xscope the harness
@@ -136,12 +143,16 @@ def test_analogue_output(xsig, duration_ms, build):
             _bg_exc=False,
         )
         # Wait for device(s) to enumerate
+        log.debug("Waiting for devices to enumerate...")
         time.sleep(10)
-        # Run xsig for duration_ms + 2 seconds
-        xsig_cmd = sh.Command(xsig)(
-            config.rate, duration_ms + 2000, XSIG_CONFIG_ROOT / xsig_config, _bg=True
+        test_freqs = [((i + 1) * 1000) + 500 for i in range(config.chans_out)]
+        ffmpeg_cmd = sh.Command(ffmpeg)(
+            ffmpeg_gen_sine_input_args(test_freqs, duration + 2)
+            + ffmpeg_output_device_args(),
+            _bg=True,
         )
-        time.sleep(duration_ms / 1000)
+        log.debug("Playing audio...")
+        time.sleep(duration)
         # Get analyser output
         try:
             harness_xrun.kill_group()
@@ -151,12 +162,12 @@ def test_analogue_output(xsig, duration_ms, build):
             pass
         xscope_str = xscope_out.getvalue()
         xscope_lines = xscope_str.split("\n")
-        print("XSCOPE STRING:")
-        print(xscope_str)
+        log.debug("XSCOPE STRING:")
+        log.debug(xscope_str)
         # Wait for xsig to exit (timeout after 5 seconds)
-        xsig_cmd.wait(timeout=5)
+        ffmpeg_cmd.wait(timeout=5)
 
-        expected_freqs = [((i + 1) * 1000) + 500 for i in range(config.chans_out)]
+        expected_freqs = test_freqs[:8]  # There are only 8 analogue output channels
         assert check_analyzer_output(xscope_lines, expected_freqs)
 
 
@@ -164,7 +175,9 @@ def test_analogue_output(xsig, duration_ms, build):
 @pytest.mark.parametrize("fs", [48000])
 @pytest.mark.parametrize("duration_ms", [10000])
 @pytest.mark.parametrize("xsig_config", ["mc_digital_input_8ch.json"])
-@pytest.mark.parametrize("build", [("xk_216_mc", "2i16o16xxxaax")], indirect=True, ids=str)
+@pytest.mark.parametrize(
+    "build", [("xk_216_mc", "2i16o16xxxaax")], indirect=True, ids=str
+)
 @pytest.mark.parametrize("num_chans", [10])
 def test_spdif_input(xsig, fs, duration_ms, xsig_config, build, num_chans):
     firmware, config = build
