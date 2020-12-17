@@ -19,18 +19,14 @@ XMOS_ROOT = Path(os.environ["XMOS_ROOT"])
 AUDIO_BASE_URL = "http://intranet.xmos.local/projects/usb_audio_regression_files/audio"
 
 # Taken from https://johnvansickle.com/ffmpeg/ and re-zipped
-FFMPEG_LINUX_URL = (
-    "http://intranet.xmos.local/projects/usb_audio_regression_files/ffmpeg/linux/ffmpeg-4.3.1-amd64-static.zip"
-)
+FFMPEG_LINUX_URL = "http://intranet.xmos.local/projects/usb_audio_regression_files/ffmpeg/linux/ffmpeg-4.3.1-amd64-static.zip"
 XSIG_LINUX_URL = (
     "http://intranet.xmos.local/projects/usb_audio_regression_files/xsig/linux/xsig"
 )
 XMOSDFU_LINUX_URL = "http://intranet.xmos.local/projects/usb_audio_regression_files/xmosdfu/linux/xmosdfu"
 
 # Taken from https://evermeet.cx/ffmpeg/ and re-zipped
-FFMPEG_MACOS_URL = (
-    "http://intranet.xmos.local/projects/usb_audio_regression_files/ffmpeg/macos/ffmpeg-100411-g32586a42da.zip"
-)
+FFMPEG_MACOS_URL = "http://intranet.xmos.local/projects/usb_audio_regression_files/ffmpeg/macos/ffmpeg-100411-g32586a42da.zip"
 XSIG_MACOS_URL = (
     "http://intranet.xmos.local/projects/usb_audio_regression_files/xsig/macos/xsig.zip"
 )
@@ -72,6 +68,7 @@ def find_aplay_device(vendor_str_search="XMOS xCORE-200 MC"):
 
 
 # /END COPIED FROM HARDWARE_TEST_TOOLS:
+
 
 @contextmanager
 def pushd(new_dir):
@@ -405,7 +402,7 @@ def check_analyzer_output(
     for line in analyzer_output:
         if re.match(".*ERROR|.*error|.*Error|.*Problem", line):
             if "glitch detected" in line:
-                parse_line = line[len("ERROR: Channel "):]
+                parse_line = line[len("ERROR: Channel ") :]
                 chan = int(parse_line[: parse_line.index(":")])
                 glitches[chan] += 1
             else:
@@ -535,16 +532,18 @@ def ffmpeg():
 
 def find_audiotoolbox_device(device_name="XMOS xCORE-200 MC"):
     """ Find the audiotoolbox device index for use with ffmpeg """
+    # fmt: off
     cmd_args = [
         "-f", "lavfi", "-i", "sine=r=44100:duration=0.01", # Input
         "-f", "audiotoolbox", "-list_device", "true", "-" # Output
     ]
+    # fmt: on
     output = sh.Command(FFMPEG_PATH)(cmd_args)
     for line in output:
         if "[AudioToolbox @" in line:
             if device_name in line:
-                num_text = line[line.index("]"):]
-                return int(num_text[line.index("["):line.index("]")])
+                num_text = line[line.index("]") :]
+                return int(num_text[line.index("[") : line.index("]")])
     return None
 
 
@@ -557,6 +556,7 @@ def ffmpeg_output_device_args(device_name="XMOS xCORE-200 MC"):
     elif platform.system() == "Darwin":
         dev_index = find_audiotoolbox_device(device_name)
         return ["-f", "audiotoolbox", str(dev_index)]
+
 
 def ffmpeg_gen_sine_input_args(freqs, duration):
     """ Returns ffmpeg args for generating multi-channel sines """
