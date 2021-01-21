@@ -43,10 +43,3 @@ For DFU tests, look for:
 ``` python
 @pytest.mark.parametrize("build_with_dfu", ..., indirect=True)
 ```
-
-For the command line arguments for controlling build/test only to work, any new
-test must skip if the `build` or `build_with_dfu` fixture returns `None`:
-``` python
-if build is None:
-    pytest.skip("Build not present")
-```

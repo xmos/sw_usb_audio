@@ -39,6 +39,7 @@ def unpack_descriptor(desc: ConfigDescriptor):
     # e.g. [1, 2], [3, 4] becomes [1, 3], [1, 4], [2, 3], [2, 4]
     combos = list(itertools.product(*settings))
 
+    # Declare a ConfigInstance type
     ConfigInstance = namedtuple(
         "ConfigInstance",
         # Take the 's' off the end of each iterator attr
@@ -56,10 +57,14 @@ def unpack_descriptor(desc: ConfigDescriptor):
         for key in fixed_attrs:
             instance_dict[key] = getattr(desc, key)
         configs.append(ConfigInstance(**instance_dict))
+
+    # Return the list of config instances
     return configs
 
 
 # The config descriptors
+# This list should be populated with configs you want to test
+# Tests are run for each config based on its capability
 descriptors = [
     ConfigDescriptor("xk_216_mc", "2i10o10xxxxxx", 10, 10, rates=[48000]),
     ConfigDescriptor("xk_216_mc", "2i2o2xxxxxd", 2, 2, rates=[48000], dsd=True),

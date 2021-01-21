@@ -18,7 +18,6 @@ from hardware_configs import configs
     "build", [c for c in configs if c.analogue_input], indirect=True, ids=str
 )
 def test_analogue_input(xsig, duration_ms, build):
-
     firmware, config = build
     xsig_config = get_xsig_config(config)
     with xtagctl.acquire("usb_audio_mc_xs2_dut", "usb_audio_mc_xs2_harness") as (
