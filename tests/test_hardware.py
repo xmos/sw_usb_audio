@@ -47,6 +47,12 @@ def test_analogue_input(xsig, duration_ms, build):
         xsig_lines = xsig_output.split("\n")
         # Check output
         expected_freqs = [(i + 1) * 1000 for i in range(config.chans_in)]
+        # Limit the number of channels to 8
+        # TODO: Check this works for configs with SPDIF and <10 channels
+        # The last 2 channels are used for SPDIF, so the ConfigDescriptor may have to
+        # change i.e. num_analogue_chans
+        expected_freqs = expected_freqs[:8]
+
         assert check_analyzer_output(xsig_lines, expected_freqs)
 
 
@@ -54,8 +60,8 @@ def test_analogue_input(xsig, duration_ms, build):
 @pytest.mark.parametrize("build", [c for c in configs if c.dsd], indirect=True, ids=str)
 @pytest.mark.parametrize("audio", [("two_tones_dop.flac",)], indirect=True)
 def test_dsd_over_pcm_output(ffmpeg, xsig, duration, build, audio):
-    if platform.system() == "Darwin":
-        pytest.skip("DSD test on macOS is currently unsupported")
+    #if platform.system() == "Darwin":
+    #    pytest.skip("DSD test on macOS is currently unsupported")
     firmware, config = build
     with xtagctl.acquire("usb_audio_mc_xs2_dut", "usb_audio_mc_xs2_harness") as (
         adapter_dut,
