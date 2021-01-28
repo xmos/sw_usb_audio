@@ -114,7 +114,12 @@ def test_dsd_over_pcm_output(ffmpeg, xsig, duration, build, audio):
     "build", [c for c in configs if c.analogue_output], indirect=True, ids=str
 )
 def test_analogue_output(request, ffmpeg, xsig, duration, build):
+    fh = logging.FileHandler('test.log')
+    fh.setLevel(logging.DEBUG)
     log = logging.getLogger(request.node.name)
+    log.setLevel(logging.DEBUG)
+    log.addHandler(fh)
+
     firmware, config = build
     with xtagctl.acquire("usb_audio_mc_xs2_dut", "usb_audio_mc_xs2_harness") as (
         adapter_dut,
@@ -145,6 +150,8 @@ def test_analogue_output(request, ffmpeg, xsig, duration, build):
         log.debug("Waiting for devices to enumerate...")
         time.sleep(10)
         test_freqs = [((i + 1) * 1000) + 500 for i in range(config.chans_out)]
+        ffmpeg_cmd_string = ffmpeg_gen_sine_input_args(test_freqs, duration + 2) + ffmpeg_output_device_args()
+        log.debug(' '.join(ffmpeg_cmd_string))
         ffmpeg_cmd = sh.Command(ffmpeg)(
             ffmpeg_gen_sine_input_args(test_freqs, duration + 2)
             + ffmpeg_output_device_args(),

@@ -230,6 +230,9 @@ def get_xsig_config(build):
     if build.chans_in == 10:
         if build.app == "xk_216_mc":
             xsig_config = "mc_analogue_input_8ch.json"
+    elif build.chans_in == 2:
+        if build.app == "xk_216_mc":
+            xsig_config = "stereo_analogue_input.json"
     if xsig_config is None:
         pytest.skip(f"No matching xsig config IN for build: {build}")
     return xsig_config

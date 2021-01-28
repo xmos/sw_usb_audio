@@ -43,3 +43,35 @@ For DFU tests, look for:
 ``` python
 @pytest.mark.parametrize("build_with_dfu", ..., indirect=True)
 ```
+
+Debugging
+=========
+
+By default, the tests will log to a test.log file. Use the following command to
+monitor test output while the tests are running:
+
+```
+tail -n 50 -f test.log
+```
+
+Troubleshooting
+===============
+
+## FT232H Error
+
+```
+>           raise XtagctlFt232hException(f"FT232H error: {e}")
+E           xtagctl.exceptions.XtagctlFt232hException: FT232H error: The device has no langid (permission issue, no string descriptors supported or device error)
+```
+
+This can be solved by either:
+
+- Ensuring you have the correct rules in /etc/udev/rules.d (See FT232H
+  Configuration in the xtagctl repo)
+- Power Cycling the FT232H - this may be necessary after a reboot
+
+## Could not find device
+
+Under Linux, some USB hubs/docks can fail when there's too much USB activity.
+Make sure the hardware is connected across as many ports as possible on the USB
+host machine.
