@@ -224,18 +224,22 @@ def audio(request, pytestconfig):
 
 
 def get_xsig_config(build):
-    """ Gets xsig config for monitoring input signals """
+    """ Gets xsig configs for input and output signals """
 
-    xsig_config = None
+    config_in = None
+    config_out = None
+
     if build.chans_in == 10:
         if build.app == "xk_216_mc":
-            xsig_config = "mc_analogue_input_8ch.json"
+            config_in = "mc_analogue_input_8ch.json"
+            config_out = "mc_analogue_output.json"
     elif build.chans_in == 2:
         if build.app == "xk_216_mc":
-            xsig_config = "stereo_analogue_input.json"
-    if xsig_config is None:
-        pytest.skip(f"No matching xsig config IN for build: {build}")
-    return xsig_config
+            config_in = "stereo_analogue_input.json"
+            config_out = "stereo_analogue_output.json"
+    if config_in is None:
+        pytest.skip(f"No matching xsig configs for build: {build}")
+    return config_in, config_out
 
 
 @pytest.fixture

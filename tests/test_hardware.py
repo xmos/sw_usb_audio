@@ -17,7 +17,7 @@ from hardware_configs import configs
 )
 def test_analogue_input(xsig, duration_ms, build):
     firmware, config = build
-    xsig_config = get_xsig_config(config)
+    xsig_config, _ = get_xsig_config(config)
     with xtagctl.acquire("usb_audio_mc_xs2_dut", "usb_audio_mc_xs2_harness") as (
         adapter_dut,
         adapter_harness,
@@ -123,13 +123,10 @@ def test_dsd_over_pcm_output(request, ffmpeg, xsig, duration, build, audio):
     "build", [c for c in configs if c.analogue_output], indirect=True, ids=str
 )
 def test_analogue_output(request, ffmpeg, xsig, duration, build):
-    fh = logging.FileHandler('test.log')
-    fh.setLevel(logging.DEBUG)
     log = logging.getLogger(request.node.name)
-    log.setLevel(logging.DEBUG)
-    log.addHandler(fh)
 
     firmware, config = build
+    _, xsig_config = get_xsig_config(config)
     with xtagctl.acquire("usb_audio_mc_xs2_dut", "usb_audio_mc_xs2_harness") as (
         adapter_dut,
         adapter_harness,
@@ -158,13 +155,9 @@ def test_analogue_output(request, ffmpeg, xsig, duration, build):
         # Wait for device(s) to enumerate
         log.debug("Waiting for devices to enumerate...")
         time.sleep(10)
-        test_freqs = [((i + 1) * 1000) + 500 for i in range(config.chans_out)]
-        ffmpeg_cmd_string = ffmpeg_gen_sine_input_args(test_freqs, duration + 2) + ffmpeg_output_device_args()
-        log.debug(' '.join(ffmpeg_cmd_string))
-        ffmpeg_cmd = sh.Command(ffmpeg)(
-            ffmpeg_gen_sine_input_args(test_freqs, duration + 2)
-            + ffmpeg_output_device_args(),
-            _bg=True,
+        # Run xsig for duration_ms + 2 seconds
+        xsig_cmd = sh.Command(xsig)(
+            config.rate, (duration + 2) * 1000, XSIG_CONFIG_ROOT / xsig_config, _bg=True
         )
         log.debug("Playing audio...")
         time.sleep(duration)
@@ -180,9 +173,14 @@ def test_analogue_output(request, ffmpeg, xsig, duration, build):
         log.debug("XSCOPE STRING:")
         log.debug(xscope_str)
         # Wait for xsig to exit (timeout after 5 seconds)
-        ffmpeg_cmd.wait(timeout=5)
+        xsig_cmd.wait(timeout=5)
 
-        expected_freqs = test_freqs[:8]  # There are only 8 analogue output channels
+        test_freqs = [((i + 1) * 1000) + 500 for i in range(config.chans_out)]
+        # Limit the number of channels to 8
+        # TODO: Check this works for configs with SPDIF and <10 channels
+        # The last 2 channels are used for SPDIF, so the ConfigDescriptor may have to
+        # change i.e. num_analogue_chans
+        expected_freqs = test_freqs[:8]
         assert check_analyzer_output(xscope_lines, expected_freqs)
 
 
