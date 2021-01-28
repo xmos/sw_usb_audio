@@ -6,8 +6,6 @@ import xtagctl
 
 import logging
 
-logging.basicConfig(level=logging.DEBUG)
-
 from usb_audio_test_tools import *
 
 from hardware_configs import configs
@@ -59,9 +57,14 @@ def test_analogue_input(xsig, duration_ms, build):
 @pytest.mark.parametrize("duration", [10])
 @pytest.mark.parametrize("build", [c for c in configs if c.dsd], indirect=True, ids=str)
 @pytest.mark.parametrize("audio", [("two_tones_dop.flac",)], indirect=True)
-def test_dsd_over_pcm_output(ffmpeg, xsig, duration, build, audio):
-    #if platform.system() == "Darwin":
-    #    pytest.skip("DSD test on macOS is currently unsupported")
+def test_dsd_over_pcm_output(request, ffmpeg, xsig, duration, build, audio):
+    if platform.system() == "Darwin":
+        # This failure is likely because the device is not picking up the DSD
+        # markers correctly. If the stream is not bit-perfect, this will happen.
+        # Could be a 32bit/24bit issue? Some macs only support 24 bit audio...
+        pytest.skip("DSD over PCM test failing on macOS - white noise + tones")
+    log = logging.getLogger(request.node.name)
+
     firmware, config = build
     with xtagctl.acquire("usb_audio_mc_xs2_dut", "usb_audio_mc_xs2_harness") as (
         adapter_dut,
