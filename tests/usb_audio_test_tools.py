@@ -224,18 +224,22 @@ def audio(request, pytestconfig):
 
 
 def get_xsig_config(build):
-    """ Gets xsig config for monitoring input signals """
+    """ Gets xsig configs for input and output signals """
 
-    xsig_config = None
+    config_in = None
+    config_out = None
+
     if build.chans_in == 10:
         if build.app == "xk_216_mc":
-            xsig_config = "mc_analogue_input_8ch.json"
+            config_in = "mc_analogue_input_8ch.json"
+            config_out = "mc_analogue_output.json"
     elif build.chans_in == 2:
         if build.app == "xk_216_mc":
-            xsig_config = "stereo_analogue_input.json"
-    if xsig_config is None:
-        pytest.skip(f"No matching xsig config IN for build: {build}")
-    return xsig_config
+            config_in = "stereo_analogue_input.json"
+            config_out = "stereo_analogue_output.json"
+    if config_in is None:
+        pytest.skip(f"No matching xsig configs for build: {build}")
+    return config_in, config_out
 
 
 @pytest.fixture
@@ -502,8 +506,13 @@ def run_audio_command(runtime, exe, *args):
 
 
 @pytest.fixture(scope="session")
-def ffmpeg():
+def ffmpeg(pytestconfig):
     """Gets ffmpeg from projects network drive """
+
+    test_only = pytestconfig.getoption("test_only")
+
+    if test_only:
+        return FFMPEG_PATH
 
     FFMPEG_PATH.parent.mkdir(parents=True, exist_ok=True)
 
@@ -538,16 +547,18 @@ def find_audiotoolbox_device(device_name="XMOS xCORE-200 MC"):
     # fmt: off
     cmd_args = [
         "-f", "lavfi", "-i", "sine=r=44100:duration=0.01", # Input
-        "-f", "audiotoolbox", "-list_device", "true", "-" # Output
+        "-f", "audiotoolbox", "-list_devices", "true", "-" # Output
     ]
     # fmt: on
-    output = sh.Command(FFMPEG_PATH)(cmd_args)
+    new_env = os.environ.copy()
+    new_env["AV_LOG_FORCE_NOCOLOR"] = "1"
+    output = sh.Command(FFMPEG_PATH)(cmd_args, _err_to_out=True, _env=new_env)
     for line in output:
         if "[AudioToolbox @" in line:
             if device_name in line:
-                num_text = line[line.index("]") :]
-                return int(num_text[line.index("[") : line.index("]")])
-    return None
+                num_text = line[line.index("]") + 1:]
+                return int(num_text[num_text.index("[") + 1 : num_text.index("]")])
+    raise Exception("Could not find audiotoolbox device")
 
 
 def ffmpeg_output_device_args(device_name="XMOS xCORE-200 MC"):
