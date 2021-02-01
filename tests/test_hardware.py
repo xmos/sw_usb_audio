@@ -1,12 +1,11 @@
+import logging
+logging.basicConfig(level=logging.DEBUG)
+
 import io
 import pytest
 import sh
 import time
 import xtagctl
-
-import logging
-
-logging.basicConfig(level=logging.DEBUG)
 
 from usb_audio_test_tools import *
 
