@@ -1,5 +1,6 @@
 import logging
-logging.getLogger().setLevel(logging.INFO)
+logging.getLogger("xtagctl").setLevel(logging.DEBUG)
+logging.getLogger("xtagctl").propagate = True
 
 import io
 import pytest

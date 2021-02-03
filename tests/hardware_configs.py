@@ -66,7 +66,7 @@ def unpack_descriptor(desc: ConfigDescriptor):
 # This list should be populated with configs you want to test
 # Tests are run for each config based on its capability
 descriptors = [
-    ConfigDescriptor("xk_216_mc", "2i10o10xxxxxx", 10, 10, rates=[48000]),
+    ConfigDescriptor("xk_216_mc", "2i10o10xxxxxx", 10, 10, rates=[48000], dfu=True),
     ConfigDescriptor("xk_216_mc", "2i2o2xxxxxd", 2, 2, rates=[48000], dsd=True),
 ]
 

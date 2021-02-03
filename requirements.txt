@@ -8,7 +8,7 @@ requests==2.24.0
 -e ../infr_scripts_py
 -e ../infr_apps
 -e ../audio_test_tools/python
--e ../xtagctl
+-e git://github0.xmos.com/xmos-int/xtagctl.git@v1.2.0#egg=xtagctl
 
 # dev/test packages
 flake8
