@@ -11,7 +11,7 @@ pipeline {
   }
   environment {
     REPO = 'sw_usb_audio'
-    VIEW = getViewName(REPO)
+    VIEW = 'usb_audio__test_infr_scripts'
   }
   stages {
     stage('Get view') {
