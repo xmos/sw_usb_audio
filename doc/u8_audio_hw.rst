@@ -13,7 +13,7 @@ tile XMOS U-series device.
 
 The kit is made up of two boards:
     - A main board which includes the XMOS U-series device and all audio hardware
-    - A "USB Slice" board which contains USB connectivity
+    - A "USB Slice" board which includes the USB connectivity
 
 The separate USB slice board allows flexibility in the connection method to the USB audio 
 source/sink as well as other functionality such as 3rd party authentication ICs and any required 

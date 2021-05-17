@@ -2,7 +2,8 @@
 #include <xs1.h>
 #include <platform.h>
 
-#include "devicedefines.h"
+#include "app_usb_aud_xk_216_mc.h"
+#include "user_hid.h"
 
 #ifdef HID_CONTROLS
 in port p_sw = on tile[1] : XS1_PORT_4B;
@@ -52,7 +53,7 @@ t_controlState state;
 
 unsigned lastA;
 
-void UserReadHIDButtons(unsigned char hidData[])
+void UserHIDGetData( unsigned char hidData[ HID_DATA_BYTES ])
 {
     /* Variables for buttons a, b, c and switch sw */
     unsigned a, b, c, sw, tmp;

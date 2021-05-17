@@ -2,7 +2,7 @@
 #define IAP2 1
 
 /* Include global device configuration defines */
-#include "devicedefines.h"
+#include "xua.h"
 #include "descriptor_defs.h"
 
 /***** Defines relating to iOS identification *****/

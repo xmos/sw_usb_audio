@@ -98,7 +98,7 @@ The main program
 ~~~~~~~~~~~~~~~~
 
 The ``main()`` function is shared across all applications is therefore part of the framework.  
-It is located in ``sc_usb_audio`` and contains:
+It is located in ``lib_xua`` and contains:
 
 * A declaration of all the ports used in the framework. These vary
   depending on the PCB an application is running on.
@@ -109,7 +109,7 @@ The framework supports devices with multiple tiles so it uses the ``on tile[n]:`
 
 The first core run is the XUD library:
 
-.. literalinclude:: sc_usb_audio/module_usb_audio/main.xc
+.. literalinclude:: lib_xua/lib_xua/src/core/main.xc
    :start-after: /* USB Interface
    :end-before: /* USB Packet buff
 
@@ -119,11 +119,11 @@ described in :ref:`usb_audio_sec_component_api`.
 The channels connected to the XUD driver are fed into the buffer
 and decouple cores:
 
-.. literalinclude:: sc_usb_audio/module_usb_audio/main.xc
+.. literalinclude:: lib_xua/lib_xua/src/core/main.xc
    :start-after: //:buffer
    :end-before: //:
 
-.. literalinclude:: sc_usb_audio/module_usb_audio/main.xc
+.. literalinclude:: lib_xua/lib_xua/src/core/main.xc
    :start-after: /* Decoupling core */
    :end-before: //:
 
@@ -132,7 +132,7 @@ These then connect to the audio driver which controls the I2S output and
 S/PDIF output (if enabled). If S/PDIF output is enabled, this
 component spawns into two cores as opposed to one.
 
-.. literalinclude:: sc_usb_audio/module_usb_audio/main.xc
+.. literalinclude:: lib_xua/lib_xua/src/core/main.xc
    :start-after: /* Audio I/O Core (pars
    :end-before: //:
 
@@ -141,7 +141,7 @@ and output.  The MIDI core also optionally handles authentication with Apple dev
 Due to licensing issues this code is only available to Apple MFI licensees.  Please contact XMOS 
 for details.
 
-.. literalinclude:: sc_usb_audio/module_usb_audio/main.xc
+.. literalinclude:: lib_xua/lib_xua/src/core/main.xc
    :start-after: /* MIDI core */
    :end-before: #endif
 

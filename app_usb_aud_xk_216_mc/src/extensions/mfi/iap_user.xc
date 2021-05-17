@@ -1,6 +1,6 @@
 
 #ifdef IAP
-#include "customdefines.h"
+#include "app_usb_aud_xk_216_mc.h"
 
 #include <print.h>
 #include <platform.h>

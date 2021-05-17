@@ -1,6 +1,332 @@
 sw_usb_audio Change Log
 =======================
 
+9.0.0
+-----
+
+  * REMOVED:   Removed remaining apps for unsupported hardware
+
+8.0.0
+-----
+
+  * CHANGE:    Now uses lib_spdif
+  * RESOLVED:  Need to drive VBUS_OUT low on xCORE-200 MC AUDIO board (#17697)
+
+  * Changes to dependencies:
+
+    - lib_device_control: 3.2.0 -> 3.2.3
+
+      + Preprocessor flag to send channel activity over xSCOPE for debugging
+      + Use -Os for the whole library rather than -O3 (#45)
+      + Fix return code of control_register_resources
+      + Fix an issue on Windows where xSCOPE connection hangs on Windows
+        (#17871)
+      + Fix an issue on Windows where first xSCOPE connection succeeds, but
+        subsequent ones fail with "socket reply error" (#47)
+
+    - lib_spdif: Added dependency 3.0.0
+
+      + spdif_tx() no longer configures port. Additional function
+        spdif_tx_port_config() provided. Allows sharing of clockblock with other
+        tasks
+
+    - lib_xua: 0.1.1 -> 0.2.0
+
+      + ADDED:     Initial library documentation
+      + ADDED:     Application note AN00247: Using lib_xua with lib_spdif
+        (transmit)
+      + CHANGE:    I2S hardware resources no longer used globally and must be
+        passed to XUA_AudioHub()
+      + CHANGE:    XUA_AudioHub() no longer pars S/PDIF transmitter task
+      + CHANGE:    Moved to lib_spdif (from module_spdif_tx & module_spdif_rx)
+      + CHANGE:    Define NUM_PDM_MICS renamed to XUA_NUM_PDM_MICS
+      + CHANGE:    Define NO_USB renamed to XUA_USB_EN
+      + ADDED:     Application note AN00246: Simple USB Audio Device using
+        lib_xua
+      + CHANGE:    xmosdfu emits warning if empty image read via upload
+      + CHANGE:    Simplified mclk port sharing - no longer uses unsafe pointer
+      + RESOLVED:  Runtime exception issues when incorrect feedback calculated
+        (introduced in sc_usb_audio 6.13)
+      + RESOLVED:  Output sample counter reset on stream start. Caused playback
+        issues on some Linux based hosts
+
+    - lib_xud: 0.1.0 -> 0.1.1
+
+      + RESOLVED:   Transmit timing fixes for U-series devices (introduced in
+        sc_xud 2.3.0)
+
+    - sc_spdif: Removed dependency
+
+7.0.1
+-----
+
+  * Changes to dependencies:
+
+    - lib_locks: Removed dependency
+
+    - lib_xua: 0.1.0 -> 0.1.1
+
+      + RESOLVED:   Configurations where I2S_CHANS_DAC and I2S_CHANS_ADC are
+        both 0 now build
+      + RESOLVED:   Deadlock in mixer when MAX_MIX_COUNT > 0 for larger channel
+        counts
+
+    - sc_util: Added dependency 1.0.6
+
+      + xCORE-200 compatibility fixes to module_trycatch
+
+7.0.0
+-----
+
+  * CHANGE:    Now uses lib_xua
+  * CHANGE:    Now uses lib_xud
+
+  * Changes to dependencies:
+
+    - lib_device_control: 2.0.0 -> 3.2.0
+
+      + Updated XSCOPE and USB protocols for host applications
+      + Improved error messages in host applications
+      + Dummy LED OEN port in example applications
+      + Document Windows 10 attestation signing of libusb driver
+      + Use Vocal Fusion board XN file in xSCOPE and USB examples
+      + Add SPI support for Raspberry Pi host
+      + No longer down-shift I2C address on Raspberry Pi host
+      + Fixed incorrectly returned read data in xSCOPE example host code
+      + Replace xSCOPE and USB size limits in public API by runtime errors
+      + xSCOPE API change - buffer type from 64 words to 256 bytes
+      + Windows build fixes
+      + xTIMEcomposer project files for AN01034 and xSCOPE examples
+      + Documentation updates
+      + Added AN01034 application note based around USB transport example and
+        xCORE Array Microphone board
+      + Documentation updates
+      + Increased test coverage
+      + Update XE232 XN file in I2C host example for tools version 14.2 (compute
+        nodes numbered 0 and 2 rather than 0 and 1)
+
+    - lib_dsp: Added dependency 4.0.0
+
+      + Removed synchronous sample rate conversion functions - now maintained in
+        lib_src
+      + Fixed bug in dsp_vector_mulv_addv()
+      + Faster bit reverse and inverse FFT
+      + Added real FFT
+      + Added real reverse FFT
+      + Added FFT with top half blanked
+      + Logistics functions
+      + Block floating point functions
+      + Complex FIR
+      + Complex vector arithmetic, with optional scaling
+      + Added in-place complex vector scaling
+      + Added complex vector magnitude
+      + Added complex vector scaling with arithmetic shift
+      + Added complex negative multiply and accumulate
+
+    - lib_locks: Added dependency 2.0.3
+
+      + RESOLVED: Fixed the software locks when using high priority cores
+
+    - lib_logging: 2.0.1 -> 2.1.1
+
+      + CHANGE:   Test runner script now terminates correctly on Windows
+      + ADDED:    Now supports the %p format specifier
+      + CHANGE:   Ignore the case of the format specifiers
+      + CHANGE:   Ignore padding and alignment characters
+
+    - lib_mic_array: 2.0.1 -> 3.1.1
+
+      + Cleaned up some of the code in the FIR designer.
+      + Removed fixed gain in examples
+      + Updated lib_dsp dependancy from 3.0.0 to 4.0.0
+      + Modified the FIR designer to increase the first stage stopband
+        attenuation.
+      + Cleaned up some of the code in the FIR designer.
+      + Updated docs to reflect the above.
+      + Update DAC settings to work for mic array base board as well.
+      + Filter design script update for usability.
+      + Documentation improvement.
+      + Changed DEBUG_UNIT to XASSERT_UNIT to work with lib_xassert.
+      + Added upgrade advisory.
+      + Added dynamic range subsection to documentation.
+      + Added ability to route internal channels of the output rate of the
+        mic_array to the mic_array so that they can benefit from the post
+        processing of the mic_array.
+      + Enabled the metadata which delivers the frame counter.
+      + Small fix to the filter generator to allow the use of fewer taps in the
+        final stage FIR.
+      + Added significant bits collection to the metadata.
+      + Added fixed gain control through define MIC_ARRAY_FIXED_GAIN.
+      + Tested and enabled the debug mode for detecting frame dropping. Enabled
+        by adding DEBUG_MIC_ARRAY to the Makefile.
+      + Moved to using types from lib_dsp.
+      + Bug fix in python FIR generator script resulting in excessive output
+        ripple.
+      + Default FIR coefficients now optimised for 16kHz output sample rate.
+      + Added ability to remap port pins to channels.
+      + MIC_ARRAY_NUM_MICS is now forced to a multiple of 4 with a warning if it
+        changed.
+      + Corrected MIC_ARRAY_DC_OFFSET_LOG2 default value reporting in
+        documentation.
+
+    - lib_xassert: 2.0.1 -> 3.0.1
+
+      + CHANGE: Correct dates in LICENSE.txt files
+      + CHANGE: Renamed DEBUG_UNIT to XASSERT_UNIT to prevent conflict with
+        lib_logging
+
+    - lib_xua: Added dependency 0.1.0
+
+      + ADDED:      FB_USE_REF_CLOCK to allow feedback generation from xCORE
+        internal reference
+      + ADDED:      Linux Makefile for xmosdfu host application
+      + ADDED:      Raspberry Pi Makefile for xmosdfu host application
+      + ADDED:      Documentation of PID argument to xmosdfu
+      + ADDED:      Optional build time microphone delay line (MIC_BUFFER_DEPTH)
+      + CHANGE:     Removal of audManage_if, users should define their own
+        interfaces as required
+      + CHANGE:     Vendor specific control interface in UAC1 descriptor now has
+        a string descriptor so it shows up with a descriptive name in Windows
+        Device Manager
+      + CHANGE:     DFU_BCD_DEVICE removed (now uses BCD_DEVICE)
+      + CHANGE:     Renaming in descriptors.h to avoid clashes with application
+      + CHANGE:     Make device reboot function no-argument (was one channel
+        end)
+      + RESOLVED:   FIR gain compensation for PDM mics set incorrectly for
+        divide of 8
+      + RESOLVED:   Incorrect xmosdfu DYLD path in test script code
+      + RESOLVED:   xmosdfu cannot find XMOS device on modern MacBook Pro
+        (#17897)
+      + RESOLVED:   Issue when feedback is initially incorrect when two SOF's
+        are not yet received
+      + RESOLVED:   AUDIO_TILE and PDM_TILE may now share the same value/tile
+      + RESOLVED:   Cope with out of order interface numbers in xmosdfu
+      + RESOLVED:   DSD playback not functional on xCORE-200 (introduced in
+        sc_usb_audio 6.14)
+      + RESOLVED:   Improvements made to clock sync code in TDM slave mode
+
+    - lib_xud: Added dependency 0.1.0
+
+      + CHANGE:     Fork from sc_xud to lib_xud
+      + CHANGE:     Documentation updates
+
+    - sc_usb: Removed dependency
+
+    - sc_usb_audio: Removed dependency
+
+    - sc_usb_device: Removed dependency
+
+    - sc_util: Removed dependency
+
+    - sc_xud: Removed dependency
+
+6.18.1
+------
+
+  * CHANGE:    Updated PIDs in app_usb_aud_mic_array
+
+  * Changes to dependencies:
+
+    - lib_device_control: Added dependency 2.0.0
+
+      + Added the ability to select USB interface (Allows control from Windows)
+
+    - sc_usb_audio: 6.18.0 -> 6.18.1
+
+      + ADDED:      Vendor Specific control interface added to UAC1 descriptors
+        to allow control of XVSM params from Windows (via lib_usb)
+
+6.18.0
+------
+
+  * ADDED:     app_usb_aud_mic_array now includes control of XVSM parameters
+    (see lib_xvsm_support/host for host control applications)
+  * RESOLVED:  Incorrect build configurations in Eclipse project files in
+    app_usb_aud_mic_array
+
+  * Changes to dependencies:
+
+    - lib_voice: 0.0.2 -> 0.0.3
+
+      + Added DOA_NAIVE_DONT_THRESH to disable thresholding code
+
+    - sc_usb_audio: 6.16.0 -> 6.18.0
+
+      + ADDED:      Call to VendorRequests() and VendorRequests_Init() to
+        Endpoint 0
+      + ADDED:      VENDOR_REQUESTS_PARAMS define to allow for custom parameters
+        to VendorRequest calls
+      + RESOLVED:   FIR gain compensation set appropriately in lib_mic_array
+        usage
+      + CHANGE:     i_dsp interface renamed i_audManage
+
+    - sc_xud: 2.4.1 -> 2.4.2
+
+      + CHANGE:     VBUS connection to xCORE-200 no longer required when using
+        XUD_PWR_BUS i.e. for bus-powered devices. This removes the need to any
+        protection circuitry and allows for a reduced BOM. Note, VBUS should
+        still be present for self powered devices in order to pass USB
+        compliance tests.
+      + RESOLVED:   Device might hang during resume if host follows resume
+        signality with activity after a time close to specified minimum of
+        1.33us (#11813)
+
+6.17.0
+------
+
+  * CHANGE:    app_usb_aud_mic array: Modifications to XVSM processing
+    integration
+  * CHANGE:    app_usb_aud_mic_array: AEC and NS enabled by default
+  * CHANGE:    app_usb_aud_mic_array: XVSM VAD output used when DOA enabled
+
+  * Changes to dependencies:
+
+    - lib_voice: 0.0.1 -> 0.0.2
+
+      + Simplification/optimisation of Naive DOA
+
+6.16.1
+------
+
+  * CHANGE:    Feedback endpoint forcefully enabled in UAC1 build configs of
+    app_usb_aud_mic array (workaround for Windows issue)
+  * CHANGE:    XVSM processing has AEC enabled by default.
+  * CHANGE:    Default gain increased for processed microphone data
+
+6.16.0
+------
+
+  * ADDED:   XVSM enabled build config added to app_usb_mic_array. Includes
+    example usage of UserBufferManagement() and i_dsp interface
+  * CHANGE:  PDM Microphone processing examples use new interface (previously
+    functional call)
+
+  * Changes to dependencies:
+
+    - lib_mic_array: 2.0.0 -> 2.0.1
+
+      + Updated AN00221 to use new lib_dsp API for FFTs
+      + Updates required for latest lib_mic_array_board_support API
+
+    - lib_voice: Added dependency 0.0.1
+
+      + Initial version
+
+    - sc_usb_audio: 6.15.2 -> 6.16.0
+
+      + ADDED:      Call to UserBufferManagement()
+      + ADDED:      PDM_MIC_INDEX in devicedefines.h and usage
+      + CHANGE:     pdm_buffer() task now combinable
+      + CHANGE:     Audio I/O task now takes i_dsp interface as a parameter
+      + CHANGE:     Removed built-in support for A/U series internal ADC
+      + CHANGE:     User PDM Microphone processing now uses an interface
+        (previously function call)
+
+    - sc_usb_device: 1.3.8 -> 1.3.9
+
+      + RESOLVED:   Value from HS config descriptor used for FS GET_STATUS
+        request. Causes USB CV test fail.
+
 6.15.2
 ------
 
@@ -11,7 +337,7 @@ sw_usb_audio Change Log
 
     - sc_usb_audio: 6.15.1 -> 6.15.2
 
-      + RESOLVED:  interrupt.h (used in audio buffering) now compatible with
+      + RESOLVED:   interrupt.h (used in audio buffering) now compatible with
         xCORE-200 ABI
 
 6.15.1
@@ -35,7 +361,7 @@ sw_usb_audio Change Log
 
     - sc_usb_audio: 6.15.0 -> 6.15.1
 
-      + RESOLVED:   DAC data mis-alignment issue in TDM slave mode
+      + RESOLVED:   DAC data mis-alignment issue in TDM/I2S slave mode
       + CHANGE:     Updates to support API changes in lib_mic_array version 2.0
 
     - sc_xud: 2.4.0 -> 2.4.1
@@ -52,9 +378,22 @@ sw_usb_audio Change Log
 
     - lib_logging: Added dependency 2.0.1
 
+      + CHANGE:   Update to source code license and copyright
+
     - lib_mic_array: Added dependency 1.0.1
 
+      + Added dynamic DC offset removal at startup to eliminate slow convergance
+      + Mute first 32 samples to allow DC offset to adapt before outputting
+        signal
+      + Fixed XTA scripte to ensure timing is being met
+      + Now use a 64-bit accumulator for DC offset removal
+      + Consolidated generators into a single python generator
+      + Produced output frequency response graphs
+      + Added 16 bit output mode
+
     - lib_xassert: Added dependency 2.0.1
+
+      + CHANGE: Update to source code license and copyright
 
     - sc_usb_audio: 6.14.0 -> 6.15.0
 
@@ -917,15 +1256,21 @@ sw_usb_audio Change Log
 
     - sc_adat: Added dependency 1.0.0
 
+      + Initial release
+
     - sc_i2c: Added dependency 1.0.0
 
     - sc_spdif: Added dependency 1.0.0
 
     - sc_usb: Added dependency 1.0.0
 
+      + Initial release
+
     - sc_usb_audio: Added dependency 1.0.0
 
     - sc_xud: Added dependency 1.0.0
+
+      + Initial stand-alone release
 
 
 Legacy release history

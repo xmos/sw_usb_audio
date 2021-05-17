@@ -14,6 +14,9 @@ brew 'xz'
 brew 'zlib'
 brew 'cmake'
 
+# Dependencies for xtag reset functionality
+brew 'libusb'
+
 if OS.linux?
     brew 'readline'
     brew 'gcc'

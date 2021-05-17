@@ -1,14 +1,17 @@
 # python_version 3.7
 
 # dependencies
-numpy>=1.16.3
-sh
+sh==1.13.1
+requests==2.24.0
 
 # viewfile dependencies
 -e ../infr_scripts_py
--e ../lib_logging_py
--e ../lib_cognidox
--e ../lib_xmlobject_py
--e ../lib_subprocess_py
--e ../lib_docref_py
 -e ../infr_apps
+-e ../audio_test_tools/python
+-e ../xtagctl
+
+# dev/test packages
+flake8
+pylint
+pytest
+pytest-xdist

@@ -1,14 +1,13 @@
 #include <xs1.h>
-
 #include <assert.h>
-#include "devicedefines.h"
 #include <platform.h>
+#include <print.h>
+
 #include "gpio_access.h"
 #include "i2c_shared.h"
 #include "cs4384.h"
 #include "cs5368.h"
 #include "cs2100.h"
-#include "print.h"
 #include "dsd_support.h"
 
 /* The number of timer ticks to wait for the audio PLL to lock */
@@ -22,7 +21,7 @@
 on tile[0] : out port p_gpio = XS1_PORT_8C;
 
 #ifndef IAP
-/* If IAP not enabled, i2c ports not declared - still needs for DAC config */
+/* If IAP not enabled, i2c ports not declared - still needed for DAC config */
 on tile [0] : struct r_i2c r_i2c = {XS1_PORT_4A};
 #else
 extern struct r_i2c r_i2c;
@@ -107,7 +106,7 @@ void wait_us(int microseconds)
     t when timerafter(time + (microseconds * 100)) :> void;
 }
 
-void AudioHwInit(chanend ?c_codec)
+void AudioHwInit()
 {
 #if !(defined(SPDIF_RX) || defined(ADAT_RX)) && defined(USE_FRACTIONAL_N)
     /* Output a fixed sync clock to the pll */
@@ -138,20 +137,23 @@ void AudioHwInit(chanend ?c_codec)
     /* If we have any digital input then use the external PLL - selected via MUX */
     set_gpio(P_GPIO_PLL_SEL, 1);
 
-     /* Initialise external PLL */
+    /* Initialise external PLL */
     PllInit();
 #endif
 
 #ifdef IAP
     /* Enable VBUS output */
     set_gpio(P_GPIO_VBUS_EN, 1);
+#else
+    /* Drive low otherwise GPIO peek picks up pull-up resistor */
+    set_gpio(P_GPIO_VBUS_EN, 0);
 #endif
 }
 
 /* Configures the external audio hardware for the required sample frequency.
  * See gpio.h for I2C helper functions and gpio access
  */
-void AudioHwConfig(unsigned samFreq, unsigned mClk, chanend ?c_codec, unsigned dsdMode,
+void AudioHwConfig(unsigned samFreq, unsigned mClk, unsigned dsdMode,
     unsigned sampRes_DAC, unsigned sampRes_ADC)
 {
 	unsigned char data[1] = {0};

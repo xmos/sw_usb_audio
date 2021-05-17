@@ -1,3 +1,4 @@
+*.settings
 */test_results.csv
 __loader/after*
 __loader/flash*
@@ -21,6 +22,18 @@ log.txt
 *.*~
 *.xmt
 *.swo
+*.swn
 *~
 *.DS_Store
 *.pyc
+
+legacy_tests/recording*.wav
+legacy_tests/plot*.pdf
+legacy_tests/generated_*.wav
+
+**/*.egg-info/
+**/.venv/*
+
+# Regression test files
+tests/xmosdfu
+tests/xsig

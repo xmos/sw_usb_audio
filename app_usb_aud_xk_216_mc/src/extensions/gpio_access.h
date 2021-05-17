@@ -1,7 +1,7 @@
 #ifndef _GPIO_ACCESS_H_
 #define _GPIO_ACCESS_H_
 
-#include "customdefines.h"
+#include "app_usb_aud_xk_216_mc.h"
 
 #if XCORE_200_MC_AUDIO_HW_VERSION == 2
 

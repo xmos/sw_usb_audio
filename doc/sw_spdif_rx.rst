@@ -55,7 +55,7 @@ audio driver and handles locking to the S/PDIF clock source if required (see Ext
 Ideally the parity of each word/sample received should be checked.  This is done using the built in 
 ``crc32`` function (see ``xs1.h``):
 
-.. literalinclude:: sc_usb_audio/module_usb_audio/clocking/clockgen.xc
+.. literalinclude:: lib_xua/lib_xua/src/core/clocking/clockgen.xc
   :start-after: //:badParity
   :end-before: //:
 
