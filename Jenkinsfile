@@ -9,7 +9,7 @@ pipeline {
   }
   environment {
     REPO = 'sw_usb_audio'
-    VIEW = 'usb_audio'
+    VIEW = 'usb_audio__test_infr_scripts'
   }
   stages {
     stage('Create release and build') {
