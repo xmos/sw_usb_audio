@@ -31,12 +31,12 @@ LIBS = [
 
 # These have to be handled differently
 SCS = [
-    "sc_usb",
+    #"sc_usb",
     "sc_adat",
     "sc_i2c",
     "sc_spdif",
-    "sc_usb_audio",
-    "sc_usb_device",
+    #"sc_usb_audio",
+    #"sc_usb_device",
     "sc_xud",
     "sc_util"
 ]
@@ -227,9 +227,18 @@ def main():
         shutil.copy2(
             str((lib_path / "README.rst").resolve()), str(lib_release_path.resolve()),
         )
+        license_file = ""
+        if (lib_path / "LICENSE.txt").is_file():
+            license_file = (lib_path / "LICENSE.txt").resolve()
+        elif (lib_path / "LICENSE.rst").is_file():
+            license_file = (lib_path / "LICENSE.rst").resolve()
+        else:
+            print(f'Error: LICENSE file for {lib_path} is missing')
+            sys.exit(1)
+
         # Copy the license to the root release folder
         shutil.copy2(
-            (lib_path / "LICENSE.txt").resolve(), lib_release_path.resolve(),
+            license_file, lib_release_path.resolve(),
         )
 
     for sc_name in SCS:
