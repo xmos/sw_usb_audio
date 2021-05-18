@@ -16,6 +16,7 @@ LIBS = [
 ]
 
 # These have to be handled differently
+#TODO: this list is not complete
 SCS = [
     #"sc_usb",
     "sc_adat",
@@ -47,7 +48,7 @@ CONFIGS = [
 # (src_path, dst_path)
 BINARY_RELEASE_FILES = [
     ("CHANGELOG.rst", "CHANGELOG.rst"),
-    ("binary_release_readme.txt", "README.txt"),
+    #("binary_release_readme.txt", "README.txt"), # TODO: This file must be added when it is ready
     ("LICENSE.txt", "LICENSE.txt"),
 ]
 
