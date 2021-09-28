@@ -1,5 +1,5 @@
-XMOS xCORE-200 USB Audio
-========================
+XMOS xcore.ai USB Audio
+=======================
 
 :maintainer: Ross Owen
 :scope: Example
