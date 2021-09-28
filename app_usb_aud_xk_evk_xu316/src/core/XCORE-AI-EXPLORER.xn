@@ -12,12 +12,10 @@
   <Packages>
     <Package id="0" Type="XS3-UnA-1024-FB265">
       <Nodes>
-        <!-- <Node Id="0" InPackageId="0" Type="XS3-L16A-1024" Oscillator="24MHz" SystemFrequency="700MHz" ReferenceFrequency="100MHz"> -->
         <Node Id="0" InPackageId="0" Type="XS3-L16A-1024" Oscillator="24MHz" SystemFrequency="600MHz" ReferenceFrequency="100MHz">
           <Boot>
             <Source Location="bootFlash"/>
           </Boot>
-          <!-- <Extmem sizeMbit="1024" Frequency="175MHz"> -->
           <Extmem sizeMbit="1024" Frequency="100MHz">
             <!-- Attributes for Padctrl and Lpddr XML elements are as per equivalently named 'Node Configuration' registers in datasheet -->
 
@@ -62,12 +60,9 @@
             <Port Location="XS1_PORT_1L"  Name="WIFI_CLK"/>
             <Port Location="XS1_PORT_1M"  Name="WIFI_MISO"/>
 
-            <Port Location="XS1_PORT_1A"  Name="PORT_MCLK_IN2"/>
+            <Port Location="XS1_PORT_1D"  Name="PORT_MCLK_IN2"/>
 
-            <!-- I2C Ports -->
-            <!-- <Port Location="XS1_PORT_1N"  Name="PORT_I2C_SCL"/> -->
-            <!-- <Port Location="XS1_PORT_1O"  Name="PORT_I2C_SDA"/> -->
-
+            <Port Location="XS1_PORT_16B" Name="PORT_MCLK_COUNT"/>
           </Tile>
           <Tile Number="1" Reference="tile[1]">
             <!-- Mic related ports -->
@@ -85,9 +80,6 @@
 
             <!-- I2C Port -->
             <Port Location="XS1_PORT_4B"  Name="PORT_I2C"/>
-
-            <Port Location="XS1_PORT_16B" Name="PORT_MCLK_COUNT"/>
-
           </Tile>
         </Node>
       </Nodes>

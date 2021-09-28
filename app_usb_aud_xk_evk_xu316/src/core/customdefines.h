@@ -2,12 +2,9 @@
  * @file       customdefines.h
  * @brief      Defines relating to device configuration and customisation.
  *             For xCORE.ai eXplorer
- * @author     Ross Owen, XMOS Limited
  */
 #ifndef _CUSTOMDEFINES_H_
 #define _CUSTOMDEFINES_H_
-
-#include "user_main.h"
 
 /*
  * Device configuration option defines to override default defines found devicedefines.h
@@ -18,30 +15,30 @@
  */
 
 /* Tile defines */
-#define AUDIO_IO_TILE      1
-#define XUD_TILE           1
+#define AUDIO_IO_TILE      (1)
+#define XUD_TILE           (0)
 
 /* Mixer core enabled by default */
 #ifndef MIXER
-#define MIXER              1
+#define MIXER              (1)
 #endif
 
 /* Mixing disabled by default */
 #ifndef MAX_MIX_COUNT
-#define MAX_MIX_COUNT      0
+#define MAX_MIX_COUNT      (0)
 #endif
 
 /* Board is self-powered i.e. not USB bus-powered */
-#define SELF_POWERED       1
+#define SELF_POWERED       (1)
 
 /* Enable/Disable MIDI - Default is MIDI off */
 #ifndef MIDI
-#define MIDI 		       0
+#define MIDI 		       (0)
 #endif
 
 /* Enable/Disable SPDIF output - Default is S/PDIF on */
 #ifndef SPDIF_TX
-#define SPDIF_TX	       0
+#define SPDIF_TX	       (0)
 #endif
 
 /* Defines relating to channel count and channel arrangement (Set to 0 for disable) */
@@ -83,7 +80,7 @@
 
 /* Enable/Disable example HID code */
 #ifndef HID_CONTROLS
-#define HID_CONTROLS       0
+#define HID_CONTROLS       (0)
 #endif
 
 #endif
