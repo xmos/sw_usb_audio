@@ -116,4 +116,22 @@
 // This define is used in sc_usb_audio/module_usb_audio/flashlib_user.c
 #define DFU_FLASH_DEVICE FL_QUADDEVICE_MX25R3235
 
+#ifdef __XC__
+void i2s_driver(chanend c);
+
+extern unsafe chanend uc;
+
+#define USER_MAIN_DECLARATIONS chan c_i2s;
+
+#define USER_MAIN_CORES on tile[1]: {\
+                                        par\
+                                        { \
+                                            i2s_driver(c_i2s);\
+                                            unsafe{\
+                                                uc = (chanend) c_i2s;\
+                                            }\
+                                        }\
+                                    } 
+#endif
+
 #endif
