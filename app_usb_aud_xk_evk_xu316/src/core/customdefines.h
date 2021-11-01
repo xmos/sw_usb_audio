@@ -25,11 +25,11 @@
 
 /* Mixing disabled by default */
 #ifndef MAX_MIX_COUNT
-#define MAX_MIX_COUNT      (0)
+#define MAX_MIX_COUNT      (2)
 #endif
 
 /* Board is self-powered i.e. not USB bus-powered */
-#define SELF_POWERED       (1)
+#define SELF_POWERED       (0)
 
 /* Enable/Disable MIDI - Default is MIDI off */
 #ifndef MIDI
@@ -74,8 +74,8 @@
 /***** Defines relating to USB descriptors etc *****/
 //:usb_defs
 #define VENDOR_ID          (0x20B1) /* XMOS VID */
-#define PID_AUDIO_2        (0x0008) /* SKC_SU1 USB Audio Reference Design PID */
-#define PID_AUDIO_1        (0x0009) /* SKC_SU1 Audio Reference Design PID */
+#define PID_AUDIO_2        (0x0008)
+#define PID_AUDIO_1        (0x0009)
 //:
 
 /* Enable/Disable example HID code */
@@ -83,7 +83,6 @@
 #define HID_CONTROLS       (0)
 #endif
 
-#endif
 
 /* Flash part for xcore-AI explorer board: MX25R3235FM1IH0 32MBIT */
 #define FL_QUADDEVICE_MX25R3235 \
@@ -117,3 +116,27 @@
 // This define is used in sc_usb_audio/module_usb_audio/flashlib_user.c
 #define DFU_FLASH_DEVICE FL_QUADDEVICE_MX25R3235
 
+#ifdef __XC__
+void AudioHwRemote(chanend c);
+
+extern unsafe chanend uc_audiohw;
+
+#define USER_MAIN_DECLARATIONS chan c_audiohw;
+
+#define USER_MAIN_CORES on tile[1]: {\
+                                        par\
+                                        {\
+                                            unsafe{\
+                                                uc_audiohw = (chanend) c_audiohw;\
+                                            }\
+                                        }\
+                                    }\
+\
+                        on tile[0]: {\
+                                        par\
+                                        {\
+                                            AudioHwRemote(c_audiohw);\
+                                        }\
+                                    }
+#endif
+#endif

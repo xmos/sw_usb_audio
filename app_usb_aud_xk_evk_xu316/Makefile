@@ -11,7 +11,7 @@ BUILD_FLAGS     = -DXUD_X200_SERIES=4 -DXUD_SERIES_SUPPORT=4 -DFLASH_MAX_UPGRADE
 # The USED_MODULES variable lists other module used by the application. These
 # modules will extend the SOURCE_DIRS, INCLUDE_DIRS and LIB_DIRS variables.
 # Modules are expected to be in the directory above the BASE_DIR directory.
-USED_MODULES = lib_xud module_usb_audio module_dfu module_i2c_shared module_i2c_single_port
+USED_MODULES = lib_xud module_usb_audio module_dfu module_i2c_simple
 
 # Build config naming scheme:
 
