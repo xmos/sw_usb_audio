@@ -6,7 +6,7 @@ TARGET = XCORE-AI-EXPLORER.xn
 APP_NAME =
 
 # The flags passed to xcc when building the application
-BUILD_FLAGS     = -DXUD_X200_SERIES=4 -DXUD_SERIES_SUPPORT=4 -DFLASH_MAX_UPGRADE_SIZE=64*1024 -fcomment-asm -Xmapper --map -Xmapper MAPFILE -Wall -O3 -report -lquadflash -save-temps -g -fxscope -DXSCOPE -DSDA_HIGH=2 -DSCL_HIGH=1 -march=xs3a -DUSB_TILE=tile[0] -DADAT_TX_USE_SHARED_BUFF=1 -DQUAD_SPI_FLASH=1 -DUAC_FORCE_FEEDBACK_EP=1
+BUILD_FLAGS     = -DXUD_X200_SERIES=4 -DXUD_SERIES_SUPPORT=4 -DFLASH_MAX_UPGRADE_SIZE=64*1024 -fcomment-asm -Xmapper --map -Xmapper MAPFILE -Wall -O3 -report -lquadflash -save-temps -g -fxscope -DXSCOPE -DUSB_TILE=tile[0] -DADAT_TX_USE_SHARED_BUFF=1 -DQUAD_SPI_FLASH=1 -DUAC_FORCE_FEEDBACK_EP=1
 
 # The USED_MODULES variable lists other module used by the application. These
 # modules will extend the SOURCE_DIRS, INCLUDE_DIRS and LIB_DIRS variables.
