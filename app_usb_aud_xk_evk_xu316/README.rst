@@ -14,9 +14,7 @@ The firmware provides a high-speed USB Audio device designed to be compliant to 
 
 Note, for correct operation external jumper cables must be attached between the following pins:
 
-- MCLK to X0D11 (J14)
-- SDA to X1D05 (J10)
-- SCL to X1D04 (J10)
+- MCLK to X0D11 (J14) (Version 1v0 hardware only)
 
 Key Features
 ............
