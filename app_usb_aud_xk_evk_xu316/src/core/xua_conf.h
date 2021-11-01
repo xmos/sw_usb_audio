@@ -116,4 +116,27 @@
 // This define is used in sc_usb_audio/module_usb_audio/flashlib_user.c
 #define DFU_FLASH_DEVICE FL_QUADDEVICE_MX25R3235
 
+#ifdef __XC__
+void AudioHwRemote(chanend c);
+
+extern unsafe chanend uc_audiohw;
+
+#define USER_MAIN_DECLARATIONS chan c_audiohw;
+
+#define USER_MAIN_CORES on tile[1]: {\
+                                        par\
+                                        {\
+                                            unsafe{\
+                                                uc_audiohw = (chanend) c_audiohw;\
+                                            }\
+                                        }\
+                                    }\
+\
+                        on tile[0]: {\
+                                        par\
+                                        {\
+                                            AudioHwRemote(c_audiohw);\
+                                        }\
+                                    } 
+#endif
 #endif

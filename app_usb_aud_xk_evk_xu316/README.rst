@@ -12,11 +12,9 @@ Overview
 
 The firmware provides a high-speed USB Audio device designed to be compliant to version 2.0 of the USB Audio Class Specification based on the XMOS xCORE.ai device.
 
-Note, for correct operation external jumper cables must be attached between the following pins:
+Note, for correct operation external jumper cables must be attached between the following pins (required for 1v0 hardware only):
 
 - MCLK to X0D11 (J14)
-- SDA to X1D05 (J10)
-- SCL to X1D04 (J10)
 
 Key Features
 ............
