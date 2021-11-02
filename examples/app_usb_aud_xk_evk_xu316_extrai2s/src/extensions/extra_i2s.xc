@@ -27,10 +27,12 @@ void UserBufferManagementInit()
 
 }
 
+unsigned counter = 0;
+
 #pragma unsafe arrays
 void UserBufferManagement(unsigned sampsFromUsbToAudio[], unsigned sampsFromAudioToUsb[])
 {
-
+    
     unsafe
     {
         outuint((chanend) uc_i2s, 1);
@@ -44,6 +46,7 @@ void UserBufferManagement(unsigned sampsFromUsbToAudio[], unsigned sampsFromAudi
         {
             sampsFromAudioToUsb[i + EXTRA_I2S_CHAN_INDEX_IN] = inuint((chanend) uc_i2s);
         } 
+        
         chkct((chanend)uc_i2s, XS1_CT_END);
     }
 }
@@ -77,25 +80,35 @@ void i2s_data(server i2s_frame_callback_if i_i2s, chanend c)
                 break;
 
             case i_i2s.init(i2s_config_t &?i2s_config, tdm_config_t &?tdm_config):
-                i2s_config.mode = I2S_MODE_LEFT_JUSTIFIED;
-                // Complete setup
+                i2s_config.mode = I2S_MODE_I2S;
                 break;
+            
             case i_i2s.restart_check() -> i2s_restart_t restart:
                 // Inform the I2S slave whether it should restart or exit
                 break;
+            
             case i_i2s.receive(size_t num_in, int32_t samples[num_in]):
-                // Handle a received sample
+#pragma loop unroll
+                for(size_t i = 0; i < EXTRA_I2S_CHAN_COUNT_IN; i++)
+                {
+                    samplesIn[i] = samples[i];
+                }
                 break;
+
             case i_i2s.send(size_t num_out, int32_t samples[num_out]):
-                // Provide a sample to send
+#pragma loop unroll
+                for(size_t i = 0; i < EXTRA_I2S_CHAN_COUNT_OUT; i++)
+                {
+                    samples[i] = samplesOut[i];
+                }
                 break;
         }
     }
 }
 
-on tile[1]: in buffered port:32 p_i2s_din[1] = {XS1_PORT_1L};
-on tile[1]: in port p_i2s_bclk = XS1_PORT_1M;
-on tile[1]: in buffered port:32 p_i2s_lrclk = XS1_PORT_1O;
+on tile[1]: in buffered port:32 p_i2s_din[1] = {XS1_PORT_1M}; // X1D36
+on tile[1]: in port p_i2s_bclk = XS1_PORT_1O;                 // X1D38
+on tile[1]: in buffered port:32 p_i2s_lrclk = XS1_PORT_1P;    // X1D39
 
 on tile[1]: clock clk_bclk = XS1_CLKBLK_1;
 
