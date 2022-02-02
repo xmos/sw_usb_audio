@@ -5,7 +5,7 @@
 #include "app_usb_aud_xk_216_mc.h"
 #include "user_hid.h"
 
-#ifdef HID_CONTROLS
+#if HID_CONTROLS > 0
 in port p_sw = on tile[1] : XS1_PORT_4B;
 
 #define P_GPI_BUTA_SHIFT        0x00
@@ -24,7 +24,7 @@ in port p_sw = on tile[1] : XS1_PORT_4B;
  * 1: Scan Next Track
  * 2: Scan Prev Track
  * 3: Volume Up
- * 4: Volime Down
+ * 4: Volume Down
  * 5: Mute
  */
 
@@ -53,8 +53,10 @@ t_controlState state;
 
 unsigned lastA;
 
-void UserHIDGetData( unsigned char hidData[ HID_DATA_BYTES ])
+size_t UserHIDGetData( const unsigned id, unsigned char hidData[ HID_MAX_DATA_BYTES ])
 {
+    // There is only one report, so the id parameter is ignored
+
     /* Variables for buttons a, b, c and switch sw */
     unsigned a, b, c, sw, tmp;
 
@@ -75,6 +77,9 @@ void UserHIDGetData( unsigned char hidData[ HID_DATA_BYTES ])
     }
     else
     {
+        // Initialise data to zero for the cases where no actions are reported
+        hidData[0] = 0;
+
         /* Assign buttons A and B to play for single tap, next/prev for double tap */
         if(b)
         {
@@ -115,6 +120,14 @@ void UserHIDGetData( unsigned char hidData[ HID_DATA_BYTES ])
     	    multicontrol_count = 0;
         }
     }
+
+    // One byte of data is always returned
+    return 1;
 }
 
-#endif
+void UserHIDInit( void )
+{
+    state = STATE_IDLE;
+}
+
+#endif  // HID_CONTROLS > 0
