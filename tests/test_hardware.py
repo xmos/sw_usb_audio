@@ -227,13 +227,12 @@ def create_dfu_bin(board, config):
     dfu_bin_path = get_dfu_bin_path(board, config)
     sh.xflash(
         "--factory-version",
-        "14.3",
+        "15.1",
         "--upgrade",
         "1",
         firmware_path,
         "-o",
         dfu_bin_path,
-        "--no-compression",
     )
     return dfu_bin_path
 
@@ -550,7 +549,7 @@ def test_dfu(xmosdfu, build_with_dfu_test):
         time.sleep(2)  # Wait for adapters to enumerate
         # xflash the firmware
         firmware, dfu_bin = build_with_dfu_test
-        sh.xflash("--adapter-id", adapter_dut, "--no-compression", firmware)
+        sh.xflash("--adapter-id", adapter_dut, firmware)
         # Wait for device to enumerate
         time.sleep(10)
         # Run DFU test procedure
