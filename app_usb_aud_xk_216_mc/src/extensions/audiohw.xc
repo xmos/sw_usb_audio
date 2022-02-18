@@ -4,7 +4,7 @@
 #include <print.h>
 
 #include "gpio_access.h"
-#include "i2c_shared.h"
+#include "i2c.h"
 #include "cs4384.h"
 #include "cs5368.h"
 #include "cs2100.h"
@@ -20,16 +20,10 @@
 
 on tile[0] : out port p_gpio = XS1_PORT_8C;
 
-#ifndef IAP
-/* If IAP not enabled, i2c ports not declared - still needed for DAC config */
-on tile [0] : struct r_i2c r_i2c = {XS1_PORT_4A};
-#else
-extern struct r_i2c r_i2c;
-#endif
+port p_i2c = PORT_I2C;
 
-#define DAC_REGWRITE(reg, val) {data[0] = val; i2c_shared_master_write_reg(r_i2c, CS4384_I2C_ADDR, reg, data, 1);}
-#define DAC_REGREAD(reg, val)  {i2c_shared_master_read_reg(r_i2c, CS4384_I2C_ADDR, reg, val, 1);}
-#define ADC_REGWRITE(reg, val) {data[0] = val; i2c_shared_master_write_reg(r_i2c, CS5368_I2C_ADDR, reg, data, 1);}
+#define DAC_REGWRITE(reg, val) {result = i2c.write_reg(CS4384_I2C_ADDR, reg, val);}
+#define ADC_REGWRITE(reg, val) {result = i2c.write_reg(CS5368_I2C_ADDR, reg, val);}
 
 #ifdef USE_FRACTIONAL_N
 
@@ -40,14 +34,15 @@ extern struct r_i2c r_i2c;
 #define PLL_SYNC_FREQ 300
 #endif
 
-#define CS2100_REGREAD(reg, data)  {data[0] = 0xAA; i2c_master_read_reg(CS2100_I2C_DEVICE_ADDR, reg, data, 1, r_i2c);}
-#define CS2100_REGREAD_ASSERT(reg, data, expected)  {data[0] = 0xAA; i2c_master_read_reg(CS2100_I2C_DEVICE_ADDR, reg, data, 1, r_i2c); assert(data[0] == expected);}
-#define CS2100_REGWRITE(reg, val) {data[0] = val; i2c_master_write_reg(CS2100_I2C_DEVICE_ADDR, reg, data, 1, r_i2c);}
+#define CS2100_REGREAD(reg, data)  {data[0] = i2c.read_reg(CS2100_I2C_DEVICE_ADDR, reg, result);}
+#define CS2100_REGREAD_ASSERT(reg, data, expected)  {data[0] = i2c.read_reg(CS2100_I2C_DEVICE_ADDR, reg, result); assert(data[0] == expected);}
+#define CS2100_REGWRITE(reg, val) {result = i2c.write_reg(CS2100_I2C_DEVICE_ADDR, reg, val);}
 
 /* Init of CS2100 */
-void PllInit(void)
+void PllInit(client interface i2c_master_if i2c)
 {
     unsigned char data[1] = {0};
+    i2c_regop_res_t result;
 
 #if XCORE_200_MC_AUDIO_HW_VERSION < 2
     /* Enable init */
@@ -68,12 +63,15 @@ void PllInit(void)
     CS2100_REGREAD_ASSERT(CS2100_GLOBAL_CONFIG, data, 0x01);
     CS2100_REGREAD_ASSERT(CS2100_FUNC_CONFIG_1, data, 0x08);
     CS2100_REGREAD_ASSERT(CS2100_FUNC_CONFIG_2, data, 0x00);
+
+    i2c.shutdown();
 }
 
 /* Setup PLL multiplier */
-void PllMult(unsigned output, unsigned ref)
+void PllMult(unsigned output, unsigned ref, client interface i2c_master_if i2c)
 {
     unsigned char data[1] = {0};
+    i2c_regop_res_t result;
 
     /* PLL expects 12:20 format, convert output and ref to 12:20 */
     /* Shift up the dividend by 12 to retain format... */
@@ -115,9 +113,6 @@ void AudioHwInit()
     start_clock(clk_pll_sync);
 #endif
 
-    /* Init the i2c module */
-    i2c_shared_master_init(r_i2c);
-
     /* Assert reset to ADC and DAC */
     set_gpio(P_GPIO_DAC_RST_N, 0);
     set_gpio(P_GPIO_ADC_RST_N, 0);
@@ -138,7 +133,12 @@ void AudioHwInit()
     set_gpio(P_GPIO_PLL_SEL, 1);
 
     /* Initialise external PLL */
-    PllInit();
+    i2c_master_if i2c[1];
+    par
+    {
+        i2c_master_single_port(i2c, 1, p_i2c, 10, 0, 1, 0);
+        PllInit(i2c[0]);
+    }
 #endif
 
 #ifdef IAP
@@ -153,10 +153,10 @@ void AudioHwInit()
 /* Configures the external audio hardware for the required sample frequency.
  * See gpio.h for I2C helper functions and gpio access
  */
-void AudioHwConfig(unsigned samFreq, unsigned mClk, unsigned dsdMode,
-    unsigned sampRes_DAC, unsigned sampRes_ADC)
+void AudioHwConfig2(unsigned samFreq, unsigned mClk, unsigned dsdMode,
+    unsigned sampRes_DAC, unsigned sampRes_ADC, client interface i2c_master_if i2c)
 {
-	unsigned char data[1] = {0};
+    i2c_regop_res_t result;
 
     /* Put ADC and DAC into reset */
 	set_gpio(P_GPIO_ADC_RST_N, 0);
@@ -165,7 +165,7 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, unsigned dsdMode,
     /* Set master clock select appropriately */
 #if defined(USE_FRACTIONAL_N)
     /* Configure external fractional-n clock multiplier for 300Hz -> mClkFreq */
-    PllMult(mClk, PLL_SYNC_FREQ);
+    PllMult(mClk, PLL_SYNC_FREQ, i2c);
 #endif
     /* Allow some time for mclk to lock and MCLK to stabilise - this is important to avoid glitches at start of stream */
     {
@@ -176,6 +176,7 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, unsigned dsdMode,
     }
 
 #if defined(USE_FRACTIONAL_N)
+    unsigned char data[1] = {0};
     while(1)
     {
         /* Read Unlock Indicator in PLL as sanity check... */
@@ -363,6 +364,18 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, unsigned dsdMode,
         DAC_REGWRITE(CS4384_MODE_CTRL, 0b10000000);
     }
 #endif
+
+    i2c.shutdown();
     return;
 }
-//:
+
+void AudioHwConfig(unsigned samFreq, unsigned mClk, unsigned dsdMode,
+    unsigned sampRes_DAC, unsigned sampRes_ADC)
+{
+    i2c_master_if i2c[1];
+    par
+    {
+        i2c_master_single_port(i2c, 1, p_i2c, 10, 0, 1, 0);
+        AudioHwConfig2(samFreq, mClk, dsdMode, sampRes_DAC, sampRes_ADC, i2c[0]);
+    }
+}
