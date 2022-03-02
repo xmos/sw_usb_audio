@@ -1,6 +1,13 @@
 sw_usb_audio Change Log
 =======================
 
+UNRELEASED
+----------
+
+  * ADDED:     Support for XTC Tools 15
+  * CHANGED:   Use lib_i2c instead of sc_i2c modules
+  * CHANGED:   HID implementation for MC audio board buttons
+
 9.0.0
 -----
 
