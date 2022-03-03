@@ -1,7 +1,7 @@
 // Copyright 2022 XMOS LIMITED.
 // This Software is subject to the terms of the XMOS Public Licence: Version 1.
-#ifndef __hid_report_descriptor_h__
-#define __hid_report_descriptor_h__
+#ifndef _hid_report_descriptor_h_
+#define _hid_report_descriptor_h_
 
 #include "xua_hid_report.h"
 
@@ -165,4 +165,4 @@ static const USB_HID_Short_Item_t* const hidReportDescriptorItems[] = {
  */
 #define HID_REPORT_COUNT ( 1 )
 
-#endif // __hid_report_descriptor_h__
+#endif // _hid_report_descriptor_h_
