@@ -227,13 +227,12 @@ def create_dfu_bin(board, config):
     dfu_bin_path = get_dfu_bin_path(board, config)
     sh.xflash(
         "--factory-version",
-        "14.3",
+        "15.1",
         "--upgrade",
         "1",
         firmware_path,
         "-o",
         dfu_bin_path,
-        "--no-compression",
     )
     return dfu_bin_path
 
@@ -464,6 +463,8 @@ def test_analogue_output(xsig, fs, duration_ms, xsig_config, build, num_chans):
         # xrun the dut
         firmware = build
         sh.xrun("--adapter-id", adapter_dut, firmware)
+        # sleep to workaround bug where running the harness firmware can fail
+        time.sleep(1)
         # xrun --xscope the harness
         harness_firmware = get_firmware_path_harness("xcore200_mc")
         xscope_out = io.StringIO()
@@ -478,7 +479,7 @@ def test_analogue_output(xsig, fs, duration_ms, xsig_config, build, num_chans):
             _bg_exc=False,
         )
         # Wait for device(s) to enumerate
-        time.sleep(10)
+        time.sleep(9)
         # Run xsig for duration_ms + 2 seconds
         xsig_cmd = sh.Command(xsig)(
             fs, duration_ms + 2000, XSIG_CONFIG_ROOT / xsig_config, _bg=True
@@ -550,7 +551,7 @@ def test_dfu(xmosdfu, build_with_dfu_test):
         time.sleep(2)  # Wait for adapters to enumerate
         # xflash the firmware
         firmware, dfu_bin = build_with_dfu_test
-        sh.xflash("--adapter-id", adapter_dut, "--no-compression", firmware)
+        sh.xflash("--adapter-id", adapter_dut, firmware)
         # Wait for device to enumerate
         time.sleep(10)
         # Run DFU test procedure

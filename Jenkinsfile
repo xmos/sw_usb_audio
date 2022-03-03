@@ -35,16 +35,6 @@ pipeline {
         //}
         stage('Build') {
           steps {
-            // We should pull the audio analyzer bin in as a binary dependency
-            // Rather than build here
-            dir("${WORKSPACE}/sw_audio_analyzer/app_audio_analyzer_xcore200_mc") {
-              viewEnv() {
-                runXmake(".")
-              }
-            }
-            dir("${WORKSPACE}") {
-                stash includes: 'sw_audio_analyzer/app_audio_analyzer_xcore200_mc/bin/**/*', name: 'audio_analyzer_bin', useDefaultExcludes: false
-            }
             dir("${REPO}/tests") {
               viewEnv() {
                 // Build all firmware but don't run any tests
@@ -78,8 +68,8 @@ pipeline {
         }
         stage('Test') {
           steps {
-            dir("${WORKSPACE}") {
-              unstash 'audio_analyzer_bin'
+            dir("${WORKSPACE}/sw_audio_analyzer") {
+              copyArtifacts filter: '**/*.xe', fingerprintArtifacts: true, projectName: 'xmos-int/sw_audio_analyzer/master', selector: lastSuccessful()
             }
             dir("${REPO}") {
               unstash 'xk_216_mc_bin'
