@@ -117,14 +117,7 @@ def get_firmware_path_harness(board, config=None):
         )
 
 
-def get_app_path(board):
-    """ Gets the path to the app folder for a given board """
-
-    app_path = XMOS_ROOT / "sw_usb_audio" / f"app_usb_aud_{board}"
-    return app_path
-
-
-def get_firmware_path(board, config, output_name=None):
+def get_firmware_path(board, config):
     """ Gets the path to the firmware binary """
 
     firmware_path = (
@@ -135,12 +128,10 @@ def get_firmware_path(board, config, output_name=None):
         / f"{config}"
         / f"app_usb_aud_{board}_{config}.xe"
     )
-    if output_name is not None:
-        firmware_path = firmware_path.parent.parent / (output_name + ".xe")
     return firmware_path
 
 
-def get_dfu_bin_path(board, config, output_name=None):
+def get_dfu_bin_path(board, config):
     """ Gets the path to the DFU binary """
 
     dfu_bin_path = (
@@ -151,19 +142,7 @@ def get_dfu_bin_path(board, config, output_name=None):
         / f"{config}"
         / f"app_usb_aud_{board}_{config}.bin"
     )
-    if output_name is not None:
-        dfu_bin_path = dfu_bin_path.parent.parent / (output_name + ".bin")
     return dfu_bin_path
-
-
-def get_target_file(board):
-    target_file_dir = (
-        XMOS_ROOT / "sw_usb_audio" / f"app_usb_aud_{board}" / "src" / f"core"
-    )
-    for p in target_file_dir.iterdir():
-        if p.is_file() and p.suffix == ".xn":
-            return p
-    return None
 
 
 @pytest.fixture
@@ -237,85 +216,11 @@ def create_dfu_bin(board, config):
     return dfu_bin_path
 
 
-def build_board_config(board, config, output_name=None, xmake_args=[]):
-    """This function builds firmware with any specified xmake args
-    and returns paths to the resulting xe and bin files
-    """
-    app_path = get_app_path(board)
-    with pushd(app_path):
-        # Clean
-        sh.xmake.clean(f"CONFIG={config}", "FULL=1", *xmake_args)
-        # Make
-        sh.xmake(f"CONFIG={config}", "FULL=1", *xmake_args)
-        # Create a DFU bin
-        dfu_bin_path = create_dfu_bin(board, config)
-
-    firmware_path = get_firmware_path(board, config)
-
-    if output_name is not None:
-        # Rename if output_name is given
-        output_firmware_path = get_firmware_path(board, config, output_name)
-        output_dfu_bin_path = get_dfu_bin_path(board, config, output_name)
-        firmware_path.rename(output_firmware_path)
-        dfu_bin_path.rename(output_dfu_bin_path)
-        return output_firmware_path, output_dfu_bin_path
-
-    return firmware_path, dfu_bin_path
-
-
 @pytest.fixture
-def build(request, pytestconfig):
-    """ Builds firmware only """
-
-    build_only = pytestconfig.getoption("build_only")
-    test_only = pytestconfig.getoption("test_only")
-
-    assert not (build_only and test_only), "Build only and test only cannot both be set"
-
+def build(request):
     board, config = request.param[:2]
-    output_name = config
 
-    if test_only:
-        # Don't build anything
-        # First 3 args specify the dfu/firmware names
-        firmware = get_firmware_path(board, config, output_name)
-    else:
-        firmware, _ = build_board_config(board, config, output_name)
-
-    if build_only:
-        return None  # Signal to the test to skip
-
-    return firmware
-
-
-@pytest.fixture
-def build_with_dfu_test(request, pytestconfig):
-    """ Builds firmware and creates a DFU test binary """
-
-    build_only = pytestconfig.getoption("build_only")
-    test_only = pytestconfig.getoption("test_only")
-
-    assert not (build_only and test_only), "Build only and test only cannot both be set"
-
-    board, config = request.param[:2]
-    factory_output_name = config
-    dfu_output_name = config + "_dfu"
-
-    if test_only:
-        # Don't build anything
-        # First 3 args specify the dfu/firmware names
-        firmware = get_firmware_path(board, config, factory_output_name)
-        dfu_bin = get_dfu_bin_path(board, config, dfu_output_name)
-    else:
-        firmware, _ = build_board_config(board, config, factory_output_name)
-        _, dfu_bin = build_board_config(
-            board, config, dfu_output_name, xmake_args=["TEST_DFU_1=1"]
-        )
-
-    if build_only:
-        return None  # Signal to the test to skip
-
-    return firmware, dfu_bin
+    return get_firmware_path(board, config)
 
 
 def check_analyzer_output(analyzer_output: List[str], expected_frequencies: int):
@@ -414,8 +319,6 @@ def run_audio_command(runtime, exe, *args):
 @pytest.mark.parametrize("build", [("xk_216_mc", "2i10o10xxxxxx")], indirect=True)
 @pytest.mark.parametrize("num_chans", [8])
 def test_analogue_input(xsig, fs, duration_ms, xsig_config, build, num_chans):
-    if build is None:
-        pytest.skip("Build not present")
     with xtagctl.acquire("usb_audio_mc_xs2_dut", "usb_audio_mc_xs2_harness") as (
         adapter_dut,
         adapter_harness,
@@ -449,8 +352,6 @@ def test_analogue_input(xsig, fs, duration_ms, xsig_config, build, num_chans):
 @pytest.mark.parametrize("build", [("xk_216_mc", "2i10o10xxxxxx")], indirect=True)
 @pytest.mark.parametrize("num_chans", [8])
 def test_analogue_output(xsig, fs, duration_ms, xsig_config, build, num_chans):
-    if build is None:
-        pytest.skip("Build not present")
     with xtagctl.acquire("usb_audio_mc_xs2_dut", "usb_audio_mc_xs2_harness") as (
         adapter_dut,
         adapter_harness,
@@ -510,8 +411,6 @@ def test_analogue_output(xsig, fs, duration_ms, xsig_config, build, num_chans):
 @pytest.mark.parametrize("build", [("xk_216_mc", "2i16o16xxxaax")], indirect=True)
 @pytest.mark.parametrize("num_chans", [10])
 def test_spdif_input(xsig, fs, duration_ms, xsig_config, build, num_chans):
-    if build is None:
-        pytest.skip("Build not present")
     with xtagctl.acquire("usb_audio_mc_xs2_dut", "usb_audio_mc_xs2_harness") as (
         adapter_dut,
         adapter_harness,
@@ -539,18 +438,15 @@ def test_spdif_input(xsig, fs, duration_ms, xsig_config, build, num_chans):
         # assert check_analyzer_output(xsig_lines, expected_freqs)
 
 
-@pytest.mark.parametrize(
-    "build_with_dfu_test", [("xk_216_mc", "2i10o10xxxxxx")], indirect=True
-)
-def test_dfu(xmosdfu, build_with_dfu_test):
-    if build_with_dfu_test is None:
-        pytest.skip("Build not present")
+@pytest.mark.parametrize("board", ["xk_216_mc"])
+def test_dfu(xmosdfu, board):
     with xtagctl.acquire("usb_audio_mc_xs2_dut") as adapter_dut:
         # Reset both xtags
         xtagctl.reset_adapter(adapter_dut)
         time.sleep(2)  # Wait for adapters to enumerate
         # xflash the firmware
-        firmware, dfu_bin = build_with_dfu_test
+        firmware = get_firmware_path(board, 'upgrade1')
+        dfu_bin = create_dfu_bin(board, 'upgrade2')
         sh.xflash("--adapter-id", adapter_dut, firmware)
         # Wait for device to enumerate
         time.sleep(10)
