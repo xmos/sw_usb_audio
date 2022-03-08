@@ -166,7 +166,7 @@ void AudioHwConfig2(unsigned samFreq, unsigned mClk, unsigned dsdMode,
 #if defined(USE_FRACTIONAL_N)
     /* Configure external fractional-n clock multiplier for 300Hz -> mClkFreq */
     PllMult(mClk, PLL_SYNC_FREQ, i2c);
-#endif
+    
     /* Allow some time for mclk to lock and MCLK to stabilise - this is important to avoid glitches at start of stream */
     {
         timer t;
@@ -175,7 +175,6 @@ void AudioHwConfig2(unsigned samFreq, unsigned mClk, unsigned dsdMode,
         t when timerafter(time+AUDIO_PLL_LOCK_DELAY) :> void;
     }
 
-#if defined(USE_FRACTIONAL_N)
     unsigned char data[1] = {0};
     while(1)
     {
