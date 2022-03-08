@@ -35,14 +35,13 @@ pipeline {
         //}
         stage('Build') {
           steps {
-            dir("${REPO}/tests") {
+            dir("${REPO}/app_usb_aud_xk_216_mc") {
               viewEnv() {
-                // Build all firmware but don't run any tests
-                runPytest('--numprocesses=1 --build-only')
+                sh 'xmake -j16 TEST_CONFIGS=1'
               }
             }
             dir("${REPO}") {
-              stash includes: 'app_usb_aud_xk_216_mc/bin/**/*', name: 'xk_216_mc_bin', useDefaultExcludes: false
+              stash includes: 'app_usb_aud_xk_216_mc/bin/**/*.xe', name: 'xk_216_mc_bin', useDefaultExcludes: false
             }
           }
         }
@@ -79,7 +78,7 @@ pipeline {
                   // We have to work around microphone permission issues
                   // For more info, see the DevOps section of the XMOS wiki
                   withEnv(["JENKINS=1"]) {
-                    runPytest('--numprocesses=1 --test-only')
+                    runPytest('--numprocesses=1')
                   }
                 }
               }
