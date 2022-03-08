@@ -323,10 +323,6 @@ def test_analogue_input(xsig, fs, duration_ms, xsig_config, build, num_chans):
         adapter_dut,
         adapter_harness,
     ):
-        # Reset both xtags
-        xtagctl.reset_adapter(adapter_dut)
-        xtagctl.reset_adapter(adapter_harness)
-        time.sleep(2)  # Wait for adapters to enumerate
         # xrun the harness
         harness_firmware = get_firmware_path_harness("xcore200_mc")
         sh.xrun("--adapter-id", adapter_harness, harness_firmware)
@@ -356,11 +352,6 @@ def test_analogue_output(xsig, fs, duration_ms, xsig_config, build, num_chans):
         adapter_dut,
         adapter_harness,
     ):
-        print(f"Adapter DUT: {adapter_dut}, Adapter harness: {adapter_harness}")
-        # Reset both xtags
-        xtagctl.reset_adapter(adapter_dut)
-        xtagctl.reset_adapter(adapter_harness)
-        time.sleep(2)  # Wait for adapters to enumerate
         # xrun the dut
         firmware = build
         sh.xrun("--adapter-id", adapter_dut, firmware)
@@ -415,10 +406,6 @@ def test_spdif_input(xsig, fs, duration_ms, xsig_config, build, num_chans):
         adapter_dut,
         adapter_harness,
     ):
-        # Reset both xtags
-        xtagctl.reset_adapter(adapter_dut)
-        xtagctl.reset_adapter(adapter_harness)
-        time.sleep(2)  # Wait for adapters to enumerate
         # xrun the harness
         harness_firmware = get_firmware_path_harness("xcore200_mc")
         sh.xrun("--adapter-id", adapter_harness, harness_firmware)
@@ -441,9 +428,6 @@ def test_spdif_input(xsig, fs, duration_ms, xsig_config, build, num_chans):
 @pytest.mark.parametrize("board", ["xk_216_mc"])
 def test_dfu(xmosdfu, board):
     with xtagctl.acquire("usb_audio_mc_xs2_dut") as adapter_dut:
-        # Reset both xtags
-        xtagctl.reset_adapter(adapter_dut)
-        time.sleep(2)  # Wait for adapters to enumerate
         # xflash the firmware
         firmware = get_firmware_path(board, 'upgrade1')
         dfu_bin = create_dfu_bin(board, 'upgrade2')
