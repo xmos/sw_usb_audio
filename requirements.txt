@@ -7,7 +7,6 @@ requests==2.24.0
 # viewfile dependencies
 -e ../infr_scripts_py
 -e ../infr_apps
--e ../audio_test_tools/python
 -e ../xtagctl
 
 # dev/test packages
