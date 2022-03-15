@@ -26,6 +26,31 @@ XSIG_PATH = Path(__file__).parent / "tools" / "xsig"
 XSIG_CONFIG_ROOT = XMOS_ROOT / "usb_audio_testing/xsig_configs"
 
 
+def wait_for_enumeration(pid, vid, timeout=10):
+    for _ in range(timeout):
+        time.sleep(1)
+
+        if platform.system() == "Darwin":
+            prof_out = sh.system_profiler.SPUSBDataType()
+            prof_lines = prof_out.split("\n")
+            current_pid = None
+            current_vid = None
+            for line in prof_lines:
+                if line.strip().startswith("Product ID:"):
+                    current_pid = int(line.split()[2], 16)
+                if line.strip().startswith("Vendor ID:"):
+                    current_vid = int(line.split()[2], 16)
+                if current_pid == pid and current_vid == vid:
+                    return
+        elif platform.system() == "Linux":
+            lsusb_out = sh.lsusb("-v", "-d", f"{hex(vid)}:{hex(pid)}")
+            for line in lsusb_out.split("\n"):
+                if line.strip().startswith("bcdDevice"):
+                    return
+
+    assert False, f"Device failed to enumerate in {timeout}s"
+
+
 def get_firmware_path_harness(board, config=None):
     if config is None:
         return (
@@ -265,8 +290,9 @@ def test_analogue_input(xsig, board, config, fs, duration, num_chans):
         # xflash the firmware
         firmware = get_firmware_path(board, config)
         sh.xrun("--adapter-id", adapter_dut, firmware)
-        # Wait for device to enumerate
-        time.sleep(10)
+
+        wait_for_enumeration(0x8, 0x20B1)
+
         # Run xsig
         xsig_duration = (duration_ms / 1000) + 5
         xsig_output = run_audio_command(
@@ -373,8 +399,9 @@ def test_analogue_output(xsig, board, config, fs, duration, num_chans):
             _bg=True,
             _bg_exc=False,
         )
-        # Wait for device(s) to enumerate
-        time.sleep(9)
+
+        wait_for_enumeration(0x8, 0x20B1)
+
         # Run xsig for duration_ms + 2 seconds
         xsig_cmd = sh.Command(xsig)(
             fs, duration_ms + 2000, XSIG_CONFIG_ROOT / xsig_config, _bg=True
