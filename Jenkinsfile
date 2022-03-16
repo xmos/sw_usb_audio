@@ -7,6 +7,10 @@ pipeline {
   options {
     skipDefaultCheckout()
   }
+  parameters {
+      choice(name: 'TEST_LEVEL', choices: ['smoke', 'nightly', 'weekend'],
+             description: 'The level of test coverage to run')
+  }
   environment {
     REPO = 'sw_usb_audio'
     VIEW = getViewName(REPO)
@@ -77,7 +81,9 @@ pipeline {
                   // We have to work around microphone permission issues
                   // For more info, see the DevOps section of the XMOS wiki
                   withEnv(["JENKINS=1"]) {
-                    runPytest('--numprocesses=1')
+                    withVenv() {
+                      sh "pytest -n 1 -m ${params.TEST_LEVEL} --junitxml=pytest_result.xml"
+                    }
                   }
                 }
               }

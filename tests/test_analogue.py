@@ -1,5 +1,4 @@
-# Copyright (c) 2020, XMOS Ltd, All rights reserved
-from contextlib import contextmanager
+# Copyright (c) 2020-2022, XMOS Ltd, All rights reserved
 import io
 import os
 from pathlib import Path
@@ -15,86 +14,16 @@ from typing import List
 import xtagctl
 import zipfile
 
-# import hardware_test_tools # Required for SPDIF test
-
 
 XMOS_ROOT = Path(os.environ["XMOS_ROOT"])
-
 XSIG_LINUX_URL = (
     "http://intranet.xmos.local/projects/usb_audio_regression_files/xsig/linux/xsig"
 )
-XMOSDFU_LINUX_URL = "http://intranet.xmos.local/projects/usb_audio_regression_files/xmosdfu/linux/xmosdfu"
 XSIG_MACOS_URL = (
     "http://intranet.xmos.local/projects/usb_audio_regression_files/xsig/macos/xsig.zip"
 )
-XMOSDFU_MACOS_URL = "http://intranet.xmos.local/projects/usb_audio_regression_files/xmosdfu/macos/xmosdfu.zip"
-
 XSIG_PATH = Path(__file__).parent / "tools" / "xsig"
-XMOSDFU_PATH = Path(__file__).parent / "tools" / "xmosdfu"
 XSIG_CONFIG_ROOT = XMOS_ROOT / "usb_audio_testing/xsig_configs"
-
-
-@contextmanager
-def pushd(new_dir):
-    last_dir = os.getcwd()
-    os.chdir(new_dir)
-    try:
-        yield
-    finally:
-        os.chdir(last_dir)
-
-
-def set_clock_source_alsa(card_num, source: str):
-    """ Sets the clock source of the USB audio device """
-
-    if source == "INTERNAL":
-        sh.amixer(
-            f"-c{card_num}",
-            "set",
-            "XMOS Clock Selector Clock Source",
-            "XMOS Internal Clock",
-        )
-    elif source == "SPDIF":
-        sh.amixer(
-            f"-c{card_num}",
-            "set",
-            "XMOS Clock Selector Clock Source",
-            "XMOS S/PDIF Clock",
-        )
-
-
-def get_bcd_version(vid: int, pid: int) -> str:
-    """Gets the BCD Device version number for a connected USB device with the
-    specified VID and PID
-
-    TODO: Windows support
-    """
-
-    if platform.system() == "Darwin":
-        prof_out = sh.system_profiler.SPUSBDataType()
-        prof_lines = prof_out.split("\n")
-        xcore_lines = []
-        current_pid = None
-        current_vid = None
-        for i, line in enumerate(prof_lines):
-            if line.strip().startswith("Product ID:"):
-                current_pid = int(line.split()[2], 16)
-            if line.strip().startswith("Vendor ID:"):
-                current_vid = int(line.split()[2], 16)
-            if line.strip().startswith("Version"):
-                if current_pid == pid and current_vid == vid:
-                    return line.split()[1].strip()
-
-        raise Exception(f"BCD Device not found: \n{prof_out}")
-    elif platform.system() == "Linux":
-        lsusb_out = sh.lsusb("-v", "-d", f"{hex(vid)}:{hex(pid)}")
-
-        for line in lsusb_out.split("\n"):
-            if line.strip().startswith("bcdDevice"):
-                version_str = line.split()[1]
-                return version_str.strip()
-
-        raise Exception(f"BCD Device not found: \n{lsusb_out}")
 
 
 def get_firmware_path_harness(board, config=None):
@@ -131,20 +60,6 @@ def get_firmware_path(board, config):
     return firmware_path
 
 
-def get_dfu_bin_path(board, config):
-    """ Gets the path to the DFU binary """
-
-    dfu_bin_path = (
-        XMOS_ROOT
-        / "sw_usb_audio"
-        / f"app_usb_aud_{board}"
-        / "bin"
-        / f"{config}"
-        / f"app_usb_aud_{board}_{config}.bin"
-    )
-    return dfu_bin_path
-
-
 @pytest.fixture
 def xsig():
     """ Gets xsig from projects network drive """
@@ -169,58 +84,6 @@ def xsig():
 
         XSIG_PATH.chmod(stat.S_IREAD | stat.S_IWRITE | stat.S_IEXEC)
     return XSIG_PATH
-
-
-@pytest.fixture
-def xmosdfu():
-    """Gets xmosdfu from projects network drive """
-
-    XMOSDFU_PATH.parent.mkdir(parents=True, exist_ok=True)
-
-    if platform.system() == "Darwin":
-        r = requests.get(XMOSDFU_MACOS_URL)
-        zip_path = XMOSDFU_PATH.parent / "xmosdfu.zip"
-        with open(zip_path, "wb") as f:
-            f.write(r.content)
-
-        # Unzip
-        with zipfile.ZipFile(zip_path, "r") as zip_ref:
-            zip_ref.extractall(XMOSDFU_PATH.parent)
-
-        XMOSDFU_PATH.chmod(stat.S_IREAD | stat.S_IWRITE | stat.S_IEXEC)
-    elif platform.system() == "Linux":
-
-        r = requests.get(XMOSDFU_LINUX_URL)
-        with open(XMOSDFU_PATH, "wb") as f:
-            f.write(r.content)
-
-        XMOSDFU_PATH.chmod(stat.S_IREAD | stat.S_IWRITE | stat.S_IEXEC)
-
-    return XMOSDFU_PATH
-
-
-def create_dfu_bin(board, config):
-    """ Calls xflash on an existing firmware binary to create a DFU binary """
-
-    firmware_path = get_firmware_path(board, config)
-    dfu_bin_path = get_dfu_bin_path(board, config)
-    sh.xflash(
-        "--factory-version",
-        "15.1",
-        "--upgrade",
-        "1",
-        firmware_path,
-        "-o",
-        dfu_bin_path,
-    )
-    return dfu_bin_path
-
-
-@pytest.fixture
-def build(request):
-    board, config = request.param[:2]
-
-    return get_firmware_path(board, config)
 
 
 def check_analyzer_output(analyzer_output: List[str], expected_frequencies: int):
@@ -313,12 +176,85 @@ def run_audio_command(runtime, exe, *args):
     return stdout
 
 
-@pytest.mark.parametrize("fs", [48000])
-@pytest.mark.parametrize("duration_ms", [10000])
-@pytest.mark.parametrize("xsig_config", ["mc_analogue_input_8ch.json"])
-@pytest.mark.parametrize("build", [("xk_216_mc", "2i10o10xxxxxx")], indirect=True)
-@pytest.mark.parametrize("num_chans", [8])
-def test_analogue_input(xsig, fs, duration_ms, xsig_config, build, num_chans):
+def mark_tests(level_mark, testcases):
+    return [pytest.param(*tc, marks=level_mark) for tc in testcases]
+
+
+# Test cases are defined by a tuple of (board, config, sample rate, seconds duration, number of channels)
+analogue_input_configs = [
+    # smoke level tests
+    *mark_tests(pytest.mark.smoke, [
+        #('xk_216_mc', '2i8o8xxxxx_tdm8',        96000, 10, 8),
+        #('xk_216_mc', '2i8o8xxxxx_tdm8_slave',  48000, 10, 8),
+        #('xk_216_mc', '2i8o8xxxxx_tdm8_slave',  96000, 10, 8),
+        ('xk_216_mc', '2i10o10xxxxxx',         192000, 10, 8),
+        ('xk_216_mc', '2i10o10xxxxxx_slave',   192000, 10, 8),
+        ('xk_216_mc', '2i10o10msxxxx',         192000, 10, 8),
+        ('xk_216_mc', '2i10o10xsxxxx_mix8',    192000, 10, 8),
+        #('xk_216_mc', '2i10o10xssxxx',         192000, 10, 8)
+    ]),
+
+    # nightly level tests
+    *mark_tests(pytest.mark.nightly, [
+        #('xk_216_mc', '2i8o8xxxxxx_tdm8',        44100, 600, 8),
+        #('xk_216_mc', '2i8o8xxxxxx_tdm8_slave',  44100, 600, 8),
+        ('xk_216_mc', '2i10o10xxxxxx',           48000, 600, 8),
+        ('xk_216_mc', '2i10o10xxxxxx_slave',    192000, 600, 8),
+        ('xk_216_mc', '2i10o10msxxxx',           48000, 600, 8),
+        ('xk_216_mc', '2i10o10xsxxxx_mix8',      48000, 600, 8),
+        #('xk_216_mc', '2i10o10xssxxx',           48000, 600, 8),
+        ('xk_216_mc', '2i10o10xsxxxd',           48000, 600, 8),
+        ('xk_216_mc', '2i10o10xsxxxd',          192000, 600, 8),
+    ]),
+
+    # weekend level tests
+    *mark_tests(pytest.mark.weekend, [
+        #('xk_216_mc', '2i8o8xxxxx_tdm8',         48000, 1800, 8),
+        #('xk_216_mc', '2i8o8xxxxx_tdm8',         88200, 1800, 8),
+        #('xk_216_mc', '2i8o8xxxxx_tdm8',         96000, 1800, 8),
+        #('xk_216_mc', '2i8o8xxxxx_tdm8_slave',   48000, 1800, 8),
+        #('xk_216_mc', '2i8o8xxxxx_tdm8_slave',   88200, 1800, 8),
+        #('xk_216_mc', '2i8o8xxxxx_tdm8_slave',   96000, 1800, 8),
+        ('xk_216_mc', '2i10o10xxxxxx',           44100, 1800, 8),
+        ('xk_216_mc', '2i10o10xxxxxx',           88200, 1800, 8),
+        ('xk_216_mc', '2i10o10xxxxxx',           96000, 1800, 8),
+        ('xk_216_mc', '2i10o10xxxxxx',          176400, 1800, 8),
+        ('xk_216_mc', '2i10o10xxxxxx_slave',     44100, 1800, 8),
+        ('xk_216_mc', '2i10o10xxxxxx_slave',     48000, 1800, 8),
+        ('xk_216_mc', '2i10o10xxxxxx_slave',     88200, 1800, 8),
+        ('xk_216_mc', '2i10o10xxxxxx_slave',     96000, 1800, 8),
+        ('xk_216_mc', '2i10o10xxxxxx_slave',    176400, 1800, 8),
+        ('xk_216_mc', '2i10o10xxxxxx_slave',    192000, 1800, 8),
+        ('xk_216_mc', '2i10o10msxxxx',           44100, 1800, 8),
+        ('xk_216_mc', '2i10o10msxxxx',           88200, 1800, 8),
+        ('xk_216_mc', '2i10o10msxxxx',           96000, 1800, 8),
+        ('xk_216_mc', '2i10o10msxxxx',          176400, 1800, 8),
+        ('xk_216_mc', '2i10o10xsxxxx_mix8',      44100, 1800, 8),
+        ('xk_216_mc', '2i10o10xsxxxx_mix8',      48000, 1800, 8),
+        ('xk_216_mc', '2i10o10xsxxxx_mix8',      96000, 1800, 8),
+        ('xk_216_mc', '2i10o10xsxxxx_mix8',     176400, 1800, 8),
+        ('xk_216_mc', '2i10o10xsxxxx_mix8',      48000, 1800, 8),
+        #('xk_216_mc', '2i10o10xssxxx',           44100, 1800, 8),
+        #('xk_216_mc', '2i10o10xssxxx',           88200, 1800, 8),
+        #('xk_216_mc', '2i10o10xssxxx',           96000, 1800, 8),
+        #('xk_216_mc', '2i10o10xssxxx',          176400, 1800, 8),
+        ('xk_216_mc', '2i10o10xsxxxd',           44100, 1800, 8),
+        ('xk_216_mc', '2i10o10xsxxxd',           88200, 1800, 8),
+        ('xk_216_mc', '2i10o10xsxxxd',           96000, 1800, 8),
+        ('xk_216_mc', '2i10o10xsxxxd',          176400, 1800, 8)
+    ])
+]
+
+
+@pytest.mark.parametrize(["board", "config", "fs", "duration", "num_chans"], analogue_input_configs)
+def test_analogue_input(xsig, board, config, fs, duration, num_chans):
+    if num_chans == 8:
+        xsig_config = "mc_analogue_input_8ch.json"
+    else:
+        assert False, f"Invalid channel count {num_chans}"
+
+    duration_ms = duration * 1000
+
     with xtagctl.acquire("usb_audio_mc_xs2_dut", "usb_audio_mc_xs2_harness") as (
         adapter_dut,
         adapter_harness,
@@ -327,7 +263,7 @@ def test_analogue_input(xsig, fs, duration_ms, xsig_config, build, num_chans):
         harness_firmware = get_firmware_path_harness("xcore200_mc")
         sh.xrun("--adapter-id", adapter_harness, harness_firmware)
         # xflash the firmware
-        firmware = build
+        firmware = get_firmware_path(board, config)
         sh.xrun("--adapter-id", adapter_dut, firmware)
         # Wait for device to enumerate
         time.sleep(10)
@@ -342,18 +278,85 @@ def test_analogue_input(xsig, fs, duration_ms, xsig_config, build, num_chans):
         assert check_analyzer_output(xsig_lines, expected_freqs)
 
 
-@pytest.mark.parametrize("fs", [48000])
-@pytest.mark.parametrize("duration_ms", [10000])
-@pytest.mark.parametrize("xsig_config", ["mc_analogue_output.json"])
-@pytest.mark.parametrize("build", [("xk_216_mc", "2i10o10xxxxxx")], indirect=True)
-@pytest.mark.parametrize("num_chans", [8])
-def test_analogue_output(xsig, fs, duration_ms, xsig_config, build, num_chans):
+# Test cases are defined by a tuple of (board, config, sample rate, seconds duration, number of channels)
+analogue_output_configs = [
+    # smoke level tests
+    *mark_tests(pytest.mark.smoke, [
+        #('xk_216_mc', '1i2o2xxxxxx',            48000, 10, 2),
+        #('xk_216_mc', '2i8o8xxxxx_tdm8',        96000, 10, 8),
+        #('xk_216_mc', '2i8o8xxxxx_tdm8_slave',  48000, 10, 8),
+        #('xk_216_mc', '2i8o8xxxxx_tdm8_slave',  96000, 10, 8),
+        ('xk_216_mc', '2i10o10xxxxxx',         192000, 10, 8),
+        ('xk_216_mc', '2i10o10xxxxxx_slave',   192000, 10, 8),
+        ('xk_216_mc', '2i10o10msxxxx',         192000, 10, 8),
+        ('xk_216_mc', '2i10o10xsxxxx_mix8',    192000, 10, 8),
+        #('xk_216_mc', '2i10o10xssxxx',         192000, 10, 8)
+    ]),
+
+    # nightly level tests
+    *mark_tests(pytest.mark.nightly, [
+        #('xk_216_mc', '1i2o2xxxxxx',            44100, 600, 2),
+        #('xk_216_mc', '1i2o2xxxxxx',            48000, 600, 2),
+        #('xk_216_mc', '2i8o8xxxxx_tdm8',        44100, 600, 8),
+        #('xk_216_mc', '2i8o8xxxxx_tdm8_slave',  44100, 600, 8),
+        ('xk_216_mc', '2i10o10xxxxxx',          48000, 600, 8),
+        ('xk_216_mc', '2i10o10xxxxxx_slave',   192000, 600, 8),
+        ('xk_216_mc', '2i10o10msxxxx',          48000, 600, 8),
+        ('xk_216_mc', '2i10o10xsxxxx_mix8',     48000, 600, 8),
+        #('xk_216_mc', '2i10o10xssxxx',          48000, 600, 8)
+    ]),
+
+    # weekend level tests
+    *mark_tests(pytest.mark.weekend, [
+        #('xk_216_mc', '1i2o2xxxxxx',            44100, 1800, 2),
+        #('xk_216_mc', '1i2o2xxxxxx',            48000, 1800, 2),
+        #('xk_216_mc', '2i8o8xxxxx_tdm8',        48000, 1800, 8),
+        #('xk_216_mc', '2i8o8xxxxx_tdm8',        88200, 1800, 8),
+        #('xk_216_mc', '2i8o8xxxxx_tdm8',        96000, 1800, 8),
+        #('xk_216_mc', '2i8o8xxxxx_tdm8_slave',  48000, 1800, 8),
+        #('xk_216_mc', '2i8o8xxxxx_tdm8_slave',  88200, 1800, 8),
+        #('xk_216_mc', '2i8o8xxxxx_tdm8_slave',  96000, 1800, 8),
+        ('xk_216_mc', '2i10o10xxxxxx',          44100, 1800, 8),
+        ('xk_216_mc', '2i10o10xxxxxx',          88200, 1800, 8),
+        ('xk_216_mc', '2i10o10xxxxxx',          96000, 1800, 8),
+        ('xk_216_mc', '2i10o10xxxxxx',         176400, 1800, 8),
+        ('xk_216_mc', '2i10o10xxxxxx_slave',    44100, 1800, 8),
+        ('xk_216_mc', '2i10o10xxxxxx_slave',    48000, 1800, 8),
+        ('xk_216_mc', '2i10o10xxxxxx_slave',    88200, 1800, 8),
+        ('xk_216_mc', '2i10o10xxxxxx_slave',    96000, 1800, 8),
+        ('xk_216_mc', '2i10o10xxxxxx_slave',   176400, 1800, 8),
+        ('xk_216_mc', '2i10o10xxxxxx_slave',   192000, 1800, 8),
+        ('xk_216_mc', '2i10o10msxxxx',          44100, 1800, 8),
+        ('xk_216_mc', '2i10o10msxxxx',          88200, 1800, 8),
+        ('xk_216_mc', '2i10o10msxxxx',          96000, 1800, 8),
+        ('xk_216_mc', '2i10o10msxxxx',         176400, 1800, 8),
+        ('xk_216_mc', '2i10o10xsxxxx_mix8',     44100, 1800, 8),
+        ('xk_216_mc', '2i10o10xsxxxx_mix8',     88200, 1800, 8),
+        ('xk_216_mc', '2i10o10xsxxxx_mix8',     96000, 1800, 8),
+        ('xk_216_mc', '2i10o10xsxxxx_mix8',    176400, 1800, 8),
+        #('xk_216_mc', '2i10o10xssxxx',          44100, 1800, 8),
+        #('xk_216_mc', '2i10o10xssxxx',          88200, 1800, 8),
+        #('xk_216_mc', '2i10o10xssxxx',          96000, 1800, 8),
+        #('xk_216_mc', '2i10o10xssxxx',         176400, 1800, 8)
+    ])
+]
+
+
+@pytest.mark.parametrize(["board", "config", "fs", "duration", "num_chans"], analogue_output_configs)
+def test_analogue_output(xsig, board, config, fs, duration, num_chans):
+    if num_chans == 8:
+        xsig_config = "mc_analogue_output.json"
+    else:
+        assert False, f"Invalid channel count {num_chans}"
+
+    duration_ms = duration * 1000
+
     with xtagctl.acquire("usb_audio_mc_xs2_dut", "usb_audio_mc_xs2_harness") as (
         adapter_dut,
         adapter_harness,
     ):
         # xrun the dut
-        firmware = build
+        firmware = get_firmware_path(board, config)
         sh.xrun("--adapter-id", adapter_dut, firmware)
         # sleep to workaround bug where running the harness firmware can fail
         time.sleep(1)
@@ -393,74 +396,3 @@ def test_analogue_output(xsig, fs, duration_ms, xsig_config, build, num_chans):
 
         expected_freqs = [((i + 1) * 1000) + 500 for i in range(num_chans)]
         assert check_analyzer_output(xscope_lines, expected_freqs)
-
-
-@pytest.mark.skip(reason="SPDIF test is WIP")
-@pytest.mark.parametrize("fs", [48000])
-@pytest.mark.parametrize("duration_ms", [10000])
-@pytest.mark.parametrize("xsig_config", ["mc_digital_input_8ch.json"])
-@pytest.mark.parametrize("build", [("xk_216_mc", "2i16o16xxxaax")], indirect=True)
-@pytest.mark.parametrize("num_chans", [10])
-def test_spdif_input(xsig, fs, duration_ms, xsig_config, build, num_chans):
-    with xtagctl.acquire("usb_audio_mc_xs2_dut", "usb_audio_mc_xs2_harness") as (
-        adapter_dut,
-        adapter_harness,
-    ):
-        # xrun the harness
-        harness_firmware = get_firmware_path_harness("xcore200_mc")
-        sh.xrun("--adapter-id", adapter_harness, harness_firmware)
-        # xflash the firmware
-        firmware = build
-        sh.xrun("--adapter-id", adapter_dut, firmware)
-        # Wait for device to enumerate
-        time.sleep(10)
-        # Set the clock source to SPDIF
-        card_num, dev_num = hardware_test_tools.find_aplay_device("xCORE USB Audio")
-        set_clock_source_alsa(card_num, "SPDIF")
-        # Run xsig
-        xsig_output = sh.Command(xsig)(fs, duration_ms, XSIG_CONFIG_ROOT / xsig_config)
-        xsig_lines = xsig_output.split("\n")
-        # Check output
-        # expected_freqs = [(i+1) * 1000 for i in range(num_chans)]
-        # assert check_analyzer_output(xsig_lines, expected_freqs)
-
-
-@pytest.mark.parametrize("board", ["xk_216_mc"])
-def test_dfu(xmosdfu, board):
-    with xtagctl.acquire("usb_audio_mc_xs2_dut") as adapter_dut:
-        # xflash the firmware
-        firmware = get_firmware_path(board, 'upgrade1')
-        dfu_bin = create_dfu_bin(board, 'upgrade2')
-        sh.xflash("--adapter-id", adapter_dut, firmware)
-        # Wait for device to enumerate
-        time.sleep(10)
-        # Run DFU test procedure
-        initial_version = get_bcd_version(0x20B1, 0x8)
-        # Download the new firmware
-        try:
-            sh.Command(xmosdfu)("0x8", "--download", dfu_bin)
-        except sh.ErrorReturnCode as e:
-            print(e.stdout)
-            raise Exception()
-        time.sleep(3)
-        # Check version
-        upgrade_version = get_bcd_version(0x20B1, 0x8)
-        # Revert to factory
-        sh.Command(xmosdfu)("0x8", "--revertfactory")
-        time.sleep(3)
-        # Check version
-        reverted_version = get_bcd_version(0x20B1, 0x8)
-
-        assert initial_version == reverted_version
-        assert upgrade_version != initial_version
-
-
-# if __name__ == "__main__":
-#    test_analogue_output(
-#        Path("./xsig").resolve(),
-#        48000,
-#        10000,
-#        "mc_analogue_output.json",
-#        ("xk_216_mc", "2i8o8xxxxx_tdm8"),
-#        8,
-#    )
