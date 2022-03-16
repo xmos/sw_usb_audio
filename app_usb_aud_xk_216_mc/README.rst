@@ -10,7 +10,7 @@ XMOS xCORE-200 USB Audio
 Overview
 ........
 
-The firmware provides a high-speed USB Audio device designed to be compliant to version 2.0 of the USB Audio Class Specification based on the XMOS U16 device.
+The firmware provides a high-speed USB Audio device designed to be compliant to version 2.0 of the USB Audio Class Specification based on the XMOS xCORE-200 device.
 
 Key Features
 ............
@@ -21,9 +21,9 @@ The app_usb_aud_xk_216_mc application is designed to run on the xCORE 200 MC Aud
 
 - Fully Asynchronous operation
 
-- 4 channels analogue input and 4 channels analogue output (Via I2S to 2 x Stereo CODECs)
+- 10 channels analogue input and 10 channels analogue output (Via I2S to a multichannel ADC/DAC respectively)
 
-- S/PDIF output (via COAX connector)
+- S/PDIF input/output
 
 - Supports for the following sample frequencies: 44.1, 48, 88.2, 96, 176.4, 192kHz
 

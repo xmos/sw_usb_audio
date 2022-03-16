@@ -14,6 +14,7 @@ pipeline {
   environment {
     REPO = 'sw_usb_audio'
     VIEW = getViewName(REPO)
+    RELEASE_ORG = 'xmos'
   }
   stages {
     stage('Create release and build') {
@@ -26,17 +27,6 @@ pipeline {
             xcorePrepareSandbox("${VIEW}", "${REPO}")
           }
         }
-        //stage('Create release') {
-        //  // This stage has to happen before everything else! It requires a clean
-        //  // sandbox
-        //  steps {
-        //    dir("${REPO}") {
-        //      viewEnv() {
-        //        runPython("python create_release.py --view ${VIEW}")
-        //      }
-        //    }
-        //  }
-        //}
         stage('Build') {
           steps {
             viewEnv() {
@@ -91,6 +81,21 @@ pipeline {
           }
         }
       }
+      stage ('Create release') 
+      {
+        when 
+        {
+           expression 
+           {
+             isReleaseBranchOfOrganisation("${RELEASE_ORG}")
+           }
+        }
+        steps
+        {
+           echo "make release" 
+        }
+      }
+
       post {
         cleanup {
           xcoreCleanSandbox()
