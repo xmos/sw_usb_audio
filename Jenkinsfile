@@ -81,27 +81,33 @@ pipeline {
           }
         }
       }
-      stage ('Create release') 
-      {
-        when 
-        {
-           expression 
-           {
-             isReleaseBranchOfOrganisation("${RELEASE_ORG}")
-           }
-        }
-        steps
-        {
-           echo "make release" 
-        }
-      }
-
+      
       post {
         cleanup {
           xcoreCleanSandbox()
         }
       }
     }
+    stage ('Create release') 
+    {
+      agent 
+      {
+        label 'x86_64'
+      }
+
+      when 
+      {
+          expression 
+          {
+              isReleaseBranchOfOrganisation("${RELEASE_ORG}")
+          }
+      }
+      steps
+      {
+          echo "make release" 
+      }
+    }
+
     stage('Update view files') {
       agent {
         label 'x86_64'
