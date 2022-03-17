@@ -1,4 +1,4 @@
-@Library('xmos_jenkins_shared_library@v0.15.0') _
+@Library('xmos_jenkins_shared_library@v0.18.0') _
 
 getApproval()
 
@@ -18,7 +18,7 @@ pipeline {
   stages {
     stage('Create release and build') {
       agent {
-        label 'macOS&&x86_64&&brew'
+        label 'macOS && x86_64'
       }
       stages {
         stage('Get view') {
@@ -99,7 +99,7 @@ pipeline {
     }
     stage('Update view files') {
       agent {
-        label 'x86_64'
+        label 'linux && x86_64'
       }
       steps {
         updateViewfiles()
