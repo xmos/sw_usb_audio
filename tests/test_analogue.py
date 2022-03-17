@@ -209,9 +209,9 @@ def mark_tests(level_mark, testcases):
 analogue_input_configs = [
     # smoke level tests
     *mark_tests(pytest.mark.smoke, [
-        #('xk_216_mc', '2i8o8xxxxx_tdm8',        96000, 10, 8),
-        #('xk_216_mc', '2i8o8xxxxx_tdm8_slave',  48000, 10, 8),
-        #('xk_216_mc', '2i8o8xxxxx_tdm8_slave',  96000, 10, 8),
+        ('xk_216_mc', '2i8o8xxxxx_tdm8',        96000, 10, 8),
+        ('xk_216_mc', '2i8o8xxxxx_tdm8_slave',  48000, 10, 8),
+        ('xk_216_mc', '2i8o8xxxxx_tdm8_slave',  96000, 10, 8),
         ('xk_216_mc', '2i10o10xxxxxx',         192000, 10, 8),
         ('xk_216_mc', '2i10o10xxxxxx_slave',   192000, 10, 8),
         ('xk_216_mc', '2i10o10msxxxx',         192000, 10, 8),
@@ -221,8 +221,8 @@ analogue_input_configs = [
 
     # nightly level tests
     *mark_tests(pytest.mark.nightly, [
-        #('xk_216_mc', '2i8o8xxxxxx_tdm8',        44100, 600, 8),
-        #('xk_216_mc', '2i8o8xxxxxx_tdm8_slave',  44100, 600, 8),
+        ('xk_216_mc', '2i8o8xxxxxx_tdm8',        44100, 600, 8),
+        ('xk_216_mc', '2i8o8xxxxxx_tdm8_slave',  44100, 600, 8),
         ('xk_216_mc', '2i10o10xxxxxx',           48000, 600, 8),
         ('xk_216_mc', '2i10o10xxxxxx_slave',    192000, 600, 8),
         ('xk_216_mc', '2i10o10msxxxx',           48000, 600, 8),
@@ -234,12 +234,12 @@ analogue_input_configs = [
 
     # weekend level tests
     *mark_tests(pytest.mark.weekend, [
-        #('xk_216_mc', '2i8o8xxxxx_tdm8',         48000, 1800, 8),
-        #('xk_216_mc', '2i8o8xxxxx_tdm8',         88200, 1800, 8),
-        #('xk_216_mc', '2i8o8xxxxx_tdm8',         96000, 1800, 8),
-        #('xk_216_mc', '2i8o8xxxxx_tdm8_slave',   48000, 1800, 8),
-        #('xk_216_mc', '2i8o8xxxxx_tdm8_slave',   88200, 1800, 8),
-        #('xk_216_mc', '2i8o8xxxxx_tdm8_slave',   96000, 1800, 8),
+        ('xk_216_mc', '2i8o8xxxxx_tdm8',         48000, 1800, 8),
+        ('xk_216_mc', '2i8o8xxxxx_tdm8',         88200, 1800, 8),
+        ('xk_216_mc', '2i8o8xxxxx_tdm8',         96000, 1800, 8),
+        ('xk_216_mc', '2i8o8xxxxx_tdm8_slave',   48000, 1800, 8),
+        ('xk_216_mc', '2i8o8xxxxx_tdm8_slave',   88200, 1800, 8),
+        ('xk_216_mc', '2i8o8xxxxx_tdm8_slave',   96000, 1800, 8),
         ('xk_216_mc', '2i10o10xxxxxx',           44100, 1800, 8),
         ('xk_216_mc', '2i10o10xxxxxx',           88200, 1800, 8),
         ('xk_216_mc', '2i10o10xxxxxx',           96000, 1800, 8),
@@ -309,9 +309,9 @@ analogue_output_configs = [
     # smoke level tests
     *mark_tests(pytest.mark.smoke, [
         #('xk_216_mc', '1i2o2xxxxxx',            48000, 10, 2),
-        #('xk_216_mc', '2i8o8xxxxx_tdm8',        96000, 10, 8),
-        #('xk_216_mc', '2i8o8xxxxx_tdm8_slave',  48000, 10, 8),
-        #('xk_216_mc', '2i8o8xxxxx_tdm8_slave',  96000, 10, 8),
+        ('xk_216_mc', '2i8o8xxxxx_tdm8',        96000, 10, 8),
+        ('xk_216_mc', '2i8o8xxxxx_tdm8_slave',  48000, 10, 8),
+        ('xk_216_mc', '2i8o8xxxxx_tdm8_slave',  96000, 10, 8),
         ('xk_216_mc', '2i10o10xxxxxx',         192000, 10, 8),
         ('xk_216_mc', '2i10o10xxxxxx_slave',   192000, 10, 8),
         ('xk_216_mc', '2i10o10msxxxx',         192000, 10, 8),
@@ -323,7 +323,7 @@ analogue_output_configs = [
     *mark_tests(pytest.mark.nightly, [
         #('xk_216_mc', '1i2o2xxxxxx',            44100, 600, 2),
         #('xk_216_mc', '1i2o2xxxxxx',            48000, 600, 2),
-        #('xk_216_mc', '2i8o8xxxxx_tdm8',        44100, 600, 8),
+        ('xk_216_mc', '2i8o8xxxxx_tdm8',        44100, 600, 8),
         #('xk_216_mc', '2i8o8xxxxx_tdm8_slave',  44100, 600, 8),
         ('xk_216_mc', '2i10o10xxxxxx',          48000, 600, 8),
         ('xk_216_mc', '2i10o10xxxxxx_slave',   192000, 600, 8),
@@ -336,12 +336,12 @@ analogue_output_configs = [
     *mark_tests(pytest.mark.weekend, [
         #('xk_216_mc', '1i2o2xxxxxx',            44100, 1800, 2),
         #('xk_216_mc', '1i2o2xxxxxx',            48000, 1800, 2),
-        #('xk_216_mc', '2i8o8xxxxx_tdm8',        48000, 1800, 8),
-        #('xk_216_mc', '2i8o8xxxxx_tdm8',        88200, 1800, 8),
-        #('xk_216_mc', '2i8o8xxxxx_tdm8',        96000, 1800, 8),
-        #('xk_216_mc', '2i8o8xxxxx_tdm8_slave',  48000, 1800, 8),
-        #('xk_216_mc', '2i8o8xxxxx_tdm8_slave',  88200, 1800, 8),
-        #('xk_216_mc', '2i8o8xxxxx_tdm8_slave',  96000, 1800, 8),
+        ('xk_216_mc', '2i8o8xxxxx_tdm8',        48000, 1800, 8),
+        ('xk_216_mc', '2i8o8xxxxx_tdm8',        88200, 1800, 8),
+        ('xk_216_mc', '2i8o8xxxxx_tdm8',        96000, 1800, 8),
+        ('xk_216_mc', '2i8o8xxxxx_tdm8_slave',  48000, 1800, 8),
+        ('xk_216_mc', '2i8o8xxxxx_tdm8_slave',  88200, 1800, 8),
+        ('xk_216_mc', '2i8o8xxxxx_tdm8_slave',  96000, 1800, 8),
         ('xk_216_mc', '2i10o10xxxxxx',          44100, 1800, 8),
         ('xk_216_mc', '2i10o10xxxxxx',          88200, 1800, 8),
         ('xk_216_mc', '2i10o10xxxxxx',          96000, 1800, 8),
