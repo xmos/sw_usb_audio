@@ -16,4 +16,11 @@
 #define XCORE_200_MC_AUDIO_HW_VERSION 2
 #endif
 
+#ifndef USB_SEL_A
+#define USB_SEL_A    (0)
+#endif
+
+// Include this header after setting application defaults to then apply any other XUA defaults
+#include "xua_conf_full.h"
+
 #endif

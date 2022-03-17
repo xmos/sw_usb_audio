@@ -1,5 +1,6 @@
+#include "app_usb_aud_xk_216_mc.h"
 
-#ifdef USB_SEL_A
+#if USB_SEL_A
 
 #include <interrupt.h>
 

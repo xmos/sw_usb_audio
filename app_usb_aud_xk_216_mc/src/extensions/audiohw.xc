@@ -3,6 +3,7 @@
 #include <platform.h>
 #include <print.h>
 
+#include "app_usb_aud_xk_216_mc.h"
 #include "gpio_access.h"
 #include "i2c.h"
 #include "cs4384.h"
@@ -14,7 +15,7 @@
 /* CS2100 lists typical lock time as 100 * input period */
 #define     AUDIO_PLL_LOCK_DELAY     (40000000)
 
-#if defined(SPDIF_RX) || defined(ADAT_RX)
+#if SPDIF_RX || ADAT_RX
 #define USE_FRACTIONAL_N 1
 #endif
 
@@ -27,7 +28,7 @@ port p_i2c = PORT_I2C;
 
 #ifdef USE_FRACTIONAL_N
 
-#if !(defined(SPDIF_RX) || defined(ADAT_RX))
+#if !(SPDIF_RX || ADAT_RX)
 /* Choose a frequency the xcore can easily generate internally */
 #define PLL_SYNC_FREQ 1000000
 #else
@@ -90,7 +91,7 @@ void PllMult(unsigned output, unsigned ref, client interface i2c_master_if i2c)
 }
 #endif
 
-#if !(defined(SPDIF_RX) || defined(ADAT_RX)) && defined(USE_FRACTIONAL_N)
+#if !(SPDIF_RX || ADAT_RX) && defined(USE_FRACTIONAL_N)
 on tile[AUDIO_IO_TILE] : out port p_pll_clk = PORT_PLL_REF;
 on tile[AUDIO_IO_TILE] : clock clk_pll_sync = XS1_CLKBLK_5;
 #endif
@@ -106,7 +107,7 @@ void wait_us(int microseconds)
 
 void AudioHwInit()
 {
-#if !(defined(SPDIF_RX) || defined(ADAT_RX)) && defined(USE_FRACTIONAL_N)
+#if !(SPDIF_RX || ADAT_RX) && defined(USE_FRACTIONAL_N)
     /* Output a fixed sync clock to the pll */
     configure_clock_rate(clk_pll_sync, 100, 100/(PLL_SYNC_FREQ/1000000));
     configure_port_clock_output(p_pll_clk, clk_pll_sync);
@@ -120,7 +121,7 @@ void AudioHwInit()
     /* 0b11 : USB B */
     /* 0b01 : Lightning */
     /* 0b10 : USB A */
-#ifdef USB_SEL_A
+#if USB_SEL_A
     set_gpio(P_GPIO_USB_SEL0, 0);
     set_gpio(P_GPIO_USB_SEL1, 1);
 #else
@@ -141,7 +142,7 @@ void AudioHwInit()
     }
 #endif
 
-#ifdef IAP
+#if IAP
     /* Enable VBUS output */
     set_gpio(P_GPIO_VBUS_EN, 1);
 #else
@@ -268,13 +269,13 @@ void AudioHwConfig2(unsigned samFreq, unsigned mClk, unsigned dsdMode,
 
         {
             unsigned dif = 0, mode = 0;
-#ifdef I2S_MODE_TDM
+#if I2S_MODE_TDM
             dif = 0x02;   /* TDM */
 #else
             dif = 0x01;   /* I2S */
 #endif
 
-#ifdef CODEC_MASTER
+#if CODEC_MASTER
             /* Note, only the ADC device supports being I2S master.
              * Set ADC as master and run DAC as slave */
             if(samFreq < 54000)
@@ -305,7 +306,7 @@ void AudioHwConfig2(unsigned samFreq, unsigned mClk, unsigned dsdMode,
          */
         ADC_REGWRITE(CS5368_PWR_DN, 0b00000000);
 
-#ifdef CODEC_MASTER
+#if CODEC_MASTER
         /* Allow some time for clocks from ADC to become stable */
         wait_us(500);
 #endif
@@ -324,7 +325,7 @@ void AudioHwConfig2(unsigned samFreq, unsigned mClk, unsigned dsdMode,
          */
         DAC_REGWRITE(CS4384_MODE_CTRL, 0b11000001);
 
-#ifdef I2S_MODE_TDM
+#if I2S_MODE_TDM
         /* PCM Control (Address: 0x03) */
         /* bit[7:4] : Digital Interface Format (DIF) : 0b1100 for TDM
          * bit[3:2] : Reserved
