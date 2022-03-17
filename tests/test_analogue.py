@@ -216,7 +216,7 @@ analogue_input_configs = [
         ('xk_216_mc', '2i10o10xxxxxx_slave',   192000, 10, 8),
         ('xk_216_mc', '2i10o10msxxxx',         192000, 10, 8),
         ('xk_216_mc', '2i10o10xsxxxx_mix8',    192000, 10, 8),
-        #('xk_216_mc', '2i10o10xssxxx',         192000, 10, 8)
+        ('xk_216_mc', '2i10o10xssxxx',         192000, 10, 8)
     ]),
 
     # nightly level tests
@@ -227,7 +227,7 @@ analogue_input_configs = [
         ('xk_216_mc', '2i10o10xxxxxx_slave',    192000, 600, 8),
         ('xk_216_mc', '2i10o10msxxxx',           48000, 600, 8),
         ('xk_216_mc', '2i10o10xsxxxx_mix8',      48000, 600, 8),
-        #('xk_216_mc', '2i10o10xssxxx',           48000, 600, 8),
+        ('xk_216_mc', '2i10o10xssxxx',           48000, 600, 8),
         ('xk_216_mc', '2i10o10xsxxxd',           48000, 600, 8),
         ('xk_216_mc', '2i10o10xsxxxd',          192000, 600, 8),
     ]),
@@ -259,10 +259,10 @@ analogue_input_configs = [
         ('xk_216_mc', '2i10o10xsxxxx_mix8',      96000, 1800, 8),
         ('xk_216_mc', '2i10o10xsxxxx_mix8',     176400, 1800, 8),
         ('xk_216_mc', '2i10o10xsxxxx_mix8',      48000, 1800, 8),
-        #('xk_216_mc', '2i10o10xssxxx',           44100, 1800, 8),
-        #('xk_216_mc', '2i10o10xssxxx',           88200, 1800, 8),
-        #('xk_216_mc', '2i10o10xssxxx',           96000, 1800, 8),
-        #('xk_216_mc', '2i10o10xssxxx',          176400, 1800, 8),
+        ('xk_216_mc', '2i10o10xssxxx',           44100, 1800, 8),
+        ('xk_216_mc', '2i10o10xssxxx',           88200, 1800, 8),
+        ('xk_216_mc', '2i10o10xssxxx',           96000, 1800, 8),
+        ('xk_216_mc', '2i10o10xssxxx',          176400, 1800, 8),
         ('xk_216_mc', '2i10o10xsxxxd',           44100, 1800, 8),
         ('xk_216_mc', '2i10o10xsxxxd',           88200, 1800, 8),
         ('xk_216_mc', '2i10o10xsxxxd',           96000, 1800, 8),
@@ -316,7 +316,7 @@ analogue_output_configs = [
         ('xk_216_mc', '2i10o10xxxxxx_slave',   192000, 10, 8),
         ('xk_216_mc', '2i10o10msxxxx',         192000, 10, 8),
         ('xk_216_mc', '2i10o10xsxxxx_mix8',    192000, 10, 8),
-        #('xk_216_mc', '2i10o10xssxxx',         192000, 10, 8)
+        ('xk_216_mc', '2i10o10xssxxx',         192000, 10, 8)
     ]),
 
     # nightly level tests
@@ -329,7 +329,7 @@ analogue_output_configs = [
         ('xk_216_mc', '2i10o10xxxxxx_slave',   192000, 600, 8),
         ('xk_216_mc', '2i10o10msxxxx',          48000, 600, 8),
         ('xk_216_mc', '2i10o10xsxxxx_mix8',     48000, 600, 8),
-        #('xk_216_mc', '2i10o10xssxxx',          48000, 600, 8)
+        ('xk_216_mc', '2i10o10xssxxx',          48000, 600, 8)
     ]),
 
     # weekend level tests
@@ -360,10 +360,10 @@ analogue_output_configs = [
         ('xk_216_mc', '2i10o10xsxxxx_mix8',     88200, 1800, 8),
         ('xk_216_mc', '2i10o10xsxxxx_mix8',     96000, 1800, 8),
         ('xk_216_mc', '2i10o10xsxxxx_mix8',    176400, 1800, 8),
-        #('xk_216_mc', '2i10o10xssxxx',          44100, 1800, 8),
-        #('xk_216_mc', '2i10o10xssxxx',          88200, 1800, 8),
-        #('xk_216_mc', '2i10o10xssxxx',          96000, 1800, 8),
-        #('xk_216_mc', '2i10o10xssxxx',         176400, 1800, 8)
+        ('xk_216_mc', '2i10o10xssxxx',          44100, 1800, 8),
+        ('xk_216_mc', '2i10o10xssxxx',          88200, 1800, 8),
+        ('xk_216_mc', '2i10o10xssxxx',          96000, 1800, 8),
+        ('xk_216_mc', '2i10o10xssxxx',         176400, 1800, 8)
     ])
 ]
 
