@@ -51,6 +51,18 @@ def wait_for_enumeration(pid, vid, timeout=10):
     assert False, f"Device failed to enumerate in {timeout}s"
 
 
+def pid_from_board_config(board, config):
+    if board == 'xk_216_mc':
+        if config.startswith('1'):
+            return 0x9
+        elif config.startswith('2'):
+            return 0x8
+        else:
+            assert False, f"Unrecognised config {config} for {board}"
+    else:
+        assert False, f"Unrecognised board {board}"
+
+
 def get_firmware_path_harness(board, config=None):
     if config is None:
         return (
@@ -209,6 +221,7 @@ def mark_tests(level_mark, testcases):
 analogue_input_configs = [
     # smoke level tests
     *mark_tests(pytest.mark.smoke, [
+        ('xk_216_mc', '1i2o2xxxxxx',            48000, 10, 2),
         ('xk_216_mc', '2i8o8xxxxx_tdm8',        96000, 10, 8),
         ('xk_216_mc', '2i8o8xxxxx_tdm8_slave',  48000, 10, 8),
         ('xk_216_mc', '2i8o8xxxxx_tdm8_slave',  96000, 10, 8),
@@ -221,6 +234,8 @@ analogue_input_configs = [
 
     # nightly level tests
     *mark_tests(pytest.mark.nightly, [
+        ('xk_216_mc', '1i2o2xxxxxx',            44100, 600, 2),
+        ('xk_216_mc', '1i2o2xxxxxx',            48000, 600, 2),
         ('xk_216_mc', '2i8o8xxxxxx_tdm8',        44100, 600, 8),
         ('xk_216_mc', '2i8o8xxxxxx_tdm8_slave',  44100, 600, 8),
         ('xk_216_mc', '2i10o10xxxxxx',           48000, 600, 8),
@@ -234,6 +249,8 @@ analogue_input_configs = [
 
     # weekend level tests
     *mark_tests(pytest.mark.weekend, [
+        ('xk_216_mc', '1i2o2xxxxxx',            44100, 1800, 2),
+        ('xk_216_mc', '1i2o2xxxxxx',            48000, 1800, 2),
         ('xk_216_mc', '2i8o8xxxxx_tdm8',         48000, 1800, 8),
         ('xk_216_mc', '2i8o8xxxxx_tdm8',         88200, 1800, 8),
         ('xk_216_mc', '2i8o8xxxxx_tdm8',         96000, 1800, 8),
@@ -275,6 +292,8 @@ analogue_input_configs = [
 def test_analogue_input(xsig, board, config, fs, duration, num_chans):
     if num_chans == 8:
         xsig_config = "mc_analogue_input_8ch.json"
+    elif num_chans == 2:
+        xsig_config = "mc_analogue_input_2ch.json"
     else:
         assert False, f"Invalid channel count {num_chans}"
 
@@ -291,7 +310,8 @@ def test_analogue_input(xsig, board, config, fs, duration, num_chans):
         firmware = get_firmware_path(board, config)
         sh.xrun("--adapter-id", adapter_dut, firmware)
 
-        wait_for_enumeration(0x8, 0x20B1)
+        pid = pid_from_board_config(board, config)
+        wait_for_enumeration(pid, 0x20B1)
 
         # Run xsig
         xsig_duration = (duration_ms / 1000) + 5
@@ -308,7 +328,7 @@ def test_analogue_input(xsig, board, config, fs, duration, num_chans):
 analogue_output_configs = [
     # smoke level tests
     *mark_tests(pytest.mark.smoke, [
-        #('xk_216_mc', '1i2o2xxxxxx',            48000, 10, 2),
+        ('xk_216_mc', '1i2o2xxxxxx',            48000, 10, 2),
         ('xk_216_mc', '2i8o8xxxxx_tdm8',        96000, 10, 8),
         ('xk_216_mc', '2i8o8xxxxx_tdm8_slave',  48000, 10, 8),
         ('xk_216_mc', '2i8o8xxxxx_tdm8_slave',  96000, 10, 8),
@@ -321,8 +341,8 @@ analogue_output_configs = [
 
     # nightly level tests
     *mark_tests(pytest.mark.nightly, [
-        #('xk_216_mc', '1i2o2xxxxxx',            44100, 600, 2),
-        #('xk_216_mc', '1i2o2xxxxxx',            48000, 600, 2),
+        ('xk_216_mc', '1i2o2xxxxxx',            44100, 600, 2),
+        ('xk_216_mc', '1i2o2xxxxxx',            48000, 600, 2),
         ('xk_216_mc', '2i8o8xxxxx_tdm8',        44100, 600, 8),
         #('xk_216_mc', '2i8o8xxxxx_tdm8_slave',  44100, 600, 8),
         ('xk_216_mc', '2i10o10xxxxxx',          48000, 600, 8),
@@ -334,8 +354,8 @@ analogue_output_configs = [
 
     # weekend level tests
     *mark_tests(pytest.mark.weekend, [
-        #('xk_216_mc', '1i2o2xxxxxx',            44100, 1800, 2),
-        #('xk_216_mc', '1i2o2xxxxxx',            48000, 1800, 2),
+        ('xk_216_mc', '1i2o2xxxxxx',            44100, 1800, 2),
+        ('xk_216_mc', '1i2o2xxxxxx',            48000, 1800, 2),
         ('xk_216_mc', '2i8o8xxxxx_tdm8',        48000, 1800, 8),
         ('xk_216_mc', '2i8o8xxxxx_tdm8',        88200, 1800, 8),
         ('xk_216_mc', '2i8o8xxxxx_tdm8',        96000, 1800, 8),
@@ -372,6 +392,8 @@ analogue_output_configs = [
 def test_analogue_output(xsig, board, config, fs, duration, num_chans):
     if num_chans == 8:
         xsig_config = "mc_analogue_output.json"
+    elif num_chans == 2:
+        xsig_config = "mc_analogue_output_2ch.json"
     else:
         assert False, f"Invalid channel count {num_chans}"
 
@@ -400,7 +422,8 @@ def test_analogue_output(xsig, board, config, fs, duration, num_chans):
             _bg_exc=False,
         )
 
-        wait_for_enumeration(0x8, 0x20B1)
+        pid = pid_from_board_config(board, config)
+        wait_for_enumeration(pid, 0x20B1)
 
         # Run xsig for duration_ms + 2 seconds
         xsig_cmd = sh.Command(xsig)(
