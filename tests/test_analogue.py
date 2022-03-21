@@ -13,6 +13,7 @@ import tempfile
 from typing import List
 import xtagctl
 import zipfile
+import json
 
 
 XMOS_ROOT = Path(os.environ["XMOS_ROOT"])
@@ -23,7 +24,7 @@ XSIG_MACOS_URL = (
     "http://intranet.xmos.local/projects/usb_audio_regression_files/xsig/macos/xsig.zip"
 )
 XSIG_PATH = Path(__file__).parent / "tools" / "xsig"
-XSIG_CONFIG_ROOT = XMOS_ROOT / "usb_audio_testing/xsig_configs"
+XSIG_CONFIG_ROOT = XMOS_ROOT / "sw_usb_audio" / "tests" / "xsig_configs"
 
 
 def wait_for_enumeration(pid, vid, timeout=10):
@@ -217,88 +218,79 @@ def mark_tests(level_mark, testcases):
     return [pytest.param(*tc, marks=level_mark) for tc in testcases]
 
 
-# Test cases are defined by a tuple of (board, config, sample rate, seconds duration, number of channels)
+# Test cases are defined by a tuple of (board, config, sample rate, seconds duration, xsig config)
 analogue_input_configs = [
     # smoke level tests
     *mark_tests(pytest.mark.smoke, [
-        ('xk_216_mc', '1i2o2xxxxxx',            48000, 10, 2),
-        ('xk_216_mc', '2i8o8xxxxx_tdm8',        96000, 10, 8),
-        ('xk_216_mc', '2i8o8xxxxx_tdm8_slave',  48000, 10, 8),
-        ('xk_216_mc', '2i8o8xxxxx_tdm8_slave',  96000, 10, 8),
-        ('xk_216_mc', '2i10o10xxxxxx',         192000, 10, 8),
-        ('xk_216_mc', '2i10o10xxxxxx_slave',   192000, 10, 8),
-        ('xk_216_mc', '2i10o10msxxxx',         192000, 10, 8),
-        ('xk_216_mc', '2i10o10xsxxxx_mix8',    192000, 10, 8),
-        ('xk_216_mc', '2i10o10xssxxx',         192000, 10, 8)
+        ('xk_216_mc', '1i2o2xxxxxx',            48000, 10, "mc_analogue_input_2ch.json"),
+        ('xk_216_mc', '2i8o8xxxxx_tdm8',        96000, 10, "mc_analogue_input_8ch.json"),
+        ('xk_216_mc', '2i8o8xxxxx_tdm8_slave',  48000, 10, "mc_analogue_input_8ch.json"),
+        ('xk_216_mc', '2i8o8xxxxx_tdm8_slave',  96000, 10, "mc_analogue_input_8ch.json"),
+        ('xk_216_mc', '2i10o10xxxxxx',         192000, 10, "mc_analogue_input_8ch.json"),
+        ('xk_216_mc', '2i10o10xxxxxx_slave',   192000, 10, "mc_analogue_input_8ch.json"),
+        ('xk_216_mc', '2i10o10msxxxx',         192000, 10, "mc_analogue_input_8ch.json"),
+        ('xk_216_mc', '2i10o10xsxxxx_mix8',    192000, 10, "mc_analogue_input_8ch.json"),
+        ('xk_216_mc', '2i10o10xssxxx',         192000, 10, "mc_analogue_input_8ch.json")
     ]),
 
     # nightly level tests
     *mark_tests(pytest.mark.nightly, [
-        ('xk_216_mc', '1i2o2xxxxxx',            44100, 600, 2),
-        ('xk_216_mc', '1i2o2xxxxxx',            48000, 600, 2),
-        ('xk_216_mc', '2i8o8xxxxxx_tdm8',        44100, 600, 8),
-        ('xk_216_mc', '2i8o8xxxxxx_tdm8_slave',  44100, 600, 8),
-        ('xk_216_mc', '2i10o10xxxxxx',           48000, 600, 8),
-        ('xk_216_mc', '2i10o10xxxxxx_slave',    192000, 600, 8),
-        ('xk_216_mc', '2i10o10msxxxx',           48000, 600, 8),
-        ('xk_216_mc', '2i10o10xsxxxx_mix8',      48000, 600, 8),
-        ('xk_216_mc', '2i10o10xssxxx',           48000, 600, 8),
-        ('xk_216_mc', '2i10o10xsxxxd',           48000, 600, 8),
-        ('xk_216_mc', '2i10o10xsxxxd',          192000, 600, 8),
+        ('xk_216_mc', '1i2o2xxxxxx',             44100, 600, "mc_analogue_input_2ch.json"),
+        ('xk_216_mc', '1i2o2xxxxxx',             48000, 600, "mc_analogue_input_2ch.json"),
+        ('xk_216_mc', '2i8o8xxxxx_tdm8',         44100, 600, "mc_analogue_input_8ch.json"),
+        ('xk_216_mc', '2i8o8xxxxx_tdm8_slave',   44100, 600, "mc_analogue_input_8ch.json"),
+        ('xk_216_mc', '2i10o10xxxxxx',           48000, 600, "mc_analogue_input_8ch.json"),
+        ('xk_216_mc', '2i10o10xxxxxx_slave',    192000, 600, "mc_analogue_input_8ch.json"),
+        ('xk_216_mc', '2i10o10msxxxx',           48000, 600, "mc_analogue_input_8ch.json"),
+        ('xk_216_mc', '2i10o10xsxxxx_mix8',      48000, 600, "mc_analogue_input_8ch.json"),
+        ('xk_216_mc', '2i10o10xssxxx',           48000, 600, "mc_analogue_input_8ch.json"),
+        ('xk_216_mc', '2i10o10xsxxxd',           48000, 600, "mc_analogue_input_8ch.json"),
+        ('xk_216_mc', '2i10o10xsxxxd',          192000, 600, "mc_analogue_input_8ch.json")
     ]),
 
     # weekend level tests
     *mark_tests(pytest.mark.weekend, [
-        ('xk_216_mc', '1i2o2xxxxxx',            44100, 1800, 2),
-        ('xk_216_mc', '1i2o2xxxxxx',            48000, 1800, 2),
-        ('xk_216_mc', '2i8o8xxxxx_tdm8',         48000, 1800, 8),
-        ('xk_216_mc', '2i8o8xxxxx_tdm8',         88200, 1800, 8),
-        ('xk_216_mc', '2i8o8xxxxx_tdm8',         96000, 1800, 8),
-        ('xk_216_mc', '2i8o8xxxxx_tdm8_slave',   48000, 1800, 8),
-        ('xk_216_mc', '2i8o8xxxxx_tdm8_slave',   88200, 1800, 8),
-        ('xk_216_mc', '2i8o8xxxxx_tdm8_slave',   96000, 1800, 8),
-        ('xk_216_mc', '2i10o10xxxxxx',           44100, 1800, 8),
-        ('xk_216_mc', '2i10o10xxxxxx',           88200, 1800, 8),
-        ('xk_216_mc', '2i10o10xxxxxx',           96000, 1800, 8),
-        ('xk_216_mc', '2i10o10xxxxxx',          176400, 1800, 8),
-        ('xk_216_mc', '2i10o10xxxxxx_slave',     44100, 1800, 8),
-        ('xk_216_mc', '2i10o10xxxxxx_slave',     48000, 1800, 8),
-        ('xk_216_mc', '2i10o10xxxxxx_slave',     88200, 1800, 8),
-        ('xk_216_mc', '2i10o10xxxxxx_slave',     96000, 1800, 8),
-        ('xk_216_mc', '2i10o10xxxxxx_slave',    176400, 1800, 8),
-        ('xk_216_mc', '2i10o10xxxxxx_slave',    192000, 1800, 8),
-        ('xk_216_mc', '2i10o10msxxxx',           44100, 1800, 8),
-        ('xk_216_mc', '2i10o10msxxxx',           88200, 1800, 8),
-        ('xk_216_mc', '2i10o10msxxxx',           96000, 1800, 8),
-        ('xk_216_mc', '2i10o10msxxxx',          176400, 1800, 8),
-        ('xk_216_mc', '2i10o10xsxxxx_mix8',      44100, 1800, 8),
-        ('xk_216_mc', '2i10o10xsxxxx_mix8',      48000, 1800, 8),
-        ('xk_216_mc', '2i10o10xsxxxx_mix8',      96000, 1800, 8),
-        ('xk_216_mc', '2i10o10xsxxxx_mix8',     176400, 1800, 8),
-        ('xk_216_mc', '2i10o10xsxxxx_mix8',      48000, 1800, 8),
-        ('xk_216_mc', '2i10o10xssxxx',           44100, 1800, 8),
-        ('xk_216_mc', '2i10o10xssxxx',           88200, 1800, 8),
-        ('xk_216_mc', '2i10o10xssxxx',           96000, 1800, 8),
-        ('xk_216_mc', '2i10o10xssxxx',          176400, 1800, 8),
-        ('xk_216_mc', '2i10o10xsxxxd',           44100, 1800, 8),
-        ('xk_216_mc', '2i10o10xsxxxd',           88200, 1800, 8),
-        ('xk_216_mc', '2i10o10xsxxxd',           96000, 1800, 8),
-        ('xk_216_mc', '2i10o10xsxxxd',          176400, 1800, 8)
+        ('xk_216_mc', '1i2o2xxxxxx',             44100, 1800, "mc_analogue_input_2ch.json"),
+        ('xk_216_mc', '1i2o2xxxxxx',             48000, 1800, "mc_analogue_input_2ch.json"),
+        ('xk_216_mc', '2i8o8xxxxx_tdm8',         48000, 1800, "mc_analogue_input_8ch.json"),
+        ('xk_216_mc', '2i8o8xxxxx_tdm8',         88200, 1800, "mc_analogue_input_8ch.json"),
+        ('xk_216_mc', '2i8o8xxxxx_tdm8',         96000, 1800, "mc_analogue_input_8ch.json"),
+        ('xk_216_mc', '2i8o8xxxxx_tdm8_slave',   48000, 1800, "mc_analogue_input_8ch.json"),
+        ('xk_216_mc', '2i8o8xxxxx_tdm8_slave',   88200, 1800, "mc_analogue_input_8ch.json"),
+        ('xk_216_mc', '2i8o8xxxxx_tdm8_slave',   96000, 1800, "mc_analogue_input_8ch.json"),
+        ('xk_216_mc', '2i10o10xxxxxx',           44100, 1800, "mc_analogue_input_8ch.json"),
+        ('xk_216_mc', '2i10o10xxxxxx',           88200, 1800, "mc_analogue_input_8ch.json"),
+        ('xk_216_mc', '2i10o10xxxxxx',           96000, 1800, "mc_analogue_input_8ch.json"),
+        ('xk_216_mc', '2i10o10xxxxxx',          176400, 1800, "mc_analogue_input_8ch.json"),
+        ('xk_216_mc', '2i10o10xxxxxx_slave',     44100, 1800, "mc_analogue_input_8ch.json"),
+        ('xk_216_mc', '2i10o10xxxxxx_slave',     48000, 1800, "mc_analogue_input_8ch.json"),
+        ('xk_216_mc', '2i10o10xxxxxx_slave',     88200, 1800, "mc_analogue_input_8ch.json"),
+        ('xk_216_mc', '2i10o10xxxxxx_slave',     96000, 1800, "mc_analogue_input_8ch.json"),
+        ('xk_216_mc', '2i10o10xxxxxx_slave',    176400, 1800, "mc_analogue_input_8ch.json"),
+        ('xk_216_mc', '2i10o10xxxxxx_slave',    192000, 1800, "mc_analogue_input_8ch.json"),
+        ('xk_216_mc', '2i10o10msxxxx',           44100, 1800, "mc_analogue_input_8ch.json"),
+        ('xk_216_mc', '2i10o10msxxxx',           88200, 1800, "mc_analogue_input_8ch.json"),
+        ('xk_216_mc', '2i10o10msxxxx',           96000, 1800, "mc_analogue_input_8ch.json"),
+        ('xk_216_mc', '2i10o10msxxxx',          176400, 1800, "mc_analogue_input_8ch.json"),
+        ('xk_216_mc', '2i10o10xsxxxx_mix8',      44100, 1800, "mc_analogue_input_8ch.json"),
+        ('xk_216_mc', '2i10o10xsxxxx_mix8',      48000, 1800, "mc_analogue_input_8ch.json"),
+        ('xk_216_mc', '2i10o10xsxxxx_mix8',      96000, 1800, "mc_analogue_input_8ch.json"),
+        ('xk_216_mc', '2i10o10xsxxxx_mix8',     176400, 1800, "mc_analogue_input_8ch.json"),
+        ('xk_216_mc', '2i10o10xsxxxx_mix8',      48000, 1800, "mc_analogue_input_8ch.json"),
+        ('xk_216_mc', '2i10o10xssxxx',           44100, 1800, "mc_analogue_input_8ch.json"),
+        ('xk_216_mc', '2i10o10xssxxx',           88200, 1800, "mc_analogue_input_8ch.json"),
+        ('xk_216_mc', '2i10o10xssxxx',           96000, 1800, "mc_analogue_input_8ch.json"),
+        ('xk_216_mc', '2i10o10xssxxx',          176400, 1800, "mc_analogue_input_8ch.json"),
+        ('xk_216_mc', '2i10o10xsxxxd',           44100, 1800, "mc_analogue_input_8ch.json"),
+        ('xk_216_mc', '2i10o10xsxxxd',           88200, 1800, "mc_analogue_input_8ch.json"),
+        ('xk_216_mc', '2i10o10xsxxxd',           96000, 1800, "mc_analogue_input_8ch.json"),
+        ('xk_216_mc', '2i10o10xsxxxd',          176400, 1800, "mc_analogue_input_8ch.json")
     ])
 ]
 
 
-@pytest.mark.parametrize(["board", "config", "fs", "duration", "num_chans"], analogue_input_configs)
-def test_analogue_input(xsig, board, config, fs, duration, num_chans):
-    if num_chans == 8:
-        xsig_config = "mc_analogue_input_8ch.json"
-    elif num_chans == 2:
-        xsig_config = "mc_analogue_input_2ch.json"
-    else:
-        assert False, f"Invalid channel count {num_chans}"
-
-    duration_ms = duration * 1000
-
+@pytest.mark.parametrize(["board", "config", "fs", "duration", "xsig_config"], analogue_input_configs)
+def test_analogue_input(xsig, board, config, fs, duration, xsig_config):
     with xtagctl.acquire("usb_audio_mc_xs2_dut", "usb_audio_mc_xs2_harness") as (
         adapter_dut,
         adapter_harness,
@@ -314,91 +306,84 @@ def test_analogue_input(xsig, board, config, fs, duration, num_chans):
         wait_for_enumeration(pid, 0x20B1)
 
         # Run xsig
-        xsig_duration = (duration_ms / 1000) + 5
+        xsig_duration = duration + 5
         xsig_output = run_audio_command(
-            xsig_duration, xsig, fs, duration_ms, XSIG_CONFIG_ROOT / xsig_config
+            xsig_duration, xsig, fs, duration * 1000, XSIG_CONFIG_ROOT / xsig_config
         )
         xsig_lines = xsig_output.split("\n")
         # Check output
-        expected_freqs = [(i + 1) * 1000 for i in range(num_chans)]
+        with open(XSIG_CONFIG_ROOT / xsig_config) as file:
+            xsig_json = json.load(file)
+        expected_freqs = [l[1] for l in xsig_json['in']]
         assert check_analyzer_output(xsig_lines, expected_freqs)
 
 
-# Test cases are defined by a tuple of (board, config, sample rate, seconds duration, number of channels)
+# Test cases are defined by a tuple of (board, config, sample rate, seconds duration, xsig config)
 analogue_output_configs = [
     # smoke level tests
     *mark_tests(pytest.mark.smoke, [
-        ('xk_216_mc', '1i2o2xxxxxx',            48000, 10, 2),
-        ('xk_216_mc', '2i8o8xxxxx_tdm8',        96000, 10, 8),
-        ('xk_216_mc', '2i8o8xxxxx_tdm8_slave',  48000, 10, 8),
-        ('xk_216_mc', '2i8o8xxxxx_tdm8_slave',  96000, 10, 8),
-        ('xk_216_mc', '2i10o10xxxxxx',         192000, 10, 8),
-        ('xk_216_mc', '2i10o10xxxxxx_slave',   192000, 10, 8),
-        ('xk_216_mc', '2i10o10msxxxx',         192000, 10, 8),
-        ('xk_216_mc', '2i10o10xsxxxx_mix8',    192000, 10, 8),
-        ('xk_216_mc', '2i10o10xssxxx',         192000, 10, 8)
+        ('xk_216_mc', '1i2o2xxxxxx',            48000, 10, "mc_analogue_output_2ch.json"),
+        ('xk_216_mc', '2i8o8xxxxx_tdm8',        96000, 10, "mc_analogue_output_8ch.json"),
+        ('xk_216_mc', '2i8o8xxxxx_tdm8_slave',  48000, 10, "mc_analogue_output_8ch_paired.json"),
+        ('xk_216_mc', '2i8o8xxxxx_tdm8_slave',  96000, 10, "mc_analogue_output_8ch_paired.json"),
+        ('xk_216_mc', '2i10o10xxxxxx',         192000, 10, "mc_analogue_output_8ch.json"),
+        ('xk_216_mc', '2i10o10xxxxxx_slave',   192000, 10, "mc_analogue_output_8ch.json"),
+        ('xk_216_mc', '2i10o10msxxxx',         192000, 10, "mc_analogue_output_8ch.json"),
+        ('xk_216_mc', '2i10o10xsxxxx_mix8',    192000, 10, "mc_analogue_output_8ch.json"),
+        ('xk_216_mc', '2i10o10xssxxx',         192000, 10, "mc_analogue_output_8ch.json")
     ]),
 
     # nightly level tests
     *mark_tests(pytest.mark.nightly, [
-        ('xk_216_mc', '1i2o2xxxxxx',            44100, 600, 2),
-        ('xk_216_mc', '1i2o2xxxxxx',            48000, 600, 2),
-        ('xk_216_mc', '2i8o8xxxxx_tdm8',        44100, 600, 8),
-        #('xk_216_mc', '2i8o8xxxxx_tdm8_slave',  44100, 600, 8),
-        ('xk_216_mc', '2i10o10xxxxxx',          48000, 600, 8),
-        ('xk_216_mc', '2i10o10xxxxxx_slave',   192000, 600, 8),
-        ('xk_216_mc', '2i10o10msxxxx',          48000, 600, 8),
-        ('xk_216_mc', '2i10o10xsxxxx_mix8',     48000, 600, 8),
-        ('xk_216_mc', '2i10o10xssxxx',          48000, 600, 8)
+        ('xk_216_mc', '1i2o2xxxxxx',            44100, 600, "mc_analogue_output_2ch.json"),
+        ('xk_216_mc', '1i2o2xxxxxx',            48000, 600, "mc_analogue_output_2ch.json"),
+        ('xk_216_mc', '2i8o8xxxxx_tdm8',        44100, 600, "mc_analogue_output_8ch.json"),
+        ('xk_216_mc', '2i8o8xxxxx_tdm8_slave',  44100, 600, "mc_analogue_output_8ch_paired.json"),
+        ('xk_216_mc', '2i10o10xxxxxx',          48000, 600, "mc_analogue_output_8ch.json"),
+        ('xk_216_mc', '2i10o10xxxxxx_slave',   192000, 600, "mc_analogue_output_8ch.json"),
+        ('xk_216_mc', '2i10o10msxxxx',          48000, 600, "mc_analogue_output_8ch.json"),
+        ('xk_216_mc', '2i10o10xsxxxx_mix8',     48000, 600, "mc_analogue_output_8ch.json"),
+        ('xk_216_mc', '2i10o10xssxxx',          48000, 600, "mc_analogue_output_8ch.json")
     ]),
 
     # weekend level tests
     *mark_tests(pytest.mark.weekend, [
-        ('xk_216_mc', '1i2o2xxxxxx',            44100, 1800, 2),
-        ('xk_216_mc', '1i2o2xxxxxx',            48000, 1800, 2),
-        ('xk_216_mc', '2i8o8xxxxx_tdm8',        48000, 1800, 8),
-        ('xk_216_mc', '2i8o8xxxxx_tdm8',        88200, 1800, 8),
-        ('xk_216_mc', '2i8o8xxxxx_tdm8',        96000, 1800, 8),
-        ('xk_216_mc', '2i8o8xxxxx_tdm8_slave',  48000, 1800, 8),
-        ('xk_216_mc', '2i8o8xxxxx_tdm8_slave',  88200, 1800, 8),
-        ('xk_216_mc', '2i8o8xxxxx_tdm8_slave',  96000, 1800, 8),
-        ('xk_216_mc', '2i10o10xxxxxx',          44100, 1800, 8),
-        ('xk_216_mc', '2i10o10xxxxxx',          88200, 1800, 8),
-        ('xk_216_mc', '2i10o10xxxxxx',          96000, 1800, 8),
-        ('xk_216_mc', '2i10o10xxxxxx',         176400, 1800, 8),
-        ('xk_216_mc', '2i10o10xxxxxx_slave',    44100, 1800, 8),
-        ('xk_216_mc', '2i10o10xxxxxx_slave',    48000, 1800, 8),
-        ('xk_216_mc', '2i10o10xxxxxx_slave',    88200, 1800, 8),
-        ('xk_216_mc', '2i10o10xxxxxx_slave',    96000, 1800, 8),
-        ('xk_216_mc', '2i10o10xxxxxx_slave',   176400, 1800, 8),
-        ('xk_216_mc', '2i10o10xxxxxx_slave',   192000, 1800, 8),
-        ('xk_216_mc', '2i10o10msxxxx',          44100, 1800, 8),
-        ('xk_216_mc', '2i10o10msxxxx',          88200, 1800, 8),
-        ('xk_216_mc', '2i10o10msxxxx',          96000, 1800, 8),
-        ('xk_216_mc', '2i10o10msxxxx',         176400, 1800, 8),
-        ('xk_216_mc', '2i10o10xsxxxx_mix8',     44100, 1800, 8),
-        ('xk_216_mc', '2i10o10xsxxxx_mix8',     88200, 1800, 8),
-        ('xk_216_mc', '2i10o10xsxxxx_mix8',     96000, 1800, 8),
-        ('xk_216_mc', '2i10o10xsxxxx_mix8',    176400, 1800, 8),
-        ('xk_216_mc', '2i10o10xssxxx',          44100, 1800, 8),
-        ('xk_216_mc', '2i10o10xssxxx',          88200, 1800, 8),
-        ('xk_216_mc', '2i10o10xssxxx',          96000, 1800, 8),
-        ('xk_216_mc', '2i10o10xssxxx',         176400, 1800, 8)
+        ('xk_216_mc', '1i2o2xxxxxx',            44100, 1800, "mc_analogue_output_2ch.json"),
+        ('xk_216_mc', '1i2o2xxxxxx',            48000, 1800, "mc_analogue_output_2ch.json"),
+        ('xk_216_mc', '2i8o8xxxxx_tdm8',        48000, 1800, "mc_analogue_output_8ch.json"),
+        ('xk_216_mc', '2i8o8xxxxx_tdm8',        88200, 1800, "mc_analogue_output_8ch.json"),
+        ('xk_216_mc', '2i8o8xxxxx_tdm8',        96000, 1800, "mc_analogue_output_8ch.json"),
+        ('xk_216_mc', '2i8o8xxxxx_tdm8_slave',  48000, 1800, "mc_analogue_output_8ch_paired.json"),
+        ('xk_216_mc', '2i8o8xxxxx_tdm8_slave',  88200, 1800, "mc_analogue_output_8ch_paired.json"),
+        ('xk_216_mc', '2i8o8xxxxx_tdm8_slave',  96000, 1800, "mc_analogue_output_8ch_paired.json"),
+        ('xk_216_mc', '2i10o10xxxxxx',          44100, 1800, "mc_analogue_output_8ch.json"),
+        ('xk_216_mc', '2i10o10xxxxxx',          88200, 1800, "mc_analogue_output_8ch.json"),
+        ('xk_216_mc', '2i10o10xxxxxx',          96000, 1800, "mc_analogue_output_8ch.json"),
+        ('xk_216_mc', '2i10o10xxxxxx',         176400, 1800, "mc_analogue_output_8ch.json"),
+        ('xk_216_mc', '2i10o10xxxxxx_slave',    44100, 1800, "mc_analogue_output_8ch.json"),
+        ('xk_216_mc', '2i10o10xxxxxx_slave',    48000, 1800, "mc_analogue_output_8ch.json"),
+        ('xk_216_mc', '2i10o10xxxxxx_slave',    88200, 1800, "mc_analogue_output_8ch.json"),
+        ('xk_216_mc', '2i10o10xxxxxx_slave',    96000, 1800, "mc_analogue_output_8ch.json"),
+        ('xk_216_mc', '2i10o10xxxxxx_slave',   176400, 1800, "mc_analogue_output_8ch.json"),
+        ('xk_216_mc', '2i10o10xxxxxx_slave',   192000, 1800, "mc_analogue_output_8ch.json"),
+        ('xk_216_mc', '2i10o10msxxxx',          44100, 1800, "mc_analogue_output_8ch.json"),
+        ('xk_216_mc', '2i10o10msxxxx',          88200, 1800, "mc_analogue_output_8ch.json"),
+        ('xk_216_mc', '2i10o10msxxxx',          96000, 1800, "mc_analogue_output_8ch.json"),
+        ('xk_216_mc', '2i10o10msxxxx',         176400, 1800, "mc_analogue_output_8ch.json"),
+        ('xk_216_mc', '2i10o10xsxxxx_mix8',     44100, 1800, "mc_analogue_output_8ch.json"),
+        ('xk_216_mc', '2i10o10xsxxxx_mix8',     88200, 1800, "mc_analogue_output_8ch.json"),
+        ('xk_216_mc', '2i10o10xsxxxx_mix8',     96000, 1800, "mc_analogue_output_8ch.json"),
+        ('xk_216_mc', '2i10o10xsxxxx_mix8',    176400, 1800, "mc_analogue_output_8ch.json"),
+        ('xk_216_mc', '2i10o10xssxxx',          44100, 1800, "mc_analogue_output_8ch.json"),
+        ('xk_216_mc', '2i10o10xssxxx',          88200, 1800, "mc_analogue_output_8ch.json"),
+        ('xk_216_mc', '2i10o10xssxxx',          96000, 1800, "mc_analogue_output_8ch.json"),
+        ('xk_216_mc', '2i10o10xssxxx',         176400, 1800, "mc_analogue_output_8ch.json")
     ])
 ]
 
 
-@pytest.mark.parametrize(["board", "config", "fs", "duration", "num_chans"], analogue_output_configs)
-def test_analogue_output(xsig, board, config, fs, duration, num_chans):
-    if num_chans == 8:
-        xsig_config = "mc_analogue_output.json"
-    elif num_chans == 2:
-        xsig_config = "mc_analogue_output_2ch.json"
-    else:
-        assert False, f"Invalid channel count {num_chans}"
-
-    duration_ms = duration * 1000
-
+@pytest.mark.parametrize(["board", "config", "fs", "duration", "xsig_config"], analogue_output_configs)
+def test_analogue_output(xsig, board, config, fs, duration, xsig_config):
     with xtagctl.acquire("usb_audio_mc_xs2_dut", "usb_audio_mc_xs2_harness") as (
         adapter_dut,
         adapter_harness,
@@ -425,11 +410,11 @@ def test_analogue_output(xsig, board, config, fs, duration, num_chans):
         pid = pid_from_board_config(board, config)
         wait_for_enumeration(pid, 0x20B1)
 
-        # Run xsig for duration_ms + 2 seconds
+        # Run xsig for duration + 2 seconds
         xsig_cmd = sh.Command(xsig)(
-            fs, duration_ms + 2000, XSIG_CONFIG_ROOT / xsig_config, _bg=True
+            fs, (duration + 2) * 1000, XSIG_CONFIG_ROOT / xsig_config, _bg=True
         )
-        time.sleep(duration_ms / 1000)
+        time.sleep(duration)
         # Get analyser output
         try:
             harness_xrun.kill_group()
@@ -444,5 +429,7 @@ def test_analogue_output(xsig, board, config, fs, duration, num_chans):
         # Wait for xsig to exit (timeout after 5 seconds)
         xsig_cmd.wait(timeout=5)
 
-        expected_freqs = [((i + 1) * 1000) + 500 for i in range(num_chans)]
+        with open(XSIG_CONFIG_ROOT / xsig_config) as file:
+            xsig_json = json.load(file)
+        expected_freqs = [l[1] for l in xsig_json['out']]
         assert check_analyzer_output(xscope_lines, expected_freqs)
