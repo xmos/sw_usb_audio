@@ -14,6 +14,7 @@ from typing import List
 import xtagctl
 import zipfile
 import json
+import sounddevice as sd
 
 
 XMOS_ROOT = Path(os.environ["XMOS_ROOT"])
@@ -27,41 +28,37 @@ XSIG_PATH = Path(__file__).parent / "tools" / "xsig"
 XSIG_CONFIG_ROOT = XMOS_ROOT / "sw_usb_audio" / "tests" / "xsig_configs"
 
 
-def wait_for_enumeration(pid, vid, timeout=10):
+def wait_for_portaudio(product_str, timeout=10):
     for _ in range(timeout):
         time.sleep(1)
 
-        if platform.system() == "Darwin":
-            prof_out = sh.system_profiler.SPUSBDataType()
-            prof_lines = prof_out.split("\n")
-            current_pid = None
-            current_vid = None
-            for line in prof_lines:
-                if line.strip().startswith("Product ID:"):
-                    current_pid = int(line.split()[2], 16)
-                if line.strip().startswith("Vendor ID:"):
-                    current_vid = int(line.split()[2], 16)
-                if current_pid == pid and current_vid == vid:
-                    return
-        elif platform.system() == "Linux":
-            lsusb_out = sh.lsusb("-v", "-d", f"{hex(vid)}:{hex(pid)}")
-            for line in lsusb_out.split("\n"):
-                if line.strip().startswith("bcdDevice"):
-                    return
+        # sounddevice must be terminated and re-initialised to get updated device info
+        sd._terminate()
+        sd._initialize()
+        sd_devs = [sd_dev['name'] for sd_dev in sd.query_devices()]
+        if product_str in sd_devs:
+            return
 
-    assert False, f"Device failed to enumerate in {timeout}s"
+    pytest.fail(f"Device not available via portaudio in {timeout}s")
 
 
-def pid_from_board_config(board, config):
+def product_str_from_board_config(board, config):
     if board == 'xk_216_mc':
         if config.startswith('1'):
-            return 0x9
+            return 'XMOS xCORE-200 MC (UAC1.0)'
         elif config.startswith('2'):
-            return 0x8
+            return 'XMOS xCORE-200 MC (UAC2.0)'
         else:
-            assert False, f"Unrecognised config {config} for {board}"
+            pytest.fail(f"Unrecognised config {config} for {board}")
+    elif board == 'xk_evk_xu316':
+        if config.startswith('1'):
+            return 'XMOS xCORE (UAC1.0)'
+        elif config.startswith('2'):
+            return 'XMOS xCORE (UAC2.0)'
+        else:
+            pytest.fail(f"Unrecognised config {config} for {board}")
     else:
-        assert False, f"Unrecognised board {board}"
+        pytest.fail(f"Unrecognised board {board}")
 
 
 def get_firmware_path_harness(board, config=None):
@@ -173,10 +170,7 @@ def check_analyzer_output(analyzer_output: List[str], expected_frequencies: int)
                 )
 
     if len(failures) > 0:
-        print("Checking analyser output failed:\n")
-        print("\n".join(failures))
-        return False
-    return True
+        pytest.fail('Checking analyser output failed:\n' + '\n'.join(failures))
 
 
 def run_audio_command(runtime, exe, *args):
@@ -230,7 +224,9 @@ analogue_input_configs = [
         ('xk_216_mc', '2i10o10xxxxxx_slave',   192000, 10, "mc_analogue_input_8ch.json"),
         ('xk_216_mc', '2i10o10msxxxx',         192000, 10, "mc_analogue_input_8ch.json"),
         ('xk_216_mc', '2i10o10xsxxxx_mix8',    192000, 10, "mc_analogue_input_8ch.json"),
-        ('xk_216_mc', '2i10o10xssxxx',         192000, 10, "mc_analogue_input_8ch.json")
+        ('xk_216_mc', '2i10o10xssxxx',         192000, 10, "mc_analogue_input_8ch.json"),
+        ('xk_evk_xu316', '1i2o2',               48000, 10, "mc_analogue_input_2ch.json"),
+        ('xk_evk_xu316', '2i2o2',               48000, 10, "mc_analogue_input_2ch.json")
     ]),
 
     # nightly level tests
@@ -245,7 +241,10 @@ analogue_input_configs = [
         ('xk_216_mc', '2i10o10xsxxxx_mix8',      48000, 600, "mc_analogue_input_8ch.json"),
         ('xk_216_mc', '2i10o10xssxxx',           48000, 600, "mc_analogue_input_8ch.json"),
         ('xk_216_mc', '2i10o10xsxxxd',           48000, 600, "mc_analogue_input_8ch.json"),
-        ('xk_216_mc', '2i10o10xsxxxd',          192000, 600, "mc_analogue_input_8ch.json")
+        ('xk_216_mc', '2i10o10xsxxxd',          192000, 600, "mc_analogue_input_8ch.json"),
+        ('xk_evk_xu316', '1i2o2',                44100, 600, "mc_analogue_input_2ch.json"),
+        ('xk_evk_xu316', '2i2o2',                44100, 600, "mc_analogue_input_2ch.json"),
+        ('xk_evk_xu316', '2i2o2',               192000, 600, "mc_analogue_input_2ch.json")
     ]),
 
     # weekend level tests
@@ -284,38 +283,43 @@ analogue_input_configs = [
         ('xk_216_mc', '2i10o10xsxxxd',           44100, 1800, "mc_analogue_input_8ch.json"),
         ('xk_216_mc', '2i10o10xsxxxd',           88200, 1800, "mc_analogue_input_8ch.json"),
         ('xk_216_mc', '2i10o10xsxxxd',           96000, 1800, "mc_analogue_input_8ch.json"),
-        ('xk_216_mc', '2i10o10xsxxxd',          176400, 1800, "mc_analogue_input_8ch.json")
+        ('xk_216_mc', '2i10o10xsxxxd',          176400, 1800, "mc_analogue_input_8ch.json"),
+        ('xk_evk_xu316', '1i2o2',                44100, 1800, "mc_analogue_input_2ch.json"),
+        ('xk_evk_xu316', '1i2o2',                48000, 1800, "mc_analogue_input_2ch.json"),
+        ('xk_evk_xu316', '2i2o2',                44100, 1800, "mc_analogue_input_2ch.json"),
+        ('xk_evk_xu316', '2i2o2',                88200, 1800, "mc_analogue_input_2ch.json"),
+        ('xk_evk_xu316', '2i2o2',                96000, 1800, "mc_analogue_input_2ch.json"),
+        ('xk_evk_xu316', '2i2o2',               176400, 1800, "mc_analogue_input_2ch.json")
     ])
 ]
 
 
 @pytest.mark.parametrize(["board", "config", "fs", "duration", "xsig_config"], analogue_input_configs)
-def test_analogue_input(xsig, board, config, fs, duration, xsig_config):
-    with xtagctl.acquire("usb_audio_mc_xs2_dut", "usb_audio_mc_xs2_harness") as (
-        adapter_dut,
-        adapter_harness,
-    ):
-        # xrun the harness
-        harness_firmware = get_firmware_path_harness("xcore200_mc")
-        sh.xrun("--adapter-id", adapter_harness, harness_firmware)
-        # xflash the firmware
-        firmware = get_firmware_path(board, config)
-        sh.xrun("--adapter-id", adapter_dut, firmware)
+def test_analogue_input(xtagctl_wrapper, xsig, board, config, fs, duration, xsig_config):
+    adapter_dut, adapter_harness = xtagctl_wrapper
 
-        pid = pid_from_board_config(board, config)
-        wait_for_enumeration(pid, 0x20B1)
+    # xrun the harness
+    harness_firmware = get_firmware_path_harness("xcore200_mc")
+    sh.xrun("--adapter-id", adapter_harness, harness_firmware)
+    # xflash the firmware
+    firmware = get_firmware_path(board, config)
+    sh.xrun("--adapter-id", adapter_dut, firmware)
 
-        # Run xsig
-        xsig_duration = duration + 5
-        xsig_output = run_audio_command(
-            xsig_duration, xsig, fs, duration * 1000, XSIG_CONFIG_ROOT / xsig_config
-        )
-        xsig_lines = xsig_output.split("\n")
-        # Check output
-        with open(XSIG_CONFIG_ROOT / xsig_config) as file:
-            xsig_json = json.load(file)
-        expected_freqs = [l[1] for l in xsig_json['in']]
-        assert check_analyzer_output(xsig_lines, expected_freqs)
+    prod_str = product_str_from_board_config(board, config)
+    wait_for_portaudio(prod_str)
+
+    # Run xsig
+    xsig_duration = duration + 5
+    xsig_output = run_audio_command(
+        xsig_duration, xsig, fs, duration * 1000, XSIG_CONFIG_ROOT / xsig_config
+    )
+    xsig_lines = xsig_output.split("\n")
+
+    # Check output
+    with open(XSIG_CONFIG_ROOT / xsig_config) as file:
+        xsig_json = json.load(file)
+    expected_freqs = [l[1] for l in xsig_json['in']]
+    check_analyzer_output(xsig_lines, expected_freqs)
 
 
 # Test cases are defined by a tuple of (board, config, sample rate, seconds duration, xsig config)
@@ -330,7 +334,9 @@ analogue_output_configs = [
         ('xk_216_mc', '2i10o10xxxxxx_slave',   192000, 10, "mc_analogue_output_8ch.json"),
         ('xk_216_mc', '2i10o10msxxxx',         192000, 10, "mc_analogue_output_8ch.json"),
         ('xk_216_mc', '2i10o10xsxxxx_mix8',    192000, 10, "mc_analogue_output_8ch.json"),
-        ('xk_216_mc', '2i10o10xssxxx',         192000, 10, "mc_analogue_output_8ch.json")
+        ('xk_216_mc', '2i10o10xssxxx',         192000, 10, "mc_analogue_output_8ch.json"),
+        ('xk_evk_xu316', '1i2o2',               48000, 10, "mc_analogue_output_2ch.json"),
+        ('xk_evk_xu316', '2i2o2',               48000, 10, "mc_analogue_output_2ch.json")
     ]),
 
     # nightly level tests
@@ -343,7 +349,10 @@ analogue_output_configs = [
         ('xk_216_mc', '2i10o10xxxxxx_slave',   192000, 600, "mc_analogue_output_8ch.json"),
         ('xk_216_mc', '2i10o10msxxxx',          48000, 600, "mc_analogue_output_8ch.json"),
         ('xk_216_mc', '2i10o10xsxxxx_mix8',     48000, 600, "mc_analogue_output_8ch.json"),
-        ('xk_216_mc', '2i10o10xssxxx',          48000, 600, "mc_analogue_output_8ch.json")
+        ('xk_216_mc', '2i10o10xssxxx',          48000, 600, "mc_analogue_output_8ch.json"),
+        ('xk_evk_xu316', '1i2o2',               44100, 600, "mc_analogue_output_2ch.json"),
+        ('xk_evk_xu316', '2i2o2',               44100, 600, "mc_analogue_output_2ch.json"),
+        ('xk_evk_xu316', '2i2o2',              192000, 600, "mc_analogue_output_2ch.json")
     ]),
 
     # weekend level tests
@@ -377,59 +386,61 @@ analogue_output_configs = [
         ('xk_216_mc', '2i10o10xssxxx',          44100, 1800, "mc_analogue_output_8ch.json"),
         ('xk_216_mc', '2i10o10xssxxx',          88200, 1800, "mc_analogue_output_8ch.json"),
         ('xk_216_mc', '2i10o10xssxxx',          96000, 1800, "mc_analogue_output_8ch.json"),
-        ('xk_216_mc', '2i10o10xssxxx',         176400, 1800, "mc_analogue_output_8ch.json")
+        ('xk_216_mc', '2i10o10xssxxx',         176400, 1800, "mc_analogue_output_8ch.json"),
+        ('xk_evk_xu316', '1i2o2',               44100, 1800, "mc_analogue_output_2ch.json"),
+        ('xk_evk_xu316', '1i2o2',               48000, 1800, "mc_analogue_output_2ch.json"),
+        ('xk_evk_xu316', '2i2o2',               44100, 1800, "mc_analogue_output_2ch.json"),
+        ('xk_evk_xu316', '2i2o2',               88200, 1800, "mc_analogue_output_2ch.json"),
+        ('xk_evk_xu316', '2i2o2',               96000, 1800, "mc_analogue_output_2ch.json"),
+        ('xk_evk_xu316', '2i2o2',              176400, 1800, "mc_analogue_output_2ch.json")
     ])
 ]
 
 
 @pytest.mark.parametrize(["board", "config", "fs", "duration", "xsig_config"], analogue_output_configs)
-def test_analogue_output(xsig, board, config, fs, duration, xsig_config):
-    with xtagctl.acquire("usb_audio_mc_xs2_dut", "usb_audio_mc_xs2_harness") as (
-        adapter_dut,
+def test_analogue_output(xtagctl_wrapper, xsig, board, config, fs, duration, xsig_config):
+    adapter_dut, adapter_harness = xtagctl_wrapper
+
+    # xrun the dut
+    firmware = get_firmware_path(board, config)
+    sh.xrun("--adapter-id", adapter_dut, firmware)
+
+    prod_str = product_str_from_board_config(board, config)
+    wait_for_portaudio(prod_str)
+
+    # xrun --xscope the harness
+    harness_firmware = get_firmware_path_harness("xcore200_mc")
+    xscope_out = io.StringIO()
+    harness_xrun = sh.xrun(
+        "--adapter-id",
         adapter_harness,
-    ):
-        # xrun the dut
-        firmware = get_firmware_path(board, config)
-        sh.xrun("--adapter-id", adapter_dut, firmware)
-        # sleep to workaround bug where running the harness firmware can fail
-        time.sleep(1)
-        # xrun --xscope the harness
-        harness_firmware = get_firmware_path_harness("xcore200_mc")
-        xscope_out = io.StringIO()
-        harness_xrun = sh.xrun(
-            "--adapter-id",
-            adapter_harness,
-            "--xscope",
-            harness_firmware,
-            _out=xscope_out,
-            _err_to_out=True,
-            _bg=True,
-            _bg_exc=False,
-        )
+        "--xscope",
+        harness_firmware,
+        _out=xscope_out,
+        _err_to_out=True,
+        _bg=True,
+        _bg_exc=False,
+    )
 
-        pid = pid_from_board_config(board, config)
-        wait_for_enumeration(pid, 0x20B1)
+    # Run xsig for duration + 2 seconds
+    xsig_cmd = sh.Command(xsig)(
+        fs, (duration + 2) * 1000, XSIG_CONFIG_ROOT / xsig_config, _bg=True
+    )
+    time.sleep(duration)
+    # Get analyser output
+    try:
+        harness_xrun.kill_group()
+        harness_xrun.wait()
+    except sh.SignalException:
+        # Killed
+        pass
+    xscope_str = xscope_out.getvalue()
+    xscope_lines = xscope_str.split("\n")
 
-        # Run xsig for duration + 2 seconds
-        xsig_cmd = sh.Command(xsig)(
-            fs, (duration + 2) * 1000, XSIG_CONFIG_ROOT / xsig_config, _bg=True
-        )
-        time.sleep(duration)
-        # Get analyser output
-        try:
-            harness_xrun.kill_group()
-            harness_xrun.wait()
-        except sh.SignalException:
-            # Killed
-            pass
-        xscope_str = xscope_out.getvalue()
-        xscope_lines = xscope_str.split("\n")
-        print("XSCOPE STRING:")
-        print(xscope_str)
-        # Wait for xsig to exit (timeout after 5 seconds)
-        xsig_cmd.wait(timeout=5)
+    # Wait for xsig to exit (timeout after 5 seconds)
+    xsig_cmd.wait(timeout=5)
 
-        with open(XSIG_CONFIG_ROOT / xsig_config) as file:
-            xsig_json = json.load(file)
-        expected_freqs = [l[1] for l in xsig_json['out']]
-        assert check_analyzer_output(xscope_lines, expected_freqs)
+    with open(XSIG_CONFIG_ROOT / xsig_config) as file:
+        xsig_json = json.load(file)
+    expected_freqs = [l[1] for l in xsig_json['out']]
+    check_analyzer_output(xscope_lines, expected_freqs)

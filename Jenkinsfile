@@ -43,7 +43,9 @@ pipeline {
               dir("${REPO}") {
                 sh 'xmake -C app_usb_aud_xk_216_mc -j16 TEST_CONFIGS=1'
                 stash includes: 'app_usb_aud_xk_216_mc/bin/**/*.xe', name: 'xk_216_mc_bin', useDefaultExcludes: false
+
                 sh 'xmake -C app_usb_aud_xk_evk_xu316 -j16 TEST_CONFIGS=1'
+                stash includes: 'app_usb_aud_xk_evk_xu316/bin/**/*.xe', name: 'xk_evk_xu316_bin', useDefaultExcludes: false
 
                 dir("doc") {
                   sh 'xdoc xmospdf'
@@ -82,6 +84,7 @@ pipeline {
             }
             dir("${REPO}") {
               unstash 'xk_216_mc_bin'
+              unstash 'xk_evk_xu316_bin'
               dir("tests") {
                 viewEnv() {
                   // The JENKINS env var is necessary for macOS catalina
