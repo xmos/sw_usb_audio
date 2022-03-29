@@ -128,30 +128,33 @@ def create_dfu_bin(board, config):
 @pytest.mark.nightly
 @pytest.mark.weekend
 @pytest.mark.parametrize("board", ["xk_216_mc"])
-def test_dfu(xmosdfu, board):
-    with xtagctl.acquire("usb_audio_mc_xs2_dut") as adapter_dut:
-        # xflash the firmware
-        firmware = get_firmware_path(board, 'upgrade1')
-        dfu_bin = create_dfu_bin(board, 'upgrade2')
-        sh.xflash("--adapter-id", adapter_dut, firmware)
-        # Wait for device to enumerate
-        time.sleep(10)
-        # Run DFU test procedure
-        initial_version = get_bcd_version(0x20B1, 0x8)
-        # Download the new firmware
-        try:
-            sh.Command(xmosdfu)("0x8", "--download", dfu_bin)
-        except sh.ErrorReturnCode as e:
-            print(e.stdout)
-            raise Exception()
-        time.sleep(3)
-        # Check version
-        upgrade_version = get_bcd_version(0x20B1, 0x8)
-        # Revert to factory
-        sh.Command(xmosdfu)("0x8", "--revertfactory")
-        time.sleep(3)
-        # Check version
-        reverted_version = get_bcd_version(0x20B1, 0x8)
+def test_dfu(xtagctl_wrapper, xmosdfu, board):
+    adapter_dut, _ = xtagctl_wrapper
 
-        assert initial_version == reverted_version
-        assert upgrade_version != initial_version
+    # xflash the firmware
+    firmware = get_firmware_path(board, 'upgrade1')
+    dfu_bin = create_dfu_bin(board, 'upgrade2')
+    sh.xflash("--adapter-id", adapter_dut, firmware)
+    # Wait for device to enumerate
+    time.sleep(10)
+    # Run DFU test procedure
+    initial_version = get_bcd_version(0x20B1, 0x8)
+    # Download the new firmware
+    try:
+        sh.Command(xmosdfu)("0x8", "--download", dfu_bin)
+    except sh.ErrorReturnCode as e:
+        pytest.fail(e.stdout)
+
+    time.sleep(3)
+    # Check version
+    upgrade_version = get_bcd_version(0x20B1, 0x8)
+    # Revert to factory
+    sh.Command(xmosdfu)("0x8", "--revertfactory")
+    time.sleep(3)
+    # Check version
+    reverted_version = get_bcd_version(0x20B1, 0x8)
+
+    if initial_version != reverted_version:
+        pytest.fail(f'Initial version ({initial_version}) does not match reverted version ({reverted_version})')
+    if upgrade_version == initial_version:
+        pytest.fail(f'Upgraded version ({upgrade_version}) matches initial version ({initial_version})')

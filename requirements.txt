@@ -1,4 +1,4 @@
-# python_version 3.7
+# python_version 3.7.6
 
 # dependencies
 sh==1.13.1
@@ -14,3 +14,4 @@ flake8
 pylint
 pytest
 pytest-xdist
+sounddevice
