@@ -135,4 +135,6 @@
 #define HID_CONTROLS       1
 #endif
 
+#include "user_main.h"
+
 #endif
