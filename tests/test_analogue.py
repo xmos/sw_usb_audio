@@ -7,6 +7,7 @@ import time
 import re
 from typing import List
 import json
+import tempfile
 
 from usb_audio_test_utils import (wait_for_portaudio, get_firmware_path_harness,
     get_firmware_path, run_audio_command, mark_tests)
@@ -162,10 +163,11 @@ def test_analogue_input(xtagctl_wrapper, xsig, board, config, fs, duration, xsig
 
     # Run xsig
     xsig_duration = duration + 5
-    xsig_output = run_audio_command(
-        xsig_duration, xsig, fs, duration * 1000, xsig_config_path
-    )
-    xsig_lines = xsig_output.split("\n")
+    with tempfile.NamedTemporaryFile(mode='w+') as out_file:
+        run_audio_command(out_file, xsig, f"{fs}", f"{duration * 1000}", xsig_config_path)
+        time.sleep(xsig_duration)
+        out_file.seek(0)
+        xsig_lines = out_file.readlines()
 
     # Check output
     with open(xsig_config_path) as file:
