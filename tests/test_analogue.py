@@ -4,65 +4,11 @@ from pathlib import Path
 import pytest
 import sh
 import time
-import re
-from typing import List
 import json
 import tempfile
 
 from usb_audio_test_utils import (wait_for_portaudio, get_firmware_path_harness,
-    get_firmware_path, run_audio_command, mark_tests)
-
-
-def check_analyzer_output(analyzer_output: List[str], expected_frequencies: int):
-    """ Verify that the output from xsig is correct """
-
-    failures = []
-    # Check for any errors
-    for line in analyzer_output:
-        if re.match(".*ERROR|.*error|.*Error|.*Problem", line):
-            failures.append(line)
-
-    # Check that the signals detected are of the correct frequencies
-    for i, expected_freq in enumerate(expected_frequencies):
-        found = False
-        expected_freq = expected_frequencies[i]
-        channel_line = f"Channel {i}: Frequency "
-        expected_line = "Channel %d: Frequency %d" % (i, expected_freq)
-        wrong_frequency = None
-        for line in analyzer_output:
-            if line.startswith(channel_line):
-                if line.startswith(expected_line):
-                    found = True
-                else:
-                    # Remove the prefix, split by whitespace, take the first element
-                    wrong_frequency = int(line[len(channel_line) :].split()[0])
-        if not found:
-            if wrong_frequency is None:
-                failures.append(f"No signal seen on channel {i}")
-            else:
-                failures.append(
-                    f"Incorrect frequency seen on channel {i}. "
-                    f"Expected {expected_freq}, got {wrong_frequency}."
-                )
-
-    for line in analyzer_output:
-        # Check that the signals were never lost
-        if re.match("Channel [0-9]*: Lost signal", line):
-            failures.append(line)
-        # Check that unexpected signals are not detected
-        if re.match("Channel [0-9]*: Signal detected .*", line):
-            chan_num = int(re.findall(r"\d", line)[0])
-            if chan_num not in range(len(expected_frequencies)):
-                failures.append("Unexpected signal detected on channel %d" % chan_num)
-        if re.match("Channel [0-9]*: Frequency [0-9]* .*", line):
-            chan_num = int(re.findall(r"\d", line)[0])
-            if chan_num not in range(len(expected_frequencies)):
-                failures.append(
-                    "Unexpected frequency reported on channel %d" % chan_num
-                )
-
-    if len(failures) > 0:
-        pytest.fail('Checking analyser output failed:\n' + '\n'.join(failures))
+    get_firmware_path, run_audio_command, mark_tests, check_analyzer_output)
 
 
 # Test cases are defined by a tuple of (board, config, sample rate, seconds duration, xsig config)
@@ -172,8 +118,7 @@ def test_analogue_input(xtagctl_wrapper, xsig, board, config, fs, duration, xsig
     # Check output
     with open(xsig_config_path) as file:
         xsig_json = json.load(file)
-    expected_freqs = [l[1] for l in xsig_json['in']]
-    check_analyzer_output(xsig_lines, expected_freqs)
+    check_analyzer_output(xsig_lines, xsig_json['in'])
 
 
 # Test cases are defined by a tuple of (board, config, sample rate, seconds duration, xsig config)
@@ -294,5 +239,4 @@ def test_analogue_output(xtagctl_wrapper, xsig, board, config, fs, duration, xsi
 
     with open(xsig_config_path) as file:
         xsig_json = json.load(file)
-    expected_freqs = [l[1] for l in xsig_json['out']]
-    check_analyzer_output(xscope_lines, expected_freqs)
+    check_analyzer_output(xscope_lines, xsig_json['out'])

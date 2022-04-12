@@ -3,14 +3,13 @@ import io
 from pathlib import Path
 import pytest
 import time
-import re
 import json
 import subprocess
 import re
 import tempfile
 
 from usb_audio_test_utils import (wait_for_portaudio, get_firmware_path_harness,
-    get_firmware_path, run_audio_command, mark_tests)
+    get_firmware_path, run_audio_command, mark_tests, check_analyzer_output)
 
 
 class Volcontrol:
@@ -31,80 +30,6 @@ class Volcontrol:
                        check=True)
         # sleep after setting the volume to allow the analyzer to detect the change
         time.sleep(3)
-
-
-def get_line_matches(lines, expected):
-    matches = []
-    for line in lines:
-        match = re.search(expected, line)
-        if match:
-            matches.append(match.group(1))
-
-    return matches
-
-
-def check_analyzer_output(analyzer_output, xsig_config):
-    """ Verify that the output from xsig is correct """
-
-    failures = []
-    # Check for any errors
-    for line in analyzer_output:
-        if re.match(".*ERROR|.*error|.*Error|.*Problem", line):
-            failures.append(line)
-
-    num_chans = len(xsig_config)
-    analyzer_channels = [[] for _ in range(num_chans)]
-    for line in analyzer_output:
-        match = re.search(r'^Channel (\d+):', line)
-        if not match:
-            continue
-
-        channel = int(match.group(1))
-        if channel not in range(num_chans):
-            failures.append(f'Invalid channel number {channel}')
-            continue
-
-        analyzer_channels[channel].append(line)
-
-        if re.match(r'Channel \d+: Lost signal', line):
-            failures.append(line)
-
-    for idx, channel_config in enumerate(xsig_config):
-        if channel_config[0] == 'volcheck':
-            vol_changes = get_line_matches(analyzer_channels[idx], r'.*Volume change by (-?\d+)')
-
-            if len(vol_changes) < 2:
-                failures.append(f'Initial volume and initial change not found on channel {idx}')
-                continue
-
-            initial_volume = int(vol_changes.pop(0))
-            initial_change = int(vol_changes.pop(0))
-            if initial_change >= 0:
-                failures.append(f'Initial change is not negative on channel {idx}: {initial_change}')
-            initial_change = abs(initial_change)
-            exp_vol_changes = [1.0, -0.5, 0.5]
-            if len(vol_changes) != len(exp_vol_changes):
-                failures.append(f'Unexpected number of volume changes on channel {idx}: {vol_changes}')
-                continue
-
-            for vol_change, exp_ratio in zip(vol_changes, exp_vol_changes):
-                expected = initial_change * exp_ratio
-                if abs(int(vol_change) - expected) > 2:
-                    failures.append(f'Volume change not as expected on channel {idx}: actual {vol_change}, expected {expected}')
-
-        elif channel_config[0] == 'sine':
-            exp_freq = channel_config[1]
-            chan_freqs = get_line_matches(analyzer_channels[idx], r'^Channel \d+: Frequency (\d+)')
-            if not len(chan_freqs):
-                failures.append(f'No signal seen on channel {idx}')
-            for freq in chan_freqs:
-                if int(freq) != exp_freq:
-                    failures.append(f'Incorrect frequency on channel {idx}; got {freq}, expected {exp_freq}')
-        else:
-            failures.append(f'Invalid channel config {channel_config}')
-
-    if len(failures) > 0:
-        pytest.fail('Checking analyser output failed:\n' + '\n'.join(failures))
 
 
 # Test cases are defined by a tuple of (board, config, sample rate, 'm' (master) or channel number)
