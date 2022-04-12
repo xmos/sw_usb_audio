@@ -86,6 +86,9 @@ pipeline {
               unstash 'xk_216_mc_bin'
               unstash 'xk_evk_xu316_bin'
               dir("tests") {
+                // Build test support application
+                sh 'make -C tools/volcontrol'
+
                 viewEnv() {
                   // The JENKINS env var is necessary for macOS catalina
                   // We have to work around microphone permission issues
