@@ -8,6 +8,7 @@ import time
 import os
 import stat
 import re
+import socket
 
 
 def product_str_from_board_config(board, config):
@@ -162,3 +163,26 @@ def check_analyzer_output(analyzer_output, xsig_config):
 
     if len(failures) > 0:
         pytest.fail('Checking analyser output failed:\n' + '\n'.join(failures))
+
+
+# Get an available port number by binding a socket then closing it (assuming nothing else takes it before it's used by xrun)
+def get_xscope_port_number():
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+        sock.bind(("localhost", 0))
+        sock.listen(1)
+        port = sock.getsockname()[1]
+    return port
+
+
+def wait_for_xscope_port(port, timeout=10):
+    for _ in range(timeout):
+        time.sleep(1)
+
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+            try:
+                sock.bind(("localhost", port))
+            except OSError:
+                # Failed to bind, so xrun has this port open and is ready to use
+                return
+
+    pytest.fail(f'xscope port {port} not ready after {timeout}s')

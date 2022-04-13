@@ -81,6 +81,7 @@ pipeline {
           steps {
             dir("${WORKSPACE}/sw_audio_analyzer") {
               copyArtifacts filter: '**/*.xe', fingerprintArtifacts: true, projectName: 'xmos-int/sw_audio_analyzer/master', selector: lastSuccessful()
+              copyArtifacts filter: 'host_xscope_controller/bin_macos/xscope_controller', fingerprintArtifacts: true, projectName: 'xmos-int/sw_audio_analyzer/master', selector: lastSuccessful()
             }
             dir("${REPO}") {
               unstash 'xk_216_mc_bin'
