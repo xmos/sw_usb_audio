@@ -56,7 +56,7 @@
 #define MIDI 		       0
 #endif
 
-/* Enable/Disable SPDIF output - Default is S/PDIF on */
+/* Enable/Disable SPDIF output - Default is S/PDIF off */
 #ifndef XUA_SPDIF_TX_EN
 #define XUA_SPDIF_TX_EN	   (0)
 #endif
