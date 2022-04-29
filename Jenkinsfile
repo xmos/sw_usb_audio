@@ -63,7 +63,7 @@ pipeline {
           archiveArtifacts artifacts: "Release/*.zip", fingerprint: true, allowEmptyArchive: true
         }
         cleanup {
-          xcoreCleanSandbox()
+          cleanWs()
         }
       }
     }
@@ -92,7 +92,7 @@ pipeline {
                   // For more info, see the DevOps section of the XMOS wiki
                   withEnv(["JENKINS=1"]) {
                     withVenv() {
-                      sh "pytest -n 1 -m ${params.TEST_LEVEL} --junitxml=pytest_result.xml"
+                      sh "pytest -m ${params.TEST_LEVEL} --junitxml=pytest_result.xml"
                     }
                   }
                 }
@@ -103,7 +103,7 @@ pipeline {
       }
       post {
         cleanup {
-          xcoreCleanSandbox()
+          cleanWs()
         }
       }
     }

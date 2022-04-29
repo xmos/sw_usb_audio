@@ -1,17 +1,8 @@
 # python_version 3.7.6
 
-# dependencies
-sh==1.13.1
-requests==2.24.0
+pytest==7.1.2
+requests==2.27.1
+sh==1.14.2
+sounddevice==0.4.4
 
-# viewfile dependencies
--e ../infr_scripts_py
--e ../infr_apps
 -e ../xtagctl
-
-# dev/test packages
-flake8
-pylint
-pytest
-pytest-xdist
-sounddevice
