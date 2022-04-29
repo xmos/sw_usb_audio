@@ -63,7 +63,7 @@ pipeline {
           archiveArtifacts artifacts: "Release/*.zip", fingerprint: true, allowEmptyArchive: true
         }
         cleanup {
-          xcoreCleanSandbox()
+          cleanWs()
         }
       }
     }
@@ -103,7 +103,7 @@ pipeline {
       }
       post {
         cleanup {
-          xcoreCleanSandbox()
+          cleanWs()
         }
       }
     }
