@@ -99,16 +99,18 @@
       <LinkEndpoint NodeId="0" Link="XL0"/>
       <LinkEndpoint NodeId="2" Chanend="1"/>
     </Link>
-  </Links>
-  <ExternalDevices>
-    <Device NodeId="0" Tile="0" Class="SQIFlash" Name="bootFlash" Type="S25FL116K" PageSize="256" SectorSize="4096" NumPages="16384">
-      <Attribute Name="PORT_SQI_CS" Value="PORT_SQI_CS"/>
-      <Attribute Name="PORT_SQI_SCLK"   Value="PORT_SQI_SCLK"/>
+</Links>
+   <ExternalDevices>
+    <Device NodeId="0" Tile="0" Class="SQIFlash" Name="bootFlash" Type="AT25FF321A" PageSize="256" SectorSize="4096" NumPages="16384">
+      <Attribute Name="PORT_SQI_CS"   Value="PORT_SQI_CS"/>
+      <Attribute Name="PORT_SQI_SCLK" Value="PORT_SQI_SCLK"/>
       <Attribute Name="PORT_SQI_SIO"  Value="PORT_SQI_SIO"/>
-      <Attribute Name="QE_REGISTER" Value="flash_qe_location_status_reg_0"/>
-      <Attribute Name="QE_BIT" Value="flash_qe_bit_6"/>
+      <Attribute Name="QE_REGISTER"   Value="flash_qe_location_status_reg_1"/>
+      <Attribute Name="QE_BIT"        Value="flash_qe_bit_1"/>
     </Device>
   </ExternalDevices>
+
+
   <JTAGChain>
     <JTAGDevice NodeId="0"/>
   </JTAGChain>
