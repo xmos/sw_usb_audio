@@ -56,7 +56,7 @@
 #define MIDI 		       0
 #endif
 
-/* Enable/Disable SPDIF output - Default is S/PDIF on */
+/* Enable/Disable SPDIF output - Default is S/PDIF off */
 #ifndef XUA_SPDIF_TX_EN
 #define XUA_SPDIF_TX_EN	   (0)
 #endif
@@ -84,14 +84,14 @@
 /* Channel index of SPDIF Rx channels (duplicated DAC channels 1/2 when index is 0) */
 /* If we have enough channels then tag on the end as separate channels, otherwise 
  * duplicate channels 1/2 */
-#if (NUM_USB_CHANS_OUT >= (I2S_CHANS_DAC+2)) 
+#if (NUM_USB_CHAN_OUT >= (I2S_CHANS_DAC+2))
 #define SPDIF_TX_INDEX     (I2S_CHANS_DAC)
 #else
 #define SPDIF_TX_INDEX     (0)
 #endif
 
 /* Channel index of SPDIF Rx channels */
-#if (NUM_USB_CHANS_IN >= (I2S_CHANS_ADC+2)) 
+#if (NUM_USB_CHAN_IN >= (I2S_CHANS_ADC+2))
 #define SPDIF_RX_INDEX     (I2S_CHANS_ADC)
 #else
 #define SPDIF_RX_INDEX     (0)

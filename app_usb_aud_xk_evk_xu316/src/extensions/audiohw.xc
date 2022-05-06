@@ -6,9 +6,8 @@
 #include "i2c.h"
 #include "tlv320aic3204.h"
 
-// SCL is on X0D37 - tile[0]: XS1_PORT_1N
-// SDA is on X0D38 - tile[0]: XS1_PORT_1O
-on tile[0]: struct r_i2c r_i2c      = {PORT_I2C_SCL, PORT_I2C_SDA};
+port p_i2c_scl = PORT_I2C_SCL;
+port p_i2c_sda = PORT_I2C_SDA;
 
 // CODEC reset line 
 on tile[1]: out port p_codec_reset  = PORT_CODEC_RST_N;
@@ -59,23 +58,19 @@ typedef enum
     AUDIOHW_CMD_REGRD
 } audioHwCmd_t;
 
-static inline void AIC3204_REGREAD(unsigned reg, unsigned &val)
+static inline void AIC3204_REGREAD(unsigned reg, unsigned &val, client interface i2c_master_if i2c)
 {
-    unsigned char data[1] = {0xAA};
-    i2c_master_read_reg(AIC3204_I2C_DEVICE_ADDR, reg, data, 1, r_i2c); 
-    val = data[0];
+    i2c_regop_res_t result;
+    val = i2c.read_reg(AIC3204_I2C_DEVICE_ADDR, reg, result);
 }
 
-static inline void AIC3204_REGWRITE(unsigned reg, unsigned val)
+static inline void AIC3204_REGWRITE(unsigned reg, unsigned val, client interface i2c_master_if i2c)
 {
-    unsigned char data[1] = {val};
-    i2c_master_write_reg(AIC3204_I2C_DEVICE_ADDR, reg, data, 1, r_i2c); 
+    i2c.write_reg(AIC3204_I2C_DEVICE_ADDR, reg, val);
 }
 
-void AudioHwRemote(chanend c)
+void AudioHwRemote2(chanend c, client interface i2c_master_if i2c)
 {
-    i2c_master_init(r_i2c);
-    
     while(1)
     {
         unsigned cmd;
@@ -85,7 +80,7 @@ void AudioHwRemote(chanend c)
         {
             unsigned regAddr, regVal;
             c :> regAddr;
-            AIC3204_REGREAD(regAddr, regVal);
+            AIC3204_REGREAD(regAddr, regVal, i2c);
             c <: regVal;
         }
         else
@@ -93,8 +88,18 @@ void AudioHwRemote(chanend c)
             unsigned regAddr, regValue;
             c :> regAddr;
             c :> regValue;
-            AIC3204_REGWRITE(regAddr, regValue);
+            AIC3204_REGWRITE(regAddr, regValue, i2c);
         }
+    }
+}
+
+void AudioHwRemote(chanend c)
+{
+    i2c_master_if i2c[1];
+    par
+    {
+        i2c_master(i2c, 1, p_i2c_scl, p_i2c_sda, 10);
+        AudioHwRemote2(c, i2c[0]);
     }
 }
 

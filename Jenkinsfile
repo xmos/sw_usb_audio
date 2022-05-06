@@ -1,4 +1,4 @@
-@Library('xmos_jenkins_shared_library@v0.15.0') _
+@Library('xmos_jenkins_shared_library@v0.18.0') _
 
 getApproval()
 
@@ -18,7 +18,7 @@ pipeline {
   stages {
     stage('Create release and build') {
       agent {
-        label 'macOS&&x86_64&&brew'
+        label 'macOS && x86_64'
       }
       stages {
         stage('Get view') {
@@ -43,7 +43,16 @@ pipeline {
               dir("${REPO}") {
                 sh 'xmake -C app_usb_aud_xk_216_mc -j16 TEST_CONFIGS=1'
                 stash includes: 'app_usb_aud_xk_216_mc/bin/**/*.xe', name: 'xk_216_mc_bin', useDefaultExcludes: false
+
                 sh 'xmake -C app_usb_aud_xk_evk_xu316 -j16 TEST_CONFIGS=1'
+                stash includes: 'app_usb_aud_xk_evk_xu316/bin/**/*.xe', name: 'xk_evk_xu316_bin', useDefaultExcludes: false
+
+                dir("doc") {
+                  sh 'xdoc xmospdf'
+                  dir("_build/xlatex") {
+                    archiveArtifacts artifacts: "index.pdf", fingerprint: true, allowEmptyArchive: true
+                  }
+                }
               }
             }
           }
@@ -54,7 +63,7 @@ pipeline {
           archiveArtifacts artifacts: "Release/*.zip", fingerprint: true, allowEmptyArchive: true
         }
         cleanup {
-          xcoreCleanSandbox()
+          cleanWs()
         }
       }
     }
@@ -75,6 +84,7 @@ pipeline {
             }
             dir("${REPO}") {
               unstash 'xk_216_mc_bin'
+              unstash 'xk_evk_xu316_bin'
               dir("tests") {
                 viewEnv() {
                   // The JENKINS env var is necessary for macOS catalina
@@ -82,7 +92,7 @@ pipeline {
                   // For more info, see the DevOps section of the XMOS wiki
                   withEnv(["JENKINS=1"]) {
                     withVenv() {
-                      sh "pytest -n 1 -m ${params.TEST_LEVEL} --junitxml=pytest_result.xml"
+                      sh "pytest -m ${params.TEST_LEVEL} --junitxml=pytest_result.xml"
                     }
                   }
                 }
@@ -93,13 +103,13 @@ pipeline {
       }
       post {
         cleanup {
-          xcoreCleanSandbox()
+          cleanWs()
         }
       }
     }
     stage('Update view files') {
       agent {
-        label 'x86_64'
+        label 'linux && x86_64'
       }
       steps {
         updateViewfiles()

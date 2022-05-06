@@ -4,7 +4,7 @@
 #include "hostactive.h"
 #include "audiostream.h"
 
-#ifdef USB_SEL_A
+#if USB_SEL_A
 #include <hwtimer.h>
 #include "interrupt.h"
 hwtimer_t g_rebootTimer;
