@@ -1,6 +1,6 @@
 #include <xs1.h>
-#include <xassert.h>
 #include <platform.h>
+#include "xassert.h"
 #include "xua.h"
 #include "i2c.h"
 #include "tlv320aic3204.h"
