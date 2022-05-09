@@ -1,21 +1,13 @@
 *.settings
 */test_results.csv
-__loader/after*
-__loader/flash*
 bin.txt
 _build
 toplevel_doc
-log.txt
-**/.build*/*
 */bin/*
 *.bin
 *.zip
 *.log
-*.o
-*.xe
 *.vcd
-*.xi
-*.i
 *.a
 *.swp
 *.*~
@@ -31,7 +23,21 @@ legacy_tests/plot*.pdf
 legacy_tests/generated_*.wav
 
 **/*.egg-info/
-**/.venv/*
+**/*venv/*
+
+# XMOS temp files
+**/.build*/*
+**/flash_bin_node*
+**/fw-*
+**/s2l-*
+**/spanning-xn-*
+**/target-xn*
+*.xi
+*.o
+*.i
+
+# XMOS binaries
+*.xe
 
 # Regression test files
 tests/xmosdfu

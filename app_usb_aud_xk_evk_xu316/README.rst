@@ -5,16 +5,15 @@ XMOS xcore.ai USB Audio
 :scope: Example
 :description: USB Audio application for xCORE.ai eXplorer board
 :keywords: USB, UAC
-:boards: xCORE.ai eXplorer (rev 1.x)
+:boards: XK-EVK-XU316 (rev 2.0)
 
 Overview
 ........
 
 The firmware provides a high-speed USB Audio device designed to be compliant to version 2.0 of the USB Audio Class Specification based on the XMOS xCORE.ai device.
 
-Note, for correct operation external jumper cables must be attached between the following pins (required for 1v0 hardware only):
+Note, this project only functions on revision 2 of the XK-EVK-XU316 board. Early versions of the hardware require modifications to both the hardware and software to operate correctly. 
 
-- MCLK to X0D11 (J14)
 
 Key Features
 ............
