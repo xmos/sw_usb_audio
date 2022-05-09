@@ -90,6 +90,10 @@ pipeline {
                 // Build test support application
                 sh 'make -C tools/volcontrol'
 
+                dir("tools") {
+                  copyArtifacts filter: 'bin_macos/xsig', fingerprintArtifacts: true, projectName: 'xmos-int/xsig/master', flatten: true, selector: lastSuccessful()
+                }
+
                 viewEnv() {
                   // The JENKINS env var is necessary for macOS catalina
                   // We have to work around microphone permission issues

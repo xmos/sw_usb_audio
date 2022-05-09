@@ -29,24 +29,9 @@ def xtagctl_wrapper(request):
 
 @pytest.fixture
 def xsig():
-    """ Gets xsig from projects network drive """
-
     xsig_path = Path(__file__).parent / "tools" / "xsig"
-    if xsig_path.exists():
-        return xsig_path
-
-    platform_str = platform.system()
-    if platform_str == "Darwin":
-        xsig_url = "http://intranet.xmos.local/projects/usb_audio_regression_files/xsig/macos/xsig"
-    elif platform_str == "Linux":
-        xsig_url = "http://intranet.xmos.local/projects/usb_audio_regression_files/xsig/linux/xsig"
-    else:
-        pytest.fail(f"Unsupported platform {platform_str}")
-
-    r = requests.get(xsig_url)
-    with open(xsig_path, "wb") as f:
-        f.write(r.content)
-    xsig_path.chmod(stat.S_IREAD | stat.S_IWRITE | stat.S_IEXEC)
+    if not xsig_path.exists():
+        pytest.fail(f"xsig binary not present in {xsig_path.parent}")
 
     return xsig_path
 
