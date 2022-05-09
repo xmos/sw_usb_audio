@@ -1,11 +1,11 @@
 #include <xs1.h>
-#include <assert.h>
+#include <xassert.h>
 #include <platform.h>
-#include <print.h>
 #include "xua.h"
 #include "i2c.h"
 #include "tlv320aic3204.h"
 
+// CODEC I2C lines
 on tile[0]: port p_i2c_scl = XS1_PORT_1N;
 on tile[0]: port p_i2c_sda = XS1_PORT_1O;
 
@@ -26,31 +26,33 @@ on tile[1]: out port p_codec_reset  = PORT_CODEC_RST_N;
 #define APP_PLL_CTL_F_48         (511) // FB divider = (F+1)/2
 #define APP_PLL_CTL_R_48         (4)   // Ref divider = (R+1)
 
+#define APP_PLL_CTL_48           ((APP_PLL_CTL_BYPASS << 29) | (APP_PLL_CTL_INPUT_SEL << 28) | (APP_PLL_CTL_ENABLE << 27) |\
+                                    (APP_PLL_CTL_OD_48 << 23) | (APP_PLL_CTL_F_48 << 8) | APP_PLL_CTL_R_48)
+
+// Fractional divide is M/N
+#define APP_PLL_FRAC_EN_48             (0)   // 0 = disabled
+#define APP_PLL_FRAC_NPLUS1_CYCLES_48  (0)   // M value is this reg value + 1.
+#define APP_PLL_FRAC_TOTAL_CYCLES_48   (0)   // N value is this reg value + 1.
+#define APP_PLL_FRAC_48          ((APP_PLL_FRAC_EN_48 << 31) | (APP_PLL_FRAC_NPLUS1_CYCLES_48 << 8) | APP_PLL_FRAC_TOTAL_CYCLES_48)
+
 // 24MHz in, 22.5792MHz out (44.1kHz * 512), frac mode
 // Found exact solution:   IN  24000000.0, OUT  22579200.0, VCO 2257920000.0, RD  5, FD  470.400 (m =   2, n =   5), OD  5, FOD   10
 #define APP_PLL_CTL_OD_441       (4)   // Output divider = (OD+1)
 #define APP_PLL_CTL_F_441        (469) // FB divider = (F+1)/2
 #define APP_PLL_CTL_R_441        (4)   // Ref divider = (R+1)
 
+#define APP_PLL_CTL_441          ((APP_PLL_CTL_BYPASS << 29) | (APP_PLL_CTL_INPUT_SEL << 28) | (APP_PLL_CTL_ENABLE << 27) |\
+                                    (APP_PLL_CTL_OD_441 << 23) | (APP_PLL_CTL_F_441 << 8) | APP_PLL_CTL_R_441)
+
+#define APP_PLL_FRAC_EN_44             (1)   // 1 = enabled
+#define APP_PLL_FRAC_NPLUS1_CYCLES_44  (1)   // M value is this reg value + 1.
+#define APP_PLL_FRAC_TOTAL_CYCLES_44   (4)   // N value is this reg value + 1.define APP_PLL_CTL_R_441        (4)   // Ref divider = (R+1)
+#define APP_PLL_FRAC_44   ((APP_PLL_FRAC_EN_44 << 31) | (APP_PLL_FRAC_NPLUS1_CYCLES_44 << 8) | APP_PLL_FRAC_TOTAL_CYCLES_44)
+
 #define APP_PLL_DIV_INPUT_SEL    (1)   // 0 = sysPLL, 1 = app_PLL
 #define APP_PLL_DIV_DISABLE      (0)   // 1 = disabled (pin connected to X1D11), 0 = enabled divider output to pin.
 #define APP_PLL_DIV_VALUE        (4)   // Divide by N+1 - remember there's a /2 also afterwards for 50/50 duty cycle.
-
-// Fractional divide is M/N
-#define APP_PLL_FRAC_EN             (1)   // 0 = disabled (do not use fractional feedback divider), 1 = enabled
-#define APP_PLL_FRAC_NPLUS1_CYCLES  (1)   // M value is this reg value + 1.
-#define APP_PLL_FRAC_TOTAL_CYCLES   (4)   // N value is this reg value + 1.
-
-// 44.1 kHz
-#define APP_PLL_CTL_441  ((APP_PLL_CTL_BYPASS << 29) | (APP_PLL_CTL_INPUT_SEL << 28) | (APP_PLL_CTL_ENABLE << 27) |\
-    (APP_PLL_CTL_OD_441 << 23) | (APP_PLL_CTL_F_441 << 8) | APP_PLL_CTL_R_441)
-
-// 48 kHz
-#define APP_PLL_CTL_48   ((APP_PLL_CTL_BYPASS << 29) | (APP_PLL_CTL_INPUT_SEL << 28) | (APP_PLL_CTL_ENABLE << 27) |\
-    (APP_PLL_CTL_OD_48 << 23) | (APP_PLL_CTL_F_48 << 8) | APP_PLL_CTL_R_48)
-
-#define APP_PLL_DIV      ((APP_PLL_DIV_INPUT_SEL << 31) | (APP_PLL_DIV_DISABLE << 16) | APP_PLL_DIV_VALUE)
-#define APP_PLL_FRAC     ((APP_PLL_FRAC_EN << 31) | (APP_PLL_FRAC_NPLUS1_CYCLES << 8) | APP_PLL_FRAC_TOTAL_CYCLES)
+#define APP_PLL_DIV              ((APP_PLL_DIV_INPUT_SEL << 31) | (APP_PLL_DIV_DISABLE << 16) | APP_PLL_DIV_VALUE)
 
 typedef enum
 {
@@ -138,12 +140,8 @@ void AudioHwInit()
 
     // Check we can talk to the CODEC
     CODEC_REGREAD(0x0b, regVal);
-    
-    if (regVal != 1)
-    {
-        printstr("DAC Reg Read Problem?\n");
-        printstr("DAC Reg Read Addr 0:"); printhexln(regVal);
-    }
+   
+    assert(regVal == 1 && msg("CODEC reg read problem"));
 
     // Set register page to 0
     CODEC_REGWRITE(AIC3204_PAGE_CTRL, 0x00);
@@ -263,10 +261,21 @@ void AudioHwInit()
     write_node_config_reg(tile[AUDIO_IO_TILE], XS1_SSWITCH_SS_APP_PLL_CTL_NUM, (APP_PLL_CTL_441 & 0xF7FFFFFF));
     write_node_config_reg(tile[AUDIO_IO_TILE], XS1_SSWITCH_SS_APP_PLL_CTL_NUM, APP_PLL_CTL_441);
 
+    assert(DEFAULT_FREQ >= 22050);
+
     // Set the fractional divider if used
-    write_node_config_reg(tile[0], XS1_SSWITCH_SS_APP_PLL_FRAC_N_DIVIDER_NUM, APP_PLL_FRAC);
+    if(DEFAULT_FREQ % 22050 == 0)
+    {
+        write_node_config_reg(tile[0], XS1_SSWITCH_SS_APP_PLL_FRAC_N_DIVIDER_NUM, APP_PLL_FRAC_44);
+    }
+    else
+    {
+        write_node_config_reg(tile[0], XS1_SSWITCH_SS_APP_PLL_FRAC_N_DIVIDER_NUM, APP_PLL_FRAC_48);
+    }  
+
     // Wait for PLL output frequency to stabilise due to fractional divider enable
     delay_microseconds(100);
+    
     // Turn on the clock output
     write_node_config_reg(tile[0], XS1_SSWITCH_SS_APP_CLK_DIVIDER_NUM, APP_PLL_DIV);
 
@@ -280,6 +289,8 @@ void AudioHwInit()
 void AudioHwConfig(unsigned samFreq, unsigned mClk, unsigned dsdMode,
     unsigned sampRes_DAC, unsigned sampRes_ADC)
 {
+    assert(samFreq >= 22050);
+    
     // Set the AppPLL up to output MCLK.
     if ((samFreq % 22050) == 0)
     {
@@ -292,6 +303,9 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, unsigned dsdMode,
         // Now disable and re-enable the PLL so we get the full 5us reset time with the correct F and R values.
         write_node_config_reg(tile[1], XS1_SSWITCH_SS_APP_PLL_CTL_NUM, (APP_PLL_CTL_441 & 0xF7FFFFFF));
         write_node_config_reg(tile[1], XS1_SSWITCH_SS_APP_PLL_CTL_NUM, APP_PLL_CTL_441);
+
+        // Set the fractional divider if used
+        write_node_config_reg(tile[0], XS1_SSWITCH_SS_APP_PLL_FRAC_N_DIVIDER_NUM, APP_PLL_FRAC_44);
     }
     else if ((samFreq % 24000) == 0)
     {
@@ -304,12 +318,14 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, unsigned dsdMode,
         // Now disable and re-enable the PLL so we get the full 5us reset time with the correct F and R values.
         write_node_config_reg(tile[1], XS1_SSWITCH_SS_APP_PLL_CTL_NUM, (APP_PLL_CTL_48 & 0xF7FFFFFF));
         write_node_config_reg(tile[1], XS1_SSWITCH_SS_APP_PLL_CTL_NUM, APP_PLL_CTL_48);
+
+        // Set the fractional divider if used
+        write_node_config_reg(tile[0], XS1_SSWITCH_SS_APP_PLL_FRAC_N_DIVIDER_NUM, APP_PLL_FRAC_48);
     }
 
-    // Set the fractional divider if used
-    write_node_config_reg(tile[0], XS1_SSWITCH_SS_APP_PLL_FRAC_N_DIVIDER_NUM, APP_PLL_FRAC);
     // Wait for PLL output frequency to stabilise due to fractional divider enable
     delay_microseconds(100);
+
     // Turn on the clock output
     write_node_config_reg(tile[0], XS1_SSWITCH_SS_APP_CLK_DIVIDER_NUM, APP_PLL_DIV);
 }
