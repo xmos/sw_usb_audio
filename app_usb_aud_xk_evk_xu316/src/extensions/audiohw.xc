@@ -6,8 +6,8 @@
 #include "i2c.h"
 #include "tlv320aic3204.h"
 
-port p_i2c_scl = PORT_I2C_SCL;
-port p_i2c_sda = PORT_I2C_SDA;
+on tile[0]: port p_i2c_scl = XS1_PORT_1N;
+on tile[0]: port p_i2c_sda = XS1_PORT_1O;
 
 // CODEC reset line 
 on tile[1]: out port p_codec_reset  = PORT_CODEC_RST_N;

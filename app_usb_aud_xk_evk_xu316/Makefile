@@ -2,7 +2,7 @@
 # compiled for. It either refers to an XN file in the source directories
 # or a valid argument for the --target option when compiling.
 
-TARGET = XCORE-AI-EXPLORER.xn
+TARGET = XK-EVK-XU316
 APP_NAME =
 
 # The flags passed to xcc when building the application
