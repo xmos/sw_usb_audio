@@ -85,10 +85,18 @@ def create_dfu_bin(board, config):
     return dfu_bin_path
 
 
-@pytest.mark.smoke
-@pytest.mark.nightly
-@pytest.mark.weekend
-@pytest.mark.parametrize(["board", "config"], [("xk_216_mc", "2i10o10xxxxxx")])
+# Test cases are defined by a tuple of (board, initial config to xflash)
+dfu_testcases = [
+    pytest.param("xk_216_mc", "2i10o10xxxxxx", marks=[pytest.mark.smoke,
+                                                      pytest.mark.nightly,
+                                                      pytest.mark.weekend]),
+
+    pytest.param("xk_evk_xu316", "2i2o2",      marks=[pytest.mark.nightly,
+                                                      pytest.mark.weekend])
+]
+
+
+@pytest.mark.parametrize(["board", "config"], dfu_testcases)
 def test_dfu(xtagctl_wrapper, xmosdfu, board, config):
     adapter_dut, _ = xtagctl_wrapper
 
