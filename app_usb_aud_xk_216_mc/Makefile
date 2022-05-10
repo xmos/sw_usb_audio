@@ -12,7 +12,7 @@ BUILD_FLAGS    = $(EXTRA_BUILD_FLAGS) -DFLASH_MAX_UPGRADE_SIZE=64*1024 -fcomment
 # The USED_MODULES variable lists other module used by the application. These
 # modules will extend the SOURCE_DIRS, INCLUDE_DIRS and LIB_DIRS variables. 
 # Modules are expected to be in the directory above the BASE_DIR directory.
-USED_MODULES = lib_xua lib_xud lib_spdif lib_i2c module_adat_tx module_adat_rx
+USED_MODULES = lib_xua lib_xud lib_spdif lib_i2c lib_adat
 
 # Build config naming scheme:
 
