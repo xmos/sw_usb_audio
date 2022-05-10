@@ -36,11 +36,6 @@ ifeq ($(TEST_DFU_2),1)
 BUILD_FLAGS += -DBCD_DEVICE=0x9902
 endif
 
-MFI ?= 0
-MFI_ ?= 0
-
-ifeq ($(MFI_), 0)
-
 # Test build configs (Note these make use of the defaults in customdefines.h)
 
 # Audio Class 2, Input (8), Output (8), No MIDI, No SPDIF i/o, No ADAT i/o, TDM mode
@@ -137,35 +132,6 @@ ifeq ($(TEST_CONFIGS),1)
 XCC_FLAGS_upgrade1 = $(BUILD_FLAGS) -DBCD_DEVICE_J=0x99 -DBCD_DEVICE_M=0x0 -DBCD_DEVICE_N=0x1
 XCC_FLAGS_upgrade2 = $(BUILD_FLAGS) -DBCD_DEVICE_J=0x99 -DBCD_DEVICE_M=0x0 -DBCD_DEVICE_N=0x2
 endif
-
-else
-
-# MFi test build configs - iAP support enabled
-	
-# # Audio Class 2, iAP enabled, Input, Output, No MIDI, SPDIF Tx
-XCC_FLAGS_2i10o10xsxxxx_mfi = $(BUILD_FLAGS) -DIAP=1 -DXUA_SPDIF_TX_EN=1 -DMIDI=0
-INCLUDE_ONLY_IN_2i10o10xsxxxx_mfi = 
-
-# # Audio Class 2, iAP enabled, No Input, Output, No MIDI, SPDIF Tx, DSD
-XCC_FLAGS_20i10oxsxxxxd_mfi = $(BUILD_FLAGS) -DIAP=1 -DXUA_SPDIF_TX_EN=1 -DMIDI=0 -DDSD_CHANS_DAC=2
-INCLUDE_ONLY_IN_20i10oxsxxxxd_mfi = 
-
-#Audio Class 2, iAP enabled, EA Protocol (Native Transport), Input, Output, No MIDI, No SPDIF Tx. i
-# Hid controls disabled (buttons used for EA)
-# XCC_FLAGS_210i10oxxxxx_mfi_n = $(BUILD_FLAGS) -DIAP=1 -DIAP_EA_NATIVE_TRANS=1 -DMIDI=0 -DXUA_SPDIF_TX_EN=0 -DHID_CONTROLS=0
-# INCLUDE_ONLY_IN_210i10oxxxxx_mfi_n =
-
-#Audio Class 2, iAP enabled, Input, Output, No,  No SPDIF Tx. Select USB A port. Ignore VBUS.
-#Note, this is the config used for Apple role-switch
-XCC_FLAGS_2ioxx_usba_mfi = $(BUILD_FLAGS) -DIAP=1 -DMIDI=0 -DXUA_SPDIF_TX_EN=0 -DUSB_SEL_A=1 -DXUD_PWR_CFG=0
-INCLUDE_ONLY_IN_2ioxx_usba_mfi = 
-
-include mfi.mk
-
-endif
-
-
-MODULE_LIBRARIES = xud_x200
 
 #=============================================================================
 # The following part of the Makefile includes the common build infrastructure
