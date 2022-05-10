@@ -18,7 +18,7 @@ pipeline {
   stages {
     stage('Create release and build') {
       agent {
-        label 'macOS && x86_64'
+        label '(linux || macOS) && x86_64'
       }
       stages {
         stage('Get view') {
