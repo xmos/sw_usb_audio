@@ -97,6 +97,8 @@ General known issues with this release are listed below.  For board/application 
 
 -  88.2kHz and 176.4kHz sample frequencies are not exposed in Windows control panels.  These are known OS restrictions.
 
+-  Compatibility issues exist with the Microsoft built in UAC1.0 driver (usbaudio.sys) and Intel Smart Sound Technology (SST) can result in audible distortions. This can be worked around by disabling the SST driver.
+
 Host System Requirements
 ========================
 
