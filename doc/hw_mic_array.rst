@@ -83,7 +83,7 @@ Four general purpose push-button switches are provided. When pressed, each butto
 
 A standard XMOS xSYS interface (J2) is provided to allow host debug of the board via JTAG.
 
-The board also includes Ethernet conextivity, however, this is outside the scope of this documentation.
+The board also includes Ethernet connectivity, however, this is outside the scope of this documentation.
 
 |newpage|
 

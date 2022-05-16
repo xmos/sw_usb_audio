@@ -18,7 +18,7 @@ pipeline {
   stages {
     stage('Create release and build') {
       agent {
-        label 'macOS && x86_64'
+        label '(linux || macOS) && x86_64'
       }
       stages {
         stage('Get view') {
@@ -81,11 +81,19 @@ pipeline {
           steps {
             dir("${WORKSPACE}/sw_audio_analyzer") {
               copyArtifacts filter: '**/*.xe', fingerprintArtifacts: true, projectName: 'xmos-int/sw_audio_analyzer/master', selector: lastSuccessful()
+              copyArtifacts filter: 'host_xscope_controller/bin_macos/xscope_controller', fingerprintArtifacts: true, projectName: 'xmos-int/sw_audio_analyzer/master', selector: lastSuccessful()
             }
             dir("${REPO}") {
               unstash 'xk_216_mc_bin'
               unstash 'xk_evk_xu316_bin'
               dir("tests") {
+                // Build test support application
+                sh 'make -C tools/volcontrol'
+
+                dir("tools") {
+                  copyArtifacts filter: 'bin_macos/xsig', fingerprintArtifacts: true, projectName: 'xmos-int/xsig/master', flatten: true, selector: lastSuccessful()
+                }
+
                 viewEnv() {
                   // The JENKINS env var is necessary for macOS catalina
                   // We have to work around microphone permission issues

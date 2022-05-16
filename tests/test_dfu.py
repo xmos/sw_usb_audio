@@ -3,10 +3,10 @@ from pathlib import Path
 import platform
 import pytest
 import subprocess
-import stat
 import time
-import requests
 import tempfile
+
+from usb_audio_test_utils import get_firmware_path
 
 
 def get_bcd_version(vid, pid, timeout=10):
@@ -43,38 +43,8 @@ def get_bcd_version(vid, pid, timeout=10):
     pytest.fail(f"Failed to get device version after {timeout}s")
 
 
-def get_firmware_path(board, config):
-    return Path(__file__).parents[1] / f"app_usb_aud_{board}" / "bin" / f"{config}" / f"app_usb_aud_{board}_{config}.xe"
-
-
 def get_dfu_bin_path(board, config):
     return Path(__file__).parents[1] / f"app_usb_aud_{board}" / "bin" / f"{config}" / f"app_usb_aud_{board}_{config}.bin"
-
-
-@pytest.fixture
-def xmosdfu():
-    """Gets xmosdfu from projects network drive """
-
-    xmosdfu_path = Path(__file__).parent / "tools" / "xmosdfu"
-    if xmosdfu_path.exists():
-        return xmosdfu_path
-
-    xmosdfu_path.parent.mkdir(parents=True, exist_ok=True)
-
-    platform_str = platform.system()
-    if platform_str == "Darwin":
-        xmosdfu_url = "http://intranet.xmos.local/projects/usb_audio_regression_files/xmosdfu/macos/xmosdfu"
-    elif platform_str == "Linux":
-        xmosdfu_url = "http://intranet.xmos.local/projects/usb_audio_regression_files/xmosdfu/linux/xmosdfu"
-    else:
-        pytest.fail(f"Unsupported platform {platform_str}")
-
-    r = requests.get(xmosdfu_url)
-    with open(xmosdfu_path, "wb") as f:
-        f.write(r.content)
-    xmosdfu_path.chmod(stat.S_IREAD | stat.S_IWRITE | stat.S_IEXEC)
-
-    return xmosdfu_path
 
 
 def create_dfu_bin(board, config):
