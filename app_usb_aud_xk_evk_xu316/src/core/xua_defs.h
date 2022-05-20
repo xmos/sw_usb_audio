@@ -31,7 +31,7 @@
 
 /* Mixing disabled by default */
 #ifndef MAX_MIX_COUNT
-#define MAX_MIX_COUNT      (2)
+#define MAX_MIX_COUNT      (0)
 #endif
 
 /* Board is self-powered i.e. not USB bus-powered */
