@@ -33,22 +33,22 @@
 
 /* Mixer core enabled by default */
 #ifndef MIXER
-#define MIXER              1
+#define MIXER              (1)
 #endif
 
 /* Mixing disabled by default */
 #ifndef MAX_MIX_COUNT
-#define MAX_MIX_COUNT      0
+#define MAX_MIX_COUNT      (0)
 #endif
 
 /* Board is self-powered i.e. not USB bus-powered */
 #ifndef SELF_POWERED
-#define SELF_POWERED       0
+#define SELF_POWERED       (0)
 #endif
 
 /* Enable/Disable MIDI - Default is MIDI off */
 #ifndef MIDI
-#define MIDI 		       0
+#define MIDI 		       (0)
 #endif
 
 /* Enable/Disable SPDIF output - Default is S/PDIF off */
@@ -122,8 +122,8 @@
 #define VENDOR_ID          (0x20B1) /* XMOS VID */
 #define PID_AUDIO_2        (0x000C) 
 #define PID_AUDIO_1        (0x000D) 
-#define PRODUCT_STR_A2     "XMOS xCORE-300 MC (UAC2.0)"
-#define PRODUCT_STR_A1     "XMOS xCORE-300 MC (UAC1.0)"
+#define PRODUCT_STR_A2     "XMOS xCORE-AI MC (UAC2.0)"
+#define PRODUCT_STR_A1     "XMOS xCORE-AI MC (UAC1.0)"
 //:
 
 /* Enable/Disable example HID code */

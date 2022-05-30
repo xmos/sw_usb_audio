@@ -54,7 +54,7 @@ void interface_saver(client interface i2c_master_if i)
 }
 
 
-/* Working around not being able to extend an unsafe interface */
+/* Working around not being able to extend an unsafe interface (Bugzilla #18670)*/
 i2c_regop_res_t i2c_reg_write(uint8_t device_addr, uint8_t reg, uint8_t data)
 {  
     uint8_t a_data[2] = {reg, data};
