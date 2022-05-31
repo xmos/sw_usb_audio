@@ -47,7 +47,6 @@
             <Port Location="XS1_PORT_1J"  Name="PORT_I2S_ADC1"/>
             <Port Location="XS1_PORT_1K"  Name="PORT_I2S_ADC2"/>
             <Port Location="XS1_PORT_1L"  Name="PORT_I2S_ADC3"/>
-            <Port Location="XS1_PORT_4A"  Name="PORT_I2C"/>
             <Port Location="XS1_PORT_1E"  Name="PORT_ADAT_OUT"/>-->  <!-- D: COAX E: OPT --> 
             <Port Location="XS1_PORT_1A"  Name="PORT_SPDIF_OUT"/>--> <!-- D: COAX E: OPT --> 
           </Tile>

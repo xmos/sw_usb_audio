@@ -21,7 +21,7 @@ The app_usb_aud_xk_316_mc application is designed to run on the xCORE-AI MC Audi
 
 - Fully Asynchronous operation
 
-- 4 channels analogue input and 4 channels analogue output (Via I2S to 4 x Stereo DACs and 2 x Quad-channel ADCs)
+- 8 channels analogue input and 8 channels analogue output (Via I2S to 4 x Stereo DACs and 2 x Quad-channel ADCs)
 
 - S/PDIF output (via COAX connector)
 
