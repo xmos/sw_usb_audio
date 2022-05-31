@@ -41,6 +41,8 @@ pipeline {
           steps {
             viewEnv() {
               dir("${REPO}") {
+                sh 'xmake -C app_usb_aud_xk_316_mc -j16'
+ 
                 sh 'xmake -C app_usb_aud_xk_216_mc -j16 TEST_CONFIGS=1'
                 stash includes: 'app_usb_aud_xk_216_mc/bin/**/*.xe', name: 'xk_216_mc_bin', useDefaultExcludes: false
 
