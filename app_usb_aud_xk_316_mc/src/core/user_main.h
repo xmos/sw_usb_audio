@@ -8,20 +8,7 @@
 #include <xs1.h>
 #include <platform.h>
 
-/*
-*    TODO: this wrapper is required rather than simply the following to avoid compiler error (bugzilla #18671) 
-*    
-*    extern unsafe client interface i2c_master i_i2c_client;
-*
-*    ...
-*
-*    {
-*        i_i2c_client = i2c[0];
-*    }
-*
-*
-*   Note, must declare elsewhere and extern in this file since could be included multiple times 
-*/
+extern unsafe client interface i2c_master_if i_i2c_client;
 extern void interface_saver(client interface i2c_master_if i);
 extern void ctrlPort();
 
@@ -37,11 +24,10 @@ extern port p_sda;
                                         i2c_master(i2c, 1, p_scl, p_sda, 10);\
                                     }\
                         on tile[1]: {\
-                                        interface_saver(i2c[0]);\
-                                        /*unsafe\
+                                        unsafe\
                                         {\
                                             i_i2c_client = i2c[0];\
-                                        }*/\
+                                        }\
                                     }
 #endif
 
