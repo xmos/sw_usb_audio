@@ -16,6 +16,7 @@ void ctrlPort()
 {
     // Drive control port to turn on 3V3 and set MCLK_DIR
     p_ctrl <: 0xA0;
+    delay_milliseconds(10);
 }
 
 // PCA9540B (2-channel I2C-bus mux) I2C Slave Address
