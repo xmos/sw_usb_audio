@@ -1,150 +1,79 @@
 sw_usb_audio Change Log
 =======================
 
-UNRELEASED
-----------
-
-  * ADDED:     Support for XTC Tools 15
-  * CHANGED:   Use lib_i2c instead of sc_i2c modules
-  * CHANGED:   HID implementation for MC audio board buttons
-
-9.0.0
------
-
-  * REMOVED:   Removed remaining apps for unsupported hardware
-
-8.0.0
------
-
-  * CHANGE:    Now uses lib_spdif
-  * RESOLVED:  Need to drive VBUS_OUT low on xCORE-200 MC AUDIO board (#17697)
-
-  * Changes to dependencies:
-
-    - lib_device_control: 3.2.0 -> 3.2.3
-
-      + Preprocessor flag to send channel activity over xSCOPE for debugging
-      + Use -Os for the whole library rather than -O3 (#45)
-      + Fix return code of control_register_resources
-      + Fix an issue on Windows where xSCOPE connection hangs on Windows
-        (#17871)
-      + Fix an issue on Windows where first xSCOPE connection succeeds, but
-        subsequent ones fail with "socket reply error" (#47)
-
-    - lib_spdif: Added dependency 3.0.0
-
-      + spdif_tx() no longer configures port. Additional function
-        spdif_tx_port_config() provided. Allows sharing of clockblock with other
-        tasks
-
-    - lib_xua: 0.1.1 -> 0.2.0
-
-      + ADDED:     Initial library documentation
-      + ADDED:     Application note AN00247: Using lib_xua with lib_spdif
-        (transmit)
-      + CHANGE:    I2S hardware resources no longer used globally and must be
-        passed to XUA_AudioHub()
-      + CHANGE:    XUA_AudioHub() no longer pars S/PDIF transmitter task
-      + CHANGE:    Moved to lib_spdif (from module_spdif_tx & module_spdif_rx)
-      + CHANGE:    Define NUM_PDM_MICS renamed to XUA_NUM_PDM_MICS
-      + CHANGE:    Define NO_USB renamed to XUA_USB_EN
-      + ADDED:     Application note AN00246: Simple USB Audio Device using
-        lib_xua
-      + CHANGE:    xmosdfu emits warning if empty image read via upload
-      + CHANGE:    Simplified mclk port sharing - no longer uses unsafe pointer
-      + RESOLVED:  Runtime exception issues when incorrect feedback calculated
-        (introduced in sc_usb_audio 6.13)
-      + RESOLVED:  Output sample counter reset on stream start. Caused playback
-        issues on some Linux based hosts
-
-    - lib_xud: 0.1.0 -> 0.1.1
-
-      + RESOLVED:   Transmit timing fixes for U-series devices (introduced in
-        sc_xud 2.3.0)
-
-    - sc_spdif: Removed dependency
-
-7.0.1
------
-
-  * Changes to dependencies:
-
-    - lib_locks: Removed dependency
-
-    - lib_xua: 0.1.0 -> 0.1.1
-
-      + RESOLVED:   Configurations where I2S_CHANS_DAC and I2S_CHANS_ADC are
-        both 0 now build
-      + RESOLVED:   Deadlock in mixer when MAX_MIX_COUNT > 0 for larger channel
-        counts
-
-    - sc_util: Added dependency 1.0.6
-
-      + xCORE-200 compatibility fixes to module_trycatch
-
 7.0.0
 -----
 
-  * CHANGE:    Now uses lib_xua
-  * CHANGE:    Now uses lib_xud
+  * ADDED:      Application for XK-AUDIO-316-MC hardware
+  * ADDED:      Support for XTC Tools 15
+  * CHANGED:    Removed apps for deprecated hardware
+  * CHANGED:    HID implementation for MC audio board buttons
+  * CHANGED:    Moved from using sc_ repos to lib_ repos (see dependency changes
+    below)
+  * FIXED:      Need to drive VBUS_OUT low on xCORE-200 MC AUDIO board (#17697)
 
   * Changes to dependencies:
 
-    - lib_device_control: 2.0.0 -> 3.2.0
+    - lib_adat: Added dependency 1.0.0
 
-      + Updated XSCOPE and USB protocols for host applications
-      + Improved error messages in host applications
-      + Dummy LED OEN port in example applications
-      + Document Windows 10 attestation signing of libusb driver
-      + Use Vocal Fusion board XN file in xSCOPE and USB examples
-      + Add SPI support for Raspberry Pi host
-      + No longer down-shift I2C address on Raspberry Pi host
-      + Fixed incorrectly returned read data in xSCOPE example host code
-      + Replace xSCOPE and USB size limits in public API by runtime errors
-      + xSCOPE API change - buffer type from 64 words to 256 bytes
-      + Windows build fixes
-      + xTIMEcomposer project files for AN01034 and xSCOPE examples
-      + Documentation updates
-      + Added AN01034 application note based around USB transport example and
-        xCORE Array Microphone board
-      + Documentation updates
-      + Increased test coverage
-      + Update XE232 XN file in I2C host example for tools version 14.2 (compute
-        nodes numbered 0 and 2 rather than 0 and 1)
+      + Initial release
 
-    - lib_dsp: Added dependency 4.0.0
+    - lib_device_control: Removed dependency
 
-      + Removed synchronous sample rate conversion functions - now maintained in
-        lib_src
-      + Fixed bug in dsp_vector_mulv_addv()
-      + Faster bit reverse and inverse FFT
-      + Added real FFT
-      + Added real reverse FFT
-      + Added FFT with top half blanked
-      + Logistics functions
-      + Block floating point functions
-      + Complex FIR
-      + Complex vector arithmetic, with optional scaling
-      + Added in-place complex vector scaling
-      + Added complex vector magnitude
-      + Added complex vector scaling with arithmetic shift
-      + Added complex negative multiply and accumulate
+    - lib_dsp: Added dependency 6.2.1
 
-    - lib_locks: Added dependency 2.0.3
+      + CHANGED: Jenkinsfile used for CI
 
-      + RESOLVED: Fixed the software locks when using high priority cores
+    - lib_i2c: Added dependency 6.1.1
 
-    - lib_logging: 2.0.1 -> 2.1.1
+      + RESOLVED: Fixed timing for repeated START condition
 
+    - lib_i2s: Added dependency 4.3.0
+
+      + CHANGED: Use XMOS Public Licence Version 1
+
+    - lib_locks: Added dependency 2.1.0
+
+      + CHANGED: Use XMOS Public Licence Version 1
+
+    - lib_logging: 2.0.1 -> 3.1.1
+
+      + CHANGED: Jenkinsfile used for CI
+      + CHANGED: Use XMOS Public Licence Version 1
+      + REMOVED: not necessary cpanfile
+      + CHANGED: Pin Python package versions
+      + CHANGED: Build files updated to support new "xcommon" behaviour in xwaf.
       + CHANGE:   Test runner script now terminates correctly on Windows
       + ADDED:    Now supports the %p format specifier
       + CHANGE:   Ignore the case of the format specifiers
       + CHANGE:   Ignore padding and alignment characters
 
-    - lib_mic_array: 2.0.1 -> 3.1.1
+    - lib_mic_array: 2.0.1 -> 4.5.0
 
+      + REMOVED: Use of Brew for CI
+      + CHANGED: XMOS Jenkins Shared Library version used in CI
+      + CHANGED: XN files to support 15.x.x tools
+      + CHANGED: Use XMOS Public Licence Version 1
+      + FIXED: Compiler warnings when MIC_DUAL_ENABLED is not defined
+      + CHANGED: Pin Python package versions
+      + REMOVED: not necessary cpanfile
+      + CHANGED: Jenkinsfile pinned to Jenkins shared library 0.10.0
+      + CHANGED: Updated the minimum version of libraries this library depends
+        upon.
+      + ADDED support for global define to set single/dual output buffer for
+        mic_dual
+      + Added mic_dual, an optimised single core, 16kHz, two channel version
+        (not compatible with async interface)
+      + ADDED: Support for arbitrary frame sizes
+      + ADDED: #defines for mic muting
+      + ADDED: Non-blocking interface to decimators for 2 mic setup
+      + CHANGED: Build files updated to support new "xcommon" behaviour in xwaf.
+      + Added xwaf build system support
       + Cleaned up some of the code in the FIR designer.
       + Removed fixed gain in examples
+      + Update VU meter example
+      + Fix port types in examples
+      + Set and inherit XCC_FLAGS rather than XCC_XC_FLAGS when building library
       + Updated lib_dsp dependancy from 3.0.0 to 4.0.0
       + Modified the FIR designer to increase the first stage stopband
         attenuation.
@@ -176,46 +105,47 @@ UNRELEASED
       + Corrected MIC_ARRAY_DC_OFFSET_LOG2 default value reporting in
         documentation.
 
-    - lib_xassert: 2.0.1 -> 3.0.1
+    - lib_spdif: Added dependency 4.1.0
 
+      + CHANGED: Use XMOS Public Licence Version 1
+      + CHANGED: Rearrange documentation files
+
+    - lib_voice: Removed dependency
+
+    - lib_xassert: 2.0.1 -> 4.1.0
+
+      + CHANGED: Use XMOS Public Licence Version 1
+      + REMOVED: not necessary cpanfile
+      + CHANGED: Pin Python package versions
+      + CHANGED: Build files updated to support new "xcommon" behaviour in xwaf.
       + CHANGE: Correct dates in LICENSE.txt files
       + CHANGE: Renamed DEBUG_UNIT to XASSERT_UNIT to prevent conflict with
         lib_logging
 
-    - lib_xua: Added dependency 0.1.0
+    - lib_xua: Added dependency 3.2.0
 
-      + ADDED:      FB_USE_REF_CLOCK to allow feedback generation from xCORE
-        internal reference
-      + ADDED:      Linux Makefile for xmosdfu host application
-      + ADDED:      Raspberry Pi Makefile for xmosdfu host application
-      + ADDED:      Documentation of PID argument to xmosdfu
-      + ADDED:      Optional build time microphone delay line (MIC_BUFFER_DEPTH)
-      + CHANGE:     Removal of audManage_if, users should define their own
-        interfaces as required
-      + CHANGE:     Vendor specific control interface in UAC1 descriptor now has
-        a string descriptor so it shows up with a descriptive name in Windows
-        Device Manager
-      + CHANGE:     DFU_BCD_DEVICE removed (now uses BCD_DEVICE)
-      + CHANGE:     Renaming in descriptors.h to avoid clashes with application
-      + CHANGE:     Make device reboot function no-argument (was one channel
-        end)
-      + RESOLVED:   FIR gain compensation for PDM mics set incorrectly for
-        divide of 8
-      + RESOLVED:   Incorrect xmosdfu DYLD path in test script code
-      + RESOLVED:   xmosdfu cannot find XMOS device on modern MacBook Pro
-        (#17897)
-      + RESOLVED:   Issue when feedback is initially incorrect when two SOF's
-        are not yet received
-      + RESOLVED:   AUDIO_TILE and PDM_TILE may now share the same value/tile
-      + RESOLVED:   Cope with out of order interface numbers in xmosdfu
-      + RESOLVED:   DSD playback not functional on xCORE-200 (introduced in
-        sc_usb_audio 6.14)
-      + RESOLVED:   Improvements made to clock sync code in TDM slave mode
+      + CHANGED:   Updated tests to use lib_locks (was legacy module_locks)
+      + CHANGED:   Exclude HID Report functions unless the HID feature is
+        enabled
+      + CHANGED:   Explicit feedback EP enabled by default (see
+        UAC_FORCE_FEEDBACK_EP)
+      + FIXED:     Incorrect conditional compilation of HID report code
+      + FIXED:     Input/output descriptors written when input/output not
+        enabled. (Audio class 1.0 mode using
+        XUA_USB_DESCRIPTOR_OVERWRITE_RATE_RES)
 
-    - lib_xud: Added dependency 0.1.0
+    - lib_xud: Added dependency 2.1.0
 
-      + CHANGE:     Fork from sc_xud to lib_xud
-      + CHANGE:     Documentation updates
+      + CHANGE:    Various optimisations to aid corner-case timings on XS3 based
+        devices
+      + CHANGE:    Some API functions re-authored in C (from Assembly)
+      + CHANGE:    Testbench now more accurately models XS3 based devices
+
+    - sc_adat: Removed dependency
+
+    - sc_i2c: 3.0.0alpha1 -> 0.0.0
+
+    - sc_spdif: Removed dependency
 
     - sc_usb: Removed dependency
 
