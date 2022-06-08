@@ -15,7 +15,14 @@ on tile[0]: out port p_ctrl = XS1_PORT_8D;
 void ctrlPort()
 {
     // Drive control port to turn on 3V3 and set MCLK_DIR
-    p_ctrl <: 0xA0;
+    // Note, "soft-start" to reduce current spike
+    for (int i = 0; i < 30; i++)
+    {
+        p_ctrl <: 0xB0;
+        delay_microseconds(5);
+        p_ctrl <: 0xA0;
+        delay_microseconds(5);
+    }
 }
 
 // PCA9540B (2-channel I2C-bus mux) I2C Slave Address
@@ -44,15 +51,6 @@ void ctrlPort()
 #define PCM1865_CLK_CFG0            (0x20) // Basic clock config.
 
 unsafe client interface i2c_master_if i_i2c_client;
-
-void interface_saver(client interface i2c_master_if i)
-{
-    unsafe
-    {
-        i_i2c_client = i; 
-    }
-}
-
 
 /* Working around not being able to extend an unsafe interface (Bugzilla #18670)*/
 i2c_regop_res_t i2c_reg_write(uint8_t device_addr, uint8_t reg, uint8_t data)
