@@ -143,7 +143,7 @@ sw_usb_audio Change Log
 
     - sc_adat: Removed dependency
 
-    - sc_i2c: 3.0.0alpha1 -> 0.0.0
+    - sc_i2c: Removed dependency
 
     - sc_spdif: Removed dependency
 
