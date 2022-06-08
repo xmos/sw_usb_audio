@@ -37,6 +37,9 @@ INCLUDE_ONLY_IN_2i10o10xxxxxx =
 XCC_FLAGS_2i10o10xsxxxx = $(BUILD_FLAGS) -DMIDI=0 -DXUA_SPDIF_TX_EN=1
 INCLUDE_ONLY_IN_2i10o10xsxxxx = 
 
+XCC_FLAGS_1i2o2xxxxxx = $(BUILD_FLAGS) -DMIDI=0 -DXUA_SPDIF_TX_EN=0 -DAUDIO_CLASS=1 -DNUM_USB_CHAN_IN=2 -DNUM_USB_CHAN_OUT=2
+INCLUDE_ONLY_IN_1i2o2xxxxxx =
+
 #=============================================================================
 # The following part of the Makefile includes the common build infrastructure
 # for compiling XMOS applications. You should not need to edit below here.
