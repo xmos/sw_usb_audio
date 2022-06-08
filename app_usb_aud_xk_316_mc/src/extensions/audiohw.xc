@@ -44,6 +44,10 @@ void ctrlPort()
 #define PCM1865_1_I2C_DEVICE_ADDR   (0x4B)
 
 // PCM1865 (4-channel audio ADC) Register Addresses
+#define PCM1865_PGA_VAL_CH1_L       (0x01)
+#define PCM1865_PGA_VAL_CH1_R       (0x02)
+#define PCM1865_PGA_VAL_CH2_L       (0x03)
+#define PCM1865_PGA_VAL_CH2_R       (0x04)
 #define PCM1865_ADC2_IP_SEL_L       (0x08) // Select input to route to ADC2 left input.
 #define PCM1865_ADC2_IP_SEL_R       (0x09) // Select input to route to ADC2 right input.
 #define PCM1865_GPIO01_FUN          (0x10) // Functionality control for GPIO0 and GPIO1.
@@ -128,6 +132,10 @@ void AudioHwInit()
     WriteAllAdcRegs(PCM1865_ADC2_IP_SEL_R,  0x42); // Set ADC2 Right input to come from VINR2[SE] input.
     WriteAllAdcRegs(PCM1865_GPIO01_FUN,     0x05); // Set GPIO1 as normal polarity, GPIO1 functionality. Set GPIO0 as normal polarity, DOUT2 functionality.
     WriteAllAdcRegs(PCM1865_GPIO01_DIR,     0x04); // Set GPIO1 as an input. Set GPIO0 as an output (used for I2S DOUT2).
+    WriteAllAdcRegs(PCM1865_PGA_VAL_CH1_L,  0xFC); 
+    WriteAllAdcRegs(PCM1865_PGA_VAL_CH1_R,  0xFC); 
+    WriteAllAdcRegs(PCM1865_PGA_VAL_CH2_L,  0xFC); 
+    WriteAllAdcRegs(PCM1865_PGA_VAL_CH2_R,  0xFC); 
     
     // Setup DACs
     // For basic I2S input we don't need any register setup. It does clock auto detect etc.
