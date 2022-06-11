@@ -78,7 +78,7 @@
 #endif
 
 /* Channel index of SPDIF Rx channels (duplicated DAC channels 1/2 when index is 0) */
-/* If we have enough channels then tag on the end as separate channels, otherwise 
+/* If we have enough channels then tag on the end as separate channels, otherwise
  * duplicate channels 1/2 */
 #if (NUM_USB_CHAN_OUT >= (I2S_CHANS_DAC+2))
 #define SPDIF_TX_INDEX     (I2S_CHANS_DAC)
@@ -120,8 +120,8 @@
 /***** Defines relating to USB descriptors etc *****/
 //:usb_defs
 #define VENDOR_ID          (0x20B1) /* XMOS VID */
-#define PID_AUDIO_2        (0x000C) 
-#define PID_AUDIO_1        (0x000D) 
+#define PID_AUDIO_2        (0x000C)
+#define PID_AUDIO_1        (0x000D)
 #define PRODUCT_STR_A2     "XMOS xCORE-AI MC (UAC2.0)"
 #define PRODUCT_STR_A1     "XMOS xCORE-AI MC (UAC1.0)"
 //:

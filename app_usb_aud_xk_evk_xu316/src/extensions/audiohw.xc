@@ -9,7 +9,7 @@
 on tile[0]: port p_i2c_scl = XS1_PORT_1N;
 on tile[0]: port p_i2c_sda = XS1_PORT_1O;
 
-// CODEC reset line 
+// CODEC reset line
 on tile[1]: out port p_codec_reset  = PORT_CODEC_RST_N;
 
 // CODEC Reset
@@ -111,8 +111,8 @@ static inline void CODEC_REGWRITE(unsigned reg, unsigned val)
 {
     unsafe
     {
-        uc_audiohw <: (unsigned) AUDIOHW_CMD_REGWR; 
-        uc_audiohw <: reg; 
+        uc_audiohw <: (unsigned) AUDIOHW_CMD_REGWR;
+        uc_audiohw <: reg;
         uc_audiohw <: val;
     }
 }
@@ -121,8 +121,8 @@ static inline void CODEC_REGREAD(unsigned reg, unsigned &val)
 {
     unsafe
     {
-        uc_audiohw <: (unsigned) AUDIOHW_CMD_REGRD; 
-        uc_audiohw <: reg; 
+        uc_audiohw <: (unsigned) AUDIOHW_CMD_REGRD;
+        uc_audiohw <: reg;
         uc_audiohw :> val;
     }
 }
@@ -132,7 +132,7 @@ static inline void CODEC_REGREAD(unsigned reg, unsigned &val)
 void AudioHwInit()
 {
     unsigned regVal = 0;
-    
+
     /* Take CODEC out of reset */
     p_codec_reset <: CODEC_RELEASE_RESET;
 
@@ -140,7 +140,7 @@ void AudioHwInit()
 
     // Check we can talk to the CODEC
     CODEC_REGREAD(0x0b, regVal);
-   
+
     assert(regVal == 1 && msg("CODEC reg read problem"));
 
     // Set register page to 0
@@ -154,22 +154,22 @@ void AudioHwInit()
     // Default is CODEC_CLKIN is from MCLK pin. Don't need to change this.
     // Power up NDAC and set to 1
     CODEC_REGWRITE(AIC3204_NDAC, 0x81);
-    
+
     // Power up MDAC and set to 4
     CODEC_REGWRITE(AIC3204_MDAC, 0x84);
-    
+
     // Power up NADC and set to 1
     CODEC_REGWRITE(AIC3204_NADC, 0x81);
-    
+
     // Power up MADC and set to 4
      CODEC_REGWRITE(AIC3204_MADC, 0x84);
-    
+
     // Program DOSR = 128
     CODEC_REGWRITE(AIC3204_DOSR, 0x80);
-    
+
     // Program AOSR = 128
     CODEC_REGWRITE(AIC3204_AOSR, 0x80);
-    
+
     // Set Audio Interface Config: I2S, 24 bits, slave mode, DOUT always driving.
     //   CODEC_REGWRITE(AIC3204_CODEC_IF, 0x20);
     CODEC_REGWRITE(AIC3204_CODEC_IF, 0x30);     // 32 bit mode
@@ -271,11 +271,11 @@ void AudioHwInit()
     else
     {
         write_node_config_reg(tile[0], XS1_SSWITCH_SS_APP_PLL_FRAC_N_DIVIDER_NUM, APP_PLL_FRAC_48);
-    }  
+    }
 
     // Wait for PLL output frequency to stabilise due to fractional divider enable
     delay_microseconds(100);
-    
+
     // Turn on the clock output
     write_node_config_reg(tile[0], XS1_SSWITCH_SS_APP_CLK_DIVIDER_NUM, APP_PLL_DIV);
 
@@ -290,7 +290,7 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, unsigned dsdMode,
     unsigned sampRes_DAC, unsigned sampRes_ADC)
 {
     assert(samFreq >= 22050);
-    
+
     // Set the AppPLL up to output MCLK.
     if ((samFreq % 22050) == 0)
     {

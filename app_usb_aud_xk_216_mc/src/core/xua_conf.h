@@ -82,7 +82,7 @@
 #endif
 
 /* Channel index of SPDIF Rx channels (duplicated DAC channels 1/2 when index is 0) */
-/* If we have enough channels then tag on the end as separate channels, otherwise 
+/* If we have enough channels then tag on the end as separate channels, otherwise
  * duplicate channels 1/2 */
 #if (NUM_USB_CHAN_OUT >= (I2S_CHANS_DAC+2))
 #define SPDIF_TX_INDEX     (I2S_CHANS_DAC)

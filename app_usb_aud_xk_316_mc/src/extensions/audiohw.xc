@@ -58,37 +58,37 @@ unsafe client interface i2c_master_if i_i2c_client;
 
 /* Working around not being able to extend an unsafe interface (Bugzilla #18670)*/
 i2c_regop_res_t i2c_reg_write(uint8_t device_addr, uint8_t reg, uint8_t data)
-{  
+{
     uint8_t a_data[2] = {reg, data};
     size_t n;
-     
+
     unsafe
     {
         i_i2c_client.write(device_addr, a_data, 2, n, 1);
     }
 
-    if (n == 0) 
+    if (n == 0)
     {
         return I2C_REGOP_DEVICE_NACK;
     }
-    if (n < 2) 
+    if (n < 2)
     {
         return I2C_REGOP_INCOMPLETE;
     }
-    
+
     return I2C_REGOP_SUCCESS;
 }
 
 void WriteAllAdcRegs(int reg_addr, int reg_data)
 {
     i2c_regop_res_t result;
-    
+
     unsafe
     {
         result = i2c_reg_write(PCM1865_0_I2C_DEVICE_ADDR, reg_addr, reg_data);
     }
     assert(result == I2C_REGOP_SUCCESS && msg("ADC0 I2C write reg failed"));
-    
+
     unsafe
     {
         result = i2c_reg_write(PCM1865_1_I2C_DEVICE_ADDR, reg_addr, reg_data);
@@ -104,7 +104,7 @@ void AudioHwInit()
 
     // Wait for power supply to come up.
     delay_milliseconds(100);
-   
+
     /* Wait until global is set */
     unsafe
     {
@@ -112,7 +112,7 @@ void AudioHwInit()
     }
 
     AppPllEnable_SampleRate(DEFAULT_FREQ);
-    
+
     // I2C mux takes the last byte written as the data for the control register.
     // We can't send only one byte so we send two with the data in the last byte.
     // We set "address" to 0 below as it's discarded by device.
@@ -121,7 +121,7 @@ void AudioHwInit()
         result = i2c_reg_write(PCA9540B_I2C_DEVICE_ADDR, 0, PCA9540B_CTRL_CHAN_0);
     }
 
-    if (result != I2C_REGOP_SUCCESS) 
+    if (result != I2C_REGOP_SUCCESS)
     {
         printstr("I2C Mux I2C write reg failed\n");
     }
@@ -132,11 +132,11 @@ void AudioHwInit()
     WriteAllAdcRegs(PCM1865_ADC2_IP_SEL_R,  0x42); // Set ADC2 Right input to come from VINR2[SE] input.
     WriteAllAdcRegs(PCM1865_GPIO01_FUN,     0x05); // Set GPIO1 as normal polarity, GPIO1 functionality. Set GPIO0 as normal polarity, DOUT2 functionality.
     WriteAllAdcRegs(PCM1865_GPIO01_DIR,     0x04); // Set GPIO1 as an input. Set GPIO0 as an output (used for I2S DOUT2).
-    WriteAllAdcRegs(PCM1865_PGA_VAL_CH1_L,  0xFC); 
-    WriteAllAdcRegs(PCM1865_PGA_VAL_CH1_R,  0xFC); 
-    WriteAllAdcRegs(PCM1865_PGA_VAL_CH2_L,  0xFC); 
-    WriteAllAdcRegs(PCM1865_PGA_VAL_CH2_R,  0xFC); 
-    
+    WriteAllAdcRegs(PCM1865_PGA_VAL_CH1_L,  0xFC);
+    WriteAllAdcRegs(PCM1865_PGA_VAL_CH1_R,  0xFC);
+    WriteAllAdcRegs(PCM1865_PGA_VAL_CH2_L,  0xFC);
+    WriteAllAdcRegs(PCM1865_PGA_VAL_CH2_R,  0xFC);
+
     // Setup DACs
     // For basic I2S input we don't need any register setup. It does clock auto detect etc.
     // It holds DAC in reset until it gets clocks anyway.

@@ -28,7 +28,7 @@ extern unsafe chanend uc_audiohw;
                                         {\
                                             AudioHwRemote(c_audiohw);\
                                         }\
-                                    } 
+                                    }
 #endif
 
 #endif

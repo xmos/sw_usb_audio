@@ -45,7 +45,7 @@ int AppPllEnable(int32_t clkFreq_hz)
 {
     switch(clkFreq_hz)
     {
-        case 44100*512: 
+        case 44100*512:
 
             // Disable the PLL
             write_node_config_reg(tile[1], XS1_SSWITCH_SS_APP_PLL_CTL_NUM, (APP_PLL_CTL_441 & 0xF7FFFFFF));
@@ -63,7 +63,7 @@ int AppPllEnable(int32_t clkFreq_hz)
             break;
 
         case 48000*512:
-            
+
             // Disable the PLL
             write_node_config_reg(tile[1], XS1_SSWITCH_SS_APP_PLL_CTL_NUM, (APP_PLL_CTL_48 & 0xF7FFFFFF));
             // Enable the PLL to invoke a reset on the appPLL.
@@ -76,7 +76,7 @@ int AppPllEnable(int32_t clkFreq_hz)
 
             // Set the fractional divider if used
             write_node_config_reg(tile[0], XS1_SSWITCH_SS_APP_PLL_FRAC_N_DIVIDER_NUM, APP_PLL_FRAC_48);
-            
+
             break;
 
         default:
