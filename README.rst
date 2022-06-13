@@ -23,7 +23,7 @@ typically relate to a specific board.  This repository contains the following:
 +=======================+==========================+============================================================+
 | app_usb_aud_xk_216_mc | xk-audio-216-mc          | xCORE-200 Multi-channel Audio Board                        |
 +-----------------------+--------------------------+------------------------------------------------------------+
-| app_usb_aud_mic_array |                          | xCORE-200 Mic Array Reference Board
+| app_usb_aud_mic_array |                          | xCORE-200 Mic Array Reference Board                        |
 +-----------------------+--------------------------+------------------------------------------------------------+
 
 Please refer to individual README files in these apps for more detailed information.
