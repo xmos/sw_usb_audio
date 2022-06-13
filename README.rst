@@ -13,18 +13,20 @@ Please see CHANGELOG.rst for detailed change listing.
 
 For full software documentation please see the USB Audio Design Guide document.
 
-This release is built and tested using version 14.3 of the XMOS tool set.  Build or functionality issues could be experienced with any other version.
+This release is built and tested using version 15.1.4 of the XMOS tool set.  Build or functionality issues could be experienced with any other version.
 
 This repository contains applications (or instances) of the XMOS USB Audio Reference Design framework.  These applications
 typically relate to a specific board.  This repository contains the following:
 
-+-----------------------+--------------------------+------------------------------------------------------------+
-|    App Name           |     Relevant Board(s)    | Description                                                |
-+=======================+==========================+============================================================+
-| app_usb_aud_xk_216_mc | xk-audio-216-mc          | xCORE-200 Multi-channel Audio Board                        |
-+-----------------------+--------------------------+------------------------------------------------------------+
-| app_usb_aud_mic_array |                          | xCORE-200 Mic Array Reference Board                        |
-+-----------------------+--------------------------+------------------------------------------------------------+
++--------------------------+--------------------------+------------------------------------------------------------+
+|    App Name              |     Relevant Board(s)    | Description                                                |
++==========================+==========================+============================================================+
+| app_usb_aud_xk_216_mc    | xk-audio-216-mc          | xCORE-200 Multi-channel Audio Board                        |
++--------------------------+--------------------------+------------------------------------------------------------+
+| app_usb_aud_xk_316_mc    | xk-audio-316-mc          | xCORE.AI Multi-channel Audio Board                         |
++--------------------------+--------------------------+------------------------------------------------------------+
+| app_usb_aud_xk_evk_xu316 |  xk-evk-xu316            | xCORE.AI Explorer Board                                    |
++--------------------------+--------------------------+------------------------------------------------------------+
 
 Please refer to individual README files in these apps for more detailed information.
 
