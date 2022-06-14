@@ -1,8 +1,7 @@
 XMOS USB Audio 2.0 Reference Design README
 ..........................................
 
-:Maintainer: Ross Owen
-:Description: USB Audio Applications
+:Latest release: 7.0.0alpha0
 
 
 Please note, Alpha and Beta releases may not accurately reflect the final release and documentation may not be complete. These early releases are not suitable for a production context, and are provided for evaluation purposes only.
@@ -123,13 +122,15 @@ For all support issues please visit http://www.xmos.com/support
 Required software (dependencies)
 ================================
 
-  * sc_adat (git@github.com:xcore/sc_adat.git)
-  * sc_i2c (ssh://git@github.com/xcore/sc_i2c)
-  * sc_u_series_support (git@github.com:xcore/sc_u_series_support.git)
-  * sc_usb (git://git/apps/sc_usb)
-  * sc_spdif (git://github.com/xcore/sc_spdif)
-  * sc_usb_audio (git://git/apps/sc_usb_audio)
-  * sc_usb_device (git://github.com/xcore/sc_usb_device)
-  * sc_util (git://github.com/xcore/sc_util)
-  * sc_xud (git://git/apps/sc_xud)
+  * lib_xua (git@github.com:xmos/lib_xua.git)
+  * lib_locks (git@github.com:xmos/lib_locks.git)
+  * lib_logging (git@github.com:xmos/lib_logging.git)
+  * lib_mic_array (git@github.com:xmos/lib_mic_array.git)
+  * lib_xassert (git@github.com:xmos/lib_xassert.git)
+  * lib_dsp (git@github.com:xmos/lib_dsp)
+  * lib_spdif (git@github.com:xmos/lib_spdif.git)
+  * lib_xud (git@github.com:xmos/lib_xud.git)
+  * lib_i2c (git@github.com:xmos/lib_i2c.git)
+  * lib_adat (git@github.com:xmos/lib_adat)
+  * lib_i2s (git@github.com:xmos/lib_i2s.git)
 
