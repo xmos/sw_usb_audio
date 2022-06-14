@@ -42,3 +42,4 @@ legacy_tests/generated_*.wav
 # Regression test files
 tests/xmosdfu
 tests/xsig
+doc/pdf/sw_usb_audio.pdf
