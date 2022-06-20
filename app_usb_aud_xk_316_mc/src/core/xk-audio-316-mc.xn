@@ -31,11 +31,11 @@
             
             <Port Location="XS1_PORT_16B" Name="PORT_MCLK_COUNT"/>
             <Port Location="XS1_PORT_1D"  Name="PORT_MCLK_IN_USB"/>
+            <Port Location="XS1_PORT_1A"  Name="PORT_PLL_REF"/>
             
           </Tile>
           <Tile Number="1" Reference="tile[1]">
             <!-- Audio Ports -->         
-            <Port Location="XS1_PORT_1A"  Name="PORT_PLL_REF"/>
             <Port Location="XS1_PORT_1D"  Name="PORT_MCLK_IN"/>
             <Port Location="XS1_PORT_1B"  Name="PORT_I2S_LRCLK"/>
             <Port Location="XS1_PORT_1C"  Name="PORT_I2S_BCLK"/>
