@@ -19,6 +19,7 @@
 #define AUDIO_IO_TILE      (1)
 #define XUD_TILE           (0)
 #define MIDI_TILE          (1)
+#define PLL_REF_TILE       (0)
 
 /* Version number */
 #ifndef BCD_DEVICE_J

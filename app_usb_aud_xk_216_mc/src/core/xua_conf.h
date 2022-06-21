@@ -38,6 +38,8 @@
 
 #define MIDI_TILE          1
 
+#define PLL_REF_TILE       (0)
+
 /* Mixer core enabled by default */
 #ifndef MIXER
 #define MIXER              1

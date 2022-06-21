@@ -1,7 +1,6 @@
 #include <xs1.h>
 #include <assert.h>
 #include <platform.h>
-#include <print.h>
 
 #include "app_usb_aud_xk_216_mc.h"
 #include "gpio_access.h"
@@ -15,7 +14,7 @@
 /* CS2100 lists typical lock time as 100 * input period */
 #define     AUDIO_PLL_LOCK_DELAY     (40000000)
 
-#if SPDIF_RX || ADAT_RX
+#if (SPDIF_RX || ADAT_RX || (XUA_SYNCMODE == XUA_SYNCMODE_SYNC))
 #define USE_FRACTIONAL_N 1
 #endif
 
@@ -27,8 +26,8 @@ port p_i2c = PORT_I2C;
 #define ADC_REGWRITE(reg, val) {result = i2c.write_reg(CS5368_I2C_ADDR, reg, val);}
 
 #if !(SPDIF_RX || ADAT_RX) && defined(USE_FRACTIONAL_N)
-on tile[AUDIO_IO_TILE] : out port p_pll_clk = PORT_PLL_REF;
 on tile[AUDIO_IO_TILE] : clock clk_pll_sync = XS1_CLKBLK_5;
+extern out port p_pll_ref;
 #endif
 
 void wait_us(int microseconds)
@@ -42,13 +41,12 @@ void wait_us(int microseconds)
 
 void AudioHwInit()
 {
-#if !(SPDIF_RX || ADAT_RX) && defined(USE_FRACTIONAL_N)
+#if !(SPDIF_RX || ADAT_RX) && defined(USE_FRACTIONAL_N) && (XUA_SYNCMODE != XUA_SYNCMODE_SYNC)
     /* Output a fixed sync clock to the pll */
     configure_clock_rate(clk_pll_sync, 100, 100/(PLL_SYNC_FREQ/1000000));
-    configure_port_clock_output(p_pll_clk, clk_pll_sync);
+    configure_port_clock_output(p_pll_ref, clk_pll_sync);
     start_clock(clk_pll_sync);
 #endif
-
     /* Assert reset to ADC and DAC */
     set_gpio(P_GPIO_DAC_RST_N, 0);
     set_gpio(P_GPIO_ADC_RST_N, 0);
@@ -73,7 +71,10 @@ void AudioHwInit()
     par
     {
         i2c_master_single_port(i2c, 1, p_i2c, 10, 0, 1, 0);
-        PllInit(i2c[0]);
+        {
+            PllInit(i2c[0]);
+            i2c[0].shutdown();
+        }
     }
 #endif
 
@@ -95,7 +96,7 @@ void AudioHwConfig2(unsigned samFreq, unsigned mClk, unsigned dsdMode,
 
     /* Set master clock select appropriately */
 #if defined(USE_FRACTIONAL_N)
-    /* Configure external fractional-n clock multiplier for 300Hz -> mClkFreq */
+    /* Configure external fractional-n clock multiplier for example 300Hz -> mClkFreq */
     PllMult(mClk, PLL_SYNC_FREQ, i2c);
 
     /* Allow some time for mclk to lock and MCLK to stabilise - this is important to avoid glitches at start of stream */
@@ -106,6 +107,8 @@ void AudioHwConfig2(unsigned samFreq, unsigned mClk, unsigned dsdMode,
         t when timerafter(time+AUDIO_PLL_LOCK_DELAY) :> void;
     }
 
+    #if (XUD_SYNC_MODE != XUD_SYNCMODE_SYNC)
+    /* In sync mode we don't currently expect to be locked */
     unsigned char data[1] = {0};
     while(1)
     {
@@ -116,6 +119,7 @@ void AudioHwConfig2(unsigned samFreq, unsigned mClk, unsigned dsdMode,
             break;
         }
     }
+    #endif
 #else
     if (mClk == MCLK_441)
     {
@@ -295,7 +299,6 @@ void AudioHwConfig2(unsigned samFreq, unsigned mClk, unsigned dsdMode,
     }
 #endif
 
-    i2c.shutdown();
     return;
 }
 
@@ -306,6 +309,9 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, unsigned dsdMode,
     par
     {
         i2c_master_single_port(i2c, 1, p_i2c, 10, 0, 1, 0);
-        AudioHwConfig2(samFreq, mClk, dsdMode, sampRes_DAC, sampRes_ADC, i2c[0]);
+        {
+            AudioHwConfig2(samFreq, mClk, dsdMode, sampRes_DAC, sampRes_ADC, i2c[0]);
+            i2c[0].shutdown();
+        }
     }
 }
