@@ -6,24 +6,93 @@
 #include "xua.h"
 #include "../../shared/apppll.h"
 
-#include <print.h>
-
 on tile[0]: port p_scl = XS1_PORT_1L;
 on tile[0]: port p_sda = XS1_PORT_1M;
 on tile[0]: out port p_ctrl = XS1_PORT_8D;
 
+#if (XUA_SYNCMODE == XUA_SYNCMODE_SYNC)
+#define EXT_PLL_SEL__MCLK_DIR   (0x00)
+#else
+#define EXT_PLL_SEL__MCLK_DIR   (0x80)
+#endif
 void ctrlPort()
 {
     // Drive control port to turn on 3V3 and set MCLK_DIR
     // Note, "soft-start" to reduce current spike
+    // Note, 3v3_EN is inverted
     for (int i = 0; i < 30; i++)
     {
-        p_ctrl <: 0xB0;
+        p_ctrl <: EXT_PLL_SEL__MCLK_DIR | 0x30; /* 3v3: off, 3v3A: on */
         delay_microseconds(5);
-        p_ctrl <: 0xA0;
+        p_ctrl <: EXT_PLL_SEL__MCLK_DIR | 0x20; /* 3v3: on, 3v3A: on */
         delay_microseconds(5);
     }
 }
+
+/* Working around not being able to extend an unsafe interface (Bugzilla #18670)*/
+i2c_regop_res_t i2c_reg_write(uint8_t device_addr, uint8_t reg, uint8_t data)
+{
+    uint8_t a_data[2] = {reg, data};
+    size_t n;
+
+    unsafe
+    {
+        i_i2c_client.write(device_addr, a_data, 2, n, 1);
+    }
+
+    if (n == 0)
+    {
+        return I2C_REGOP_DEVICE_NACK;
+    }
+    if (n < 2)
+    {
+        return I2C_REGOP_INCOMPLETE;
+    }
+
+    return I2C_REGOP_SUCCESS;
+}
+
+uint8_t i2c_reg_read(uint8_t device_addr, uint8_t reg, i2c_regop_res_t &result) 
+{   
+    uint8_t a_reg[1] = {reg};
+    uint8_t data[1] = {0};
+    size_t n;
+    i2c_res_t res;
+
+    unsafe
+    {
+        res = i_i2c_client.write(device_addr, a_reg, 1, n, 0);
+        
+        if (n != 1) 
+        {
+            result = I2C_REGOP_DEVICE_NACK;
+            i_i2c_client.send_stop_bit();
+            return 0;
+        }
+        
+        res = i_i2c_client.read(device_addr, data, 1, 1);
+    }
+    
+    if (res == I2C_ACK) 
+    {
+        result = I2C_REGOP_SUCCESS;
+    } 
+    else 
+    {
+        result = I2C_REGOP_DEVICE_NACK;
+    }
+    return data[0];
+}
+
+#if (SPDIF_RX || ADAT_RX || (XUA_SYNCMODE == XUA_SYNCMODE_SYNC))
+#define USE_FRACTIONAL_N                            (1)
+#define UNSAFE unsafe
+#define CS2100_REGWRITE(reg, val)                   {result = i2c_reg_write(CS2100_I2C_DEVICE_ADDR, reg, val);}
+#define CS2100_REGREAD_ASSERT(reg, data, expected)  {data[0] = i2c_reg_read(CS2100_I2C_DEVICE_ADDR, reg, result); assert(data[0] == expected);}
+#define CS2100_I2C_DEVICE_ADDRESS                   (0x4E)
+#include "../../shared/cs2100.h"
+#undef UNSAFE
+#endif
 
 // PCA9540B (2-channel I2C-bus mux) I2C Slave Address
 #define PCA9540B_I2C_DEVICE_ADDR    (0x70)
@@ -56,29 +125,6 @@ void ctrlPort()
 
 unsafe client interface i2c_master_if i_i2c_client;
 
-/* Working around not being able to extend an unsafe interface (Bugzilla #18670)*/
-i2c_regop_res_t i2c_reg_write(uint8_t device_addr, uint8_t reg, uint8_t data)
-{
-    uint8_t a_data[2] = {reg, data};
-    size_t n;
-
-    unsafe
-    {
-        i_i2c_client.write(device_addr, a_data, 2, n, 1);
-    }
-
-    if (n == 0)
-    {
-        return I2C_REGOP_DEVICE_NACK;
-    }
-    if (n < 2)
-    {
-        return I2C_REGOP_INCOMPLETE;
-    }
-
-    return I2C_REGOP_SUCCESS;
-}
-
 void WriteAllAdcRegs(int reg_addr, int reg_data)
 {
     i2c_regop_res_t result;
@@ -96,6 +142,21 @@ void WriteAllAdcRegs(int reg_addr, int reg_data)
     assert(result == I2C_REGOP_SUCCESS && msg("ADC1 I2C write reg failed"));
 }
 
+void SetI2CMux(int ch)
+{
+    i2c_regop_res_t result;
+    
+    // I2C mux takes the last byte written as the data for the control register.
+    // We can't send only one byte so we send two with the data in the last byte.
+    // We set "address" to 0 below as it's discarded by device.
+    unsafe
+    {
+        result = i2c_reg_write(PCA9540B_I2C_DEVICE_ADDR, 0, ch);
+    }
+
+    assert(result == I2C_REGOP_SUCCESS && msg("I2C Mux I2C write reg failed"));
+}
+
 /* Configures the external audio hardware at startup */
 void AudioHwInit()
 {
@@ -110,22 +171,23 @@ void AudioHwInit()
     {
         while(!(unsigned) i_i2c_client);
     }
+    
+#ifdef USE_FRACTIONAL_N
+    /* Set external I2C mux to CS2100 */
+    SetI2CMux(PCA9540B_CTRL_CHAN_1);
 
-    AppPllEnable_SampleRate(DEFAULT_FREQ);
-
-    // I2C mux takes the last byte written as the data for the control register.
-    // We can't send only one byte so we send two with the data in the last byte.
-    // We set "address" to 0 below as it's discarded by device.
     unsafe
     {
-        result = i2c_reg_write(PCA9540B_I2C_DEVICE_ADDR, 0, PCA9540B_CTRL_CHAN_0);
+        /* Use external CS2100 to generate master clock */
+        PllInit(i_i2c_client);
     }
-
-    if (result != I2C_REGOP_SUCCESS)
-    {
-        printstr("I2C Mux I2C write reg failed\n");
-    }
-
+#else
+    /* Use xCORE Secondary PLL to generate *fixed* master clock */
+    AppPllEnable_SampleRate(DEFAULT_FREQ);
+#endif
+    /* Set external I2C mux to ADC's */
+    SetI2CMux(PCA9540B_CTRL_CHAN_0);
+    
     // Setup ADCs
     // Setup is ADC is I2S slave, MCLK slave, I2S_DOUT2 on GPIO0. ADC sets up clocking automatically based on applied input clocks.
     WriteAllAdcRegs(PCM1865_ADC2_IP_SEL_L,  0x42); // Set ADC2 Left input to come from VINL2[SE] input.
@@ -141,10 +203,19 @@ void AudioHwInit()
     // For basic I2S input we don't need any register setup. It does clock auto detect etc.
     // It holds DAC in reset until it gets clocks anyway.
 
+#ifdef USE_FRACTIONAL_N
+    /* Set I2C mux back to CS2100 */
+    SetI2CMux(PCA9540B_CTRL_CHAN_1);
+#endif
 }
 
 /* Configures the external audio hardware for the required sample frequency */
 void AudioHwConfig(unsigned samFreq, unsigned mClk, unsigned dsdMode, unsigned sampRes_DAC, unsigned sampRes_ADC)
 {
+#ifdef USE_FRACTIONAL_N
+    PllMult(mClk, PLL_SYNC_FREQ, i_i2c_client);
+#else
     AppPllEnable_SampleRate(samFreq);
+#endif
 }
+

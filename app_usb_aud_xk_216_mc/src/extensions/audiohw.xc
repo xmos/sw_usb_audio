@@ -8,7 +8,7 @@
 #include "i2c.h"
 #include "cs4384.h"
 #include "cs5368.h"
-#include "cs2100.h"
+#include "../../shared/cs2100.h"
 #include "dsd_support.h"
 
 /* The number of timer ticks to wait for the audio PLL to lock */
@@ -25,71 +25,6 @@ port p_i2c = PORT_I2C;
 
 #define DAC_REGWRITE(reg, val) {result = i2c.write_reg(CS4384_I2C_ADDR, reg, val);}
 #define ADC_REGWRITE(reg, val) {result = i2c.write_reg(CS5368_I2C_ADDR, reg, val);}
-
-#ifdef USE_FRACTIONAL_N
-
-#if !(SPDIF_RX || ADAT_RX)
-/* Choose a frequency the xcore can easily generate internally */
-#define PLL_SYNC_FREQ 1000000
-#else
-#define PLL_SYNC_FREQ 300
-#endif
-
-#define CS2100_REGREAD(reg, data)  {data[0] = i2c.read_reg(CS2100_I2C_DEVICE_ADDR, reg, result);}
-#define CS2100_REGREAD_ASSERT(reg, data, expected)  {data[0] = i2c.read_reg(CS2100_I2C_DEVICE_ADDR, reg, result); assert(data[0] == expected);}
-#define CS2100_REGWRITE(reg, val) {result = i2c.write_reg(CS2100_I2C_DEVICE_ADDR, reg, val);}
-
-/* Init of CS2100 */
-void PllInit(client interface i2c_master_if i2c)
-{
-    unsigned char data[1] = {0};
-    i2c_regop_res_t result;
-
-#if XCORE_200_MC_AUDIO_HW_VERSION < 2
-    /* Enable init */
-    CS2100_REGWRITE(CS2100_DEVICE_CONFIG_1, 0x05);
-#else
-    CS2100_REGWRITE(CS2100_DEVICE_CONFIG_1, 0x07);
-#endif
-    CS2100_REGWRITE(CS2100_GLOBAL_CONFIG, 0x01);
-    CS2100_REGWRITE(CS2100_FUNC_CONFIG_1, 0x08);
-    CS2100_REGWRITE(CS2100_FUNC_CONFIG_2, 0x00); //0x10 for always gen clock even when unlocked
-
-    /* Read back and check */
-#if XCORE_200_MC_AUDIO_HW_VERSION < 2
-    CS2100_REGREAD_ASSERT(CS2100_DEVICE_CONFIG_1, data, 0x05);
-#else
-    CS2100_REGREAD_ASSERT(CS2100_DEVICE_CONFIG_1, data, 0x07);
-#endif
-    CS2100_REGREAD_ASSERT(CS2100_GLOBAL_CONFIG, data, 0x01);
-    CS2100_REGREAD_ASSERT(CS2100_FUNC_CONFIG_1, data, 0x08);
-    CS2100_REGREAD_ASSERT(CS2100_FUNC_CONFIG_2, data, 0x00);
-
-    i2c.shutdown();
-}
-
-/* Setup PLL multiplier */
-void PllMult(unsigned output, unsigned ref, client interface i2c_master_if i2c)
-{
-    unsigned char data[1] = {0};
-    i2c_regop_res_t result;
-
-    /* PLL expects 12:20 format, convert output and ref to 12:20 */
-    /* Shift up the dividend by 12 to retain format... */
-    unsigned mult = (unsigned) ((((unsigned long long)output) << 32) / (((unsigned long long)ref) << 20));
-
-    CS2100_REGWRITE(CS2100_RATIO_1, (mult >> 24) & 0xFF);
-    CS2100_REGWRITE(CS2100_RATIO_2, (mult >> 16) & 0xFF);
-    CS2100_REGWRITE(CS2100_RATIO_3, (mult >> 8) & 0xFF);
-    CS2100_REGWRITE(CS2100_RATIO_4, (mult & 0xFF));
-
-	/* Read back and check */
-    CS2100_REGREAD_ASSERT(CS2100_RATIO_1, data, ((mult >> 24) & 0xFF));
-    CS2100_REGREAD_ASSERT(CS2100_RATIO_2, data, ((mult >> 16) & 0xFF));
-    CS2100_REGREAD_ASSERT(CS2100_RATIO_3, data, ((mult >> 8) & 0xFF));
-    CS2100_REGREAD_ASSERT(CS2100_RATIO_4, data, (mult & 0xFF));
-}
-#endif
 
 #if !(SPDIF_RX || ADAT_RX) && defined(USE_FRACTIONAL_N)
 on tile[AUDIO_IO_TILE] : out port p_pll_clk = PORT_PLL_REF;
