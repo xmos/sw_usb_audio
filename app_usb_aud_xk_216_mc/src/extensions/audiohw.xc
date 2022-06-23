@@ -107,7 +107,7 @@ void AudioHwConfig2(unsigned samFreq, unsigned mClk, unsigned dsdMode,
         t when timerafter(time+AUDIO_PLL_LOCK_DELAY) :> void;
     }
 
-    #if (XUD_SYNC_MODE != XUD_SYNCMODE_SYNC)
+    #if (XUD_SYNCMODE != XUD_SYNCMODE_SYNC)
     /* In sync mode we don't currently expect to be locked */
     unsigned char data[1] = {0};
     while(1)
@@ -118,7 +118,7 @@ void AudioHwConfig2(unsigned samFreq, unsigned mClk, unsigned dsdMode,
         {
             break;
         }
-    }
+    } 
     #endif
 #else
     if (mClk == MCLK_441)
