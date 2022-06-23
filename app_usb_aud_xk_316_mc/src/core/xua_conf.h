@@ -23,7 +23,7 @@
 
 /* Version number */
 #ifndef BCD_DEVICE_J
-#define BCD_DEVICE_J       (8)
+#define BCD_DEVICE_J       (7)
 #endif
 #ifndef BCD_DEVICE_M
 #define BCD_DEVICE_M       (0)

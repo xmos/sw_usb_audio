@@ -50,6 +50,10 @@ INCLUDE_ONLY_IN_1Si2o2xxxxxx =
 XCC_FLAGS_2Si10o10xxxxxx = $(BUILD_FLAGS) -DMIDI=0 -DXUA_SPDIF_TX_EN=0 -DXUA_SYNCMODE=3
 INCLUDE_ONLY_IN_2Si10o10xxxxxx =
 
+# Audio Class 2, Async, 10xInput, 10xOutput, MIDI, no S/PDIF
+XCC_FLAGS_2Ai10o10mxxxxx = $(BUILD_FLAGS) -DMIDI=1
+INCLUDE_ONLY_IN_2Ai10o10mxxxxx =
+
 #=============================================================================
 # The following part of the Makefile includes the common build infrastructure
 # for compiling XMOS applications. You should not need to edit below here.
