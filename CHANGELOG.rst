@@ -1,6 +1,11 @@
 sw_usb_audio Change Log
 =======================
 
+UNRELEASED
+----------
+
+   * ADDED:     Build configs for synchronous mode (uses external CS2100 device)
+
 7.0.0
 -----
 
