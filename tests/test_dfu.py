@@ -57,7 +57,7 @@ def create_dfu_bin(board, config):
 
 # Test cases are defined by a tuple of (board, initial config to xflash)
 dfu_testcases = [
-    pytest.param("xk_216_mc", "2i10o10xxxxxx", marks=[pytest.mark.smoke,
+    pytest.param("xk_216_mc", "2Ai10o10xxxxxx", marks=[pytest.mark.smoke,
                                                       pytest.mark.nightly,
                                                       pytest.mark.weekend]),
 
