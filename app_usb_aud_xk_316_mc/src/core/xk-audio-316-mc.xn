@@ -33,6 +33,10 @@
             <Port Location="XS1_PORT_1D"  Name="PORT_MCLK_IN_USB"/>
             <Port Location="XS1_PORT_1A"  Name="PORT_PLL_REF"/>
             
+            <!-- Audio Ports: Digital -->         
+            <Port Location="XS1_PORT_1O"  Name="PORT_ADAT_IN"/>   <!-- N: Coax O: Optical --> 
+            <Port Location="XS1_PORT_1N"  Name="PORT_SPDIF_IN"/>  <!-- N: Coax O: Optical --> 
+            
           </Tile>
           <Tile Number="1" Reference="tile[1]">
             <!-- Audio Ports: I2S -->         
@@ -41,8 +45,8 @@
             <Port Location="XS1_PORT_1C"  Name="PORT_I2S_BCLK"/>
             <Port Location="XS1_PORT_1P"  Name="PORT_I2S_DAC0"/>
             <port Location="XS1_PORT_1O"  Name="PORT_I2S_DAC1"/>
-            <port Location="XS1_PORT_1M"  Name="PORT_I2S_DAC2"/>
-            <port Location="XS1_PORT_1N"  Name="PORT_I2S_DAC3"/>
+            <port Location="XS1_PORT_1N"  Name="PORT_I2S_DAC2"/>
+            <port Location="XS1_PORT_1M"  Name="PORT_I2S_DAC3"/>
             <Port Location="XS1_PORT_1I"  Name="PORT_I2S_ADC0"/>
             <Port Location="XS1_PORT_1J"  Name="PORT_I2S_ADC1"/>
             <Port Location="XS1_PORT_1K"  Name="PORT_I2S_ADC2"/>

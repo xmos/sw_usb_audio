@@ -16,10 +16,11 @@
  */
 
 /* Tile defines */
-#define AUDIO_IO_TILE      (1)
 #define XUD_TILE           (0)
-#define MIDI_TILE          (1)
 #define PLL_REF_TILE       (0)
+
+#define AUDIO_IO_TILE      (1)
+#define MIDI_TILE          (1)
 
 /* Version number */
 #ifndef BCD_DEVICE_J
@@ -102,7 +103,7 @@
 #endif
 
 /* Channel index of ADAT Rx channels */
-#if defined(SPDIF_RX) && (SPDIF_RX==1)
+#if defined(XUA_SPDIF_RX_EN) && (XUA_SPDIF_RXEN == 1)
 #define ADAT_RX_INDEX      (SPDIF_RX_INDEX + 2)
 #else
 #define ADAT_RX_INDEX      (I2S_CHANS_ADC)

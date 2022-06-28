@@ -21,10 +21,10 @@ USED_MODULES = lib_xua lib_xud lib_spdif lib_i2c lib_adat
 # Input 			enabled: i (channelcount)
 # Output 			enabled: o (channelcount)
 # MIDI 				enabled: m, disabled: x
-# SPDIF out			enabled: s, disabled: x
 # SPDIF in 			enabled: s, disabled: x
-# ADAT out			enabled: a, disabled: x
+# SPDIF out			enabled: s, disabled: x
 # ADAT in			enabled: a, disabled: x
+# ADAT out			enabled: a, disabled: x
 # DSD out			enabled: d, disabled: x
 # e.g. 2Ai10o10xsxxx: Audio class 2.0, Asynchronous, input and output enabled (10 channels each), SPDIF output, no SPDIF input, no ADAT
 
@@ -33,21 +33,29 @@ USED_MODULES = lib_xua lib_xud lib_spdif lib_i2c lib_adat
 #
 # Asynchronous Mode Configs
 #
-# Audio Class 2, 10xInput, 10xOutput, no MIDI, no SPDIF
+# Audio Class 2, 10xInput, 10xOutput
 XCC_FLAGS_2Ai10o10xxxxxx = $(BUILD_FLAGS)
 INCLUDE_ONLY_IN_2Ai10o10xxxxxx = 
 
-# Audio Class 2, 10xInput, 10xOutput, no MIDI, SPDIF
+# Audio Class 2, 10xInput, 10xOutput, S/PDIF Tx
 XCC_FLAGS_2Ai10o10xsxxxx = $(BUILD_FLAGS) -DXUA_SPDIF_TX_EN=1
 INCLUDE_ONLY_IN_2Ai10o10xsxxxx = 
 
-# Audio Class 1, 2xInput, 2xOutput, no MIDI, no S/PDIF
+# Audio Class 1, 2xInput, 2xOutput
 XCC_FLAGS_1Ai2o2xxxxxx = $(BUILD_FLAGS) -DAUDIO_CLASS=1 -DNUM_USB_CHAN_IN=2 -DNUM_USB_CHAN_OUT=2
 INCLUDE_ONLY_IN_1Ai2o2xxxxxx =
 
-# Audio Class 2, Async, 10xInput, 10xOutput, MIDI, no S/PDIF
+# Audio Class 2, Async, 10xInput, 10xOutput, MIDI
 XCC_FLAGS_2Ai10o10mxxxxx = $(BUILD_FLAGS) -DMIDI=1
 INCLUDE_ONLY_IN_2Ai10o10mxxxxx =
+
+# Audio Class 2, 10xInput, 10xOutput, S/PDIF Tx, S/PDIF Rx
+XCC_FLAGS_2Ai10o10ssxxxx = $(BUILD_FLAGS) -DXUA_SPDIF_TX_EN=1 -DXUA_SPDIF_RX_EN=1
+INCLUDE_ONLY_IN_2Ai10o10ssxxxx =
+
+# Audio Class 2, 10xInput, 10xOutput, S/PDIF Rx
+XCC_FLAGS_2Ai10o10sxxxxx = $(BUILD_FLAGS) -DXUA_SPDIF_RX_EN=1
+INCLUDE_ONLY_IN_2Ai10o10sxxxxx =
 
 #
 # Synchronous Mode Configs

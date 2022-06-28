@@ -10,10 +10,23 @@ on tile[0]: port p_scl = XS1_PORT_1L;
 on tile[0]: port p_sda = XS1_PORT_1M;
 on tile[0]: out port p_ctrl = XS1_PORT_8D;
 
-#if (XUA_SYNCMODE == XUA_SYNCMODE_SYNC)
-#define EXT_PLL_SEL__MCLK_DIR   (0x00)
+#if (SPDIF_RX || ADAT_RX || (XUA_SYNCMODE == XUA_SYNCMODE_SYNC))
+/* If we have an external digital input interface or running in synchronous mode we need to use the 
+ * external CS2100 device for master clock generation */
+#define USE_FRACTIONAL_N         (1)
+#endif
+
+/* p_ctrl:
+ * [0:3] - Unused 
+ * [4]   - EN_3v3_N
+ * [5]   - EN_3v3A
+ * [6]   - EXT_PLL_SEL (CS2100:0, SI: 1)
+ * [7]   - MCLK_DIR    (Out:0, In: 1)
+ */
+#if defined(USE_FRACTIONAL_N)
+#define EXT_PLL_SEL__MCLK_DIR    (0x00)
 #else
-#define EXT_PLL_SEL__MCLK_DIR   (0x80)
+#define EXT_PLL_SEL__MCLK_DIR    (0x80)
 #endif
 void ctrlPort()
 {
@@ -84,8 +97,7 @@ uint8_t i2c_reg_read(uint8_t device_addr, uint8_t reg, i2c_regop_res_t &result)
     return data[0];
 }
 
-#if (SPDIF_RX || ADAT_RX || (XUA_SYNCMODE == XUA_SYNCMODE_SYNC))
-#define USE_FRACTIONAL_N                            (1)
+#if defined(USE_FRACTIONAL_N)
 #define UNSAFE unsafe
 #define CS2100_REGWRITE(reg, val)                   {result = i2c_reg_write(CS2100_I2C_DEVICE_ADDR, reg, val);}
 #define CS2100_REGREAD_ASSERT(reg, data, expected)  {data[0] = i2c_reg_read(CS2100_I2C_DEVICE_ADDR, reg, result); assert(data[0] == expected);}
