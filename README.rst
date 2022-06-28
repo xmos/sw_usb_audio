@@ -47,7 +47,7 @@ Key features of the various applications in this repository are as follow.  Plea
 
 - USB Audio Class 1.0/2.0 Compliant 
 
-- Fully Asynchronous operation
+- Fully Asynchronous operation (Synchronous mode as an option)
 
 - Support for the following sample frequencies: 8, 11.025, 12, 16, 32, 44.1, 48, 88.2, 96, 176.4, 192, 352.8, 384kHz
 
