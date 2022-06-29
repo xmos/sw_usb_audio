@@ -38,6 +38,7 @@ XCC_FLAGS_2Ai10o10xxxxxx = $(BUILD_FLAGS)
 INCLUDE_ONLY_IN_2Ai10o10xxxxxx = 
 
 # Audio Class 2, 10xInput, 10xOutput, TDM
+# TODO can run at 192kHz when AppPLL settings for 49MHz added
 XCC_FLAGS_2Ai10o10xxxxxx_tdm8 = $(BUILD_FLAGS) -DXUA_PCM_FORMAT=XUA_PCM_FORMAT_TDM -DMAX_FREQ=96000
 INCLUDE_ONLY_IN_2Ai10o10xxxxxx_tdm8 = 
 
@@ -64,13 +65,21 @@ INCLUDE_ONLY_IN_2Ai10o10sxxxxx =
 #
 # Synchronous Mode Configs
 #
-# Audio Class 1, Sync, 2xInput, 2xOutput, no MIDI, no S/PDIF
-XCC_FLAGS_1Si2o2xxxxxx = $(BUILD_FLAGS) -DAUDIO_CLASS=1 -DXUA_SYNCMODE=3
+# Audio Class 1, Sync, 2xInput, 2xOutput
+XCC_FLAGS_1Si2o2xxxxxx = $(BUILD_FLAGS) -DAUDIO_CLASS=1 -DXUA_SYNCMODE=XUA_SYNCMODE_SYNC
 INCLUDE_ONLY_IN_1Si2o2xxxxxx =
 
-# Audio Class 2, Sync, 10xInput, 10xOutput, no MIDI, no S/PDIF
-XCC_FLAGS_2Si10o10xxxxxx = $(BUILD_FLAGS) -DXUA_SYNCMODE=3
+# Audio Class 2, Sync, 10xInput, 10xOutput
+XCC_FLAGS_2Si10o10xxxxxx = $(BUILD_FLAGS) -DXUA_SYNCMODE=XUA_SYNCMODE_SYNC
 INCLUDE_ONLY_IN_2Si10o10xxxxxx =
+
+# Audio Class 2, Sync, 10xInput, 10xOutput, TDM
+# (1024x Mclk required for 192/176 TDM)
+XCC_FLAGS_2Si10o10xxxxxx_tdm8 = $(BUILD_FLAGS) 	-DXUA_PCM_FORMAT=XUA_PCM_FORMAT_TDM \
+												-DXUA_SYNCMODE=XUA_SYNCMODE_SYNC \
+												-DMCLK_48=1024*48000 \
+												-DMCLK_441=1024*44100
+INCLUDE_ONLY_IN_2Si10o10xxxxxx_tdm8 = 
 
 
 #=============================================================================
