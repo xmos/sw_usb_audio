@@ -126,15 +126,15 @@
 /***** Defines relating to USB descriptors etc *****/
 //:usb_defs
 #define VENDOR_ID          (0x20B1) /* XMOS VID */
-#define PID_AUDIO_2        (0x0008) /* SKC_SU1 USB Audio Reference Design PID */
-#define PID_AUDIO_1        (0x0009) /* SKC_SU1 Audio Reference Design PID */
+#define PID_AUDIO_2        (0x000E) /* XK-AUDIO-216-MC USB Audio Reference Design PID */
+#define PID_AUDIO_1        (0x000F) /* XK-AUDIO-216-MC USB Audio Reference Design PID */
 #define PRODUCT_STR_A2     "XMOS xCORE-200 MC (UAC2.0)"
 #define PRODUCT_STR_A1     "XMOS xCORE-200 MC (UAC1.0)"
 //:
 
 /* Enable/Disable example HID code */
 #ifndef HID_CONTROLS
-#define HID_CONTROLS       1
+#define HID_CONTROLS       (1)
 #endif
 
 #include "user_main.h"
