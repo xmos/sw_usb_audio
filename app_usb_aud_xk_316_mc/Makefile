@@ -37,6 +37,10 @@ USED_MODULES = lib_xua lib_xud lib_spdif lib_i2c lib_adat
 XCC_FLAGS_2Ai10o10xxxxxx = $(BUILD_FLAGS)
 INCLUDE_ONLY_IN_2Ai10o10xxxxxx = 
 
+# Audio Class 2, 10xInput, 10xOutput, TDM
+XCC_FLAGS_2Ai10o10xxxxxx_tdm8 = $(BUILD_FLAGS) -DXUA_PCM_FORMAT=XUA_PCM_FORMAT_TDM
+INCLUDE_ONLY_IN_2Ai10o10xxxxxx_tdm8 = 
+
 # Audio Class 2, 10xInput, 10xOutput, S/PDIF Tx
 XCC_FLAGS_2Ai10o10xsxxxx = $(BUILD_FLAGS) -DXUA_SPDIF_TX_EN=1
 INCLUDE_ONLY_IN_2Ai10o10xsxxxx = 
