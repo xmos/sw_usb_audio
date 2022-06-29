@@ -186,7 +186,7 @@ void AudioHwInit()
     {
         while(!(unsigned) i_i2c_client);
     }
-    
+
 #ifdef USE_FRACTIONAL_N
     /* Set external I2C mux to CS2100 */
     SetI2CMux(PCA9540B_CTRL_CHAN_1);
@@ -219,9 +219,9 @@ void AudioHwInit()
     if(XUA_PCM_FORMAT == XUA_PCM_FORMAT_TDM)
     {
         /* Write offset such that ADC's do not drive against eachother */
-        result = i2c_reg_write(PCM1865_0_I2C_DEVICE_ADDR, PCM1865_TX_TDM_OFFSET, 0);    
+        result = i2c_reg_write(PCM1865_0_I2C_DEVICE_ADDR, PCM1865_TX_TDM_OFFSET, 1);
         assert(result == I2C_REGOP_SUCCESS && msg("ADC I2C write reg failed"));
-        result = i2c_reg_write(PCM1865_1_I2C_DEVICE_ADDR, PCM1865_TX_TDM_OFFSET, 128);    
+        result = i2c_reg_write(PCM1865_1_I2C_DEVICE_ADDR, PCM1865_TX_TDM_OFFSET, 129);
         assert(result == I2C_REGOP_SUCCESS && msg("ADC I2C write reg failed"));
         
         /* RX_WLEN:        24-bit (default)
@@ -229,11 +229,11 @@ void AudioHwInit()
          * TX_WLEN:        32-bit
          * FMT:            TDM/DSP
          */
-        WriteAllAdcRegs(PCM1865_FMT, 0b01010011);     
+        WriteAllAdcRegs(PCM1865_FMT, 0b01010011);
         
         /* TDM_OSEL:       4ch TDM 
          */
-        WriteAllAdcRegs(PCM1865_TDM_OSEL, 0b00000001);     
+        WriteAllAdcRegs(PCM1865_TDM_OSEL, 0b00000001);
     }
 
     /*
