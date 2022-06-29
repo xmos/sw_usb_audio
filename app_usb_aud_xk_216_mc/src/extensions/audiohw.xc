@@ -203,7 +203,7 @@ void AudioHwConfig2(unsigned samFreq, unsigned mClk, unsigned dsdMode,
 
         {
             unsigned dif = 0, mode = 0;
-#if I2S_MODE_TDM
+#if (XUA_PCM_FORMAT == XUA_PCM_FORMAT_TDM)
             dif = 0x02;   /* TDM */
 #else
             dif = 0x01;   /* I2S */
@@ -259,7 +259,7 @@ void AudioHwConfig2(unsigned samFreq, unsigned mClk, unsigned dsdMode,
          */
         DAC_REGWRITE(CS4384_MODE_CTRL, 0b11000001);
 
-#if I2S_MODE_TDM
+#if (XUA_PCM_FORMAT == XUA_PCM_FORMAT_TDM)
         /* PCM Control (Address: 0x03) */
         /* bit[7:4] : Digital Interface Format (DIF) : 0b1100 for TDM
          * bit[3:2] : Reserved
