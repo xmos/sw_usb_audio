@@ -43,3 +43,6 @@ legacy_tests/generated_*.wav
 tests/xmosdfu
 tests/xsig
 doc/pdf/sw_usb_audio.pdf
+
+#Editor Crud
+.vscode

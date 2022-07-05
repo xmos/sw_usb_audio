@@ -1,4 +1,4 @@
-@Library('xmos_jenkins_shared_library@v0.18.0') _
+@Library('xmos_jenkins_shared_library@feature/windows_basic_compatibility') _
 
 getApproval()
 
@@ -71,7 +71,7 @@ pipeline {
     }
     stage('Regression Test') {
       agent {
-        label 'usb_audio'
+        label 'sw-hw-tester'
       }
       stages {
         stage('Get view') {
