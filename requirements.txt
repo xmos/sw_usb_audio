@@ -1,4 +1,4 @@
-# python_version 3.7.6
+# python_version 3.9.0
 
 pytest==7.1.2
 requests==2.27.1
