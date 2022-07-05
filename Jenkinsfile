@@ -16,7 +16,7 @@ pipeline {
     VIEW = getViewName(REPO)
   }
   stages {
-    stage('Create release and build') {
+/*    stage('Create release and build') {
       agent {
         label '(linux || macOS) && x86_64'
       }
@@ -43,13 +43,13 @@ pipeline {
               dir("${REPO}") {
                 sh 'xmake -C app_usb_aud_xk_316_mc -j16'
  
-                sh 'xmake -C app_usb_aud_xk_216_mc -j16 TEST_CONFIGS=1'
-                stash includes: 'app_usb_aud_xk_216_mc/bin/**/*.xe', name: 'xk_216_mc_bin', useDefaultExcludes: false
+                sh 'xmake -C app_usb_aud_xk_216_mc -j16 TEST_CONFIGS=1' */
+//                stash includes: 'app_usb_aud_xk_216_mc/bin/**/*.xe', name: 'xk_216_mc_bin', useDefaultExcludes: false
 
-                sh 'xmake -C app_usb_aud_xk_evk_xu316 -j16 TEST_CONFIGS=1'
-                stash includes: 'app_usb_aud_xk_evk_xu316/bin/**/*.xe', name: 'xk_evk_xu316_bin', useDefaultExcludes: false
+//                sh 'xmake -C app_usb_aud_xk_evk_xu316 -j16 TEST_CONFIGS=1'
+//                stash includes: 'app_usb_aud_xk_evk_xu316/bin/**/*.xe', name: 'xk_evk_xu316_bin', useDefaultExcludes: false
 
-                dir("doc") {
+/*                dir("doc") {
                   sh 'xdoc xmospdf'
                   dir("_build/xlatex") {
                     archiveArtifacts artifacts: "index.pdf", fingerprint: true, allowEmptyArchive: true
@@ -68,7 +68,7 @@ pipeline {
           cleanWs()
         }
       }
-    }
+    } */
     stage('Regression Test') {
       agent {
         label 'sw-hw-tester'
@@ -111,7 +111,7 @@ pipeline {
           }
         }
       }
-      post {
+/*      post {
         cleanup {
           cleanWs()
         }
@@ -123,7 +123,7 @@ pipeline {
       }
       steps {
         updateViewfiles()
-      }
+      } */
     }
   }
 }
