@@ -41,20 +41,20 @@ pipeline {
           steps {
             viewEnv() {
               dir("${REPO}") {
-                sh 'xmake -C app_usb_aud_xk_316_mc -j16'
+                //sh 'xmake -C app_usb_aud_xk_316_mc -j16'
  
-                sh 'xmake -C app_usb_aud_xk_216_mc -j16 TEST_CONFIGS=1'
+                sh 'xmake -C app_usb_aud_xk_216_mc -j16 CONFIG=2i10o10xxxxxx'
                 stash includes: 'app_usb_aud_xk_216_mc/bin/**/*.xe', name: 'xk_216_mc_bin', useDefaultExcludes: false
 
-                sh 'xmake -C app_usb_aud_xk_evk_xu316 -j16 TEST_CONFIGS=1'
-                stash includes: 'app_usb_aud_xk_evk_xu316/bin/**/*.xe', name: 'xk_evk_xu316_bin', useDefaultExcludes: false
+                //sh 'xmake -C app_usb_aud_xk_evk_xu316 -j16 TEST_CONFIGS=1'
+                //stash includes: 'app_usb_aud_xk_evk_xu316/bin/**/*.xe', name: 'xk_evk_xu316_bin', useDefaultExcludes: false
 
-                dir("doc") {
-                  sh 'xdoc xmospdf'
-                  dir("_build/xlatex") {
-                    archiveArtifacts artifacts: "index.pdf", fingerprint: true, allowEmptyArchive: true
-                  }
-                }
+                //dir("doc") {
+                //  sh 'xdoc xmospdf'
+                //  dir("_build/xlatex") {
+                //    archiveArtifacts artifacts: "index.pdf", fingerprint: true, allowEmptyArchive: true
+                //  }
+                //}
               }
             }
           }
@@ -87,7 +87,7 @@ pipeline {
             }
             dir("${REPO}") {
               unstash 'xk_216_mc_bin'
-              unstash 'xk_evk_xu316_bin'
+              //unstash 'xk_evk_xu316_bin'
               dir("tests") {
                 // Build test support application
                 sh 'make -C tools/volcontrol'
@@ -102,7 +102,11 @@ pipeline {
                   // For more info, see the DevOps section of the XMOS wiki
                   withEnv(["JENKINS=1"]) {
                     withVenv() {
-                      sh "pytest -m ${params.TEST_LEVEL} --junitxml=pytest_result.xml"
+                      //sh "pytest -s -m ${params.TEST_LEVEL} -k analogue_input --junitxml=pytest_result.xml"
+                      sh "xrun --adapter-id RdZ15gCf ${WORKSPACE}/sw_usb_audio/app_usb_aud_xk_216_mc/bin/2i10o10xxxxxx/app_usb_aud_xk_216_mc_2i10o10xxxxxx.xe"
+                      sh "xrun --adapter-id WV22B7qE ${WORKSPACE}/sw_audio_analyzer/app_audio_analyzer_xcore200_mc/bin/app_audio_analyzer_xcore200_mc.xe"
+                      sh "sleep 5"
+                      sh "./tools/xsig 48000 10000 xsig_configs/mc_analogue_input_8ch.json"
                     }
                   }
                 }

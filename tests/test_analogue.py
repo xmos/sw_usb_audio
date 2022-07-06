@@ -7,25 +7,18 @@ import time
 import json
 import tempfile
 
+import os
+import pprint
+
 from usb_audio_test_utils import (wait_for_portaudio, get_firmware_path_harness,
-    get_firmware_path, run_audio_command, mark_tests, check_analyzer_output)
+    get_firmware_path, mark_tests, check_analyzer_output)
 
 
 # Test cases are defined by a tuple of (board, config, sample rate, seconds duration, xsig config)
 analogue_input_configs = [
     # smoke level tests
     *mark_tests(pytest.mark.smoke, [
-        ('xk_216_mc', '1i2o2xxxxxx',            48000, 10, "mc_analogue_input_2ch.json"),
-        ('xk_216_mc', '2i8o8xxxxx_tdm8',        96000, 10, "mc_analogue_input_8ch.json"),
-        ('xk_216_mc', '2i8o8xxxxx_tdm8_slave',  48000, 10, "mc_analogue_input_8ch.json"),
-        ('xk_216_mc', '2i8o8xxxxx_tdm8_slave',  96000, 10, "mc_analogue_input_8ch.json"),
-        ('xk_216_mc', '2i10o10xxxxxx',         192000, 10, "mc_analogue_input_8ch.json"),
-        ('xk_216_mc', '2i10o10xxxxxx_slave',   192000, 10, "mc_analogue_input_8ch.json"),
-        ('xk_216_mc', '2i10o10msxxxx',         192000, 10, "mc_analogue_input_8ch.json"),
-        ('xk_216_mc', '2i10o10xsxxxx_mix8',    192000, 10, "mc_analogue_input_8ch.json"),
-        ('xk_216_mc', '2i10o10xssxxx',         192000, 10, "mc_analogue_input_8ch.json"),
-        ('xk_evk_xu316', '1i2o2',               48000, 10, "mc_analogue_input_2ch.json"),
-        ('xk_evk_xu316', '2i2o2',               48000, 10, "mc_analogue_input_2ch.json")
+        ('xk_216_mc', '2i10o10xxxxxx',         192000, 10, "mc_analogue_input_8ch.json")
     ]),
 
     # nightly level tests
@@ -95,6 +88,10 @@ analogue_input_configs = [
 
 @pytest.mark.parametrize(["board", "config", "fs", "duration", "xsig_config"], analogue_input_configs)
 def test_analogue_input(xtagctl_wrapper, xsig, board, config, fs, duration, xsig_config):
+    env_var = os.environ
+    print('environment variables')
+    pprint.pprint(dict(env_var), width=1)
+
     xsig_config_path = Path(__file__).parent / 'xsig_configs' / xsig_config
     adapter_dut, adapter_harness = xtagctl_wrapper
 
@@ -108,12 +105,8 @@ def test_analogue_input(xtagctl_wrapper, xsig, board, config, fs, duration, xsig
     wait_for_portaudio(board, config)
 
     # Run xsig
-    xsig_duration = duration + 5
-    with tempfile.NamedTemporaryFile(mode='w+') as out_file:
-        run_audio_command(out_file, xsig, f"{fs}", f"{duration * 1000}", xsig_config_path)
-        time.sleep(xsig_duration)
-        out_file.seek(0)
-        xsig_lines = out_file.readlines()
+    xsig_output = sh.Command(xsig)(fs, duration * 1000, xsig_config_path, _err_to_out=True)
+    xsig_lines = xsig_output.splitlines()
 
     # Check output
     with open(xsig_config_path) as file:
