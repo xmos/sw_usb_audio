@@ -48,11 +48,17 @@ def wait_for_portaudio(board, config, timeout=10):
 
 def get_firmware_path_harness(board, config=None):
     xe_name = f"app_audio_analyzer_{board}_{config}.xe" if config else f"app_audio_analyzer_{board}.xe"
-    return Path(__file__).parents[2] / "sw_audio_analyzer" / f"app_audio_analyzer_{board}" / "bin" / xe_name
+    fw_path = Path(__file__).parents[2] / "sw_audio_analyzer" / f"app_audio_analyzer_{board}" / "bin" / xe_name
+    if not fw_path.exists():
+        pytest.fail(f"Harness firmware not present at {fw_path}")
+    return fw_path
 
 
 def get_firmware_path(board, config):
-    return Path(__file__).parents[1] / f"app_usb_aud_{board}" / "bin" / config / f"app_usb_aud_{board}_{config}.xe"
+    fw_path = Path(__file__).parents[1] / f"app_usb_aud_{board}" / "bin" / config / f"app_usb_aud_{board}_{config}.xe"
+    if not fw_path.exists():
+        pytest.fail(f"Firmware not present at {fw_path}")
+    return fw_path
 
 
 def run_audio_command(outfile, exe, *args):
