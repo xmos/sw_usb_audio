@@ -16,29 +16,39 @@ USED_MODULES = lib_xua lib_xud lib_spdif lib_i2c lib_adat
 
 # Build config naming scheme:
 
-# Audio Class:  1 or 2
-# Input 	enabled: i (channelcount)
-# Output 	enabled: o (channelcount)
-# MIDI 		enabled: m, disabled: x
-# SPDIF out	enabled: s, disabled: x
-# SPDIF in 	enabled: s, disabled: x
-# ADAT out	enabled: a, disabled: x
-# ADAT in	enabled: a, disabled: x
-# DSD out	enabled: d, disabled: x
-# e.g. 2i10o10xsxxx: Audio class 2.0, input and output enabled (10 channels each), SPDIF output, no SPDIF input, no ADAT
+# Audio Class:  	1 or 2
+# Sync Mode 		A(sync) S(ync)
+# Input 			enabled: i (channelcount)
+# Output 			enabled: o (channelcount)
+# MIDI 				enabled: m, disabled: x
+# SPDIF out			enabled: s, disabled: x
+# SPDIF in 			enabled: s, disabled: x
+# ADAT out			enabled: a, disabled: x
+# ADAT in			enabled: a, disabled: x
+# DSD out			enabled: d, disabled: x
+# e.g. 2Ai10o10xsxxx: Audio class 2.0, Asynchronous, input and output enabled (10 channels each), SPDIF output, no SPDIF input, no ADAT
 
 # Supported build configs (Note these make use of the defaults in xua_conf.h)
 
 # Audio Class 2, Input, Output, no MIDI, no SPDIF
-XCC_FLAGS_2i10o10xxxxxx = $(BUILD_FLAGS) -DMIDI=0 -DXUA_SPDIF_TX_EN=0
-INCLUDE_ONLY_IN_2i10o10xxxxxx = 
+XCC_FLAGS_2Ai10o10xxxxxx = $(BUILD_FLAGS) -DMIDI=0 -DXUA_SPDIF_TX_EN=0
+INCLUDE_ONLY_IN_2Ai10o10xxxxxx = 
 
 # Audio Class 2, Input, Output, no MIDI, SPDIF
-XCC_FLAGS_2i10o10xsxxxx = $(BUILD_FLAGS) -DMIDI=0 -DXUA_SPDIF_TX_EN=1
-INCLUDE_ONLY_IN_2i10o10xsxxxx = 
+XCC_FLAGS_2Ai10o10xsxxxx = $(BUILD_FLAGS) -DMIDI=0 -DXUA_SPDIF_TX_EN=1
+INCLUDE_ONLY_IN_2Ai10o10xsxxxx = 
 
-XCC_FLAGS_1i2o2xxxxxx = $(BUILD_FLAGS) -DMIDI=0 -DXUA_SPDIF_TX_EN=0 -DAUDIO_CLASS=1 -DNUM_USB_CHAN_IN=2 -DNUM_USB_CHAN_OUT=2
-INCLUDE_ONLY_IN_1i2o2xxxxxx =
+# Audio Class 1, 2xInput, 2xOutput, no MIDI, no S/PDIF
+XCC_FLAGS_1Ai2o2xxxxxx = $(BUILD_FLAGS) -DMIDI=0 -DXUA_SPDIF_TX_EN=0 -DAUDIO_CLASS=1 -DNUM_USB_CHAN_IN=2 -DNUM_USB_CHAN_OUT=2
+INCLUDE_ONLY_IN_1Ai2o2xxxxxx =
+
+# Audio Class 1, Sync, 2xInput, 2xOutput, no MIDI, no S/PDIF
+XCC_FLAGS_1Si2o2xxxxxx = $(BUILD_FLAGS) -DMIDI=0 -DXUA_SPDIF_TX_EN=0 -DAUDIO_CLASS=1 -DXUA_SYNCMODE=3
+INCLUDE_ONLY_IN_1Si2o2xxxxxx =
+
+# Audio Class 2, Sync, 10xInput, 10xOutput, no MIDI, no S/PDIF
+XCC_FLAGS_2Si10o10xxxxxx = $(BUILD_FLAGS) -DMIDI=0 -DXUA_SPDIF_TX_EN=0 -DXUA_SYNCMODE=3
+INCLUDE_ONLY_IN_2Si10o10xxxxxx =
 
 #=============================================================================
 # The following part of the Makefile includes the common build infrastructure
