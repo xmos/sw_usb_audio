@@ -16,7 +16,7 @@
 #if (XUA_SYNCMODE == XUA_SYNCMODE_SYNC)
     #define PLL_SYNC_FREQ           (500)
 #else
-    #if (SPDIF_RX || ADAT_RX)
+    #if (XUA_SPDIF_RX_EN || ADAT_RX)
     /* Choose a frequency the xcore can easily generate internally */
     #define PLL_SYNC_FREQ           (300)
     #else
