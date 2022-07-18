@@ -20,8 +20,12 @@ def get_bcd_version(vid, pid, timeout=10):
         time.sleep(1)
 
         if platform.system() == "Darwin":
-            ret = subprocess.run(["system_profiler", "SPUSBDataType"], capture_output=True,
-                                 check=True, text=True)
+            ret = subprocess.run(
+                ["system_profiler", "SPUSBDataType"],
+                capture_output=True,
+                check=True,
+                text=True,
+            )
             current_pid = None
             current_vid = None
             for i, line in enumerate(ret.stdout.splitlines()):
@@ -33,8 +37,12 @@ def get_bcd_version(vid, pid, timeout=10):
                     if current_pid == pid and current_vid == vid:
                         return line.split()[1].strip()
         elif platform.system() == "Linux":
-            ret = subprocess.run(["lsusb", "-vd", f"{hex(vid)}:{hex(pid)}"], capture_output=True,
-                                 check=True, text=True)
+            ret = subprocess.run(
+                ["lsusb", "-vd", f"{hex(vid)}:{hex(pid)}"],
+                capture_output=True,
+                check=True,
+                text=True,
+            )
             for line in ret.stdout.splitlines():
                 if line.strip().startswith("bcdDevice"):
                     version_str = line.split()[1]
@@ -44,26 +52,50 @@ def get_bcd_version(vid, pid, timeout=10):
 
 
 def get_dfu_bin_path(board, config):
-    return Path(__file__).parents[1] / f"app_usb_aud_{board}" / "bin" / f"{config}" / f"app_usb_aud_{board}_{config}.bin"
+    return (
+        Path(__file__).parents[1]
+        / f"app_usb_aud_{board}"
+        / "bin"
+        / f"{config}"
+        / f"app_usb_aud_{board}_{config}.bin"
+    )
 
 
 def create_dfu_bin(board, config):
     firmware_path = get_firmware_path(board, config)
     dfu_bin_path = get_dfu_bin_path(board, config)
-    subprocess.run(["xflash", "--factory-version", "15.1", "--upgrade", "1",
-                    firmware_path, "-o", dfu_bin_path], check=True)
+    subprocess.run(
+        [
+            "xflash",
+            "--factory-version",
+            "15.1",
+            "--upgrade",
+            "1",
+            firmware_path,
+            "-o",
+            dfu_bin_path,
+        ],
+        check=True,
+    )
     return dfu_bin_path
 
 
 # Test cases are defined by a tuple of (board, initial config to xflash)
 dfu_testcases = [
-    pytest.param("xk_216_mc", "2Ai10o10xxxxxx", marks=[pytest.mark.smoke,
-                                                      pytest.mark.nightly,
-                                                      pytest.mark.weekend]),
-
-    pytest.param("xk_evk_xu316", "2i2o2",      marks=[pytest.mark.nightly,
-                                                      pytest.mark.weekend])
+    pytest.param(
+        "xk_216_mc",
+        "2Ai10o10xxxxxx",
+        marks=[pytest.mark.smoke, pytest.mark.nightly, pytest.mark.weekend],
+    ),
+    pytest.param(
+        "xk_evk_xu316", "2i2o2", marks=[pytest.mark.nightly, pytest.mark.weekend]
+    ),
 ]
+
+pids = {
+    "xk_216_mc": 0xE,
+    "xK_evk_xu316": 0x18,
+}
 
 
 @pytest.mark.parametrize(["board", "config"], dfu_testcases)
@@ -71,11 +103,13 @@ def test_dfu(xtagctl_wrapper, xmosdfu, board, config):
     adapter_dut, _ = xtagctl_wrapper
 
     vid = 0x20B1
-    pid = 0x8
+    pid = pids[board]
 
     # xflash the factory image for the initial version
     firmware = get_firmware_path(board, config)
-    subprocess.run(["xflash", "--adapter-id", adapter_dut, "--factory", firmware], check=True)
+    subprocess.run(
+        ["xflash", "--adapter-id", adapter_dut, "--factory", firmware], check=True
+    )
     initial_version = get_bcd_version(vid, pid)
     exp_version1 = "99.01"
     exp_version2 = "99.02"
@@ -103,15 +137,21 @@ def test_dfu(xtagctl_wrapper, xmosdfu, board, config):
         subprocess.run([xmosdfu, f"{hex(pid)}", "--revertfactory"], check=True)
         version = get_bcd_version(vid, pid)
         if version != initial_version:
-            pytest.fail(f"After factory reset, version {version} didn't match initial {initial_version}")
+            pytest.fail(
+                f"After factory reset, version {version} didn't match initial {initial_version}"
+            )
 
         subprocess.run([xmosdfu, f"{hex(pid)}", "--download", tmpfile.name], check=True)
         version = get_bcd_version(vid, pid)
         if version != exp_version2:
-            pytest.fail(f"Unexpected version {version} after writing the image that was read")
+            pytest.fail(
+                f"Unexpected version {version} after writing the image that was read"
+            )
 
     # Finish by reverting back to the factory image again
     subprocess.run([xmosdfu, f"{hex(pid)}", "--revertfactory"], check=True)
     version = get_bcd_version(vid, pid)
     if version != initial_version:
-        pytest.fail(f"Version {version} didn't match initial {initial_version} after final factory reset")
+        pytest.fail(
+            f"Version {version} didn't match initial {initial_version} after final factory reset"
+        )
