@@ -67,8 +67,8 @@ dfu_testcases = [
 
 
 @pytest.mark.parametrize(["board", "config"], dfu_testcases)
-def test_dfu(xtagctl_wrapper, xmosdfu, board, config):
-    adapter_dut, _ = xtagctl_wrapper
+def test_dfu(xtag_wrapper, xmosdfu, board, config):
+    adapter_dut, _ = xtag_wrapper
 
     vid = 0x20B1
     pid = 0x8

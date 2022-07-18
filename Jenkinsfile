@@ -1,5 +1,21 @@
 @Library('xmos_jenkins_shared_library@v0.19.0') _
 
+def withXTAG(List targets, Closure body) {
+  def xtagIds = []
+
+  try {
+    targets.each {
+      def adapterId = sh (script: "xtagctl acquire ${it}", returnStdout: true).trim()
+      xtagIds.add(adapterId)
+    }
+    body(xtagIds)
+  } finally {
+    xtagIds.each {
+      sh "xtagctl release ${it}"
+    }
+  }
+}
+
 getApproval()
 
 pipeline {
@@ -102,7 +118,13 @@ pipeline {
                   // For more info, see the DevOps section of the XMOS wiki
                   withEnv(["JENKINS=1"]) {
                     withVenv() {
-                      sh "pytest -m ${params.TEST_LEVEL} --junitxml=pytest_result.xml"
+                      sh "pip install -e ${WORKSPACE}/xtagctl"
+                      withXTAG(["usb_audio_mc_xs2_dut", "usb_audio_mc_xs2_harness", \
+                                "usb_audio_xcai_exp_dut", "usb_audio_xcai_exp_harness"]) { xtagIds ->
+                        sh "pytest -m ${params.TEST_LEVEL} --junitxml=pytest_result.xml \
+                            --xk-216-mc-dut=${xtagIds[0]} --xk-216-mc-harness=${xtagIds[1]} \
+                            --xk-evk-xu316-dut=${xtagIds[2]} --xk-evk-xu316-harness=${xtagIds[3]}"
+                      }
                     }
                   }
                 }

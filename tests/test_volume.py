@@ -63,7 +63,7 @@ volume_input_configs = [
 
 
 @pytest.mark.parametrize(["board", "config", "fs", "channel"], volume_input_configs)
-def test_volume_input(xtagctl_wrapper, xsig, board, config, fs, channel):
+def test_volume_input(xtag_wrapper, xsig, board, config, fs, channel):
     if board == "xk_216_mc":
         num_chans = 8
     elif board == "xk_evk_xu316":
@@ -85,7 +85,7 @@ def test_volume_input(xtagctl_wrapper, xsig, board, config, fs, channel):
         if ch in channels:
             xsig_json["in"][ch][0] = "volcheck"
 
-    adapter_dut, adapter_harness = xtagctl_wrapper
+    adapter_dut, adapter_harness = xtag_wrapper
 
     # xrun the harness
     harness_firmware = get_firmware_path_harness("xcore200_mc")
@@ -149,7 +149,7 @@ volume_output_configs = [
 
 
 @pytest.mark.parametrize(["board", "config", "fs", "channel"], volume_output_configs)
-def test_volume_output(xtagctl_wrapper, xsig, board, config, fs, channel):
+def test_volume_output(xtag_wrapper, xsig, board, config, fs, channel):
     if board == 'xk_216_mc':
         num_chans = 8
     elif board == 'xk_evk_xu316':
@@ -162,7 +162,7 @@ def test_volume_output(xtagctl_wrapper, xsig, board, config, fs, channel):
     xsig_config = f'mc_analogue_output_{num_chans}ch.json'
     xsig_config_path = Path(__file__).parent / "xsig_configs" / xsig_config
 
-    adapter_dut, adapter_harness = xtagctl_wrapper
+    adapter_dut, adapter_harness = xtag_wrapper
 
     # xrun the dut
     firmware = get_firmware_path(board, config)

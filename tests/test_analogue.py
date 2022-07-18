@@ -100,9 +100,9 @@ analogue_input_configs = [
 
 
 @pytest.mark.parametrize(["board", "config", "fs", "duration", "xsig_config"], analogue_input_configs)
-def test_analogue_input(xtagctl_wrapper, xsig, board, config, fs, duration, xsig_config):
+def test_analogue_input(xtag_wrapper, xsig, board, config, fs, duration, xsig_config):
     xsig_config_path = Path(__file__).parent / 'xsig_configs' / xsig_config
-    adapter_dut, adapter_harness = xtagctl_wrapper
+    adapter_dut, adapter_harness = xtag_wrapper
 
     # xrun the harness
     harness_firmware = get_firmware_path_harness("xcore200_mc")
@@ -203,9 +203,9 @@ analogue_output_configs = [
 
 
 @pytest.mark.parametrize(["board", "config", "fs", "duration", "xsig_config"], analogue_output_configs)
-def test_analogue_output(xtagctl_wrapper, xsig, board, config, fs, duration, xsig_config):
+def test_analogue_output(xtag_wrapper, xsig, board, config, fs, duration, xsig_config):
     xsig_config_path = Path(__file__).parent / 'xsig_configs' / xsig_config
-    adapter_dut, adapter_harness = xtagctl_wrapper
+    adapter_dut, adapter_harness = xtag_wrapper
 
     # xrun the dut
     firmware = get_firmware_path(board, config)

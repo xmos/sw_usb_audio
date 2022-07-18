@@ -1,30 +1,48 @@
 import pytest
 import subprocess
-import xtagctl
 from pathlib import Path
 import platform
 import stat
 import requests
 
 
+# XTAG IDs for the boards in the test setup can be hard-coded here to avoid having to use the
+# pytest command-line options for a fixed local setup.
+XK_216_MC_DUT = None
+XK_216_MC_HARNESS = None
+XK_EVK_XU316_DUT = None
+XK_EVK_XU316_HARNESS = None
+
+
+def pytest_addoption(parser):
+    parser.addoption("--xk-216-mc-dut", action="store", default=XK_216_MC_DUT)
+    parser.addoption("--xk-216-mc-harness", action="store", default=XK_216_MC_HARNESS)
+    parser.addoption("--xk-evk-xu316-dut", action="store", default=XK_EVK_XU316_DUT)
+    parser.addoption("--xk-evk-xu316-harness", action="store", default=XK_EVK_XU316_HARNESS)
+
+
 @pytest.fixture(autouse=True)
-def xtagctl_wrapper(request):
+def xtag_wrapper(pytestconfig, request):
     # Find out which board is being tested
-    if any('xk_216_mc' in kw for kw in request.keywords):
-        dut_target = 'usb_audio_mc_xs2_dut'
-        dut_harness = 'usb_audio_mc_xs2_harness'
-    elif any('xk_evk_xu316' in kw for kw in request.keywords):
-        dut_target = 'usb_audio_xcai_exp_dut'
-        dut_harness = 'usb_audio_xcai_exp_harness'
+    if any("xk_216_mc" in kw for kw in request.keywords):
+        board = "xk_216_mc"
+        adapter_dut = pytestconfig.getoption("xk_216_mc_dut")
+        adapter_harness = pytestconfig.getoption("xk_216_mc_harness")
+    elif any("xk_evk_xu316" in kw for kw in request.keywords):
+        board = "xk_evk_xu316"
+        adapter_dut = pytestconfig.getoption("xk_evk_xu316_dut")
+        adapter_harness = pytestconfig.getoption("xk_evk_xu316_harness")
     else:
-        pytest.fail('Cannot identify board to test')
+        pytest.fail("Cannot identify board to test")
 
-    with xtagctl.acquire(dut_target, dut_harness) as (adapter_dut, adapter_harness):
-        yield adapter_dut, adapter_harness
+    if not all([adapter_dut, adapter_harness]):
+        pytest.skip(f"Both DUT and harness for {board} must be specified")
 
-        # Since multiple DUTs can be connected to one test host, the application running on the DUT must be
-        # stopped when the test ends; this can be done using xgdb to break in to stop it running
-        subprocess.check_output(['xgdb', f'--eval-command=connect --adapter-id {adapter_dut}', '--eval-command=quit'])
+    yield adapter_dut, adapter_harness
+
+    # Since multiple DUTs can be connected to one test host, the application running on the DUT must be
+    # stopped when the test ends; this can be done using xgdb to break in to stop it running
+    subprocess.check_output(["xgdb", f"--eval-command=connect --adapter-id {adapter_dut}", "--eval-command=quit"])
 
 
 @pytest.fixture
