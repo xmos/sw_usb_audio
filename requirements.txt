@@ -4,5 +4,3 @@ pytest==7.1.2
 requests==2.27.1
 sh==1.14.2
 sounddevice==0.4.4
-
--e ../xtagctl
