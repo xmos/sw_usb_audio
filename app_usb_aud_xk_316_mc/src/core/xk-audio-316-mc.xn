@@ -28,27 +28,38 @@
             <Port Location="XS1_PORT_8D"  Name="PORT_CTRL"/>
             <Port Location="XS1_PORT_8D"  Name="PORT_CTRL"/>
 
-            
+            <!-- Clocking --> 
             <Port Location="XS1_PORT_16B" Name="PORT_MCLK_COUNT"/>
             <Port Location="XS1_PORT_1D"  Name="PORT_MCLK_IN_USB"/>
             <Port Location="XS1_PORT_1A"  Name="PORT_PLL_REF"/>
             
+            <!-- Audio Ports: Digital -->         
+            <Port Location="XS1_PORT_1O"  Name="PORT_ADAT_IN"/>   <!-- N: Coax O: Optical --> 
+            <Port Location="XS1_PORT_1N"  Name="PORT_SPDIF_IN"/>  <!-- N: Coax O: Optical --> 
+            
           </Tile>
           <Tile Number="1" Reference="tile[1]">
-            <!-- Audio Ports -->         
+            <!-- Audio Ports: I2S -->         
             <Port Location="XS1_PORT_1D"  Name="PORT_MCLK_IN"/>
             <Port Location="XS1_PORT_1B"  Name="PORT_I2S_LRCLK"/>
             <Port Location="XS1_PORT_1C"  Name="PORT_I2S_BCLK"/>
             <Port Location="XS1_PORT_1P"  Name="PORT_I2S_DAC0"/>
             <port Location="XS1_PORT_1O"  Name="PORT_I2S_DAC1"/>
-            <port Location="XS1_PORT_1M"  Name="PORT_I2S_DAC2"/>
-            <port Location="XS1_PORT_1N"  Name="PORT_I2S_DAC3"/>
+            <port Location="XS1_PORT_1N"  Name="PORT_I2S_DAC2"/>
+            <port Location="XS1_PORT_1M"  Name="PORT_I2S_DAC3"/>
             <Port Location="XS1_PORT_1I"  Name="PORT_I2S_ADC0"/>
             <Port Location="XS1_PORT_1J"  Name="PORT_I2S_ADC1"/>
             <Port Location="XS1_PORT_1K"  Name="PORT_I2S_ADC2"/>
             <Port Location="XS1_PORT_1L"  Name="PORT_I2S_ADC3"/>
-            <Port Location="XS1_PORT_1E"  Name="PORT_ADAT_OUT"/>-->  <!-- D: COAX E: OPT --> 
-            <Port Location="XS1_PORT_1A"  Name="PORT_SPDIF_OUT"/>--> <!-- D: COAX E: OPT --> 
+            
+            <!-- Audio Ports: Digital -->         
+            <Port Location="XS1_PORT_1E"  Name="PORT_ADAT_OUT"/>  <!-- A: Coax E: Optical --> 
+            <Port Location="XS1_PORT_1A"  Name="PORT_SPDIF_OUT"/> <!-- A: Coax E: Optical --> 
+
+            <!-- MIDI -->
+            <Port Location="XS1_PORT_1F"  Name="PORT_MIDI_IN"/>
+            <Port Location="XS1_PORT_4C"  Name="PORT_MIDI_OUT"/>  <!-- bit[0] -->
+
           </Tile>
         </Node>
       </Nodes>

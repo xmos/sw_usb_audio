@@ -10,10 +10,23 @@ on tile[0]: port p_scl = XS1_PORT_1L;
 on tile[0]: port p_sda = XS1_PORT_1M;
 on tile[0]: out port p_ctrl = XS1_PORT_8D;
 
-#if (XUA_SYNCMODE == XUA_SYNCMODE_SYNC)
-#define EXT_PLL_SEL__MCLK_DIR   (0x00)
+#if (SPDIF_RX || ADAT_RX || (XUA_SYNCMODE == XUA_SYNCMODE_SYNC))
+/* If we have an external digital input interface or running in synchronous mode we need to use the 
+ * external CS2100 device for master clock generation */
+#define USE_FRACTIONAL_N         (1)
+#endif
+
+/* p_ctrl:
+ * [0:3] - Unused 
+ * [4]   - EN_3v3_N
+ * [5]   - EN_3v3A
+ * [6]   - EXT_PLL_SEL (CS2100:0, SI: 1)
+ * [7]   - MCLK_DIR    (Out:0, In: 1)
+ */
+#if defined(USE_FRACTIONAL_N)
+#define EXT_PLL_SEL__MCLK_DIR    (0x00)
 #else
-#define EXT_PLL_SEL__MCLK_DIR   (0x80)
+#define EXT_PLL_SEL__MCLK_DIR    (0x80)
 #endif
 void ctrlPort()
 {
@@ -84,8 +97,7 @@ uint8_t i2c_reg_read(uint8_t device_addr, uint8_t reg, i2c_regop_res_t &result)
     return data[0];
 }
 
-#if (SPDIF_RX || ADAT_RX || (XUA_SYNCMODE == XUA_SYNCMODE_SYNC))
-#define USE_FRACTIONAL_N                            (1)
+#if defined(USE_FRACTIONAL_N)
 #define UNSAFE unsafe
 #define CS2100_REGWRITE(reg, val)                   {result = i2c_reg_write(CS2100_I2C_DEVICE_ADDR, reg, val);}
 #define CS2100_REGREAD_ASSERT(reg, data, expected)  {data[0] = i2c_reg_read(CS2100_I2C_DEVICE_ADDR, reg, result); assert(data[0] == expected);}
@@ -119,6 +131,9 @@ uint8_t i2c_reg_read(uint8_t device_addr, uint8_t reg, i2c_regop_res_t &result)
 #define PCM1865_PGA_VAL_CH2_R       (0x04)
 #define PCM1865_ADC2_IP_SEL_L       (0x08) // Select input to route to ADC2 left input.
 #define PCM1865_ADC2_IP_SEL_R       (0x09) // Select input to route to ADC2 right input.
+#define PCM1865_FMT                 (0x0B) // RX_WLEN, TDM_LRCLK_MODE, TX_WLEN, FMT
+#define PCM1865_TDM_OSEL            (0x0C)
+#define PCM1865_TX_TDM_OFFSET       (0x0D)
 #define PCM1865_GPIO01_FUN          (0x10) // Functionality control for GPIO0 and GPIO1.
 #define PCM1865_GPIO01_DIR          (0x12) // Direction control for GPIO0 and GPIO1.
 #define PCM1865_CLK_CFG0            (0x20) // Basic clock config.
@@ -171,7 +186,7 @@ void AudioHwInit()
     {
         while(!(unsigned) i_i2c_client);
     }
-    
+
 #ifdef USE_FRACTIONAL_N
     /* Set external I2C mux to CS2100 */
     SetI2CMux(PCA9540B_CTRL_CHAN_1);
@@ -188,8 +203,10 @@ void AudioHwInit()
     /* Set external I2C mux to ADC's */
     SetI2CMux(PCA9540B_CTRL_CHAN_0);
     
-    // Setup ADCs
-    // Setup is ADC is I2S slave, MCLK slave, I2S_DOUT2 on GPIO0. ADC sets up clocking automatically based on applied input clocks.
+    /*
+     * Setup ADCs
+     */
+    /* Setup is ADC is I2S slave, MCLK slave, I2S_DOUT2 on GPIO0. ADC sets up clocking automatically based on applied input clocks.*/
     WriteAllAdcRegs(PCM1865_ADC2_IP_SEL_L,  0x42); // Set ADC2 Left input to come from VINL2[SE] input.
     WriteAllAdcRegs(PCM1865_ADC2_IP_SEL_R,  0x42); // Set ADC2 Right input to come from VINR2[SE] input.
     WriteAllAdcRegs(PCM1865_GPIO01_FUN,     0x05); // Set GPIO1 as normal polarity, GPIO1 functionality. Set GPIO0 as normal polarity, DOUT2 functionality.
@@ -199,9 +216,52 @@ void AudioHwInit()
     WriteAllAdcRegs(PCM1865_PGA_VAL_CH2_L,  0xFC);
     WriteAllAdcRegs(PCM1865_PGA_VAL_CH2_R,  0xFC);
 
-    // Setup DACs
-    // For basic I2S input we don't need any register setup. It does clock auto detect etc.
-    // It holds DAC in reset until it gets clocks anyway.
+    if(XUA_PCM_FORMAT == XUA_PCM_FORMAT_TDM)
+    {
+        /* Write offset such that ADC's do not drive against eachother */
+        result = i2c_reg_write(PCM1865_0_I2C_DEVICE_ADDR, PCM1865_TX_TDM_OFFSET, 1);
+        assert(result == I2C_REGOP_SUCCESS && msg("ADC I2C write reg failed"));
+        result = i2c_reg_write(PCM1865_1_I2C_DEVICE_ADDR, PCM1865_TX_TDM_OFFSET, 129);
+        assert(result == I2C_REGOP_SUCCESS && msg("ADC I2C write reg failed"));
+        
+        /* RX_WLEN:        24-bit (default)
+         * TDM_LRCLK_MODE: duty cycle of LRCLK is 1/256
+         * TX_WLEN:        32-bit
+         * FMT:            TDM/DSP
+         */
+        WriteAllAdcRegs(PCM1865_FMT, 0b01010011);
+        
+        /* TDM_OSEL:       4ch TDM 
+         */
+        WriteAllAdcRegs(PCM1865_TDM_OSEL, 0b00000001);
+    }
+
+    /*
+     * Setup DACs
+     */
+    /* There are 4 DAC's on the board at I2C addresses 0x4C, 0x4D, 0x4E & 0x4F */
+    if(XUA_PCM_FORMAT == XUA_PCM_FORMAT_TDM)
+    {
+        /* Note for TDM to work as expected for all DACs the jumpers marked "DAC I2S/TDM Config" need setting appropriately 
+         * I2S MODE: SET ALL 2-3
+         * TDM MODE: SET ALL 1-2, TDM SOURCE 3-4
+         */
+        for (int i = 0; i < 4; i++)
+        { 
+            /* Set Format to TDM/DSP & 24bit */
+            result = i2c_reg_write(0x4C+i, 40, 0b00010011);
+            assert(result == I2C_REGOP_SUCCESS && msg("DAC I2C write reg failed"));
+        
+            /* Set offset to appropriately for each DAC */
+            result = i2c_reg_write(0x4C+i, 41, 1 + (i * 64));
+            assert(result == I2C_REGOP_SUCCESS && msg("DAC I2C write reg failed"));
+        }
+    }
+    else
+    {
+        // For basic I2S input we don't need any register setup. DACs will clock auto detect etc.
+        // It holds DAC in reset until it gets clocks anyway.
+    }
 
 #ifdef USE_FRACTIONAL_N
     /* Set I2C mux back to CS2100 */

@@ -16,14 +16,15 @@
  */
 
 /* Tile defines */
-#define AUDIO_IO_TILE      (1)
 #define XUD_TILE           (0)
-#define MIDI_TILE          (1)
 #define PLL_REF_TILE       (0)
+
+#define AUDIO_IO_TILE      (1)
+#define MIDI_TILE          (1)
 
 /* Version number */
 #ifndef BCD_DEVICE_J
-#define BCD_DEVICE_J       (8)
+#define BCD_DEVICE_J       (7)
 #endif
 #ifndef BCD_DEVICE_M
 #define BCD_DEVICE_M       (0)
@@ -102,15 +103,20 @@
 #endif
 
 /* Channel index of ADAT Rx channels */
-#if defined(SPDIF_RX) && (SPDIF_RX==1)
+#if defined(XUA_SPDIF_RX_EN) && (XUA_SPDIF_RXEN == 1)
 #define ADAT_RX_INDEX      (SPDIF_RX_INDEX + 2)
 #else
 #define ADAT_RX_INDEX      (I2S_CHANS_ADC)
 #endif
 
 /* Master clock defines (in Hz) */
+#ifndef MCLK_441
 #define MCLK_441           (512*44100)   /* 44.1, 88.2 etc */
+#endif
+
+#ifndef MCLK_48
 #define MCLK_48            (512*48000)   /* 48, 96 etc */
+#endif
 
 /* Maximum frequency device runs at */
 #ifndef MAX_FREQ
@@ -121,8 +127,8 @@
 /***** Defines relating to USB descriptors etc *****/
 //:usb_defs
 #define VENDOR_ID          (0x20B1) /* XMOS VID */
-#define PID_AUDIO_2        (0x000C)
-#define PID_AUDIO_1        (0x000D)
+#define PID_AUDIO_2        (0x0016)
+#define PID_AUDIO_1        (0x0017)
 #define PRODUCT_STR_A2     "XMOS xCORE-AI MC (UAC2.0)"
 #define PRODUCT_STR_A1     "XMOS xCORE-AI MC (UAC1.0)"
 //:
