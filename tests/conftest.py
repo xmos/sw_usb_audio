@@ -6,37 +6,56 @@ import stat
 import requests
 
 
-# XTAG IDs for the boards in the test setup can be hard-coded here to avoid having to use the
-# pytest command-line options for a fixed local setup.
-XK_216_MC_DUT = None
-XK_216_MC_HARNESS = None
-XK_EVK_XU316_DUT = None
-XK_EVK_XU316_HARNESS = None
-
-
 def pytest_addoption(parser):
-    parser.addoption("--xk-216-mc-dut", action="store", default=XK_216_MC_DUT)
-    parser.addoption("--xk-216-mc-harness", action="store", default=XK_216_MC_HARNESS)
-    parser.addoption("--xk-evk-xu316-dut", action="store", default=XK_EVK_XU316_DUT)
-    parser.addoption("--xk-evk-xu316-harness", action="store", default=XK_EVK_XU316_HARNESS)
+    parser.addini("xk_216_mc_dut", help="XTAG ID for xk_216_mc DUT")
+    parser.addini("xk_216_mc_harness", help="XTAG ID for xk_216_mc harness")
+    parser.addini("xk_316_mc_dut", help="XTAG ID for xk_316_mc DUT")
+    parser.addini("xk_316_mc_harness", help="XTAG ID for xk_316_mc harness")
+    parser.addini("xk_evk_xu316_dut", help="XTAG ID for xk_evk_xu316 DUT")
+    parser.addini("xk_evk_xu316_harness", help="XTAG ID for xk_evk_xu316 harness")
+
+
+boards = ["xk_216_mc", "xk_316_mc", "xk_evk_xu316"]
+
+# Dictionary indexed by board name, with each entry being the tuple of XTAG IDs for
+# the DUT and harness for that board, (None, None) if XTAGs for board not provided.
+xtag_dut_harness = {}
+
+
+def pytest_collection_modifyitems(config, items):
+    # Populate the xtag_dut_harness dictionary with the XTAG IDs that were set
+    # in pytest.ini or overridden on the command-line
+    for board in boards:
+        dut = config.getini(f"{board}_dut")
+        harness = config.getini(f"{board}_harness")
+        xtag_dut_harness[board] = (dut, harness)
+
+    selected = []
+    deselected = []
+
+    # Deselect testcases which use hardware that doesn't have an XTAG ID
+    for item in items:
+        xtags = (None, None)
+        for board in boards:
+            if any(board in kw for kw in item.keywords):
+                xtags = xtag_dut_harness[board]
+                break
+
+        if all([*xtags]):
+            selected.append(item)
+        else:
+            deselected.append(item)
+
+    config.hook.pytest_deselected(items=deselected)
+    items[:] = selected
 
 
 @pytest.fixture(autouse=True)
 def xtag_wrapper(pytestconfig, request):
-    # Find out which board is being tested
-    if any("xk_216_mc" in kw for kw in request.keywords):
-        board = "xk_216_mc"
-        adapter_dut = pytestconfig.getoption("xk_216_mc_dut")
-        adapter_harness = pytestconfig.getoption("xk_216_mc_harness")
-    elif any("xk_evk_xu316" in kw for kw in request.keywords):
-        board = "xk_evk_xu316"
-        adapter_dut = pytestconfig.getoption("xk_evk_xu316_dut")
-        adapter_harness = pytestconfig.getoption("xk_evk_xu316_harness")
-    else:
-        pytest.fail("Cannot identify board to test")
-
-    if not all([adapter_dut, adapter_harness]):
-        pytest.skip(f"Both DUT and harness for {board} must be specified")
+    for board in boards:
+        if any(board in kw for kw in request.keywords):
+            (adapter_dut, adapter_harness) = xtag_dut_harness[board]
+            break
 
     yield adapter_dut, adapter_harness
 

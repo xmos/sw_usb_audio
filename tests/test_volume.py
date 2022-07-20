@@ -34,20 +34,31 @@ class Volcontrol:
         time.sleep(3)
 
 
+num_chans = {
+    "xk_216_mc": 8,
+    "xk_316_mc": 8,
+    "xk_evk_xu316": 2,
+}
+
+
 # Test cases are defined by a tuple of (board, config, sample rate, 'm' (master) or channel number)
 volume_input_configs = [
     # smoke level tests
     *mark_tests(pytest.mark.smoke, [
         *[('xk_216_mc',    '2Ai10o10xxxxxx',        96000, ch) for ch in ['m', *range(8)]],
-        *[('xk_evk_xu316', '2i2o2',                48000, ch) for ch in ['m', *range(2)]]
+        *[('xk_316_mc',    '2Ai10o10xxxxxx',        96000, ch) for ch in ['m', *range(8)]],
+        *[('xk_evk_xu316', '2i2o2',                 48000, ch) for ch in ['m', *range(2)]]
     ]),
 
     # nightly level tests
     *mark_tests(pytest.mark.nightly, [
         *[('xk_216_mc',    '2Ai8o8xxxxx_tdm8',      48000, ch) for ch in ['m', *range(8)]],
         *[('xk_216_mc',    '2Ai10o10msxxxx',       192000, ch) for ch in ['m', *range(8)]],
-        *[('xk_evk_xu316', '2i2o2',                44100, ch) for ch in ['m', *range(2)]],
-        *[('xk_evk_xu316', '2i2o2',                96000, ch) for ch in ['m', *range(2)]]
+        *[('xk_316_mc',    '2Ai10o10xxxxxx',        48000, ch) for ch in ['m', *range(8)]],
+        *[('xk_316_mc',    '2Ai10o10xsxxxx',       192000, ch) for ch in ['m', *range(8)]],
+        *[('xk_316_mc',    '2Si10o10xxxxxx',        88200, ch) for ch in ['m', *range(8)]],
+        *[('xk_evk_xu316', '2i2o2',                 44100, ch) for ch in ['m', *range(2)]],
+        *[('xk_evk_xu316', '2i2o2',                 96000, ch) for ch in ['m', *range(2)]]
     ]),
 
     # weekend level tests
@@ -55,28 +66,24 @@ volume_input_configs = [
         *[('xk_216_mc',    '2Ai10o10xsxxxx_mix8',   44100, ch) for ch in ['m', *range(8)]],
         *[('xk_216_mc',    '2Ai10o10xssxxx',       176400, ch) for ch in ['m', *range(8)]],
         *[('xk_216_mc',    '2Si10o10xxxxxx',       192000, ch) for ch in ['m', *range(8)]],
-        *[('xk_evk_xu316', '2i2o2',                88200, ch) for ch in ['m', *range(2)]],
-        *[('xk_evk_xu316', '2i2o2',               176400, ch) for ch in ['m', *range(2)]],
-        *[('xk_evk_xu316', '2i2o2',               192000, ch) for ch in ['m', *range(2)]]
+        *[('xk_316_mc',    '2Ai10o10xxxxxx',        44100, ch) for ch in ['m', *range(8)]],
+        *[('xk_316_mc',    '2Ai10o10xsxxxx',       176400, ch) for ch in ['m', *range(8)]],
+        *[('xk_316_mc',    '2Si10o10xxxxxx',        96000, ch) for ch in ['m', *range(8)]],
+        *[('xk_evk_xu316', '2i2o2',                 88200, ch) for ch in ['m', *range(2)]],
+        *[('xk_evk_xu316', '2i2o2',                176400, ch) for ch in ['m', *range(2)]],
+        *[('xk_evk_xu316', '2i2o2',                192000, ch) for ch in ['m', *range(2)]]
     ])
 ]
 
 
 @pytest.mark.parametrize(["board", "config", "fs", "channel"], volume_input_configs)
 def test_volume_input(xtag_wrapper, xsig, board, config, fs, channel):
-    if board == "xk_216_mc":
-        num_chans = 8
-    elif board == "xk_evk_xu316":
-        num_chans = 2
-    else:
-        pytest.fail(f'Unrecognised board {board}')
-
-    channels = range(num_chans) if channel == "m" else [channel]
+    channels = range(num_chans[board]) if channel == "m" else [channel]
 
     duration = 25
 
     # Load JSON xsig_config data
-    xsig_config = f'mc_analogue_input_{num_chans}ch.json'
+    xsig_config = f'mc_analogue_input_{num_chans[board]}ch.json'
     xsig_config_path = Path(__file__).parent / "xsig_configs" / xsig_config
     with open(xsig_config_path) as file:
         xsig_json = json.load(file)
@@ -105,9 +112,9 @@ def test_volume_input(xtag_wrapper, xsig, board, config, fs, channel):
         time.sleep(5)
 
         if channel == 'm':
-            vol_in = Volcontrol('input', num_chans, master=True)
+            vol_in = Volcontrol('input', num_chans[board], master=True)
         else:
-            vol_in = Volcontrol('input', num_chans, channel=int(channel))
+            vol_in = Volcontrol('input', num_chans[board], channel=int(channel))
 
         vol_in.reset()
         vol_changes = [0.5, 1.0, 0.75, 1.0]
@@ -126,40 +133,40 @@ volume_output_configs = [
     # smoke level tests
     *mark_tests(pytest.mark.smoke, [
         *[('xk_216_mc',    '2Ai10o10xxxxxx',        96000, ch) for ch in ['m', *range(8)]],
-        *[('xk_evk_xu316', '2i2o2',                48000, ch) for ch in ['m', *range(2)]]
+        *[('xk_316_mc',    '2Ai10o10xxxxxx',        96000, ch) for ch in ['m', *range(8)]],
+        *[('xk_evk_xu316', '2i2o2',                 48000, ch) for ch in ['m', *range(2)]]
     ]),
 
     # nightly level tests
     *mark_tests(pytest.mark.nightly, [
         *[('xk_216_mc',    '2Ai8o8xxxxx_tdm8',      48000, ch) for ch in ['m', *range(8)]],
         *[('xk_216_mc',    '2Ai10o10msxxxx',       192000, ch) for ch in ['m', *range(8)]],
-        *[('xk_evk_xu316', '2i2o2',                44100, ch) for ch in ['m', *range(2)]],
-        *[('xk_evk_xu316', '2i2o2',                96000, ch) for ch in ['m', *range(2)]]
+        *[('xk_316_mc',    '2Ai10o10xxxxxx',        48000, ch) for ch in ['m', *range(8)]],
+        *[('xk_316_mc',    '2Ai10o10xsxxxx',       192000, ch) for ch in ['m', *range(8)]],
+        *[('xk_316_mc',    '2Si10o10xxxxxx',        88200, ch) for ch in ['m', *range(8)]],
+        *[('xk_evk_xu316', '2i2o2',                 44100, ch) for ch in ['m', *range(2)]],
+        *[('xk_evk_xu316', '2i2o2',                 96000, ch) for ch in ['m', *range(2)]]
     ]),
 
     # weekend level tests
     *mark_tests(pytest.mark.weekend, [
         *[('xk_216_mc',    '2Ai10o10xsxxxx_mix8',   44100, ch) for ch in ['m', *range(8)]],
         *[('xk_216_mc',    '2Ai10o10xssxxx',       176400, ch) for ch in ['m', *range(8)]],
-        *[('xk_evk_xu316', '2i2o2',                88200, ch) for ch in ['m', *range(2)]],
-        *[('xk_evk_xu316', '2i2o2',               176400, ch) for ch in ['m', *range(2)]],
-        *[('xk_evk_xu316', '2i2o2',               192000, ch) for ch in ['m', *range(2)]]
+        *[('xk_316_mc',    '2Ai10o10xxxxxx',        44100, ch) for ch in ['m', *range(8)]],
+        *[('xk_316_mc',    '2Ai10o10xsxxxx',       176400, ch) for ch in ['m', *range(8)]],
+        *[('xk_316_mc',    '2Si10o10xxxxxx',        96000, ch) for ch in ['m', *range(8)]],
+        *[('xk_evk_xu316', '2i2o2',                 88200, ch) for ch in ['m', *range(2)]],
+        *[('xk_evk_xu316', '2i2o2',                176400, ch) for ch in ['m', *range(2)]],
+        *[('xk_evk_xu316', '2i2o2',                192000, ch) for ch in ['m', *range(2)]]
     ])
 ]
 
 
 @pytest.mark.parametrize(["board", "config", "fs", "channel"], volume_output_configs)
 def test_volume_output(xtag_wrapper, xsig, board, config, fs, channel):
-    if board == 'xk_216_mc':
-        num_chans = 8
-    elif board == 'xk_evk_xu316':
-        num_chans = 2
-    else:
-        pytest.fail(f'Unrecognised board {board}')
+    channels = range(num_chans[board]) if channel == "m" else [channel]
 
-    channels = range(num_chans) if channel == "m" else [channel]
-
-    xsig_config = f'mc_analogue_output_{num_chans}ch.json'
+    xsig_config = f'mc_analogue_output_{num_chans[board]}ch.json'
     xsig_config_path = Path(__file__).parent / "xsig_configs" / xsig_config
 
     adapter_dut, adapter_harness = xtag_wrapper
@@ -191,9 +198,9 @@ def test_volume_output(xtag_wrapper, xsig, board, config, fs, channel):
     time.sleep(2)
 
     if channel == "m":
-        vol_out = Volcontrol("output", num_chans, master=True)
+        vol_out = Volcontrol("output", num_chans[board], master=True)
     else:
-        vol_out = Volcontrol("output", num_chans, channel=channel)
+        vol_out = Volcontrol("output", num_chans[board], channel=channel)
 
     vol_out.reset()
     vol_changes = [0.5, 1.0, 0.75, 1.0]
