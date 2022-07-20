@@ -94,7 +94,7 @@ dfu_testcases = [
 
 pids = {
     "xk_216_mc": 0xE,
-    "xK_evk_xu316": 0x18,
+    "xk_evk_xu316": 0x18,
 }
 
 
