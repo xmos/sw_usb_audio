@@ -88,12 +88,18 @@ dfu_testcases = [
         marks=[pytest.mark.smoke, pytest.mark.nightly, pytest.mark.weekend],
     ),
     pytest.param(
+        "xk_316_mc",
+        "2Ai10o10xxxxxx",
+        marks=[pytest.mark.smoke, pytest.mark.nightly, pytest.mark.weekend],
+    ),
+    pytest.param(
         "xk_evk_xu316", "2i2o2", marks=[pytest.mark.nightly, pytest.mark.weekend]
     ),
 ]
 
 pids = {
     "xk_216_mc": 0xE,
+    "xk_316_mc": 0x16,
     "xk_evk_xu316": 0x18,
 }
 
