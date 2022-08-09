@@ -1,4 +1,4 @@
-@Library('xmos_jenkins_shared_library@v0.19.0') _
+@Library('xmos_jenkins_shared_library@feature/always_use_withtools') _
 
 def withXTAG(List targets, Closure body) {
   def xtagIds = []
