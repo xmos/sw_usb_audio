@@ -2,10 +2,11 @@
 import io
 from pathlib import Path
 import pytest
-import sh
+import subprocess
 import time
 import json
 import tempfile
+import signal
 
 from usb_audio_test_utils import (wait_for_portaudio, get_firmware_path_harness,
     get_firmware_path, run_audio_command, mark_tests, check_analyzer_output)
@@ -124,10 +125,10 @@ def test_analogue_input(xtag_wrapper, xsig, board, config, fs, duration, xsig_co
 
     # xrun the harness
     harness_firmware = get_firmware_path_harness("xcore200_mc")
-    sh.xrun("--adapter-id", adapter_harness, harness_firmware)
+    subprocess.run(["xrun", "--adapter-id", adapter_harness, harness_firmware], check=True)
     # xflash the firmware
     firmware = get_firmware_path(board, config)
-    sh.xrun("--adapter-id", adapter_dut, firmware)
+    subprocess.run(["xrun", "--adapter-id", adapter_dut, firmware], check=True)
 
     wait_for_portaudio(board, config)
 
@@ -138,6 +139,9 @@ def test_analogue_input(xtag_wrapper, xsig, board, config, fs, duration, xsig_co
         time.sleep(xsig_duration)
         out_file.seek(0)
         xsig_lines = out_file.readlines()
+
+    # Harness is still running, so break in with xgdb to stop it
+    subprocess.check_output(["xgdb", f"--eval-command=connect --adapter-id {adapter_harness}", "--eval-command=quit"])
 
     # Check output
     with open(xsig_config_path) as file:
@@ -245,39 +249,24 @@ def test_analogue_output(xtag_wrapper, xsig, board, config, fs, duration, xsig_c
 
     # xrun the dut
     firmware = get_firmware_path(board, config)
-    sh.xrun("--adapter-id", adapter_dut, firmware)
+    subprocess.run(["xrun", "--adapter-id", adapter_dut, firmware], check=True)
 
     wait_for_portaudio(board, config)
 
     # xrun --xscope the harness
     harness_firmware = get_firmware_path_harness("xcore200_mc")
-    xscope_out = io.StringIO()
-    harness_xrun = sh.xrun(
-        "--adapter-id",
-        adapter_harness,
-        "--xscope",
-        harness_firmware,
-        _out=xscope_out,
-        _err_to_out=True,
-        _bg=True,
-        _bg_exc=False,
-    )
+    harness_proc = subprocess.Popen(["xrun", "--adapter-id", adapter_harness, "--xscope", harness_firmware],
+                                    stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
 
     # Run xsig for duration + 2 seconds
-    xsig_cmd = sh.Command(xsig)(fs, (duration + 2) * 1000, xsig_config_path, _bg=True)
+    xsig_proc = subprocess.Popen([xsig, f"{fs}", f"{(duration + 2) * 1000}", xsig_config_path])
     time.sleep(duration)
-    # Get analyser output
-    try:
-        harness_xrun.kill_group()
-        harness_xrun.wait()
-    except sh.SignalException:
-        # Killed
-        pass
-    xscope_str = xscope_out.getvalue()
-    xscope_lines = xscope_str.split("\n")
 
-    # Wait for xsig to exit (timeout after 5 seconds)
-    xsig_cmd.wait(timeout=5)
+    harness_proc.send_signal(signal.SIGINT)
+    xsig_proc.terminate()
+
+    xscope_str = harness_proc.stdout.read()
+    xscope_lines = xscope_str.splitlines()
 
     with open(xsig_config_path) as file:
         xsig_json = json.load(file)
