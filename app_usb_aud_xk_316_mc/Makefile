@@ -26,7 +26,7 @@ USED_MODULES = lib_xua lib_xud lib_spdif lib_i2c lib_adat
 # ADAT in			enabled: a, disabled: x
 # ADAT out			enabled: a, disabled: x
 # DSD out			enabled: d, disabled: x
-# e.g. 2Ai10o10xsxxx: Audio class 2.0, Asynchronous, input and output enabled (10 channels each), SPDIF output, no SPDIF input, no ADAT
+# e.g. 2Ai10o10xxsxxx: Audio class 2.0, Asynchronous, input and output enabled (10 channels each), SPDIF output, no SPDIF input, no ADAT
 
 # Supported build configs (Note these make use of the defaults in xua_conf.h)
 
@@ -53,8 +53,8 @@ XCC_FLAGS_2Ai32o32xxxxxx_tdm8 = $(BUILD_FLAGS)	-DXUA_PCM_FORMAT=XUA_PCM_FORMAT_T
 INCLUDE_ONLY_IN_2Ai32o32xxxxxx_tdm8 = 
 
 # Audio Class 2, 10xInput, 10xOutput, S/PDIF Tx
-XCC_FLAGS_2Ai10o10xsxxxx = $(BUILD_FLAGS)		-DXUA_SPDIF_TX_EN=1
-INCLUDE_ONLY_IN_2Ai10o10xsxxxx = 
+XCC_FLAGS_2Ai10o10xxsxxx = $(BUILD_FLAGS)		-DXUA_SPDIF_TX_EN=1
+INCLUDE_ONLY_IN_2Ai10o10xxsxxx =
 
 # Audio Class 1, 2xInput, 2xOutput
 XCC_FLAGS_1Ai2o2xxxxxx = $(BUILD_FLAGS) 		-DAUDIO_CLASS=1 \
@@ -67,13 +67,13 @@ XCC_FLAGS_2Ai10o10mxxxxx = $(BUILD_FLAGS)		-DMIDI=1
 INCLUDE_ONLY_IN_2Ai10o10mxxxxx =
 
 # Audio Class 2, 10xInput, 10xOutput, S/PDIF Tx, S/PDIF Rx
-XCC_FLAGS_2Ai10o10ssxxxx = $(BUILD_FLAGS)		-DXUA_SPDIF_TX_EN=1 \
+XCC_FLAGS_2Ai10o10xssxxx = $(BUILD_FLAGS)		-DXUA_SPDIF_TX_EN=1 \
 						   						-DXUA_SPDIF_RX_EN=1
-INCLUDE_ONLY_IN_2Ai10o10ssxxxx =
+INCLUDE_ONLY_IN_2Ai10o10xssxxx =
 
 # Audio Class 2, 10xInput, 10xOutput, S/PDIF Rx
-XCC_FLAGS_2Ai10o10sxxxxx = $(BUILD_FLAGS) 		-DXUA_SPDIF_RX_EN=1
-INCLUDE_ONLY_IN_2Ai10o10sxxxxx =
+XCC_FLAGS_2Ai10o10xsxxxx = $(BUILD_FLAGS) 		-DXUA_SPDIF_RX_EN=1
+INCLUDE_ONLY_IN_2Ai10o10xsxxxx =
 
 #
 # Synchronous Mode Configs

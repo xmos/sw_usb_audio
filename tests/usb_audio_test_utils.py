@@ -51,7 +51,10 @@ def wait_for_portaudio(board, config, timeout=10):
 
 def get_firmware_path_harness(board, config=None):
     xe_name = f"app_audio_analyzer_{board}_{config}.xe" if config else f"app_audio_analyzer_{board}.xe"
-    fw_path = Path(__file__).parents[2] / "sw_audio_analyzer" / f"app_audio_analyzer_{board}" / "bin" / xe_name
+    bin_dir = Path(__file__).parents[2] / "sw_audio_analyzer" / f"app_audio_analyzer_{board}" / "bin"
+    if config:
+        bin_dir = bin_dir / f"{config}"
+    fw_path = bin_dir / xe_name
     if not fw_path.exists():
         pytest.fail(f"Harness firmware not present at {fw_path}")
     return fw_path
@@ -167,6 +170,26 @@ def check_analyzer_output(analyzer_output, xsig_config):
             for freq in chan_freqs:
                 if int(freq) != exp_freq:
                     failures.append(f'Incorrect frequency on channel {idx}; got {freq}, expected {exp_freq}')
+
+        elif channel_config[0] == 'ramp':
+            exp_ramp = channel_config[1]
+            ramps = get_line_matches(analyzer_channels[idx], r'.*step = (-?\d+)')
+
+            if len(ramps) == 0:
+                failures.append(f"No ramp seen on channel {idx}")
+
+            for ramp in ramps:
+                if int(ramp) != exp_ramp:
+                    failures.append(f"Incorrect ramp on channel {idx}: got {ramp}, expected {exp_ramp}")
+
+            for line in analyzer_channels[idx]:
+                if re.match(".*discontinuity", line):
+                    failures.append(line)
+
+        elif channel_config[0] == 'zero':
+            if len(analyzer_channels[idx]):
+                failures.append(analyzer_channels[idx])
+
         else:
             failures.append(f'Invalid channel config {channel_config}')
 
