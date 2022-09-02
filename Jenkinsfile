@@ -1,20 +1,4 @@
-@Library('xmos_jenkins_shared_library@v0.19.0') _
-
-def withXTAG(List targets, Closure body) {
-  def xtagIds = []
-
-  try {
-    targets.each {
-      def adapterId = sh (script: "xtagctl acquire ${it}", returnStdout: true).trim()
-      xtagIds.add(adapterId)
-    }
-    body(xtagIds)
-  } finally {
-    xtagIds.each {
-      sh "xtagctl release ${it}"
-    }
-  }
-}
+@Library('xmos_jenkins_shared_library@v0.20.0') _
 
 getApproval()
 
@@ -82,7 +66,7 @@ pipeline {
           archiveArtifacts artifacts: "Release/*.zip", fingerprint: true, allowEmptyArchive: true
         }
         cleanup {
-          cleanWs()
+          xcoreCleanSandbox()
         }
       }
     }
@@ -138,7 +122,7 @@ pipeline {
           }
           post {
             cleanup {
-              cleanWs()
+              xcoreCleanSandbox()
             }
           }
         }
@@ -189,7 +173,7 @@ pipeline {
           }
           post {
             cleanup {
-              cleanWs()
+              xcoreCleanSandbox()
             }
           }
         }
@@ -201,6 +185,11 @@ pipeline {
       }
       steps {
         updateViewfiles()
+      }
+      post {
+        cleanup {
+          cleanWs()
+        }
       }
     }
   }
