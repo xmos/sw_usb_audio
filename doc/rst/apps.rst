@@ -9,10 +9,6 @@ framework.
 
 .. toctree::
 
-    sw_l1_audio
-    sw_su1_audio
-    sw_l2_audio
-    sw_u8_audio
-    sw_u16_audio8
-    sw_216_mc
-    sw_mic_arr
+    app_316_mc
+    app_216_mc
+    app_mic_arr

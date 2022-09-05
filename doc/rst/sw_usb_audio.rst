@@ -6,16 +6,17 @@ USB Audio Design Guide
 =======================
 
 The XMOS USB Audio solution provides *USB Audio Class* compliant devices over USB 2.0 (high-speed 
-or full-speed). Based on the XMOS XS1 and xCORE-200 architectures, it supports USB Audio Class 2.0 and USB Audio 
-Class 1.0, asynchronous mode and sample rates up to 384kHz.
+or full-speed). Based on the XMOS xCORE-200 (XS2) and xCORE.ai (XS3) architectures, it supports USB
+Audio Class 2.0 and USB Audio Class 1.0, asynchronous mode (synchronous as an option) and sample 
+rates up to 384kHz.
 
-The complete source code, together with the free XMOS xTIMEcomposer development tools and xCORE 
-multi-core micro-controller devices allow the implementer to select the exact mix of interfaces 
+The complete source code, together with the free XMOS XTC development tools and xCORE 
+multi-core micro-controller devices allow the developer to select the exact mix of interfaces 
 and processing required.
 
-The XMOS USB Audio solution is deployed as a framework with reference design applications extending
-and customising this framework. These reference designs have particular qualified feature sets and 
-an accompanying reference hardware platform.
+The XMOS USB Audio solution is deployed as a framework (see `lib_xua``) with reference design 
+applications extending and customising this framework. These reference designs have particular 
+qualified feature sets and an accompanying reference hardware platform.
 
 This software design guide assumes the reader is familiar with the XC language and xCORE devices. 
 For more information see `XMOS Programming Guide 
@@ -25,17 +26,16 @@ The reader should also familiarise themselves with the `XMOS USB Device Library
 <http://www.xmos.com/published/xuddg>`_ and the `XMOS USB Device Design Guide 
 <https://www.xmos.com/zh/node/17007?page=9>`_
 
-
 .. note::
     
-    The reader should always refer to the supplied CHANGELOG and README files for known issues in a specific release
+    The reader should always refer to the supplied `CHANGELOG` and `README` files for known issues
+    in a specific release
 
 .. toctree::
 
     Overview <overview>
     Hardware Platforms <hw>
     Software Architecture <sw>
-    Features & Options <features>
     Programming Guide <programming>
     USB Audio Applications <apps>
     API <api>

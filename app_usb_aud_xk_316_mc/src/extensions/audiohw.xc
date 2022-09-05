@@ -9,11 +9,18 @@
 on tile[0]: port p_scl = XS1_PORT_1L;
 on tile[0]: port p_sda = XS1_PORT_1M;
 on tile[0]: out port p_ctrl = XS1_PORT_8D;
+on tile[0]: in port p_margin = XS1_PORT_1G; /* CORE_POWER_MARGIN       Driven 0: 0.925v
+                                             *                        Pull down: 0.922v
+                                             *                         High-z:   0.9v
+                                             *                         Pull-up:  0.854v
+                                             *                         Driven 1: 0.85v
+                                             */
 
 #if (SPDIF_RX || ADAT_RX || (XUA_SYNCMODE == XUA_SYNCMODE_SYNC))
 /* If we have an external digital input interface or running in synchronous mode we need to use the 
  * external CS2100 device for master clock generation */
 #define USE_FRACTIONAL_N         (1)
+#error
 #endif
 
 /* p_ctrl:
@@ -175,6 +182,10 @@ void SetI2CMux(int ch)
 /* Configures the external audio hardware at startup */
 void AudioHwInit()
 {
+#if (XUA_SYNCMODE == XUA_SYNC_MODESYMC)
+#error
+#endif
+
     i2c_regop_res_t result;
     size_t length;
 

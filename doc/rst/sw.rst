@@ -1,24 +1,13 @@
-USB Audio Software Architecture
-===============================
+Software Architecture
+=====================
 
-This section describes the software architecture of the XMOS USB Audio framework.
+The reference applications supplied in ``sw_usb_audio`` use the framework provided in ``lib_xua``. 
+These reference design applications customise and extended this framework to provide the required functionality.  
+These applications execute on a reference hardware platform.
 
-XMOS USB Audio is supplied as a framework with reference design applications customising
-and extending this framework to provide the required functionality.  These applications execute on a 
-reference hardware platform.
-
-.. toctree::
-
-   sw_intro
-   sw_xud
-   sw_ep0
-   sw_audio
-   sw_mixer
-   sw_spdif
-   sw_spdif_rx
-   sw_adat
-   sw_clocking
-   sw_midi
-   sw_pdm
-   sw_resource
+The applications contained in this repo use ``lib_xua`` in a "code-less" manner. That it, they use 
+the ``main()`` function from ``lib_xua`` and customise the code-base as required using build time defines and by 
+providing implementations to the various required functions in order to support their hardware. 
+Please see ``lib_xua`` documentation for full details.  This document details what these 
+customisations are for each application.
 

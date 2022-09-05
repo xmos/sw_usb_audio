@@ -20,13 +20,13 @@ USED_MODULES = lib_xua lib_xud lib_spdif lib_i2c lib_adat
 # Sync Mode 		A(sync) S(ync)
 # Input 			enabled: i (channelcount)
 # Output 			enabled: o (channelcount)
-# MIDI 				enabled: m, disabled: x
 # SPDIF in 			enabled: s, disabled: x
 # SPDIF out			enabled: s, disabled: x
 # ADAT in			enabled: a, disabled: x
 # ADAT out			enabled: a, disabled: x
+# MIDI 				enabled: m, disabled: x
 # DSD out			enabled: d, disabled: x
-# e.g. 2Ai10o10xsxxx: Audio class 2.0, Asynchronous, input and output enabled (10 channels each), SPDIF output, no SPDIF input, no ADAT
+# e.g. 2Ai10o10xsxxx: Audio class 2.0, Asynchronous, input and output enabled (10 channels each), SPDIF output, no SPDIF input, no ADAT, no MIDI
 
 # Supported build configs (Note these make use of the defaults in xua_conf.h)
 

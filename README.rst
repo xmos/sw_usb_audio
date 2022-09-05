@@ -37,13 +37,12 @@ Mandatory files per application include:
 
 Each application also contains an "extensions" folder which includes board specific extensions such as CODEC configuration etc.
 
-Additionally some options are contained in Makefiles for building multiple configurations of an application. For example 
-app_usb_aud_l1 builds a MIDI and S/PDIF configurations.  See the USB Audio Software Design Guide for full details.
+Additionally some options are contained in Makefiles for building multiple configurations of an application. For example an application may provide configurations with and without MIDI enabled.  See the USB Audio Software Design Guide for full details.
 
 Key Framework Features
 ======================
 
-Key features of the various applications in this repository are as follow.  Please refer to the application README for application specific feature set.
+Key features of the various applications in this repository are listed below.  Please refer to the application README for application specific feature set.
 
 - USB Audio Class 1.0/2.0 Compliant 
 
@@ -67,13 +66,11 @@ Key features of the various applications in this repository are as follow.  Plea
 
 - MIDI input/output (Compliant to USB Class Specification for MIDI devices)
 
-- DSD output (Native and DoP mode) at DSD64 and DSD128 rates
+- DSD output ("Native" and DoP mode) at DSD64 and DSD128 rates
 
 - Mixer with flexible routing
 
 - Simple playback controls via Human Interface Device (HID)
-
-- Support for operation with Apple devices (requires software module sc_mfi for MFI licensees only - please contact XMOS) 
 
 Note, not all features may be supported at all sample frequencies, simultaneously or on all devices.  Some features also require specific host driver support.
 
