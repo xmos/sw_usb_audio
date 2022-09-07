@@ -77,11 +77,11 @@ INCLUDE_ONLY_IN_2Ai10o10xsxxxx =
 
 # Audio Class 2, 10xInput, 10xOutput, ADAT Rx
 XCC_FLAGS_2Ai16o8xxxaxx = $(BUILD_FLAGS) 		-DXUA_ADAT_RX_EN=1 -DNUM_USB_CHAN_IN=16 -DNUM_USB_CHAN_OUT=8
-INCLUDE_ONLY_IN_2Ai16o8sxxaxx =
+INCLUDE_ONLY_IN_2Ai16o8xxxaxx =
 
 # Audio Class 2, 10xInput, 10xOutput, ADAT Tx
 XCC_FLAGS_2Ai8o16xxxxax = $(BUILD_FLAGS) 		-DXUA_ADAT_TX_EN=1 -DNUM_USB_CHAN_IN=8 -DNUM_USB_CHAN_OUT=16
-INCLUDE_ONLY_IN_2Ai8o16sxxxax =
+INCLUDE_ONLY_IN_2Ai8o16xxxxax =
 
 #
 # Synchronous Mode Configs
