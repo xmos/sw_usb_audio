@@ -89,7 +89,7 @@ dfu_testcases = [
     ),
     pytest.param(
         "xk_316_mc",
-        "2Ai10o10xxxxxx",
+        "2AMi10o10xxxxxx",
         marks=[pytest.mark.smoke, pytest.mark.nightly, pytest.mark.weekend],
     ),
     pytest.param(
