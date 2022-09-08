@@ -53,8 +53,8 @@
             <Port Location="XS1_PORT_1L"  Name="PORT_I2S_ADC3"/>
             
             <!-- Audio Ports: Digital -->         
-            <Port Location="XS1_PORT_1E"  Name="PORT_ADAT_OUT"/>  <!-- A: Coax E: Optical --> 
-            <Port Location="XS1_PORT_1A"  Name="PORT_SPDIF_OUT"/> <!-- A: Coax E: Optical --> 
+            <Port Location="XS1_PORT_1G"  Name="PORT_ADAT_OUT"/>  <!-- A: Coax G: Optical --> 
+            <Port Location="XS1_PORT_1A"  Name="PORT_SPDIF_OUT"/> <!-- A: Coax G: Optical --> 
 
             <!-- MIDI -->
             <Port Location="XS1_PORT_1F"  Name="PORT_MIDI_IN"/>
