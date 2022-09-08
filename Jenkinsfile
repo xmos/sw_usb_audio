@@ -119,7 +119,7 @@ pipeline {
                       // The JENKINS env var is necessary for macOS catalina
                       // We have to work around microphone permission issues
                       // For more info, see the DevOps section of the XMOS wiki
-                      withEnv(["JENKINS=1"]) {
+                      withEnv(["USBA_TEST_INPUT_VIA_SSH=1"]) {
                         withVenv() {
                           sh "pip install -e ${WORKSPACE}/xtagctl"
                           withXTAG(["usb_audio_mc_xs2_dut", "usb_audio_mc_xs2_harness", \
@@ -172,7 +172,7 @@ pipeline {
                       // The JENKINS env var is necessary for macOS catalina
                       // We have to work around microphone permission issues
                       // For more info, see the DevOps section of the XMOS wiki
-                      withEnv(["JENKINS=1"]) {
+                      withEnv(["USBA_TEST_INPUT_VIA_SSH=1"]) {
                         withVenv() {
                           sh "pip install -e ${WORKSPACE}/xtagctl"
                           withXTAG(["usb_audio_mc_xcai_dut", "usb_audio_mc_xcai_harness"]) { xtagIds ->

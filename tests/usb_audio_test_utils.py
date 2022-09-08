@@ -79,22 +79,10 @@ def run_audio_command(outfile, exe, *args):
     # If we're running on macOS on Jenkins, we need microphone permissions
     # To do this, we put an executable script in the $HOME/exec_all directory
     # A script is running on the host machine to execute everything in that dir
-    if platform.system() == "Darwin" and "JENKINS" in os.environ:
-        # Create a shell script to run the exe
-        with tempfile.NamedTemporaryFile("w+", delete=False, dir=Path.home() / "exec_all") as script_file:
-            str_args = [str(a) for a in args]
-            # fmt: off
-            script_text = (
-                "#!/bin/bash\n"
-                f"{exe} {' '.join(str_args)} > {outfile.name}\n"
-            )
-            # fmt: on
-            script_file.write(script_text)
-            script_file.flush()
-            Path(script_file.name).chmod(
-                stat.S_IREAD | stat.S_IWRITE | stat.S_IEXEC
-            )
-            return
+    if platform.system() == "Darwin" and "USBA_TEST_INPUT_VIA_SSH" in os.environ:
+        args_str = [str(arg) for arg in args]
+        cmd = f"{str(exe)} " + " ".join(args_str)
+        subprocess.Popen(["ssh", "127.0.0.1", cmd], stdout=outfile, text=True)
 
     subprocess.Popen([exe, *args], stdout=outfile, text=True)
 
