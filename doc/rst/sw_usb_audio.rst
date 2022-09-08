@@ -35,7 +35,6 @@ The reader should also familiarise themselves with the `XMOS USB Device Library
 
     Overview <overview>
     Hardware Platforms <hw>
-    Software Architecture <sw>
     Programming Guide <programming>
     USB Audio Applications <apps>
     API <api>

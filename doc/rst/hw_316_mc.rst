@@ -1,4 +1,4 @@
-xCORE.AI Multi-Channel Audio Board
+xCORE.ai Multi-Channel Audio Board
 ...................................
 
 The `XMOS xCORE.ai Multichannel Audio Board` (XK-AUDIO-316-MC) is a complete hardware and software reference platform targeted at up to 32-channel USB audio applications, such as DJ decks, mixers and other musical instrument interfaces.  The board can also be used to prototype products with reduced feature sets or HiFi style products.
@@ -6,6 +6,8 @@ The `XMOS xCORE.ai Multichannel Audio Board` (XK-AUDIO-316-MC) is a complete har
 The XK-AUDIO-316-MC is based around the XU316-1024-TQ128-C24 multicore microcontroller; a dual-tile xCORE.ai device with an integrated High Speed USB 2.0 PHY and 16 logical cores delivering up to 3200MIPS of deterministic and responsive processing power.
 
 Exploiting the flexible programmability of the xCORE.ai architecture, the XK-AUDIO-316-MC supports a USB audio source, streaming 8 analogue input and 8 analogue output audio channels simultaneously - at up to 192kHz. It also supports digital input/output streams (S/PDIF and ADAT) and MIDI.
+
+For full details regarding the hardware please refer to `xCORE.ai Multichannel Audio Platform Hardware Manual <ADD LINK HERE>`_.
 
 The XK-AUDIO-316-MC reference hardware has an associated firmware application that uses `lib_xua` to implemented a USB Audio Device. Full details of this application can be found later in this document.
 
@@ -29,7 +31,7 @@ The output data streams from the xCORE are re-clocked using the external master 
 MIDI
 ++++
 
-MIDI I/O is provided on the board via standard 5-pin DIN connectors. The signals are buffered using 5V line drivers and are then connected to 1-bit ports on the xCORE, via a 5V to 3.3V buffer.
+MIDI I/O is provided on the board via standard 5-pin DIN connectors. The signals are buffered using 5V line drivers and are then connected ports on the xCORE, via a 5V to 3.3V buffer. A 1-bit port is used for receive and a 4-bit port is used for transmit.
 
 Audio Clocking
 ++++++++++++++
@@ -40,13 +42,11 @@ Three methods of generating an audio master clock are provided on the board:
 
     * A Cirrus Logic CS2100-CP PLL device.  The CS2100 features both a clock generator and clock multiplier/jitter reduced clock frequency synthesizer (clean up) and can generate a low jitter audio clock based on a synchronisation signal provided by the xCORE
 
-    * A Skyworks Si5351B PLL device. The Si5351 is an I2C configurable clock generator that is ideally suited for replacing crystals, crystal oscillators, VCXOs, phase-locked loops (PLLs), and fanout buffers.
+    * A Skyworks Si5351B PLL device. The Si5351 is an I2C configurable clock generator that is suited for replacing crystals, crystal oscillators, VCXOs, phase-locked loops (PLLs), and fanout buffers.
 
-    * xCORE.ai devices are equipped with a secondary (or 'application') PLL which can be used to generate audio clocks
+    * xCORE.ai devices are equipped with a secondary (or `application`) PLL which can be used to generate audio clocks.
 
-Selection between these methods is done via writing to bits 6 and 7 of PORT 8D on tile[0]. 
-
-Either the locally generated clock (from the PL611) or the recovered low jitter clock (from the CS2100) may be selected to clock the audio stages; the xCORE-200, the ADC/DAC and Digital output stages. Selection is controlled via an additional I/O, bit 5 of PORT 8C, see :ref:`hw_316_ctrlport`.
+Selecting between these methods is done via writing to bits 6 and 7 of PORT 8D on tile[0]. See :ref:`hw_316_ctrlport`.
 
 .. _hw_316_ctrlport:
 
@@ -83,29 +83,35 @@ Control I/O
 LEDs, Buttons and Other IO
 ++++++++++++++++++++++++++
 
-All programmable I/O on the board is configured for 3v3.
+All programmable I/O on the board is configured for 3.3 volts.
 
-For green LED's and three push buttons are provided for general purpose user interfacing. 
+Four green LED's and three push buttons are provided for general purpose user interfacing. 
 
-The LEDs are connected to PORT 4F and the buttons are connected to bits [0:2] of PORT 4E. Bit 3 of this port is connected to the (currently
-unused) ADC interrupt line.
+The LEDs are connected to PORT 4F and the buttons are connected to bits [0:2] of PORT 4E. Bit 3 of
+this port is connected to the (currently unused) ADC interrupt line.
 
-The board also includes support for an AES11 format Word Clock input via 75 ohm BNC. The software does not support this currently and it is
-provided for future expansion.
+The board also includes support for an AES11 format Word Clock input via 75 ohm BNC. The software 
+does not currently support any functionality related to this and it is provided for future expansion.
 
-All spare IO and Functional IO brought out on headers for easy connection of expansion boards (via 0.1” headers).
+All spare I/O is brought out and made available on 0.1" headers for easy connection of expansion 
+boards etc.
 
 Power
 +++++
 
-The board is capable of acting as a USB2.0 self or bus powered device. If bus powered, board takes power from  ``USB DEVICE`` connector (micro-B receptacle). 
-If self powered, board takes power from ``EXTERNAL POWER`` input (micro-B receptacle).
+The board is capable of acting as a USB2.0 self or bus powered device. If bus powered, the board takes
+power from the ``USB DEVICE`` connector (micro-B receptacle). If self powered, board takes power 
+from ``EXTERNAL POWER`` input (micro-B receptacle).
 
 A Power Source Select (marked ``PWR SRC``) is used to select between bus and self-powered configuration. 
 
+.. note::
+
+    To remain USB compliant the software should be properly configured for bus vs self powered operation
 
 Debug
 +++++
 
-For convenience the board includes an on-board xTAG4 for debugging via JTAG/xSCOPE. This is accessed via the USB (micro-B) receptacle marked ``DEBUG``. 
+For convenience the board includes an on-board xTAG4 for debugging via JTAG/xSCOPE. 
+This is accessed via the USB (micro-B) receptacle marked ``DEBUG``. 
 
