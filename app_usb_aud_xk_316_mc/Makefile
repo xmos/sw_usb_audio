@@ -64,17 +64,17 @@ XCC_FLAGS_2AMi10o10xxsxxx = $(BUILD_FLAGS)		-DXUA_SPDIF_TX_EN=1
 INCLUDE_ONLY_IN_2AMi10o10xxsxxx =
 
 # Audio Class 1, Async, I2S Master, 2xInput, 2xOutput
-XCC_FLAGS_1Ai2o2xxxxxx = $(BUILD_FLAGS) 		-DAUDIO_CLASS=1 \
+XCC_FLAGS_1AMi2o2xxxxxx = $(BUILD_FLAGS) 		-DAUDIO_CLASS=1 \
 						 						-DNUM_USB_CHAN_IN=2 \
 												-DNUM_USB_CHAN_OUT=2
-INCLUDE_ONLY_IN_1Ai2o2xxxxxx =
+INCLUDE_ONLY_IN_1AMi2o2xxxxxx =
 
 # Audio Class 2, Async, I2S Master, 10xInput, 10xOutput, MIDI
 XCC_FLAGS_2AMi10o10mxxxxx = $(BUILD_FLAGS)		-DMIDI=1
 INCLUDE_ONLY_IN_2AMi10o10mxxxxx =
 
 # Audio Class 2, Async, I2S Master, 10xInput, 10xOutput, S/PDIF Tx, S/PDIF Rx
-XCC_FLAGS_2Ai10o10xssxxx = $(BUILD_FLAGS)		-DXUA_SPDIF_TX_EN=1 \
+XCC_FLAGS_2AMi10o10xssxxx = $(BUILD_FLAGS)		-DXUA_SPDIF_TX_EN=1 \
 						   						-DXUA_SPDIF_RX_EN=1
 INCLUDE_ONLY_IN_2AMi10o10xssxxx =
 
