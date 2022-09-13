@@ -99,13 +99,13 @@ INCLUDE_ONLY_IN_2AMi8o16xxxxax =
 # Synchronous Mode Configs
 #
 # Audio Class 1, Sync, I2S Master, 2xInput, 2xOutput
-XCC_FLAGS_1SMi2o2xxxxxx = $(BUILD_FLAGS)			-DAUDIO_CLASS=1 \
+XCC_FLAGS_1SMi2o2xxxxxx = $(BUILD_FLAGS)		-DAUDIO_CLASS=1 \
 						 						-DXUA_SYNCMODE=XUA_SYNCMODE_SYNC
 INCLUDE_ONLY_IN_1SMi2o2xxxxxx =
 
-# Audio Class 2, Sync, I2S Master, 10xInput, 10xOutput
-XCC_FLAGS_2SMi10o10xxxxxx = $(BUILD_FLAGS)		-DXUA_SYNCMODE=XUA_SYNCMODE_SYNC
-INCLUDE_ONLY_IN_2SMi10o10xxxxxx =
+# Audio Class 2, Sync, I2S Master, 8xInput, 8xOutput
+XCC_FLAGS_2SMi8o8xxxxxx = $(BUILD_FLAGS)		-DXUA_SYNCMODE=XUA_SYNCMODE_SYNC
+INCLUDE_ONLY_IN_2SMi8o8xxxxxx =
 
 # Audio Class 2, Sync, I2S Master, 10xInput, 10xOutput, TDM
 # (1024x Mclk required for 192/176 TDM)
