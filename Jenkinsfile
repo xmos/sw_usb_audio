@@ -117,6 +117,7 @@ pipeline {
                     }
                   }
                 }
+                archiveArtifacts artifacts: "pytest-result.xml", fingerprint: true, allowEmptyArchive: true
               }
             }
           }
