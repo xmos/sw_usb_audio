@@ -31,16 +31,16 @@ spdif_input_configs = [
     # nightly level tests
     *mark_tests(pytest.mark.nightly, [
         *[("xk_216_mc", "2Ai10o10xssxxx", fs, 600) for fs in all_freqs],
-        *[("xk_316_mc", "2AMi10o10xssxxx", fs, 600) for fs in all_freqs]
-        *[("xk_316_mc", "2ASi10o10xssxxx", fs, 600) for fs in all_freqs]
+        *[("xk_316_mc", "2AMi10o10xssxxx", fs, 600) for fs in all_freqs],
+        *[("xk_316_mc", "2ASi10o10xssxxx", fs, 600) for fs in all_freqs],
     ]),
 
     # weekend level tests
     *mark_tests(pytest.mark.weekend, [
         *[("xk_216_mc", "2Ai10o10xssxxx", fs, 1800) for fs in all_freqs],
         *[("xk_316_mc", "2AMi10o8xsxxxx", fs, 1800) for fs in all_freqs],
-        *[("xk_316_mc", "2AMi10o10xssxxx", fs, 1800) for fs in all_freqs]
-        *[("xk_316_mc", "2ASi10o10xssxxx", fs, 1800) for fs in all_freqs]
+        *[("xk_316_mc", "2AMi10o10xssxxx", fs, 1800) for fs in all_freqs],
+        *[("xk_316_mc", "2ASi10o10xssxxx", fs, 1800) for fs in all_freqs],
     ])
 ]
 
