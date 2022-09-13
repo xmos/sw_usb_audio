@@ -19,13 +19,13 @@ all_freqs = [44100, 48000, 88200, 96000, 176400, 192000]
 spdif_input_configs = [
     # smoke level tests
     *mark_tests(pytest.mark.smoke, [
-        ("xk_216_mc", "2Ai10o10xssxxx",  48000, 10),
-        ("xk_216_mc", "2Ai10o10xssxxx", 192000, 10),
-        ("xk_316_mc", "2AMi10o8xsxxxx",  44100, 10),
-        ("xk_316_mc", "2AMi10o8xsxxxx",  96000, 10),
+        ("xk_216_mc", "2Ai10o10xssxxx",   48000, 10),
+        ("xk_216_mc", "2Ai10o10xssxxx",  192000, 10),
+        ("xk_316_mc", "2AMi10o8xsxxxx",   44100, 10),
+        ("xk_316_mc", "2AMi10o8xsxxxx",   96000, 10),
         ("xk_316_mc", "2AMi10o10xssxxx",  88200, 10),
-        ("xk_316_mc", "2AMi10o10xssxxx", 192000, 10)
-        ("xk_316_mc", "2ASi10o10xssxxx", 192000, 10)
+        ("xk_316_mc", "2AMi10o10xssxxx", 192000, 10),
+        ("xk_316_mc", "2ASi10o10xssxxx", 192000, 10),
     ]),
 
     # nightly level tests
