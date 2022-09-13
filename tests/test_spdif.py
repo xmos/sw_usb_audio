@@ -21,8 +21,8 @@ spdif_input_configs = [
     *mark_tests(pytest.mark.smoke, [
         ("xk_216_mc", "2Ai10o10xssxxx",  48000, 10),
         ("xk_216_mc", "2Ai10o10xssxxx", 192000, 10),
-        ("xk_316_mc", "2AMi10o10xsxxxx",  44100, 10),
-        ("xk_316_mc", "2AMi10o10xsxxxx",  96000, 10),
+        ("xk_316_mc", "2AMi10o8xsxxxx",  44100, 10),
+        ("xk_316_mc", "2AMi10o8xsxxxx",  96000, 10),
         ("xk_316_mc", "2AMi10o10xssxxx",  88200, 10),
         ("xk_316_mc", "2AMi10o10xssxxx", 192000, 10)
     ]),
@@ -30,13 +30,13 @@ spdif_input_configs = [
     # nightly level tests
     *mark_tests(pytest.mark.nightly, [
         *[("xk_216_mc", "2Ai10o10xssxxx", fs, 600) for fs in all_freqs],
-        *[("xk_316_mc", "2AMi10o10xsxxxx", fs, 600) for fs in all_freqs]
+        *[("xk_316_mc", "2AMi10o8xsxxxx", fs, 600) for fs in all_freqs]
     ]),
 
     # weekend level tests
     *mark_tests(pytest.mark.weekend, [
         *[("xk_216_mc", "2Ai10o10xssxxx", fs, 1800) for fs in all_freqs],
-        *[("xk_316_mc", "2AMi10o10xsxxxx", fs, 1800) for fs in all_freqs],
+        *[("xk_316_mc", "2AMi10o8xsxxxx", fs, 1800) for fs in all_freqs],
         *[("xk_316_mc", "2AMi10o10xssxxx", fs, 1800) for fs in all_freqs]
     ])
 ]
@@ -94,10 +94,11 @@ spdif_output_configs = [
         ("xk_216_mc", "2Ai10o10xssxxx",       176400, 10),
         ("xk_216_mc", "2Ai10o10xsxxxd",        48000, 10),
         ("xk_216_mc", "2Ai10o10xsxxxx",        48000, 10),
-        ("xk_316_mc", "2AMi10o10xxsxxx",       44100, 10),
-        ("xk_316_mc", "2AMi10o10xxsxxx",      192000, 10),
+        ("xk_316_mc", "2AMi8o10xxsxxx",        44100, 10),
+        ("xk_316_mc", "2AMi8o10xxsxxx",       192000, 10),
         ("xk_316_mc", "2AMi10o10xssxxx",       48000, 10),
-        ("xk_316_mc", "2AMi10o10xssxxx",      176400, 10)
+        ("xk_316_mc", "2AMi10o10xssxxx",      176400, 10),
+        ("xk_316_mc", "2ASi8o10xxsxxx",       192000, 10),
     ]),
 
     # nightly level tests
@@ -109,12 +110,13 @@ spdif_output_configs = [
         ("xk_216_mc", "2Ai10o10xsxxxx",        88200, 600),
         ("xk_216_mc", "2Ai10o10xsxxxx",        96000, 600),
         ("xk_216_mc", "2Ai10o10xsxxxx_mix8",  192000, 600),
-        ("xk_316_mc", "2AMi10o10xxsxxx",       44100, 600),
-        ("xk_316_mc", "2AMi10o10xxsxxx",       96000, 600),
-        ("xk_316_mc", "2AMi10o10xxsxxx",      176400, 600),
+        ("xk_316_mc", "2AMi8o10xxsxxx",        44100, 600),
+        ("xk_316_mc", "2AMi8o10xxsxxx",        96000, 600),
+        ("xk_316_mc", "2AMi8o10xxsxxx",       176400, 600),
         ("xk_316_mc", "2AMi10o10xssxxx",       48000, 600),
         ("xk_316_mc", "2AMi10o10xssxxx",       88200, 600),
-        ("xk_316_mc", "2AMi10o10xssxxx",      192000, 600)
+        ("xk_316_mc", "2AMi10o10xssxxx",      192000, 600),
+        ("xk_316_mc", "2ASi8o10xxsxxx",       192000, 600),
     ]),
 
     # weekend level tests
@@ -124,8 +126,9 @@ spdif_output_configs = [
         *[("xk_216_mc", "2Ai10o10xsxxxd",       fs, 1800) for fs in all_freqs],
         *[("xk_216_mc", "2Ai10o10xsxxxx",       fs, 1800) for fs in all_freqs],
         *[("xk_216_mc", "2Ai10o10xsxxxx_mix8",  fs, 1800) for fs in all_freqs],
-        *[("xk_316_mc", "2AMi10o10xxsxxx",      fs, 1800) for fs in all_freqs],
-        *[("xk_316_mc", "2AMi10o10xssxxx",      fs, 1800) for fs in all_freqs]
+        *[("xk_316_mc", "2AMi8o10xxsxxx",       fs, 1800) for fs in all_freqs],
+        *[("xk_316_mc", "2AMi10o10xssxxx",      fs, 1800) for fs in all_freqs],
+        *[("xk_316_mc", "2ASi10o10xssxxx",      fs, 1800) for fs in all_freqs],
     ])
 ]
 

@@ -14,6 +14,8 @@ on tile[0]: out port p_ctrl = XS1_PORT_8D;
 /* If we have an external digital input interface or running in synchronous mode we need to use the 
  * external CS2100 device for master clock generation */
 #define USE_FRACTIONAL_N         (1)
+#else
+#define USE_FRACTIONAL_N         (0)
 #endif
 
 /* p_ctrl:
@@ -23,7 +25,7 @@ on tile[0]: out port p_ctrl = XS1_PORT_8D;
  * [6]   - EXT_PLL_SEL (CS2100:0, SI: 1)
  * [7]   - MCLK_DIR    (Out:0, In: 1)
  */
-#if defined(USE_FRACTIONAL_N)
+#if (USE_FRACTIONAL_N)
 #define EXT_PLL_SEL__MCLK_DIR    (0x00)
 #else
 #define EXT_PLL_SEL__MCLK_DIR    (0x80)
@@ -97,14 +99,12 @@ uint8_t i2c_reg_read(uint8_t device_addr, uint8_t reg, i2c_regop_res_t &result)
     return data[0];
 }
 
-#if defined(USE_FRACTIONAL_N)
-#define UNSAFE unsafe
 #define CS2100_REGWRITE(reg, val)                   {result = i2c_reg_write(CS2100_I2C_DEVICE_ADDR, reg, val);}
 #define CS2100_REGREAD_ASSERT(reg, data, expected)  {data[0] = i2c_reg_read(CS2100_I2C_DEVICE_ADDR, reg, result); assert(data[0] == expected);}
 #define CS2100_I2C_DEVICE_ADDRESS                   (0x4E)
+#define UNSAFE unsafe
 #include "../../shared/cs2100.h"
 #undef UNSAFE
-#endif
 
 // PCA9540B (2-channel I2C-bus mux) I2C Slave Address
 #define PCA9540B_I2C_DEVICE_ADDR    (0x70)
@@ -176,7 +176,6 @@ void SetI2CMux(int ch)
 void AudioHwInit()
 {
     i2c_regop_res_t result;
-    size_t length;
 
     // Wait for power supply to come up.
     delay_milliseconds(100);
@@ -187,95 +186,232 @@ void AudioHwInit()
         while(!(unsigned) i_i2c_client);
     }
 
-#ifdef USE_FRACTIONAL_N
-    /* Set external I2C mux to CS2100 */
-    SetI2CMux(PCA9540B_CTRL_CHAN_1);
-
-    unsafe
+    if(USE_FRACTIONAL_N)
     {
-        /* Use external CS2100 to generate master clock */
-        PllInit(i_i2c_client);
-    }
-#else
-    /* Use xCORE Secondary PLL to generate *fixed* master clock */
-    AppPllEnable_SampleRate(DEFAULT_FREQ);
-#endif
-    /* Set external I2C mux to ADC's */
-    SetI2CMux(PCA9540B_CTRL_CHAN_0);
-    
-    /*
-     * Setup ADCs
-     */
-    /* Setup is ADC is I2S slave, MCLK slave, I2S_DOUT2 on GPIO0. ADC sets up clocking automatically based on applied input clocks.*/
-    WriteAllAdcRegs(PCM1865_ADC2_IP_SEL_L,  0x42); // Set ADC2 Left input to come from VINL2[SE] input.
-    WriteAllAdcRegs(PCM1865_ADC2_IP_SEL_R,  0x42); // Set ADC2 Right input to come from VINR2[SE] input.
-    WriteAllAdcRegs(PCM1865_GPIO01_FUN,     0x05); // Set GPIO1 as normal polarity, GPIO1 functionality. Set GPIO0 as normal polarity, DOUT2 functionality.
-    WriteAllAdcRegs(PCM1865_GPIO01_DIR,     0x04); // Set GPIO1 as an input. Set GPIO0 as an output (used for I2S DOUT2).
-    WriteAllAdcRegs(PCM1865_PGA_VAL_CH1_L,  0xFC);
-    WriteAllAdcRegs(PCM1865_PGA_VAL_CH1_R,  0xFC);
-    WriteAllAdcRegs(PCM1865_PGA_VAL_CH2_L,  0xFC);
-    WriteAllAdcRegs(PCM1865_PGA_VAL_CH2_R,  0xFC);
+        /* Set external I2C mux to CS2100 */
+        SetI2CMux(PCA9540B_CTRL_CHAN_1);
 
-    if(XUA_PCM_FORMAT == XUA_PCM_FORMAT_TDM)
-    {
-        /* Write offset such that ADC's do not drive against eachother */
-        result = i2c_reg_write(PCM1865_0_I2C_DEVICE_ADDR, PCM1865_TX_TDM_OFFSET, 1);
-        assert(result == I2C_REGOP_SUCCESS && msg("ADC I2C write reg failed"));
-        result = i2c_reg_write(PCM1865_1_I2C_DEVICE_ADDR, PCM1865_TX_TDM_OFFSET, 129);
-        assert(result == I2C_REGOP_SUCCESS && msg("ADC I2C write reg failed"));
-        
-        /* RX_WLEN:        24-bit (default)
-         * TDM_LRCLK_MODE: duty cycle of LRCLK is 1/256
-         * TX_WLEN:        32-bit
-         * FMT:            TDM/DSP
-         */
-        WriteAllAdcRegs(PCM1865_FMT, 0b01010011);
-        
-        /* TDM_OSEL:       4ch TDM 
-         */
-        WriteAllAdcRegs(PCM1865_TDM_OSEL, 0b00000001);
-    }
-
-    /*
-     * Setup DACs
-     */
-    /* There are 4 DAC's on the board at I2C addresses 0x4C, 0x4D, 0x4E & 0x4F */
-    if(XUA_PCM_FORMAT == XUA_PCM_FORMAT_TDM)
-    {
-        /* Note for TDM to work as expected for all DACs the jumpers marked "DAC I2S/TDM Config" need setting appropriately 
-         * I2S MODE: SET ALL 2-3
-         * TDM MODE: SET ALL 1-2, TDM SOURCE 3-4
-         */
-        for (int i = 0; i < 4; i++)
-        { 
-            /* Set Format to TDM/DSP & 24bit */
-            result = i2c_reg_write(0x4C+i, 40, 0b00010011);
-            assert(result == I2C_REGOP_SUCCESS && msg("DAC I2C write reg failed"));
-        
-            /* Set offset to appropriately for each DAC */
-            result = i2c_reg_write(0x4C+i, 41, 1 + (i * 64));
-            assert(result == I2C_REGOP_SUCCESS && msg("DAC I2C write reg failed"));
+        unsafe
+        {
+            /* Use external CS2100 to generate master clock */
+            PllInit(i_i2c_client);
         }
     }
     else
     {
-        // For basic I2S input we don't need any register setup. DACs will clock auto detect etc.
-        // It holds DAC in reset until it gets clocks anyway.
+        /* Use xCORE Secondary PLL to generate *fixed* master clock */
+        AppPllEnable_SampleRate(DEFAULT_FREQ);
     }
 
-#ifdef USE_FRACTIONAL_N
-    /* Set I2C mux back to CS2100 */
-    SetI2CMux(PCA9540B_CTRL_CHAN_1);
-#endif
+    /* Set external I2C mux to DACs/ADCs */
+    SetI2CMux(PCA9540B_CTRL_CHAN_0);
+    
+    /*
+     * Setup DACs
+     */
+    if(CODEC_MASTER)
+    {
+        if(XUA_PCM_FORMAT == XUA_PCM_FORMAT_I2S)
+        {
+            /* Write to all DACS */ 
+            for(int dacAddr = PCM5122_0_I2C_DEVICE_ADDR; dacAddr < (PCM5122_0_I2C_DEVICE_ADDR+4); dacAddr++)
+            unsafe{
+                /* Reset DAC state */
+                result = i2c_reg_write(dacAddr, 0x01, 0x11);
+
+                // Disable Auto Clock Configuration
+                result |= i2c_reg_write(dacAddr, 0x25, 0x72);
+
+                // PLL P divider to 2
+                result |= i2c_reg_write(dacAddr, 0x14, 0x01);
+                
+                // PLL J divider to 8
+                result |= i2c_reg_write(dacAddr, 0x15, 0x08);
+
+                // PLL D1 divider to 00
+                result |= i2c_reg_write(dacAddr, 0x16, 0x00);
+
+                // PLL D2 divider to 00
+                result |= i2c_reg_write(dacAddr, 0x17, 0x00);
+
+                // PLL R divider to 1
+                result |= i2c_reg_write(dacAddr, 0x18, 0x00); 
+
+                // NB: Overall PLL Multiplier is x4.
+                // miniDSP CLK divider (NMAC) to 2
+                result |= i2c_reg_write(dacAddr, 0x1B, 0x01); 
+
+                //DAC CLK divider to 16
+                result |= i2c_reg_write(dacAddr, 0x1C, 0x0F); 
+
+                // NCP CLK divider to 4
+                result |= i2c_reg_write(dacAddr, 0x1D, 0x03); 
+
+                // IDAC2
+                result |= i2c_reg_write(dacAddr, 0x24, 0x00); 
+                assert(result == I2C_REGOP_SUCCESS && msg("DAC I2C write reg y failed"));
+            }
+        }
+        else // TDM
+        {
+            assert(0);
+        }
+    }
+    else
+    {
+        /* There are 4 DAC's on the board at I2C addresses 0x4C, 0x4D, 0x4E & 0x4F */
+        if(XUA_PCM_FORMAT == XUA_PCM_FORMAT_I2S)
+        {
+            // For basic I2S input we don't need any register setup. DACs will clock auto detect etc.
+            // It holds DAC in reset until it gets clocks anyway.
+        }
+        else
+        {
+            /* Note for TDM to work as expected for all DACs the jumpers marked "DAC I2S/TDM Config" need setting appropriately 
+             * I2S MODE: SET ALL 2-3
+             * TDM MODE: SET ALL 1-2, TDM SOURCE 3-4
+             */
+            for (int i = 0; i < 4; i++)
+            { 
+                /* Set Format to TDM/DSP & 24bit */
+                result = i2c_reg_write(0x4C+i, 40, 0b00010011);
+                assert(result == I2C_REGOP_SUCCESS && msg("DAC I2C write reg 1 failed"));
+            
+                /* Set offset to appropriately for each DAC */
+                result = i2c_reg_write(0x4C+i, 41, 1 + (i * 64));
+                assert(result == I2C_REGOP_SUCCESS && msg("DAC I2C write reg 2 failed"));
+            }
+        }
+    }
 }
 
 /* Configures the external audio hardware for the required sample frequency */
 void AudioHwConfig(unsigned samFreq, unsigned mClk, unsigned dsdMode, unsigned sampRes_DAC, unsigned sampRes_ADC)
 {
-#ifdef USE_FRACTIONAL_N
-    PllMult(mClk, PLL_SYNC_FREQ, i_i2c_client);
-#else
-    AppPllEnable_SampleRate(samFreq);
-#endif
+    if (USE_FRACTIONAL_N)
+    {
+        SetI2CMux(PCA9540B_CTRL_CHAN_1);
+        PllMult(mClk, PLL_SYNC_FREQ, i_i2c_client);
+        SetI2CMux(PCA9540B_CTRL_CHAN_0);
+    }
+    else
+    {
+        AppPllEnable_SampleRate(samFreq);
+    }
+
+    /* Write to all DACS */
+    if(CODEC_MASTER)
+    { 
+        for(int dacAddr = PCM5122_0_I2C_DEVICE_ADDR; dacAddr < (PCM5122_0_I2C_DEVICE_ADDR+4); dacAddr++)
+        unsafe{
+    
+            i2c_regop_res_t result = I2C_REGOP_SUCCESS;
+            unsigned regVal;
+            
+            if((dacAddr == PCM5122_3_I2C_DEVICE_ADDR))
+            {
+                //OSR CLK divider is set to one (as its based on the output from the DAC CLK, which is already PLL/16)
+                switch(samFreq)
+                {
+                    case 44100:
+                    case 48000:
+                        regVal = 0x07;
+                        break;
+                    case 88200:
+                    case 96000:
+                        regVal = 0x03;
+                        break;
+                    case 176400:
+                    case 192000:
+                        regVal = 0x01;
+                        break;
+                    default:
+                        assert(0);
+                        break;
+                }
+                result |= i2c_reg_write(dacAddr, 0x1E, regVal); 
+
+                //# FS setting should be set based on sample rate
+                switch(samFreq)
+                {
+                    case 44100:
+                    case 48000:
+                        regVal = 0x00;
+                        break;
+                    case 88200:
+                    case 96000:
+                        regVal = 0x01;
+                        break;
+                    case 176400:
+                    case 192000:
+                        regVal = 0x02;
+                        break;
+                    default:
+                        assert(0);
+                        break;
+                }
+                result |= i2c_reg_write(dacAddr, 0x22, regVal); 
+
+                //IDAC1  sets the number of miniDSP instructions per clock.
+                switch(samFreq)
+                {
+                    case 44100:
+                    case 48000:
+                        regVal = 0x04;
+                        break;
+                    case 88200:
+                    case 96000:
+                        regVal = 0x02;
+                        break;
+                    case 176400:
+                    case 192000:
+                        regVal = 0x01;
+                        break;
+                    default:
+                        assert(0);
+                        break;
+                }
+                result |= i2c_reg_write(dacAddr, 0x23, regVal); 
+
+                /* Master mode setting */
+                // BCK, LRCK output
+                result |= i2c_reg_write(dacAddr, 0x09, 0x11); 
+
+                // Master mode BCK divider setting (making 64fs)
+                switch(samFreq)
+                {
+                    case 44100:
+                    case 48000:
+                        regVal = 0x07;
+                        break;
+                    case 88200:
+                    case 96000:
+                        regVal = 0x03;
+                        break;
+                    case 176400:
+                    case 192000:
+                        regVal = 0x01;
+                        break;
+                    default:
+                        assert(0);
+                        break;
+                }
+                result |= i2c_reg_write(dacAddr, 0x20, regVal); 
+
+                // Master mode LRCK divider setting (divide BCK by a further 64 to make 1fs)
+                result |= i2c_reg_write(dacAddr, 0x21, 0x3f); 
+
+                // Master mode BCK, LRCK divider reset release
+                result |= i2c_reg_write(dacAddr, 0x0C, 0x3f); 
+            }
+
+            // Stand-by request
+            result |= i2c_reg_write(dacAddr, 0x02, 0x10); 
+            // Stand-by release
+            result |= i2c_reg_write(dacAddr, 0x02, 0x00); 
+
+            assert(result == I2C_REGOP_SUCCESS && msg("DAC I2C write reg x failed"));
+        }
+    }
 }
 

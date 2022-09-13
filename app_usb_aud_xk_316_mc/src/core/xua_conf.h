@@ -53,20 +53,24 @@
 #define MIDI 		       (0)
 #endif
 
-/* Enable/Disable SPDIF output - Default is S/PDIF off */
+/* Enable/Disable S/PDIF output - Default is S/PDIF off */
 #ifndef XUA_SPDIF_TX_EN
 #define XUA_SPDIF_TX_EN	   (0)
 #endif
 
-/* Defines relating to channel count and channel arrangement (Set to 0 for disable) */
-//:audio_defs
-/* Number of USB streaming channels - Default is 4 in 4 out */
-#ifndef NUM_USB_CHAN_IN
-#define NUM_USB_CHAN_IN    (10)         /* Device to Host */
+/* Enable/Disable S/PDIF input - Default is S/PDIF off */
+#ifndef XUA_SPDIF_RX_EN
+#define XUA_SPDIF_RX_EN	   (0)
 #endif
 
-#ifndef NUM_USB_CHAN_OUT
-#define NUM_USB_CHAN_OUT   (10)         /* Host to Device */
+/* Enable/Disable ADAT output - Default is ADAT off */
+#ifndef XUA_ADAT_TX_EN
+#define XUA_ADAT_TX_EN	   (0)
+#endif
+
+/* Enable/Disable ADAT input - Default is ADAT off */
+#ifndef XUA_SPDIF_RX_EN
+#define XUA_ADAT_RX_EN	   (0)
 #endif
 
 /* Number of IS2 chans to DAC..*/
@@ -137,6 +141,43 @@
 #ifndef HID_CONTROLS
 #define HID_CONTROLS       (0)
 #endif
+
+/* Calculate channel counts based on features */
+#if (XUA_SPDIF_TX_EN)
+#define SPDIF_TX_CHANS     (2)
+#else
+#define SPDIF_TX_CHANS     (0)
+#endif
+
+#if (XUA_SPDIF_RX_EN)
+#define SPDIF_RX_CHANS     (2)
+#else
+#define SPDIF_RX_CHANS     (0)
+#endif
+
+#if (XUA_ADAT_TX_EN)
+#define ADAT_TX_CHANS      (8)
+#else
+#define ADAT_TX_CHANS      (0)
+#endif
+
+#if (XUA_ADAT_RX_EN)
+#define ADAT_RX_CHANS      (8)
+#else
+#define ADAT_RX_CHANS      (0)
+#endif
+
+/* Defines relating to channel count and channel arrangement (Set to 0 for disable) */
+//:audio_defs
+/* Number of USB streaming channels - Default is 8 in 8 out */
+#ifndef NUM_USB_CHAN_IN
+#define NUM_USB_CHAN_IN    (I2S_CHANS_ADC + SPDIF_RX_CHANS + ADAT_RX_CHANS)         /* Device to Host */
+#endif
+
+#ifndef NUM_USB_CHAN_OUT
+#define NUM_USB_CHAN_OUT   (I2S_CHANS_ADC + SPDIF_TX_CHANS + ADAT_TX_CHANS)         /* Host to Device */
+#endif
+
 
 #include "user_main.h"
 

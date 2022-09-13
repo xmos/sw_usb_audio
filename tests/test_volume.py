@@ -45,8 +45,8 @@ num_chans = {
 volume_input_configs = [
     # smoke level tests
     *mark_tests(pytest.mark.smoke, [
-        *[('xk_216_mc',    '2Ai10o10xxxxxx',        96000, ch) for ch in ['m', *range(8)]],
-        *[('xk_316_mc',    '2AMi10o10xxxxxx',       96000, ch) for ch in ['m', *range(8)]],
+        *[('xk_216_mc',    '2Ai8o8xxxxxx',          96000, ch) for ch in ['m', *range(8)]],
+        *[('xk_316_mc',    '2AMi8o8xxxxxx',         96000, ch) for ch in ['m', *range(8)]],
         *[('xk_evk_xu316', '2i2o2',                 48000, ch) for ch in ['m', *range(2)]]
     ]),
 
@@ -54,9 +54,9 @@ volume_input_configs = [
     *mark_tests(pytest.mark.nightly, [
         *[('xk_216_mc',    '2Ai8o8xxxxx_tdm8',      48000, ch) for ch in ['m', *range(8)]],
         *[('xk_216_mc',    '2Ai10o10msxxxx',       192000, ch) for ch in ['m', *range(8)]],
-        *[('xk_316_mc',    '2AMi10o10xxxxxx',       48000, ch) for ch in ['m', *range(8)]],
-        *[('xk_316_mc',    '2AMi10o10xsxxxx',      192000, ch) for ch in ['m', *range(8)]],
-        *[('xk_316_mc',    '2Si10o10xxxxxx',        88200, ch) for ch in ['m', *range(8)]],
+        *[('xk_316_mc',    '2AMi8o8xxxxxx',         48000, ch) for ch in ['m', *range(8)]],
+        *[('xk_316_mc',    '2AMi10o8xsxxxx',       192000, ch) for ch in ['m', *range(8)]],
+        *[('xk_316_mc',    '2Si8o8xxxxxx',          88200, ch) for ch in ['m', *range(8)]],
         *[('xk_evk_xu316', '2i2o2',                 44100, ch) for ch in ['m', *range(2)]],
         *[('xk_evk_xu316', '2i2o2',                 96000, ch) for ch in ['m', *range(2)]]
     ]),
@@ -66,9 +66,9 @@ volume_input_configs = [
         *[('xk_216_mc',    '2Ai10o10xsxxxx_mix8',   44100, ch) for ch in ['m', *range(8)]],
         *[('xk_216_mc',    '2Ai10o10xssxxx',       176400, ch) for ch in ['m', *range(8)]],
         *[('xk_216_mc',    '2Si10o10xxxxxx',       192000, ch) for ch in ['m', *range(8)]],
-        *[('xk_316_mc',    '2AMi10o10xxxxxx',       44100, ch) for ch in ['m', *range(8)]],
-        *[('xk_316_mc',    '2AMi10o10xsxxxx',      176400, ch) for ch in ['m', *range(8)]],
-        *[('xk_316_mc',    '2SMi10o10xxxxxx',       96000, ch) for ch in ['m', *range(8)]],
+        *[('xk_316_mc',    '2AMi8o8xxxxxx',         44100, ch) for ch in ['m', *range(8)]],
+        *[('xk_316_mc',    '2AMi10o8xsxxxx',       176400, ch) for ch in ['m', *range(8)]],
+        *[('xk_316_mc',    '2SMi8o8xxxxxx',         96000, ch) for ch in ['m', *range(8)]],
         *[('xk_evk_xu316', '2i2o2',                 88200, ch) for ch in ['m', *range(2)]],
         *[('xk_evk_xu316', '2i2o2',                176400, ch) for ch in ['m', *range(2)]],
         *[('xk_evk_xu316', '2i2o2',                192000, ch) for ch in ['m', *range(2)]]
@@ -133,7 +133,7 @@ volume_output_configs = [
     # smoke level tests
     *mark_tests(pytest.mark.smoke, [
         *[('xk_216_mc',    '2Ai10o10xxxxxx',        96000, ch) for ch in ['m', *range(8)]],
-        *[('xk_316_mc',    '2Ai10o10xxxxxx',        96000, ch) for ch in ['m', *range(8)]],
+        *[('xk_316_mc',    '2Ai8o8xxxxxx',          96000, ch) for ch in ['m', *range(8)]],
         *[('xk_evk_xu316', '2i2o2',                 48000, ch) for ch in ['m', *range(2)]]
     ]),
 
@@ -141,9 +141,9 @@ volume_output_configs = [
     *mark_tests(pytest.mark.nightly, [
         *[('xk_216_mc',    '2Ai8o8xxxxx_tdm8',      48000, ch) for ch in ['m', *range(8)]],
         *[('xk_216_mc',    '2Ai10o10msxxxx',       192000, ch) for ch in ['m', *range(8)]],
-        *[('xk_316_mc',    '2Ai10o10xxxxxx',        48000, ch) for ch in ['m', *range(8)]],
-        *[('xk_316_mc',    '2Ai10o10xsxxxx',       192000, ch) for ch in ['m', *range(8)]],
-        *[('xk_316_mc',    '2Si10o10xxxxxx',        88200, ch) for ch in ['m', *range(8)]],
+        *[('xk_316_mc',    '2Ai8o8xxxxxx',          48000, ch) for ch in ['m', *range(8)]],
+        *[('xk_316_mc',    '2Ai10o8xsxxxx',        192000, ch) for ch in ['m', *range(8)]],
+        *[('xk_316_mc',    '2Si8o8xxxxxx',          88200, ch) for ch in ['m', *range(8)]],
         *[('xk_evk_xu316', '2i2o2',                 44100, ch) for ch in ['m', *range(2)]],
         *[('xk_evk_xu316', '2i2o2',                 96000, ch) for ch in ['m', *range(2)]]
     ]),
@@ -152,9 +152,9 @@ volume_output_configs = [
     *mark_tests(pytest.mark.weekend, [
         *[('xk_216_mc',    '2Ai10o10xsxxxx_mix8',   44100, ch) for ch in ['m', *range(8)]],
         *[('xk_216_mc',    '2Ai10o10xssxxx',       176400, ch) for ch in ['m', *range(8)]],
-        *[('xk_316_mc',    '2Ai10o10xxxxxx',        44100, ch) for ch in ['m', *range(8)]],
-        *[('xk_316_mc',    '2Ai10o10xsxxxx',       176400, ch) for ch in ['m', *range(8)]],
-        *[('xk_316_mc',    '2Si10o10xxxxxx',        96000, ch) for ch in ['m', *range(8)]],
+        *[('xk_316_mc',    '2Ai8o8xxxxxx',          44100, ch) for ch in ['m', *range(8)]],
+        *[('xk_316_mc',    '2Ai10o8xsxxxx',        176400, ch) for ch in ['m', *range(8)]],
+        *[('xk_316_mc',    '2Si8o8xxxxxx',          96000, ch) for ch in ['m', *range(8)]],
         *[('xk_evk_xu316', '2i2o2',                 88200, ch) for ch in ['m', *range(2)]],
         *[('xk_evk_xu316', '2i2o2',                176400, ch) for ch in ['m', *range(2)]],
         *[('xk_evk_xu316', '2i2o2',                192000, ch) for ch in ['m', *range(2)]]

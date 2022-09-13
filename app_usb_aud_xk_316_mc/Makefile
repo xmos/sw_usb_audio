@@ -35,19 +35,18 @@ USED_MODULES = lib_xua lib_xud lib_spdif lib_i2c lib_adat
 # Asynchronous Mode Configs
 #
 # Audio Class 2, Async, I2S Master, 8xInput, 8xOutput
-XCC_FLAGS_2AMi10o10xxxxxx = $(BUILD_FLAGS)
-INCLUDE_ONLY_IN_2AMi10o10xxxxxx = 
+XCC_FLAGS_2AMi8o8xxxxxx = $(BUILD_FLAGS)
+INCLUDE_ONLY_IN_2AMi8o8xxxxxx = 
 
 # Audio Class 2, Async, I2S Slave, 8xInput, 8xOutput
-XCC_FLAGS_2ASi8o8xsxxx = $(BUILD_FLAGS)
-INCLUDE_ONLY_IN_2ASi8o8xxsxxx =
+XCC_FLAGS_2ASi8o8xxxxxx = $(BUILD_FLAGS)		-DCODEC_MASTER=1
+INCLUDE_ONLY_IN_2ASi8o8xxxxxx =
 
-
-# Audio Class 2, Async, I2S Master, 10xInput, 10xOutput, TDM
+# Audio Class 2, Async, I2S Master, 8xInput, 8xOutput, TDM
 # TODO can run at 192kHz when AppPLL settings for 49MHz added
-XCC_FLAGS_2AMi10o10xxxxxx_tdm8 = $(BUILD_FLAGS)	-DXUA_PCM_FORMAT=XUA_PCM_FORMAT_TDM \
+XCC_FLAGS_2AMi8o8xxxxxx_tdm8 = $(BUILD_FLAGS)	-DXUA_PCM_FORMAT=XUA_PCM_FORMAT_TDM \
 												-DMAX_FREQ=96000
-INCLUDE_ONLY_IN_2AMi10o10xxxxxx_tdm8 = 
+INCLUDE_ONLY_IN_2AMi8o8xxxxxx_tdm8 = 
 
 # Audio Class 2, Async, I2S Master, 32xInput, 32xOutput, TDM
 XCC_FLAGS_2AMi32o32xxxxxx_tdm8 = $(BUILD_FLAGS)	-DXUA_PCM_FORMAT=XUA_PCM_FORMAT_TDM \
@@ -59,9 +58,9 @@ XCC_FLAGS_2AMi32o32xxxxxx_tdm8 = $(BUILD_FLAGS)	-DXUA_PCM_FORMAT=XUA_PCM_FORMAT_
 INCLUDE_ONLY_IN_2AMi32o32xxxxxx_tdm8 = 
 
 
-# Audio Class 2, Async, I2S Master, 10xInput, 10xOutput, S/PDIF Tx
-XCC_FLAGS_2AMi10o10xxsxxx = $(BUILD_FLAGS)		-DXUA_SPDIF_TX_EN=1
-INCLUDE_ONLY_IN_2AMi10o10xxsxxx =
+# Audio Class 2, Async, I2S Master, 8xInput, 10xOutput, S/PDIF Tx
+XCC_FLAGS_2AMi8o10xxsxxx = $(BUILD_FLAGS)		-DXUA_SPDIF_TX_EN=1
+INCLUDE_ONLY_IN_2AMi8o10xxsxxx =
 
 # Audio Class 1, Async, I2S Master, 2xInput, 2xOutput
 XCC_FLAGS_1AMi2o2xxxxxx = $(BUILD_FLAGS) 		-DAUDIO_CLASS=1 \
@@ -69,25 +68,31 @@ XCC_FLAGS_1AMi2o2xxxxxx = $(BUILD_FLAGS) 		-DAUDIO_CLASS=1 \
 												-DNUM_USB_CHAN_OUT=2
 INCLUDE_ONLY_IN_1AMi2o2xxxxxx =
 
-# Audio Class 2, Async, I2S Master, 10xInput, 10xOutput, MIDI
-XCC_FLAGS_2AMi10o10mxxxxx = $(BUILD_FLAGS)		-DMIDI=1
-INCLUDE_ONLY_IN_2AMi10o10mxxxxx =
+# Audio Class 2, Async, I2S Master, 8xInput, 8xOutput, MIDI
+XCC_FLAGS_2AMi8o8mxxxxx = $(BUILD_FLAGS)		-DMIDI=1
+INCLUDE_ONLY_IN_2AMi8o8mxxxxx =
 
 # Audio Class 2, Async, I2S Master, 10xInput, 10xOutput, S/PDIF Tx, S/PDIF Rx
 XCC_FLAGS_2AMi10o10xssxxx = $(BUILD_FLAGS)		-DXUA_SPDIF_TX_EN=1 \
 						   						-DXUA_SPDIF_RX_EN=1
 INCLUDE_ONLY_IN_2AMi10o10xssxxx =
 
-# Audio Class 2, Async, I2S Master, 10xInput, 10xOutput, S/PDIF Rx
-XCC_FLAGS_2AMi10o10xsxxxx = $(BUILD_FLAGS) 		-DXUA_SPDIF_RX_EN=1
-INCLUDE_ONLY_IN_2AMi10o10xsxxxx =
+# Audio Class 2, Async, I2S Slave, 10xInput, 10xOutput, S/PDIF Tx, S/PDIF Rx
+XCC_FLAGS_2ASi10o10xssxxx = $(BUILD_FLAGS)		-DXUA_SPDIF_TX_EN=1 \
+						   						-DXUA_SPDIF_RX_EN=1 \
+												-DCODEC_MASTER=1
+INCLUDE_ONLY_IN_2ASi10o10xssxxx =
 
-# Audio Class 2, Async, I2S Master, 10xInput, 10xOutput, ADAT Rx
-XCC_FLAGS_2AMi16o8xxxaxx = $(BUILD_FLAGS) 		-DXUA_ADAT_RX_EN=1 -DNUM_USB_CHAN_IN=16 -DNUM_USB_CHAN_OUT=8
+# Audio Class 2, Async, I2S Master, 10xInput, 8xOutput, S/PDIF Rx
+XCC_FLAGS_2AMi10o8xsxxxx = $(BUILD_FLAGS) 		-DXUA_SPDIF_RX_EN=1
+INCLUDE_ONLY_IN_2AMi10o8xsxxxx =
+
+# Audio Class 2, Async, I2S Master, 16xInput, 8xOutput, ADAT Rx
+XCC_FLAGS_2AMi16o8xxxaxx = $(BUILD_FLAGS) 		-DXUA_ADAT_RX_EN=1
 INCLUDE_ONLY_IN_2AMi16o8xxxaxx =
 
-# Audio Class 2, 10xInput, 10xOutput, ADAT Tx
-XCC_FLAGS_2AMi8o16xxxxax = $(BUILD_FLAGS) 		-DXUA_ADAT_TX_EN=1 -DNUM_USB_CHAN_IN=8 -DNUM_USB_CHAN_OUT=16
+# Audio Class 2, Async, I2S master, 8xInput, 16xOutput, ADAT Tx
+XCC_FLAGS_2AMi8o16xxxxax = $(BUILD_FLAGS) 		-DXUA_ADAT_TX_EN=1
 INCLUDE_ONLY_IN_2AMi8o16xxxxax =
 
 #

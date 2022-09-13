@@ -27,11 +27,12 @@ analogue_input_configs = [
         ('xk_216_mc', '2Ai10o10xssxxx',         192000, 10, "mc_analogue_input_8ch.json"),
         ('xk_216_mc', '2Si10o10xxxxxx',         192000, 10, "mc_analogue_input_8ch.json"),
         ('xk_316_mc', '1AMi2o2xxxxxx',           48000, 10, "mc_analogue_input_2ch.json"),
-        ('xk_316_mc', '2AMi10o10xxxxxx',         96000, 10, "mc_analogue_input_8ch.json"),
-        ('xk_316_mc', '2AMi10o10xsxxxx',        192000, 10, "mc_analogue_input_8ch.json"),
-        ('xk_316_mc', '2SMi10o10xxxxxx',        192000, 10, "mc_analogue_input_8ch.json"),
+        ('xk_316_mc', '2AMi8o8xxxxxx',           96000, 10, "mc_analogue_input_8ch.json"),
+        ('xk_316_mc', '2AMi10o8xsxxxx',         192000, 10, "mc_analogue_input_8ch.json"),
+        ('xk_316_mc', '2SMi8o8xxxxxx',          192000, 10, "mc_analogue_input_8ch.json"),
+        ('xk_316_mc', '2SSi8o8xxxxxx',          192000, 10, "mc_analogue_input_8ch.json"),
         ('xk_evk_xu316', '1i2o2',                48000, 10, "mc_analogue_input_2ch.json"),
-        ('xk_evk_xu316', '2i2o2',                48000, 10, "mc_analogue_input_2ch.json")
+        ('xk_evk_xu316', '2i2o2',                48000, 10, "mc_analogue_input_2ch.json"),
     ]),
 
     # nightly level tests
@@ -50,11 +51,12 @@ analogue_input_configs = [
         ('xk_216_mc', '2Si10o10xxxxxx',          192000, 600, "mc_analogue_input_8ch.json"),
         ('xk_316_mc', '1AMi2o2xxxxxx',            44100, 600, "mc_analogue_input_2ch.json"),
         ('xk_316_mc', '1SMi2o2xxxxxx',            48000, 600, "mc_analogue_input_2ch.json"),
-        ('xk_316_mc', '2AMi10o10xxxxxx',         192000, 600, "mc_analogue_input_8ch.json"),
-        ('xk_316_mc', '2AMi10o10xsxxxx',          48000, 600, "mc_analogue_input_8ch.json"),
+        ('xk_316_mc', '2AMi8o8xxxxxx',           192000, 600, "mc_analogue_input_8ch.json"),
+        ('xk_316_mc', '2AMi10o8xsxxxx',           48000, 600, "mc_analogue_input_8ch.json"),
+        ('xk_316_mc', '2ASi8o8xxxxxx',           192000, 600, "mc_analogue_input_8ch.json"),
         ('xk_evk_xu316',  '1i2o2',                44100, 600, "mc_analogue_input_2ch.json"),
         ('xk_evk_xu316',  '2i2o2',                44100, 600, "mc_analogue_input_2ch.json"),
-        ('xk_evk_xu316',  '2i2o2',               192000, 600, "mc_analogue_input_2ch.json")
+        ('xk_evk_xu316',  '2i2o2',               192000, 600, "mc_analogue_input_2ch.json"),
     ]),
 
     # weekend level tests
@@ -102,18 +104,19 @@ analogue_input_configs = [
         ('xk_316_mc', '1AMi2o2xxxxxx',            48000, 1800, "mc_analogue_input_2ch.json"),
         ('xk_316_mc', '1SMi2o2xxxxxx',            44100, 1800, "mc_analogue_input_2ch.json"),
         ('xk_316_mc', '1SMi2o2xxxxxx',            48000, 1800, "mc_analogue_input_2ch.json"),
-        ('xk_316_mc', '2AMi10o10xxxxxx',         176400, 1800, "mc_analogue_input_8ch.json"),
-        ('xk_316_mc', '2AMi10o10xxxxxx',         192000, 1800, "mc_analogue_input_8ch.json"),
-        ('xk_316_mc', '2AMi10o10xsxxxx',          88200, 1800, "mc_analogue_input_8ch.json"),
-        ('xk_316_mc', '2AMi10o10xsxxxx',          96000, 1800, "mc_analogue_input_8ch.json"),
-        ('xk_316_mc', '2SMi10o10xxxxxx',          44100, 1800, "mc_analogue_input_8ch.json"),
-        ('xk_316_mc', '2SMi10o10xxxxxx',          96000, 1800, "mc_analogue_input_8ch.json"),
+        ('xk_316_mc', '2AMi8o8xxxxxx',           176400, 1800, "mc_analogue_input_8ch.json"),
+        ('xk_316_mc', '2AMi8o8xxxxxx',           192000, 1800, "mc_analogue_input_8ch.json"),
+        ('xk_316_mc', '2AMi10o8xsxxxx',           88200, 1800, "mc_analogue_input_8ch.json"),
+        ('xk_316_mc', '2AMi10o8xsxxxx',           96000, 1800, "mc_analogue_input_8ch.json"),
+        ('xk_316_mc', '2SMi8o8xxxxxx',            44100, 1800, "mc_analogue_input_8ch.json"),
+        ('xk_316_mc', '2SMi8o8xxxxxx',            96000, 1800, "mc_analogue_input_8ch.json"),
+        ('xk_316_mc', '2SSi8o8xxxxxx',           192000, 1800, "mc_analogue_input_8ch.json"),
         ('xk_evk_xu316', '1i2o2',                 44100, 1800, "mc_analogue_input_2ch.json"),
         ('xk_evk_xu316', '1i2o2',                 48000, 1800, "mc_analogue_input_2ch.json"),
         ('xk_evk_xu316', '2i2o2',                 44100, 1800, "mc_analogue_input_2ch.json"),
         ('xk_evk_xu316', '2i2o2',                 88200, 1800, "mc_analogue_input_2ch.json"),
         ('xk_evk_xu316', '2i2o2',                 96000, 1800, "mc_analogue_input_2ch.json"),
-        ('xk_evk_xu316', '2i2o2',                176400, 1800, "mc_analogue_input_2ch.json")
+        ('xk_evk_xu316', '2i2o2',                176400, 1800, "mc_analogue_input_2ch.json"),
     ])
 ]
 
@@ -164,10 +167,11 @@ analogue_output_configs = [
         ('xk_216_mc', '2Ai10o10xssxxx',         192000, 10, "mc_analogue_output_8ch.json"),
         ('xk_316_mc', '1AMi2o2xxxxxx',           48000, 10, "mc_analogue_output_2ch.json"),
         ('xk_316_mc', '2AMi10o10xxxxxx',         96000, 10, "mc_analogue_output_8ch.json"),
-        ('xk_316_mc', '2AMi10o10xsxxxx',        192000, 10, "mc_analogue_output_8ch.json"),
-        ('xk_316_mc', '2SMi10o10xxxxxx',        192000, 10, "mc_analogue_output_8ch.json"),
+        ('xk_316_mc', '2AMi10o8xsxxxx',         192000, 10, "mc_analogue_output_8ch.json"),
+        ('xk_316_mc', '2SMi8o8xxxxxx',          192000, 10, "mc_analogue_output_8ch.json"),
+        ('xk_316_mc', '2ASi8o8xxxxxx',          192000, 10, "mc_analogue_output_8ch.json"),
         ('xk_evk_xu316', '1i2o2',                48000, 10, "mc_analogue_output_2ch.json"),
-        ('xk_evk_xu316', '2i2o2',                48000, 10, "mc_analogue_output_2ch.json")
+        ('xk_evk_xu316', '2i2o2',                48000, 10, "mc_analogue_output_2ch.json"),
     ]),
 
     # nightly level tests
@@ -183,11 +187,12 @@ analogue_output_configs = [
         ('xk_216_mc', '2Ai10o10xssxxx',          48000, 600, "mc_analogue_output_8ch.json"),
         ('xk_316_mc', '1AMi2o2xxxxxx',           44100, 600, "mc_analogue_output_2ch.json"),
         ('xk_316_mc', '1SMi2o2xxxxxx',           48000, 600, "mc_analogue_output_2ch.json"),
-        ('xk_316_mc', '2AMi10o10xxxxxx',        192000, 600, "mc_analogue_output_8ch.json"),
-        ('xk_316_mc', '2AMi10o10xsxxxx',         48000, 600, "mc_analogue_output_8ch.json"),
+        ('xk_316_mc', '2AMi8o8xxxxxx',          192000, 600, "mc_analogue_output_8ch.json"),
+        ('xk_316_mc', '2AMi10o8xsxxxx',          48000, 600, "mc_analogue_output_8ch.json"),
+        ('xk_316_mc', '2ASi8o8xxxxxx',          192000, 600, "mc_analogue_output_8ch.json"),
         ('xk_evk_xu316', '1i2o2',                44100, 600, "mc_analogue_output_2ch.json"),
         ('xk_evk_xu316', '2i2o2',                44100, 600, "mc_analogue_output_2ch.json"),
-        ('xk_evk_xu316', '2i2o2',               192000, 600, "mc_analogue_output_2ch.json")
+        ('xk_evk_xu316', '2i2o2',               192000, 600, "mc_analogue_output_2ch.json"),
     ]),
 
     # weekend level tests
@@ -227,17 +232,18 @@ analogue_output_configs = [
         ('xk_316_mc', '1SMi2o2xxxxxx',           44100, 1800, "mc_analogue_output_2ch.json"),
         ('xk_316_mc', '1SMi2o2xxxxxx',           48000, 1800, "mc_analogue_output_2ch.json"),
         ('xk_316_mc', '2AMi10o10xxxxxx',        176400, 1800, "mc_analogue_output_8ch.json"),
-        ('xk_316_mc', '2AMi10o10xxxxxx',        192000, 1800, "mc_analogue_output_8ch.json"),
-        ('xk_316_mc', '2AMi10o10xsxxxx',         88200, 1800, "mc_analogue_output_8ch.json"),
-        ('xk_316_mc', '2AMi10o10xsxxxx',         96000, 1800, "mc_analogue_output_8ch.json"),
-        ('xk_316_mc', '2SMi10o10xxxxxx',         44100, 1800, "mc_analogue_output_8ch.json"),
-        ('xk_316_mc', '2SMi10o10xxxxxx',         96000, 1800, "mc_analogue_output_8ch.json"),
+        ('xk_316_mc', '2AMi8o8xxxxxx',          192000, 1800, "mc_analogue_output_8ch.json"),
+        ('xk_316_mc', '2AMi8o8xsxxxx',           88200, 1800, "mc_analogue_output_8ch.json"),
+        ('xk_316_mc', '2AMi8o8xsxxxx',           96000, 1800, "mc_analogue_output_8ch.json"),
+        ('xk_316_mc', '2SMi8o8xxxxxx',           44100, 1800, "mc_analogue_output_8ch.json"),
+        ('xk_316_mc', '2SMi8o8xxxxxx',           96000, 1800, "mc_analogue_output_8ch.json"),
+        ('xk_316_mc', '2ASi8o8xxxxxx',          192000, 1800, "mc_analogue_output_8ch.json"),
         ('xk_evk_xu316', '1i2o2',                44100, 1800, "mc_analogue_output_2ch.json"),
         ('xk_evk_xu316', '1i2o2',                48000, 1800, "mc_analogue_output_2ch.json"),
         ('xk_evk_xu316', '2i2o2',                44100, 1800, "mc_analogue_output_2ch.json"),
         ('xk_evk_xu316', '2i2o2',                88200, 1800, "mc_analogue_output_2ch.json"),
         ('xk_evk_xu316', '2i2o2',                96000, 1800, "mc_analogue_output_2ch.json"),
-        ('xk_evk_xu316', '2i2o2',               176400, 1800, "mc_analogue_output_2ch.json")
+        ('xk_evk_xu316', '2i2o2',               176400, 1800, "mc_analogue_output_2ch.json"),
     ])
 ]
 
