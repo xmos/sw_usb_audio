@@ -117,11 +117,13 @@ pipeline {
                     }
                   }
                 }
-                archiveArtifacts artifacts: "pytest-result.xml", fingerprint: true, allowEmptyArchive: true
               }
             }
           }
           post {
+            always {
+              archiveArtifacts artifacts: "pytest-result.xml", fingerprint: true, allowEmptyArchive: true
+            }
             cleanup {
               xcoreCleanSandbox()
             }
