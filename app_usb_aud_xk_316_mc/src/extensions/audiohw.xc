@@ -125,6 +125,7 @@ uint8_t i2c_reg_read(uint8_t device_addr, uint8_t reg, i2c_regop_res_t &result)
 #define PCM1865_1_I2C_DEVICE_ADDR   (0x4B)
 
 // PCM1865 (4-channel audio ADC) Register Addresses
+#define PCM1865_RESET               (0x00)
 #define PCM1865_PGA_VAL_CH1_L       (0x01)
 #define PCM1865_PGA_VAL_CH1_R       (0x02)
 #define PCM1865_PGA_VAL_CH2_L       (0x03)
@@ -206,51 +207,71 @@ void AudioHwInit()
     /* Set external I2C mux to DACs/ADCs */
     SetI2CMux(PCA9540B_CTRL_CHAN_0);
 
+    /* Reset DAC state */
+    for(int dacAddr = PCM5122_0_I2C_DEVICE_ADDR; dacAddr < (PCM5122_0_I2C_DEVICE_ADDR+4); dacAddr++)
+    unsafe{
+        result = i2c_reg_write(dacAddr, 0x01, 0x11);
+        assert(result == I2C_REGOP_SUCCESS && msg("DAC I2C write reg failed"));
+    }
+
     /*
      * Setup ADCs
      */
-    /* Setup is ADC is I2S slave, MCLK slave, I2S_DOUT2 on GPIO0. ADC sets up clocking automatically based on applied input clocks.*/
+    /* Setup is ADC is I2S slave, MCLK slave, I2S_DOUT2 on GPIO0. ADC sets up clocking automatically based on applied input clocks */
+    WriteAllAdcRegs(PCM1865_RESET,          0xFE); // Reset registers */
     WriteAllAdcRegs(PCM1865_ADC2_IP_SEL_L,  0x42); // Set ADC2 Left input to come from VINL2[SE] input.
     WriteAllAdcRegs(PCM1865_ADC2_IP_SEL_R,  0x42); // Set ADC2 Right input to come from VINR2[SE] input.
-    WriteAllAdcRegs(PCM1865_GPIO01_FUN,     0x05); // Set GPIO1 as normal polarity, GPIO1 functionality. Set GPIO0 as normal polarity, DOUT2 functionality.
-    WriteAllAdcRegs(PCM1865_GPIO01_DIR,     0x04); // Set GPIO1 as an input. Set GPIO0 as an output (used for I2S DOUT2).
     WriteAllAdcRegs(PCM1865_PGA_VAL_CH1_L,  0xFC);
     WriteAllAdcRegs(PCM1865_PGA_VAL_CH1_R,  0xFC);
     WriteAllAdcRegs(PCM1865_PGA_VAL_CH2_L,  0xFC);
     WriteAllAdcRegs(PCM1865_PGA_VAL_CH2_R,  0xFC);
 
-    if(XUA_PCM_FORMAT == XUA_PCM_FORMAT_TDM)
+    if (XUA_PCM_FORMAT == XUA_PCM_FORMAT_I2S)
+    {   /* Only enable DOUT2 in I2S mode. In TDM mode it doesn't really make sense, wastes power (and data sheet states "not available") */
+        WriteAllAdcRegs(PCM1865_GPIO01_FUN,     0x05); // Set GPIO1 as normal polarity, GPIO1 functionality. Set GPIO0 as normal polarity, DOUT2 functionality.
+        WriteAllAdcRegs(PCM1865_GPIO01_DIR,     0x04); // Set GPIO1 as an input. Set GPIO0 as an output (used for I2S DOUT2).
+    }
+    else
     {
         /* Write offset such that ADC's do not drive against eachother */
         result = i2c_reg_write(PCM1865_0_I2C_DEVICE_ADDR, PCM1865_TX_TDM_OFFSET, 1);
         assert(result == I2C_REGOP_SUCCESS && msg("ADC I2C write reg failed"));
         result = i2c_reg_write(PCM1865_1_I2C_DEVICE_ADDR, PCM1865_TX_TDM_OFFSET, 129);
         assert(result == I2C_REGOP_SUCCESS && msg("ADC I2C write reg failed"));
-        
-        /* RX_WLEN:        24-bit (default)
-         * TDM_LRCLK_MODE: duty cycle of LRCLK is 1/256
-         * TX_WLEN:        32-bit
-         * FMT:            TDM/DSP
-         */
-        WriteAllAdcRegs(PCM1865_FMT, 0b01010011);
+       
+        if(CODEC_MASTER)
+        {  
+            /* PCM5122 drives a 1/2 duty cycle LRCLK for TDM */ 
+            /* RX_WLEN:        24-bit (default)
+             * TDM_LRCLK_MODE: duty cycle of LRCLK is 1/2
+             * TX_WLEN:        32-bit
+             * FMT:            TDM/DSP
+             */
+            WriteAllAdcRegs(PCM1865_FMT, 0b01000011);
+        }
+        else
+        {
+            /* xCORE drives 1/256 duty cycle LRCLK for TDM */
+            /* RX_WLEN:        24-bit (default)
+             * TDM_LRCLK_MODE: duty cycle of LRCLK is 1/256
+             * TX_WLEN:        32-bit
+             * FMT:            TDM/DSP
+             */
+            WriteAllAdcRegs(PCM1865_FMT, 0b01010011);
+        }
         
         /* TDM_OSEL:       4ch TDM 
          */
         WriteAllAdcRegs(PCM1865_TDM_OSEL, 0b00000001);
     }
-    
+
     /* 
      * Setup DACs
      */
-    for(int dacAddr = PCM5122_0_I2C_DEVICE_ADDR; dacAddr < (PCM5122_0_I2C_DEVICE_ADDR+4); dacAddr++)
-    unsafe{
-        /* Reset DAC state */
-        result = i2c_reg_write(dacAddr, 0x01, 0x11);
-        assert(result == I2C_REGOP_SUCCESS && msg("DAC I2C write reg failed"));
-    }
-
     if(CODEC_MASTER)
     {
+        /* When xCORE is I2S slave we set one DAC to master and the rest remain slaves.
+         * We write some values to all DACs just to avoid any difference in performance */
         for(int dacAddr = PCM5122_0_I2C_DEVICE_ADDR; dacAddr < (PCM5122_0_I2C_DEVICE_ADDR+4); dacAddr++)
         unsafe{
             // Disable Auto Clock Configuration
@@ -301,12 +322,12 @@ void AudioHwInit()
         for(int dacAddr = PCM5122_0_I2C_DEVICE_ADDR; dacAddr < (PCM5122_0_I2C_DEVICE_ADDR+4); dacAddr++)
         { 
             /* Set Format to TDM/DSP & 24bit */
-            result = i2c_reg_write(dacAddr, 40, 0b00010011);
+            result = i2c_reg_write(dacAddr, 0x28, 0b00010011);
             assert(result == I2C_REGOP_SUCCESS && msg("DAC I2C write reg failed"));
         
             /* Set offset to appropriately for each DAC */
             const int dacOffset = dacAddr - PCM5122_0_I2C_DEVICE_ADDR;
-            result = i2c_reg_write(dacAddr, 41, 1 + (dacOffset * 64));
+            result = i2c_reg_write(dacAddr, 0x29, 1 + (dacOffset * 64));
             assert(result == I2C_REGOP_SUCCESS && msg("DAC I2C write reg failed"));
         }
     }
@@ -325,8 +346,7 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, unsigned dsdMode, unsigned s
     {
         AppPllEnable_SampleRate(samFreq);
     }
-
-    
+       
     if(CODEC_MASTER)
     { 
         /* Set one DAC to I2S master */
@@ -335,66 +355,15 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, unsigned dsdMode, unsigned s
         int dacAddr = PCM5122_3_I2C_DEVICE_ADDR;
 
         //OSR CLK divider is set to one (as its based on the output from the DAC CLK, which is already PLL/16)
-        switch(samFreq)
-        {
-            case 44100:
-            case 48000:
-                regVal = 0x07;
-                break;
-            case 88200:
-            case 96000:
-                regVal = 0x03;
-                break;
-            case 176400:
-            case 192000:
-                regVal = 0x01;
-                break;
-            default:
-                assert(0);
-                break;
-        }
+        regVal = (mClk/(samFreq*I2S_CHANS_PER_FRAME*32))-1;
         result |= i2c_reg_write(dacAddr, 0x1E, regVal); 
 
         //# FS setting should be set based on sample rate
-        switch(samFreq)
-        {
-            case 44100:
-            case 48000:
-                regVal = 0x00;
-                break;
-            case 88200:
-            case 96000:
-                regVal = 0x01;
-                break;
-            case 176400:
-            case 192000:
-                regVal = 0x02;
-                break;
-            default:
-                assert(0);
-                break;
-        }
+        regVal = samFreq/96000;
         result |= i2c_reg_write(dacAddr, 0x22, regVal); 
 
         //IDAC1  sets the number of miniDSP instructions per clock.
-        switch(samFreq)
-        {
-            case 44100:
-            case 48000:
-                regVal = 0x04;
-                break;
-            case 88200:
-            case 96000:
-                regVal = 0x02;
-                break;
-            case 176400:
-            case 192000:
-                regVal = 0x01;
-                break;
-            default:
-                assert(0);
-                break;
-        }
+        regVal = 192000/samFreq; // TODO confirm this
         result |= i2c_reg_write(dacAddr, 0x23, regVal); 
 
         /* Master mode setting */
@@ -402,28 +371,12 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, unsigned dsdMode, unsigned s
         result |= i2c_reg_write(dacAddr, 0x09, 0x11); 
 
         // Master mode BCK divider setting (making 64fs)
-        switch(samFreq)
-        {
-            case 44100:
-            case 48000:
-                regVal = 0x07;
-                break;
-            case 88200:
-            case 96000:
-                regVal = 0x03;
-                break;
-            case 176400:
-            case 192000:
-                regVal = 0x01;
-                break;
-            default:
-                assert(0);
-                break;
-        }
+        regVal = (mClk/(samFreq*I2S_CHANS_PER_FRAME*32))-1;
         result |= i2c_reg_write(dacAddr, 0x20, regVal); 
 
-        // Master mode LRCK divider setting (divide BCK by a further 64 to make 1fs)
-        result |= i2c_reg_write(dacAddr, 0x21, 0x3f); 
+        // Master mode LRCK divider setting (divide BCK by a further 64 (256 for TDM) to make 1fs)
+        regVal = (I2S_CHANS_PER_FRAME*32)-1;
+        result |= i2c_reg_write(dacAddr, 0x21, regVal); 
 
         // Master mode BCK, LRCK divider reset release
         result |= i2c_reg_write(dacAddr, 0x0C, 0x3f); 

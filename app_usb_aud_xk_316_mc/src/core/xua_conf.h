@@ -83,36 +83,6 @@
 #define I2S_CHANS_ADC      (8)
 #endif
 
-/* Channel index of SPDIF Rx channels (duplicated DAC channels 1/2 when index is 0) */
-/* If we have enough channels then tag on the end as separate channels, otherwise
- * duplicate channels 1/2 */
-#if (NUM_USB_CHAN_OUT >= (I2S_CHANS_DAC+2))
-#define SPDIF_TX_INDEX     (I2S_CHANS_DAC)
-#else
-#define SPDIF_TX_INDEX     (0)
-#endif
-
-/* Channel index of SPDIF Rx channels */
-#if (NUM_USB_CHAN_IN >= (I2S_CHANS_ADC+2))
-#define SPDIF_RX_INDEX     (I2S_CHANS_ADC)
-#else
-#define SPDIF_RX_INDEX     (0)
-#endif
-
-/* Channel index of ADAT Tx channels */
-#if (XUA_SPDIF_TX_EN == 1)
-#define ADAT_TX_INDEX      (SPDIF_TX_INDEX + 2)
-#else
-#define ADAT_TX_INDEX      (I2S_CHANS_DAC)
-#endif
-
-/* Channel index of ADAT Rx channels */
-#if defined(XUA_SPDIF_RX_EN) && (XUA_SPDIF_RXEN == 1)
-#define ADAT_RX_INDEX      (SPDIF_RX_INDEX + 2)
-#else
-#define ADAT_RX_INDEX      (I2S_CHANS_ADC)
-#endif
-
 /* Master clock defines (in Hz) */
 #ifndef MCLK_441
 #define MCLK_441           (512*44100)   /* 44.1, 88.2 etc */
@@ -178,6 +148,35 @@
 #define NUM_USB_CHAN_OUT   (I2S_CHANS_ADC + SPDIF_TX_CHANS + ADAT_TX_CHANS)         /* Host to Device */
 #endif
 
+/* Channel index of SPDIF Rx channels (duplicated DAC channels 1/2 when index is 0) */
+/* If we have enough channels then tag on the end as separate channels, otherwise
+ * duplicate channels 1/2 */
+#if (NUM_USB_CHAN_OUT >= (I2S_CHANS_DAC+2))
+#define SPDIF_TX_INDEX     (I2S_CHANS_DAC)
+#else
+#define SPDIF_TX_INDEX     (0)
+#endif
+
+/* Channel index of SPDIF Rx channels */
+#if (NUM_USB_CHAN_IN >= (I2S_CHANS_ADC+2))
+#define SPDIF_RX_INDEX     (I2S_CHANS_ADC)
+#else
+#define SPDIF_RX_INDEX     (0)
+#endif
+
+/* Channel index of ADAT Tx channels */
+#if (XUA_SPDIF_TX_EN == 1)
+#define ADAT_TX_INDEX      (SPDIF_TX_INDEX + 2)
+#else
+#define ADAT_TX_INDEX      (I2S_CHANS_DAC)
+#endif
+
+/* Channel index of ADAT Rx channels */
+#if defined(XUA_SPDIF_RX_EN) && (XUA_SPDIF_RXEN == 1)
+#define ADAT_RX_INDEX      (SPDIF_RX_INDEX + 2)
+#else
+#define ADAT_RX_INDEX      (I2S_CHANS_ADC)
+#endif
 
 #include "user_main.h"
 
