@@ -27,7 +27,7 @@ USED_MODULES = lib_xua lib_xud lib_spdif lib_i2c lib_adat
 # ADAT in			enabled: a, disabled: x
 # ADAT out			enabled: a, disabled: x
 # DSD out			enabled: d, disabled: x
-# e.g. 2AMi10o10xxsxxx: Audio class 2.0, Asynchronous, I2S Master, input and output enabled (10 channels each), SPDIF output, no SPDIF input, no ADAT
+# e.g. 2AMi10o10xxsxxx: Audio class 2.0, Asynchronous, I2S Master, input and output enabled (10 channels each), no MIDI, SPDIF output, no SPDIF input, no ADAT
 
 # Supported build configs (Note these make use of the defaults in xua_conf.h)
 

@@ -123,6 +123,7 @@ pipeline {
           post {
             always {
               archiveArtifacts artifacts: "pytest-result.xml", fingerprint: true, allowEmptyArchive: true
+              junit "${REPO}/tests/pytest_result.xml"
             }
             cleanup {
               xcoreCleanSandbox()
@@ -175,6 +176,9 @@ pipeline {
             }
           }
           post {
+            always {
+              junit "${REPO}/tests/pytest_result.xml"
+            }
             cleanup {
               xcoreCleanSandbox()
             }

@@ -141,21 +141,28 @@ uint8_t i2c_reg_read(uint8_t device_addr, uint8_t reg, i2c_regop_res_t &result)
 
 unsafe client interface i2c_master_if i_i2c_client;
 
-void WriteAllAdcRegs(int reg_addr, int reg_data)
+void WriteRegs(int deviceAddr, int numDevices, int regAddr, int regData)
 {
     i2c_regop_res_t result;
 
-    unsafe
+    for(int i = deviceAddr; i < deviceAddr + numDevices; i++)
     {
-        result = i2c_reg_write(PCM1865_0_I2C_DEVICE_ADDR, reg_addr, reg_data);
+        unsafe
+        {
+            result = i2c_reg_write(deviceAddr, regAddr, regData);
+        }
+        assert(result == I2C_REGOP_SUCCESS && msg("I2C write reg failed"));
     }
-    assert(result == I2C_REGOP_SUCCESS && msg("ADC0 I2C write reg failed"));
+}
 
-    unsafe
-    {
-        result = i2c_reg_write(PCM1865_1_I2C_DEVICE_ADDR, reg_addr, reg_data);
-    }
-    assert(result == I2C_REGOP_SUCCESS && msg("ADC1 I2C write reg failed"));
+void WriteAllDacRegs(int regAddr, int regData)
+{
+    WriteRegs(PCM5122_0_I2C_DEVICE_ADDR, 4, regAddr, regData); 
+}
+
+void WriteAllAdcRegs(int regAddr, int regData)
+{
+    WriteRegs(PCM1865_0_I2C_DEVICE_ADDR, 2, regAddr, regData); 
 }
 
 void SetI2CMux(int ch)
@@ -207,18 +214,14 @@ void AudioHwInit()
     /* Set external I2C mux to DACs/ADCs */
     SetI2CMux(PCA9540B_CTRL_CHAN_0);
 
-    /* Reset DAC state */
-    for(int dacAddr = PCM5122_0_I2C_DEVICE_ADDR; dacAddr < (PCM5122_0_I2C_DEVICE_ADDR+4); dacAddr++)
-    unsafe{
-        result = i2c_reg_write(dacAddr, 0x01, 0x11);
-        assert(result == I2C_REGOP_SUCCESS && msg("DAC I2C write reg failed"));
-    }
+    /* Reset DAC & ADC registers. Just in case we've run another build config */
+    WriteAllDacRegs(0x1, 0x11);
+    WriteAllAdcRegs(PCM1865_RESET, 0xFE);
 
     /*
      * Setup ADCs
      */
     /* Setup is ADC is I2S slave, MCLK slave, I2S_DOUT2 on GPIO0. ADC sets up clocking automatically based on applied input clocks */
-    WriteAllAdcRegs(PCM1865_RESET,          0xFE); // Reset registers */
     WriteAllAdcRegs(PCM1865_ADC2_IP_SEL_L,  0x42); // Set ADC2 Left input to come from VINL2[SE] input.
     WriteAllAdcRegs(PCM1865_ADC2_IP_SEL_R,  0x42); // Set ADC2 Right input to come from VINR2[SE] input.
     WriteAllAdcRegs(PCM1865_PGA_VAL_CH1_L,  0xFC);
@@ -234,9 +237,9 @@ void AudioHwInit()
     else
     {
         /* Write offset such that ADC's do not drive against eachother */
-        result = i2c_reg_write(PCM1865_0_I2C_DEVICE_ADDR, PCM1865_TX_TDM_OFFSET, 1);
+        result = i2c_reg_write(PCM1865_0_I2C_DEVICE_ADDR, PCM1865_TX_TDM_OFFSET, 0);
         assert(result == I2C_REGOP_SUCCESS && msg("ADC I2C write reg failed"));
-        result = i2c_reg_write(PCM1865_1_I2C_DEVICE_ADDR, PCM1865_TX_TDM_OFFSET, 129);
+        result = i2c_reg_write(PCM1865_1_I2C_DEVICE_ADDR, PCM1865_TX_TDM_OFFSET, 128);
         assert(result == I2C_REGOP_SUCCESS && msg("ADC I2C write reg failed"));
        
         if(CODEC_MASTER)
@@ -272,40 +275,37 @@ void AudioHwInit()
     {
         /* When xCORE is I2S slave we set one DAC to master and the rest remain slaves.
          * We write some values to all DACs just to avoid any difference in performance */
-        for(int dacAddr = PCM5122_0_I2C_DEVICE_ADDR; dacAddr < (PCM5122_0_I2C_DEVICE_ADDR+4); dacAddr++)
-        unsafe{
-            // Disable Auto Clock Configuration
-            result = i2c_reg_write(dacAddr, 0x25, 0x72);
+        
+        // Disable Auto Clock Configuration
+        WriteAllDacRegs(0x25, 0x72);
 
-            // PLL P divider to 2
-            result |= i2c_reg_write(dacAddr, 0x14, 0x01);
+        // PLL P divider to 2
+        WriteAllDacRegs(0x14, 0x01);
             
-            // PLL J divider to 8
-            result |= i2c_reg_write(dacAddr, 0x15, 0x08);
+        // PLL J divider to 8
+        WriteAllDacRegs(0x15, 0x08);
 
-            // PLL D1 divider to 00
-            result |= i2c_reg_write(dacAddr, 0x16, 0x00);
+        // PLL D1 divider to 00
+        WriteAllDacRegs(0x16, 0x00);
 
-            // PLL D2 divider to 00
-            result |= i2c_reg_write(dacAddr, 0x17, 0x00);
+        // PLL D2 divider to 00
+        WriteAllDacRegs(0x17, 0x00);
 
-            // PLL R divider to 1
-            result |= i2c_reg_write(dacAddr, 0x18, 0x00); 
+        // PLL R divider to 1
+        WriteAllDacRegs(0x18, 0x00); 
 
-            // NB: Overall PLL Multiplier is x4.
-            // miniDSP CLK divider (NMAC) to 2
-            result |= i2c_reg_write(dacAddr, 0x1B, 0x01); 
+        // NB: Overall PLL Multiplier is x4.
+        // miniDSP CLK divider (NMAC) to 2
+        WriteAllDacRegs(0x1B, 0x01); 
 
-            //DAC CLK divider to 16
-            result |= i2c_reg_write(dacAddr, 0x1C, 0x0F); 
+        //DAC CLK divider to 16
+        WriteAllDacRegs(0x1C, 0x0F); 
 
-            // NCP CLK divider to 4
-            result |= i2c_reg_write(dacAddr, 0x1D, 0x03); 
+        // NCP CLK divider to 4
+        WriteAllDacRegs(0x1D, 0x03); 
 
-            // IDAC2
-            result |= i2c_reg_write(dacAddr, 0x24, 0x00); 
-            assert(result == I2C_REGOP_SUCCESS && msg("DAC I2C write reg failed"));
-        }
+        // IDAC2
+        WriteAllDacRegs(0x24, 0x00); 
     }
     
     if(XUA_PCM_FORMAT == XUA_PCM_FORMAT_I2S)
@@ -319,13 +319,12 @@ void AudioHwInit()
          * I2S MODE: SET ALL 2-3
          * TDM MODE: SET ALL 1-2, TDM SOURCE 3-4
          */
+        /* Set Format to TDM/DSP & 24bit */
+        WriteAllDacRegs(0x28, 0b00010011);
+        
+        /* Set offset to appropriately for each DAC */
         for(int dacAddr = PCM5122_0_I2C_DEVICE_ADDR; dacAddr < (PCM5122_0_I2C_DEVICE_ADDR+4); dacAddr++)
         { 
-            /* Set Format to TDM/DSP & 24bit */
-            result = i2c_reg_write(dacAddr, 0x28, 0b00010011);
-            assert(result == I2C_REGOP_SUCCESS && msg("DAC I2C write reg failed"));
-        
-            /* Set offset to appropriately for each DAC */
             const int dacOffset = dacAddr - PCM5122_0_I2C_DEVICE_ADDR;
             result = i2c_reg_write(dacAddr, 0x29, 1 + (dacOffset * 64));
             assert(result == I2C_REGOP_SUCCESS && msg("DAC I2C write reg failed"));
@@ -347,12 +346,12 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, unsigned dsdMode, unsigned s
         AppPllEnable_SampleRate(samFreq);
     }
        
+    /* Set one DAC to I2S master */
     if(CODEC_MASTER)
     { 
-        /* Set one DAC to I2S master */
         i2c_regop_res_t result = I2C_REGOP_SUCCESS;
         unsigned regVal;
-        int dacAddr = PCM5122_3_I2C_DEVICE_ADDR;
+        const int dacAddr = PCM5122_3_I2C_DEVICE_ADDR;
 
         //OSR CLK divider is set to one (as its based on the output from the DAC CLK, which is already PLL/16)
         regVal = (mClk/(samFreq*I2S_CHANS_PER_FRAME*32))-1;
@@ -363,7 +362,7 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, unsigned dsdMode, unsigned s
         result |= i2c_reg_write(dacAddr, 0x22, regVal); 
 
         //IDAC1  sets the number of miniDSP instructions per clock.
-        regVal = 192000/samFreq; // TODO confirm this
+        regVal = 192000/samFreq;
         result |= i2c_reg_write(dacAddr, 0x23, regVal); 
 
         /* Master mode setting */
@@ -380,17 +379,15 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, unsigned dsdMode, unsigned s
 
         // Master mode BCK, LRCK divider reset release
         result |= i2c_reg_write(dacAddr, 0x0C, 0x3f); 
+        
+        assert(result == I2C_REGOP_SUCCESS && msg("DAC I2C write reg failed"));
 
         /* Write to all DACs */
-        for(int dacAddr = PCM5122_0_I2C_DEVICE_ADDR; dacAddr < (PCM5122_0_I2C_DEVICE_ADDR+4); dacAddr++)
-        {
-            // Stand-by request
-            result |= i2c_reg_write(dacAddr, 0x02, 0x10); 
-            // Stand-by release
-            result |= i2c_reg_write(dacAddr, 0x02, 0x00); 
-
-            assert(result == I2C_REGOP_SUCCESS && msg("DAC I2C write reg failed"));
-        }
+        // Stand-by request
+        WriteAllDacRegs(0x02, 0x10); 
+         
+        // Stand-by release
+        WriteAllDacRegs(0x02, 0x00); 
     }
 }
 
