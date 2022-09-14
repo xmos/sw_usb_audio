@@ -28,8 +28,8 @@ analogue_input_configs = [
         ('xk_216_mc', '2Si10o10xxxxxx',         192000, 10, "mc_analogue_input_8ch.json"),
         ('xk_316_mc', '1AMi2o2xxxxxx',           48000, 10, "mc_analogue_input_2ch.json"),
         ('xk_316_mc', '2AMi8o8xxxxxx',           96000, 10, "mc_analogue_input_8ch.json"),
-        ('xk_316_mc', '2AMi8o8xxxxxx_tdm8',      96000, 10, "mc_analogue_input_8ch.json"),
-        ('xk_316_mc', '2ASi8o8xxxxxx_tdm8',      96000, 10, "mc_analogue_input_8ch.json"),
+        ('xk_316_mc', '2AMi8o8xxxxxx_tdm8',      96000, 10, "mc_analogue_input_4ch.json"), # Requires jumper change to test > 4 chans input on 316 TDM
+        ('xk_316_mc', '2ASi8o8xxxxxx_tdm8',      96000, 10, "mc_analogue_input_4ch.json"), # Requires jumper change to test > 4 chans input on 316 TDM
         ('xk_316_mc', '2AMi10o8xsxxxx',         192000, 10, "mc_analogue_input_8ch.json"),
         ('xk_316_mc', '2SMi8o8xxxxxx',          192000, 10, "mc_analogue_input_8ch.json"),
         ('xk_316_mc', '2SSi8o8xxxxxx',          192000, 10, "mc_analogue_input_8ch.json"),
@@ -169,8 +169,8 @@ analogue_output_configs = [
         ('xk_216_mc', '2Ai10o10xssxxx',         192000, 10, "mc_analogue_output_8ch.json"),
         ('xk_316_mc', '1AMi2o2xxxxxx',           48000, 10, "mc_analogue_output_2ch.json"),
         ('xk_316_mc', '2AMi8o8xxxxxx',           96000, 10, "mc_analogue_output_8ch.json"),
-        ('xk_316_mc', '2AMi8o8xxxxxx_tdm8',      96000, 10, "mc_analogue_output_8ch.json"),
-        ('xk_316_mc', '2ASi8o8xxxxxx_tdm8',      96000, 10, "mc_analogue_output_8ch.json"),
+        ('xk_316_mc', '2AMi8o8xxxxxx_tdm8',      96000, 10, "mc_analogue_output_2ch.json"), # Requires jumper change to test > 2 chans output on 316 TDM
+        ('xk_316_mc', '2ASi8o8xxxxxx_tdm8',      96000, 10, "mc_analogue_output_2ch.json"), # Requires jumper change to test > 2 chans output on 316 TDM
         ('xk_316_mc', '2AMi10o8xsxxxx',         192000, 10, "mc_analogue_output_8ch.json"),
         ('xk_316_mc', '2SMi8o8xxxxxx',          192000, 10, "mc_analogue_output_8ch.json"),
         ('xk_316_mc', '2ASi8o8xxxxxx',          192000, 10, "mc_analogue_output_8ch.json"),

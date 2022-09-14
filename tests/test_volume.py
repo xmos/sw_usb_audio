@@ -45,7 +45,7 @@ num_chans = {
 volume_input_configs = [
     # smoke level tests
     *mark_tests(pytest.mark.smoke, [
-        *[('xk_216_mc',    '2Ai8o8xxxxxx',          96000, ch) for ch in ['m', *range(8)]],
+        *[('xk_216_mc',    '2Ai10o10xxxxxx',        96000, ch) for ch in ['m', *range(8)]],
         *[('xk_316_mc',    '2AMi8o8xxxxxx',         96000, ch) for ch in ['m', *range(8)]],
         *[('xk_evk_xu316', '2i2o2',                 48000, ch) for ch in ['m', *range(2)]]
     ]),
