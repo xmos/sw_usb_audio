@@ -145,11 +145,11 @@ void WriteRegs(int deviceAddr, int numDevices, int regAddr, int regData)
 {
     i2c_regop_res_t result;
 
-    for(int i = deviceAddr; i < deviceAddr + numDevices; i++)
+    for(int i = deviceAddr; i < (deviceAddr + numDevices); i++)
     {
         unsafe
         {
-            result = i2c_reg_write(deviceAddr, regAddr, regData);
+            result = i2c_reg_write(i, regAddr, regData);
         }
         assert(result == I2C_REGOP_SUCCESS && msg("I2C write reg failed"));
     }
@@ -237,9 +237,9 @@ void AudioHwInit()
     else
     {
         /* Write offset such that ADC's do not drive against eachother */
-        result = i2c_reg_write(PCM1865_0_I2C_DEVICE_ADDR, PCM1865_TX_TDM_OFFSET, 0);
+        result = i2c_reg_write(PCM1865_0_I2C_DEVICE_ADDR, PCM1865_TX_TDM_OFFSET, 1);
         assert(result == I2C_REGOP_SUCCESS && msg("ADC I2C write reg failed"));
-        result = i2c_reg_write(PCM1865_1_I2C_DEVICE_ADDR, PCM1865_TX_TDM_OFFSET, 128);
+        result = i2c_reg_write(PCM1865_1_I2C_DEVICE_ADDR, PCM1865_TX_TDM_OFFSET, 129);
         assert(result == I2C_REGOP_SUCCESS && msg("ADC I2C write reg failed"));
        
         if(CODEC_MASTER)

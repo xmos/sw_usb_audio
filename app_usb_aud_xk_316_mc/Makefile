@@ -35,7 +35,7 @@ USED_MODULES = lib_xua lib_xud lib_spdif lib_i2c lib_adat
 # Asynchronous Mode Configs
 #
 # Audio Class 2, Async, I2S Master, 8xInput, 8xOutput
-XCC_FLAGS_2AMi8o8xxxxxx = $(BUILD_FLAGS)
+XCC_FLAGS_2AMi8o8xxxxxx = $(BUILD_FLAGS)		
 INCLUDE_ONLY_IN_2AMi8o8xxxxxx = 
 
 # Audio Class 2, Async, I2S Slave, 8xInput, 8xOutput
