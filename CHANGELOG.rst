@@ -5,6 +5,8 @@ UNRELEASED
 ----------
 
    * ADDED:     Build configs for synchronous mode (uses external CS2100 device)
+   * ADDED:     Build configs for xCORE as I2S slave in app_usb_aud_xk_316_mc
+
 
 7.0.0
 -----
