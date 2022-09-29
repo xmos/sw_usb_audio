@@ -46,7 +46,7 @@ def wait_for_portaudio(board, config, timeout=10):
         if prod_str in sd_devs:
             return
 
-    pytest.fail(f"Device not available via portaudio in {timeout}s")
+    pytest.fail(f"Device ({prod_str}) not available via portaudio in {timeout}s")
 
 
 def get_firmware_path_harness(board, config=None):
