@@ -155,11 +155,13 @@ void WriteRegs(int deviceAddr, int numDevices, int regAddr, int regData)
     }
 }
 
+/* Note, this function assumes contiguous devices addresses */
 void WriteAllDacRegs(int regAddr, int regData)
 {
     WriteRegs(PCM5122_0_I2C_DEVICE_ADDR, 4, regAddr, regData); 
 }
 
+/* Note, this function assumes contiguous devices addresses */
 void WriteAllAdcRegs(int regAddr, int regData)
 {
     WriteRegs(PCM1865_0_I2C_DEVICE_ADDR, 2, regAddr, regData); 
