@@ -103,8 +103,8 @@
 #define VENDOR_ID          (0x20B1) /* XMOS VID */
 #define PID_AUDIO_2        (0x0016)
 #define PID_AUDIO_1        (0x0017)
-#define PRODUCT_STR_A2     "XMOS xCORE-AI MC (UAC2.0)"
-#define PRODUCT_STR_A1     "XMOS xCORE-AI MC (UAC1.0)"
+#define PRODUCT_STR_A2     "XMOS xCORE.ai MC (UAC2.0)"
+#define PRODUCT_STR_A1     "XMOS xCORE.ai MC (UAC1.0)"
 //:
 
 /* Enable/Disable example HID code */
