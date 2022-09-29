@@ -114,6 +114,11 @@ INCLUDE_ONLY_IN_1SMi2o2xxxxxx =
 XCC_FLAGS_2SMi8o8xxxxxx = $(BUILD_FLAGS)		-DXUA_SYNCMODE=XUA_SYNCMODE_SYNC
 INCLUDE_ONLY_IN_2SMi8o8xxxxxx =
 
+# Audio Class 2, Sync, I2S Slave, 8xInput, 8xOutput
+XCC_FLAGS_2SSi8o8xxxxxx = $(BUILD_FLAGS)		-DXUA_SYNCMODE=XUA_SYNCMODE_SYNC \
+						  						-DCODEC_MASTER=1
+INCLUDE_ONLY_IN_2SSi8o8xxxxxx =
+
 # Audio Class 2, Sync, I2S Master, 10xInput, 10xOutput, TDM
 # (1024x Mclk required for 192/176 TDM)
 XCC_FLAGS_2SMi10o10xxxxxx_tdm8 = $(BUILD_FLAGS)	-DXUA_PCM_FORMAT=XUA_PCM_FORMAT_TDM \
