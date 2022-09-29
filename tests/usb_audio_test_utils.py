@@ -19,9 +19,9 @@ def product_str_from_board_config(board, config):
             return 'XMOS xCORE-200 MC (UAC2.0)'
     elif board == 'xk_316_mc':
         if config.startswith('1'):
-            return 'XMOS xCORE-AI MC (UAC1.0)'
+            return 'XMOS xCORE.ai MC (UAC1.0)'
         elif config.startswith('2'):
-            return 'XMOS xCORE-AI MC (UAC2.0)'
+            return 'XMOS xCORE.ai MC (UAC2.0)'
     elif board == 'xk_evk_xu316':
         if config.startswith('1'):
             return 'XMOS xCORE (UAC1.0)'
