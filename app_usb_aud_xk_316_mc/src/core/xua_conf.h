@@ -139,13 +139,13 @@
 
 /* Defines relating to channel count and channel arrangement (Set to 0 for disable) */
 //:audio_defs
-/* Number of USB streaming channels - Default is 8 in 8 out */
+/* Number of USB streaming channels - by default calculate by counting audio interfaces */
 #ifndef NUM_USB_CHAN_IN
 #define NUM_USB_CHAN_IN    (I2S_CHANS_ADC + SPDIF_RX_CHANS + ADAT_RX_CHANS)         /* Device to Host */
 #endif
 
 #ifndef NUM_USB_CHAN_OUT
-#define NUM_USB_CHAN_OUT   (I2S_CHANS_ADC + SPDIF_TX_CHANS + ADAT_TX_CHANS)         /* Host to Device */
+#define NUM_USB_CHAN_OUT   (I2S_CHANS_DAC + SPDIF_TX_CHANS + ADAT_TX_CHANS)         /* Host to Device */
 #endif
 
 /* Channel index of SPDIF Rx channels (duplicated DAC channels 1/2 when index is 0) */
