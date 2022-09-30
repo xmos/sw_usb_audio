@@ -21,7 +21,7 @@ extern port p_sda;
 
 #define USER_MAIN_CORES on tile[0]: {\
                                         ctrlPort();\
-                                        i2c_master(i2c, 1, p_scl, p_sda, 10);\
+                                        i2c_master(i2c, 1, p_scl, p_sda, 100);\
                                     }\
                         on tile[1]: {\
                                         unsafe\
