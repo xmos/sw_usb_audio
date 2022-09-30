@@ -5,8 +5,8 @@ UNRELEASED
 ----------
 
    * ADDED:     Build configs for synchronous mode (uses external CS2100 device)
-   * ADDED:     Build configs for xCORE as I2S slave in app_usb_aud_xk_316_mc
-
+   * ADDED:     app_usb_aud_xk_316_mc: Build configs for xCORE as I2S slave
+   * CHANGED:   app_usb_aud_xk_316_mc: Core voltage reduced to 0.9v (was 0.922v)
 
 7.0.0
 -----
