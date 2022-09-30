@@ -89,6 +89,8 @@ int AppPllEnable(int32_t clkFreq_hz)
 
     // Turn on the clock output
     write_node_config_reg(tile[0], XS1_SSWITCH_SS_APP_CLK_DIVIDER_NUM, APP_PLL_DIV);
+
+	return 0;
 }
 
 int AppPllEnable_SampleRate(int32_t sampleRate_hz)
@@ -103,5 +105,7 @@ int AppPllEnable_SampleRate(int32_t sampleRate_hz)
     {
         AppPllEnable(48000*512);
     }
+
+	return 0;
 }
 

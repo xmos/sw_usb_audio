@@ -17,83 +17,116 @@ USED_MODULES = lib_xua lib_xud lib_spdif lib_i2c lib_adat
 # Build config naming scheme:
 
 # Audio Class:  	1 or 2
-# Sync Mode 		A(sync) S(ync)
-# Input 			enabled: i (channelcount)
-# Output 			enabled: o (channelcount)
+# Sync Mode 		A(sync)/S(ync)
+# I2S 				  M(aster)/S(lave)
+# Input 			  enabled: i (channelcount)
+# Output 			  enabled: o (channelcount)
+# MIDI 				  enabled: m, disabled: x
 # SPDIF in 			enabled: s, disabled: x
 # SPDIF out			enabled: s, disabled: x
-# ADAT in			enabled: a, disabled: x
+# ADAT in			  enabled: a, disabled: x
 # ADAT out			enabled: a, disabled: x
-# MIDI 				enabled: m, disabled: x
-# DSD out			enabled: d, disabled: x
-# e.g. 2Ai10o10xsxxx: Audio class 2.0, Asynchronous, input and output enabled (10 channels each), SPDIF output, no SPDIF input, no ADAT, no MIDI
+# DSD out			  enabled: d, disabled: x
+#
+# e.g. 2AMi10o10xxsxxx: Audio class 2.0, Asynchronous, I2S Master, input and output enabled (10 channels each), no MIDI, SPDIF output, no SPDIF input, no ADAT
 
 # Supported build configs (Note these make use of the defaults in xua_conf.h)
 
 #
 # Asynchronous Mode Configs
 #
-# Audio Class 2, 10xInput, 10xOutput
-XCC_FLAGS_2Ai10o10xxxxxx = $(BUILD_FLAGS)
-INCLUDE_ONLY_IN_2Ai10o10xxxxxx = 
+# Audio Class 2, Async, I2S Master, 8xInput, 8xOutput
+XCC_FLAGS_2AMi8o8xxxxxx = $(BUILD_FLAGS)		
+INCLUDE_ONLY_IN_2AMi8o8xxxxxx = 
 
-# Audio Class 2, 10xInput, 10xOutput, TDM
-# TODO can run at 192kHz when AppPLL settings for 49MHz added
-XCC_FLAGS_2Ai10o10xxxxxx_tdm8 = $(BUILD_FLAGS)	-DXUA_PCM_FORMAT=XUA_PCM_FORMAT_TDM \
+# Audio Class 2, Async, I2S Slave, 8xInput, 8xOutput
+XCC_FLAGS_2ASi8o8xxxxxx = $(BUILD_FLAGS)		-DCODEC_MASTER=1
+INCLUDE_ONLY_IN_2ASi8o8xxxxxx =
+
+# Audio Class 2, Async, I2S Slave, 8xInput, 8xOutput, TDM
+XCC_FLAGS_2ASi8o8xxxxxx_tdm8 = $(BUILD_FLAGS)	-DCODEC_MASTER=1 \
+												-DXUA_PCM_FORMAT=XUA_PCM_FORMAT_TDM \
 												-DMAX_FREQ=96000
-INCLUDE_ONLY_IN_2Ai10o10xxxxxx_tdm8 = 
+INCLUDE_ONLY_IN_2ASi8o8xxxxxx_tdm8 =
 
-# Audio Class 2, 32xInput, 32xOutput, TDM
-XCC_FLAGS_2Ai32o32xxxxxx_tdm8 = $(BUILD_FLAGS)	-DXUA_PCM_FORMAT=XUA_PCM_FORMAT_TDM \
+
+# Audio Class 2, Async, I2S Master, 8xInput, 8xOutput, TDM
+# TODO can run at 192kHz when AppPLL settings for 49MHz added
+XCC_FLAGS_2AMi8o8xxxxxx_tdm8 = $(BUILD_FLAGS)	-DXUA_PCM_FORMAT=XUA_PCM_FORMAT_TDM \
+												-DMAX_FREQ=96000
+INCLUDE_ONLY_IN_2AMi8o8xxxxxx_tdm8 = 
+
+# Audio Class 2, Async, I2S Master, 32xInput, 32xOutput, TDM
+XCC_FLAGS_2AMi32o32xxxxxx_tdm8 = $(BUILD_FLAGS)	-DXUA_PCM_FORMAT=XUA_PCM_FORMAT_TDM \
 												-DNUM_USB_CHAN_OUT=32 \
 												-DI2S_CHANS_DAC=32 \
 												-DNUM_USB_CHAN_IN=32 \
 												-DI2S_CHANS_ADC=32 \
 												-DMAX_FREQ=48000
-INCLUDE_ONLY_IN_2Ai32o32xxxxxx_tdm8 = 
+INCLUDE_ONLY_IN_2AMi32o32xxxxxx_tdm8 = 
 
-# Audio Class 2, 10xInput, 10xOutput, S/PDIF Tx
-XCC_FLAGS_2Ai10o10xsxxxx = $(BUILD_FLAGS)		-DXUA_SPDIF_TX_EN=1
-INCLUDE_ONLY_IN_2Ai10o10xsxxxx = 
 
-# Audio Class 1, 2xInput, 2xOutput
-XCC_FLAGS_1Ai2o2xxxxxx = $(BUILD_FLAGS) 		-DAUDIO_CLASS=1 \
+# Audio Class 2, Async, I2S Master, 8xInput, 10xOutput, S/PDIF Tx
+XCC_FLAGS_2AMi8o10xxsxxx = $(BUILD_FLAGS)		-DXUA_SPDIF_TX_EN=1
+INCLUDE_ONLY_IN_2AMi8o10xxsxxx =
+
+# Audio Class 1, Async, I2S Master, 2xInput, 2xOutput
+XCC_FLAGS_1AMi2o2xxxxxx = $(BUILD_FLAGS) 		-DAUDIO_CLASS=1 \
 						 						-DNUM_USB_CHAN_IN=2 \
 												-DNUM_USB_CHAN_OUT=2
-INCLUDE_ONLY_IN_1Ai2o2xxxxxx =
+INCLUDE_ONLY_IN_1AMi2o2xxxxxx =
 
-# Audio Class 2, Async, 10xInput, 10xOutput, MIDI
-XCC_FLAGS_2Ai10o10mxxxxx = $(BUILD_FLAGS)		-DMIDI=1
-INCLUDE_ONLY_IN_2Ai10o10mxxxxx =
+# Audio Class 2, Async, I2S Master, 8xInput, 8xOutput, MIDI
+XCC_FLAGS_2AMi8o8mxxxxx = $(BUILD_FLAGS)		-DMIDI=1
+INCLUDE_ONLY_IN_2AMi8o8mxxxxx =
 
-# Audio Class 2, 10xInput, 10xOutput, S/PDIF Tx, S/PDIF Rx
-XCC_FLAGS_2Ai10o10ssxxxx = $(BUILD_FLAGS)		-DXUA_SPDIF_TX_EN=1 \
+# Audio Class 2, Async, I2S Master, 10xInput, 10xOutput, S/PDIF Tx, S/PDIF Rx
+XCC_FLAGS_2AMi10o10xssxxx = $(BUILD_FLAGS)		-DXUA_SPDIF_TX_EN=1 \
 						   						-DXUA_SPDIF_RX_EN=1
-INCLUDE_ONLY_IN_2Ai10o10ssxxxx =
+INCLUDE_ONLY_IN_2AMi10o10xssxxx =
 
-# Audio Class 2, 10xInput, 10xOutput, S/PDIF Rx
-XCC_FLAGS_2Ai10o10sxxxxx = $(BUILD_FLAGS) 		-DXUA_SPDIF_RX_EN=1
-INCLUDE_ONLY_IN_2Ai10o10sxxxxx =
+# Audio Class 2, Async, I2S Slave, 10xInput, 10xOutput, S/PDIF Tx, S/PDIF Rx
+XCC_FLAGS_2ASi10o10xssxxx = $(BUILD_FLAGS)		-DXUA_SPDIF_TX_EN=1 \
+						   						-DXUA_SPDIF_RX_EN=1 \
+												-DCODEC_MASTER=1
+INCLUDE_ONLY_IN_2ASi10o10xssxxx =
+
+# Audio Class 2, Async, I2S Master, 10xInput, 8xOutput, S/PDIF Rx
+XCC_FLAGS_2AMi10o8xsxxxx = $(BUILD_FLAGS) 		-DXUA_SPDIF_RX_EN=1
+INCLUDE_ONLY_IN_2AMi10o8xsxxxx =
+
+# Audio Class 2, Async, I2S Master, 16xInput, 8xOutput, ADAT Rx
+XCC_FLAGS_2AMi16o8xxxaxx = $(BUILD_FLAGS) 		-DXUA_ADAT_RX_EN=1
+INCLUDE_ONLY_IN_2AMi16o8xxxaxx =
+
+# Audio Class 2, Async, I2S master, 8xInput, 16xOutput, ADAT Tx
+XCC_FLAGS_2AMi8o16xxxxax = $(BUILD_FLAGS) 		-DXUA_ADAT_TX_EN=1
+INCLUDE_ONLY_IN_2AMi8o16xxxxax =
 
 #
 # Synchronous Mode Configs
 #
-# Audio Class 1, Sync, 2xInput, 2xOutput
-XCC_FLAGS_1Si2o2xxxxxx = $(BUILD_FLAGS)			-DAUDIO_CLASS=1 \
+# Audio Class 1, Sync, I2S Master, 2xInput, 2xOutput
+XCC_FLAGS_1SMi2o2xxxxxx = $(BUILD_FLAGS)		-DAUDIO_CLASS=1 \
 						 						-DXUA_SYNCMODE=XUA_SYNCMODE_SYNC
-INCLUDE_ONLY_IN_1Si2o2xxxxxx =
+INCLUDE_ONLY_IN_1SMi2o2xxxxxx =
 
-# Audio Class 2, Sync, 10xInput, 10xOutput
-XCC_FLAGS_2Si10o10xxxxxx = $(BUILD_FLAGS)		-DXUA_SYNCMODE=XUA_SYNCMODE_SYNC
-INCLUDE_ONLY_IN_2Si10o10xxxxxx =
+# Audio Class 2, Sync, I2S Master, 8xInput, 8xOutput
+XCC_FLAGS_2SMi8o8xxxxxx = $(BUILD_FLAGS)		-DXUA_SYNCMODE=XUA_SYNCMODE_SYNC
+INCLUDE_ONLY_IN_2SMi8o8xxxxxx =
 
-# Audio Class 2, Sync, 10xInput, 10xOutput, TDM
+# Audio Class 2, Sync, I2S Slave, 8xInput, 8xOutput
+XCC_FLAGS_2SSi8o8xxxxxx = $(BUILD_FLAGS)		-DXUA_SYNCMODE=XUA_SYNCMODE_SYNC \
+						  						-DCODEC_MASTER=1
+INCLUDE_ONLY_IN_2SSi8o8xxxxxx =
+
+# Audio Class 2, Sync, I2S Master, 10xInput, 10xOutput, TDM
 # (1024x Mclk required for 192/176 TDM)
-XCC_FLAGS_2Si10o10xxxxxx_tdm8 = $(BUILD_FLAGS)	-DXUA_PCM_FORMAT=XUA_PCM_FORMAT_TDM \
+XCC_FLAGS_2SMi10o10xxxxxx_tdm8 = $(BUILD_FLAGS)	-DXUA_PCM_FORMAT=XUA_PCM_FORMAT_TDM \
 												-DXUA_SYNCMODE=XUA_SYNCMODE_SYNC \
 												-DMCLK_48=1024*48000 \
 												-DMCLK_441=1024*44100
-INCLUDE_ONLY_IN_2Si10o10xxxxxx_tdm8 = 
+INCLUDE_ONLY_IN_2SMi10o10xxxxxx_tdm8 = 
 
 
 ifeq ($(TEST_CONFIGS),1)
