@@ -63,6 +63,11 @@
 #define XUA_SPDIF_TX_EN	   (0)
 #endif
 
+/* Enable/Disable SPDIF input - Default is S/PDIF off */
+#ifndef XUA_SPDIF_RX_EN
+#define XUA_SPDIF_RX_EN	   (0)
+#endif
+
 /* Defines relating to channel count and channel arrangement (Set to 0 for disable) */
 //:audio_defs
 /* Number of USB streaming channels - Default is 4 in 4 out */
@@ -107,7 +112,7 @@
 #endif
 
 /* Channel index of ADAT Rx channels */
-#if defined(SPDIF_RX) && (SPDIF_RX==1)
+#if (XUA_SPDIF_RX_EN == 1)
 #define ADAT_RX_INDEX      (SPDIF_RX_INDEX + 2)
 #else
 #define ADAT_RX_INDEX      (I2S_CHANS_ADC)
