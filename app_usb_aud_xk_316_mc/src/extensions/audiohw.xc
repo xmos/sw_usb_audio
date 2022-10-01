@@ -191,10 +191,6 @@ void SetI2CMux(int ch)
 /* Configures the external audio hardware at startup */
 void AudioHwInit()
 {
-#if (XUA_SYNCMODE == XUA_SYNC_MODESYMC)
-#error
-#endif
-
     i2c_regop_res_t result;
 
     // Wait for power supply to come up.
