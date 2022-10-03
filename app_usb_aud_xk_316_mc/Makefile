@@ -16,21 +16,23 @@ USED_MODULES = lib_xua lib_xud lib_spdif lib_i2c lib_adat
 
 # Build config naming scheme:
 
-# Audio Class:  	1 or 2
-# Sync Mode 		A(sync)/S(ync)
-# I2S 				  M(aster)/S(lave)
-# Input 			  enabled: i (channelcount)
-# Output 			  enabled: o (channelcount)
-# MIDI 				  enabled: m, disabled: x
-# SPDIF in 			enabled: s, disabled: x
-# SPDIF out			enabled: s, disabled: x
-# ADAT in			  enabled: a, disabled: x
-# ADAT out			enabled: a, disabled: x
-# DSD out			  enabled: d, disabled: x
+# Audio Class:   1 or 2
+# Sync Mode      A(sync)/S(ync)
+# I2S            M(aster)/S(lave)
+# Input          enabled: i (channelcount)
+# Output         enabled: o (channelcount)
+# MIDI           enabled: m, disabled: x
+# SPDIF in       enabled: s, disabled: x
+# SPDIF out      enabled: s, disabled: x
+# ADAT in        enabled: a, disabled: x
+# ADAT out       enabled: a, disabled: x
+# DSD out        enabled: d, disabled: x
 #
 # e.g. 2AMi10o10xxsxxx: Audio class 2.0, Asynchronous, I2S Master, input and output enabled (10 channels each), no MIDI, SPDIF output, no SPDIF input, no ADAT
 
+#
 # Supported build configs (Note these make use of the defaults in xua_conf.h)
+#
 
 #
 # Asynchronous Mode Configs
@@ -117,7 +119,7 @@ INCLUDE_ONLY_IN_2SMi8o8xxxxxx =
 
 # Audio Class 2, Sync, I2S Slave, 8xInput, 8xOutput
 XCC_FLAGS_2SSi8o8xxxxxx = $(BUILD_FLAGS)		-DXUA_SYNCMODE=XUA_SYNCMODE_SYNC \
-						  						-DCODEC_MASTER=1
+												-DCODEC_MASTER=1
 INCLUDE_ONLY_IN_2SSi8o8xxxxxx =
 
 # Audio Class 2, Sync, I2S Master, 10xInput, 10xOutput, TDM
@@ -128,6 +130,15 @@ XCC_FLAGS_2SMi10o10xxxxxx_tdm8 = $(BUILD_FLAGS)	-DXUA_PCM_FORMAT=XUA_PCM_FORMAT_
 												-DMCLK_441=1024*44100
 INCLUDE_ONLY_IN_2SMi10o10xxxxxx_tdm8 = 
 
+#
+# Addtional build configs for testing etc
+#
+
+# Audio Class 2, Async, I2S Master, 10xInput, 10xOutput, S/PDIF Tx, S/PDIF Rx, Self Powered
+XCC_FLAGS_2AMi10o10xssxxx_sp = $(BUILD_FLAGS)	-DXUA_SPDIF_TX_EN=1 \
+						   						-DXUA_SPDIF_RX_EN=1 \
+												-DXUA_POWERMODE=XUA_POWERMODE_SELF
+INCLUDE_ONLY_IN_2AMi10o10xssxxx_sp =
 
 ifeq ($(TEST_CONFIGS),1)
 XCC_FLAGS_upgrade1 = $(BUILD_FLAGS) -DBCD_DEVICE_J=0x99 -DBCD_DEVICE_M=0x0 -DBCD_DEVICE_N=0x1
