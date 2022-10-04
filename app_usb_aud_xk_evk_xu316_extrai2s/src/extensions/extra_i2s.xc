@@ -20,6 +20,8 @@
 #define EXTRA_I2S_CHAN_INDEX_OUT (0)
 #endif
 
+#define DATA_BITS (32)
+
 unsafe chanend uc_i2s;
 
 void UserBufferManagementInit()
@@ -119,7 +121,7 @@ void i2s_driver(chanend c)
 
     par
     {
-        i2s_frame_slave(i_i2s, null, 0, p_i2s_din, 1, p_i2s_bclk, p_i2s_lrclk, clk_bclk);
+        i2s_frame_slave(i_i2s, null, 0, p_i2s_din, 1, DATA_BITS, p_i2s_bclk, p_i2s_lrclk, clk_bclk);
         i2s_data(i_i2s, c);
     }
 
