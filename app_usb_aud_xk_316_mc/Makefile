@@ -15,7 +15,7 @@ BUILD_FLAGS    = $(EXTRA_BUILD_FLAGS) -DFLASH_MAX_UPGRADE_SIZE=64*1024 -fcomment
 USED_MODULES = lib_xua lib_xud lib_spdif lib_i2c lib_adat
 
 # Build config naming scheme:
-
+#
 # Audio Class:   1 or 2
 # Sync Mode      A(sync)/S(ync)
 # I2S            M(aster)/S(lave)
@@ -41,61 +41,22 @@ USED_MODULES = lib_xua lib_xud lib_spdif lib_i2c lib_adat
 XCC_FLAGS_2AMi8o8xxxxxx = $(BUILD_FLAGS)		
 INCLUDE_ONLY_IN_2AMi8o8xxxxxx = 
 
-# Audio Class 2, Async, I2S Slave, 8xInput, 8xOutput
-XCC_FLAGS_2ASi8o8xxxxxx = $(BUILD_FLAGS)		-DCODEC_MASTER=1
-INCLUDE_ONLY_IN_2ASi8o8xxxxxx =
-
-# Audio Class 2, Async, I2S Slave, 8xInput, 8xOutput, TDM
-XCC_FLAGS_2ASi8o8xxxxxx_tdm8 = $(BUILD_FLAGS)	-DCODEC_MASTER=1 \
-												-DXUA_PCM_FORMAT=XUA_PCM_FORMAT_TDM \
-												-DMAX_FREQ=96000
-INCLUDE_ONLY_IN_2ASi8o8xxxxxx_tdm8 =
-
-
 # Audio Class 2, Async, I2S Master, 8xInput, 8xOutput, TDM
 # TODO can run at 192kHz when AppPLL settings for 49MHz added
 XCC_FLAGS_2AMi8o8xxxxxx_tdm8 = $(BUILD_FLAGS)	-DXUA_PCM_FORMAT=XUA_PCM_FORMAT_TDM \
 												-DMAX_FREQ=96000
 INCLUDE_ONLY_IN_2AMi8o8xxxxxx_tdm8 = 
 
-# Audio Class 2, Async, I2S Master, 32xInput, 32xOutput, TDM
-XCC_FLAGS_2AMi32o32xxxxxx_tdm8 = $(BUILD_FLAGS)	-DXUA_PCM_FORMAT=XUA_PCM_FORMAT_TDM \
-												-DNUM_USB_CHAN_OUT=32 \
-												-DI2S_CHANS_DAC=32 \
-												-DNUM_USB_CHAN_IN=32 \
-												-DI2S_CHANS_ADC=32 \
-												-DMAX_FREQ=48000
-INCLUDE_ONLY_IN_2AMi32o32xxxxxx_tdm8 = 
-
-
-# Audio Class 2, Async, I2S Master, 8xInput, 10xOutput, S/PDIF Tx
-XCC_FLAGS_2AMi8o10xxsxxx = $(BUILD_FLAGS)		-DXUA_SPDIF_TX_EN=1
-INCLUDE_ONLY_IN_2AMi8o10xxsxxx =
-
-# Audio Class 1, Async, I2S Master, 2xInput, 2xOutput
-XCC_FLAGS_1AMi2o2xxxxxx = $(BUILD_FLAGS) 		-DAUDIO_CLASS=1 \
-						 						-DNUM_USB_CHAN_IN=2 \
-												-DNUM_USB_CHAN_OUT=2
-INCLUDE_ONLY_IN_1AMi2o2xxxxxx =
-
-# Audio Class 2, Async, I2S Master, 8xInput, 8xOutput, MIDI
-XCC_FLAGS_2AMi8o8mxxxxx = $(BUILD_FLAGS)		-DMIDI=1
-INCLUDE_ONLY_IN_2AMi8o8mxxxxx =
+# Audio Class 2, Async, I2S Slave, 8xInput, 8xOutput, TDM
+XCC_FLAGS_2ASi8o8xxxxxx_tdm8 = $(BUILD_FLAGS)   -DCODEC_MASTER=1 \
+                                                -DXUA_PCM_FORMAT=XUA_PCM_FORMAT_TDM \
+                                                -DMAX_FREQ=96000
+INCLUDE_ONLY_IN_2ASi8o8xxxxxx_tdm8 =
 
 # Audio Class 2, Async, I2S Master, 10xInput, 10xOutput, S/PDIF Tx, S/PDIF Rx
-XCC_FLAGS_2AMi10o10xssxxx = $(BUILD_FLAGS)		-DXUA_SPDIF_TX_EN=1 \
-						   						-DXUA_SPDIF_RX_EN=1
+XCC_FLAGS_2AMi10o10xssxxx = $(BUILD_FLAGS)     	-DXUA_SPDIF_TX_EN=1 \
+                                            	-DXUA_SPDIF_RX_EN=1
 INCLUDE_ONLY_IN_2AMi10o10xssxxx =
-
-# Audio Class 2, Async, I2S Slave, 10xInput, 10xOutput, S/PDIF Tx, S/PDIF Rx
-XCC_FLAGS_2ASi10o10xssxxx = $(BUILD_FLAGS)		-DXUA_SPDIF_TX_EN=1 \
-						   						-DXUA_SPDIF_RX_EN=1 \
-												-DCODEC_MASTER=1
-INCLUDE_ONLY_IN_2ASi10o10xssxxx =
-
-# Audio Class 2, Async, I2S Master, 10xInput, 8xOutput, S/PDIF Rx
-XCC_FLAGS_2AMi10o8xsxxxx = $(BUILD_FLAGS) 		-DXUA_SPDIF_RX_EN=1
-INCLUDE_ONLY_IN_2AMi10o8xsxxxx =
 
 # Audio Class 2, Async, I2S Master, 16xInput, 8xOutput, ADAT Rx
 XCC_FLAGS_2AMi16o8xxxaxx = $(BUILD_FLAGS) 		-DXUA_ADAT_RX_EN=1
@@ -122,28 +83,26 @@ XCC_FLAGS_2SSi8o8xxxxxx = $(BUILD_FLAGS)		-DXUA_SYNCMODE=XUA_SYNCMODE_SYNC \
 												-DCODEC_MASTER=1
 INCLUDE_ONLY_IN_2SSi8o8xxxxxx =
 
-# Audio Class 2, Sync, I2S Master, 10xInput, 10xOutput, TDM
-# (1024x Mclk required for 192/176 TDM)
-XCC_FLAGS_2SMi10o10xxxxxx_tdm8 = $(BUILD_FLAGS)	-DXUA_PCM_FORMAT=XUA_PCM_FORMAT_TDM \
-												-DXUA_SYNCMODE=XUA_SYNCMODE_SYNC \
-												-DMCLK_48=1024*48000 \
-												-DMCLK_441=1024*44100
-INCLUDE_ONLY_IN_2SMi10o10xxxxxx_tdm8 = 
-
-#
-# Addtional build configs for testing etc
-#
-
-# Audio Class 2, Async, I2S Master, 10xInput, 10xOutput, S/PDIF Tx, S/PDIF Rx, Self Powered
-XCC_FLAGS_2AMi10o10xssxxx_sp = $(BUILD_FLAGS)	-DXUA_SPDIF_TX_EN=1 \
-						   						-DXUA_SPDIF_RX_EN=1 \
-												-DXUA_POWERMODE=XUA_POWERMODE_SELF
-INCLUDE_ONLY_IN_2AMi10o10xssxxx_sp =
-
-ifeq ($(TEST_CONFIGS),1)
-XCC_FLAGS_upgrade1 = $(BUILD_FLAGS) -DBCD_DEVICE_J=0x99 -DBCD_DEVICE_M=0x0 -DBCD_DEVICE_N=0x1
-XCC_FLAGS_upgrade2 = $(BUILD_FLAGS) -DBCD_DEVICE_J=0x99 -DBCD_DEVICE_M=0x0 -DBCD_DEVICE_N=0x2
+ifneq ($(CONFIG),)
+BUILD_TEST_CONFIGS = 1
 endif
+
+BUILD_TEST_CONFIGS ?= 0
+ifeq ($(BUILD_TEST_CONFIGS),1)
+include configs_build.inc
+PARTIAL_TEST_CONFIGS = 1
+endif
+
+PARTIAL_TEST_CONFIGS ?= 0
+ifeq ($(PARTIAL_TEST_CONFIGS),1)
+include configs_partial.inc
+endif
+
+TEST_SUPPORT_CONFIGS ?= 0
+ifeq ($(TEST_SUPPORT_CONFIGS),1)
+include configs_test.inc
+endif
+
 
 #=============================================================================
 # The following part of the Makefile includes the common build infrastructure

@@ -25,14 +25,24 @@ pipeline {
 
         viewEnv() {
           dir("${REPO}") {
-            sh 'xmake -C app_usb_aud_xk_316_mc -j16 TEST_CONFIGS=1'
+            // Build and archive the main app configs; doing each app separately is faster than xmake in top directory
+            sh 'xmake -C app_usb_aud_xk_316_mc -j16'
+            sh 'xmake -C app_usb_aud_xk_216_mc -j16'
+            sh 'xmake -C app_usb_aud_xk_evk_xu316 -j16'
+            archiveArtifacts artifacts: "app_usb_aud_*/bin/**/*.xe", fingerprint: true, allowEmptyArchive: false
+
+            // Build all other configs for testing and stash for stages on the later agents
+            sh 'xmake -C app_usb_aud_xk_316_mc -j16 BUILD_TEST_CONFIGS=1 TEST_SUPPORT_CONFIGS=1'
             stash includes: 'app_usb_aud_xk_316_mc/bin/**/*.xe', name: 'xk_316_mc_bin', useDefaultExcludes: false
- 
-            sh 'xmake -C app_usb_aud_xk_216_mc -j16 TEST_CONFIGS=1'
+
+            sh 'xmake -C app_usb_aud_xk_216_mc -j16 BUILD_TEST_CONFIGS=1 TEST_SUPPORT_CONFIGS=1'
             stash includes: 'app_usb_aud_xk_216_mc/bin/**/*.xe', name: 'xk_216_mc_bin', useDefaultExcludes: false
 
-            sh 'xmake -C app_usb_aud_xk_evk_xu316 -j16 TEST_CONFIGS=1'
+            sh 'xmake -C app_usb_aud_xk_evk_xu316 -j16 BUILD_TEST_CONFIGS=1 TEST_SUPPORT_CONFIGS=1'
             stash includes: 'app_usb_aud_xk_evk_xu316/bin/**/*.xe', name: 'xk_evk_xu316_bin', useDefaultExcludes: false
+
+            // Build untested app
+            sh 'xmake -C app_usb_aud_xk_evk_xu316_extrai2s -j16'
           }
         }
       }
