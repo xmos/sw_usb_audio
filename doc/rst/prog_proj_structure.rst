@@ -31,11 +31,11 @@ Applications and there respective hardware platforms are listed in :ref:`proj_ap
 
    * - Application
      - Hardware platform
-   * - app_usb_aud_xk_316_mc
+   * - `app_usb_aud_xk_316_mc`
      - xCORE.ai USB Audio 2.0 Multi-channel Audio Board
-   * - app_usb_aud_xk_216_mc
+   * - `app_usb_aud_xk_216_mc`
      - xCORE-200 USB Audio 2.0 Multi-channel Audio Board
-   * - app_usb_aud_xk_evk_xu316
+   * - `app_usb_aud_xk_evk_xu316`
      - xCORE.ai Evaluation Kit
 
 The code is split into several modules (or `library`) directories, each their own GIT repository. The code for these 
@@ -49,28 +49,27 @@ in :ref:`proj_core_libs`.
 
 .. _proj_core_libs:
 
-.. list-table:: Core Libraries of USB Audio
+.. list-table:: Core dependenciesgit of USB Audio
    :header-rows: 1
    :widths: 20 80
     
    * - Library
      - Description
-   * - lib_xua
+   * - `lib_xua`
      - Common code for USB audio applications
-   * - lib_xud
+   * - `lib_xud`
      - Low level USB device library
-   * - lib_spdif
+   * - `lib_spdif`
      - S/PDIF transmit and receive code
-   * - lib_adat
+   * - `lib_adat`
      - ADAT transmit and receive code
-   * - lib_mic_array
+   * - `lib_mic_array`
      - PDM microphone interface and decimator
-   * - lib_xassert
+   * - `lib_xassert`
      - Lightweight assertions library
 
+.. note:: 
 
-|newpage|
-
-
+   Some of these core dependencies will have their own dependencies, for example ``lib_mic_array`` depnds on ``lib_xasset`` (see above), ``lib_logging`` (a lightweight print library) and ``lib_dsp`` (a DSP library).
 
  
