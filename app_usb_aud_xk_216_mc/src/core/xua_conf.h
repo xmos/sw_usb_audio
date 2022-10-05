@@ -51,7 +51,7 @@
 #endif
 
 /* Board is self-powered i.e. not USB bus-powered */
-#define SELF_POWERED       1
+#define XUA_POWERMODE      XUA_POWERMODE_SELF
 
 /* Enable/Disable MIDI - Default is MIDI off */
 #ifndef MIDI
