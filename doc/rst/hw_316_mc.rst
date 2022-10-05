@@ -3,13 +3,67 @@ xCORE.ai Multi-Channel Audio Board
 
 The `XMOS xCORE.ai Multichannel Audio Board` (XK-AUDIO-316-MC) is a complete hardware and software reference platform targeted at up to 32-channel USB audio applications, such as DJ decks, mixers and other musical instrument interfaces.  The board can also be used to prototype products with reduced feature sets or HiFi style products.
 
-The XK-AUDIO-316-MC is based around the XU316-1024-TQ128-C24 multicore microcontroller; a dual-tile xCORE.ai device with an integrated High Speed USB 2.0 PHY and 16 logical cores delivering up to 3200MIPS of deterministic and responsive processing power.
+The XK-AUDIO-316-MC is based around the XU316-1024-TQ128-C24 multicore microcontroller; a dual-tile xCORE.ai device with an integrated High Speed USB 2.0 PHY and 16 logical cores delivering up to 2400MIPS of deterministic and responsive processing power.
 
-Exploiting the flexible programmability of the xCORE.ai architecture, the XK-AUDIO-316-MC supports a USB audio source, streaming 8 analogue input and 8 analogue output audio channels simultaneously - at up to 192kHz. It also supports digital input/output streams (S/PDIF and ADAT) and MIDI.
+Exploiting the flexible programmability of the xCORE.ai architecture, the XK-AUDIO-316-MC supports a USB audio source, streaming 8 analogue input and 8 analogue output audio channels simultaneously - at up to 192kHz. It also supports digital input/output streams (S/PDIF and ADAT) and MIDI. Ideal for consumer and professional USB audio interfaces. The board can also be used for testing general purpose audio DSP activities - mixing, filtering, etc.
+
+The guaranteed Hardware-ResponseTM times of xCORE technology always ensure lowest latency (round trip as low as 3ms), bit perfect audio streaming to and from the USB host
 
 For full details regarding the hardware please refer to `xCORE.ai Multichannel Audio Platform Hardware Manual <ADD LINK HERE>`_.
 
-The XK-AUDIO-316-MC reference hardware has an associated firmware application that uses `lib_xua` to implemented a USB Audio Device. Full details of this application can be found later in this document.
+The XK-AUDIO-316-MC reference hardware has an associated firmware application that uses `lib_xua` to implement fully-features and production ready USB Audio solution. Full details of this application can be found later in this document.
+
+|newpage|
+
+Hardware Features
++++++++++++++++++
+
+The location of the various featurs of the xCORE.ai Multichannel Audio Board (XK-AUDIO-316-MC) is shown in :ref:`xk_audio_316_mc_block_diagram`. 
+
+.. _xk_audio_316_mc_block_diagram:
+.. figure:: images/xk_316_audio_mc.pdf
+    :scale: 70%
+
+    xcore.ai Multichannel Audio Board block diagram
+
+It includes the following features:
+
+- A: xCORE.ai (XU316-1024-TQ128-C24) multicore microcontroller device
+
+- B: 8 line level analog outputs (3.5mm stereo jacks)
+
+- C: 8 line level analog inputs (3.5mm stereo jacks)
+
+- D: 384kHz 24 bit audio DACs
+
+- E: 192kHz 24 bit audio ADCs
+
+- F: Optical connections for digital interface (e.g. S/PDIF and ADAT)
+
+- G: Coaxial connections for digital interfaces (e.g. S/PDIF)
+
+- H: MIDI in and out connections
+
+- I: Flexible audio master clock generation
+
+- J: USB 2.0 micro-B jacks
+
+- L: 4 general purpose LEDs
+
+- M: 3 general purpose buttons
+
+- O: Flexible I2S/TDM input data routing
+
+- P: Flexible I2S/TDM output data routing
+
+- Q: Integrated power supply
+
+- R: Quad-SPI boot ROM
+
+- S: 24MHz Crystal
+
+- T: Integrated XTAG4 debugger
+
 
 Analogue Input & Output
 +++++++++++++++++++++++
@@ -31,7 +85,10 @@ The output data streams from the xCORE are re-clocked using the external master 
 MIDI
 ++++
 
-MIDI I/O is provided on the board via standard 5-pin DIN connectors. The signals are buffered using 5V line drivers and are then connected ports on the xCORE, via a 5V to 3.3V buffer. A 1-bit port is used for receive and a 4-bit port is used for transmit.
+MIDI input and output is provided on the board via standard 5-pin DIN connectors compliant to the MIDI specification.
+The signals are buffered using 5V line drivers and are then connected ports on the xCORE, via a 5V to 3.3V buffer. 
+A 1-bit port is used for receive and a 4-bit port is used for transmit. A pullup resistor on the MIDI output ensures there
+is no MIDI output when the xCORE device is not actively driving the output.
 
 Audio Clocking
 ++++++++++++++
@@ -47,6 +104,10 @@ Three methods of generating an audio master clock are provided on the board:
     * xCORE.ai devices are equipped with a secondary (or `application`) PLL which can be used to generate audio clocks.
 
 Selecting between these methods is done via writing to bits 6 and 7 of PORT 8D on tile[0]. See :ref:`hw_316_ctrlport`.
+
+.. note::
+    
+    The supplied software currently supports the xCORE.ai secondary PLL or CS2100 device.
 
 .. _hw_316_ctrlport:
 

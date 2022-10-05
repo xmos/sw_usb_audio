@@ -11,7 +11,7 @@ Audio Class 2.0 and USB Audio Class 1.0, asynchronous mode (synchronous as an op
 rates up to 384kHz.
 
 The complete source code, together with the free XMOS XTC development tools and xCORE 
-multi-core micro-controller devices allow the developer to select the exact mix of interfaces 
+multi-core micro-controller devices, allow the developer to select the exact mix of interfaces 
 and processing required.
 
 The XMOS USB Audio solution is deployed as a framework (see `lib_xua``) with reference design 
@@ -22,19 +22,20 @@ This software design guide assumes the reader is familiar with the XC language a
 For more information see `XMOS Programming Guide 
 <https://www.xmos.com/published/xmos-programming-guide>`_.
 
-The reader should also familiarise themselves with the `XMOS USB Device Library 
-<http://www.xmos.com/published/xuddg>`_ and the `XMOS USB Device Design Guide 
-<https://www.xmos.com/zh/node/17007?page=9>`_
+The reader should also familiarise themselves with the `XMOS USB Device Library (lib_xud)
+<https://github.com/xmos/lib_xud/releases/latest>`_ and the `XMOS USB Audio Library (lib_xua)
+<https://github.com/xmos/lib_xua/releases/latest>`_
 
 .. note::
     
     The reader should always refer to the supplied `CHANGELOG` and `README` files for known issues
-    in a specific release
+    of a specific release
 
 .. toctree::
 
     Overview <overview>
     Hardware Platforms <hw>
+    Quick Start <quick>
     Programming Guide <programming>
     USB Audio Applications <apps>
     API <api>
