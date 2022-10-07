@@ -19,31 +19,33 @@ USED_MODULES = lib_xua lib_xud lib_spdif lib_i2c lib_adat
 
 # Audio Class:  1 or 2
 # Sync Mode     A(sync) or S(ync)
+# I2S                   M(aster)/S(lave)
 # Input                 enabled: i (channelcount)
 # Output                enabled: o (channelcount)
 # MIDI                  enabled: m, disabled: x
-# SPDIF out             enabled: s, disabled: x
 # SPDIF in              enabled: s, disabled: x
-# ADAT out              enabled: a, disabled: x
+# SPDIF out             enabled: s, disabled: x
 # ADAT in               enabled: a, disabled: x
+# ADAT out              enabled: a, disabled: x
 # DSD out               enabled: d, disabled: x
-# e.g. 2Ai10o10xsxxx: Audio class 2.0, Asynchronous, input and output enabled (10 channels each), SPDIF output, no SPDIF input, no ADAT
+# e.g. 2Ai10o10xsxxx: Audio class 2.0, Asynchronous, input and output enabled (10 channels each), SPDIF input, no SPDIF output, no ADAT
 
 # Fully tested build configs (Note these make use of the defaults in xua_conf.h)
 
-# Audio Class 1, 2 channels Input, 2 channels Output, no MIDI, no SPDIF
-XCC_FLAGS_1Ai2o2xxxxxx = $(BUILD_FLAGS) -DAUDIO_CLASS=1
-INCLUDE_ONLY_IN_1Ai2o2xxxxxx =
+# Audio Class 1, Async, I2S Master, 2 channels Input, 2 channels Output, no MIDI, no SPDIF
+XCC_FLAGS_1AMi2o2xxxxxx = $(BUILD_FLAGS) -DAUDIO_CLASS=1
+INCLUDE_ONLY_IN_1AMi2o2xxxxxx =
 
-# Audio Class 2, Input, Output, No MIDI, SPDIF out, SPDIF in
-XCC_FLAGS_2Ai10o10xssxxx = $(BUILD_FLAGS) -DXUA_SPDIF_TX_EN=1 -DXUA_SPDIF_RX_EN=1
-INCLUDE_ONLY_IN_2Ai10o10xssxxx =
+# Audio Class 2, Async, I2S Master, 10xInput, 10xOutput, SPDIF in, SPDIF out
+XCC_FLAGS_2AMi10o10xssxxx = $(BUILD_FLAGS) -DXUA_SPDIF_RX_EN=1 \
+                                           -DXUA_SPDIF_TX_EN=1
+INCLUDE_ONLY_IN_2AMi10o10xssxxx =
 
-# Audio Class 2, Input (8), Output (8), No MIDI, No SPDIF i/o, No ADAT i/o, TDM slave mode
-XCC_FLAGS_2Ai8o8xxxxx_tdm8_slave  = $(BUILD_FLAGS) -DI2S_CHANS_DAC=8 -DI2S_CHANS_ADC=8 -DNUM_USB_CHAN_OUT=8 -DNUM_USB_CHAN_IN=8 \
-                                                                -DMIDI=0 -DXUA_SPDIF_TX_EN=0 -DXUA_SPDIF_RX_EN=0 -DADAT_TX=0 -DADAT_RX=0 -DDSD_CHANS_DAC=0 \
-                                                                -DXUA_PCM_FORMAT=XUA_PCM_FORMAT_TDM -DMAX_FREQ=96000 -DMIXER=0 -DCODEC_MASTER=1
-INCLUDE_ONLY_IN_2Ai8o8xxxxx_tdm8_slave =
+# Audio Class 2, Async, I2S Slave, 8xInput, 8xOutput, TDM slave mode
+XCC_FLAGS_2ASi8o8xxxxxx_tdm8  = $(BUILD_FLAGS) -DXUA_PCM_FORMAT=XUA_PCM_FORMAT_TDM \
+                                               -DMAX_FREQ=96000 \
+                                               -DCODEC_MASTER=1
+INCLUDE_ONLY_IN_2ASi8o8xxxxxx_tdm8 =
 
 
 ifneq ($(CONFIG),)
