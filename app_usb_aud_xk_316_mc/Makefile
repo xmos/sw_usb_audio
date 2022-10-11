@@ -7,7 +7,7 @@ APP_NAME =
 
 # The flags passed to xcc when building the application
 # The EXTRA_BUILD_FLAGS variable can be used on the xmake command line to add options
-BUILD_FLAGS    = $(EXTRA_BUILD_FLAGS) -DFLASH_MAX_UPGRADE_SIZE=64*1024 -fcomment-asm -Xmapper --map -Xmapper MAPFILE -O3 -report -lquadflash -g -fxscope -DUSB_TILE=tile[0] -DADAT_TX_USE_SHARED_BUFF=1 -DQUAD_SPI_FLASH=1
+BUILD_FLAGS    = $(EXTRA_BUILD_FLAGS) -DFLASH_MAX_UPGRADE_SIZE=64*1024 -fcomment-asm -Xmapper --map -Xmapper MAPFILE -O3 -report -lquadflash -g -fxscope -DUSB_TILE=tile[0] -DADAT_TX_USE_SHARED_BUFF=1 -DQUAD_SPI_FLASH=1 -save-temps
 
 # The USED_MODULES variable lists other module used by the application. These
 # modules will extend the SOURCE_DIRS, INCLUDE_DIRS and LIB_DIRS variables. 
@@ -17,8 +17,8 @@ USED_MODULES = lib_xua lib_i2c
 # Build config naming scheme:
 #
 # Audio Class:   1 or 2
-# Sync Mode      A(sync)/S(ync)
-# I2S            M(aster)/S(lave)
+# Sync Mode      A(sync) or S(ync)
+# I2S            M(aster) or S(lave)
 # Input          enabled: i (channelcount)
 # Output         enabled: o (channelcount)
 # MIDI           enabled: m, disabled: x
