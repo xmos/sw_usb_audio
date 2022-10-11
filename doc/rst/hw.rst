@@ -7,4 +7,4 @@ This section describes the hardware development platforms supported by the XMOS 
 
    hw_316_mc
    hw_216_mc
-   hw_mic_array
+   hw_evk_xu316

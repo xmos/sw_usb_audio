@@ -3,10 +3,12 @@
 Project Structure
 -----------------
 
+.. _proj_build_system:
+
 Build System
 ++++++++++++
 
-The USB Audio Reference Design software and associated libraries employ the `XMOS XCOMMON` build system. The `XCOMMON` build
+The `XMOS USB Audio Reference Design` software and associated libraries employ the `XMOS XCOMMON` build system. The `XCOMMON` build
 system is built on top of the GNU Makefile build system. The `XCOMMON` build system accelerates the development of xCORE 
 applications. Instead of having to express dependencies explicitly in Makefiles, users should follow a particular folder
 structures and naming convention, from which dependencies are inferred automatically.
@@ -49,7 +51,7 @@ in :ref:`proj_core_libs`.
 
 .. _proj_core_libs:
 
-.. list-table:: Core dependenciesgit of USB Audio
+.. list-table:: Core dependencies of USB Audio
    :header-rows: 1
    :widths: 20 80
     
@@ -70,6 +72,19 @@ in :ref:`proj_core_libs`.
 
 .. note:: 
 
-   Some of these core dependencies will have their own dependencies, for example ``lib_mic_array`` depnds on ``lib_xasset`` (see above), ``lib_logging`` (a lightweight print library) and ``lib_dsp`` (a DSP library).
+   Some of these core dependencies will have their own dependencies, for example ``lib_mic_array`` depnds on ``lib_xassert`` (see above), ``lib_logging`` (a lightweight print library) and ``lib_dsp`` (a DSP library).
 
+Applications may use additional dependencies to support the hardware platform or add features beyond core functionality.
+For example, the application for XK-AUDIO-316-MC uses the additional dependencies listed in :ref:`proj_other_libs`:
+
+.. _proj_other_libs:
+
+.. list-table:: Example additonal dependencies
+   :header-rows: 1
+   :widths: 20 80
+    
+   * - Library
+     - Description
+   * - `lib_i2c`
+     - I2C interface, used to configure DACs/ADCs etc
  

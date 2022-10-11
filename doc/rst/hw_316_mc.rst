@@ -11,7 +11,7 @@ The guaranteed Hardware-ResponseTM times of xCORE technology always ensure lowes
 
 For full details regarding the hardware please refer to `xCORE.ai Multichannel Audio Platform Hardware Manual <ADD LINK HERE>`_.
 
-The XK-AUDIO-316-MC reference hardware has an associated firmware application that uses `lib_xua` to implement fully-features and production ready USB Audio solution. Full details of this application can be found later in this document.
+The XK-AUDIO-316-MC reference hardware has an associated firmware application that uses `lib_xua` to implement fully-featured and production ready USB Audio solution. Full details of this application can be found later in this document.
 
 |newpage|
 
@@ -24,7 +24,7 @@ The location of the various featurs of the xCORE.ai Multichannel Audio Board (XK
 .. figure:: images/xk_316_audio_mc.pdf
     :scale: 70%
 
-    xcore.ai Multichannel Audio Board block diagram
+    xCORE.ai Multichannel Audio Board block diagram
 
 It includes the following features:
 
@@ -72,7 +72,7 @@ A total of eight single-ended analog input channels are provided via 3.5mm stere
 
 A total of eight single-ended analog output channels are provided. These are fed from four PCM5122 stereo DAC's from Texas instruments.
 
-All ADC's and DAC's are configured via an I2C bus. Due to an clash of device addressed a I2C mux is also 
+All ADC's and DAC's are configured via an I2C bus. Due to an clash of device addresses a I2C mux is used.
 
 The four digital I2S/TDM input and output channels are mapped to the xCORE input/outputs through a header array. These jumpers allow channel selection when the ADCs/DACs are used in TDM mode.
 
@@ -148,11 +148,11 @@ All programmable I/O on the board is configured for 3.3 volts.
 
 Four green LED's and three push buttons are provided for general purpose user interfacing. 
 
-The LEDs are connected to PORT 4F and the buttons are connected to bits [0:2] of PORT 4E. Bit 3 of
-this port is connected to the (currently unused) ADC interrupt line.
+The LEDs are connected to PORT 4F and the buttons are connected to bits [0:2] of PORT 4E, both on tile 0. Bit 3 of this
+port is connected to the (currently unused) ADC interrupt line.
 
-The board also includes support for an AES11 format Word Clock input via 75 ohm BNC. The software 
-does not currently support any functionality related to this and it is provided for future expansion.
+The board also includes support for an AES11 format Word Clock input via 75 ohm BNC. The software does not currently 
+support any functionality related to this and it is provided for future expansion.
 
 All spare I/O is brought out and made available on 0.1" headers for easy connection of expansion 
 boards etc.

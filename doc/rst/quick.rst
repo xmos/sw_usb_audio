@@ -14,12 +14,12 @@ Quick Start
       (Section :ref:`quick_start_firmware`.)
 
    #. If using a Windows host computer, download the **USB Audio Class 2.0 Evaluation Driver for Windows** from 
-      :menuitem:`http://xmos.com, MyXMOS,  Applications, USB & Multi-Channel Audio` and followw the `DRIVER SUPPORT` link 
+      :menuitem:`http://xmos.com, Applications, USB & Multi-Channel Audio` and follow the `DRIVER SUPPORT` link 
       and click on `Download`. Once downloaded, run the executable and install the driver. 
 
       (Section :ref:`quick_start_windows_driver`.)
 
-   #. Download the **XMOS XTC Tools** from: http://xmos.com/tools and install. 
+   #. Download the **XMOS XTC Tools** from: http://www.xmos.com/software-tools and install. 
 
       The firmware should be compiled using a specific version of the tools. Make sure that you download the correct version of the tools.
 
@@ -107,7 +107,7 @@ http://www.xmos.com/published/usb-audio-20-stereo-driver-windows-overview
 XMOS XTC Development Tools
 --------------------------
 
-The `XMOS XTC Tools` provide everything you need to develop applications for xCORE multicore microcontrollers and can be downloaded, 
+The `XMOS XTC Tools` provide everything you need to develop applications for `xCORE multicore microcontrollers` and can be downloaded, 
 free of charge, from: http://www.xmos.com/software-tools.
 
 The `XMOS XTC Tools` make it easy to define real-time tasks as a parallel system. They come with standards compliant C and C++ compilers,
@@ -115,7 +115,7 @@ language libraries, simulator, symbolic debugger, and runtime instrumentation an
 task based parallelism and communication, accurate timing and I/O, and safe memory management. All components work off the real-time multicore 
 functionality, giving a fully integrated approach.
 
-The XTC tools are required by anyone developing or deploying applications on an XCore processor. The tools include:
+The XTC tools are required by anyone developing or deploying applications on an `xCORE` processor. The tools include:
 
     * “Tile-level” toolchain (Compiler, assembler, etc)
     * System libraries
@@ -156,10 +156,10 @@ From a command prompt with the XMOS tools available, follow these steps:
 The proceeding steps will build all of the available and supported build configurations for the application.
 
 The main Makefile for the project is in the application directory (e.g. ``app_usb_aud_xk_audio_316_mc``). This file specifies build
-options and used modules/libraries. 
+options and dependencies. 
 
 This Makefile uses the common build infrastructure supplied with XMOS tools in ``module_xmos_common``. This system includes
-the source files from the relevant modules and is documented within ``module_xmos_common``.
+the source files from the relevant modules and is documented within ``module_xmos_common``. See ::ref:`proj_build_system`.
 
 .. _quick_start_running:
 
@@ -168,7 +168,7 @@ Running the Firmware
 
 Typically during development the developer wishes to program the device's internal RAM directly via JTAG and run then execute this program.
 
-To run one of the compiled binaries you must, firstly: 
+To run one of the compiled binaries complete the following steps: 
 
     #. Connect the USB Audio board to your host computer.
 
@@ -183,8 +183,8 @@ Finally, to run the binary on the target, execute a command similar to the follo
 The device should now present itself as a USB Audio Device on the connected host computer. 
 It will continue to operate as a USB Audio Device until the target board is power cycled.
 
-Installing the Application to Flash
------------------------------------
+Writing the Application Binary to Flash
+---------------------------------------
 
 Optionally a binary can be programmed into the boot flash. To do this:
 
@@ -202,10 +202,10 @@ Once flashed the target device will reboot and execute the binary. Power cycling
 
 If subsequently you wish to use ``xrun`` to program the device it is always advisable to erase the flash contents using the ``erase-all`` option to the ``xflash`` tool.
 
-.. _quick_play_audio:
+.. _quick_start_play_audio:
 
-Playing Audio Using the Board
-------------------------------
+Playing Audio
+-------------
 
 .. steps::
 
