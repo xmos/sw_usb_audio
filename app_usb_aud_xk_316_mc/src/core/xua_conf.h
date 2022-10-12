@@ -69,7 +69,7 @@
 #endif
 
 /* Enable/Disable ADAT input - Default is ADAT off */
-#ifndef XUA_SPDIF_RX_EN
+#ifndef XUA_ADAT_RX_EN
 #define XUA_ADAT_RX_EN	   (0)
 #endif
 
@@ -172,7 +172,7 @@
 #endif
 
 /* Channel index of ADAT Rx channels */
-#if defined(XUA_SPDIF_RX_EN) && (XUA_SPDIF_RXEN == 1)
+#if (XUA_SPDIF_RX_EN == 1)
 #define ADAT_RX_INDEX      (SPDIF_RX_INDEX + 2)
 #else
 #define ADAT_RX_INDEX      (I2S_CHANS_ADC)

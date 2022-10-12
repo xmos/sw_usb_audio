@@ -17,21 +17,23 @@ USED_MODULES = lib_xud lib_xua lib_i2c lib_xassert
 # Build config naming scheme:
 
 # Audio Class:  1 or 2
+# Sync Mode     A(sync)/S(ync)
+# I2S           M(aster)/S(lave)
 # Input         enabled: i (channelcount)
 # Output        enabled: o (channelcount)
 # MIDI          enabled: m, disabled: x
-# SPDIF out     enabled: s, disabled: x
 # SPDIF in      enabled: s, disabled: x
-# ADAT out      enabled: a, disabled: x
+# SPDIF out     enabled: s, disabled: x
 # ADAT in       enabled: a, disabled: x
+# ADAT out      enabled: a, disabled: x
 # DSD out       enabled: d, disabled: x
-# e.g. 2i10o10xsxxx: Audio class 2.0, input and output enabled (10 channels each), SPDIF output, no SPDIF input, no ADAT
+# e.g. 2AMi10o10xxsxxx: Audio class 2.0, Asynchronous, I2S Master, input and output enabled (10 channels each), no MIDI, SPDIF output, no SPDIF input, no ADAT
 
 # Fully tested build configs (Note these make use of the defaults in xua_conf.h)
 
-# Audio Class 1, 2 channels Input, 2 channels Output, no MIDI, no SPDIF
-XCC_FLAGS_1i2o2 = $(BUILD_FLAGS) -DAUDIO_CLASS=1 -DMIN_FREQ=44100 -DMAX_FREQ=48000 -DI2S_CHANS_ADC=2 -DI2S_CHANS_DAC=2 -DNUM_USB_CHAN_OUT=2 -DNUM_USB_CHAN_IN=2 -DMIDI=0 -DSPDIF_TX=0
-INCLUDE_ONLY_IN_1i2o2 =
+# Audio Class 1, Async, I2S Master, 2xInput, 2xOutput
+XCC_FLAGS_1AMi2o2xxxxxx = $(BUILD_FLAGS) -DAUDIO_CLASS=1
+INCLUDE_ONLY_IN_1AMi2o2xxxxxx =
 
 
 ifneq ($(CONFIG),)
