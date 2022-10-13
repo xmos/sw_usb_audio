@@ -82,19 +82,9 @@ def create_dfu_bin(board, config):
 
 # Test cases are defined by a tuple of (board, initial config to xflash)
 dfu_testcases = [
-    pytest.param(
-        "xk_216_mc",
-        "2Ai10o10xxxxxx",
-        marks=[pytest.mark.smoke, pytest.mark.nightly, pytest.mark.weekend],
-    ),
-    pytest.param(
-        "xk_316_mc",
-        "2AMi8o8xxxxxx",
-        marks=[pytest.mark.smoke, pytest.mark.nightly, pytest.mark.weekend],
-    ),
-    pytest.param(
-        "xk_evk_xu316", "2i2o2", marks=[pytest.mark.nightly, pytest.mark.weekend]
-    ),
+    ("xk_216_mc", "2AMi10o10xssxxx"),
+    ("xk_316_mc", "2AMi10o10xssxxx"),
+    ("xk_evk_xu316", "2AMi2o2xxxxxx"),
 ]
 
 pids = {
@@ -104,8 +94,15 @@ pids = {
 }
 
 
+def dfu_uncollect(level, board, config):
+    if level == "smoke":
+        return board in ["xk_216_mc", "xk_evk_xu316"]
+    return False
+
+
+@pytest.mark.uncollect_if(func=dfu_uncollect)
 @pytest.mark.parametrize(["board", "config"], dfu_testcases)
-def test_dfu(xtag_wrapper, xmosdfu, board, config):
+def test_dfu(pytestconfig, xtag_wrapper, xmosdfu, board, config):
     adapter_dut, _ = xtag_wrapper
 
     vid = 0x20B1

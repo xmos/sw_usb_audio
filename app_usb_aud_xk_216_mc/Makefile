@@ -7,13 +7,12 @@ APP_NAME =
 
 # The flags passed to xcc when building the application
 # The EXTRA_BUILD_FLAGS variable can be used on the xmake command line to add options
-BUILD_FLAGS    = $(EXTRA_BUILD_FLAGS) -DFLASH_MAX_UPGRADE_SIZE=64*1024 -fcomment-asm -O3 -report -lquadflash -g -fxscope -DUSB_TILE=tile[1] -DADAT_TX_USE_SHARED_BUFF=1 -DQUAD_SPI_FLASH=1
+BUILD_FLAGS    = $(EXTRA_BUILD_FLAGS) -save-temps -DFLASH_MAX_UPGRADE_SIZE=64*1024 -fcomment-asm -O3 -report -lquadflash -g -fxscope -DUSB_TILE=tile[1] -DADAT_TX_USE_SHARED_BUFF=1 -DQUAD_SPI_FLASH=1
 
 # The USED_MODULES variable lists other module used by the application. These
 # modules will extend the SOURCE_DIRS, INCLUDE_DIRS and LIB_DIRS variables. 
 # Modules are expected to be in the directory above the BASE_DIR directory.
 USED_MODULES = lib_xua lib_i2c
-
 
 # Build config naming scheme:
 
@@ -77,7 +76,6 @@ XCC_FLAGS_2AMi32o32xxxxx_tdm8 = $(BUILD_FLAGS) 	-DI2S_CHANS_ADC=32 \
 												-DMAX_FREQ=48000 \
 												-DXUA_SPDIF_TX_EN=1 \
 												-DSPDIF_TX_INDEX=0
-
 
 ifneq ($(CONFIG),)
 BUILD_TEST_CONFIGS = 1

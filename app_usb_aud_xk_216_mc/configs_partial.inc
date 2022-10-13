@@ -1,8 +1,12 @@
 # Configs that have been partially tested, but not as comprehensively as those in the Makefile
 
+# Audio Class 2, Async, I2S Master, 8xInput, 8xOutput
+XCC_FLAGS_2AMi8o8xxxxxx = $(BUILD_FLAGS)
+INCLUDE_ONLY_IN_2AMi8o8xxxxxx =
+
 # Audio Class 2, Async, I2S Master, 8xInput 8xOutput (TDM)
-INCLUDE_ONLY_IN_2AMi8o8xxxxx_tdm8 =
-XCC_FLAGS_2AMi8o8xxxxx_tdm8 = $(BUILD_FLAGS) 	-DXUA_PCM_FORMAT=XUA_PCM_FORMAT_TDM \
+INCLUDE_ONLY_IN_2AMi8o8xxxxxx_tdm8 =
+XCC_FLAGS_2AMi8o8xxxxxx_tdm8 = $(BUILD_FLAGS) 	-DXUA_PCM_FORMAT=XUA_PCM_FORMAT_TDM \
 												-DMAX_FREQ=96000
 
 # Audio Class 2, Async, I2S Slave, 8xInput 8xOutput (TDM)
@@ -10,6 +14,10 @@ INCLUDE_ONLY_IN_2ASi8o8xxxxx_tdm8 =
 XCC_FLAGS_2ASi8o8xxxxx_tdm8 = $(BUILD_FLAGS) 	-DXUA_PCM_FORMAT=XUA_PCM_FORMAT_TDM \
 												-DMAX_FREQ=96000 \
 												-DCODEC_MASTER=1
+
+ # Audio Class 2, Async, I2S Slave, 8xInput, 8xOutput
+XCC_FLAGS_2ASi8o8xxxxxx = $(BUILD_FLAGS)        -DCODEC_MASTER=1
+INCLUDE_ONLY_IN_2ASi8o8xxxxxx =
 
 # Audio Class 2, Async, I2S Master, 32xInput 32xOutput (TDM)
 INCLUDE_ONLY_IN_2AMi32o32xxxxx_tdm8 = 
@@ -19,6 +27,10 @@ XCC_FLAGS_2AMi32o32xxxxx_tdm8 = $(BUILD_FLAGS) 	-DI2S_CHANS_ADC=32 \
 												-DNUM_USB_CHAN_OUT=32 \
 												-DXUA_PCM_FORMAT=XUA_PCM_FORMAT_TDM \
 												-DMAX_FREQ=48000
+
+# Audio Class 2, Async, I2S Master, 8xInput, 10xOutput, S/PDIF Tx
+XCC_FLAGS_2AMi8o10xxsxxx = $(BUILD_FLAGS)       -DXUA_SPDIF_TX_EN=1
+INCLUDE_ONLY_IN_2AMi8o10xxsxxx =
 
 # Audio Class 2, Async, I2S Master, 8xInput, 10xOutput, MIDI, S/PDIF Tx
 INCLUDE_ONLY_IN_2AMi8o10mxsxxx =  
@@ -53,7 +65,20 @@ XCC_FLAGS_2AXi0o2xxsxxx = $(BUILD_FLAGS) 		-DXUA_SPDIF_TX_EN=1 \
 												-DNUM_USB_CHAN_IN=0 \
 												-DNUM_USB_CHAN_OUT=2
 
-# Audio Class 2, Sync, I2S Master, 10xInput, 10xOutput
+# Audio Class 2, Sync, I2S Master, 8xInput, 8xOutput
 INCLUDE_ONLY_IN_2SMi8o8xxxxxx = 
 XCC_FLAGS_2SMi8o8xxxxxx = $(BUILD_FLAGS)		-DXUA_SYNCMODE=XUA_SYNCMODE_SYNC
+
+# Audio Class 2, Async, I2S Master, 8xInput, 16xOutput, ADAT Tx
+# Sample rate restriced to 96kHz fit in USB bandwidth
+INCLUDE_ONLY_IN_2AMi8o16xxxxax =
+XCC_FLAGS_2AMi8o16xxxxax = $(BUILD_FLAGS) -DXUA_ADAT_TX_EN=1 \
+                                          -DMAX_FREQ=96000
+
+# Audio Class 2, Async, I2S Master, 16xInput, 16xOutput, ADAT Rx, ADAT Tx
+# Sample rate restriced to 96kHz fit in USB bandwidth
+INCLUDE_ONLY_IN_2AMi16o16xxxaax =
+XCC_FLAGS_2AMi16o16xxxaax = $(BUILD_FLAGS) -DXUA_ADAT_RX_EN=1 \
+                                           -DXUA_ADAT_TX_EN=1 \
+                                           -DMAX_FREQ=96000
 

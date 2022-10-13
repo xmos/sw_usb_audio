@@ -61,9 +61,15 @@ def get_firmware_path_harness(board, config=None):
 
 
 def get_firmware_path(board, config):
-    fw_path = Path(__file__).parents[1] / f"app_usb_aud_{board}" / "bin" / config / f"app_usb_aud_{board}_{config}.xe"
+    # XE can be called app_usb_aud_{board}.xe or app_usb_aud_{board}_{config}.xe
+    xe_name = f"app_usb_aud_{board}_{config}.xe"
+    fw_path_base = Path(__file__).parents[1] / f"app_usb_aud_{board}" / "bin" / config
+    fw_path = fw_path_base / xe_name
     if not fw_path.exists():
-        pytest.fail(f"Firmware not present at {fw_path}")
+        xe_name = f"app_usb_aud_{board}.xe"
+        fw_path = fw_path_base / xe_name
+        if not fw_path.exists():
+            pytest.fail(f"Firmware not present at {fw_path_base}")
     return fw_path
 
 
@@ -97,10 +103,6 @@ def run_audio_command(outfile, exe, *args):
             return
 
     subprocess.Popen([exe, *args], stdout=outfile, text=True)
-
-
-def mark_tests(level_mark, testcases):
-    return [pytest.param(*tc, marks=level_mark) for tc in testcases]
 
 
 def get_line_matches(lines, expected):

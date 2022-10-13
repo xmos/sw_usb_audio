@@ -8,12 +8,11 @@
 #define _XUA_CONF_H_
 
 /*
- * Device configuration option defines to override default defines found in lib_xua/api/xua_conf_default.h
+ * Device configuration option defines to override default defines found lib_xua/api/xua_conf_defaults.h
  *
  * Build can be customised but changing and adding defines here
  *
- * Note, we check if they are already defined in Makefile
- */
+ * Note, we check if they are already defined in Makefile */
 
 /*** Defines relating to basic functionality ***/
 /* Enable/Disable MIDI - Default is MIDI off */
@@ -150,4 +149,3 @@
 #include "user_main.h"
 
 #endif
-
