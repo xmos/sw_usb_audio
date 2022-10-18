@@ -20,13 +20,10 @@ TEST_SUBDIRS =
 # the targets below here.
 
 %.all:
-	cd $* && xmake all
+	cd $* && xmake BUILD_TEST_CONFIGS=1 BUILD_PARTIAL_CONFIGS=1 all
 
 %.clean:
-	cd $* && xmake clean
-
-%.test:
-	cd $* && xmake test
+	cd $* && xmake BUILD_TEST_CONFIGS=1 BUILD_PARTIAL_CONFIGS=1 clean
 
 all: $(foreach x, $(BUILD_SUBDIRS), $x.all)
 plugins: $(foreach x, $(PLUGIN_SUBDIRS), $x.all)
