@@ -27,19 +27,21 @@ The design uses the following tasks:
  * Clockgen
  * MIDI
 
-:ref:`usb_audio_l2_threads`  shows the software layout of the USB
-Audio 2.0 Multichannel Reference Design running on the `xCORE-200` device.
-
-.. _usb_audio_l2_threads:
-
-.. figure:: images/threads-l2-crop.*
-     :width: 90%
-     :align: center    
-
-     Dual Tile xCORE-200 Series Reference Design Core Layout
+The software layout of the USB Audio 2.0 Reference Design running on the
+`xCORE.ai` device is shown in :ref:`usb_audio_x200_threads`.
 
 Each circle depicts a task running in a single core concurrently with the others task. The 
 lines show the communication between each task. 
+
+.. _usb_audio_x200_threads:
+
+.. figure:: images/threads_l2_crop.pdf
+     :width: 90%
+     :align: center    
+
+     xCORE-200 Multichannel Audio System/Core Diagram
+
+|newpage|
 
 Clocking and Clock Selection
 +++++++++++++++++++++++++++++
@@ -84,7 +86,7 @@ The board is equipped with a single multi-channel audio DAC (Cirrus Logic CS4384
 multi-channel ADC (Cirrus Logic CS5368) giving 8 channels of analogue output and 8 channels of 
 analogue input.
 
-Configuration of both the DAC and ADC takes place using I2C.  The design uses the I2C lib
+Configuration of both the DAC and ADC takes place using I2C.  The design uses
 `lib_i2c <http://www.github.com/xmos/lib_i2c>`_.
 
 The reset lines of the DAC and ADC are connected to bits 1 and 6 of `PORT 8C` respectively.
@@ -119,7 +121,8 @@ The reference design can be built in several ways by changing the
 build options.  These are described in :ref:`sec_custom_defines_api`. 
 
 The design has only been fully validated against the build options as set in the
-application as distributed in the Makefile.  See :ref:`usb_audio_sec_valbuild` for details and general information binary naming scheme.
+application as distributed in the Makefile.  See :ref:`usb_audio_sec_valbuild` for details and general information on
+build configuation naming scheme.
 
 These fully validated build configurations are enumerated in the supplied Makefile
 

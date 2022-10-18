@@ -60,7 +60,7 @@ Hint, a naive approach would simply include right-shifting the audio data by 7 b
 would of course lose LSB data depending on the sample-depth.
 
 Example: Adding DSP to the Output Stream
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 To add some DSP requires an extra core of computation. Depending on the `xCORE` device being used you may have to disable some
 existing functionality to free up a core (e.g. disable S/PDIF). There are many ways that DSP processing can be added,

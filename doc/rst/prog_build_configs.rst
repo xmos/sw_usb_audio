@@ -70,9 +70,7 @@ Reference Design` software therefore defines three levels of quality:
 .. note::
 
    Typically disabing a function should have no effect on QA. For example, disabling S/PDIF on a fully-tested configuration
-   with it enabled should not effect its quality. You should also expect a quality level of a configuration to carry over
-   between XMOS device series.. 
-
+   with it enabled should not effect its quality. 
 `XMOS` aims to provide fully tested configurations for popular device configurations and common customer requirements.
 
 .. note::
@@ -92,6 +90,13 @@ only build fully tested configurations. Partially tested and build tested config
     representative of the final release firmware. Additionally, some releases may include feaures of lesser quality level. 
     For example a beta release may contain a feature still at alpha level quality. See application ``README`` 
     for details of any such features.
+
+.. note:: 
+
+    Due to the similarities between the `xCORE-200` and `xCORE.ai` series feature sets, it is fully expected that all 
+    listed `xCORE-200` series configurations will operate as expected on the `xCORE.ai` series and vice versa. It is therefore 
+    expected that a quality level of a configuration will migrate between XMOS device series.
+
 
 |newpage|
 

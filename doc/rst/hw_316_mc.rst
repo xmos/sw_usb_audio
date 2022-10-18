@@ -1,3 +1,6 @@
+
+.. _usb_audio_sec_hw_316_mc:
+
 xCORE.ai Multi-Channel Audio Board
 ...................................
 
