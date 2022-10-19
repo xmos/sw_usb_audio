@@ -78,7 +78,7 @@
 /*** Defines relating to channel arrangement/indices ***/
 /* Channel index of S/PDIF Tx channels: separate channels after analogue channels (if they fit) */
 #ifndef SPDIF_TX_INDEX
-    #if (I2S_CHANS_DAC + 2*XUA_SPDIF_TX_EN) < NUM_USB_CHAN_OUT
+    #if (I2S_CHANS_DAC + 2*XUA_SPDIF_TX_EN) <= NUM_USB_CHAN_OUT
         #define SPDIF_TX_INDEX   (I2S_CHANS_DAC)
     #else
         #define SPDIF_TX_INDEX   (0)
@@ -92,7 +92,7 @@
 
 /* Channel index of ADAT Tx channels: separate channels after S/PDIF channels (if they fit) */
 #ifndef ADAT_TX_INDEX
-    #if (I2S_CHANS_DAC + 2*XUA_SPDIF_TX_EN + 8*XUA_ADAT_TX_EN) < NUM_USB_CHAN_OUT
+    #if (I2S_CHANS_DAC + 2*XUA_SPDIF_TX_EN + 8*XUA_ADAT_TX_EN) <= NUM_USB_CHAN_OUT
         #define ADAT_TX_INDEX    (I2S_CHANS_DAC + 2*XUA_SPDIF_TX_EN)
     #else
         #define ADAT_TX_INDEX    (0)
