@@ -43,50 +43,50 @@ INCLUDE_ONLY_IN_1AMi2o2xxxxxx =
 XCC_FLAGS_1AMi2o2xxxxxx = $(BUILD_FLAGS) 		-DAUDIO_CLASS=1
 
 # Audio Class 2, Async, I2S Master, 8xInput, 8xOutput
-XCC_FLAGS_2AMi8o8xxxxxx = $(BUILD_FLAGS)		
 INCLUDE_ONLY_IN_2AMi8o8xxxxxx = 
+XCC_FLAGS_2AMi8o8xxxxxx = $(BUILD_FLAGS)		
 
 # Audio Class 2, Async, I2S Master, 8xInput, 8xOutput, TDM
 # TODO can run at 192kHz when AppPLL settings for 49MHz added
-XCC_FLAGS_2AMi8o8xxxxxx_tdm8 = $(BUILD_FLAGS)	-DXUA_PCM_FORMAT=XUA_PCM_FORMAT_TDM \
+INCLUDE_ONLY_IN_2AMi8o8xxxxxxx_tdm8 = 
+XCC_FLAGS_2AMi8o8xxxxxxx_tdm8 = $(BUILD_FLAGS)	-DXUA_PCM_FORMAT=XUA_PCM_FORMAT_TDM \
 												-DMAX_FREQ=96000
-INCLUDE_ONLY_IN_2AMi8o8xxxxxx_tdm8 = 
 
 # Audio Class 2, Async, I2S Slave, 8xInput, 8xOutput, TDM
+INCLUDE_ONLY_IN_2ASi8o8xxxxxx_tdm8 =
 XCC_FLAGS_2ASi8o8xxxxxx_tdm8 = $(BUILD_FLAGS)   -DCODEC_MASTER=1 \
                                                 -DXUA_PCM_FORMAT=XUA_PCM_FORMAT_TDM \
                                                 -DMAX_FREQ=96000
-INCLUDE_ONLY_IN_2ASi8o8xxxxxx_tdm8 =
 
 # Audio Class 2, Async, I2S Master, 10xInput, 10xOutput, S/PDIF Tx, S/PDIF Rx
+INCLUDE_ONLY_IN_2AMi10o10xssxxx =
 XCC_FLAGS_2AMi10o10xssxxx = $(BUILD_FLAGS)     	-DXUA_SPDIF_TX_EN=1 \
                                             	-DXUA_SPDIF_RX_EN=1
-INCLUDE_ONLY_IN_2AMi10o10xssxxx =
 
 # Audio Class 2, Async, I2S Master, 16xInput, 8xOutput, ADAT Rx
-XCC_FLAGS_2AMi16o8xxxaxx = $(BUILD_FLAGS) 		-DXUA_ADAT_RX_EN=1
 INCLUDE_ONLY_IN_2AMi16o8xxxaxx =
+XCC_FLAGS_2AMi16o8xxxaxx = $(BUILD_FLAGS) 		-DXUA_ADAT_RX_EN=1
 
 # Audio Class 2, Async, I2S master, 8xInput, 16xOutput, ADAT Tx
-XCC_FLAGS_2AMi8o16xxxxax = $(BUILD_FLAGS) 		-DXUA_ADAT_TX_EN=1
 INCLUDE_ONLY_IN_2AMi8o16xxxxax =
+XCC_FLAGS_2AMi8o16xxxxax = $(BUILD_FLAGS) 		-DXUA_ADAT_TX_EN=1
 
 #
 # Synchronous Mode Configs
 #
 # Audio Class 1, Sync, I2S Master, 2xInput, 2xOutput
+INCLUDE_ONLY_IN_1SMi2o2xxxxxx =
 XCC_FLAGS_1SMi2o2xxxxxx = $(BUILD_FLAGS)		-DAUDIO_CLASS=1 \
 						 						-DXUA_SYNCMODE=XUA_SYNCMODE_SYNC
-INCLUDE_ONLY_IN_1SMi2o2xxxxxx =
 
 # Audio Class 2, Sync, I2S Master, 8xInput, 8xOutput
-XCC_FLAGS_2SMi8o8xxxxxx = $(BUILD_FLAGS)		-DXUA_SYNCMODE=XUA_SYNCMODE_SYNC
 INCLUDE_ONLY_IN_2SMi8o8xxxxxx =
+XCC_FLAGS_2SMi8o8xxxxxx = $(BUILD_FLAGS)		-DXUA_SYNCMODE=XUA_SYNCMODE_SYNC
 
 # Audio Class 2, Sync, I2S Slave, 8xInput, 8xOutput
+INCLUDE_ONLY_IN_2SSi8o8xxxxxx =
 XCC_FLAGS_2SSi8o8xxxxxx = $(BUILD_FLAGS)		-DXUA_SYNCMODE=XUA_SYNCMODE_SYNC \
 												-DCODEC_MASTER=1
-INCLUDE_ONLY_IN_2SSi8o8xxxxxx =
 
 ifneq ($(CONFIG),)
 BUILD_TEST_CONFIGS = 1
