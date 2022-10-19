@@ -48,8 +48,8 @@ XCC_FLAGS_2AMi8o8xxxxxx = $(BUILD_FLAGS)
 
 # Audio Class 2, Async, I2S Master, 8xInput, 8xOutput, TDM
 # TODO can run at 192kHz when AppPLL settings for 49MHz added
-INCLUDE_ONLY_IN_2AMi8o8xxxxxxx_tdm8 = 
-XCC_FLAGS_2AMi8o8xxxxxxx_tdm8 = $(BUILD_FLAGS)	-DXUA_PCM_FORMAT=XUA_PCM_FORMAT_TDM \
+INCLUDE_ONLY_IN_2AMi8o8xxxxxx_tdm8 = 
+XCC_FLAGS_2AMi8o8xxxxxx_tdm8 = $(BUILD_FLAGS)	-DXUA_PCM_FORMAT=XUA_PCM_FORMAT_TDM \
 												-DMAX_FREQ=96000
 
 # Audio Class 2, Async, I2S Slave, 8xInput, 8xOutput, TDM

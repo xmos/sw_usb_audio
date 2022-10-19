@@ -36,7 +36,7 @@ def parse_features(config):
     config_re = r"^(?P<uac>[12])(?P<sync_mode>[AS])(?P<slave>[MS])i(?P<chan_i>\d+)o(?P<chan_o>\d+)(?P<midi>[mx])(?P<spdif_i>[sx])(?P<spdif_o>[sx])(?P<adat_i>[ax])(?P<adat_o>[ax])(?P<dsd>[dx])(?P<tdm8>(_tdm8)?)"
     match = re.search(config_re, config)
     if not match:
-        pytest.exit(f"Unable to parse features from {config}")
+        pytest.exit(f"Error: Unable to parse features from {config}")
 
     # Form dictionary of features then convert items to integers or boolean as required
     features = match.groupdict()

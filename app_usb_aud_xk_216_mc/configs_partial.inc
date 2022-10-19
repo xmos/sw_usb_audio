@@ -10,8 +10,8 @@ XCC_FLAGS_2AMi8o8xxxxxx_tdm8 = $(BUILD_FLAGS) 	-DXUA_PCM_FORMAT=XUA_PCM_FORMAT_T
 												-DMAX_FREQ=96000
 
 # Audio Class 2, Async, I2S Slave, 8xInput 8xOutput (TDM)
-INCLUDE_ONLY_IN_2ASi8o8xxxxx_tdm8 =
-XCC_FLAGS_2ASi8o8xxxxx_tdm8 = $(BUILD_FLAGS) 	-DXUA_PCM_FORMAT=XUA_PCM_FORMAT_TDM \
+INCLUDE_ONLY_IN_2ASi8o8xxxxxx_tdm8 =
+XCC_FLAGS_2ASi8o8xxxxxx_tdm8 = $(BUILD_FLAGS) 	-DXUA_PCM_FORMAT=XUA_PCM_FORMAT_TDM \
 												-DMAX_FREQ=96000 \
 												-DCODEC_MASTER=1
 
@@ -20,8 +20,8 @@ XCC_FLAGS_2ASi8o8xxxxxx = $(BUILD_FLAGS)        -DCODEC_MASTER=1
 INCLUDE_ONLY_IN_2ASi8o8xxxxxx =
 
 # Audio Class 2, Async, I2S Master, 32xInput 32xOutput (TDM)
-INCLUDE_ONLY_IN_2AMi32o32xxxxx_tdm8 = 
-XCC_FLAGS_2AMi32o32xxxxx_tdm8 = $(BUILD_FLAGS) 	-DI2S_CHANS_ADC=32 \
+INCLUDE_ONLY_IN_2AMi32o32xxxxxx_tdm8 = 
+XCC_FLAGS_2AMi32o32xxxxxx_tdm8 = $(BUILD_FLAGS) -DI2S_CHANS_ADC=32 \
 												-DI2S_CHANS_DAC=32 \
 												-DNUM_USB_CHAN_IN=32 \
 												-DNUM_USB_CHAN_OUT=32 \
