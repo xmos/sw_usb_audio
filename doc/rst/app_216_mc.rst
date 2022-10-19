@@ -35,7 +35,7 @@ lines show the communication between each task.
 
 .. _usb_audio_x200_threads:
 
-.. figure:: images/threads_l2_crop.pdf
+.. figure:: images/threads-l2-crop.pdf
      :width: 90%
      :align: center    
 
