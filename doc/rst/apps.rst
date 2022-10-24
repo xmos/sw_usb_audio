@@ -20,4 +20,4 @@ Please see ``lib_xua`` documentation for full details.
 
     app_316_mc
     app_216_mc
-    app_mic_arr
+

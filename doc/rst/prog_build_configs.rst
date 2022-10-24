@@ -80,7 +80,7 @@ Reference Design` software therefore defines three levels of quality:
 Fully tested configurations can be found in the application Makefile. Partially and build tested configurations can be 
 found in the ``configs_partial.inc`` and ``configs_build.inc`` files respectively. Using the command ``xmake all`` will
 only build fully tested configurations. Partially tested and build tested configurations can be accessed by setting the
-``BUILD_PARTIAL_CONFIGS`` and ``BUILD_TEST_CONFIGS`` variables respectively. For example::
+``PARTIAL_TEST_CONFIGS`` and ``BUILD_TEST_CONFIGS`` variables respectively. For example::
 
     xmake PARTIAL_TEST_CONFIGS=1 all
    

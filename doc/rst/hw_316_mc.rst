@@ -33,9 +33,9 @@ It includes the following features:
 
 - A: xCORE.ai (XU316-1024-TQ128-C24) multicore microcontroller device
 
-- B: 8 line level analog outputs (3.5mm stereo jacks)
+- B: 8 line level analog inputs (3.5mm stereo jacks)
 
-- C: 8 line level analog inputs (3.5mm stereo jacks)
+- C: 8 line level analog outputs (3.5mm stereo jacks)
 
 - D: 384kHz 24 bit audio DACs
 

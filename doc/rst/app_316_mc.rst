@@ -162,6 +162,9 @@ The build configuration naming scheme employed in the makefile is as follows:
    * - USB Sync Mode
      - async: A
      - sync: S
+   * - I2S Role
+     - slave: S
+     - master: M
    * - Input 
      - enabled: i (channel count)
      - disabled: x
@@ -187,7 +190,7 @@ The build configuration naming scheme employed in the makefile is as follows:
      - enabled: d
      - disabled: x
 
-e.g. A build configuration named 2AMi10o10xsxxx would signify: Audio class 2.0 running in asynchronous mode. `xCORE` is 
+e.g. A build configuration named 2AMi10o10xsxxxx would signify: Audio class 2.0 running in asynchronous mode. `xCORE` is 
 I2S master. Input and output enabled (10 channels each), no MIDI, S/PDIF input, no S/PDIF output, no ADAT or DSD.
 
 In addition to this some terms may be appended onto a build configuration name to signify additional options. For

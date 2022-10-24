@@ -1,5 +1,5 @@
 
-.. _sec_custom_defines_api:
+.. _sec_xua_conf_api:
 
 Configuration Defines
 ---------------------
