@@ -36,7 +36,7 @@
 #endif
 
 /* Enable/Disable ADAT input - Default is ADAT off */
-#ifndef XUA_SPDIF_RX_EN
+#ifndef XUA_ADAT_RX_EN
 #define XUA_ADAT_RX_EN     (0)
 #endif
 
