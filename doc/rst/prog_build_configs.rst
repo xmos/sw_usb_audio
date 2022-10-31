@@ -71,6 +71,7 @@ Reference Design` software therefore defines three levels of quality:
 
    Typically disabing a function should have no effect on QA. For example, disabling S/PDIF on a fully-tested configuration
    with it enabled should not effect its quality. 
+
 `XMOS` aims to provide fully tested configurations for popular device configurations and common customer requirements.
 
 .. note::
