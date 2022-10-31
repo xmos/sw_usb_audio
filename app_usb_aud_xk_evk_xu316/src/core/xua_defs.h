@@ -6,6 +6,8 @@
 #ifndef _XUA_CONF_H_
 #define _XUA_CONF_H_
 
+#include "../../../shared/version.h"
+
 /*
  * Device configuration option defines to override default defines found devicedefines.h
  *
