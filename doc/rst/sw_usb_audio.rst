@@ -1,9 +1,6 @@
 
-.. TODO
-.. Description of descriptors
-
 USB Audio Design Guide
-=======================
+######################
 
 The XMOS USB Audio solution provides *USB Audio Class* compliant devices over USB 2.0 (high-speed 
 or full-speed). Based on the XMOS xCORE-200 (XS2) and xCORE.ai (XS3) architectures, it supports USB
