@@ -7,6 +7,8 @@
 #ifndef _XUA_CONF_H_
 #define _XUA_CONF_H_
 
+#include "../../../shared/version.h"
+
 /*
  * Device configuration option defines to override default defines found lib_xua/api/xua_conf_defaults.h
  *
@@ -21,17 +23,6 @@
 
 #define AUDIO_IO_TILE      (1)
 #define MIDI_TILE          (1)
-
-/* Version number */
-#ifndef BCD_DEVICE_J
-#define BCD_DEVICE_J       (7)
-#endif
-#ifndef BCD_DEVICE_M
-#define BCD_DEVICE_M       (0)
-#endif
-#ifndef BCD_DEVICE_N
-#define BCD_DEVICE_N       (0)
-#endif
 
 /* Mixer core enabled by default */
 #ifndef MIXER
