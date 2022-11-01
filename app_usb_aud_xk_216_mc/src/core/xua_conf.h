@@ -7,12 +7,16 @@
 #ifndef _XUA_CONF_H_
 #define _XUA_CONF_H_
 
+#include "app_usb_aud_xk_216_mc.h"
+#include "../../../shared/version.h"
+
 /*
  * Device configuration option defines to override default defines found lib_xua/api/xua_conf_defaults.h
  *
  * Build can be customised but changing and adding defines here
  *
- * Note, we check if they are already defined in Makefile */
+ * Note, we check if they are already defined in Makefile 
+ */
 
 /*** Defines relating to basic functionality ***/
 /* Enable/Disable MIDI - Default is MIDI off */
@@ -132,17 +136,6 @@
 #define PID_AUDIO_1        (0x000F) /* XK-AUDIO-216-MC USB Audio Reference Design PID */
 #define PRODUCT_STR_A2     "XMOS xCORE-200 MC (UAC2.0)"
 #define PRODUCT_STR_A1     "XMOS xCORE-200 MC (UAC1.0)"
-
-/* Version number reported to host - Default matches XMOS release version */
-#ifndef BCD_DEVICE_J
-#define BCD_DEVICE_J       (7)
-#endif
-#ifndef BCD_DEVICE_M
-#define BCD_DEVICE_M       (0)
-#endif
-#ifndef BCD_DEVICE_N
-#define BCD_DEVICE_N       (0)
-#endif
 
 /* Board power source - Default is self-powered */
 #ifndef XUA_POWERMODE
