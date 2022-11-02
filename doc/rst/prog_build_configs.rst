@@ -4,64 +4,102 @@
 Build Configurations
 --------------------
 
-Due to the flexibility of the framework there are many different build options.  For example input
-and output channel count, Audio Class version, interface types etc. A "build configuration" is 
-a set of build options that combine to produce a certain feature set.
+Due to the flexibility of the reference design software there are a large number of build options.  For example input
+and output channel counts, Audio Class version, interface types etc. A "build configuration" is a set of build options 
+that combine to produce a binary with a certain feature set.
 
-Build configurations are listed in the application makefile with their associated options, they can 
-be built within the xTIMEComposer GUI or via the command like as follows::
+The following command builds all supported configurations::
+
+    xmake all
+
+Build configurations are listed in the application Makefile with their associated options, a specific 
+configuration can be built via the command line as follows::
 
     xmake CONFIG=<config name>
 
-When a reference design application is compiled using "build all" (`xmake all` on command line) all
-configurations are automatically built.  
+Once build a corresponding binary for a configuration can be found in the following location::
 
-A naming scheme is employed in each application to link a feature set to a build configuration/binary.  
-Different variations of the same basic scheme are used. This scheme is described in the next section.
+    <app name>/bin/<app name>_<config name>.xe
 
-Validated Build Configurations
-------------------------------
 
-It is not possible for all build configuration permutations to be exhaustively tested.
-XMOS therefore test a subset of build configurations for proper behaviour, these are based on
-popular device configurations.
+Configuration Naming
+--------------------
 
-The presence of a build configuration in an application signifies it as a Validated Build Configuration
-and should be considered supported.
-
-Configuration Naming Scheme
-----------------------------
-
-This section describes the naming scheme for the provided build configurations (and therefore binaries) 
-generated for each build configuration
+A naming scheme is employed in each application to link features to a build configuration/binary.  
+Depending on the hardware interfaces available variations of the same basic scheme are used.
 
 Each relevant build option is assigned a position in the configuration name, with a character denoting the
 options value (normally 'x' is used to denote "off" or "disabled")
 
-For example, :ref:`l1_build_options` lists the build options for the single tile L-Series Reference
-Design.
+Some example build options are listed in :ref:`prog_build_configs_naming`.
 
-.. _l1_build_options:
+.. _prog_build_configs_naming:
 
-.. table::  Single tile L-Series build options
+.. table::  Example build options and naming
 
  +---------------------+-------------+-------------+
  | Build Option Name   | Options     | Denoted by  |
  +=====================+=============+=============+
  | Audio Class Version | 1 or 2      | 1 or 2      |
  +---------------------+-------------+-------------+
- | Audio Input         | on or off   | i or x      |
- +---------------------+-------------+-------------+
- | Audio Output        | on or off   | o or x      |
- +---------------------+-------------+-------------+
  | MIDI                | on or off   | m or x      |
  +---------------------+-------------+-------------+
  | S/PDIF Output       | on or off   | s or x      |
  +---------------------+-------------+-------------+
+ | S/PDIF Input        | on or off   | s or x      |
+ +---------------------+-------------+-------------+
 
-For example a binary named 2ioxs would indicate Audio Class 2.0 with input and output enabled, MIDI
-disabled, SPDIF output enabled.
+For example, in this scheme, a configuration named ``2xsx`` would indicate Audio Class 2.0, MIDI
+disabled, S/PDIF output enabled and S/PDIF input disabled.
 
+Some additional letters or numbers may also be used to denote things like channel counts etc. See comments
+in the application Makefile for details.
+
+Quality & Testing
+-----------------
+
+It is not possible for all build option permutations to be exhaustively tested. The `XMOS USB Audio
+Reference Design` software therefore defines three levels of quality:
+
+    * **Fully Tested** - the configuration is fully supported. A product based on it can be immediately put into to a
+      production environment with high confidence. Quality assurance (QA) should cover any customised code/functionality.
+    * **Partially Tested** - the configuration is partially tested. A product based on it can be put into a production 
+      environment with medium confidence. Some additional QA is recommended.
+    * **Build Tested** - the configuration is guaranteed to build but has not been tested. Full QA is required.
+
+.. note::
+
+   Typically disabing a function should have no effect on QA. For example, disabling S/PDIF on a fully-tested configuration
+   with it enabled should not effect its quality. 
+
+`XMOS` aims to provide fully tested configurations for popular device configurations and common customer requirements.
+
+.. note::
+    
+   It is advised that full QA is a applied to any product regardless of the quality level of the configuration it is based on.
+
+Fully tested configurations can be found in the application Makefile. Partially and build tested configurations can be 
+found in the ``configs_partial.inc`` and ``configs_build.inc`` files respectively. Using the command ``xmake all`` will
+only build fully tested configurations. Partially tested and build tested configurations can be accessed by setting the
+``PARTIAL_TEST_CONFIGS`` and ``BUILD_TEST_CONFIGS`` variables respectively. For example::
+
+    xmake PARTIAL_TEST_CONFIGS=1 all
+   
+.. note::
+
+    Pre-release (i.e. alpha, beta or RC) firmware should not be used as basis for a production device and may not be 
+    representative of the final release firmware. Additionally, some releases may include feaures of lesser quality level. 
+    For example a beta release may contain a feature still at alpha level quality. See application ``README`` 
+    for details of any such features.
+
+.. note:: 
+
+    Due to the similarities between the `xCORE-200` and `xCORE.ai` series feature sets, it is fully expected that all 
+    listed `xCORE-200` series configurations will operate as expected on the `xCORE.ai` series and vice versa. It is therefore 
+    expected that a quality level of a configuration will migrate between XMOS device series.
+
+
+|newpage|
 
 
 

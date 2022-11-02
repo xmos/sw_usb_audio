@@ -7,46 +7,75 @@ APP_NAME =
 
 # The flags passed to xcc when building the application
 # The EXTRA_BUILD_FLAGS variable can be used on the xmake command line to add options
-BUILD_FLAGS    = $(EXTRA_BUILD_FLAGS) -fcomment-asm -Xmapper --map -Xmapper MAPFILE -O3 -report -lquadflash -g -fxscope -march=xs2a -DUSB_TILE=tile[1] -DADAT_TX_USE_SHARED_BUFF=1 -DQUAD_SPI_FLASH=1
+BUILD_FLAGS    = $(EXTRA_BUILD_FLAGS) -fcomment-asm -O3 -report -lquadflash -g -fxscope -march=xs2a -DUSB_TILE=tile[1] -DADAT_TX_USE_SHARED_BUFF=1 -DQUAD_SPI_FLASH=1
 
 # The USED_MODULES variable lists other module used by the application. These
 # modules will extend the SOURCE_DIRS, INCLUDE_DIRS and LIB_DIRS variables. 
 # Modules are expected to be in the directory above the BASE_DIR directory.
-USED_MODULES = lib_xua lib_xud lib_spdif lib_i2c lib_adat
-
+USED_MODULES = lib_xua lib_i2c
 
 # Build config naming scheme:
 
 # Audio Class:  1 or 2
-# Sync Mode     A(sync) or S(ync)
-# I2S                   M(aster)/S(lave)
+# Sync Mode             A(sync) or S(ync)
+# I2S                   M(aster) or S(lave)
 # Input                 enabled: i (channelcount)
 # Output                enabled: o (channelcount)
 # MIDI                  enabled: m, disabled: x
-# SPDIF in              enabled: s, disabled: x
-# SPDIF out             enabled: s, disabled: x
+# S/PDIF in             enabled: s, disabled: x
+# S/PDIF out            enabled: s, disabled: x
 # ADAT in               enabled: a, disabled: x
 # ADAT out              enabled: a, disabled: x
 # DSD out               enabled: d, disabled: x
-# e.g. 2Ai10o10xsxxx: Audio class 2.0, Asynchronous, input and output enabled (10 channels each), SPDIF input, no SPDIF output, no ADAT
+#
+# e.g. 2AMi10o10xsxxx: Audio class 2.0, Asynchronous, I2S Master,input and output enabled (10 channels each), no MIDI, S/PDIF output, no S/PDIF input, no ADAT
 
 # Fully tested build configs (Note these make use of the defaults in xua_conf.h)
 
-# Audio Class 1, Async, I2S Master, 2 channels Input, 2 channels Output, no MIDI, no SPDIF
-XCC_FLAGS_1AMi2o2xxxxxx = $(BUILD_FLAGS) -DAUDIO_CLASS=1
-INCLUDE_ONLY_IN_1AMi2o2xxxxxx =
+# Audio Class 1, I2S Master, 2xInput, 2xOutput
+INCLUDE_ONLY_IN_1AMi2o2xxxxxx = 
+XCC_FLAGS_1AMi2o2xxxxxx = $(BUILD_FLAGS) 		-DAUDIO_CLASS=1
 
-# Audio Class 2, Async, I2S Master, 10xInput, 10xOutput, SPDIF in, SPDIF out
-XCC_FLAGS_2AMi10o10xssxxx = $(BUILD_FLAGS) -DXUA_SPDIF_RX_EN=1 \
-                                           -DXUA_SPDIF_TX_EN=1
+# Audio Class 2, I2S Master, 10xInput, 10xOutput, S/PDIF Rx, S/PDIF Tx
 INCLUDE_ONLY_IN_2AMi10o10xssxxx =
+XCC_FLAGS_2AMi10o10xssxxx = $(BUILD_FLAGS) 		-DXUA_SPDIF_RX_EN=1 \
+												-DXUA_SPDIF_TX_EN=1
 
-# Audio Class 2, Async, I2S Slave, 8xInput, 8xOutput, TDM slave mode
-XCC_FLAGS_2ASi8o8xxxxxx_tdm8  = $(BUILD_FLAGS) -DXUA_PCM_FORMAT=XUA_PCM_FORMAT_TDM \
-                                               -DMAX_FREQ=96000 \
-                                               -DCODEC_MASTER=1
-INCLUDE_ONLY_IN_2ASi8o8xxxxxx_tdm8 =
+# Audio Class 2, I2S Slave, 10xInput, 10xOutput, S/PDIF Rx, S/PDIF Tx
+INCLUDE_ONLY_IN_2AMi10o10xssxxx =
+XCC_FLAGS_2AMi10o10xssxxx = $(BUILD_FLAGS) 		-DXUA_SPDIF_RX_EN=1 \
+												-DXUA_SPDIF_TX_EN=1 \
+												-DCODEC_MASTER=1
 
+# Audio Class 2, I2S Slave, 16xInput 16xOutput (TDM)
+INCLUDE_ONLY_IN_2ASi16o16xxxxxx_tdm8 = 
+XCC_FLAGS_2ASi16o16xxxxxx_tdm8 = $(BUILD_FLAGS) -DI2S_CHANS_ADC=16 \
+												-DI2S_CHANS_DAC=16 \
+												-DNUM_USB_CHAN_IN=16 \
+												-DNUM_USB_CHAN_OUT=16 \
+												-DXUA_PCM_FORMAT=XUA_PCM_FORMAT_TDM \
+												-DMAX_FREQ=96000 \
+												-DCODEC_MASTER=1
+
+# Audio Class 2, I2S Master, 16xInput 16xOutput (TDM)
+INCLUDE_ONLY_IN_2ASi16o16xxxxxx_tdm8 =
+XCC_FLAGS_2ASi16o16xxxxxx_tdm8 = $(BUILD_FLAGS) -DI2S_CHANS_ADC=16 \
+												-DI2S_CHANS_DAC=16 \
+												-DNUM_USB_CHAN_IN=16 \
+												-DNUM_USB_CHAN_OUT=16 \
+												-DXUA_PCM_FORMAT=XUA_PCM_FORMAT_TDM \
+												-DMAX_FREQ=96000
+
+# Audio Class 2, I2S Master, 32xInput 32xOutput, S/PDIF Tx (TDM)
+INCLUDE_ONLY_IN_2AMi32o32xxxxxx_tdm8 = 
+XCC_FLAGS_2AMi32o32xxxxxx_tdm8 = $(BUILD_FLAGS) -DI2S_CHANS_ADC=32 \
+												-DI2S_CHANS_DAC=32 \
+												-DNUM_USB_CHAN_IN=32 \
+												-DNUM_USB_CHAN_OUT=32 \
+												-DXUA_PCM_FORMAT=XUA_PCM_FORMAT_TDM \
+												-DMAX_FREQ=48000 \
+												-DXUA_SPDIF_TX_EN=1 \
+												-DSPDIF_TX_INDEX=0
 
 ifneq ($(CONFIG),)
 BUILD_TEST_CONFIGS = 1

@@ -1,12 +1,9 @@
 XMOS USB Audio 2.0 Reference Design README
-..........................................
+##########################################
 
 :Latest release: 7.0.0alpha0
 
-
-Please note, Alpha and Beta releases may not accurately reflect the final release and documentation may not be complete. These early releases are not suitable for a production context, and are provided for evaluation purposes only.
-
-Welcome to version 7 of the XMOS USB Audio Software Framework.
+Please note, Alpha and Beta releases may not accurately reflect the final release and documentation may not be complete. These early releases are not suitable for a production context, and are provided for evaluation purposes only. See 'Release Quality & QA'.
 
 Please see CHANGELOG.rst for detailed change listing.
 
@@ -15,7 +12,7 @@ For full software documentation please see the USB Audio Design Guide document.
 This release is built and tested using version 15.1.4 of the XMOS tool set.  Build or functionality issues could be experienced with any other version.
 
 This repository contains applications (or instances) of the XMOS USB Audio Reference Design framework.  These applications
-typically relate to a specific board.  This repository contains the following:
+typically relate to a specific hardware platform.  This repository contains the following:
 
 +--------------------------+--------------------------+------------------------------------------------------------+
 |    App Name              |     Relevant Board(s)    | Description                                                |
@@ -37,13 +34,12 @@ Mandatory files per application include:
 
 Each application also contains an "extensions" folder which includes board specific extensions such as CODEC configuration etc.
 
-Additionally some options are contained in Makefiles for building multiple configurations of an application. For example 
-app_usb_aud_l1 builds a MIDI and S/PDIF configurations.  See the USB Audio Software Design Guide for full details.
+Additionally some options are contained in Makefiles for building multiple configurations of an application. For example an application may provide configurations with and without MIDI enabled.  See the USB Audio Software Design Guide for full details.
 
-Key Framework Features
-======================
+Key Features
+============
 
-Key features of the various applications in this repository are as follow.  Please refer to the application README for application specific feature set.
+Key features of the various applications in this repository are listed below.  Please refer to the application README the specific feature set supported by that application.
 
 - USB Audio Class 1.0/2.0 Compliant 
 
@@ -67,15 +63,40 @@ Key features of the various applications in this repository are as follow.  Plea
 
 - MIDI input/output (Compliant to USB Class Specification for MIDI devices)
 
-- DSD output (Native and DoP mode) at DSD64 and DSD128 rates
+- DSD output ("Native" and DoP mode) at DSD64 and DSD128 rates
 
 - Mixer with flexible routing
 
 - Simple playback controls via Human Interface Device (HID)
 
-- Support for operation with Apple devices (requires software module sc_mfi for MFI licensees only - please contact XMOS) 
-
 Note, not all features may be supported at all sample frequencies, simultaneously or on all devices.  Some features also require specific host driver support.
+
+Release Quality & QA
+====================
+
++---------------------------+--------------------------+
+| Feature                   | Quality                  |
++===========================+==========================+
+| Audio Class 1.0 Streaming | Alpha                    | 
++---------------------------+--------------------------+
+| Audio Class 2.0 Streaming | Alpha                    | 
++---------------------------+--------------------------+
+| S/PDIF Receive            | Alpha                    | 
++---------------------------+--------------------------+
+| S/PDIF Transmit           | Alpha                    | 
++---------------------------+--------------------------+
+| ADAT Receive              | Alpha                    | 
++---------------------------+--------------------------+
+| ADAT Transmit             | Alpha                    | 
++---------------------------+--------------------------+
+| MIDI I/O                  | Alpha                    | 
++---------------------------+--------------------------+
+| DSD Playback              | Alpha                    | 
++---------------------------+--------------------------+
+| Mixer                     | Alpha                    | 
++---------------------------+--------------------------+
+| HID Controls              | Alpha                    | 
++---------------------------+--------------------------+
 
 Known Issues
 ============

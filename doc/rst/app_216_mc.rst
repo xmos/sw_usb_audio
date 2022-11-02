@@ -7,28 +7,41 @@ The xCORE-200 Multi-Channel Audio Board
 
 An application of the USB audio framework is provided specifically for the hardware described in
 :ref:`usb_audio_sec_hw_216_mc` and is implemented on an xCORE-200-series dual tile device.  The 
-related code can be found in `app_usb_aud_xk_216_mc`.
+related code can be found in ``app_usb_aud_xk_216_mc``.
 
-The design supports upto 10 channels of analogue audio input/output at sample-rates up to 192kHz
-assuming the use of I2S. This can be further increased by utilising TDM.
+The design supports upto 8 channels of analogue audio input/output at sample-rates up to 192kHz 
+(assuming the use of I2S). This can be further increased by utilising TDM. It also supports S/PDIF,
+ADAT and MIDI input and output aswell as the mixing functionalty of ``lib_xua``.
 
-The design uses the following components:
+The design uses the following tasks:
 
  * XMOS USB Device Driver (XUD)
  * Endpoint 0
- * Endpoint buffer
+ * Endpoint Buffer
  * Decoupler
- * Audio Driver
- * Device Firmware Upgrade (DFU)
+ * AudioHub Driver
+ * Mixer
  * S/PDIF Transmitter
+ * S/PDIF Receiver
+ * ADAT Receiver
+ * Clockgen
  * MIDI
 
-The software layout is the identical to the dual tile L-Series Multi-channel Reference Design 
-and therefore the diagram :ref:`usb_audio_l2_threads` shows the software arrangement of the code 
-running on the xCORE-200 device.
+The software layout of the USB Audio 2.0 Reference Design running on the
+`xCORE.ai` device is shown in :ref:`usb_audio_x200_threads`.
 
-As with the L/U-Series, each unit runs in a single core concurrently with the others units. The 
-lines show the communication between each functional unit. 
+Each circle depicts a task running in a single core concurrently with the others task. The 
+lines show the communication between each task. 
+
+.. _usb_audio_x200_threads:
+
+.. figure:: images/threads-l2-crop.pdf
+     :width: 90%
+     :align: center    
+
+     xCORE-200 Multichannel Audio System/Core Diagram
+
+|newpage|
 
 Clocking and Clock Selection
 +++++++++++++++++++++++++++++
@@ -73,8 +86,8 @@ The board is equipped with a single multi-channel audio DAC (Cirrus Logic CS4384
 multi-channel ADC (Cirrus Logic CS5368) giving 8 channels of analogue output and 8 channels of 
 analogue input.
 
-Configuration of both the DAC and ADC takes place using I2C.  The design uses the I2C component
-`sc_i2c <http://www.github.com/xcore/sc_i2c>`_.
+Configuration of both the DAC and ADC takes place using I2C.  The design uses
+`lib_i2c <http://www.github.com/xmos/lib_i2c>`_.
 
 The reset lines of the DAC and ADC are connected to bits 1 and 6 of `PORT 8C` respectively.
 
@@ -101,8 +114,6 @@ The DAC and ADC are brought out of reset by setting *P8C[1]* and *P8C[6]* back h
 
 Various registers are then written to the ADC and DAC as required.
 
-|newpage|
-
 Validated Build Options
 +++++++++++++++++++++++
 
@@ -110,12 +121,13 @@ The reference design can be built in several ways by changing the
 build options.  These are described in :ref:`sec_custom_defines_api`. 
 
 The design has only been fully validated against the build options as set in the
-application as distributed in the Makefile.  See :ref:`usb_audio_sec_valbuild` for details and binary naming scheme.
+application as distributed in the Makefile.  See :ref:`usb_audio_sec_valbuild` for details and general information on
+build configuation naming scheme.
 
 These fully validated build configurations are enumerated in the supplied Makefile
 
-In practise, due to the similarities between the U/L/xCORE-200 Series feature set, it is fully
-expected that all listed U-Series configurations will operate as expected on the L-Series and vice versa.
+In practise, due to the similarities between the `xCORE-200` and `xCORE.ai` series feature set, it is fully
+expected that all listed `xCORE-200` series configurations will operate as expected on the `xCORE.ai` series and vice versa.
 
 The build configuration naming scheme employed in the makefile is as follows:
 
@@ -129,6 +141,12 @@ The build configuration naming scheme employed in the makefile is as follows:
    * - Audio Class
      - 1
      - 2
+   * - USB Sync Mode
+     - async: A
+     - sync: S
+   * - I2S Role
+     - slave: S
+     - master: M
    * - Input 
      - enabled: i (channel count)
      - disabled: x
@@ -138,22 +156,24 @@ The build configuration naming scheme employed in the makefile is as follows:
    * - MIDI
      - enabled: m
      - disabled: x
-   * - SPDIF output
+   * - S/PDIF input
      - enabled: s
      - disabled: x
-   * - SPDIF input
+   * - S/PDIF input
      - enabled: s
-     - disabled: x
-   * - ADAT output
-     - enabled: a
      - disabled: x
    * - ADAT input
+     - enabled: a
+     - disabled: x
+   * - ADAT output
      - enabled: a
      - disabled: x
    * - DSD output
      - enabled: d
      - disabled: x
 
-e.g. A build config named 2i10o10xsxxx would signify: Audio class 2.0, input and output enabled (10 channels each), no MIDI SPDIF output, no SPDIF input, no ADAT or DSD
+e.g. A build configuration named 2AMi10o10xsxxxx would signify: Audio class 2.0 running in asynchronous mode. `xCORE` is 
+I2S master. Input and output enabled (10 channels each), no MIDI, S/PDIF input, no S/PDIF output, no ADAT or DSD.
 
-In addition to this the terms `tdm` or `slave` may be appended to the build configuration name to indicate the I2S mode employed.
+In addition to this some terms may be appended onto a build configuration name to signify additional options. For
+example, `tdm` may be appended to the build configuration name to indicate the I2S mode employed.

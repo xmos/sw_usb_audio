@@ -1,5 +1,6 @@
-.. _usb_audio_sec_hw_216_mc:
+|newpage|
 
+.. _usb_audio_sec_hw_216_mc:
 
 xCORE-200 Multi-Channel Audio Board
 -----------------------------------
@@ -7,9 +8,11 @@ xCORE-200 Multi-Channel Audio Board
 `The XMOS xCORE-200 Multi-channel Audio board <https://www.xmos.com/support/boards?product=18334>`_ 
 (XK-AUDIO-216-MC) is a complete hardware and reference software platform targeted at up to 32-channel USB and networked audio applications, such as DJ decks and mixers.
 
-The Multichannel Audio Platform hardware is based around the XE216-512-TQ128 multicore microcontroller; an dual-tile xCORE-200 device with an integrated High Speed USB 2.0 PHY, RGMII (Gigabit Ethernet) interface and 16 logical cores delivering up to 2000MIPS of deterministic and responsive processing power.
+The XK-AUDIO-216-MC is based around the XE216-512-TQ128 multicore microcontroller; an dual-tile xCORE-200 device with an integrated High Speed USB 2.0 PHY, RGMII (Gigabit Ethernet) interface and 16 logical cores delivering up to 2000MIPS of deterministic and responsive processing power.
 
-Exploiting the flexible programmability of the xCORE-200 architecture, the Multi-channel Audio Platform supports either USB or network audio source, streaming 8 analogue input and 8 analogue output audio channels simultaneously - at up to 192kHz.
+Exploiting the flexible programmability of the xCORE-200 architecture, the XK-AUDIO-216-MC supports
+either USB or network audio source, streaming 8 analogue input and 8 analogue output audio channels 
+simultaneously - at up to 192kHz.
 
 For full details regarding the hardware please refer to `xCORE-200 Multichannel Audio Platform Hardware Manual <https://www.xmos.com/support/boards?product=18334&component=18687>`_.
 

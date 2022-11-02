@@ -1,4 +1,4 @@
-
+#include <platform.h>
 #include <stdint.h>
 
 // App PLL setup

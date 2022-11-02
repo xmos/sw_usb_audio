@@ -1,49 +1,90 @@
+|newpage|
+
 Project Structure
 -----------------
 
-Applications and Modules
-++++++++++++++++++++++++
+.. _proj_build_system:
 
-The code is split into several module directories. The code for these
-modules can be included by adding the module name to the
-``USED_MODULES`` define in an application Makefile:
+Build System
+++++++++++++
 
-.. list-table:: Modules used by USB Audio
+The `XMOS USB Audio Reference Design` software and associated libraries employ the `XMOS XCOMMON` build system. The `XCOMMON` build
+system is built on top of the GNU Makefile build system. The `XCOMMON` build system accelerates the development of xCORE 
+applications. Instead of having to express dependencies explicitly in Makefiles, users should follow a particular folder
+structures and naming convention, from which dependencies are inferred automatically.
 
- * - module_xud
-   - Low level USB device library
- * - module_usb_shared
-   - Common code for USB applications
- * - module_usb_device
-   - Common code for USB device applications
- * - module_usb_audio
-   - Common code for USB audio applications
- * - module_spdif_tx
-   - S/PDIF transmit code
- * - module_spdif_rx
-   - S/PDIF receive code
- * - module_adat_rx
-   - ADAT receive code
- * - module_usb_midi
-   - MIDI I/O code
- * - module_dfu 
-   - Device Firmware Upgrade code
+The `XCOMMON` build system depends on use of of the tool `XMAKE
+<https://www.xmos.ai/documentation/XM-014363-PC-4/html/tools-guide/tools-ref/cmd-line-tools/xmake-manual/xmake-manual.html#xmake-manual>`_ 
+specifically. It cannot currently be used with a generic port of GNU Make.
 
-There are multiple application directories that contain Makefiles that
-build into executables:
+
+Applications and Libraries
+++++++++++++++++++++++++++
+
+The ``sw_usb_audio`` `GIT <https://git-scm.com>`_ repository includes multiple application directories that in turn contain Makefiles that
+build into executables. Typically you can expect to see one application directory per hardware platform. 
+Applications and there respective hardware platforms are listed in :ref:`proj_app_boards`.
+
+.. _proj_app_boards:
 
 .. list-table:: USB Audio Reference Applications
+   :header-rows: 1
+   :widths: 20 80
 
-  * - app_usb_aud_l1
-    - USB Audio 2.0 Reference Design application
-  * - app_usb_aud_l2
-    - USB Audio 2.0 Multichannel Reference Design application
-  * - app_usb_aud_skc_u16
-    - U16 SliceKit with Audio Slice application
-  * - app_usb_aud_xk_u8_2c
-    - Multi-function Audio board application
-  * - app_usb_aud_skc_su1
-    - DJ kit application
- 
+   * - Application
+     - Hardware platform
+   * - `app_usb_aud_xk_316_mc`
+     - xCORE.ai USB Audio 2.0 Multi-channel Audio Board
+   * - `app_usb_aud_xk_216_mc`
+     - xCORE-200 USB Audio 2.0 Multi-channel Audio Board
+   * - `app_usb_aud_xk_evk_xu316`
+     - xCORE.ai Evaluation Kit
 
+The code is split into several modules (or `library`) directories, each their own GIT repository. The code for these 
+libraries is included in the build by adding the library name to the ``USED_MODULES`` define in an application Makefile. 
+
+Each library has a ``module_build_info`` file that lists it's dependencies in ``DEPENDENT_MODULES``. This allows dependency 
+trees and nesting. 
+
+Most of the core code is contained in the `XMOS USB Audio Library` (``lib_xua``). A full list of core dependencies is shown 
+in :ref:`proj_core_libs`.
+
+.. _proj_core_libs:
+
+.. list-table:: Core dependencies of USB Audio
+   :header-rows: 1
+   :widths: 20 80
+    
+   * - Library
+     - Description
+   * - `lib_xua`
+     - Common code for USB audio applications
+   * - `lib_xud`
+     - Low level USB device library
+   * - `lib_spdif`
+     - S/PDIF transmit and receive code
+   * - `lib_adat`
+     - ADAT transmit and receive code
+   * - `lib_mic_array`
+     - PDM microphone interface and decimator
+   * - `lib_xassert`
+     - Lightweight assertions library
+
+.. note:: 
+
+   Some of these core dependencies will have their own dependencies, for example ``lib_mic_array`` depnds on ``lib_xassert`` (see above), ``lib_logging`` (a lightweight print library) and ``lib_dsp`` (a DSP library).
+
+Applications may use additional dependencies to support the hardware platform or add features beyond core functionality.
+For example, the application for XK-AUDIO-316-MC uses the additional dependencies listed in :ref:`proj_other_libs`:
+
+.. _proj_other_libs:
+
+.. list-table:: Example additonal dependencies
+   :header-rows: 1
+   :widths: 20 80
+    
+   * - Library
+     - Description
+   * - `lib_i2c`
+     - I2C interface, used to configure DACs/ADCs etc
  

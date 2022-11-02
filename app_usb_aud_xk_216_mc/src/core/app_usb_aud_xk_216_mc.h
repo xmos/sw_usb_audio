@@ -1,10 +1,5 @@
-
-/**
- * @file       app_vf_spk_base.h
- * @brief      Defines relating to device configuration and customisation.
- *             For xCORE-200 Microphone Array board (2vx)
- * @author     Ross Owen, XMOS Limited
- */
+// Copyright 2018-2022 XMOS LIMITED.
+// This Software is subject to the terms of the XMOS Public Licence: Version 1.
 
 #ifndef APP_USB_AUD_XK_216_MC_H_
 #define APP_USB_AUD_XK_216_MC_H_

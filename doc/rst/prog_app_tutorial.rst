@@ -1,145 +1,169 @@
-A USB Audio Application
------------------------
-.. highlight:: none
+A Typical USB Audio Application
+--------------------------------
 
-This section provides a walk through of the single tile USB Audio Reference Design (L-Series) 
-example, which can be found in the ``app_usb_aud_l1`` directory. 
+This section provides a walk through of a typical USB Audio application. Where specific examples are required
+code is used from the application for `XK-AUDIO-316-MC` (``app_usb_aud_xk_316_mc``).
 
-In each application directory the ``src`` directory is arranged into two folders:
+.. note:: 
 
-#. An ``core`` directory containing source items that must be made available to the USB Audio
-framework
+    The applications in ``sw_usb_audio`` use the "Codeless Programming Model" as documented in ``lib_xua``. 
+    Briefly, the ``main()`` function is used from ``lib_xua`` with build-time defines in the application configuring 
+    the framework provided by ``lib_xua``. Various functions from ``lib_xua`` are then overridden to provide 
+    customisation. See ``lib_xua`` for full details.
 
-#. An ``extensions`` directory that includes extensions to the framework such as CODEC config etc
+Each application directory contains:
+
+    #. A ``Makefile``
+
+    #. A ``src`` directory
+
+The ``src`` directory is arranged into two directories:
+
+    #. A ``core`` directory containing source items that must be made available to the USB Audio framework
+
+    #. An ``extensions`` directory that includes extensions to the framework such as external device configuration etc
 
 The ``core`` folder for each application contains:
 
-#. A ``.xn`` file to describe the hardware platform the app will run on
-#. A custom defines file: ``customdefines.h`` for framework configuration
+    #. A ``.xn`` file to describe the hardware platform the application will run on
+    #. An (optional) configuration header file to customised the framework provided by ``lib_xua`` named ``xua_conf.h`` 
 
-Custom Defines
-~~~~~~~~~~~~~~
+.. note:: 
 
-The ``customdefines.h`` file contains all the #defines required to tailor the USB audio framework
-to the particular application at hand.  Typically these over-ride default values in `devicedefines.h`
-in `module_usb_audio`.
+    The `XCOMMON` build sytem autmatically locates ``_conf.h`` files in the source tree for all used ``lib`` dependencies.
 
 
-First there are defines to determine overall capability. For this appliction 
-S/PDIF output and DFU are enabled. Note that `ifndef` is used to check that the option is not
-already defined in the makefile.
+Lib_xua Configuration
+~~~~~~~~~~~~~~~~~~~~~
 
-.. literalinclude:: sw_usb_audio/app_usb_aud_l1/src/core/customdefines.h
-  :start-after: in Makefile */
-  :end-before: /* Audio Class Version 
+The ``xua_conf.h`` file contains all the build-time ``#defines`` required to tailor framework provided by ``lib_xua``
+to the particular application at hand.  Typically these over-ride default values in ``xua_conf_default.h``
+in ``lib_xua/api``.
 
-Next, the file defines the audio properties of the application. This application has stereo in and
-stereo out with an S/PDIF output that duplicates analogue channels 1 and 2 (note channels are 
-indexed from 0):
+Firstly in ``app_usb_aud_xk_316_mc`` the ``xua_conf.h`` file sets defines to determine overall capability. For this application 
+most of the optional interfaces are disabled by default. This is because the applications provide a large number build configurations 
+in the ``Makefile`` enabling various interfaces. For a product with a fixed specification this almost certainly would not be the case and setting 
+in this file may be the preferred option.
 
-.. literalinclude:: sw_usb_audio/app_usb_aud_l1/src/core/customdefines.h
-  :start-after: /* Defines relating to channel 
-  :end-before: /* Master clock defines
+Note that ``ifndef`` is used to check that the option is not already defined in the ``Makefile``.
 
-The file then sets some defines for the master clocks on the hardware and the maximum sample-rate
-for the device. 
+.. literalinclude:: sw_usb_audio/app_usb_aud_xk_316_mc/src/core/xua_conf.h
+  :start-after: Defines relating to basic functionality
+  :end-before: Defines relating to channel count
 
-.. literalinclude:: sw_usb_audio/app_usb_aud_l1/src/core/customdefines.h
-  :start-after: SPDIF_TX_INDEX     (0)
-  :end-before: /***** Defines relating to USB 
+Next, the file defines properties of the audio channels including counts and arrangements. By default the
+application provides 8 analogue channels for input and output.
 
-Finally, there are some general USB identification defines to be
-set. These are set for the XMOS reference design but vary per
+The total number of channels exposed to the USB host (set via ``NUM_USB_CHAN_OUT`` and ``NUM_USB_CHAN_IN``) are calculated
+based on the audio interfaces enabled. Again, this is due to the multiple build configurations in the application ``Makefile``
+and likely to be hard-coded for a product.
+
+.. literalinclude:: sw_usb_audio/app_usb_aud_xk_316_mc/src/core/xua_conf.h
+  :start-after: Defines relating to channel 
+  :end-before: Channel index of S/PDIF
+
+Channel indices/offsets are set based on the audio interfaces enabled. Channels are indexed from 0. Setting ``SPDIF_TX_INDEX`` to 0
+would cause the S/PDIF channels to duplicate analogue channels 0 and 1. Note, the offset for analogue channels is always 0.
+
+.. literalinclude:: sw_usb_audio/app_usb_aud_xk_316_mc/src/core/xua_conf.h
+  :start-after: Defines relating to channel arrangement
+  :end-before: Defines relating to audio frequencies
+
+The file then sets some frequency related defines for the audio master clocks and the maximum sample-rate for the device. 
+
+.. literalinclude:: sw_usb_audio/app_usb_aud_xk_316_mc/src/core/xua_conf.h
+  :start-after: Defines relating to audio frequencies
+  :end-before: Defines relating to feature
+
+Due to the multi-tile nature of the `xCORE` architecture the framework needs to be informed as to which tile various interfaces 
+should be placed on, for example USB, S/PDIF etc.
+
+.. literalinclude:: sw_usb_audio/app_usb_aud_xk_316_mc/src/core/xua_conf.h
+  :start-after: Defines relating to feature placement
+  :end-before: Defines relating to USB descriptor
+
+The file also sets some defines for general USB ID's and strings. These are set for the XMOS reference design but vary per
 manufacturer:
 
-.. literalinclude:: sw_usb_audio/app_usb_aud_l1/src/core/customdefines.h
-  :start-after: //:usb_defs
-  :end-before: //:
+.. literalinclude:: sw_usb_audio/app_usb_aud_xk_316_mc/src/core/xua_conf.h
+  :start-after: Defines relating to USB descriptor
+  :end-before: Board power source
 
-For a full description of all the defines that can be set in
-``customdefines.h`` see :ref:`sec_custom_defines_api` 
+For a full description of all the defines that can be set in ``xua_conf.h`` see :ref:`sec_xua_conf_api` 
 
-Configuration Functions
-~~~~~~~~~~~~~~~~~~~~~~~
+User Functions
+~~~~~~~~~~~~~~
 
-In addition to the custom defines file, the application needs to provide implementations of user 
-functions that are specific to the application.
+In addition to the ``xua_conf.h`` file, the application needs to provide implementations of some overridable user 
+functions in ``lib_xua`` to provide custom functionality. 
 
-For `app_usb_aud_l1` the implementations can be found in `audiohw.xc`. 
+For ``app_usb_aud_xk_316_mc`` the implementations can be found in ``src/extensions/audiohw.xc`` and ``src/extensions/audiostream.xc`` 
 
-Firstly, code is required to initialise the external audio hardware. In the case of the CODEC on
-the L1 Refence Design board there is no required action so the funciton is left empty:
+The two functions it overrides in ``audiohw.xc`` are ``AudioHwInit()`` and ``AudioHwConfig()``. These are run from ``lib_xua`` on startup
+and sample-rate change respectively. Note, the default implementations in ``lib_xua`` are empty. These functions have 
+parameters for sample frequency, sample depth, etc.
 
-.. literalinclude:: sw_usb_audio/app_usb_aud_l1/src/extensions/audiohw.xc
-  :start-after: //:audiohw_init
-  :end-before: //:
+In the case of ``app_usb_aud_xk_316_mc`` these functions configure the external DAC's and ADC's via an I2C bus and configure
+the `xCORE` secondary PLL to generate the required master clock frequencies.
 
-On every sample-rate change a call is made to `AudioHwConfig()`. In the case of the CODEC on the 
-L1 Reference Design baord the CODEC must be reset and set the relevant clock input from the two 
-oscillators on the board. 
+Due to the complexity of the hardware on the `XK-AUDIO-316-MC` the source code is not included here. 
 
-Both the CODEC reset line and clock selection line are attached to the 32 bit port 32A. This is 
-accessed through the ``port32A_peek`` and ``port32A_out`` functions:
+The application also overrides ``UserAudioStreamStart()`` and ``UserAudioStreamStop()``. These are called from ``lib_xua`` when the audio
+stream to the device is started or stopped respectively. The applications uses these functions to enable/disable the LEDs on the board
+based on whether an audio stream is present (input or output). 
 
-.. literalinclude:: sw_usb_audio/app_usb_aud_l1/src/extensions/audiohw.xc
-  :start-after: // Port 32A helpers 
-  :end-before: //:audiohw_init
+.. literalinclude:: sw_usb_audio/app_usb_aud_xk_316_mc/src/extensions/audiostream.xc
 
-.. literalinclude:: sw_usb_audio/app_usb_aud_l1/src/extensions/audiohw.xc
-  :start-after: //:audiohw_config
-  :end-before: //:
+.. note::
 
-Finally, the application has functions for audio streaming start/stop
-that enable/disable an LED on the board (also on port 32A):
+    An media player application may choose to keep an audio stream open and simply send zero data when paused.
 
-.. literalinclude:: sw_usb_audio/app_usb_aud_l1/src/extensions/audiostream.xc
-
-The main program
+The Main Program
 ~~~~~~~~~~~~~~~~
 
-The ``main()`` function is shared across all applications is therefore part of the framework.  
-It is located in ``lib_xua`` and contains:
+The ``main()`` function is the entry point to an application. In the `XMOS USB Audio Reference Design` software it is shared by all 
+applications and is therefore part of the framework.  
 
-* A declaration of all the ports used in the framework. These vary
-  depending on the PCB an application is running on.
-* A ``main`` function which declares some channels and then has a
-  ``par`` statement which runs the required cores in parallel.
+This section is largely informational as most developers should not need to modify the ``main()`` function.
+``main()`` is located in ``main.xc`` in  ``lib_xua``, this file contains:
 
-The framework supports devices with multiple tiles so it uses the ``on tile[n]:`` syntax.
+  * A declaration of all the ports used in the framework. These clearly vary depending on the hardware platform the 
+    application is running on.
+  * A ``main()`` function which declares some channels and then has a ``par`` statement which runs the required cores in parallel.
 
-The first core run is the XUD library:
+Full documentation can be found in ``lib_xua``.
 
-.. literalinclude:: lib_xua/lib_xua/src/core/main.xc
-   :start-after: /* USB Interface
-   :end-before: /* USB Packet buff
-
-The make up of the channel arrays connecting to this driver are
-described in :ref:`usb_audio_sec_component_api`.
-
-The channels connected to the XUD driver are fed into the buffer
-and decouple cores:
+The first core run is a ``usb_audio_core`` task. This runs cores for the USB interface and buffering tasks for audio
+and endpoint buffering:
 
 .. literalinclude:: lib_xua/lib_xua/src/core/main.xc
-   :start-after: //:buffer
+   :start-after: /* Core USB audio task
+   :end-before: XUA_USB_EN
+
+This task runs various cores including one for the USB interfacing core (``XUD_Main()``):
+
+.. literalinclude:: lib_xua/lib_xua/src/core/main.xc
+   :start-after: /* USB interface core
+   :end-before: XUD_PWR_CFG
+
+The specification of the channel arrays connecting to this driver are described in :ref:`usb_audio_sec_component_api`.
+
+The channels connected to ``XUD_Main()`` are passed to the ``XUA_Buffer()`` function which implements audio buffering and also 
+buffering for other Endpoints.
+
+.. literalinclude:: lib_xua/lib_xua/src/core/main.xc
+   :start-after: /* Endpoint & audio buffering
    :end-before: //:
 
-.. literalinclude:: lib_xua/lib_xua/src/core/main.xc
-   :start-after: /* Decoupling core */
-   :end-before: //:
-
-
-These then connect to the audio driver which controls the I2S output and
-S/PDIF output (if enabled). If S/PDIF output is enabled, this
-component spawns into two cores as opposed to one.
+A channel connects this buffering task to the audio driver which controls the I2S output. It also forwards and receives
+audio samples from other interfaces e.g. S/PDIF, ADAT, as required:
 
 .. literalinclude:: lib_xua/lib_xua/src/core/main.xc
-   :start-after: /* Audio I/O Core (pars
+   :start-after: /* Audio I/O task
    :end-before: //:
 
-Finally, if MIDI is enabled you need a core to drive the MIDI input
-and output.  The MIDI core also optionally handles authentication with Apple devices. 
-Due to licensing issues this code is only available to Apple MFI licensees.  Please contact XMOS 
-for details.
+Finally, other task are create for various interfaces, for example, if MIDI is enabled a core is required to drive the MIDI input
+and output. 
 
 .. literalinclude:: lib_xua/lib_xua/src/core/main.xc
    :start-after: /* MIDI core */
