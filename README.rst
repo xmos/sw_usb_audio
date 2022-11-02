@@ -21,7 +21,7 @@ typically relate to a specific hardware platform.  This repository contains the 
 +--------------------------+--------------------------+------------------------------------------------------------+
 | app_usb_aud_xk_316_mc    | xk-audio-316-mc          | xCORE.AI Multi-channel Audio Board                         |
 +--------------------------+--------------------------+------------------------------------------------------------+
-| app_usb_aud_xk_evk_xu316 |  xk-evk-xu316            | xCORE.AI Explorer Board                                    |
+| app_usb_aud_xk_evk_xu316 | xk-evk-xu316             | xCORE.AI Explorer Board                                    |
 +--------------------------+--------------------------+------------------------------------------------------------+
 
 Please refer to individual README files in these apps for more detailed information.
@@ -80,6 +80,14 @@ Release Quality & QA
 | Audio Class 1.0 Streaming | Alpha                    | 
 +---------------------------+--------------------------+
 | Audio Class 2.0 Streaming | Alpha                    | 
++---------------------------+--------------------------+
+| I2S Master                | Alpha                    | 
++---------------------------+--------------------------+
+| I2S Slave                 | Alpha                    | 
++---------------------------+--------------------------+
+| TDM Master                | Alpha                    | 
++---------------------------+--------------------------+
+| TDM Slave                 | Alpha                    | 
 +---------------------------+--------------------------+
 | S/PDIF Receive            | Alpha                    | 
 +---------------------------+--------------------------+
