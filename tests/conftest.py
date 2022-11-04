@@ -33,7 +33,7 @@ board_configs = {}
 def parse_features(config):
     max_analogue_chans = 8
 
-    config_re = r"^(?P<uac>[12])(?P<sync_mode>[AS])(?P<slave>[MS])i(?P<chan_i>\d+)o(?P<chan_o>\d+)(?P<midi>[mx])(?P<spdif_i>[sx])(?P<spdif_o>[sx])(?P<adat_i>[ax])(?P<adat_o>[ax])(?P<dsd>[dx])(?P<tdm8>(_tdm8)?)"
+    config_re = r"^(?P<uac>[12])(?P<sync_mode>[AS])(?P<i2s>[MSX])i(?P<chan_i>\d+)o(?P<chan_o>\d+)(?P<midi>[mx])(?P<spdif_i>[sx])(?P<spdif_o>[sx])(?P<adat_i>[ax])(?P<adat_o>[ax])(?P<dsd>[dx])(?P<tdm8>(_tdm8)?)"
     match = re.search(config_re, config)
     if not match:
         pytest.exit(f"Error: Unable to parse features from {config}")
@@ -44,8 +44,6 @@ def parse_features(config):
         features[k] = int(features[k])
     for k in ["midi", "spdif_i", "spdif_o", "adat_i", "adat_o", "dsd", "tdm8"]:
         features[k] = features[k] not in ["", "x"]
-
-    features["slave"] = features["slave"] == "S"
 
     # Set the number of analogue channels
     features["analogue_i"] = min(features["chan_i"], max_analogue_chans)

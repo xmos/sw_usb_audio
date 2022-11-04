@@ -119,7 +119,7 @@ def test_analogue_output(pytestconfig, xtag_wrapper, xsig, board_config, fs):
     xsig_config = f'mc_analogue_output_{features["analogue_o"]}ch'
     if "xk_316_mc" in board_config and features["tdm8"]:
         xsig_config = "mc_analogue_output_2ch"
-    elif "xk_216_mc" in board_config and features["tdm8"] and features["slave"]:
+    elif "xk_216_mc" in board_config and features["tdm8"] and features["i2s"] == "S":
         xsig_config += "_paired"  # Pairs of channels can be swapped in hardware
     xsig_config_path = Path(__file__).parent / "xsig_configs" / f"{xsig_config}.json"
     adapter_dut, adapter_harness = xtag_wrapper
