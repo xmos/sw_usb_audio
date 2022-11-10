@@ -111,7 +111,11 @@ Known Issues
 
 General known issues with this release are listed below.  For board/application specific known issues please see README in relevant app directory
 
-- Quad-SPI DFU will corrupt the factory image with tools version < 14.0.4 due to an issue with libquadflash 
+- (xmos/sw_usb_audio#99) Input via TDM master unreliable due to low-level timing issues (xcore-200 only)
+
+- (xmos/sw_usb_audio#97) Documentation missing for XK-EVK-316
+
+- (xmos/sw_usb_audio#54) When DFU flash access fails the xcore sends NAKs to the USB host forever, rather than a STALL
 
 - (#14762) When in DSD mode with S/PDIF output enabled, DSD samples are transmitted over S/PDIF if the DSD and S/PDIF channels are shared, this may or may not be desired
 
