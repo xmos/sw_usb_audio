@@ -1,12 +1,58 @@
 sw_usb_audio Change Log
 =======================
 
-UNRELEASED
-----------
+7.1.0
+-----
 
-   * ADDED:     Build configs for synchronous mode (uses external CS2100 device)
-   * ADDED:     app_usb_aud_xk_316_mc: Build configs for xCORE as I2S slave
-   * CHANGED:   app_usb_aud_xk_316_mc: Core voltage reduced to 0.9v (was 0.922v)
+  * ADDED:     Build configs for synchronous mode (uses external CS2100 device)
+  * ADDED:     app_usb_aud_xk_316_mc: Build configs for xCORE as I2S slave
+  * CHANGED:   app_usb_aud_xk_316_mc: Core voltage reduced to 0.9v (was 0.922v)
+  * CHANGED:   Seperated build configs into build-tested, partially-test and
+    fully-tested
+  * CHANGED:   Documentation updates
+
+  * Changes to dependencies:
+
+    - lib_adat: 1.0.0 -> 1.0.1
+
+      + Removed duplicate header file
+
+    - lib_spdif: 4.1.0 -> 4.2.1
+
+      + CHANGED:   Documentation updates
+      + ADDED:     Added shutdown function for S/PDIF Receiver
+      + CHANGED:   spdif_tx_example updated to use XK-AUDIO-216-MC
+
+    - lib_xua: 3.2.0 -> 3.3.1
+
+      + CHANGED:  Documentation updates
+      + CHANGED:   Define ADAT_RX renamed to XUA_ADAT_RX_EN
+      + CHANGED:   Define ADAT_TX renamed to XUA_ADAT_TX_EN
+      + CHANGED:   Define SPDIF_RX renamed to XUA_SPDIF_RX_EN
+      + CHANGED:   Define SELF_POWERED changed to XUA_POWERMODE and associated
+        defines
+      + CHANGED:   Drive strength of I2S clock lines upped to 8mA on xCORE.ai
+      + CHANGED:   ADC datalines sampled on falling edge of clock in TDM mode
+      + CHANGED:   Improved startup behaviour of TDM clocks
+      + FIXED:     Intermittent underflow at MAX_FREQ on input stream start due
+        to insufficient packet buffering
+      + FIXED:     Decouple buffer accounting to avoid corruption of samples
+
+    - lib_xud: 2.1.0 -> 2.2.1
+
+      + FIXED:     Control endpoint ready flag not properly cleared on receipt
+        of SETUP transaction (#356)
+      + CHANGE:    Further API functions re-authored in C (were Assembly)
+      + CHANGE:    Endpoints marked as Disabled now reply with STALL if the host
+        attempts to access them, previously they would NAK (#342)
+      + FIXED:     Exception if host accesses an endpoint that XUD believes to
+        be not in use
+      + FIXED:     Timeout event properly cleaned up after tx handshake received
+        (#312)
+      + FIXED:     A control endpoint will respect the halt condition for OUT
+        transactions when marked ready to accept SETUP transactions (#339)
+      + FIXED:     USB Disconnect on self-powered devices intermittently causing
+        Iso EP's to be set to not-ready indefinitely (#351)
 
 7.0.0
 -----
@@ -114,8 +160,8 @@ UNRELEASED
 
     - lib_spdif: Added dependency 4.1.0
 
-      + CHANGED: Use XMOS Public Licence Version 1
-      + CHANGED: Rearrange documentation files
+      + CHANGED:   Use XMOS Public Licence Version 1
+      + CHANGED:   Rearrange documentation files
 
     - lib_voice: Removed dependency
 
@@ -145,8 +191,10 @@ UNRELEASED
 
       + CHANGE:    Various optimisations to aid corner-case timings on XS3 based
         devices
-      + CHANGE:    Some API functions re-authored in C (from Assembly)
+      + CHANGE:    Some API functions re-authored in C (were Assembly)
       + CHANGE:    Testbench now more accurately models XS3 based devices
+      + CHANGE:    Endpoint functions called on a halted endpoint will block
+        until the halt condition is cleared
 
     - sc_adat: Removed dependency
 
