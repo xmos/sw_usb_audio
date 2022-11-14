@@ -46,7 +46,3 @@ XCC_FLAGS_2AMi16o8xxxaxx = $(BUILD_FLAGS) 		-DXUA_ADAT_RX_EN=1
 INCLUDE_ONLY_IN_2AMi8o16xxxxax =
 XCC_FLAGS_2AMi8o16xxxxax = $(BUILD_FLAGS) 		-DXUA_ADAT_TX_EN=1
 
-#
-# Synchronous Mode Configs
-#
-

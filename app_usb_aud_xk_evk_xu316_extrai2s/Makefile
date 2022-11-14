@@ -17,16 +17,16 @@ USED_MODULES = lib_xud lib_xua lib_i2c lib_i2s
 # Build config naming scheme:
 
 # Audio Class:          1 or 2
-# Sync Mode             A(sync)/S(ync)
-# I2S                           M(aster)/S(lave)
-# Input                         enabled: i (channelcount)
-# Output                        enabled: o (channelcount)
-# MIDI                          enabled: m, disabled: x
-# SPDIF in                      enabled: s, disabled: x
-# SPDIF out                     enabled: s, disabled: x
-# ADAT in                       enabled: a, disabled: x
-# ADAT out                      enabled: a, disabled: x
-# DSD out                       enabled: d, disabled: x
+# Sync Mode             A(sync), S(ync) or (a)D(aptive)
+# I2S                   M(aster), S(lave) or X (I2S disabled)
+# Input                 enabled: i (channelcount)
+# Output                enabled: o (channelcount)
+# MIDI                  enabled: m, disabled: x
+# SPDIF in              enabled: s, disabled: x
+# SPDIF out             enabled: s, disabled: x
+# ADAT in               enabled: a, disabled: x
+# ADAT out              enabled: a, disabled: x
+# DSD out               enabled: d, disabled: x
 # e.g. 2AMi10o10xxsxxx: Audio class 2.0, Asynchronous, I2S Master, input and output enabled (10 channels each), no MIDI, SPDIF output, no SPDIF input, no ADAT
 # Configs that have only had their build process tested
 
