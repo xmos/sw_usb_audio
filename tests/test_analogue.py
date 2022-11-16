@@ -57,8 +57,8 @@ def analogue_duration(level, partial):
 
 
 @pytest.mark.uncollect_if(func=analogue_input_uncollect)
-@pytest.mark.parametrize("board_config", list_configs())
 @pytest.mark.parametrize("fs", samp_freqs)
+@pytest.mark.parametrize("board_config", list_configs())
 def test_analogue_input(pytestconfig, xtag_wrapper, xsig, board_config, fs):
     features = get_config_features(board_config)
     xsig_config = f'mc_analogue_input_{features["analogue_i"]}ch'
@@ -112,8 +112,8 @@ def test_analogue_input(pytestconfig, xtag_wrapper, xsig, board_config, fs):
 
 
 @pytest.mark.uncollect_if(func=analogue_output_uncollect)
-@pytest.mark.parametrize("board_config", list_configs())
 @pytest.mark.parametrize("fs", samp_freqs)
+@pytest.mark.parametrize("board_config", list_configs())
 def test_analogue_output(pytestconfig, xtag_wrapper, xsig, board_config, fs):
     features = get_config_features(board_config)
     xsig_config = f'mc_analogue_output_{features["analogue_o"]}ch'
