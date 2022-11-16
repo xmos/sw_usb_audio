@@ -17,11 +17,11 @@ typically relate to a specific hardware platform.  This repository contains the 
 +--------------------------+--------------------------+------------------------------------------------------------+
 |    App Name              |     Relevant Board(s)    | Description                                                |
 +==========================+==========================+============================================================+
-| app_usb_aud_xk_216_mc    | xk-audio-216-mc          | xCORE-200 Multi-channel Audio Board                        |
+| app_usb_aud_xk_216_mc    | xk-audio-216-mc          | xcore-200 Multi-channel Audio Board                        |
 +--------------------------+--------------------------+------------------------------------------------------------+
-| app_usb_aud_xk_316_mc    | xk-audio-316-mc          | xCORE.AI Multi-channel Audio Board                         |
+| app_usb_aud_xk_316_mc    | xk-audio-316-mc          | xcore.ai Multi-channel Audio Board                         |
 +--------------------------+--------------------------+------------------------------------------------------------+
-| app_usb_aud_xk_evk_xu316 | xk-evk-xu316             | xCORE.AI Explorer Board                                    |
+| app_usb_aud_xk_evk_xu316 | xk-evk-xu316             | xcore.ai Explorer Board                                    |
 +--------------------------+--------------------------+------------------------------------------------------------+
 
 Please refer to individual README files in these apps for more detailed information.
