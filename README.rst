@@ -7,7 +7,7 @@ Please note, Alpha and Beta releases may not accurately reflect the final releas
 
 Please see CHANGELOG.rst for detailed change listing.
 
-For full software documentation please see the USB Audio Design Guide document.
+For full software documentation please see the USB Audio User Guide document.
 
 This release is built and tested using version 15.1.4 of the XMOS tool set.  Build or functionality issues could be experienced with any other version.
 
@@ -34,7 +34,7 @@ Mandatory files per application include:
 
 Each application also contains an "extensions" folder which includes board specific extensions such as CODEC configuration etc.
 
-Additionally some options are contained in Makefiles for building multiple configurations of an application. For example an application may provide configurations with and without MIDI enabled.  See the USB Audio Software Design Guide for full details.
+Additionally some options are contained in Makefiles for building multiple configurations of an application. For example an application may provide configurations with and without MIDI enabled.  See the USB Audio Software User Guide for full details.
 
 Key Features
 ============

@@ -2,11 +2,11 @@
 .. _usb_audio_sec_mic_arr_audio_sw:
 
 
-The xCORE-200 Array Microphone Board
+The xcore-200 Array Microphone Board
 ------------------------------------
 
 An application of the USB audio framework is provided specifically for the hardware described in
-:ref:`usb_audio_sec_hw_mic_arr` and is implemented on an xCORE-200-series dual tile device.  The 
+:ref:`usb_audio_sec_hw_mic_arr` and is implemented on an xcore-200-series dual tile device.  The 
 related code can be found in `app_usb_aud_array_mic`.
 
 The design supports upto 2 channels of analogue audio output at sample-rates from the
@@ -24,7 +24,7 @@ The design uses the following components:
 
 The software layout is the identical to the dual tile L-Series Multi-channel Reference Design 
 and therefore the diagram :ref:`usb_audio_l2_threads` shows the software arrangement of the code 
-running on the xCORE-200 device.
+running on the xcore-200 device.
 
 As with the L/U-Series, each unit runs in a single core concurrently with the others units. The 
 lines show the communication between each functional unit. 
@@ -117,7 +117,7 @@ application as distributed in the Makefile.  See :ref:`usb_audio_sec_valbuild` f
 
 These fully validated build configurations are enumerated in the supplied Makefile
 
-In practise, due to the similarities between the U/L/xCORE-200 Series feature set, it is fully
+In practise, due to the similarities between the U/L/xcore-200 Series feature set, it is fully
 expected that all listed U-Series configurations will operate as expected on the L-Series and vice versa.
 
 The build configuration naming scheme employed in the makefile is as follows:

@@ -2,11 +2,11 @@
 .. _usb_audio_sec_216_audio_sw:
 
 
-The xCORE-200 Multi-Channel Audio Board
+The xcore-200 Multi-Channel Audio Board
 ---------------------------------------
 
 An application of the USB audio framework is provided specifically for the hardware described in
-:ref:`usb_audio_sec_hw_216_mc` and is implemented on an xCORE-200-series dual tile device.  The 
+:ref:`usb_audio_sec_hw_216_mc` and is implemented on an xcore-200-series dual tile device.  The 
 related code can be found in ``app_usb_aud_xk_216_mc``.
 
 The design supports upto 8 channels of analogue audio input/output at sample-rates up to 192kHz 
@@ -39,7 +39,7 @@ lines show the communication between each task.
      :width: 90%
      :align: center    
 
-     xCORE-200 Multichannel Audio System/Core Diagram
+     xcore-200 Multichannel Audio System/Core Diagram
 
 |newpage|
 
@@ -126,8 +126,8 @@ build configuation naming scheme.
 
 These fully validated build configurations are enumerated in the supplied Makefile
 
-In practise, due to the similarities between the `xCORE-200` and `xCORE.ai` series feature set, it is fully
-expected that all listed `xCORE-200` series configurations will operate as expected on the `xCORE.ai` series and vice versa.
+In practise, due to the similarities between the `xcore-200` and `xCORE.ai` series feature set, it is fully
+expected that all listed `xcore-200` series configurations will operate as expected on the `xCORE.ai` series and vice versa.
 
 The build configuration naming scheme employed in the makefile is as follows:
 

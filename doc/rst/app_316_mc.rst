@@ -1,11 +1,11 @@
 
 .. _usb_audio_sec_316_audio_sw:
 
-The xCORE.a Multi-Channel Audio Board
+The xcore.ai Multi-Channel Audio Board
 ---------------------------------------
 
 An application of the USB audio framework is provided specifically for the hardware described in
-:ref:`usb_audio_sec_hw_316_mc` and is implemented on an xCORE.ai-series dual tile device.  The 
+:ref:`usb_audio_sec_hw_316_mc` and is implemented on an xcore.ai-series dual tile device.  The 
 related code can be found in ``app_usb_aud_xk_316_mc``.
 
 The design supports upto 8 channels of analogue audio input/output at sample-rates up to 192kHz 
@@ -27,7 +27,7 @@ The design uses the following tasks:
  * MIDI
 
 The software layout of the USB Audio 2.0 Reference Design running on the
-`xCORE.ai` device is shown in :ref:`usb_audio_ai_threads`.
+`xcore.ai` device is shown in :ref:`usb_audio_ai_threads`.
 
 Each circle depicts a task running in a single core concurrently with the others task. The 
 lines show the communication between each task. 
@@ -38,13 +38,13 @@ lines show the communication between each task.
      :width: 90%
      :align: center    
 
-     xCORE-AI Multichannel Audio System/Core Diagram
+     xcore.ai Multichannel Audio System/Core Diagram
 
 
 Clocking and Clock Selection
 +++++++++++++++++++++++++++++
 
-As well as the secondary (application) PLL of the `xCORE.ai` device the board includes two options for master clock generation:
+As well as the secondary (application) PLL of the `xcore.ai` device the board includes two options for master clock generation:
 
     * A Cirrus Logic CS2100 fractional-N clock multiplier allowing the master clock to be generated from a
       xCORE derived reference.

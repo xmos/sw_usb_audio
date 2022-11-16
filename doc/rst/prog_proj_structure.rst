@@ -34,11 +34,11 @@ Applications and there respective hardware platforms are listed in :ref:`proj_ap
    * - Application
      - Hardware platform
    * - `app_usb_aud_xk_316_mc`
-     - xCORE.ai USB Audio 2.0 Multi-channel Audio Board
+     - xcore.ai USB Audio 2.0 Multi-channel Audio Board
    * - `app_usb_aud_xk_216_mc`
-     - xCORE-200 USB Audio 2.0 Multi-channel Audio Board
+     - xcore-200 USB Audio 2.0 Multi-channel Audio Board
    * - `app_usb_aud_xk_evk_xu316`
-     - xCORE.ai Evaluation Kit
+     - xcore.ai Evaluation Kit
 
 The code is split into several modules (or `library`) directories, each their own GIT repository. The code for these 
 libraries is included in the build by adding the library name to the ``USED_MODULES`` define in an application Makefile. 

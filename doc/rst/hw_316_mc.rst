@@ -1,18 +1,18 @@
 
 .. _usb_audio_sec_hw_316_mc:
 
-xCORE.ai Multi-Channel Audio Board
+xcore.ai Multi-Channel Audio Board
 ...................................
 
-The `XMOS xCORE.ai Multichannel Audio Board` (XK-AUDIO-316-MC) is a complete hardware and software reference platform targeted at up to 32-channel USB audio applications, such as DJ decks, mixers and other musical instrument interfaces.  The board can also be used to prototype products with reduced feature sets or HiFi style products.
+The `XMOS xcore.ai Multichannel Audio Board` (XK-AUDIO-316-MC) is a complete hardware and software reference platform targeted at up to 32-channel USB audio applications, such as DJ decks, mixers and other musical instrument interfaces.  The board can also be used to prototype products with reduced feature sets or HiFi style products.
 
-The XK-AUDIO-316-MC is based around the XU316-1024-TQ128-C24 multicore microcontroller; a dual-tile xCORE.ai device with an integrated High Speed USB 2.0 PHY and 16 logical cores delivering up to 2400MIPS of deterministic and responsive processing power.
+The XK-AUDIO-316-MC is based around the XU316-1024-TQ128-C24 multicore microcontroller; a dual-tile xcore.ai device with an integrated High Speed USB 2.0 PHY and 16 logical cores delivering up to 2400MIPS of deterministic and responsive processing power.
 
-Exploiting the flexible programmability of the xCORE.ai architecture, the XK-AUDIO-316-MC supports a USB audio source, streaming 8 analogue input and 8 analogue output audio channels simultaneously - at up to 192kHz. It also supports digital input/output streams (S/PDIF and ADAT) and MIDI. Ideal for consumer and professional USB audio interfaces. The board can also be used for testing general purpose audio DSP activities - mixing, filtering, etc.
+Exploiting the flexible programmability of the xcore.ai architecture, the XK-AUDIO-316-MC supports a USB audio source, streaming 8 analogue input and 8 analogue output audio channels simultaneously - at up to 192kHz. It also supports digital input/output streams (S/PDIF and ADAT) and MIDI. Ideal for consumer and professional USB audio interfaces. The board can also be used for testing general purpose audio DSP activities - mixing, filtering, etc.
 
 The guaranteed Hardware-ResponseTM times of xCORE technology always ensure lowest latency (round trip as low as 3ms), bit perfect audio streaming to and from the USB host
 
-For full details regarding the hardware please refer to `xCORE.ai Multichannel Audio Platform Hardware Manual <ADD LINK HERE>`_.
+For full details regarding the hardware please refer to `xcore.ai Multichannel Audio Platform Hardware Manual <ADD LINK HERE>`_.
 
 The XK-AUDIO-316-MC reference hardware has an associated firmware application that uses `lib_xua` to implement fully-featured and production ready USB Audio solution. Full details of this application can be found later in this document.
 
@@ -21,17 +21,17 @@ The XK-AUDIO-316-MC reference hardware has an associated firmware application th
 Hardware Features
 +++++++++++++++++
 
-The location of the various featurs of the xCORE.ai Multichannel Audio Board (XK-AUDIO-316-MC) is shown in :ref:`xk_audio_316_mc_block_diagram`. 
+The location of the various featurs of the xcore.ai Multichannel Audio Board (XK-AUDIO-316-MC) is shown in :ref:`xk_audio_316_mc_block_diagram`. 
 
 .. _xk_audio_316_mc_block_diagram:
 .. figure:: images/xk_316_audio_mc.pdf
     :scale: 70%
 
-    xCORE.ai Multichannel Audio Board block diagram
+    xcore.ai Multichannel Audio Board block diagram
 
 It includes the following features:
 
-- A: xCORE.ai (XU316-1024-TQ128-C24) multicore microcontroller device
+- A: xcore.ai (XU316-1024-TQ128-C24) multicore microcontroller device
 
 - B: 8 line level analog inputs (3.5mm stereo jacks)
 
@@ -104,13 +104,13 @@ Three methods of generating an audio master clock are provided on the board:
 
     * A Skyworks Si5351B PLL device. The Si5351 is an I2C configurable clock generator that is suited for replacing crystals, crystal oscillators, VCXOs, phase-locked loops (PLLs), and fanout buffers.
 
-    * xCORE.ai devices are equipped with a secondary (or `application`) PLL which can be used to generate audio clocks.
+    * xcore.ai devices are equipped with a secondary (or `application`) PLL which can be used to generate audio clocks.
 
 Selecting between these methods is done via writing to bits 6 and 7 of PORT 8D on tile[0]. See :ref:`hw_316_ctrlport`.
 
 .. note::
     
-    The supplied software currently supports the xCORE.ai secondary PLL or CS2100 device.
+    The supplied software currently supports the xcore.ai secondary PLL or CS2100 device.
 
 .. _hw_316_ctrlport:
 
