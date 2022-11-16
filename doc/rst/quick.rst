@@ -107,7 +107,7 @@ http://www.xmos.com/published/usb-audio-20-stereo-driver-windows-overview
 XMOS XTC Development Tools
 --------------------------
 
-The `XMOS XTC Tools` provide everything you need to develop applications for `xCORE multicore microcontrollers` and can be downloaded, 
+The `XMOS XTC Tools` provide everything you need to develop applications for `xcore multicore microcontrollers` and can be downloaded, 
 free of charge, from: http://www.xmos.com/software-tools.
 
 The `XMOS XTC Tools` make it easy to define real-time tasks as a parallel system. They come with standards compliant C and C++ compilers,
@@ -115,7 +115,7 @@ language libraries, simulator, symbolic debugger, and runtime instrumentation an
 task based parallelism and communication, accurate timing and I/O, and safe memory management. All components work off the real-time multicore 
 functionality, giving a fully integrated approach.
 
-The XTC tools are required by anyone developing or deploying applications on an `xCORE` processor. The tools include:
+The XTC tools are required by anyone developing or deploying applications on an `xcore` processor. The tools include:
 
     * “Tile-level” toolchain (Compiler, assembler, etc)
     * System libraries
@@ -226,11 +226,11 @@ Next Steps
 
 Further information on using the board and the `XTC Tools` is available from:
 
-**xCORE-200 Multichannel Audio Platform 2v0 Hardware Manual**
+**xcore-200 Multichannel Audio Platform 2v0 Hardware Manual**
 
 https://www.xmos.ai/file/xcore-200-multichannel-audio-platform-hardware-manuals?version=latest
 
-**xCORE.ai Multichannel Audio Platform 2v0 Hardware Manual**
+**xcore.ai Multichannel Audio Platform 2v0 Hardware Manual**
 
 https://www.xmos.ai/file/xcore-ai-multichannel-audio-platform-hardware-manuals?version=latest
 
