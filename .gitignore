@@ -1,14 +1,9 @@
+# Tmp files & logs
 *.settings
-*/test_results.csv
-bin.txt
-_build
-toplevel_doc
-*/bin/*
 *.bin
 *.zip
 *.log
 *.vcd
-*.a
 *.swp
 *.*~
 *.xmt
@@ -16,17 +11,16 @@ toplevel_doc
 *.swn
 *~
 *.DS_Store
+
+# Python
 *.pyc
-
-legacy_tests/recording*.wav
-legacy_tests/plot*.pdf
-legacy_tests/generated_*.wav
-
 **/*.egg-info/
 **/*venv/*
 
 # XMOS temp files
 **/.build*/*
+*/bin/*
+_build
 **/flash_bin_node*
 **/fw-*
 **/s2l-*
@@ -35,6 +29,7 @@ legacy_tests/generated_*.wav
 *.xi
 *.o
 *.i
+*.a
 
 # XMOS binaries
 *.xe
@@ -42,4 +37,11 @@ legacy_tests/generated_*.wav
 # Regression test files
 tests/xmosdfu
 tests/xsig
+legacy_tests/recording*.wav
+legacy_tests/plot*.pdf
+legacy_tests/generated_*.wav
+*/test_results.csv
+
+# Built documentation
 doc/pdf/sw_usb_audio.pdf
+toplevel_doc
