@@ -17,8 +17,8 @@ USED_MODULES = lib_xua lib_i2c
 # Build config naming scheme:
 #
 # Audio Class:   1 or 2
-# Sync Mode             A(sync), S(ync) or (a)D(aptive)
-# I2S                   M(aster), S(lave) or X (I2S disabled)
+# Sync Mode      A(sync) or S(ync)
+# I2S            M(aster) or S(lave)
 # Input          enabled: i (channelcount)
 # Output         enabled: o (channelcount)
 # MIDI           enabled: m, disabled: x
@@ -115,4 +115,3 @@ endif
 
 XMOS_MAKE_PATH ?= ../..
 include $(XMOS_MAKE_PATH)/xcommon/module_xcommon/build/Makefile.common
-

@@ -152,18 +152,18 @@ Support
 
 For all support issues please visit http://www.xmos.com/support
 
-Required software (dependencies)
+Required Software (dependencies)
 ================================
 
-  * lib_xua (git@github.com:xmos/lib_xua.git)
-  * lib_locks (git@github.com:xmos/lib_locks.git)
-  * lib_logging (git@github.com:xmos/lib_logging.git)
-  * lib_mic_array (git@github.com:xmos/lib_mic_array.git)
-  * lib_xassert (git@github.com:xmos/lib_xassert.git)
-  * lib_dsp (git@github.com:xmos/lib_dsp)
-  * lib_spdif (git@github.com:xmos/lib_spdif.git)
-  * lib_xud (git@github.com:xmos/lib_xud.git)
-  * lib_i2c (git@github.com:xmos/lib_i2c.git)
-  * lib_adat (git@github.com:xmos/lib_adat)
-  * lib_i2s (git@github.com:xmos/lib_i2s.git)
+  * lib_xua (www.github.com/xmos/lib_xua)
+  * lib_locks (www.github.com/xmos/lib_locks)
+  * lib_logging (www.github.com/xmos/lib_logging)
+  * lib_mic_array (www.github.com/xmos/lib_mic_array)
+  * lib_xassert (www.github.com/xmos/lib_xassert)
+  * lib_dsp (www.github.com/xmos/lib_dsp)
+  * lib_spdif (www.github.com/xmos/lib_spdif)
+  * lib_xud (www.github.com/xmos/lib_xud)
+  * lib_adat (www.github.com/xmos/lib_adat)
+  * lib_i2c (www.github.com/xmos/lib_i2c)
+  * lib_i2s (www.github.com/xmos/lib_i2s)
 
