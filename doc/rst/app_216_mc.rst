@@ -30,7 +30,7 @@ The design uses the following tasks:
 The software layout of the USB Audio 2.0 Reference Design running on the
 `xCORE.ai` device is shown in :ref:`usb_audio_x200_threads`.
 
-Each circle depicts a task running in a single core concurrently with the others task. The 
+Each circle depicts a task running in a single core concurrently with the other tasks. The 
 lines show the communication between each task. 
 
 .. _usb_audio_x200_threads:

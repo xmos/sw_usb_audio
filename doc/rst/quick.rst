@@ -209,7 +209,7 @@ Playing Audio
 
 .. steps::
 
-    #. Connect the board to any power supply provided (some board will be USB bus powered)
+    #. Connect the board to any power supply provided (note, some boards will be USB bus powered)
 
     #. Connect the board a host with driver support the USB Audio Class using a USB cable
 

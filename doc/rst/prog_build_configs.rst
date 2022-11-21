@@ -76,7 +76,7 @@ Reference Design` software therefore defines three levels of quality:
 
 .. note::
     
-   It is advised that full QA is a applied to any product regardless of the quality level of the configuration it is based on.
+   It is advised that full QA is applied to any product regardless of the quality level of the configuration it is based on.
 
 Fully tested configurations can be found in the application Makefile. Partially and build tested configurations can be 
 found in the ``configs_partial.inc`` and ``configs_build.inc`` files respectively. Using the command ``xmake all`` will

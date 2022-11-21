@@ -116,7 +116,7 @@ based on whether an audio stream is present (input or output).
 
 .. note::
 
-    An media player application may choose to keep an audio stream open and simply send zero data when paused.
+    A media player application may choose to keep an audio stream open and simply send zero data when paused.
 
 The Main Program
 ~~~~~~~~~~~~~~~~

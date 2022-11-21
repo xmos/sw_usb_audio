@@ -68,7 +68,7 @@ the steps below outline one approach:
 
 #. Remove some functionality using the defines in :ref:`sec_custom_defines_api` to free up a core as required.
 
-#. Add another core to do the DSP. This core will probably have a single XC channels. This channel can be used to send
+#. Add another core to do the DSP. This core will probably have a single XC channel. This channel can be used to send
    and receive audio samples from the ``XUA_AudioHub()`` task. A benefit of modifying samples here is that samples from 
    all inputs are collected into one place at this point. Optionally, a second channel could be used to accept control 
    messages that affect the DSP. This could be from Endpoint 0 or some other task with user input - a core handling
