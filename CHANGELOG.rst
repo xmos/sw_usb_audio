@@ -9,13 +9,19 @@ sw_usb_audio Change Log
   * CHANGED:   app_usb_aud_xk_316_mc: Core voltage reduced to 0.9v (was 0.922v)
   * CHANGED:   Seperated build configs into build-tested, partially-test and
     fully-tested
-  * CHANGED:   Documentation updates
+  * CHANGED:   Documentation updates (note, "Design Guide" now "User Guide")
 
   * Changes to dependencies:
 
     - lib_adat: 1.0.0 -> 1.0.1
 
       + Removed duplicate header file
+
+    - lib_i2s: 4.3.0 -> 5.0.0
+
+      + ADDED: Support for I2S data lengths less than 32 bit.
+      + ADDED: Implementation allowing use of a 4-bit port for up to 4
+        simultaneous streaming inputs or outputs.
 
     - lib_spdif: 4.1.0 -> 4.2.1
 
