@@ -17,7 +17,7 @@ on tile[0]: in port p_margin = XS1_PORT_1G;  /* CORE_POWER_MARGIN:   Driven 0:  
                                               */
 
 #if (XUA_SPDIF_RX_EN || XUA_ADAT_RX_EN || (XUA_SYNCMODE == XUA_SYNCMODE_SYNC))
-/* If we have an external digital input interface or running in synchronous mode we need to configure the 
+/* If we have an external digital input interface or running in synchronous mode we need to configure the
  * external CS2100 device for master clock generation */
 #define USE_FRACTIONAL_N         (1)
 #else
@@ -25,7 +25,7 @@ on tile[0]: in port p_margin = XS1_PORT_1G;  /* CORE_POWER_MARGIN:   Driven 0:  
 #endif
 
 /* p_ctrl:
- * [0:3] - Unused 
+ * [0:3] - Unused
  * [4]   - EN_3v3_N
  * [5]   - EN_3v3A
  * [6]   - EXT_PLL_SEL (CS2100:0, SI: 1)
@@ -73,8 +73,8 @@ i2c_regop_res_t i2c_reg_write(uint8_t device_addr, uint8_t reg, uint8_t data)
     return I2C_REGOP_SUCCESS;
 }
 
-uint8_t i2c_reg_read(uint8_t device_addr, uint8_t reg, i2c_regop_res_t &result) 
-{   
+uint8_t i2c_reg_read(uint8_t device_addr, uint8_t reg, i2c_regop_res_t &result)
+{
     uint8_t a_reg[1] = {reg};
     uint8_t data[1] = {0};
     size_t n;
@@ -83,22 +83,22 @@ uint8_t i2c_reg_read(uint8_t device_addr, uint8_t reg, i2c_regop_res_t &result)
     unsafe
     {
         res = i_i2c_client.write(device_addr, a_reg, 1, n, 0);
-        
-        if (n != 1) 
+
+        if (n != 1)
         {
             result = I2C_REGOP_DEVICE_NACK;
             i_i2c_client.send_stop_bit();
             return 0;
         }
-        
+
         res = i_i2c_client.read(device_addr, data, 1, 1);
     }
-    
-    if (res == I2C_ACK) 
+
+    if (res == I2C_ACK)
     {
         result = I2C_REGOP_SUCCESS;
-    } 
-    else 
+    }
+    else
     {
         result = I2C_REGOP_DEVICE_NACK;
     }
@@ -164,19 +164,19 @@ void WriteRegs(int deviceAddr, int numDevices, int regAddr, int regData)
 /* Note, this function assumes contiguous devices addresses */
 void WriteAllDacRegs(int regAddr, int regData)
 {
-    WriteRegs(PCM5122_0_I2C_DEVICE_ADDR, 4, regAddr, regData); 
+    WriteRegs(PCM5122_0_I2C_DEVICE_ADDR, 4, regAddr, regData);
 }
 
 /* Note, this function assumes contiguous devices addresses */
 void WriteAllAdcRegs(int regAddr, int regData)
 {
-    WriteRegs(PCM1865_0_I2C_DEVICE_ADDR, 2, regAddr, regData); 
+    WriteRegs(PCM1865_0_I2C_DEVICE_ADDR, 2, regAddr, regData);
 }
 
 void SetI2CMux(int ch)
 {
     i2c_regop_res_t result;
-    
+
     // I2C mux takes the last byte written as the data for the control register.
     // We can't send only one byte so we send two with the data in the last byte.
     // We set "address" to 0 below as it's discarded by device.
@@ -249,10 +249,10 @@ void AudioHwInit()
         assert(result == I2C_REGOP_SUCCESS && msg("ADC I2C write reg failed"));
         result = i2c_reg_write(PCM1865_1_I2C_DEVICE_ADDR, PCM1865_TX_TDM_OFFSET, 129);
         assert(result == I2C_REGOP_SUCCESS && msg("ADC I2C write reg failed"));
-       
+
         if(CODEC_MASTER)
-        {  
-            /* PCM5122 drives a 1/2 duty cycle LRCLK for TDM */ 
+        {
+            /* PCM5122 drives a 1/2 duty cycle LRCLK for TDM */
             /* RX_WLEN:        24-bit (default)
              * TDM_LRCLK_MODE: duty cycle of LRCLK is 1/2
              * TX_WLEN:        32-bit
@@ -270,26 +270,26 @@ void AudioHwInit()
              */
             WriteAllAdcRegs(PCM1865_FMT, 0b01010011);
         }
-        
-        /* TDM_OSEL:       4ch TDM 
+
+        /* TDM_OSEL:       4ch TDM
          */
         WriteAllAdcRegs(PCM1865_TDM_OSEL, 0b00000001);
     }
 
-    /* 
+    /*
      * Setup DACs
      */
     if(CODEC_MASTER)
     {
         /* When xCORE is I2S slave we set one DAC to master and the rest remain slaves.
          * We write some values to all DACs just to avoid any difference in performance */
-        
+
         // Disable Auto Clock Configuration
         WriteAllDacRegs(0x25, 0x72);
 
         // PLL P divider to 2
         WriteAllDacRegs(0x14, 0x01);
-            
+
         // PLL J divider to 8
         WriteAllDacRegs(0x15, 0x08);
 
@@ -300,22 +300,22 @@ void AudioHwInit()
         WriteAllDacRegs(0x17, 0x00);
 
         // PLL R divider to 1
-        WriteAllDacRegs(0x18, 0x00); 
+        WriteAllDacRegs(0x18, 0x00);
 
         // NB: Overall PLL Multiplier is x4.
         // miniDSP CLK divider (NMAC) to 2
-        WriteAllDacRegs(0x1B, 0x01); 
+        WriteAllDacRegs(0x1B, 0x01);
 
         //DAC CLK divider to 16
-        WriteAllDacRegs(0x1C, 0x0F); 
+        WriteAllDacRegs(0x1C, 0x0F);
 
         // NCP CLK divider to 4
-        WriteAllDacRegs(0x1D, 0x03); 
+        WriteAllDacRegs(0x1D, 0x03);
 
         // IDAC2
-        WriteAllDacRegs(0x24, 0x00); 
+        WriteAllDacRegs(0x24, 0x00);
     }
-    
+
     if(XUA_PCM_FORMAT == XUA_PCM_FORMAT_I2S)
     {
         // For basic I2S input we don't need any register setup. DACs will clock auto detect etc.
@@ -323,16 +323,16 @@ void AudioHwInit()
     }
     else /* TDM */
     {
-        /* Note for TDM to work as expected for all DACs the jumpers marked "DAC I2S/TDM Config" need setting appropriately 
+        /* Note for TDM to work as expected for all DACs the jumpers marked "DAC I2S/TDM Config" need setting appropriately
          * I2S MODE: SET ALL 2-3
          * TDM MODE: SET ALL 1-2, TDM SOURCE 3-4
          */
         /* Set Format to TDM/DSP & 24bit */
         WriteAllDacRegs(0x28, 0b00010011);
-        
+
         /* Set offset to appropriately for each DAC */
         for(int dacAddr = PCM5122_0_I2C_DEVICE_ADDR; dacAddr < (PCM5122_0_I2C_DEVICE_ADDR+4); dacAddr++)
-        { 
+        {
             const int dacOffset = dacAddr - PCM5122_0_I2C_DEVICE_ADDR;
             result = i2c_reg_write(dacAddr, 0x29, 1 + (dacOffset * 64));
             assert(result == I2C_REGOP_SUCCESS && msg("DAC I2C write reg failed"));
@@ -353,49 +353,49 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, unsigned dsdMode, unsigned s
     {
         AppPllEnable_SampleRate(samFreq);
     }
-       
+
     /* Set one DAC to I2S master */
     if(CODEC_MASTER)
-    { 
+    {
         i2c_regop_res_t result = I2C_REGOP_SUCCESS;
         unsigned regVal;
         const int dacAddr = PCM5122_3_I2C_DEVICE_ADDR;
 
         //OSR CLK divider is set to one (as its based on the output from the DAC CLK, which is already PLL/16)
         regVal = (mClk/(samFreq*I2S_CHANS_PER_FRAME*32))-1;
-        result |= i2c_reg_write(dacAddr, 0x1E, regVal); 
+        result |= i2c_reg_write(dacAddr, 0x1E, regVal);
 
         //# FS setting should be set based on sample rate
         regVal = samFreq/96000;
-        result |= i2c_reg_write(dacAddr, 0x22, regVal); 
+        result |= i2c_reg_write(dacAddr, 0x22, regVal);
 
         //IDAC1  sets the number of miniDSP instructions per clock.
         regVal = 192000/samFreq;
-        result |= i2c_reg_write(dacAddr, 0x23, regVal); 
+        result |= i2c_reg_write(dacAddr, 0x23, regVal);
 
         /* Master mode setting */
         // BCK, LRCK output
-        result |= i2c_reg_write(dacAddr, 0x09, 0x11); 
+        result |= i2c_reg_write(dacAddr, 0x09, 0x11);
 
         // Master mode BCK divider setting (making 64fs)
         regVal = (mClk/(samFreq*I2S_CHANS_PER_FRAME*32))-1;
-        result |= i2c_reg_write(dacAddr, 0x20, regVal); 
+        result |= i2c_reg_write(dacAddr, 0x20, regVal);
 
         // Master mode LRCK divider setting (divide BCK by a further 64 (256 for TDM) to make 1fs)
         regVal = (I2S_CHANS_PER_FRAME*32)-1;
-        result |= i2c_reg_write(dacAddr, 0x21, regVal); 
+        result |= i2c_reg_write(dacAddr, 0x21, regVal);
 
         // Master mode BCK, LRCK divider reset release
-        result |= i2c_reg_write(dacAddr, 0x0C, 0x3f); 
-        
+        result |= i2c_reg_write(dacAddr, 0x0C, 0x3f);
+
         assert(result == I2C_REGOP_SUCCESS && msg("DAC I2C write reg failed"));
 
         /* Write to all DACs */
         // Stand-by request
-        WriteAllDacRegs(0x02, 0x10); 
-         
+        WriteAllDacRegs(0x02, 0x10);
+
         // Stand-by release
-        WriteAllDacRegs(0x02, 0x00); 
+        WriteAllDacRegs(0x02, 0x00);
     }
 }
 
