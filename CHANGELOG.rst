@@ -7,7 +7,7 @@ sw_usb_audio Change Log
   * ADDED:     Build configs for synchronous mode (uses external CS2100 device)
   * ADDED:     app_usb_aud_xk_316_mc: Build configs for xCORE as I2S slave
   * CHANGED:   app_usb_aud_xk_316_mc: Core voltage reduced to 0.9v (was 0.922v)
-  * CHANGED:   Seperated build configs into build-tested, partially-test and
+  * CHANGED:   Separated build configs into build-tested, partially-tested and
     fully-tested
   * CHANGED:   Documentation updates (note, "Design Guide" now "User Guide")
 
