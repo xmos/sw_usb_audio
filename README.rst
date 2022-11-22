@@ -1,7 +1,9 @@
 XMOS USB Audio 2.0 Reference Design README
 ##########################################
 
-:Latest release: 7.0.0alpha0
+:Version: 7.1.0alpha0
+:Vendor: XMOS
+
 
 Please note, Alpha and Beta releases may not accurately reflect the final release and documentation may not be complete. These early releases are not suitable for a production context, and are provided for evaluation purposes only. See 'Release Quality & QA'.
 
@@ -147,11 +149,6 @@ In Field Firmware Upgrade
 
 The firmware provides a Device Firmware Upgrade (DFU) interface compliant to the USB DFU Device Class.  An example host application is provided for OSX.  See README in example application for usage.  The Thesycon USB Audio Class 2.0 driver for Windows provides DFU functionality and includes an example application.
 
-Support
-=======
-
-For all support issues please visit http://www.xmos.com/support
-
 Required Software (dependencies)
 ================================
 
@@ -166,4 +163,14 @@ Required Software (dependencies)
   * lib_adat (www.github.com/xmos/lib_adat)
   * lib_i2c (www.github.com/xmos/lib_i2c)
   * lib_i2s (www.github.com/xmos/lib_i2s)
+
+Documentation
+=============
+
+You can find the documentation for this software in the /doc directory of the package.
+
+Support
+=======
+
+This package is supported by XMOS Ltd. Issues can be raised against the software at: http://www.xmos.com/support
 

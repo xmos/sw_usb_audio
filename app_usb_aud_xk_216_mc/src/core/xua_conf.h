@@ -15,7 +15,7 @@
  *
  * Build can be customised but changing and adding defines here
  *
- * Note, we check if they are already defined in Makefile 
+ * Note, we check if they are already defined in Makefile
  */
 
 /*** Defines relating to basic functionality ***/
