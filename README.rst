@@ -131,7 +131,7 @@ General known issues with this release are listed below.  For board/application 
 
 -  Windows XP volume control very sensitive.  The Audio 1.0 driver built into Windows XP (usbaudio.sys) does not properly support master volume AND channel volume controls, leading to a very sensitive control.  Descriptors can be easily modified to disable master volume control if required (one byte - bmaControls(0) in Feature Unit descriptors)
 
--  88.2kHz and 176.4kHz sample frequencies are not exposed in Windows control panels.  These are known OS restrictions.
+-  88.2kHz and 176.4kHz sample frequencies are not exposed in Windows control panels.  These are known OS restrictions in Windows 7 and earlier.
 
 -  Compatibility issues exist with the Microsoft built in UAC1.0 driver (usbaudio.sys) and Intel Smart Sound Technology (SST) can result in audible distortions. This can be worked around by disabling the SST driver.
 
