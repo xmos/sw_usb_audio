@@ -52,3 +52,7 @@ manifest:
       remote: github-int
       revision: v15.1.4
 
+    - name: xdoc_released
+      groups: [infr]
+      remote: github-int
+      revision: 5f7494dd290e92dbf68038091bb53d2605644616
