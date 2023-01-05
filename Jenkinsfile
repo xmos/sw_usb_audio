@@ -23,7 +23,7 @@ pipeline {
       stages {
         stage('Get view') {
           steps {
-            xcorePrepareWestWorkspace()
+            xcorePrepareWestWorkspace(REPO)
           }
         }
         stage('Build applications') {
