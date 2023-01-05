@@ -10,6 +10,8 @@ pipeline {
   parameters {
       choice(name: 'TEST_LEVEL', choices: ['smoke', 'nightly', 'weekend'],
              description: 'The level of test coverage to run')
+      string(name: 'ROLL_DEPS_CMD', defaultValue: '',
+             description: 'A git command that is run on all repos before the build to check them out to a version')
   }
   environment {
     REPO = 'sw_usb_audio'
@@ -23,7 +25,7 @@ pipeline {
       stages {
         stage('Get view') {
           steps {
-            xcorePrepareWestWorkspace(REPO)
+            xcorePrepareWestWorkspace(REPO, params.ROLL_DEPS_CMD)
           }
         }
         stage('Build applications') {
