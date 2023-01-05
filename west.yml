@@ -60,3 +60,12 @@ manifest:
     - name: infr_scripts_pl
       groups: [infr]
       revision: 227ca03fe0b6c4382579101e8b3672b34f8668b7
+
+    - name: infr_apps
+      groups: [infr]
+      revision: 4471a9ecbdf26ab77829c36327225f1fc386a082
+
+    - name: tools_xmostest
+      groups: [infr]
+      remote: github-int
+      revision: 1e2d0097624e0df9c92981d2fc652fda3f81b9e2
