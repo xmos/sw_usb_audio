@@ -6,6 +6,7 @@ pipeline {
   agent none
   options {
     skipDefaultCheckout()
+    disableConcurrentBuilds()
   }
   parameters {
       choice(name: 'TEST_LEVEL', choices: ['smoke', 'nightly', 'weekend'],
