@@ -56,3 +56,7 @@ manifest:
       groups: [infr]
       remote: github-int
       revision: 5f7494dd290e92dbf68038091bb53d2605644616
+
+    - name: infr_scripts_pl
+      groups: [infr]
+      revision: 227ca03fe0b6c4382579101e8b3672b34f8668b7
