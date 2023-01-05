@@ -1,4 +1,4 @@
-@Library('xmos_jenkins_shared_library@v0.20.0') _
+@Library('xmos_jenkins_shared_library@feature/west_support') _
 
 getApproval()
 
@@ -23,7 +23,7 @@ pipeline {
       stages {
         stage('Get view') {
           steps {
-            xcorePrepareSandbox("${VIEW}", "${REPO}")
+            xcorePrepareWestWorkspace()
           }
         }
         stage('Build applications') {
