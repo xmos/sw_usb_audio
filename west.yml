@@ -61,6 +61,10 @@ manifest:
       groups: [infr]
       revision: 227ca03fe0b6c4382579101e8b3672b34f8668b7
 
+    - name: infr_scripts_py
+      groups: [infr]
+      revision: 1d767cbe89a3223da7a4e27c283fb96ee2a279c9
+
     - name: infr_apps
       groups: [infr]
       revision: 4471a9ecbdf26ab77829c36327225f1fc386a082
