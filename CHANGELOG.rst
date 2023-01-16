@@ -1,6 +1,11 @@
 sw_usb_audio Change Log
 =======================
 
+UNRELEASED
+----------
+
+  * FIXED:     Configuration of DACs when changing sample rate (#110)
+
 7.1.0
 -----
 
