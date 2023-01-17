@@ -30,7 +30,7 @@ boards = ["xk_216_mc", "xk_316_mc", "xk_evk_xu316"]
 board_configs = {}
 
 
-def parse_features(config):
+def parse_features(board, config):
     max_analogue_chans = 8
 
     config_re = r"^(?P<uac>[12])(?P<sync_mode>[ADS])(?P<i2s>[MSX])i(?P<chan_i>\d+)o(?P<chan_o>\d+)(?P<midi>[mx])(?P<spdif_i>[sx])(?P<spdif_o>[sx])(?P<adat_i>[ax])(?P<adat_o>[ax])(?P<dsd>[dx])(?P<tdm8>(_tdm8)?)"
@@ -44,6 +44,25 @@ def parse_features(config):
         features[k] = int(features[k])
     for k in ["midi", "spdif_i", "spdif_o", "adat_i", "adat_o", "dsd", "tdm8"]:
         features[k] = features[k] not in ["", "x"]
+
+    if not features["uac"] in [1, 2]:
+        pytest.exit(f"Error: Invalid UAC in {config}")
+
+    if board == "xk_216_mc":
+        if config.startswith("1"):
+            features["pid"] = 0xF
+        else:
+            features["pid"] = 0xE
+    elif board == "xk_316_mc":
+        if config.startswith("1"):
+            features["pid"] = 0x17
+        else:
+            features["pid"] = 0x16
+    elif board == "xk_evk_xu316":
+        if config.startswith("1"):
+            features["pid"] = 0x19
+        else:
+            features["pid"] = 0x18
 
     # Set the number of analogue channels
     features["analogue_i"] = min(features["chan_i"], max_analogue_chans)
@@ -105,18 +124,18 @@ def pytest_sessionstart(session):
         partial_configs = [config for config in configs if config not in full_configs]
         for config in configs:
             global board_configs
-            features = parse_features(config)
+            features = parse_features(board, config)
             # Mark the relevant configs for partial testing only
             features["partial"] = config in partial_configs
             board_configs[f"{board}-{config}"] = features
 
 
 def list_configs():
-    return board_configs.keys()
+    return [tuple(k.split("-", maxsplit=1)) for k in board_configs.keys()]
 
 
-def get_config_features(board_config):
-    return board_configs[board_config]
+def get_config_features(board, config):
+    return board_configs[f"{board}-{config}"]
 
 
 # Dictionary indexed by board name, with each entry being the tuple of XTAG IDs for
@@ -144,7 +163,7 @@ def pytest_collection_modifyitems(config, items):
         m = item.get_closest_marker("uncollect_if")
         if m:
             func = m.kwargs["func"]
-            if func(config.getoption("level"), **item.callspec.params):
+            if func(config, **item.callspec.params):
                 deselected.append(item)
                 continue
 
@@ -161,35 +180,6 @@ def pytest_collection_modifyitems(config, items):
 
     config.hook.pytest_deselected(items=deselected)
     items[:] = selected
-
-
-@pytest.fixture(autouse=True)
-def xtag_wrapper(pytestconfig, request):
-    for board in boards:
-        if any(board in kw for kw in request.keywords):
-            (adapter_dut, adapter_harness) = xtag_dut_harness[board]
-            break
-
-    yield adapter_dut, adapter_harness
-
-    # Since multiple DUTs can be connected to one test host, the application running on the DUT must be
-    # stopped when the test ends; this can be done using xgdb to break in to stop it running
-    subprocess.check_output(
-        [
-            "xgdb",
-            f"--eval-command=connect --adapter-id {adapter_dut}",
-            "--eval-command=quit",
-        ]
-    )
-
-
-@pytest.fixture
-def xsig():
-    xsig_path = Path(__file__).parent / "tools" / "xsig"
-    if not xsig_path.exists():
-        pytest.fail(f"xsig binary not present in {xsig_path.parent}")
-
-    return xsig_path
 
 
 @pytest.fixture

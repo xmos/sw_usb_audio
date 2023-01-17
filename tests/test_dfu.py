@@ -6,7 +6,19 @@ import subprocess
 import time
 import tempfile
 
-from usb_audio_test_utils import get_firmware_path
+from usb_audio_test_utils import get_firmware_path, get_xtag_dut, xtc_version, stop_xrun_app
+from conftest import get_config_features
+
+
+class DfuTester:
+    def __init__(self, pytestconfig, board):
+        self.xtag_id = get_xtag_dut(pytestconfig, board)
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        stop_xrun_app(self.xtag_id)
 
 
 def get_bcd_version(vid, pid, timeout=10):
@@ -64,11 +76,13 @@ def get_dfu_bin_path(board, config):
 def create_dfu_bin(board, config):
     firmware_path = get_firmware_path(board, config)
     dfu_bin_path = get_dfu_bin_path(board, config)
+    # Assume that XE was built with the same version of XTC Tools as used in this test
+    version = xtc_version()
     subprocess.run(
         [
             "xflash",
             "--factory-version",
-            "15.1",
+            f'{version["major"]}.{version["minor"]}',
             "--upgrade",
             "1",
             firmware_path,
@@ -87,14 +101,9 @@ dfu_testcases = [
     ("xk_evk_xu316", "2AMi2o2xxxxxx"),
 ]
 
-pids = {
-    "xk_216_mc": 0xE,
-    "xk_316_mc": 0x16,
-    "xk_evk_xu316": 0x18,
-}
 
-
-def dfu_uncollect(level, board, config):
+def dfu_uncollect(pytestconfig, board, config):
+    level = pytestconfig.getoption("level")
     if level == "smoke":
         return board in ["xk_216_mc", "xk_evk_xu316"]
     return False
@@ -102,59 +111,59 @@ def dfu_uncollect(level, board, config):
 
 @pytest.mark.uncollect_if(func=dfu_uncollect)
 @pytest.mark.parametrize(["board", "config"], dfu_testcases)
-def test_dfu(pytestconfig, xtag_wrapper, xmosdfu, board, config):
-    adapter_dut, _ = xtag_wrapper
-
+def test_dfu(pytestconfig, xmosdfu, board, config):
+    features = get_config_features(board, config)
     vid = 0x20B1
-    pid = pids[board]
+    pid = features["pid"]
 
-    # xflash the factory image for the initial version
-    firmware = get_firmware_path(board, config)
-    subprocess.run(
-        ["xflash", "--adapter-id", adapter_dut, "--factory", firmware], check=True
-    )
-    initial_version = get_bcd_version(vid, pid)
-    exp_version1 = "99.01"
-    exp_version2 = "99.02"
+    with DfuTester(pytestconfig, board) as dfu_test:
+        # xflash the factory image for the initial version
+        firmware = get_firmware_path(board, config)
+        subprocess.run(
+            ["xflash", "--adapter-id", dfu_test.xtag_id, "--factory", firmware], check=True
+        )
+        initial_version = get_bcd_version(vid, pid)
+        exp_version1 = "99.01"
+        exp_version2 = "99.02"
 
-    # perform the first upgrade
-    dfu_bin1 = create_dfu_bin(board, "upgrade1")
-    subprocess.run([xmosdfu, f"{hex(pid)}", "--download", dfu_bin1], check=True)
-    version = get_bcd_version(vid, pid)
-    if version != exp_version1:
-        pytest.fail(f"Unexpected version {version} after first upgrade")
+        # perform the first upgrade
+        dfu_bin1 = create_dfu_bin(board, "upgrade1")
+        subprocess.run([xmosdfu, f"{hex(pid)}", "--download", dfu_bin1], check=True)
+        version = get_bcd_version(vid, pid)
+        if version != exp_version1:
+            pytest.fail(f"Unexpected version {version} after first upgrade")
 
-    # perform the second upgrade
-    dfu_bin2 = create_dfu_bin(board, "upgrade2")
-    subprocess.run([xmosdfu, f"{hex(pid)}", "--download", dfu_bin2], check=True)
-    version = get_bcd_version(vid, pid)
-    if version != exp_version2:
-        pytest.fail(f"Unexpected version {version} after second upgrade")
-
-    with tempfile.NamedTemporaryFile() as tmpfile:
-        subprocess.run([xmosdfu, f"{hex(pid)}", "--upload", tmpfile.name], check=True)
+        # perform the second upgrade
+        dfu_bin2 = create_dfu_bin(board, "upgrade2")
+        subprocess.run([xmosdfu, f"{hex(pid)}", "--download", dfu_bin2], check=True)
         version = get_bcd_version(vid, pid)
         if version != exp_version2:
-            pytest.fail(f"Unexpected version {version} after reading upgrade image")
+            pytest.fail(f"Unexpected version {version} after second upgrade")
 
+        with tempfile.NamedTemporaryFile() as tmpfile:
+            subprocess.run([xmosdfu, f"{hex(pid)}", "--upload", tmpfile.name], check=True)
+            version = get_bcd_version(vid, pid)
+            if version != exp_version2:
+                pytest.fail(f"Unexpected version {version} after reading upgrade image")
+
+            subprocess.run([xmosdfu, f"{hex(pid)}", "--revertfactory"], check=True)
+            version = get_bcd_version(vid, pid)
+            if version != initial_version:
+                pytest.fail(
+                    f"After factory reset, version {version} didn't match initial {initial_version}"
+                )
+
+            subprocess.run([xmosdfu, f"{hex(pid)}", "--download", tmpfile.name], check=True)
+            version = get_bcd_version(vid, pid)
+            if version != exp_version2:
+                pytest.fail(
+                    f"Unexpected version {version} after writing the image that was read"
+                )
+
+        # Finish by reverting back to the factory image again
         subprocess.run([xmosdfu, f"{hex(pid)}", "--revertfactory"], check=True)
         version = get_bcd_version(vid, pid)
         if version != initial_version:
             pytest.fail(
-                f"After factory reset, version {version} didn't match initial {initial_version}"
+                f"Version {version} didn't match initial {initial_version} after final factory reset"
             )
-
-        subprocess.run([xmosdfu, f"{hex(pid)}", "--download", tmpfile.name], check=True)
-        version = get_bcd_version(vid, pid)
-        if version != exp_version2:
-            pytest.fail(
-                f"Unexpected version {version} after writing the image that was read"
-            )
-
-    # Finish by reverting back to the factory image again
-    subprocess.run([xmosdfu, f"{hex(pid)}", "--revertfactory"], check=True)
-    version = get_bcd_version(vid, pid)
-    if version != initial_version:
-        pytest.fail(
-            f"Version {version} didn't match initial {initial_version} after final factory reset"
-        )
