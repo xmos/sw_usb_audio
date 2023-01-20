@@ -383,6 +383,10 @@ void AudioHwInit()
 /* Configures the external audio hardware for the required sample frequency */
 void AudioHwConfig(unsigned samFreq, unsigned mClk, unsigned dsdMode, unsigned sampRes_DAC, unsigned sampRes_ADC)
 {
+    WriteAllDacRegs(PCM5122_MUTE,           0x11); // Soft Mute both channels
+    delay_milliseconds(3);  // Wait for mute to take effect. This takes 104 samples, this is 2.4ms @ 44.1kHz. So lets say 3ms to cover everything.
+    WriteAllDacRegs(PCM5122_STANDBY_PWDN,   0x10); // Request standby mode while we change regs
+
     if (USE_FRACTIONAL_N)
     {
         SetI2CMux(PCA9540B_CTRL_CHAN_1);
@@ -393,10 +397,6 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, unsigned dsdMode, unsigned s
     {
         AppPllEnable_SampleRate(samFreq);
     }
-
-    WriteAllDacRegs(PCM5122_MUTE,           0x11); // Soft Mute both channels
-    delay_milliseconds(3);  // Wait for mute to take effect. This takes 104 samples, this is 2.4ms @ 44.1kHz. So lets say 3ms to cover everything.
-    WriteAllDacRegs(PCM5122_STANDBY_PWDN,   0x10); // Request standby mode while we change regs
 
     /* Set one DAC to I2S master */
     if(CODEC_MASTER)
