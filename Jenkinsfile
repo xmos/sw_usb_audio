@@ -91,6 +91,7 @@ pipeline {
                 dir("${REPO}") {
                   unstash 'xk_216_mc_bin'
                   unstash 'xk_evk_xu316_bin'
+
                   dir("tests") {
                     withVenv() {
                       sh "pip install -e ${WORKSPACE}/xtagctl"
@@ -99,7 +100,7 @@ pipeline {
                     dir("tools") {
                       // Build test support application
                       sh 'make -C volcontrol'
-                      copyArtifacts filter: 'bin_macos/xsig', fingerprintArtifacts: true, projectName: 'xmos-int/xsig/master', flatten: true, selector: lastSuccessful()
+                      copyArtifacts filter: 'bin-macos-x86/xsig', fingerprintArtifacts: true, projectName: 'xmos-int/xsig/master', flatten: true, selector: lastSuccessful()
                     }
                   }
                 }
@@ -153,6 +154,7 @@ pipeline {
 
                 dir("${REPO}") {
                   unstash 'xk_316_mc_bin'
+
                   dir("tests") {
                     withVenv() {
                       sh "pip install -e ${WORKSPACE}/xtagctl"
@@ -161,7 +163,7 @@ pipeline {
                     dir("tools") {
                       // Build test support application
                       sh 'make -C volcontrol'
-                      copyArtifacts filter: 'bin_macos_m1/xsig', fingerprintArtifacts: true, projectName: 'xmos-int/xsig/master', flatten: true, selector: lastSuccessful()
+                      copyArtifacts filter: 'bin-macos-arm/xsig', fingerprintArtifacts: true, projectName: 'xmos-int/xsig/master', flatten: true, selector: lastSuccessful()
                     }
                   }
                 }
@@ -188,6 +190,64 @@ pipeline {
             always {
               archiveArtifacts artifacts: "${REPO}/tests/pytest_result_mac_arm.xml", fingerprint: true, allowEmptyArchive: true
               junit "${REPO}/tests/pytest_result_mac_arm.xml"
+            }
+            cleanup {
+              xcoreCleanSandbox()
+            }
+          }
+        }
+        stage('Windows 10') {
+          agent {
+            label 'usb_audio && windows10 && xcore.ai-mcab'
+          }
+          stages {
+            stage('Get view') {
+              steps {
+                xcorePrepareSandbox("${VIEW}", "${REPO}")
+              }
+            }
+            stage('Setup') {
+              steps {
+                dir("${WORKSPACE}/sw_audio_analyzer") {
+                  copyArtifacts filter: '**/*.xe', fingerprintArtifacts: true, projectName: 'xmos-int/sw_audio_analyzer/master', selector: lastSuccessful()
+                }
+
+                dir("${REPO}") {
+                  unstash 'xk_316_mc_bin'
+
+                  dir("tests") {
+                    withVenv() {
+                      dir("${WORKSPACE}/xtagctl") {
+                        sh "pip install -e ."
+                      }
+                    }
+
+                    dir("tools") {
+                      copyArtifacts filter: 'bin-windows-x86/xsig.exe', fingerprintArtifacts: true, projectName: 'xmos-int/xsig/master', flatten: true, selector: lastSuccessful()
+                    }
+                  }
+                }
+              }
+            }
+            stage('Test') {
+              steps {
+                dir("${REPO}/tests") {
+                  viewEnv() {
+                    withVenv() {
+                      withXTAG(["usb_audio_mc_xcai_dut", "usb_audio_mc_xcai_harness"]) { xtagIds ->
+                        sh "pytest -v --level ${params.TEST_LEVEL} --junitxml=pytest_result_windows10.xml \
+                            -o xk_316_mc_dut=${xtagIds[0]} -o xk_316_mc_harness=${xtagIds[1]}"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+          post {
+            always {
+              archiveArtifacts artifacts: "${REPO}/tests/pytest_result_windows10.xml", fingerprint: true, allowEmptyArchive: true
+              junit "${REPO}/tests/pytest_result_windows10.xml"
             }
             cleanup {
               xcoreCleanSandbox()

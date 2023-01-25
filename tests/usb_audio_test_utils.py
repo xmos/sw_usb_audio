@@ -8,28 +8,43 @@ import time
 import os
 import stat
 import re
+import shutil
 import socket
 import signal
 
 from conftest import get_config_features
 
 
+def use_windows_builtin_driver(board, config):
+    # Use the builtin driver for:
+    #  - configs with the"_winbuiltin" keyword
+    #  - our UAC 1 PID is not supported by the Thesycon driver
+    if config.startswith("1"):
+        return True
+    if "_winbuiltin" in config:
+        return True
+    return False
+
+
 def product_str_from_board_config(board, config):
-    if board == 'xk_216_mc':
+    if platform.system() == "Windows" and not use_windows_builtin_driver(board, config):
+        return "XMOS USB Audio Device"
+
+    if board == "xk_216_mc":
+        if config.startswith("1"):
+            return "XMOS xCORE-200 MC (UAC1.0)"
+        elif config.startswith("2"):
+            return "XMOS xCORE-200 MC (UAC2.0)"
+    elif board == "xk_316_mc":
         if config.startswith('1'):
-            return 'XMOS xCORE-200 MC (UAC1.0)'
-        elif config.startswith('2'):
-            return 'XMOS xCORE-200 MC (UAC2.0)'
-    elif board == 'xk_316_mc':
-        if config.startswith('1'):
-            return 'XMOS xCORE.ai MC (UAC1.0)'
-        elif config.startswith('2'):
-            return 'XMOS xCORE.ai MC (UAC2.0)'
-    elif board == 'xk_evk_xu316':
-        if config.startswith('1'):
-            return 'XMOS xCORE (UAC1.0)'
-        elif config.startswith('2'):
-            return 'XMOS xCORE (UAC2.0)'
+            return "XMOS xCORE.ai MC (UAC1.0)"
+        elif config.startswith("2"):
+            return "XMOS xCORE.ai MC (UAC2.0)"
+    elif board == "xk_evk_xu316":
+        if config.startswith("1"):
+            return "XMOS xCORE (UAC1.0)"
+        elif config.startswith("2"):
+            return "XMOS xCORE (UAC2.0)"
     else:
         pytest.fail(f"Unrecognised board {board}")
 
@@ -222,12 +237,14 @@ def get_xtag_dut_and_harness(pytestconfig, board):
 
 
 # Stop an application that was run using xrun by breaking in with xgdb
+# Allow a long timeout here because sometimes an XTAG can get stuck in a USB transaction when xrun
+# is killed, and this connect via xgdb can recover it but it takes a while to reboot the XTAG
 def stop_xrun_app(adapter_id):
     subprocess.run(
             ["xgdb", "-ex", f"connect --adapter-id {adapter_id}", "-ex", "quit"],
             stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL,
-            timeout=10,
+            timeout=120,
         )
 
 
@@ -281,7 +298,12 @@ class AudioAnalyzerHarness:
         if self.xscope == "app":
             wait_for_xscope_port(self.xscope_port)
         else:
-            time.sleep(2)
+            # Wait for a short delay to allow the analyzer app to start running before
+            # doing anything else; Windows seems to need a longer delay, otherwise xrun
+            # becomes very slow and a longer wait is required to reboot the XTAG.
+            delay_sec = 10 if platform.system() == "Windows" else 5
+            time.sleep(delay_sec)
+
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -289,14 +311,24 @@ class AudioAnalyzerHarness:
 
     def terminate(self):
         if self.proc.poll() is None:
-            self.proc.send_signal(signal.SIGINT)
-            try:
-                self.proc.wait(timeout=2)
-            except subprocess.TimeoutExpired:
-                self.proc.kill()
-        # If not attached via xscope, kill the app
-        if not self.xscope:
-            stop_xrun_app(self.adapter_id)
+            # Due to a bug in Tools 15.1.4, terminating xrun leaves xgdb running.
+            # On non-Windows platforms, SIGINT can be used instead. On Windows,
+            # kill all xgdb.exe processes, since the xgdb process ID is unknown.
+            if platform.system() == "Windows":
+                self.proc.terminate()
+                subprocess.run(
+                    ["taskkill", "/F", "/IM", "xgdb.exe"],
+                    stdout=subprocess.DEVNULL,
+                    stderr=subprocess.DEVNULL,
+                    timeout=5,
+                )
+            else:
+                self.proc.send_signal(signal.SIGINT)
+                try:
+                    self.proc.wait(timeout=2)
+                except subprocess.TimeoutExpired:
+                    self.proc.kill()
+        stop_xrun_app(self.adapter_id)
 
     def get_output(self):
         try:
@@ -329,10 +361,30 @@ class XrunDut:
         firmware = get_firmware_path(self.board, self.config)
         subprocess.run(["xrun", "--adapter-id", self.adapter_id, firmware])
         self.dev_name = wait_for_portaudio(self.board, self.config)
+        if platform.system() == "Windows" and use_windows_builtin_driver(self.board, self.config):
+            # Select ASIO4ALL as device for built-in driver testing (cannot wait for this device
+            # name in wait_for_portaudio because it is always present)
+            self.dev_name = "ASIO4ALL v2"
+        time.sleep(5)
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         stop_xrun_app(self.adapter_id)
+
+        # If usbdeview program is present on Windows, uninstall the device to force
+        # re-enumeration next time and avoid caching of device features by the OS
+        if platform.system() == "Windows":
+            usbdeview_path = shutil.which("usbdeview")
+            if usbdeview_path:
+                subprocess.run(
+                    [
+                        usbdeview_path,
+                        "/RunAsAdmin",
+                        "/remove_by_pid",
+                        f"0x20b1;{hex(self.pid)}",
+                    ],
+                    timeout=10,
+                )
 
 
 class XsigProcess:
@@ -346,7 +398,8 @@ class XsigProcess:
     """
     def __init__(self, fs, duration, cfg_file, dev_name):
         self.duration = 0 if duration is None else duration
-        xsig = Path(__file__).parent / "tools" / "xsig"
+        binary_name = "xsig.exe" if platform.system() == "Windows" else "xsig"
+        xsig = Path(__file__).parent / "tools" / binary_name
         if not xsig.exists():
             pytest.fail(f"xsig binary not present in {xsig.parent}")
         self.xsig_cmd = [xsig, f"{fs}", f"{self.duration * 1000}", cfg_file, "--device", dev_name]
