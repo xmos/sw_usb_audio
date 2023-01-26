@@ -1,6 +1,12 @@
 sw_usb_audio Change Log
 =======================
 
+UNRELEASED
+----------
+
+  * CHANGED:   AppPLL settings to reduce jitter (#112)
+  * FIXED:     Configuration of DACs when changing sample rate (#110)
+
 7.1.0
 -----
 

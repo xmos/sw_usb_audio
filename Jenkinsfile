@@ -112,10 +112,7 @@ pipeline {
               steps {
                 dir("${REPO}/tests") {
                   viewEnv() {
-                    // The JENKINS env var is necessary for macOS catalina
-                    // We have to work around microphone permission issues
-                    // For more info, see the DevOps section of the XMOS wiki
-                    withEnv(["JENKINS=1"]) {
+                    withEnv(["USBA_MAC_PRIV_WORKAROUND=1"]) {
                       withVenv() {
                         withXTAG(["usb_audio_mc_xs2_dut", "usb_audio_mc_xs2_harness", \
                                   "usb_audio_xcai_exp_dut", "usb_audio_xcai_exp_harness"]) { xtagIds ->
@@ -177,10 +174,7 @@ pipeline {
               steps {
                 dir("${REPO}/tests") {
                   viewEnv() {
-                    // The JENKINS env var is necessary for macOS catalina
-                    // We have to work around microphone permission issues
-                    // For more info, see the DevOps section of the XMOS wiki
-                    withEnv(["JENKINS=1"]) {
+                    withEnv(["USBA_MAC_PRIV_WORKAROUND=1"]) {
                       withVenv() {
                         withXTAG(["usb_audio_mc_xcai_dut", "usb_audio_mc_xcai_harness"]) { xtagIds ->
                           sh "pytest -v --level ${params.TEST_LEVEL} --junitxml=pytest_result_mac_arm.xml \

@@ -9,6 +9,9 @@ import os
 import stat
 import re
 import socket
+import signal
+
+from conftest import get_config_features
 
 
 def product_str_from_board_config(board, config):
@@ -42,22 +45,11 @@ def wait_for_portaudio(board, config, timeout=10):
         # sounddevice must be terminated and re-initialised to get updated device info
         sd._terminate()
         sd._initialize()
-        sd_devs = [sd_dev['name'] for sd_dev in sd.query_devices()]
-        if prod_str in sd_devs:
-            return
+        for sd_dev in sd.query_devices():
+            if prod_str in sd_dev["name"]:
+                return sd_dev["name"]
 
     pytest.fail(f"Device ({prod_str}) not available via portaudio in {timeout}s")
-
-
-def get_firmware_path_harness(board, config=None):
-    xe_name = f"app_audio_analyzer_{board}_{config}.xe" if config else f"app_audio_analyzer_{board}.xe"
-    bin_dir = Path(__file__).parents[2] / "sw_audio_analyzer" / f"app_audio_analyzer_{board}" / "bin"
-    if config:
-        bin_dir = bin_dir / f"{config}"
-    fw_path = bin_dir / xe_name
-    if not fw_path.exists():
-        pytest.fail(f"Harness firmware not present at {fw_path}")
-    return fw_path
 
 
 def get_firmware_path(board, config):
@@ -73,38 +65,6 @@ def get_firmware_path(board, config):
     return fw_path
 
 
-def run_audio_command(outfile, exe, *args):
-    """ Run any command that needs to capture audio
-
-    'outfile' is a file that must be provided to store stdout
-
-    NOTE: If running on macOS on Jenkins, the environment WILL NOT be inherited
-    by the child process
-    """
-
-    # If we're running on macOS on Jenkins, we need microphone permissions
-    # To do this, we put an executable script in the $HOME/exec_all directory
-    # A script is running on the host machine to execute everything in that dir
-    if platform.system() == "Darwin" and "JENKINS" in os.environ:
-        # Create a shell script to run the exe
-        with tempfile.NamedTemporaryFile("w+", delete=False, dir=Path.home() / "exec_all") as script_file:
-            str_args = [str(a) for a in args]
-            # fmt: off
-            script_text = (
-                "#!/bin/bash\n"
-                f"{exe} {' '.join(str_args)} > {outfile.name}\n"
-            )
-            # fmt: on
-            script_file.write(script_text)
-            script_file.flush()
-            Path(script_file.name).chmod(
-                stat.S_IREAD | stat.S_IWRITE | stat.S_IEXEC
-            )
-            return
-
-    subprocess.Popen([exe, *args], stdout=outfile, text=True)
-
-
 def get_line_matches(lines, expected):
     matches = []
     for line in lines:
@@ -116,7 +76,7 @@ def get_line_matches(lines, expected):
 
 
 def check_analyzer_output(analyzer_output, xsig_config):
-    """ Verify that the output from xsig is correct """
+    """Verify that the output from xsig is correct"""
 
     failures = []
     # Check for any errors
@@ -127,76 +87,92 @@ def check_analyzer_output(analyzer_output, xsig_config):
     num_chans = len(xsig_config)
     analyzer_channels = [[] for _ in range(num_chans)]
     for line in analyzer_output:
-        match = re.search(r'^Channel (\d+):', line)
+        match = re.search(r"^Channel (\d+):", line)
         if not match:
             continue
 
         channel = int(match.group(1))
         if channel not in range(num_chans):
-            failures.append(f'Invalid channel number {channel}')
+            failures.append(f"Invalid channel number {channel}")
             continue
 
         analyzer_channels[channel].append(line)
 
-        if re.match(r'Channel \d+: Lost signal', line):
+        if re.match(r"Channel \d+: Lost signal", line):
             failures.append(line)
 
     for idx, channel_config in enumerate(xsig_config):
-        if channel_config[0] == 'volcheck':
-            vol_changes = get_line_matches(analyzer_channels[idx], r'.*Volume change by (-?\d+)')
+        if channel_config[0] == "volcheck":
+            vol_changes = get_line_matches(
+                analyzer_channels[idx], r".*Volume change by (-?\d+)"
+            )
 
             if len(vol_changes) < 2:
-                failures.append(f'Initial volume and initial change not found on channel {idx}')
+                failures.append(
+                    f"Initial volume and initial change not found on channel {idx}"
+                )
                 continue
 
             initial_volume = int(vol_changes.pop(0))
             initial_change = int(vol_changes.pop(0))
             if initial_change >= 0:
-                failures.append(f'Initial change is not negative on channel {idx}: {initial_change}')
+                failures.append(
+                    f"Initial change is not negative on channel {idx}: {initial_change}"
+                )
             initial_change = abs(initial_change)
             exp_vol_changes = [1.0, -0.5, 0.5]
             if len(vol_changes) != len(exp_vol_changes):
-                failures.append(f'Unexpected number of volume changes on channel {idx}: {vol_changes}')
+                failures.append(
+                    f"Unexpected number of volume changes on channel {idx}: {vol_changes}"
+                )
                 continue
 
             for vol_change, exp_ratio in zip(vol_changes, exp_vol_changes):
                 expected = initial_change * exp_ratio
                 if abs(int(vol_change) - expected) > 2:
-                    failures.append(f'Volume change not as expected on channel {idx}: actual {vol_change}, expected {expected}')
+                    failures.append(
+                        f"Volume change not as expected on channel {idx}: actual {vol_change}, expected {expected}"
+                    )
 
-        elif channel_config[0] == 'sine':
+        elif channel_config[0] == "sine":
             exp_freq = channel_config[1]
-            chan_freqs = get_line_matches(analyzer_channels[idx], r'^Channel \d+: Frequency (\d+)')
+            chan_freqs = get_line_matches(
+                analyzer_channels[idx], r"^Channel \d+: Frequency (\d+)"
+            )
             if not len(chan_freqs):
-                failures.append(f'No signal seen on channel {idx}')
+                failures.append(f"No signal seen on channel {idx}")
             for freq in chan_freqs:
                 if int(freq) != exp_freq:
-                    failures.append(f'Incorrect frequency on channel {idx}; got {freq}, expected {exp_freq}')
+                    failures.append(
+                        f"Incorrect frequency on channel {idx}; got {freq}, expected {exp_freq}"
+                    )
 
-        elif channel_config[0] == 'ramp':
+        elif channel_config[0] == "ramp":
             exp_ramp = channel_config[1]
-            ramps = get_line_matches(analyzer_channels[idx], r'.*step = (-?\d+)')
+            ramps = get_line_matches(analyzer_channels[idx], r".*step = (-?\d+)")
 
             if len(ramps) == 0:
                 failures.append(f"No ramp seen on channel {idx}")
 
             for ramp in ramps:
                 if int(ramp) != exp_ramp:
-                    failures.append(f"Incorrect ramp on channel {idx}: got {ramp}, expected {exp_ramp}")
+                    failures.append(
+                        f"Incorrect ramp on channel {idx}: got {ramp}, expected {exp_ramp}"
+                    )
 
             for line in analyzer_channels[idx]:
                 if re.match(".*discontinuity", line):
                     failures.append(line)
 
-        elif channel_config[0] == 'zero':
+        elif channel_config[0] == "zero":
             if len(analyzer_channels[idx]):
                 failures.append(analyzer_channels[idx])
 
         else:
-            failures.append(f'Invalid channel config {channel_config}')
+            failures.append(f"Invalid channel config {channel_config}")
 
     if len(failures) > 0:
-        pytest.fail('Checking analyser output failed:\n' + '\n'.join(failures))
+        pytest.fail("Checking analyser output failed:\n" + "\n".join(failures))
 
 
 # Get an available port number by binding a socket then closing it (assuming nothing else takes it before it's used by xrun)
@@ -219,4 +195,233 @@ def wait_for_xscope_port(port, timeout=10):
                 # Failed to bind, so xrun has this port open and is ready to use
                 return
 
-    pytest.fail(f'xscope port {port} not ready after {timeout}s')
+    pytest.fail(f"xscope port {port} not ready after {timeout}s")
+
+
+def xtc_version():
+    version_re = r"XTC version: (?P<major>\d+)\.(?P<minor>\d+)\.(?P<patch>\d+)"
+    ret = subprocess.run(["xcc", "--version"], capture_output=True, text=True)
+    match = re.search(version_re, ret.stdout)
+    if not match:
+        pytest.fail(f"Unable to get XTC Tools version: stdout={ret.stdout}")
+    return match.groupdict()
+
+
+def split_board_config(board_config):
+    return tuple(board_config.split("-", maxsplit=1))
+
+
+def get_xtag_dut(pytestconfig, board):
+    return pytestconfig.getini(f"{board}_dut")
+
+
+def get_xtag_dut_and_harness(pytestconfig, board):
+    dut = pytestconfig.getini(f"{board}_dut")
+    harness = pytestconfig.getini(f"{board}_harness")
+    return dut, harness
+
+
+# Stop an application that was run using xrun by breaking in with xgdb
+def stop_xrun_app(adapter_id):
+    subprocess.run(
+            ["xgdb", "-ex", f"connect --adapter-id {adapter_id}", "-ex", "quit"],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            timeout=10,
+        )
+
+
+class AudioAnalyzerHarness:
+    """
+    Run the audio analyzer harness
+
+    The xscope parameter can be None, "io" or "app". If None, xrun does not remain
+    attached after starting the application. If "io", xrun remains attached and
+    stdout/stderr is collected. If "app", xrun opens up a port and waits for another
+    application to connect; the application that wants to connect should use the
+    port number stored in the xscope_port member of this class.
+    """
+    def __init__(self, adapter_id, board="xcore200_mc", config=None, xscope=None):
+        self.adapter_id = adapter_id
+        xe_name = (
+            f"app_audio_analyzer_{board}_{config}.xe"
+            if config
+            else f"app_audio_analyzer_{board}.xe"
+        )
+        bin_dir = (
+            Path(__file__).parents[2]
+            / "sw_audio_analyzer"
+            / f"app_audio_analyzer_{board}"
+            / "bin"
+        )
+        if config:
+            bin_dir = bin_dir / f"{config}"
+        self.harness_firmware = bin_dir / xe_name
+        if not self.harness_firmware.exists():
+            pytest.fail(f"Harness firmware not present at {self.harness_firmware}")
+        if xscope and xscope not in ["app", "io"]:
+            pytest.fail(f"Error: invalid xscope option value {xscope}")
+        self.xscope = xscope
+        self.xscope_port = None
+        self.proc = None
+
+    def __enter__(self):
+        xrun_cmd = ["xrun", "--adapter-id", self.adapter_id]
+        if self.xscope == "app":
+            self.xscope_port = get_xscope_port_number()
+            xrun_cmd.append("--xscope-port")
+            xrun_cmd.append(f"localhost:{self.xscope_port}")
+        elif self.xscope == "io":
+            xrun_cmd.append("--xscope")
+        xrun_cmd.append(self.harness_firmware)
+        self.proc = subprocess.Popen(
+            xrun_cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT
+        )
+
+        if self.xscope == "app":
+            wait_for_xscope_port(self.xscope_port)
+        else:
+            time.sleep(2)
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.terminate()
+
+    def terminate(self):
+        if self.proc.poll() is None:
+            self.proc.send_signal(signal.SIGINT)
+            try:
+                self.proc.wait(timeout=2)
+            except subprocess.TimeoutExpired:
+                self.proc.kill()
+        # If not attached via xscope, kill the app
+        if not self.xscope:
+            stop_xrun_app(self.adapter_id)
+
+    def get_output(self):
+        try:
+            out, _ = self.proc.communicate(timeout=5)
+        except subprocess.TimeoutExpired:
+            pytest.fail("Error: timeout getting audio analyzer output")
+        return out.decode().splitlines()
+
+
+class XrunDut:
+    """
+    Run a USB Audio application on a device
+
+    A USB Audio application, chosen based on the board and config parameters, is
+    run on the device accessible via the XTAG given by the adapter_id parameter.
+
+    There is a delay after starting the application to wait for it to appear as a
+    PortAudio device. Then the device_name class member can be used by audio
+    software to use this particular device.
+    """
+    def __init__(self, adapter_id, board, config):
+        self.adapter_id = adapter_id
+        self.board = board
+        self.config = config
+        features = get_config_features(board, config)
+        self.pid = features["pid"]
+        self.dev_name = None
+
+    def __enter__(self):
+        firmware = get_firmware_path(self.board, self.config)
+        subprocess.run(["xrun", "--adapter-id", self.adapter_id, firmware])
+        self.dev_name = wait_for_portaudio(self.board, self.config)
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        stop_xrun_app(self.adapter_id)
+
+
+class XsigProcess:
+    """
+    Super-class to run the xsig analyzer/signal generator
+
+    In general, this class shouldn't be used directly; instead use XsigInput or XsigOutput.
+
+    The application requires a sample rate (fs), duration in seconds (can be zero for indefinite
+    runtime), a configuration file and the name of the audio device to use.
+    """
+    def __init__(self, fs, duration, cfg_file, dev_name):
+        self.duration = 0 if duration is None else duration
+        xsig = Path(__file__).parent / "tools" / "xsig"
+        if not xsig.exists():
+            pytest.fail(f"xsig binary not present in {xsig.parent}")
+        self.xsig_cmd = [xsig, f"{fs}", f"{self.duration * 1000}", cfg_file, "--device", dev_name]
+        self.proc = None
+        self.output_file = None
+
+    def __enter__(self):
+        self.proc = subprocess.Popen(self.xsig_cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        if self.proc.poll() is None:
+            self.proc.terminate()
+
+    def get_output(self):
+        try:
+            out, _ = self.proc.communicate(timeout=5)
+        except subprocess.TimeoutExpired:
+            pytest.fail("Error: timeout getting xsig output")
+        return out.decode().splitlines()
+
+
+class XsigInput(XsigProcess):
+    """
+    Xsig input class
+
+    This class contains logic that is specific to running an instance of xsig for an input test.
+
+    As a workaround for MacOS privacy restrictions, a Python script can be created which will run
+    the xsig command with a timeout; this is executed by a separate script running on the host.
+    """
+    def __enter__(self):
+        if platform.system() == "Darwin" and os.environ.get("USBA_MAC_PRIV_WORKAROUND", None) == "1":
+            self.output_file = tempfile.NamedTemporaryFile(mode="w+")
+            # Create a Python script to run the xsig command
+            with tempfile.NamedTemporaryFile(
+                "w+", delete=False, dir=Path.home() / "exec_all", suffix=".py"
+            ) as script_file:
+                # fmt: off
+                script_text = (
+                    'import subprocess\n'
+                    'from pathlib import PosixPath\n'
+                    f'with open("{self.output_file.name}", "w+") as f:\n'
+                    '    try:\n'
+                    f'        ret = subprocess.run({self.xsig_cmd}, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout={self.duration+3})\n'
+                    f'    except subprocess.TimeoutExpired:\n'
+                    f'        f.write("Timeout running command: {self.xsig_cmd}")\n'
+                    '    else:\n'
+                    '        f.write(ret.stdout.decode())\n'
+                )
+                # fmt: on
+                script_file.write(script_text)
+                script_file.flush()
+                Path(script_file.name).chmod(stat.S_IREAD | stat.S_IWRITE | stat.S_IEXEC)
+            return self
+        return super().__enter__()
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        if self.proc is None:
+            del self.output_file
+            return
+        super().__exit__(exc_type, exc_val, exc_tb)
+
+    def get_output(self):
+        if platform.system() == "Darwin" and os.environ.get("USBA_MAC_PRIV_WORKAROUND", None) == "1":
+            self.output_file.seek(0)
+            return self.output_file.readlines()
+        return super().get_output()
+
+
+class XsigOutput(XsigProcess):
+    """
+    Xsig output class
+
+    No output-specific logic is required, but this class should still be used instead of
+    XsigProcess as it makes the direction of the test-code more obvious to the reader.
+    """
+    pass
