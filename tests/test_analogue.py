@@ -3,10 +3,12 @@ from pathlib import Path
 import pytest
 import time
 import json
+import platform
 
 from usb_audio_test_utils import (
     check_analyzer_output,
     get_xtag_dut_and_harness,
+    use_windows_builtin_driver,
     AudioAnalyzerHarness,
     XrunDut,
     XsigInput,
@@ -17,10 +19,25 @@ from conftest import list_configs, get_config_features
 
 samp_freqs = [44100, 48000, 88200, 96000, 176400, 192000]
 
+# Run a reduced set of configs on Windows at the smoke level to keep the total duration reasonable
+windows_smoke_configs = [
+    "1AMi2o2xxxxxx",
+    "2AMi10o10xssxxx",
+    "2SSi8o8xxxxxx_tdm8",
+    "2AMi8o8xxxxxx_winbuiltin",
+]
 
-def analogue_common_uncollect(fs, features, board, pytestconfig):
+
+def analogue_common_uncollect(fs, features, board, config, pytestconfig):
     # Sample rate not supported
     if features["max_freq"] < fs:
+        return True
+    level = pytestconfig.getoption("level")
+    if (
+        level == "smoke"
+        and platform.system() == "Windows"
+        and config not in windows_smoke_configs
+    ):
         return True
     # XTAGs not present
     xtag_ids = get_xtag_dut_and_harness(pytestconfig, board)
@@ -31,7 +48,7 @@ def analogue_common_uncollect(fs, features, board, pytestconfig):
 
 def analogue_input_uncollect(pytestconfig, board, config, fs):
     features = get_config_features(board, config)
-    if analogue_common_uncollect(fs, features, board, pytestconfig):
+    if analogue_common_uncollect(fs, features, board, config, pytestconfig):
         return True
     if not features["analogue_i"]:
         # No input channels
@@ -41,7 +58,7 @@ def analogue_input_uncollect(pytestconfig, board, config, fs):
 
 def analogue_output_uncollect(pytestconfig, board, config, fs):
     features = get_config_features(board, config)
-    if analogue_common_uncollect(fs, features, board, pytestconfig):
+    if analogue_common_uncollect(fs, features, board, config, pytestconfig):
         return True
     if not features["analogue_o"]:
         # No output channels
@@ -97,6 +114,15 @@ def test_analogue_input(pytestconfig, board, config, fs):
 @pytest.mark.parametrize(["board", "config"], list_configs())
 def test_analogue_output(pytestconfig, board, config, fs):
     features = get_config_features(board, config)
+
+    # Issue 120
+    if (
+        platform.system() == "Windows"
+        and board == "xk_316_mc"
+        and config == "2AMi8o8xxxxxx_winbuiltin"
+        and fs in [44100, 48000]
+    ):
+        pytest.xfail("Glitches can occur")
 
     xsig_config = f'mc_analogue_output_{features["analogue_o"]}ch'
     if board == "xk_316_mc" and features["tdm8"]:

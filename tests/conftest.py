@@ -5,6 +5,7 @@ import platform
 import stat
 import requests
 import re
+import shutil
 
 
 def pytest_addoption(parser):
@@ -57,7 +58,7 @@ def parse_features(board, config):
         if config.startswith("1"):
             features["pid"] = 0x17
         else:
-            features["pid"] = 0x16
+            features["pid"] = 0x16 if not "_winbuiltin" in config else 0x1a
     elif board == "xk_evk_xu316":
         if config.startswith("1"):
             features["pid"] = 0x19
@@ -121,6 +122,15 @@ def pytest_sessionstart(session):
             configs = ret.stdout.split()
         else:
             configs = full_configs
+
+        # On Windows also collect special configs that will use the built-in driver
+        if platform.system() == "Windows":
+            winconfigs_cmd = ["xmake", "TEST_SUPPORT_CONFIGS=1", "allconfigs"]
+            ret = subprocess.run(
+                winconfigs_cmd, capture_output=True, text=True, cwd=app_dir
+            )
+            configs += [cfg for cfg in ret.stdout.split() if "_winbuiltin" in cfg]
+
         partial_configs = [config for config in configs if config not in full_configs]
         for config in configs:
             global board_configs
@@ -180,6 +190,15 @@ def pytest_collection_modifyitems(config, items):
 
     config.hook.pytest_deselected(items=deselected)
     items[:] = selected
+
+
+# Print a session-level warning if usbdeview is not available on Windows
+def pytest_terminal_summary(terminalreporter):
+    if platform.system() == "Windows" and not shutil.which("usbdeview"):
+        terminalreporter.section("Session warning")
+        terminalreporter.write(
+            "usbdeview not on PATH so test device data has not been cleared"
+        )
 
 
 @pytest.fixture

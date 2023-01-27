@@ -4,6 +4,7 @@ import pytest
 import subprocess
 import time
 import json
+import platform
 
 from usb_audio_test_utils import (
     check_analyzer_output,
@@ -23,7 +24,7 @@ class SpdifClockSrc:
     def __enter__(self):
         subprocess.run([self.volcontrol, "--clock", "SPDIF"], timeout=10)
         # Short delay to wait for clock source
-        time.sleep(1)
+        time.sleep(3)
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -45,6 +46,9 @@ def spdif_common_uncollect(fs, features, board, pytestconfig):
 
 
 def spdif_input_uncollect(pytestconfig, board, config, fs):
+    # Not yet supported on Windows
+    if platform.system() == "Windows":
+        return True
     features = get_config_features(board, config)
     return any([not features["spdif_i"], spdif_common_uncollect(fs, features, board, pytestconfig)])
 

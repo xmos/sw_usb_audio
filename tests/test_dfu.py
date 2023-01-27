@@ -103,6 +103,9 @@ dfu_testcases = [
 
 
 def dfu_uncollect(pytestconfig, board, config):
+    # Not yet supported on Windows
+    if platform.system() == "Windows":
+        return True
     level = pytestconfig.getoption("level")
     if level == "smoke":
         return board in ["xk_216_mc", "xk_evk_xu316"]

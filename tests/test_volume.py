@@ -5,6 +5,7 @@ import time
 import json
 import subprocess
 import tempfile
+import platform
 
 from usb_audio_test_utils import (
     check_analyzer_output,
@@ -48,6 +49,9 @@ volume_configs = [
 
 
 def volume_uncollect(pytestconfig, board, config, fs, channel):
+    # Not yet supported on Windows
+    if platform.system() == "Windows":
+        return True
     xtag_ids = get_xtag_dut_and_harness(pytestconfig, board)
     # XTAGs not present
     if not all(xtag_ids):
