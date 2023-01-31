@@ -1,4 +1,4 @@
-@Library('xmos_jenkins_shared_library@feature/west_support') _
+@Library('xmos_jenkins_shared_library@develop') _
 
 getApproval()
 
