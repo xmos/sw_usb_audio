@@ -81,7 +81,7 @@ pipeline {
           stages {
             stage('Get view') {
               steps {
-                xcorePrepareSandbox("${VIEW}", "${REPO}")
+                xcorePrepareWestWorkspace(REPO, params.ROLL_DEPS_CMD)
               }
             }
             stage('Setup') {
@@ -145,7 +145,7 @@ pipeline {
           stages {
             stage('Get view') {
               steps {
-                xcorePrepareSandbox("${VIEW}", "${REPO}")
+                xcorePrepareWestWorkspace(REPO, params.ROLL_DEPS_CMD)
               }
             }
             stage('Setup') {
@@ -206,7 +206,7 @@ pipeline {
           stages {
             stage('Get view') {
               steps {
-                xcorePrepareSandbox("${VIEW}", "${REPO}")
+                xcorePrepareWestWorkspace(REPO, params.ROLL_DEPS_CMD)
               }
             }
             stage('Setup') {
