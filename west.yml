@@ -73,3 +73,8 @@ manifest:
       groups: [infr]
       remote: github-int
       revision: 1e2d0097624e0df9c92981d2fc652fda3f81b9e2
+      
+    - name: xtagctl
+      groups: [infr]
+      remote: github-int
+      revision: v1.7.0
