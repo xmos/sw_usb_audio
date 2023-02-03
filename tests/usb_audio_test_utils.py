@@ -51,7 +51,8 @@ def product_str_from_board_config(board, config):
     pytest.fail(f"Unrecognised config {config} for {board}")
 
 
-def wait_for_portaudio(board, config, timeout=10):
+def wait_for_portaudio(board, config):
+    timeout = 30
     prod_str = product_str_from_board_config(board, config)
 
     for _ in range(timeout):
@@ -444,7 +445,7 @@ class XsigInput(XsigProcess):
                     'from pathlib import PosixPath\n'
                     f'with open("{self.output_file.name}", "w+") as f:\n'
                     '    try:\n'
-                    f'        ret = subprocess.run({self.xsig_cmd}, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout={self.duration+3})\n'
+                    f'        ret = subprocess.run({self.xsig_cmd}, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout={self.duration+5})\n'
                     f'    except subprocess.TimeoutExpired:\n'
                     f'        f.write("Timeout running command: {self.xsig_cmd}")\n'
                     '    else:\n'

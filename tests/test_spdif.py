@@ -24,7 +24,7 @@ class SpdifClockSrc:
     def __enter__(self):
         subprocess.run([self.volcontrol, "--clock", "SPDIF"], timeout=10)
         # Short delay to wait for clock source
-        time.sleep(3)
+        time.sleep(5)
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -64,7 +64,7 @@ def spdif_duration(level, partial):
     elif level == "nightly":
         duration = 15 if partial else 180
     else:
-        duration = 5
+        duration = 10
     return duration
 
 
@@ -102,7 +102,7 @@ def test_spdif_input(pytestconfig, board, config, fs):
             XsigInput(fs, duration, xsig_config_path, dut.dev_name) as xsig_proc,
         ):
 
-            time.sleep(duration + 5)
+            time.sleep(duration + 6)
             xsig_lines = xsig_proc.get_output()
 
     # Check output

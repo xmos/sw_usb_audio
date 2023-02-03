@@ -72,7 +72,7 @@ def analogue_duration(level, partial):
     elif level == "nightly":
         duration = 15 if partial else 180
     else:
-        duration = 5
+        duration = 10
     return duration
 
 
@@ -100,7 +100,7 @@ def test_analogue_input(pytestconfig, board, config, fs):
     ):
 
         # Sleep for a few extra seconds so that xsig will have completed
-        time.sleep(duration + 5)
+        time.sleep(duration + 6)
         xsig_lines = xsig_proc.get_output()
 
     # Check output

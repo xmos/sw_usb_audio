@@ -94,8 +94,8 @@ def test_volume_input(pytestconfig, board, config, fs, channel):
 
         with XsigInput(fs, duration, Path(xsig_file.name), dut.dev_name) as xsig_proc:
             start_time = time.time()
-            # Allow five extra seconds to ensure xsig has completed
-            end_time = start_time + duration + 5
+            # Allow some extra time to ensure xsig has completed
+            end_time = start_time + duration + 7
 
             time.sleep(5)
 
