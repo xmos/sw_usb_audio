@@ -42,9 +42,18 @@ USED_MODULES = lib_xua lib_i2c
 INCLUDE_ONLY_IN_1AMi2o2xxxxxx =
 XCC_FLAGS_1AMi2o2xxxxxx = $(BUILD_FLAGS) 		-DAUDIO_CLASS=1
 
+# Audio Class 2, Async, I2S Master, 2xInput, 2xOutput
+INCLUDE_ONLY_IN_2AMi2o2xxxxxx =
+XCC_FLAGS_2AMi2o2xxxxxx = $(BUILD_FLAGS) 		-DI2S_CHANS_DAC=2 -DI2S_CHANS_ADC=2 \
+						  						-DNUM_USB_CHAN_OUT=2 -DNUM_USB_CHAN_IN=2
+
 # Audio Class 2, Async, I2S Master, 8xInput, 8xOutput
-INCLUDE_ONLY_IN_2AMi8o8xxxxxx = 
+INCLUDE_ONLY_IN_2AMi8o8xxxxxx =
 XCC_FLAGS_2AMi8o8xxxxxx = $(BUILD_FLAGS)		
+
+# Audio Class 2, Async, I2S Master, 8xInput, 8xOutput, Mixer
+INCLUDE_ONLY_IN_2AMi8o8xxxxxx_mix8 =
+XCC_FLAGS_2AMi8o8xxxxxx_mix8 = $(BUILD_FLAGS) 	-DMAX_MIX_COUNT=8
 
 # Audio Class 2, Async, I2S Master, 8xInput, 8xOutput, TDM
 # TODO can run at 192kHz when AppPLL settings for 49MHz added
