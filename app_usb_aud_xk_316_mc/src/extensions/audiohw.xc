@@ -244,7 +244,14 @@ void AudioHwInit()
     else
     {
         /* Use xCORE Secondary PLL to generate *fixed* master clock */
-        AppPllEnable_SampleRate(DEFAULT_FREQ);
+        if (DEFAULT_FREQ % 22050 == 0)
+        {
+            AppPllEnable(MCLK_441);
+        }
+        else
+        {
+            AppPllEnable(MCLK_48);
+        }
     }
 
     /* Set external I2C mux to DACs/ADCs */
@@ -395,7 +402,14 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, unsigned dsdMode, unsigned s
     }
     else
     {
-        AppPllEnable_SampleRate(samFreq);
+        if (samFreq % 22050 == 0)
+        {
+            AppPllEnable(MCLK_441);
+        }
+        else
+        {
+            AppPllEnable(MCLK_48);
+        }
     }
 
     /* Set one DAC to I2S master */
