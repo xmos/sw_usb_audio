@@ -41,14 +41,14 @@ class Volcontrol:
         time.sleep(3)
 
 
-# Test cases are defined by a tuple of (board, config, sample rate, 'm' (master) or channel number)
+# Test cases are defined by a tuple of (board, config)
 volume_configs = [
-    *[("xk_316_mc", "2AMi10o10xssxxx", 96000, ch) for ch in ["m", *range(8)]],
-    *[("xk_evk_xu316", "2AMi2o2xxxxxx", 48000, ch) for ch in ["m", *range(2)]],
+    ("xk_316_mc",    "2AMi10o10xssxxx"),
+    ("xk_evk_xu316", "2AMi2o2xxxxxx"),
 ]
 
 
-def volume_uncollect(pytestconfig, board, config, fs, channel):
+def volume_uncollect(pytestconfig, board, config):
     # Not yet supported on Windows
     if platform.system() == "Windows":
         return True
@@ -58,126 +58,147 @@ def volume_uncollect(pytestconfig, board, config, fs, channel):
         return True
     if pytestconfig.getoption("level") == "smoke":
         # Only test master volume on one board at smoke level
-        return board != "xk_316_mc" or channel != "m"
+        return board != "xk_evk_xu316"
     return False
 
 
 @pytest.mark.uncollect_if(func=volume_uncollect)
-@pytest.mark.parametrize(["board", "config", "fs", "channel"], volume_configs)
-def test_volume_input(pytestconfig, board, config, fs, channel):
+@pytest.mark.parametrize(["board", "config"], volume_configs)
+def test_volume_input(pytestconfig, board, config):
     features = get_config_features(board, config)
+    fs = max(features["samp_freqs"])
     num_chans = features["analogue_i"]
-    channels = range(num_chans) if channel == "m" else [channel]
+    test_chans = ["m", *range(num_chans)]
 
     duration = 25
 
-    # Load JSON xsig_config data
-    xsig_config = f"mc_analogue_input_{num_chans}ch.json"
-    xsig_config_path = Path(__file__).parent / "xsig_configs" / xsig_config
-    with open(xsig_config_path) as file:
-        xsig_json = json.load(file)
-
-    for ch, ch_config in enumerate(xsig_json["in"]):
-        if ch in channels:
-            xsig_json["in"][ch][0] = "volcheck"
-
     adapter_dut, adapter_harness = get_xtag_dut_and_harness(pytestconfig, board)
 
-    with (
-        XrunDut(adapter_dut, board, config) as dut,
-        AudioAnalyzerHarness(adapter_harness) as harness,
-        tempfile.NamedTemporaryFile(mode="w") as xsig_file,
-    ):
+    with XrunDut(adapter_dut, board, config) as dut:
+        ch_failures = []
 
-        json.dump(xsig_json, xsig_file)
-        xsig_file.flush()
+        for channel in test_chans:
+            channels = range(num_chans) if channel == "m" else [channel]
 
-        with XsigInput(fs, duration, Path(xsig_file.name), dut.dev_name) as xsig_proc:
-            start_time = time.time()
-            # Allow some extra time to ensure xsig has completed
-            end_time = start_time + duration + 7
+            # Load JSON xsig_config data
+            xsig_config = f"mc_analogue_input_{num_chans}ch.json"
+            xsig_config_path = Path(__file__).parent / "xsig_configs" / xsig_config
+            with open(xsig_config_path) as file:
+                xsig_json = json.load(file)
 
-            time.sleep(5)
+            for ch, ch_config in enumerate(xsig_json["in"]):
+                if ch in channels:
+                    xsig_json["in"][ch][0] = "volcheck"
 
-            if channel == "m":
-                vol_in = Volcontrol("input", num_chans, master=True)
-            else:
-                vol_in = Volcontrol("input", num_chans, channel=int(channel))
+            with (
+                AudioAnalyzerHarness(adapter_harness) as harness,
+                tempfile.NamedTemporaryFile(mode="w") as xsig_file,
+            ):
 
-            vol_in.reset()
-            vol_changes = [0.5, 1.0, 0.75, 1.0]
-            for vol_change in vol_changes:
-                vol_in.set(vol_change)
+                json.dump(xsig_json, xsig_file)
+                xsig_file.flush()
 
-            current_time = time.time()
-            if current_time < end_time:
-                time.sleep(end_time - current_time)
-            xsig_lines = xsig_proc.get_output()
+                with XsigInput(fs, duration, Path(xsig_file.name), dut.dev_name) as xsig_proc:
+                    start_time = time.time()
+                    # Allow some extra time to ensure xsig has completed
+                    end_time = start_time + duration + 7
 
-    # Check output
-    check_analyzer_output(xsig_lines, xsig_json["in"])
+                    time.sleep(5)
+
+                    if channel == "m":
+                        vol_in = Volcontrol("input", num_chans, master=True)
+                    else:
+                        vol_in = Volcontrol("input", num_chans, channel=int(channel))
+
+                    vol_in.reset()
+                    vol_changes = [0.5, 1.0, 0.75, 1.0]
+                    for vol_change in vol_changes:
+                        vol_in.set(vol_change)
+
+                    current_time = time.time()
+                    if current_time < end_time:
+                        time.sleep(end_time - current_time)
+                    xsig_lines = xsig_proc.get_output()
+
+            failures = check_analyzer_output(xsig_lines, xsig_json["in"])
+            if len(failures) > 0:
+                ch_failures.append((channel, failures))
+
+    if len(ch_failures) > 0:
+        pytest.fail(f"{ch_failures}")
 
 
 @pytest.mark.uncollect_if(func=volume_uncollect)
-@pytest.mark.parametrize(["board", "config", "fs", "channel"], volume_configs)
-def test_volume_output(pytestconfig, board, config, fs, channel):
+@pytest.mark.parametrize(["board", "config"], volume_configs)
+def test_volume_output(pytestconfig, board, config):
     features = get_config_features(board, config)
+    fs = max(features["samp_freqs"])
     num_chans = features["analogue_o"]
-    channels = range(num_chans) if channel == "m" else [channel]
+    test_chans = ["m", *range(num_chans)]
 
     xsig_config = f"mc_analogue_output_{num_chans}ch.json"
     xsig_config_path = Path(__file__).parent / "xsig_configs" / xsig_config
 
     adapter_dut, adapter_harness = get_xtag_dut_and_harness(pytestconfig, board)
 
-    with (
-        XrunDut(adapter_dut, board, config) as dut,
-        AudioAnalyzerHarness(adapter_harness, xscope="app") as harness,
-        XsigOutput(fs, None, xsig_config_path, dut.dev_name),
-    ):
+    with XrunDut(adapter_dut, board, config) as dut:
+        ch_failures = []
 
-        # Set the channels being tested to 'volume' mode on the analyzer
-        analyser_cmds = [f"m {ch} v" for ch in channels]
-        xscope_controller = (
-            Path(__file__).parents[2]
-            / "sw_audio_analyzer"
-            / "host_xscope_controller"
-            / "bin_macos"
-            / "xscope_controller"
-        )
-        subprocess.run(
-            [
-                xscope_controller,
-                "localhost",
-                f"{harness.xscope_port}",
-                "0",
-                *analyser_cmds,
-            ],
-            check=True,
-            timeout=10,
-        )
+        for channel in test_chans:
+            channels = range(num_chans) if channel == "m" else [channel]
 
-        time.sleep(2)
+            with (
+                AudioAnalyzerHarness(adapter_harness, xscope="app") as harness,
+                XsigOutput(fs, None, xsig_config_path, dut.dev_name),
+            ):
 
-        if channel == "m":
-            vol_out = Volcontrol("output", num_chans, master=True)
-        else:
-            vol_out = Volcontrol("output", num_chans, channel=channel)
+                # Set the channels being tested to 'volume' mode on the analyzer
+                analyser_cmds = [f"m {ch} v" for ch in channels]
+                xscope_controller = (
+                    Path(__file__).parents[2]
+                    / "sw_audio_analyzer"
+                    / "host_xscope_controller"
+                    / "bin_macos"
+                    / "xscope_controller"
+                )
+                subprocess.run(
+                    [
+                        xscope_controller,
+                        "localhost",
+                        f"{harness.xscope_port}",
+                        "0",
+                        *analyser_cmds,
+                    ],
+                    check=True,
+                    timeout=10,
+                )
 
-        vol_out.reset()
-        vol_changes = [0.5, 1.0, 0.75, 1.0]
-        for vol_change in vol_changes:
-            vol_out.set(vol_change)
+                time.sleep(2)
 
-        harness.terminate()
-        xscope_lines = harness.get_output()
+                if channel == "m":
+                    vol_out = Volcontrol("output", num_chans, master=True)
+                else:
+                    vol_out = Volcontrol("output", num_chans, channel=channel)
 
-    # Load JSON xsig config data
-    with open(xsig_config_path) as file:
-        xsig_json = json.load(file)
+                vol_out.reset()
+                vol_changes = [0.5, 1.0, 0.75, 1.0]
+                for vol_change in vol_changes:
+                    vol_out.set(vol_change)
 
-    for ch, ch_config in enumerate(xsig_json["out"]):
-        if ch in channels:
-            xsig_json["out"][ch][0] = "volcheck"
+                harness.terminate()
+                xscope_lines = harness.get_output()
 
-    check_analyzer_output(xscope_lines, xsig_json["out"])
+            # Load JSON xsig config data
+            with open(xsig_config_path) as file:
+                xsig_json = json.load(file)
+
+            for ch, ch_config in enumerate(xsig_json["out"]):
+                if ch in channels:
+                    xsig_json["out"][ch][0] = "volcheck"
+
+            failures = check_analyzer_output(xscope_lines, xsig_json["out"])
+            if len(failures) > 0:
+                ch_failures.append((ch, failures))
+
+    if len(ch_failures) > 0:
+        pytest.fail(f"{ch_failures}")

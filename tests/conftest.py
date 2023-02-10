@@ -31,6 +31,12 @@ boards = ["xk_216_mc", "xk_316_mc", "xk_evk_xu316"]
 board_configs = {}
 
 
+all_freqs = [44100, 48000, 88200, 96000, 176400, 192000]
+
+def samp_freqs_upto(max):
+    return [fs for fs in all_freqs if fs <= max]
+
+
 def parse_features(board, config):
     max_analogue_chans = 8
 
@@ -73,22 +79,22 @@ def parse_features(board, config):
         features["analogue_i"] = 0
         features["analogue_o"] = 0
 
-    # Set the maximum sample rate frequency
+    # Create list of supported sample frequencies
     if config == "1AMi8o2xxxxxx":
-        features["max_freq"] = 44100
+        features["samp_freqs"] = samp_freqs_upto(44100)
     elif features["uac"] == 1:
         if features["chan_i"] and features["chan_o"]:
-            features["max_freq"] = 48000
+            features["samp_freqs"] = samp_freqs_upto(48000)
         else:
-            features["max_freq"] = 96000
+            features["samp_freqs"] = samp_freqs_upto(96000)
     elif features["chan_i"] >= 32 or features["chan_o"] >= 32:
-        features["max_freq"] = 48000
+        features["samp_freqs"] = samp_freqs_upto(48000)
     elif features["chan_i"] >= 16 or features["chan_o"] >= 16:
-        features["max_freq"] = 96000
+        features["samp_freqs"] = samp_freqs_upto(96000)
     elif features["tdm8"]:
-        features["max_freq"] = 96000
+        features["samp_freqs"] = samp_freqs_upto(96000)
     else:
-        features["max_freq"] = 192000
+        features["samp_freqs"] = samp_freqs_upto(192000)
 
     return features
 
