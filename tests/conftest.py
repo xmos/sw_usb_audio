@@ -2,8 +2,6 @@ import pytest
 import subprocess
 from pathlib import Path
 import platform
-import stat
-import requests
 import re
 import shutil
 
@@ -181,18 +179,8 @@ def pytest_collection_modifyitems(config, items):
             func = m.kwargs["func"]
             if func(config, **item.callspec.params):
                 deselected.append(item)
-                continue
-
-        xtags = (None, None)
-        for board in boards:
-            if any(board in kw for kw in item.keywords):
-                xtags = xtag_dut_harness[board]
-                break
-
-        if all([*xtags]):
-            selected.append(item)
-        else:
-            deselected.append(item)
+            else:
+                selected.append(item)
 
     config.hook.pytest_deselected(items=deselected)
     items[:] = selected
@@ -205,27 +193,3 @@ def pytest_terminal_summary(terminalreporter):
         terminalreporter.write(
             "usbdeview not on PATH so test device data has not been cleared"
         )
-
-
-@pytest.fixture
-def xmosdfu():
-    """Gets xmosdfu from projects network drive"""
-
-    xmosdfu_path = Path(__file__).parent / "tools" / "xmosdfu"
-    if xmosdfu_path.exists():
-        return xmosdfu_path
-
-    platform_str = platform.system()
-    if platform_str == "Darwin":
-        xmosdfu_url = "http://intranet.xmos.local/projects/usb_audio_regression_files/xmosdfu/macos/xmosdfu"
-    elif platform_str == "Linux":
-        xmosdfu_url = "http://intranet.xmos.local/projects/usb_audio_regression_files/xmosdfu/linux/xmosdfu"
-    else:
-        pytest.fail(f"Unsupported platform {platform_str}")
-
-    r = requests.get(xmosdfu_url)
-    with open(xmosdfu_path, "wb") as f:
-        f.write(r.content)
-    xmosdfu_path.chmod(stat.S_IREAD | stat.S_IWRITE | stat.S_IEXEC)
-
-    return xmosdfu_path
