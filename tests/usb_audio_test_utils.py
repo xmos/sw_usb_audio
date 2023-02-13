@@ -187,8 +187,7 @@ def check_analyzer_output(analyzer_output, xsig_config):
         else:
             failures.append(f"Invalid channel config {channel_config}")
 
-    if len(failures) > 0:
-        pytest.fail("Checking analyser output failed:\n" + "\n".join(failures))
+    return failures
 
 
 # Get an available port number by binding a socket then closing it (assuming nothing else takes it before it's used by xrun)

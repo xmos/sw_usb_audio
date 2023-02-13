@@ -31,13 +31,7 @@ class SpdifClockSrc:
         subprocess.run([self.volcontrol, "--clock", "Internal"], timeout=10)
 
 
-samp_freqs = [44100, 48000, 88200, 96000, 176400, 192000]
-
-
-def spdif_common_uncollect(fs, features, board, pytestconfig):
-    # Sample rate not supported
-    if features["max_freq"] < fs:
-        return True
+def spdif_common_uncollect(features, board, pytestconfig):
     xtag_ids = get_xtag_dut_and_harness(pytestconfig, board)
     # XTAGs not present
     if not all(xtag_ids):
@@ -45,17 +39,17 @@ def spdif_common_uncollect(fs, features, board, pytestconfig):
     return False
 
 
-def spdif_input_uncollect(pytestconfig, board, config, fs):
+def spdif_input_uncollect(pytestconfig, board, config):
     # Not yet supported on Windows
     if platform.system() == "Windows":
         return True
     features = get_config_features(board, config)
-    return any([not features["spdif_i"], spdif_common_uncollect(fs, features, board, pytestconfig)])
+    return any([not features["spdif_i"], spdif_common_uncollect(features, board, pytestconfig)])
 
 
-def spdif_output_uncollect(pytestconfig, board, config, fs):
+def spdif_output_uncollect(pytestconfig, board, config):
     features = get_config_features(board, config)
-    return any([not features["spdif_o"], spdif_common_uncollect(fs, features, board, pytestconfig)])
+    return any([not features["spdif_o"], spdif_common_uncollect(features, board, pytestconfig)])
 
 
 def spdif_duration(level, partial):
@@ -69,9 +63,8 @@ def spdif_duration(level, partial):
 
 
 @pytest.mark.uncollect_if(func=spdif_input_uncollect)
-@pytest.mark.parametrize("fs", samp_freqs)
 @pytest.mark.parametrize(["board", "config"], list_configs())
-def test_spdif_input(pytestconfig, board, config, fs):
+def test_spdif_input(pytestconfig, board, config):
     features = get_config_features(board, config)
 
     xsig_config = f'mc_digital_input_{features["analogue_i"]}ch'
@@ -81,40 +74,44 @@ def test_spdif_input(pytestconfig, board, config, fs):
 
     duration = spdif_duration(pytestconfig.getoption("level"), features["partial"])
 
-    with (
-        XrunDut(adapter_dut, board, config) as dut,
-        AudioAnalyzerHarness(adapter_harness, config="spdif_test", xscope="app") as harness,
-    ):
+    with XrunDut(adapter_dut, board, config) as dut:
+        fs_failures = []
 
-        xscope_controller = (
-            Path(__file__).parents[2]
-            / "sw_audio_analyzer"
-            / "host_xscope_controller"
-            / "bin_macos"
-            / "xscope_controller"
-        )
-        subprocess.run([xscope_controller, "localhost", f"{harness.xscope_port}", "0", f"f {fs}"], timeout=10)
-        # Short delay to wait for the S/PDIF ramp to be generated before selecting the clock source
-        time.sleep(3)
+        for fs in features["samp_freqs"]:
+            with AudioAnalyzerHarness(adapter_harness, config="spdif_test", xscope="app") as harness:
 
-        with (
-            SpdifClockSrc(),
-            XsigInput(fs, duration, xsig_config_path, dut.dev_name) as xsig_proc,
-        ):
+                xscope_controller = (
+                    Path(__file__).parents[2]
+                    / "sw_audio_analyzer"
+                    / "host_xscope_controller"
+                    / "bin_macos"
+                    / "xscope_controller"
+                )
+                subprocess.run([xscope_controller, "localhost", f"{harness.xscope_port}", "0", f"f {fs}"], timeout=10)
+                # Short delay to wait for the S/PDIF ramp to be generated before selecting the clock source
+                time.sleep(3)
 
-            time.sleep(duration + 6)
-            xsig_lines = xsig_proc.get_output()
+                with (
+                    SpdifClockSrc(),
+                    XsigInput(fs, duration, xsig_config_path, dut.dev_name) as xsig_proc,
+                ):
 
-    # Check output
-    with open(xsig_config_path) as file:
-        xsig_json = json.load(file)
-    check_analyzer_output(xsig_lines, xsig_json["in"])
+                    time.sleep(duration + 6)
+                    xsig_lines = xsig_proc.get_output()
+
+            with open(xsig_config_path) as file:
+                xsig_json = json.load(file)
+            failures = check_analyzer_output(xsig_lines, xsig_json["in"])
+            if len(failures) > 0:
+                fs_failures.append((fs, failures))
+
+    if len(fs_failures) > 0:
+        pytest.fail(f"{fs_failures}")
 
 
 @pytest.mark.uncollect_if(func=spdif_output_uncollect)
-@pytest.mark.parametrize("fs", samp_freqs)
 @pytest.mark.parametrize(["board", "config"], list_configs())
-def test_spdif_output(pytestconfig, board, config, fs):
+def test_spdif_output(pytestconfig, board, config):
     features = get_config_features(board, config)
 
     xsig_config = f'mc_digital_output_{features["analogue_o"]}ch'
@@ -124,16 +121,24 @@ def test_spdif_output(pytestconfig, board, config, fs):
 
     duration = spdif_duration(pytestconfig.getoption("level"), features["partial"])
 
-    with (
-        XrunDut(adapter_dut, board, config) as dut,
-        AudioAnalyzerHarness(adapter_harness, config="spdif_test", xscope="io") as harness,
-        XsigOutput(fs, None, xsig_config_path, dut.dev_name),
-    ):
+    with XrunDut(adapter_dut, board, config) as dut:
+        fs_failures = []
 
-        time.sleep(duration)
-        harness.terminate()
-        xscope_lines = harness.get_output()
+        for fs in features["samp_freqs"]:
+            with (
+                AudioAnalyzerHarness(adapter_harness, config="spdif_test", xscope="io") as harness,
+                XsigOutput(fs, None, xsig_config_path, dut.dev_name),
+            ):
 
-    with open(xsig_config_path) as file:
-        xsig_json = json.load(file)
-    check_analyzer_output(xscope_lines, xsig_json["out"])
+                time.sleep(duration)
+                harness.terminate()
+                xscope_lines = harness.get_output()
+
+            with open(xsig_config_path) as file:
+                xsig_json = json.load(file)
+            failures = check_analyzer_output(xscope_lines, xsig_json["out"])
+            if len(failures) > 0:
+                fs_failures.append((fs, failures))
+
+    if len(fs_failures) > 0:
+        pytest.fail(f"{fs_failures}")

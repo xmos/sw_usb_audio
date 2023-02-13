@@ -17,8 +17,6 @@ from usb_audio_test_utils import (
 from conftest import list_configs, get_config_features
 
 
-samp_freqs = [44100, 48000, 88200, 96000, 176400, 192000]
-
 # Run a reduced set of configs on Windows at the smoke level to keep the total duration reasonable
 windows_smoke_configs = [
     "1AMi2o2xxxxxx",
@@ -28,10 +26,7 @@ windows_smoke_configs = [
 ]
 
 
-def analogue_common_uncollect(fs, features, board, config, pytestconfig):
-    # Sample rate not supported
-    if features["max_freq"] < fs:
-        return True
+def analogue_common_uncollect(features, board, config, pytestconfig):
     level = pytestconfig.getoption("level")
     if (
         level == "smoke"
@@ -46,9 +41,9 @@ def analogue_common_uncollect(fs, features, board, config, pytestconfig):
     return False
 
 
-def analogue_input_uncollect(pytestconfig, board, config, fs):
+def analogue_input_uncollect(pytestconfig, board, config):
     features = get_config_features(board, config)
-    if analogue_common_uncollect(fs, features, board, config, pytestconfig):
+    if analogue_common_uncollect(features, board, config, pytestconfig):
         return True
     if not features["analogue_i"]:
         # No input channels
@@ -56,9 +51,9 @@ def analogue_input_uncollect(pytestconfig, board, config, fs):
     return False
 
 
-def analogue_output_uncollect(pytestconfig, board, config, fs):
+def analogue_output_uncollect(pytestconfig, board, config):
     features = get_config_features(board, config)
-    if analogue_common_uncollect(fs, features, board, config, pytestconfig):
+    if analogue_common_uncollect(features, board, config, pytestconfig):
         return True
     if not features["analogue_o"]:
         # No output channels
@@ -77,9 +72,8 @@ def analogue_duration(level, partial):
 
 
 @pytest.mark.uncollect_if(func=analogue_input_uncollect)
-@pytest.mark.parametrize("fs", samp_freqs)
 @pytest.mark.parametrize(["board", "config"], list_configs())
-def test_analogue_input(pytestconfig, board, config, fs):
+def test_analogue_input(pytestconfig, board, config):
     features = get_config_features(board, config)
 
     xsig_config = f'mc_analogue_input_{features["analogue_i"]}ch'
@@ -96,33 +90,29 @@ def test_analogue_input(pytestconfig, board, config, fs):
     with (
         XrunDut(adapter_dut, board, config) as dut,
         AudioAnalyzerHarness(adapter_harness) as harness,
-        XsigInput(fs, duration, xsig_config_path, dut.dev_name) as xsig_proc,
     ):
+        fs_failures = []
 
-        # Sleep for a few extra seconds so that xsig will have completed
-        time.sleep(duration + 6)
-        xsig_lines = xsig_proc.get_output()
+        for fs in features["samp_freqs"]:
+            with XsigInput(fs, duration, xsig_config_path, dut.dev_name) as xsig_proc:
+                # Sleep for a few extra seconds so that xsig will have completed
+                time.sleep(duration + 6)
+                xsig_lines = xsig_proc.get_output()
 
-    # Check output
-    with open(xsig_config_path) as file:
-        xsig_json = json.load(file)
-    check_analyzer_output(xsig_lines, xsig_json["in"])
+            with open(xsig_config_path) as file:
+                xsig_json = json.load(file)
+            failures = check_analyzer_output(xsig_lines, xsig_json["in"])
+            if len(failures) > 0:
+                fs_failures.append((fs, failures))
+
+    if len(fs_failures) > 0:
+        pytest.fail(f"{fs_failures}")
 
 
 @pytest.mark.uncollect_if(func=analogue_output_uncollect)
-@pytest.mark.parametrize("fs", samp_freqs)
 @pytest.mark.parametrize(["board", "config"], list_configs())
-def test_analogue_output(pytestconfig, board, config, fs):
+def test_analogue_output(pytestconfig, board, config):
     features = get_config_features(board, config)
-
-    # Issue 120
-    if (
-        platform.system() == "Windows"
-        and board == "xk_316_mc"
-        and config == "2AMi8o8xxxxxx_winbuiltin"
-        and fs in [44100, 48000]
-    ):
-        pytest.xfail("Glitches can occur")
 
     xsig_config = f'mc_analogue_output_{features["analogue_o"]}ch'
     if board == "xk_316_mc" and features["tdm8"]:
@@ -135,16 +125,33 @@ def test_analogue_output(pytestconfig, board, config, fs):
 
     duration = analogue_duration(pytestconfig.getoption("level"), features["partial"])
 
-    with (
-        XrunDut(adapter_dut, board, config) as dut,
-        AudioAnalyzerHarness(adapter_harness, xscope="io") as harness,
-        XsigOutput(fs, None, xsig_config_path, dut.dev_name),
-    ):
+    with XrunDut(adapter_dut, board, config) as dut:
+        fs_failures = []
 
-        time.sleep(duration)
-        harness.terminate()
-        xscope_lines = harness.get_output()
+        for fs in features["samp_freqs"]:
+            # Issue 120
+            if (
+                platform.system() == "Windows"
+                and board == "xk_316_mc"
+                and config == "2AMi8o8xxxxxx_winbuiltin"
+                and fs in [44100, 48000]
+            ):
+                continue
 
-    with open(xsig_config_path) as file:
-        xsig_json = json.load(file)
-    check_analyzer_output(xscope_lines, xsig_json["out"])
+            with (
+                AudioAnalyzerHarness(adapter_harness, xscope="io") as harness,
+                XsigOutput(fs, None, xsig_config_path, dut.dev_name),
+            ):
+
+                time.sleep(duration)
+                harness.terminate()
+                xscope_lines = harness.get_output()
+
+            with open(xsig_config_path) as file:
+                xsig_json = json.load(file)
+            failures = check_analyzer_output(xscope_lines, xsig_json["out"])
+            if len(failures) > 0:
+                fs_failures.append((fs, failures))
+
+    if len(fs_failures) > 0:
+        pytest.fail(f"{fs_failures}")
