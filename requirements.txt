@@ -1,5 +1,4 @@
 # python_version 3.10.5
 
 pytest==7.1.2
-requests==2.27.1
 sounddevice==0.4.4
