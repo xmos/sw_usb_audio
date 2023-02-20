@@ -2,9 +2,8 @@ import pytest
 import subprocess
 from pathlib import Path
 import platform
-import stat
-import requests
 import re
+import shutil
 
 
 def pytest_addoption(parser):
@@ -30,7 +29,13 @@ boards = ["xk_216_mc", "xk_316_mc", "xk_evk_xu316"]
 board_configs = {}
 
 
-def parse_features(config):
+all_freqs = [44100, 48000, 88200, 96000, 176400, 192000]
+
+def samp_freqs_upto(max):
+    return [fs for fs in all_freqs if fs <= max]
+
+
+def parse_features(board, config):
     max_analogue_chans = 8
 
     config_re = r"^(?P<uac>[12])(?P<sync_mode>[ADS])(?P<i2s>[MSX])i(?P<chan_i>\d+)o(?P<chan_o>\d+)(?P<midi>[mx])(?P<spdif_i>[sx])(?P<spdif_o>[sx])(?P<adat_i>[ax])(?P<adat_o>[ax])(?P<dsd>[dx])(?P<tdm8>(_tdm8)?)"
@@ -45,6 +50,25 @@ def parse_features(config):
     for k in ["midi", "spdif_i", "spdif_o", "adat_i", "adat_o", "dsd", "tdm8"]:
         features[k] = features[k] not in ["", "x"]
 
+    if not features["uac"] in [1, 2]:
+        pytest.exit(f"Error: Invalid UAC in {config}")
+
+    if board == "xk_216_mc":
+        if config.startswith("1"):
+            features["pid"] = 0xF
+        else:
+            features["pid"] = 0xE
+    elif board == "xk_316_mc":
+        if config.startswith("1"):
+            features["pid"] = 0x17
+        else:
+            features["pid"] = 0x16 if not "_winbuiltin" in config else 0x1a
+    elif board == "xk_evk_xu316":
+        if config.startswith("1"):
+            features["pid"] = 0x19
+        else:
+            features["pid"] = 0x18
+
     # Set the number of analogue channels
     features["analogue_i"] = min(features["chan_i"], max_analogue_chans)
     features["analogue_o"] = min(features["chan_o"], max_analogue_chans)
@@ -53,22 +77,22 @@ def parse_features(config):
         features["analogue_i"] = 0
         features["analogue_o"] = 0
 
-    # Set the maximum sample rate frequency
+    # Create list of supported sample frequencies
     if config == "1AMi8o2xxxxxx":
-        features["max_freq"] = 44100
+        features["samp_freqs"] = samp_freqs_upto(44100)
     elif features["uac"] == 1:
         if features["chan_i"] and features["chan_o"]:
-            features["max_freq"] = 48000
+            features["samp_freqs"] = samp_freqs_upto(48000)
         else:
-            features["max_freq"] = 96000
+            features["samp_freqs"] = samp_freqs_upto(96000)
     elif features["chan_i"] >= 32 or features["chan_o"] >= 32:
-        features["max_freq"] = 48000
+        features["samp_freqs"] = samp_freqs_upto(48000)
     elif features["chan_i"] >= 16 or features["chan_o"] >= 16:
-        features["max_freq"] = 96000
+        features["samp_freqs"] = samp_freqs_upto(96000)
     elif features["tdm8"]:
-        features["max_freq"] = 96000
+        features["samp_freqs"] = samp_freqs_upto(96000)
     else:
-        features["max_freq"] = 192000
+        features["samp_freqs"] = samp_freqs_upto(192000)
 
     return features
 
@@ -102,21 +126,30 @@ def pytest_sessionstart(session):
             configs = ret.stdout.split()
         else:
             configs = full_configs
+
+        # On Windows also collect special configs that will use the built-in driver
+        if platform.system() == "Windows":
+            winconfigs_cmd = ["xmake", "TEST_SUPPORT_CONFIGS=1", "allconfigs"]
+            ret = subprocess.run(
+                winconfigs_cmd, capture_output=True, text=True, cwd=app_dir
+            )
+            configs += [cfg for cfg in ret.stdout.split() if "_winbuiltin" in cfg]
+
         partial_configs = [config for config in configs if config not in full_configs]
         for config in configs:
             global board_configs
-            features = parse_features(config)
+            features = parse_features(board, config)
             # Mark the relevant configs for partial testing only
             features["partial"] = config in partial_configs
             board_configs[f"{board}-{config}"] = features
 
 
 def list_configs():
-    return board_configs.keys()
+    return [tuple(k.split("-", maxsplit=1)) for k in board_configs.keys()]
 
 
-def get_config_features(board_config):
-    return board_configs[board_config]
+def get_config_features(board, config):
+    return board_configs[f"{board}-{config}"]
 
 
 # Dictionary indexed by board name, with each entry being the tuple of XTAG IDs for
@@ -144,73 +177,19 @@ def pytest_collection_modifyitems(config, items):
         m = item.get_closest_marker("uncollect_if")
         if m:
             func = m.kwargs["func"]
-            if func(config.getoption("level"), **item.callspec.params):
+            if func(config, **item.callspec.params):
                 deselected.append(item)
-                continue
-
-        xtags = (None, None)
-        for board in boards:
-            if any(board in kw for kw in item.keywords):
-                xtags = xtag_dut_harness[board]
-                break
-
-        if all([*xtags]):
-            selected.append(item)
-        else:
-            deselected.append(item)
+            else:
+                selected.append(item)
 
     config.hook.pytest_deselected(items=deselected)
     items[:] = selected
 
 
-@pytest.fixture(autouse=True)
-def xtag_wrapper(pytestconfig, request):
-    for board in boards:
-        if any(board in kw for kw in request.keywords):
-            (adapter_dut, adapter_harness) = xtag_dut_harness[board]
-            break
-
-    yield adapter_dut, adapter_harness
-
-    # Since multiple DUTs can be connected to one test host, the application running on the DUT must be
-    # stopped when the test ends; this can be done using xgdb to break in to stop it running
-    subprocess.check_output(
-        [
-            "xgdb",
-            f"--eval-command=connect --adapter-id {adapter_dut}",
-            "--eval-command=quit",
-        ]
-    )
-
-
-@pytest.fixture
-def xsig():
-    xsig_path = Path(__file__).parent / "tools" / "xsig"
-    if not xsig_path.exists():
-        pytest.fail(f"xsig binary not present in {xsig_path.parent}")
-
-    return xsig_path
-
-
-@pytest.fixture
-def xmosdfu():
-    """Gets xmosdfu from projects network drive"""
-
-    xmosdfu_path = Path(__file__).parent / "tools" / "xmosdfu"
-    if xmosdfu_path.exists():
-        return xmosdfu_path
-
-    platform_str = platform.system()
-    if platform_str == "Darwin":
-        xmosdfu_url = "http://intranet.xmos.local/projects/usb_audio_regression_files/xmosdfu/macos/xmosdfu"
-    elif platform_str == "Linux":
-        xmosdfu_url = "http://intranet.xmos.local/projects/usb_audio_regression_files/xmosdfu/linux/xmosdfu"
-    else:
-        pytest.fail(f"Unsupported platform {platform_str}")
-
-    r = requests.get(xmosdfu_url)
-    with open(xmosdfu_path, "wb") as f:
-        f.write(r.content)
-    xmosdfu_path.chmod(stat.S_IREAD | stat.S_IWRITE | stat.S_IEXEC)
-
-    return xmosdfu_path
+# Print a session-level warning if usbdeview is not available on Windows
+def pytest_terminal_summary(terminalreporter):
+    if platform.system() == "Windows" and not shutil.which("usbdeview"):
+        terminalreporter.section("Session warning")
+        terminalreporter.write(
+            "usbdeview not on PATH so test device data has not been cleared"
+        )

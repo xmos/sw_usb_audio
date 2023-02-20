@@ -119,7 +119,7 @@ void AudioHwConfig2(unsigned samFreq, unsigned mClk, unsigned dsdMode,
         {
             break;
         }
-    } 
+    }
     #endif
 #else
     if (mClk == MCLK_441)

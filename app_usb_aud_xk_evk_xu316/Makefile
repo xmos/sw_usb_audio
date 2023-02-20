@@ -35,21 +35,10 @@ USED_MODULES = lib_xua lib_i2c
 XCC_FLAGS_1AMi2o2xxxxxx = $(BUILD_FLAGS) -DAUDIO_CLASS=1
 INCLUDE_ONLY_IN_1AMi2o2xxxxxx =
 
+# Audio Class 2, Async, I2S Master, 2xInput, 2xOutput
+XCC_FLAGS_2AMi2o2xxxxxx = $(BUILD_FLAGS)
+INCLUDE_ONLY_IN_2AMi2o2xxxxxx =
 
-ifneq ($(CONFIG),)
-BUILD_TEST_CONFIGS = 1
-endif
-
-BUILD_TEST_CONFIGS ?= 0
-ifeq ($(BUILD_TEST_CONFIGS),1)
-include configs_build.inc
-PARTIAL_TEST_CONFIGS = 1
-endif
-
-PARTIAL_TEST_CONFIGS ?= 0
-ifeq ($(PARTIAL_TEST_CONFIGS),1)
-include configs_partial.inc
-endif
 
 TEST_SUPPORT_CONFIGS ?= 0
 ifeq ($(TEST_SUPPORT_CONFIGS),1)

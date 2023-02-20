@@ -4,36 +4,52 @@ import pytest
 import subprocess
 import time
 import json
-import tempfile
-import signal
+import platform
 
 from usb_audio_test_utils import (
-    wait_for_portaudio,
-    get_firmware_path_harness,
-    get_firmware_path,
-    run_audio_command,
     check_analyzer_output,
-    get_xscope_port_number,
-    wait_for_xscope_port,
+    get_xtag_dut_and_harness,
+    AudioAnalyzerHarness,
+    XrunDut,
+    XsigInput,
+    XsigOutput,
 )
 from conftest import list_configs, get_config_features
 
 
-samp_freqs = [44100, 48000, 88200, 96000, 176400, 192000]
+class SpdifClockSrc:
+    def __init__(self):
+        self.volcontrol = Path(__file__).parent / "tools" / "volcontrol" / "volcontrol"
+
+    def __enter__(self):
+        subprocess.run([self.volcontrol, "--clock", "SPDIF"], timeout=10)
+        # Short delay to wait for clock source
+        time.sleep(5)
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        subprocess.run([self.volcontrol, "--clock", "Internal"], timeout=10)
 
 
-def spdif_common_uncollect(fs, features):
-    return features["max_freq"] < fs
+def spdif_common_uncollect(features, board, pytestconfig):
+    xtag_ids = get_xtag_dut_and_harness(pytestconfig, board)
+    # XTAGs not present
+    if not all(xtag_ids):
+        return True
+    return False
 
 
-def spdif_input_uncollect(level, board_config, fs):
-    features = get_config_features(board_config)
-    return any([not features["spdif_i"], spdif_common_uncollect(fs, features)])
+def spdif_input_uncollect(pytestconfig, board, config):
+    # Not yet supported on Windows
+    if platform.system() == "Windows":
+        return True
+    features = get_config_features(board, config)
+    return any([not features["spdif_i"], spdif_common_uncollect(features, board, pytestconfig)])
 
 
-def spdif_output_uncollect(level, board_config, fs):
-    features = get_config_features(board_config)
-    return any([not features["spdif_o"], spdif_common_uncollect(fs, features)])
+def spdif_output_uncollect(pytestconfig, board, config):
+    features = get_config_features(board, config)
+    return any([not features["spdif_o"], spdif_common_uncollect(features, board, pytestconfig)])
 
 
 def spdif_duration(level, partial):
@@ -42,125 +58,87 @@ def spdif_duration(level, partial):
     elif level == "nightly":
         duration = 15 if partial else 180
     else:
-        duration = 5
+        duration = 10
     return duration
 
 
 @pytest.mark.uncollect_if(func=spdif_input_uncollect)
-@pytest.mark.parametrize("fs", samp_freqs)
-@pytest.mark.parametrize("board_config", list_configs())
-def test_spdif_input(pytestconfig, xtag_wrapper, xsig, board_config, fs):
-    features = get_config_features(board_config)
+@pytest.mark.parametrize(["board", "config"], list_configs())
+def test_spdif_input(pytestconfig, board, config):
+    features = get_config_features(board, config)
+
     xsig_config = f'mc_digital_input_{features["analogue_i"]}ch'
     xsig_config_path = Path(__file__).parent / "xsig_configs" / f"{xsig_config}.json"
-    adapter_dut, adapter_harness = xtag_wrapper
+
+    adapter_dut, adapter_harness = get_xtag_dut_and_harness(pytestconfig, board)
 
     duration = spdif_duration(pytestconfig.getoption("level"), features["partial"])
 
-    board_config = board_config.split("-", maxsplit=1)
-    board = board_config[0]
-    config = board_config[1]
+    with XrunDut(adapter_dut, board, config) as dut:
+        fs_failures = []
 
-    xscope_port = get_xscope_port_number()
+        for fs in features["samp_freqs"]:
+            with AudioAnalyzerHarness(adapter_harness, config="spdif_test", xscope="app") as harness:
 
-    # Run the harness and set the sample rate for the ramp signal
-    harness_firmware = get_firmware_path_harness("xcore200_mc", config="spdif_test")
-    harness_proc = subprocess.Popen(
-        [
-            "xrun",
-            "--adapter-id",
-            adapter_harness,
-            "--xscope-port",
-            f"localhost:{xscope_port}",
-            harness_firmware,
-        ],
-        stdout=subprocess.DEVNULL,
-        stderr=subprocess.DEVNULL,
-    )
+                xscope_controller = (
+                    Path(__file__).parents[2]
+                    / "sw_audio_analyzer"
+                    / "host_xscope_controller"
+                    / "bin_macos"
+                    / "xscope_controller"
+                )
+                subprocess.run([xscope_controller, "localhost", f"{harness.xscope_port}", "0", f"f {fs}"], timeout=10)
+                # Short delay to wait for the S/PDIF ramp to be generated before selecting the clock source
+                time.sleep(3)
 
-    wait_for_xscope_port(xscope_port)
+                with (
+                    SpdifClockSrc(),
+                    XsigInput(fs, duration, xsig_config_path, dut.dev_name) as xsig_proc,
+                ):
 
-    xscope_controller = (
-        Path(__file__).parents[2]
-        / "sw_audio_analyzer"
-        / "host_xscope_controller"
-        / "bin_macos"
-        / "xscope_controller"
-    )
-    subprocess.run([xscope_controller, "localhost", f"{xscope_port}", "0", f"f {fs}"])
+                    time.sleep(duration + 6)
+                    xsig_lines = xsig_proc.get_output()
 
-    firmware = get_firmware_path(board, config)
-    subprocess.run(["xrun", "--adapter-id", adapter_dut, firmware])
+            with open(xsig_config_path) as file:
+                xsig_json = json.load(file)
+            failures = check_analyzer_output(xsig_lines, xsig_json["in"])
+            if len(failures) > 0:
+                fs_failures.append((fs, failures))
 
-    wait_for_portaudio(board, config)
-
-    volcontrol_path = Path(__file__).parent / "tools" / "volcontrol" / "volcontrol"
-    subprocess.run([volcontrol_path, "--clock", "SPDIF"])
-
-    # Run xsig
-    xsig_duration = duration + 5
-    with tempfile.NamedTemporaryFile(mode="w+") as out_file:
-        run_audio_command(
-            out_file, xsig, f"{fs}", f"{duration * 1000}", xsig_config_path
-        )
-        time.sleep(xsig_duration)
-        out_file.seek(0)
-        xsig_lines = out_file.readlines()
-
-    harness_proc.send_signal(signal.SIGINT)
-
-    # Return to using to the internal clock
-    subprocess.run([volcontrol_path, "--clock", "Internal"])
-
-    # Check output
-    with open(xsig_config_path) as file:
-        xsig_json = json.load(file)
-    check_analyzer_output(xsig_lines, xsig_json["in"])
+    if len(fs_failures) > 0:
+        pytest.fail(f"{fs_failures}")
 
 
 @pytest.mark.uncollect_if(func=spdif_output_uncollect)
-@pytest.mark.parametrize("fs", samp_freqs)
-@pytest.mark.parametrize("board_config", list_configs())
-def test_spdif_output(pytestconfig, xtag_wrapper, xsig, board_config, fs):
-    features = get_config_features(board_config)
+@pytest.mark.parametrize(["board", "config"], list_configs())
+def test_spdif_output(pytestconfig, board, config):
+    features = get_config_features(board, config)
+
     xsig_config = f'mc_digital_output_{features["analogue_o"]}ch'
     xsig_config_path = Path(__file__).parent / "xsig_configs" / f"{xsig_config}.json"
-    adapter_dut, adapter_harness = xtag_wrapper
+
+    adapter_dut, adapter_harness = get_xtag_dut_and_harness(pytestconfig, board)
 
     duration = spdif_duration(pytestconfig.getoption("level"), features["partial"])
 
-    board_config = board_config.split("-", maxsplit=1)
-    board = board_config[0]
-    config = board_config[1]
+    with XrunDut(adapter_dut, board, config) as dut:
+        fs_failures = []
 
-    firmware = get_firmware_path(board, config)
-    subprocess.run(["xrun", "--adapter-id", adapter_dut, firmware])
+        for fs in features["samp_freqs"]:
+            with (
+                AudioAnalyzerHarness(adapter_harness, config="spdif_test", xscope="io") as harness,
+                XsigOutput(fs, None, xsig_config_path, dut.dev_name),
+            ):
 
-    wait_for_portaudio(board, config)
+                time.sleep(duration)
+                harness.terminate()
+                xscope_lines = harness.get_output()
 
-    # Run xsig for longer than the test duration as it will be terminated later
-    xsig_duration_ms = (duration + 100) * 1000
-    xsig_proc = subprocess.Popen(
-        [xsig, f"{fs}", f"{xsig_duration_ms}", xsig_config_path]
-    )
+            with open(xsig_config_path) as file:
+                xsig_json = json.load(file)
+            failures = check_analyzer_output(xscope_lines, xsig_json["out"])
+            if len(failures) > 0:
+                fs_failures.append((fs, failures))
 
-    harness_firmware = get_firmware_path_harness("xcore200_mc", config="spdif_test")
-    harness_proc = subprocess.Popen(
-        ["xrun", "--adapter-id", adapter_harness, "--xscope", harness_firmware],
-        stdout=subprocess.PIPE,
-        stderr=subprocess.STDOUT,
-        text=True,
-    )
-
-    time.sleep(duration)
-
-    harness_proc.send_signal(signal.SIGINT)
-    xscope_str = harness_proc.stdout.read()
-    xscope_lines = xscope_str.splitlines()
-
-    xsig_proc.terminate()
-
-    with open(xsig_config_path) as file:
-        xsig_json = json.load(file)
-
-    check_analyzer_output(xscope_lines, xsig_json["out"])
+    if len(fs_failures) > 0:
+        pytest.fail(f"{fs_failures}")

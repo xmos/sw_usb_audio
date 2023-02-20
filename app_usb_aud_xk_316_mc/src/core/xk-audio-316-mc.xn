@@ -25,8 +25,8 @@
             <Port Location="XS1_PORT_8D"  Name="PORT_CTRL"/>
 
             <!-- I2C -->
-            <Port Location="XS1_PORT_8D"  Name="PORT_CTRL"/>
-            <Port Location="XS1_PORT_8D"  Name="PORT_CTRL"/>
+            <Port Location="XS1_PORT_1L"  Name="PORT_I2C_SCL"/>
+            <Port Location="XS1_PORT_1M"  Name="PORT_I2C_SDA"/>
 
             <!-- Clocking --> 
             <Port Location="XS1_PORT_16B" Name="PORT_MCLK_COUNT"/>

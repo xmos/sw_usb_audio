@@ -1,34 +1,49 @@
 # Copyright (c) 2020-2022, XMOS Ltd, All rights reserved
-import io
 from pathlib import Path
 import pytest
-import subprocess
 import time
 import json
-import tempfile
-import signal
+import platform
 
 from usb_audio_test_utils import (
-    wait_for_portaudio,
-    get_firmware_path_harness,
-    get_firmware_path,
-    run_audio_command,
     check_analyzer_output,
+    get_xtag_dut_and_harness,
+    use_windows_builtin_driver,
+    AudioAnalyzerHarness,
+    XrunDut,
+    XsigInput,
+    XsigOutput,
 )
 from conftest import list_configs, get_config_features
 
 
-samp_freqs = [44100, 48000, 88200, 96000, 176400, 192000]
+# Run a reduced set of configs on Windows at the smoke level to keep the total duration reasonable
+windows_smoke_configs = [
+    "1AMi2o2xxxxxx",
+    "2AMi10o10xssxxx",
+    "2SSi8o8xxxxxx_tdm8",
+    "2AMi8o8xxxxxx_winbuiltin",
+]
 
 
-def analogue_common_uncollect(fs, features):
-    # Sample rate not supported
-    return features["max_freq"] < fs
+def analogue_common_uncollect(features, board, config, pytestconfig):
+    level = pytestconfig.getoption("level")
+    if (
+        level == "smoke"
+        and platform.system() == "Windows"
+        and config not in windows_smoke_configs
+    ):
+        return True
+    # XTAGs not present
+    xtag_ids = get_xtag_dut_and_harness(pytestconfig, board)
+    if not all(xtag_ids):
+        return True
+    return False
 
 
-def analogue_input_uncollect(level, board_config, fs):
-    features = get_config_features(board_config)
-    if analogue_common_uncollect(fs, features):
+def analogue_input_uncollect(pytestconfig, board, config):
+    features = get_config_features(board, config)
+    if analogue_common_uncollect(features, board, config, pytestconfig):
         return True
     if not features["analogue_i"]:
         # No input channels
@@ -36,9 +51,9 @@ def analogue_input_uncollect(level, board_config, fs):
     return False
 
 
-def analogue_output_uncollect(level, board_config, fs):
-    features = get_config_features(board_config)
-    if analogue_common_uncollect(fs, features):
+def analogue_output_uncollect(pytestconfig, board, config):
+    features = get_config_features(board, config)
+    if analogue_common_uncollect(features, board, config, pytestconfig):
         return True
     if not features["analogue_o"]:
         # No output channels
@@ -52,111 +67,91 @@ def analogue_duration(level, partial):
     elif level == "nightly":
         duration = 15 if partial else 180
     else:
-        duration = 5
+        duration = 10
     return duration
 
 
 @pytest.mark.uncollect_if(func=analogue_input_uncollect)
-@pytest.mark.parametrize("fs", samp_freqs)
-@pytest.mark.parametrize("board_config", list_configs())
-def test_analogue_input(pytestconfig, xtag_wrapper, xsig, board_config, fs):
-    features = get_config_features(board_config)
+@pytest.mark.parametrize(["board", "config"], list_configs())
+def test_analogue_input(pytestconfig, board, config):
+    features = get_config_features(board, config)
+
     xsig_config = f'mc_analogue_input_{features["analogue_i"]}ch'
-    if "xk_316_mc" in board_config and features["tdm8"]:
+    if board == "xk_316_mc" and features["tdm8"]:
         xsig_config = (
             "mc_analogue_input_4ch"  # Requires jumper change to test > 4 channels
         )
     xsig_config_path = Path(__file__).parent / "xsig_configs" / f"{xsig_config}.json"
-    adapter_dut, adapter_harness = xtag_wrapper
+
+    adapter_dut, adapter_harness = get_xtag_dut_and_harness(pytestconfig, board)
 
     duration = analogue_duration(pytestconfig.getoption("level"), features["partial"])
 
-    board_config = board_config.split("-", maxsplit=1)
-    board = board_config[0]
-    config = board_config[1]
+    with (
+        XrunDut(adapter_dut, board, config) as dut,
+        AudioAnalyzerHarness(adapter_harness) as harness,
+    ):
+        fs_failures = []
 
-    # xrun the harness
-    harness_firmware = get_firmware_path_harness("xcore200_mc")
-    subprocess.run(
-        ["xrun", "--adapter-id", adapter_harness, harness_firmware], check=True
-    )
-    # xflash the firmware
-    firmware = get_firmware_path(board, config)
-    subprocess.run(["xrun", "--adapter-id", adapter_dut, firmware], check=True)
+        for fs in features["samp_freqs"]:
+            with XsigInput(fs, duration, xsig_config_path, dut.dev_name) as xsig_proc:
+                # Sleep for a few extra seconds so that xsig will have completed
+                time.sleep(duration + 6)
+                xsig_lines = xsig_proc.get_output()
 
-    wait_for_portaudio(board, config)
+            with open(xsig_config_path) as file:
+                xsig_json = json.load(file)
+            failures = check_analyzer_output(xsig_lines, xsig_json["in"])
+            if len(failures) > 0:
+                fs_failures.append((fs, failures))
 
-    # Run xsig
-    xsig_duration = duration + 5
-    with tempfile.NamedTemporaryFile(mode="w+") as out_file:
-        run_audio_command(
-            out_file, xsig, f"{fs}", f"{duration * 1000}", xsig_config_path
-        )
-        time.sleep(xsig_duration)
-        out_file.seek(0)
-        xsig_lines = out_file.readlines()
-
-    # Harness is still running, so break in with xgdb to stop it
-    subprocess.check_output(
-        [
-            "xgdb",
-            f"--eval-command=connect --adapter-id {adapter_harness}",
-            "--eval-command=quit",
-        ]
-    )
-
-    # Check output
-    with open(xsig_config_path) as file:
-        xsig_json = json.load(file)
-    check_analyzer_output(xsig_lines, xsig_json["in"])
+    if len(fs_failures) > 0:
+        pytest.fail(f"{fs_failures}")
 
 
 @pytest.mark.uncollect_if(func=analogue_output_uncollect)
-@pytest.mark.parametrize("fs", samp_freqs)
-@pytest.mark.parametrize("board_config", list_configs())
-def test_analogue_output(pytestconfig, xtag_wrapper, xsig, board_config, fs):
-    features = get_config_features(board_config)
+@pytest.mark.parametrize(["board", "config"], list_configs())
+def test_analogue_output(pytestconfig, board, config):
+    features = get_config_features(board, config)
+
     xsig_config = f'mc_analogue_output_{features["analogue_o"]}ch'
-    if "xk_316_mc" in board_config and features["tdm8"]:
+    if board == "xk_316_mc" and features["tdm8"]:
         xsig_config = "mc_analogue_output_2ch"
-    elif "xk_216_mc" in board_config and features["tdm8"] and features["i2s"] == "S":
+    elif board == "xk_216_mc" and features["tdm8"] and features["i2s"] == "S":
         xsig_config += "_paired"  # Pairs of channels can be swapped in hardware
     xsig_config_path = Path(__file__).parent / "xsig_configs" / f"{xsig_config}.json"
-    adapter_dut, adapter_harness = xtag_wrapper
+
+    adapter_dut, adapter_harness = get_xtag_dut_and_harness(pytestconfig, board)
 
     duration = analogue_duration(pytestconfig.getoption("level"), features["partial"])
 
-    board_config = board_config.split("-", maxsplit=1)
-    board = board_config[0]
-    config = board_config[1]
+    with XrunDut(adapter_dut, board, config) as dut:
+        fs_failures = []
 
-    # xrun the dut
-    firmware = get_firmware_path(board, config)
-    subprocess.run(["xrun", "--adapter-id", adapter_dut, firmware], check=True)
+        for fs in features["samp_freqs"]:
+            # Issue 120
+            if (
+                platform.system() == "Windows"
+                and board == "xk_316_mc"
+                and config == "2AMi8o8xxxxxx_winbuiltin"
+                and fs in [44100, 48000]
+            ):
+                continue
 
-    wait_for_portaudio(board, config)
+            with (
+                AudioAnalyzerHarness(adapter_harness, xscope="io") as harness,
+                XsigOutput(fs, None, xsig_config_path, dut.dev_name),
+            ):
 
-    # xrun --xscope the harness
-    harness_firmware = get_firmware_path_harness("xcore200_mc")
-    harness_proc = subprocess.Popen(
-        ["xrun", "--adapter-id", adapter_harness, "--xscope", harness_firmware],
-        stdout=subprocess.PIPE,
-        stderr=subprocess.STDOUT,
-        text=True,
-    )
+                time.sleep(duration)
+                harness.terminate()
+                xscope_lines = harness.get_output()
 
-    # Run xsig for duration + 2 seconds
-    xsig_proc = subprocess.Popen(
-        [xsig, f"{fs}", f"{(duration + 2) * 1000}", xsig_config_path]
-    )
-    time.sleep(duration)
+            with open(xsig_config_path) as file:
+                xsig_json = json.load(file)
+            failures = check_analyzer_output(xscope_lines, xsig_json["out"])
+            if len(failures) > 0:
+                fs_failures.append((fs, failures))
 
-    harness_proc.send_signal(signal.SIGINT)
-    xsig_proc.terminate()
-
-    xscope_str = harness_proc.stdout.read()
-    xscope_lines = xscope_str.splitlines()
-
-    with open(xsig_config_path) as file:
-        xsig_json = json.load(file)
-    check_analyzer_output(xscope_lines, xsig_json["out"])
+    if len(fs_failures) > 0:
+        pytest.fail(f"{fs_failures}")

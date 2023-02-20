@@ -131,8 +131,12 @@
 
 /*** Defines relating to USB descriptor strings and ID's ***/
 #define VENDOR_ID          (0x20B1) /* XMOS VID */
+#ifndef PID_AUDIO_2
 #define PID_AUDIO_2        (0x0016)
+#endif
+#ifndef PID_AUDIO_1
 #define PID_AUDIO_1        (0x0017)
+#endif
 #define PRODUCT_STR_A2     "XMOS xCORE.ai MC (UAC2.0)"
 #define PRODUCT_STR_A1     "XMOS xCORE.ai MC (UAC1.0)"
 
