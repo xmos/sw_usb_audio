@@ -9,7 +9,7 @@ import configparser
 import os
 import re
 import stat
-import requests
+import urllib.request
 
 from usb_audio_test_utils import get_firmware_path, get_xtag_dut, xtc_version, stop_xrun_app
 from conftest import get_config_features
@@ -58,9 +58,9 @@ class DfuTester:
             if not xmosdfu_path.exists():
                 os_dir = "macos" if platform_str == "Darwin" else "linux"
                 xmosdfu_url = f"http://intranet.xmos.local/projects/usb_audio_regression_files/xmosdfu/{os_dir}/xmosdfu"
-                r = requests.get(xmosdfu_url)
+                r = urllib.request.urlopen(xmosdfu_url)
                 with open(xmosdfu_path, "wb") as f:
-                    f.write(r.content)
+                    f.write(r.read())
                 xmosdfu_path.chmod(stat.S_IREAD | stat.S_IWRITE | stat.S_IEXEC)
             self.dfu_app = xmosdfu_path
 
