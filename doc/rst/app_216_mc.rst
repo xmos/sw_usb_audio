@@ -118,18 +118,20 @@ Validated Build Options
 +++++++++++++++++++++++
 
 The reference design can be built in several ways by changing the
-build options.  These are described in :ref:`sec_custom_defines_api`. 
+build options.  These are described in :ref:`sec_xua_conf_api`.
 
 The design has only been fully validated against the build options as set in the
 application as distributed in the Makefile.  See :ref:`usb_audio_sec_valbuild` for details and general information on
 build configuation naming scheme.
 
-These fully validated build configurations are enumerated in the supplied Makefile
+These fully validated build configurations are enumerated in the supplied Makefile.
 
 In practise, due to the similarities between the `xcore-200` and `xCORE.ai` series feature set, it is fully
 expected that all listed `xcore-200` series configurations will operate as expected on the `xCORE.ai` series and vice versa.
 
-The build configuration naming scheme employed in the makefile is as follows:
+The build configuration naming scheme employed in the makefile is shown in :ref:`table_216_config_naming`.
+
+.. _table_216_config_naming:
 
 .. list-table:: Build config naming scheme
    :header-rows: 1
