@@ -24,7 +24,7 @@ For some products it may be desirable to use a third-party driver for Windows. A
     
     - In order to support UAC 2.0 on Windows versions earlier than 10
     - The built-in Windows support is typically designed for consumer audio devices, not for professional audio devices
-    - The built in drivers support sound APIs such as WSAPI, DirectSound, MME, but not ASIO.
+    - The built in drivers support sound APIs such as WASAPI, DirectSound, MME, but not ASIO.
 
 The XMOS USB Audio Reference design is tested against *Thesycon USB Audio Driver for Windows*. This includes the following 
 feature-set/benefits:
@@ -32,7 +32,7 @@ feature-set/benefits:
     - Available for Windows 10 and Windows 11 operating systems
     - Designed for professional audio devices and consumer-style devices
     - Supports ASIO for transparent and low-latency audio streaming
-    - Supports Windows sound APIs such as WSAPI, DirectSound, MME
+    - Supports Windows sound APIs such as WASAPI, DirectSound, MME
     - Supports high-end audio features such as bit-perfect PCM up to 768 kHz sampling rate, native DSD format (through ASIO) up to DSD1024
     - Supports multiple clock sources such as S/PDIF, ADAT or WCLK inputs
     - Supports MIDI 1.0 class, including MIDI port sharing
