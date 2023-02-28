@@ -143,7 +143,6 @@ USB Audio Class 1.0
 
 - macOS version 10.6 or later
 - Windows XP, Vista, 7, 8, 10, or 11 with built-in USB Audio Class 1.0 driver.
-- Windows 10 or 11 with Thesycon Audio Class 2.0 driver for Windows (Tested against version 5.5)
 
 USB Audio Class 2.0
 -------------------
