@@ -47,5 +47,6 @@ feature-set/benefits:
 
 .. note::
 
-    Many of the benefits listed above apply to both UAC1.0 and UAC2.0 and the Thesycon Driver supports both class versions.
+    Many of the benefits listed above apply to both UAC1.0 and UAC2.0 and the Thesycon Driver supports both class versions. It should
+    be noted, however, that XMOS only currently tests UAC1 with built-in drivers.
 
