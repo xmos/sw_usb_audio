@@ -138,11 +138,19 @@ General known issues with this release are listed below.  For board/application 
 Host System Requirements
 ========================
 
-- Mac OSX version 10.6 or later
+USB Audio Class 1.0
+-------------------
 
-- Windows XP, Vista, 7, 8 or 10 with Thesycon Audio Class 2.0 driver for Windows (Tested against version 3.20). Please contact XMOS for details.
- 
-- Windows XP, Vista, 7, 8 or 10 with built-in USB Audio Class 1.0 driver.
+- macOS version 10.6 or later
+- Windows XP, Vista, 7, 8, 10, or 11 with built-in USB Audio Class 1.0 driver.
+- Windows 10 or 11 with Thesycon Audio Class 2.0 driver for Windows (Tested against version 5.5)
+
+USB Audio Class 2.0
+-------------------
+
+- macOS version 10.6 or later
+- Windows 10 or 11 with built-in USB Audio Class 2.0 driver.
+- Windows 10 or 11 using built-in or Thesycon Audio Class 2.0 driver for Windows (Tested against version 5.5)
 
 In Field Firmware Upgrade
 =========================
