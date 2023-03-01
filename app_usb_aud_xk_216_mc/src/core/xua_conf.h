@@ -7,7 +7,6 @@
 #ifndef _XUA_CONF_H_
 #define _XUA_CONF_H_
 
-#include "app_usb_aud_xk_216_mc.h"
 #include "../../../shared/version.h"
 
 /*

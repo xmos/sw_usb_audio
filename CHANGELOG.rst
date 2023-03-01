@@ -7,6 +7,7 @@ UNRELEASED
   * ADDED:     Driver information section to documentation
   * CHANGED:   AppPLL settings to reduce jitter (#112)
   * FIXED:     Configuration of DACs when changing sample rate (#110)
+  * FIXED:     Define app defaults ahead of lib_xua defaults (xk_216_mc)
 
 7.1.0
 -----
