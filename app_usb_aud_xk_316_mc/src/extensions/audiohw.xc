@@ -105,6 +105,10 @@ uint8_t i2c_reg_read(uint8_t device_addr, uint8_t reg, i2c_regop_res_t &result)
     return data[0];
 }
 
+/* The number of timer ticks to wait for the audio PLL to lock */
+/* CS2100 lists typical lock time as 100 * input period */
+#define     AUDIO_PLL_LOCK_DELAY     (40000000)
+
 #define CS2100_REGWRITE(reg, val)                   {result = i2c_reg_write(CS2100_I2C_DEVICE_ADDR, reg, val);}
 #define CS2100_REGREAD_ASSERT(reg, data, expected)  {data[0] = i2c_reg_read(CS2100_I2C_DEVICE_ADDR, reg, result); assert(data[0] == expected);}
 #define CS2100_I2C_DEVICE_ADDRESS                   (0x4E)
@@ -396,8 +400,16 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, unsigned dsdMode, unsigned s
 
     if (USE_FRACTIONAL_N)
     {
+        timer t;
+        unsigned time;
+        
         SetI2CMux(PCA9540B_CTRL_CHAN_1);
         PllMult(mClk, PLL_SYNC_FREQ, i_i2c_client);
+
+        /* Allow some time for mclk to lock and MCLK to stabilise - this is important to avoid glitches at start of stream */
+        t :> time;
+        t when timerafter(time+AUDIO_PLL_LOCK_DELAY) :> void;
+        
         SetI2CMux(PCA9540B_CTRL_CHAN_0);
     }
     else

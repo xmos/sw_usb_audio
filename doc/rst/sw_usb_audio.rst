@@ -1,4 +1,10 @@
 
+.. raw:: latex
+
+  \makeoddfoot{singlepage}{}{\mbox{}\\[\onelineskip]{\xmoslightgrey\rule[2mm]{\headwidth}{0.5pt}}\ifpreliminary\begin{picture}(0,0)\put(11,0){\makebox(0,0)[bl]{\includegraphics[width=\textwidth]{preliminary}}}\end{picture}\fi\\\footerpubsummary\companyextra}
+
+
+
 USB Audio User Guide
 ######################
 
@@ -32,12 +38,10 @@ The reader should also familiarise themselves with the `XMOS USB Device Library 
 
     Overview <overview>
     Hardware Platforms <hw>
+    Driver Support <drivers>
     Quick Start <quick>
     Programming Guide <programming>
     USB Audio Applications <apps>
     API <api>
     Frequently Asked Questions <faq>
-
-
-
 
