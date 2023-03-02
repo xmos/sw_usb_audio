@@ -253,3 +253,46 @@ def test_mixing_multi_channel_output(pytestconfig, ctrl_app, board, config):
     failures = check_analyzer_output(xscope_lines, xsig_json["out"])
     if len(failures) > 0:
         pytest.fail(f"{failures}")
+
+@pytest.mark.uncollect_if(func=mixer_uncollect)
+@pytest.mark.parametrize(["board", "config"], mixer_configs)
+def test_routing_daw_out_mix_input(pytestconfig, ctrl_app, board, config):
+    features = get_config_features(board, config)
+    # Limit to 96kHz to be able to use all 8 mixes
+    fs = min(96000, max([f for f in features["samp_freqs"] if f <= 96000]))
+    xsig_config_path = Path(__file__).parent / "xsig_configs" / "mc_analogue_output_8ch.json"
+    adapter_dut, adapter_harness = get_xtag_dut_and_harness(pytestconfig, board)
+    duration = 10
+
+    with (
+        XrunDut(adapter_dut, board, config) as dut,
+        AudioAnalyzerHarness(adapter_harness, xscope="io") as harness,
+    ):
+
+        num_mixes = 8
+        num_chans = features["analogue_i"]
+        if num_chans > num_mixes:
+            pytest.fail(f"Unsupported number of channels ({num_chans}) and mixes ({num_mixes})")
+
+        # Set (DEVICE OUT - Analogue [0 ... N]) source to (MIX - Mix [0 ... N])
+        mixer_offset = features["chan_o"] + features["analogue_i"]
+        for ch in range(num_chans):
+            mixer_cmd = [ctrl_app, "--set-aud-channel-map", f"{ch}", f"{mixer_offset + ch}"]
+            subprocess.run(mixer_cmd, timeout=10)
+
+        # Set mixer(0) input [0 ... N] to device input X (DAW - Analogue [N ... 0])
+        for mx in range(num_mixes):
+            mixer_cmd = [ctrl_app, "--set-mixer-source", "0", f"{mx}", f"{num_chans - mx}"]
+            subprocess.run(mixer_cmd, timeout=10)
+
+        with XsigOutput(fs, None, xsig_config_path, dut.dev_name):
+            time.sleep(duration)
+            harness.terminate()
+            xscope_lines = harness.get_output()
+
+    xsig_reversed_chans = Path(__file__).parent / "xsig_configs" / "routed_output_8ch.json"
+    with open(xsig_reversed_chans) as file:
+        xsig_json = json.load(file)
+    failures = check_analyzer_output(xscope_lines, xsig_json["out"])
+    if len(failures) > 0:
+        pytest.fail(f"{failures}")
