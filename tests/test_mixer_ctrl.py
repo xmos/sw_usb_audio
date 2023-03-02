@@ -201,6 +201,9 @@ def test_mixing_ctrl_output(pytestconfig, ctrl_app, board, config):
     xsig_reversed_chans = Path(__file__).parent / "xsig_configs" / "routed_output_8ch.json"
     with open(xsig_reversed_chans) as file:
         xsig_json = json.load(file)
+    failures = check_analyzer_output(xscope_lines, xsig_json["out"])
+    if len(failures) > 0:
+        pytest.fail(f"{failures}")
 
 @pytest.mark.uncollect_if(func=mixer_uncollect)
 @pytest.mark.parametrize(["board", "config"], mixer_configs)
@@ -247,3 +250,6 @@ def test_mixing_multi_channel_output(pytestconfig, ctrl_app, board, config):
     xsig_reversed_chans = Path(__file__).parent / "xsig_configs" / "mc_analogue_output_8ch_paired_inverse_sine_result.json"
     with open(xsig_reversed_chans) as file:
         xsig_json = json.load(file)
+    failures = check_analyzer_output(xscope_lines, xsig_json["out"])
+    if len(failures) > 0:
+        pytest.fail(f"{failures}")
