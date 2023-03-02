@@ -201,3 +201,55 @@ def test_mixing_ctrl_output(pytestconfig, ctrl_app, board, config):
     xsig_reversed_chans = Path(__file__).parent / "xsig_configs" / "routed_output_8ch.json"
     with open(xsig_reversed_chans) as file:
         xsig_json = json.load(file)
+    failures = check_analyzer_output(xscope_lines, xsig_json["out"])
+    if len(failures) > 0:
+        pytest.fail(f"{failures}")
+
+@pytest.mark.uncollect_if(func=mixer_uncollect)
+@pytest.mark.parametrize(["board", "config"], mixer_configs)
+def test_mixing_multi_channel_output(pytestconfig, ctrl_app, board, config):
+    features = get_config_features(board, config)
+    # Limit to 96kHz to be able to use all 8 mixes
+    fs = min(96000, max([f for f in features["samp_freqs"] if f <= 96000]))
+    xsig_config_path = Path(__file__).parent / "xsig_configs" / "mc_analogue_output_8ch_paired_inverse_sine.json"
+    adapter_dut, adapter_harness = get_xtag_dut_and_harness(pytestconfig, board)
+    duration = 10
+
+    with (
+        XrunDut(adapter_dut, board, config) as dut,
+        AudioAnalyzerHarness(adapter_harness, xscope="io") as harness,
+    ):
+
+        num_mixes = 8
+        num_chans = features["analogue_o"]
+        if num_chans > num_mixes:
+            pytest.fail(f"Unsupported number of channels ({num_chans}) and mixes ({num_mixes})")
+
+        # Set analogue outputs from the mixer outputs
+        mixer_offset = features["chan_o"] + features["analogue_i"]
+        for ch in range(num_chans):
+            mixer_cmd = [ctrl_app, "--set-aud-channel-map", f"{ch}", f"{mixer_offset + ch}"]
+            subprocess.run(mixer_cmd, timeout=10)
+
+        clear_default_mixes(ctrl_app, num_mixes)
+
+        # Mix DAW - Analogue N, N+1 & N+2 in Mixer Output N
+        for mx in range(num_mixes):
+            mixer_cmd = [ctrl_app, "--set-value", "0", f"{((mx + 0) % num_chans) * num_mixes + mx}", "0"]
+            subprocess.run(mixer_cmd, timeout=10)
+            mixer_cmd = [ctrl_app, "--set-value", "0", f"{((mx + 1) % num_chans) * num_mixes + mx}", "0"]
+            subprocess.run(mixer_cmd, timeout=10) 
+            mixer_cmd = [ctrl_app, "--set-value", "0", f"{((mx + 2) % num_chans) * num_mixes + mx}", "0"]
+            subprocess.run(mixer_cmd, timeout=10)
+
+        with XsigOutput(fs, None, xsig_config_path, dut.dev_name):
+            time.sleep(duration)
+            harness.terminate()
+            xscope_lines = harness.get_output()
+
+    xsig_reversed_chans = Path(__file__).parent / "xsig_configs" / "mc_analogue_output_8ch_paired_inverse_sine_result.json"
+    with open(xsig_reversed_chans) as file:
+        xsig_json = json.load(file)
+    failures = check_analyzer_output(xscope_lines, xsig_json["out"])
+    if len(failures) > 0:
+        pytest.fail(f"{failures}")
