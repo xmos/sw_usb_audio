@@ -55,14 +55,14 @@ int AppPllEnable(int32_t clkFreq_hz)
         case 44100*512:
 
             // Disable the PLL
-            write_node_config_reg(tile[1], XS1_SSWITCH_SS_APP_PLL_CTL_NUM, (APP_PLL_CTL_22M & 0xF7FFFFFF));
+            write_node_config_reg(tile[0], XS1_SSWITCH_SS_APP_PLL_CTL_NUM, (APP_PLL_CTL_22M & 0xF7FFFFFF));
             // Enable the PLL to invoke a reset on the appPLL.
-            write_node_config_reg(tile[1], XS1_SSWITCH_SS_APP_PLL_CTL_NUM, APP_PLL_CTL_22M);
+            write_node_config_reg(tile[0], XS1_SSWITCH_SS_APP_PLL_CTL_NUM, APP_PLL_CTL_22M);
             // Must write the CTL register twice so that the F and R divider values are captured using a running clock.
-            write_node_config_reg(tile[1], XS1_SSWITCH_SS_APP_PLL_CTL_NUM, APP_PLL_CTL_22M);
+            write_node_config_reg(tile[0], XS1_SSWITCH_SS_APP_PLL_CTL_NUM, APP_PLL_CTL_22M);
             // Now disable and re-enable the PLL so we get the full 5us reset time with the correct F and R values.
-            write_node_config_reg(tile[1], XS1_SSWITCH_SS_APP_PLL_CTL_NUM, (APP_PLL_CTL_22M & 0xF7FFFFFF));
-            write_node_config_reg(tile[1], XS1_SSWITCH_SS_APP_PLL_CTL_NUM, APP_PLL_CTL_22M);
+            write_node_config_reg(tile[0], XS1_SSWITCH_SS_APP_PLL_CTL_NUM, (APP_PLL_CTL_22M & 0xF7FFFFFF));
+            write_node_config_reg(tile[0], XS1_SSWITCH_SS_APP_PLL_CTL_NUM, APP_PLL_CTL_22M);
             delay_microseconds(500);
             // Set the fractional divider if used
             write_node_config_reg(tile[0], XS1_SSWITCH_SS_APP_PLL_FRAC_N_DIVIDER_NUM, APP_PLL_FRAC_22M);
@@ -76,14 +76,14 @@ int AppPllEnable(int32_t clkFreq_hz)
         case 48000*512:
 
             // Disable the PLL
-            write_node_config_reg(tile[1], XS1_SSWITCH_SS_APP_PLL_CTL_NUM, (APP_PLL_CTL_24M & 0xF7FFFFFF));
+            write_node_config_reg(tile[0], XS1_SSWITCH_SS_APP_PLL_CTL_NUM, (APP_PLL_CTL_24M & 0xF7FFFFFF));
             // Enable the PLL to invoke a reset on the appPLL.
-            write_node_config_reg(tile[1], XS1_SSWITCH_SS_APP_PLL_CTL_NUM, APP_PLL_CTL_24M);
+            write_node_config_reg(tile[0], XS1_SSWITCH_SS_APP_PLL_CTL_NUM, APP_PLL_CTL_24M);
             // Must write the CTL register twice so that the F and R divider values are captured using a running clock.
-            write_node_config_reg(tile[1], XS1_SSWITCH_SS_APP_PLL_CTL_NUM, APP_PLL_CTL_24M);
+            write_node_config_reg(tile[0], XS1_SSWITCH_SS_APP_PLL_CTL_NUM, APP_PLL_CTL_24M);
             // Now disable and re-enable the PLL so we get the full 5us reset time with the correct F and R values.
-            write_node_config_reg(tile[1], XS1_SSWITCH_SS_APP_PLL_CTL_NUM, (APP_PLL_CTL_24M & 0xF7FFFFFF));
-            write_node_config_reg(tile[1], XS1_SSWITCH_SS_APP_PLL_CTL_NUM, APP_PLL_CTL_24M);
+            write_node_config_reg(tile[0], XS1_SSWITCH_SS_APP_PLL_CTL_NUM, (APP_PLL_CTL_24M & 0xF7FFFFFF));
+            write_node_config_reg(tile[0], XS1_SSWITCH_SS_APP_PLL_CTL_NUM, APP_PLL_CTL_24M);
             delay_microseconds(500);
             // Set the fractional divider if used
             write_node_config_reg(tile[0], XS1_SSWITCH_SS_APP_PLL_FRAC_N_DIVIDER_NUM, APP_PLL_FRAC_24M);
@@ -97,14 +97,14 @@ int AppPllEnable(int32_t clkFreq_hz)
         case 44100*1024:
 
             // Disable the PLL
-            write_node_config_reg(tile[1], XS1_SSWITCH_SS_APP_PLL_CTL_NUM, (APP_PLL_CTL_45M & 0xF7FFFFFF));
+            write_node_config_reg(tile[0], XS1_SSWITCH_SS_APP_PLL_CTL_NUM, (APP_PLL_CTL_45M & 0xF7FFFFFF));
             // Enable the PLL to invoke a reset on the appPLL.
-            write_node_config_reg(tile[1], XS1_SSWITCH_SS_APP_PLL_CTL_NUM, APP_PLL_CTL_45M);
+            write_node_config_reg(tile[0], XS1_SSWITCH_SS_APP_PLL_CTL_NUM, APP_PLL_CTL_45M);
             // Must write the CTL register twice so that the F and R divider values are captured using a running clock.
-            write_node_config_reg(tile[1], XS1_SSWITCH_SS_APP_PLL_CTL_NUM, APP_PLL_CTL_45M);
+            write_node_config_reg(tile[0], XS1_SSWITCH_SS_APP_PLL_CTL_NUM, APP_PLL_CTL_45M);
             // Now disable and re-enable the PLL so we get the full 5us reset time with the correct F and R values.
-            write_node_config_reg(tile[1], XS1_SSWITCH_SS_APP_PLL_CTL_NUM, (APP_PLL_CTL_45M & 0xF7FFFFFF));
-            write_node_config_reg(tile[1], XS1_SSWITCH_SS_APP_PLL_CTL_NUM, APP_PLL_CTL_45M);
+            write_node_config_reg(tile[0], XS1_SSWITCH_SS_APP_PLL_CTL_NUM, (APP_PLL_CTL_45M & 0xF7FFFFFF));
+            write_node_config_reg(tile[0], XS1_SSWITCH_SS_APP_PLL_CTL_NUM, APP_PLL_CTL_45M);
             delay_microseconds(500);
             // Set the fractional divider if used
             write_node_config_reg(tile[0], XS1_SSWITCH_SS_APP_PLL_FRAC_N_DIVIDER_NUM, APP_PLL_FRAC_45M);
@@ -118,14 +118,14 @@ int AppPllEnable(int32_t clkFreq_hz)
         case 48000*1024:
 
             // Disable the PLL
-            write_node_config_reg(tile[1], XS1_SSWITCH_SS_APP_PLL_CTL_NUM, (APP_PLL_CTL_49M & 0xF7FFFFFF));
+            write_node_config_reg(tile[0], XS1_SSWITCH_SS_APP_PLL_CTL_NUM, (APP_PLL_CTL_49M & 0xF7FFFFFF));
             // Enable the PLL to invoke a reset on the appPLL.
-            write_node_config_reg(tile[1], XS1_SSWITCH_SS_APP_PLL_CTL_NUM, APP_PLL_CTL_49M);
+            write_node_config_reg(tile[0], XS1_SSWITCH_SS_APP_PLL_CTL_NUM, APP_PLL_CTL_49M);
             // Must write the CTL register twice so that the F and R divider values are captured using a running clock.
-            write_node_config_reg(tile[1], XS1_SSWITCH_SS_APP_PLL_CTL_NUM, APP_PLL_CTL_49M);
+            write_node_config_reg(tile[0], XS1_SSWITCH_SS_APP_PLL_CTL_NUM, APP_PLL_CTL_49M);
             // Now disable and re-enable the PLL so we get the full 5us reset time with the correct F and R values.
-            write_node_config_reg(tile[1], XS1_SSWITCH_SS_APP_PLL_CTL_NUM, (APP_PLL_CTL_49M & 0xF7FFFFFF));
-            write_node_config_reg(tile[1], XS1_SSWITCH_SS_APP_PLL_CTL_NUM, APP_PLL_CTL_49M);
+            write_node_config_reg(tile[0], XS1_SSWITCH_SS_APP_PLL_CTL_NUM, (APP_PLL_CTL_49M & 0xF7FFFFFF));
+            write_node_config_reg(tile[0], XS1_SSWITCH_SS_APP_PLL_CTL_NUM, APP_PLL_CTL_49M);
             delay_microseconds(500);
             // Set the fractional divider if used
             write_node_config_reg(tile[0], XS1_SSWITCH_SS_APP_PLL_FRAC_N_DIVIDER_NUM, APP_PLL_FRAC_49M);
