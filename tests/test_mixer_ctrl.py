@@ -282,7 +282,7 @@ def test_routing_daw_out_mix_input(pytestconfig, ctrl_app, board, config):
 
         # Set mixer(0) input [0 ... N] to device input X (DAW - Analogue [N ... 0])
         for mx in range(num_mixes):
-            mixer_cmd = [ctrl_app, "--set-mixer-source", "0", f"{mx}", f"{num_chans - mx}"]
+            mixer_cmd = [ctrl_app, "--set-mixer-source", "0", f"{mx}", f"{(num_chans -1) - mx}"]
             subprocess.run(mixer_cmd, timeout=10)
 
         with XsigOutput(fs, None, xsig_config_path, dut.dev_name):
