@@ -95,17 +95,17 @@ Release Quality & QA
 +---------------------------+--------------------------+
 | S/PDIF Transmit           | Release                  | 
 +---------------------------+--------------------------+
-| ADAT Receive              | Alpha                    | 
+| ADAT Receive              | Beta                     | 
 +---------------------------+--------------------------+
-| ADAT Transmit             | Alpha                    | 
+| ADAT Transmit             | Beta                     | 
 +---------------------------+--------------------------+
-| MIDI I/O                  | Alpha                    | 
+| MIDI I/O                  | Beta                     | 
 +---------------------------+--------------------------+
-| DSD Playback              | Alpha                    | 
+| DSD Playback              | Beta                     | 
 +---------------------------+--------------------------+
 | Mixer                     | Release                  | 
 +---------------------------+--------------------------+
-| HID Controls              | Alpha                    | 
+| HID Controls              | Beta                     | 
 +---------------------------+--------------------------+
 
 Known Issues
@@ -113,11 +113,13 @@ Known Issues
 
 General known issues with this release are listed below.  For board/application specific known issues please see README in relevant app directory
 
-- (xmos/sw_usb_audio#99) Input via TDM master unreliable due to low-level timing issues (xcore-200 only)
+- (xmos/sw_usb_audio#54) When DFU flash access fails the xcore sends NAKs to the USB host forever, rather than a STALL
 
 - (xmos/sw_usb_audio#97) Documentation missing for XK-EVK-316
 
-- (xmos/sw_usb_audio#54) When DFU flash access fails the xcore sends NAKs to the USB host forever, rather than a STALL
+- (xmos/sw_usb_audio#99) Input via TDM master unreliable due to low-level timing issues (xcore-200 only)
+
+- (xmos/sw_usb_audio#132) Output glitches experienced on some laptops due to Thesycon driver outputting zero samples. This is under investigation by Thesycon.
 
 - (#14762) When in DSD mode with S/PDIF output enabled, DSD samples are transmitted over S/PDIF if the DSD and S/PDIF channels are shared, this may or may not be desired
 
