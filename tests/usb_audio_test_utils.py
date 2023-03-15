@@ -51,7 +51,7 @@ def product_str_from_board_config(board, config):
     pytest.fail(f"Unrecognised config {config} for {board}")
 
 
-def wait_for_portaudio(board, config):
+def wait_for_portaudio(board, config, adapter_id):
     timeout = 30
     prod_str = product_str_from_board_config(board, config)
 
@@ -65,7 +65,16 @@ def wait_for_portaudio(board, config):
             if prod_str in sd_dev["name"]:
                 return sd_dev["name"]
 
-    pytest.fail(f"Device ({prod_str}) not available via portaudio in {timeout}s")
+    fail_str = FailMsg()
+    fail_str += f"Device ({prod_str}) not available via portaudio in {timeout}s"
+
+    # Device doesn't appear to have started, so dump the state of the xcore
+    firmware = get_firmware_path(board, config)
+    ret = subprocess.run(["xrun", "--adapter-id", adapter_id, "--dump-state", firmware],
+                         text=True, timeout=10, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    fail_str += "Register and thread state of the xcore device\n"
+    fail_str += "\n".join(ret.stdout.splitlines())
+    pytest.fail(fail_str)
 
 
 def get_firmware_path(board, config):
@@ -360,7 +369,7 @@ class XrunDut:
     def __enter__(self):
         firmware = get_firmware_path(self.board, self.config)
         subprocess.run(["xrun", "--adapter-id", self.adapter_id, firmware])
-        self.dev_name = wait_for_portaudio(self.board, self.config)
+        self.dev_name = wait_for_portaudio(self.board, self.config, self.adapter_id)
         if platform.system() == "Windows" and use_windows_builtin_driver(self.board, self.config):
             # Select ASIO4ALL as device for built-in driver testing (cannot wait for this device
             # name in wait_for_portaudio because it is always present)
