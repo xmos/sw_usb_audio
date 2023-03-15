@@ -7,8 +7,9 @@ INCLUDE_ONLY_IN_2AMi8o8xxxxxx =
 # Audio Class 2, Async, I2S Slave, 8xInput 8xOutput (TDM)
 INCLUDE_ONLY_IN_2ASi8o8xxxxxx_tdm8 =
 XCC_FLAGS_2ASi8o8xxxxxx_tdm8 = $(BUILD_FLAGS)   -DXUA_PCM_FORMAT=XUA_PCM_FORMAT_TDM \
-                                                                                                -DMAX_FREQ=96000 \
-                                                                                                -DCODEC_MASTER=1
+                                                -DMAX_FREQ=96000 \
+                                                -DCODEC_MASTER=1 \
+                                                -DOUT_VOLUME_IN_MIXER=0
 
 # Audio Class 2, Async, I2S Slave, 8xInput, 8xOutput
 XCC_FLAGS_2ASi8o8xxxxxx = $(BUILD_FLAGS)        -DCODEC_MASTER=1
