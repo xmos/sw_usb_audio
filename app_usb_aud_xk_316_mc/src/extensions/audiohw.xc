@@ -402,14 +402,14 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, unsigned dsdMode, unsigned s
     {
         timer t;
         unsigned time;
-        
+
         SetI2CMux(PCA9540B_CTRL_CHAN_1);
         PllMult(mClk, PLL_SYNC_FREQ, i_i2c_client);
 
         /* Allow some time for mclk to lock and MCLK to stabilise - this is important to avoid glitches at start of stream */
         t :> time;
         t when timerafter(time+AUDIO_PLL_LOCK_DELAY) :> void;
-        
+
         SetI2CMux(PCA9540B_CTRL_CHAN_0);
     }
     else
