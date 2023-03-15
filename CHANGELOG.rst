@@ -1,13 +1,41 @@
 sw_usb_audio Change Log
 =======================
 
-UNRELEASED
-----------
+7.2.0
+-----
 
   * ADDED:     Driver information section to documentation
-  * CHANGED:   AppPLL settings to reduce jitter (#112)
-  * FIXED:     Configuration of DACs when changing sample rate (#110)
-  * FIXED:     Define app defaults ahead of lib_xua defaults (xk_216_mc)
+  * CHANGED:   AppPLL settings updated to reduce jitter (#112)
+  * CHANGED:   app_usb_aud_316_mc: Improved DAC configuration sequencing
+    following datasheet recommendations
+  * CHANGED:   app_usb_aud_316_mc: Manual DAC setup rather than using
+    auto-config to improve output quality (internal PLL no longer used)
+  * FIXED:     app_usb_aud_316_mc: Intermittent output from DACs due to DAC
+    auto-standby (#110)
+  * FIXED:     app_usb_aud_216_mc: Define app defaults ahead of lib_xua defaults
+
+  * Changes to dependencies:
+
+    - lib_xua: 3.3.1 -> 3.4.0
+
+      + ADDED:     Unit tests for mixer functionality
+      + ADDED:     Host mixer control applications (for Win/macOS)
+      + CHANGED:   Small tidies to mixer implementation
+      + CHANGED:   Improved mixer control channel communication protocol to
+        avoid deadlock situations
+      + CHANGED:   By default, output volume processing occurs in mixer task, if
+        present. Previously occurred in decouple task
+      + CHANGED:   Some optimisations in sample transfer from decouple task
+      + FIXED:     Exception on startup when USB input disabled
+      + FIXED:     Full 32bit volume processing only applied when required
+      + FIXED:     Setting OUT_VOLUME_AFTER_MIX to zero now has the expected
+        effect
+
+    - lib_xud: 2.2.1 -> 2.2.2
+
+      + FIXED:     Syntax error when including xud.h from C
+      + CHANGE:    Various API functions optionally marked as a weak symbol
+        based on XUD_WEAK_API
 
 7.1.0
 -----
