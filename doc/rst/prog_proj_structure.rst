@@ -14,7 +14,7 @@ applications. Instead of having to express dependencies explicitly in Makefiles,
 structures and naming convention, from which dependencies are inferred automatically.
 
 The `XCOMMON` build system depends on use of of the tool `XMAKE
-<https://www.xmos.ai/documentation/XM-014363-PC-4/html/tools-guide/tools-ref/cmd-line-tools/xmake-manual/xmake-manual.html#xmake-manual>`_ 
+<https://www.xmos.ai/documentation/XM-014363-PC-7/html/tools-guide/tools-ref/cmd-line-tools/xmake-manual/xmake-manual.html#xmake>`_ 
 specifically. It cannot currently be used with a generic port of GNU Make.
 
 

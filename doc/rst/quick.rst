@@ -125,14 +125,14 @@ The XTC tools are required by anyone developing or deploying applications on an 
     * Deployment tools
 
 The tools as delivered are to be used within a command line environment, though may also be integrated with 
-`your preferred IDE <https://www.xmos.ai/documentation/XM-014363-PC-4/html/tools-guide/install-configure/config-ide/index.html#config-ide>`_.
+`your preferred IDE <https://www.xmos.ai/documentation/XM-014363-PC-7/html/tools-guide/install-configure/config-ide/index.html>`_.
 
 .. warning:: 
 
     The firmware must be compiled using a specific version of the tools. Make sure that you download the correct version of the tools. 
     Older versions of tools are available from the `TOOLS ARCHIVE` section of http://www.xmos.com/software-tools
 
-Information on using the tools, including installation, is provided in the `XTC Tools Guide <https://www.xmos.ai/documentation/XM-014363-PC-4/html/tools-guide/index.html>`_.
+Information on using the tools, including installation, is provided in the `XTC Tools Guide <https://www.xmos.ai/documentation/XM-014363-PC-7/html/intro.html>`_.
 
 |newpage|
 
