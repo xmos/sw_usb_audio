@@ -71,12 +71,10 @@ def test_volume_input(pytestconfig, board, config):
     test_chans = ["m", *range(num_chans)]
 
     duration = 25
-
+    fail_str = ""
     adapter_dut, adapter_harness = get_xtag_dut_and_harness(pytestconfig, board)
 
     with XrunDut(adapter_dut, board, config) as dut:
-        ch_failures = []
-
         for channel in test_chans:
             channels = range(num_chans) if channel == "m" else [channel]
 
@@ -122,10 +120,17 @@ def test_volume_input(pytestconfig, board, config):
 
             failures = check_analyzer_output(xsig_lines, xsig_json["in"])
             if len(failures) > 0:
-                ch_failures.append((channel, failures))
+                fail_str += f"Failure for channel {channel}\n"
+                fail_str += "\n".join(failures) + "\n\n"
+                fail_str += f"xsig stdout for channel {channel}\n"
+                fail_str += "\n".join(xsig_lines) + "\n\n"
+                harness_output = harness.get_output()
+                if len(harness_output) > 0:
+                    fail_str += f"Audio analyzer stdout for channel {channel}\n"
+                    fail_str += "\n".join(harness_output) + "\n\n"
 
-    if len(ch_failures) > 0:
-        pytest.fail(f"{ch_failures}")
+    if len(fail_str) > 0:
+        pytest.fail(fail_str)
 
 
 @pytest.mark.uncollect_if(func=volume_uncollect)
@@ -140,10 +145,9 @@ def test_volume_output(pytestconfig, board, config):
     xsig_config_path = Path(__file__).parent / "xsig_configs" / xsig_config
 
     adapter_dut, adapter_harness = get_xtag_dut_and_harness(pytestconfig, board)
+    fail_str = ""
 
     with XrunDut(adapter_dut, board, config) as dut:
-        ch_failures = []
-
         for channel in test_chans:
             channels = range(num_chans) if channel == "m" else [channel]
 
@@ -198,7 +202,10 @@ def test_volume_output(pytestconfig, board, config):
 
             failures = check_analyzer_output(xscope_lines, xsig_json["out"])
             if len(failures) > 0:
-                ch_failures.append((ch, failures))
+                fail_str += f"Failure for channel {channel}\n"
+                fail_str += "\n".join(failures) + "\n\n"
+                fail_str += f"xscope stdout for channel {channel}\n"
+                fail_str += "\n".join(xscope_lines) + "\n\n"
 
-    if len(ch_failures) > 0:
-        pytest.fail(f"{ch_failures}")
+    if len(fail_str) > 0:
+        pytest.fail(fail_str)

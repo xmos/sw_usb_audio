@@ -71,12 +71,10 @@ def test_spdif_input(pytestconfig, board, config):
     xsig_config_path = Path(__file__).parent / "xsig_configs" / f"{xsig_config}.json"
 
     adapter_dut, adapter_harness = get_xtag_dut_and_harness(pytestconfig, board)
-
     duration = spdif_duration(pytestconfig.getoption("level"), features["partial"])
+    fail_str = ""
 
     with XrunDut(adapter_dut, board, config) as dut:
-        fs_failures = []
-
         for fs in features["samp_freqs"]:
             with AudioAnalyzerHarness(adapter_harness, config="spdif_test", xscope="app") as harness:
 
@@ -103,10 +101,15 @@ def test_spdif_input(pytestconfig, board, config):
                 xsig_json = json.load(file)
             failures = check_analyzer_output(xsig_lines, xsig_json["in"])
             if len(failures) > 0:
-                fs_failures.append((fs, failures))
+                fail_str += f"Failure at sample rate {fs}\n"
+                fail_str += "\n".join(failures) + "\n\n"
+                fail_str += f"xsig stdout at sample rate {fs}\n"
+                fail_str += "\n".join(xsig_lines) + "\n\n"
+                fail_str += f"Audio analyzer stdout at sample rate {fs}\n"
+                fail_str += "\n".join(harness.get_output()) + "\n\n"
 
-    if len(fs_failures) > 0:
-        pytest.fail(f"{fs_failures}")
+    if len(fail_str) > 0:
+        pytest.fail(fail_str)
 
 
 @pytest.mark.uncollect_if(func=spdif_output_uncollect)
@@ -118,12 +121,10 @@ def test_spdif_output(pytestconfig, board, config):
     xsig_config_path = Path(__file__).parent / "xsig_configs" / f"{xsig_config}.json"
 
     adapter_dut, adapter_harness = get_xtag_dut_and_harness(pytestconfig, board)
-
     duration = spdif_duration(pytestconfig.getoption("level"), features["partial"])
+    fail_str = ""
 
     with XrunDut(adapter_dut, board, config) as dut:
-        fs_failures = []
-
         for fs in features["samp_freqs"]:
             with (
                 AudioAnalyzerHarness(adapter_harness, config="spdif_test", xscope="io") as harness,
@@ -138,7 +139,10 @@ def test_spdif_output(pytestconfig, board, config):
                 xsig_json = json.load(file)
             failures = check_analyzer_output(xscope_lines, xsig_json["out"])
             if len(failures) > 0:
-                fs_failures.append((fs, failures))
+                fail_str += f"Failure at sample rate {fs}\n"
+                fail_str += "\n".join(failures) + "\n\n"
+                fail_str += f"xscope stdout at sample rate {fs}\n"
+                fail_str += "\n".join(xscope_lines) + "\n\n"
 
-    if len(fs_failures) > 0:
-        pytest.fail(f"{fs_failures}")
+    if len(fail_str) > 0:
+        pytest.fail(fail_str)
