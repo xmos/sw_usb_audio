@@ -84,15 +84,13 @@ def test_analogue_input(pytestconfig, board, config):
     xsig_config_path = Path(__file__).parent / "xsig_configs" / f"{xsig_config}.json"
 
     adapter_dut, adapter_harness = get_xtag_dut_and_harness(pytestconfig, board)
-
     duration = analogue_duration(pytestconfig.getoption("level"), features["partial"])
+    fail_str = ""
 
     with (
         XrunDut(adapter_dut, board, config) as dut,
         AudioAnalyzerHarness(adapter_harness) as harness,
     ):
-        fs_failures = []
-
         for fs in features["samp_freqs"]:
             with XsigInput(fs, duration, xsig_config_path, dut.dev_name) as xsig_proc:
                 # Sleep for a few extra seconds so that xsig will have completed
@@ -103,10 +101,17 @@ def test_analogue_input(pytestconfig, board, config):
                 xsig_json = json.load(file)
             failures = check_analyzer_output(xsig_lines, xsig_json["in"])
             if len(failures) > 0:
-                fs_failures.append((fs, failures))
+                fail_str += f"Failure at sample rate {fs}\n"
+                fail_str += "\n".join(failures) + "\n\n"
+                fail_str += f"xsig stdout at sample rate {fs}\n"
+                fail_str += "\n".join(xsig_lines) + "\n\n"
 
-    if len(fs_failures) > 0:
-        pytest.fail(f"{fs_failures}")
+    if len(fail_str) > 0:
+        harness_output = harness.get_output()
+        if len(harness_output) > 0:
+            fail_str += "Audio analyzer stdout\n"
+            fail_str += "\n".join(harness_output)
+        pytest.fail(fail_str)
 
 
 @pytest.mark.uncollect_if(func=analogue_output_uncollect)
@@ -122,12 +127,10 @@ def test_analogue_output(pytestconfig, board, config):
     xsig_config_path = Path(__file__).parent / "xsig_configs" / f"{xsig_config}.json"
 
     adapter_dut, adapter_harness = get_xtag_dut_and_harness(pytestconfig, board)
-
     duration = analogue_duration(pytestconfig.getoption("level"), features["partial"])
+    fail_str = ""
 
     with XrunDut(adapter_dut, board, config) as dut:
-        fs_failures = []
-
         for fs in features["samp_freqs"]:
             # Issue 120
             if (
@@ -151,7 +154,10 @@ def test_analogue_output(pytestconfig, board, config):
                 xsig_json = json.load(file)
             failures = check_analyzer_output(xscope_lines, xsig_json["out"])
             if len(failures) > 0:
-                fs_failures.append((fs, failures))
+                fail_str += f"Failure at sample rate {fs}\n"
+                fail_str += "\n".join(failures) + "\n\n"
+                fail_str += f"xscope stdout at sample rate {fs}\n"
+                fail_str += "\n".join(xscope_lines) + "\n\n"
 
-    if len(fs_failures) > 0:
-        pytest.fail(f"{fs_failures}")
+    if len(fail_str) > 0:
+        pytest.fail(fail_str)

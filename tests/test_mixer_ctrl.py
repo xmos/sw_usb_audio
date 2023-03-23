@@ -50,10 +50,11 @@ def test_routing_ctrl_input(pytestconfig, ctrl_app, board, config):
     xsig_config_path = Path(__file__).parent / "xsig_configs" / "routed_input_8ch.json"
     adapter_dut, adapter_harness = get_xtag_dut_and_harness(pytestconfig, board)
     duration = 10
+    fail_str = ""
 
     with (
         XrunDut(adapter_dut, board, config) as dut,
-        AudioAnalyzerHarness(adapter_harness),
+        AudioAnalyzerHarness(adapter_harness) as harness,
     ):
 
         # Route analogue inputs 0, 1, ..., N to host inputs N, N-1, ..., 0 respectively
@@ -71,7 +72,14 @@ def test_routing_ctrl_input(pytestconfig, ctrl_app, board, config):
         xsig_json = json.load(file)
     failures = check_analyzer_output(xsig_lines, xsig_json["in"])
     if len(failures) > 0:
-        pytest.fail(f"{failures}")
+        fail_str += "\n".join(failures) + "\n\n"
+        fail_str += "xsig stdout\n"
+        fail_str += "\n".join(xsig_lines)
+        harness_output = harness.get_output()
+        if len(harness_output) > 0:
+            fail_str += "\n\nAudio analyzer stdout\n"
+            fail_str += "\n".join(harness_output)
+        pytest.fail(fail_str)
 
 
 @pytest.mark.uncollect_if(func=mixer_uncollect)
@@ -82,6 +90,7 @@ def test_routing_ctrl_output(pytestconfig, ctrl_app, board, config):
     xsig_config_path = Path(__file__).parent / "xsig_configs" / "mc_analogue_output_8ch.json"
     adapter_dut, adapter_harness = get_xtag_dut_and_harness(pytestconfig, board)
     duration = 10
+    fail_str = ""
 
     with (
         XrunDut(adapter_dut, board, config) as dut,
@@ -105,7 +114,10 @@ def test_routing_ctrl_output(pytestconfig, ctrl_app, board, config):
         xsig_json = json.load(file)
     failures = check_analyzer_output(xscope_lines, xsig_json["out"])
     if len(failures) > 0:
-        pytest.fail(f"{failures}")
+        fail_str += "\n".join(failures) + "\n\n"
+        fail_str += "xscope stdout\n"
+        fail_str += "\n".join(xscope_lines)
+        pytest.fail(fail_str)
 
 
 def clear_default_mixes(ctrl_app, num_mixes):
@@ -123,10 +135,11 @@ def test_mixing_ctrl_input(pytestconfig, ctrl_app, board, config):
     xsig_config_path = Path(__file__).parent / "xsig_configs" / "routed_input_8ch.json"
     adapter_dut, adapter_harness = get_xtag_dut_and_harness(pytestconfig, board)
     duration = 10
+    fail_str = ""
 
     with (
         XrunDut(adapter_dut, board, config) as dut,
-        AudioAnalyzerHarness(adapter_harness),
+        AudioAnalyzerHarness(adapter_harness) as harness,
     ):
 
         num_mixes = 8
@@ -156,7 +169,14 @@ def test_mixing_ctrl_input(pytestconfig, ctrl_app, board, config):
         xsig_json = json.load(file)
     failures = check_analyzer_output(xsig_lines, xsig_json["in"])
     if len(failures) > 0:
-        pytest.fail(f"{failures}")
+        fail_str += "\n".join(failures) + "\n\n"
+        fail_str += "xsig stdout\n"
+        fail_str += "\n".join(xsig_lines)
+        harness_output = harness.get_output()
+        if len(harness_output) > 0:
+            fail_str += "\n\nAudio analyzer stdout\n"
+            fail_str += "\n".join(harness_output)
+        pytest.fail(fail_str)
 
 
 @pytest.mark.uncollect_if(func=mixer_uncollect)
@@ -168,6 +188,7 @@ def test_mixing_ctrl_output(pytestconfig, ctrl_app, board, config):
     xsig_config_path = Path(__file__).parent / "xsig_configs" / "mc_analogue_output_8ch.json"
     adapter_dut, adapter_harness = get_xtag_dut_and_harness(pytestconfig, board)
     duration = 10
+    fail_str = ""
 
     with (
         XrunDut(adapter_dut, board, config) as dut,
@@ -203,7 +224,10 @@ def test_mixing_ctrl_output(pytestconfig, ctrl_app, board, config):
         xsig_json = json.load(file)
     failures = check_analyzer_output(xscope_lines, xsig_json["out"])
     if len(failures) > 0:
-        pytest.fail(f"{failures}")
+        fail_str += "\n".join(failures) + "\n\n"
+        fail_str += "xscope stdout\n"
+        fail_str += "\n".join(xscope_lines)
+        pytest.fail(fail_str)
 
 @pytest.mark.uncollect_if(func=mixer_uncollect)
 @pytest.mark.parametrize(["board", "config"], mixer_configs)
@@ -214,6 +238,7 @@ def test_mixing_multi_channel_output(pytestconfig, ctrl_app, board, config):
     xsig_config_path = Path(__file__).parent / "xsig_configs" / "mc_analogue_output_8ch_paired_inverse_sine.json"
     adapter_dut, adapter_harness = get_xtag_dut_and_harness(pytestconfig, board)
     duration = 10
+    fail_str = ""
 
     with (
         XrunDut(adapter_dut, board, config) as dut,
@@ -252,7 +277,10 @@ def test_mixing_multi_channel_output(pytestconfig, ctrl_app, board, config):
         xsig_json = json.load(file)
     failures = check_analyzer_output(xscope_lines, xsig_json["out"])
     if len(failures) > 0:
-        pytest.fail(f"{failures}")
+        fail_str += "\n".join(failures) + "\n\n"
+        fail_str += "xscope stdout\n"
+        fail_str += "\n".join(xscope_lines)
+        pytest.fail(fail_str)
 
 @pytest.mark.uncollect_if(func=mixer_uncollect)
 @pytest.mark.parametrize(["board", "config"], mixer_configs)
@@ -263,6 +291,7 @@ def test_routing_daw_out_mix_input(pytestconfig, ctrl_app, board, config):
     xsig_config_path = Path(__file__).parent / "xsig_configs" / "mc_analogue_output_8ch.json"
     adapter_dut, adapter_harness = get_xtag_dut_and_harness(pytestconfig, board)
     duration = 10
+    fail_str = ""
 
     with (
         XrunDut(adapter_dut, board, config) as dut,
@@ -295,4 +324,7 @@ def test_routing_daw_out_mix_input(pytestconfig, ctrl_app, board, config):
         xsig_json = json.load(file)
     failures = check_analyzer_output(xscope_lines, xsig_json["out"])
     if len(failures) > 0:
-        pytest.fail(f"{failures}")
+        fail_str += "\n".join(failures) + "\n\n"
+        fail_str += "xscope stdout\n"
+        fail_str += "\n".join(xscope_lines)
+        pytest.fail(fail_str)
