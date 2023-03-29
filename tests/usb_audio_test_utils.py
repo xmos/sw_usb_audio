@@ -320,22 +320,19 @@ class AudioAnalyzerHarness:
     def terminate(self):
         if self.proc.poll() is None:
             # Due to a bug in Tools 15.1.4, terminating xrun leaves xgdb running.
-            # On non-Windows platforms, SIGINT can be used instead. On Windows,
-            # kill all xgdb.exe processes, since the xgdb process ID is unknown.
+            # Kill all xgdb processes, since the xgdb process ID is unknown.
+            self.proc.terminate()
+            time.sleep(1)
             if platform.system() == "Windows":
-                self.proc.terminate()
-                subprocess.run(
-                    ["taskkill", "/F", "/IM", "xgdb.exe"],
-                    stdout=subprocess.DEVNULL,
-                    stderr=subprocess.DEVNULL,
-                    timeout=5,
-                )
+                kill_cmd = ["taskkill", "/F", "/IM", "xgdb.exe"]
             else:
-                self.proc.send_signal(signal.SIGINT)
-                try:
-                    self.proc.wait(timeout=2)
-                except subprocess.TimeoutExpired:
-                    self.proc.kill()
+                kill_cmd = ["pkill", "-9", "xgdb"]
+            subprocess.run(
+                kill_cmd,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+                timeout=5,
+            )
         stop_xrun_app(self.adapter_id)
 
     def get_output(self):
