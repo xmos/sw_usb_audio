@@ -66,8 +66,8 @@ def analogue_output_uncollect(pytestconfig, board, config):
     return False
 
 def analogue_loopback_uncollect(pytestconfig, board, config):
-    xtag_ids = get_xtag_dut(pytestconfig, board)
-    if not all(xtag_ids):
+    xtag_id = get_xtag_dut(pytestconfig, board)
+    if not xtag_id:
         return True
     return False
 
