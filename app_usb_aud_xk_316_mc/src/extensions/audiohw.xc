@@ -6,6 +6,8 @@
 #include "xua.h"
 #include "../../shared/apppll.h"
 
+#define I2S_LOOPBACK 1
+
 port p_scl = PORT_I2C_SCL;
 port p_sda = PORT_I2C_SDA;
 out port p_ctrl = PORT_CTRL;
@@ -389,6 +391,15 @@ void AudioHwInit()
             assert(result == I2C_REGOP_SUCCESS && msg("DAC I2C write reg failed"));
         }
     }
+    if(I2S_LOOPBACK)
+    {
+        WriteAllAdcRegs(0x70, 0x77);
+
+        WriteAllDacRegs(0x07, 0x01);
+        WriteAllDacRegs(0x55, 0x07);
+        WriteAllDacRegs(0x08, 0x20);
+    }
+
 }
 
 /* Configures the external audio hardware for the required sample frequency */
