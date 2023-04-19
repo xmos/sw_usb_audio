@@ -6,7 +6,6 @@
 #include "xua.h"
 #include "../../shared/apppll.h"
 
-
 port p_scl = PORT_I2C_SCL;
 port p_sda = PORT_I2C_SDA;
 out port p_ctrl = PORT_CTRL;
