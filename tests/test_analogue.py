@@ -177,16 +177,18 @@ def test_analogue_output(pytestconfig, board, config):
 @pytest.mark.uncollect_if(func=analogue_loopback_uncollect)
 @pytest.mark.parametrize(["board", "config"], loopback_configs)
 def test_analogue_loopback(pytestconfig, board, config):
-    features = get_config_features(board, config)
+    #features = get_config_features(board, config)
 
     xsig_config_path = Path(__file__).parent / "xsig_configs" / "mc_analogue_loopback_8ch.json"
 
     adapter_dut = get_xtag_dut(pytestconfig, board)
-    duration = analogue_duration(pytestconfig.getoption("level"), features["partial"])
+    #duration = analogue_duration(pytestconfig.getoption("level"), features["partial"])
+    duration = 10
     fail_str = ""
 
     with XrunDut(adapter_dut, board, config) as dut:
-        for fs in features["samp_freqs"]:
+        #for fs in features["samp_freqs"]:
+        for fs in [44100, 48000, 88200, 96000, 176400, 192000]:
             with XsigInput(fs, duration, xsig_config_path, dut.dev_name) as xsig_proc:
                 time.sleep(duration + 6)
                 xsig_lines = xsig_proc.get_output()
