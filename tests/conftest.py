@@ -76,6 +76,9 @@ def parse_features(board, config):
         # Force analogue channels to zero
         features["analogue_i"] = 0
         features["analogue_o"] = 0
+    elif "i2sloop" in config:
+        # The analogue output channels are looped back to the inputs preventing their use
+        features["analogue_i"] = 0
 
     # Create list of supported sample frequencies
     if config == "1AMi8o2xxxxxx":
