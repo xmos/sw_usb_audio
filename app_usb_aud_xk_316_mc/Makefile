@@ -80,6 +80,11 @@ XCC_FLAGS_2AMi16o8xxxaxx = $(BUILD_FLAGS)       -DXUA_ADAT_RX_EN=1
 INCLUDE_ONLY_IN_2AMi8o16xxxxax =
 XCC_FLAGS_2AMi8o16xxxxax = $(BUILD_FLAGS)       -DXUA_ADAT_TX_EN=1
 
+# Audio Class 2, Async, I2S Master, 8xInput, 8xOutput, I2S loopback
+INCLUDE_ONLY_IN_2AMi8o8xxxxxx_i2sloop =
+XCC_FLAGS_2AMi8o8xxxxxx_i2sloop = $(BUILD_FLAGS)        -DI2S_LOOPBACK=1  
+
+
 #
 # Synchronous Mode Configs
 #
