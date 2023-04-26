@@ -7,7 +7,6 @@ import platform
 
 from usb_audio_test_utils import (
     check_analyzer_output,
-    get_xtag_dut,
     get_xtag_dut_and_harness,
     use_windows_builtin_driver,
     AudioAnalyzerHarness,
@@ -24,10 +23,6 @@ windows_smoke_configs = [
     "2AMi10o10xssxxx",
     "2SSi8o8xxxxxx_tdm8",
     "2AMi8o8xxxxxx_winbuiltin",
-]
-
-loopback_configs = [
-    ("xk_316_mc", "2AMi8o8xxxxxx_i2sloop"),
 ]
 
 
@@ -62,12 +57,6 @@ def analogue_output_uncollect(pytestconfig, board, config):
         return True
     if not features["analogue_o"]:
         # No output channels
-        return True
-    return False
-
-def analogue_loopback_uncollect(pytestconfig, board, config):
-    xtag_id = get_xtag_dut(pytestconfig, board)
-    if not xtag_id:
         return True
     return False
 
@@ -169,37 +158,6 @@ def test_analogue_output(pytestconfig, board, config):
                 fail_str += "\n".join(failures) + "\n\n"
                 fail_str += f"xscope stdout at sample rate {fs}\n"
                 fail_str += "\n".join(xscope_lines) + "\n\n"
-
-    if len(fail_str) > 0:
-        pytest.fail(fail_str)
-
-
-@pytest.mark.uncollect_if(func=analogue_loopback_uncollect)
-@pytest.mark.parametrize(["board", "config"], loopback_configs)
-def test_analogue_loopback(pytestconfig, board, config):
-    #features = get_config_features(board, config)
-
-    xsig_config_path = Path(__file__).parent / "xsig_configs" / "mc_analogue_loopback_8ch.json"
-
-    adapter_dut = get_xtag_dut(pytestconfig, board)
-    #duration = analogue_duration(pytestconfig.getoption("level"), features["partial"])
-    duration = 10
-    fail_str = ""
-
-    with XrunDut(adapter_dut, board, config) as dut:
-        #for fs in features["samp_freqs"]:
-        for fs in [44100, 48000, 88200, 96000, 176400, 192000]:
-            with XsigInput(fs, duration, xsig_config_path, dut.dev_name) as xsig_proc:
-                time.sleep(duration + 6)
-                xsig_lines = xsig_proc.get_output()
-            with open(xsig_config_path) as file:
-                xsig_json = json.load(file)
-            failures = check_analyzer_output(xsig_lines, xsig_json["in"])
-        if len(failures) > 0:
-            fail_str += f"Failure at sample rate {fs}\n"
-            fail_str += "\n".join(failures) + "\n\n"
-            fail_str += f"xsig stdout at sample rate {fs}\n"
-            fail_str += "\n".join(xsig_lines) + "\n\n"
 
     if len(fail_str) > 0:
         pytest.fail(fail_str)

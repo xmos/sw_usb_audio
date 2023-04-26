@@ -400,6 +400,7 @@ void AudioHwInit()
     if(I2S_LOOPBACK)
     {
         WriteAllAdcRegs(PCM1865_PWR_STATE, 0x77);
+        WriteAllAdcRegs(PCM1865_FMT, 0x47);
 
         WriteAllDacRegs(PMC5122_DE_SDOUT, 0x01);
         WriteAllDacRegs(PCM5122_GPIO_OUT_SEL, 0x07);
