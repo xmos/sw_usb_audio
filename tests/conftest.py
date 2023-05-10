@@ -130,13 +130,12 @@ def pytest_sessionstart(session):
         else:
             configs = full_configs
 
-        # On Windows also collect special configs that will use the built-in driver
-        if platform.system() == "Windows":
-            winconfigs_cmd = ["xmake", "TEST_SUPPORT_CONFIGS=1", "allconfigs"]
-            ret = subprocess.run(
-                winconfigs_cmd, capture_output=True, text=True, cwd=app_dir
-            )
-            configs += [cfg for cfg in ret.stdout.split() if "_winbuiltin" in cfg]
+        # add in test configs
+        testconfigs_cmd = ["xmake", "TEST_SUPPORT_CONFIGS=1", "allconfigs"]
+        ret = subprocess.run(
+            testconfigs_cmd, capture_output=True, text=True, cwd=app_dir
+        )
+        configs += [cfg for cfg in ret.stdout.split() if "_winbuiltin" in cfg or "_i2sloop" in cfg]
 
         partial_configs = [config for config in configs if config not in full_configs]
         for config in configs:
