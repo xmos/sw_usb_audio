@@ -257,6 +257,65 @@ pipeline {
             }
           }
         }
+        stage('Windows 11') {
+          agent {
+            label 'usb_audio && windows11 && xcore.ai-mcab'
+          }
+          stages {
+            stage('Get view') {
+              steps {
+                xcorePrepareSandbox("${VIEW}", "${REPO}")
+              }
+            }
+            stage('Setup') {
+              steps {
+                dir("${WORKSPACE}/sw_audio_analyzer") {
+                  copyArtifacts filter: '**/*.xe', fingerprintArtifacts: true, projectName: 'xmos-int/sw_audio_analyzer/master', selector: lastSuccessful()
+                }
+
+                dir("${REPO}") {
+                  unstash 'xk_316_mc_bin'
+
+                  dir("tests") {
+                    withVenv() {
+                      dir("${WORKSPACE}/xtagctl") {
+                        sh "pip install -e ."
+                      }
+                    }
+
+                    dir("tools") {
+                      copyArtifacts filter: 'bin-windows-x86/xsig.exe', fingerprintArtifacts: true, projectName: 'xmos-int/xsig/master', flatten: true, selector: lastSuccessful()
+                      copyArtifacts filter: 'Win/x64/xmos_mixer.exe', fingerprintArtifacts: true, projectName: 'XMOS/lib_xua/develop', flatten: true, selector: lastSuccessful()
+                    }
+                  }
+                }
+              }
+            }
+            stage('Test') {
+              steps {
+                dir("${REPO}/tests") {
+                  viewEnv() {
+                    withVenv() {
+                      withXTAG(["usb_audio_mc_xcai_dut", "usb_audio_mc_xcai_harness"]) { xtagIds ->
+                        sh "pytest -v --level ${params.TEST_LEVEL} --junitxml=pytest_result_windows11.xml \
+                            -o xk_316_mc_dut=${xtagIds[0]} -o xk_316_mc_harness=${xtagIds[1]}"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+          post {
+            always {
+              archiveArtifacts artifacts: "${REPO}/tests/pytest_result_windows11.xml", fingerprint: true, allowEmptyArchive: true
+              junit "${REPO}/tests/pytest_result_windows11.xml"
+            }
+            cleanup {
+              xcoreCleanSandbox()
+            }
+          }
+        }
       }
     }
     stage('Update view files') {
