@@ -36,6 +36,10 @@ on tile[0]: in port p_margin = XS1_PORT_1G;  /* CORE_POWER_MARGIN:   Driven 0:  
 #else
 #define EXT_PLL_SEL__MCLK_DIR    (0x80)
 #endif
+
+#ifndef I2S_LOOPBACK
+#define I2S_LOOPBACK 0
+#endif
 void ctrlPort()
 {
     // Drive control port to turn on 3V3 and set MCLK_DIR
@@ -136,6 +140,8 @@ uint8_t i2c_reg_read(uint8_t device_addr, uint8_t reg, i2c_regop_res_t &result)
 #define PCM5122_STANDBY_PWDN      0x02 // Standby/Power Down control
 #define PCM5122_MUTE              0x03 // Mute control
 #define PCM5122_PLL               0x04 // PLL control
+#define PMC5122_DE_SDOUT          0x07 // De-Emphasis and SDOUT Select
+#define PMC5122_GPIO_ENABLE       0x08 // GPIO enables
 #define PCM5122_BCK_LRCLK         0x09 // BCK, LRCLK configuration
 #define PCM5122_RBCK_LRCLK        0x0C // BCK, LRCLK reset
 #define PCM5122_SDAC              0x0E // DAC Clock Source Select
@@ -157,6 +163,7 @@ uint8_t i2c_reg_read(uint8_t device_addr, uint8_t reg, i2c_regop_res_t &result)
 #define PCM5122_I2S               0x28 // I2S configuration
 #define PCM5122_I2S_SHIFT         0x29 // I2S shift
 #define PCM5122_AUTO_MUTE         0x41 // Auto Mute
+#define PCM5122_GPIO_OUT_SEL      0x55 // GPIOn output selection
 
 // PCM1865 (4-channel audio ADC) I2C Slave Addresses
 #define PCM1865_0_I2C_DEVICE_ADDR   (0x4A)
@@ -176,6 +183,7 @@ uint8_t i2c_reg_read(uint8_t device_addr, uint8_t reg, i2c_regop_res_t &result)
 #define PCM1865_GPIO01_FUN          (0x10) // Functionality control for GPIO0 and GPIO1.
 #define PCM1865_GPIO01_DIR          (0x12) // Direction control for GPIO0 and GPIO1.
 #define PCM1865_CLK_CFG0            (0x20) // Basic clock config.
+#define PCM1865_PWR_STATE           (0x70) // Power down, Sleep, Standby
 
 unsafe client interface i2c_master_if i_i2c_client;
 
@@ -389,6 +397,16 @@ void AudioHwInit()
             assert(result == I2C_REGOP_SUCCESS && msg("DAC I2C write reg failed"));
         }
     }
+    if(I2S_LOOPBACK)
+    {
+        WriteAllAdcRegs(PCM1865_PWR_STATE, 0x77);
+        WriteAllAdcRegs(PCM1865_FMT, 0x47);
+
+        WriteAllDacRegs(PMC5122_DE_SDOUT, 0x01);
+        WriteAllDacRegs(PCM5122_GPIO_OUT_SEL, 0x07);
+        WriteAllDacRegs(PMC5122_GPIO_ENABLE, 0x20);
+    }
+
 }
 
 /* Configures the external audio hardware for the required sample frequency */
