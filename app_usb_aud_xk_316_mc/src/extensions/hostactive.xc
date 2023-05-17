@@ -16,7 +16,6 @@ void UserHostActive(int active)
     {
         /* Turn all LEDs off */
         p_leds <: 0x0;
-
     }
 }
 #endif
