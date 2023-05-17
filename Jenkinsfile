@@ -30,6 +30,10 @@ pipeline {
           steps {
             viewEnv() {
               dir("${REPO}") {
+                // Build the loopback version of the configs for 316 and rename them to have _loopback
+                sh 'xmake -C app_usb_aud_xk_316_mc -j16 PARTIAL_TEST_CONFIGS=1 EXTRA_BUILD_FLAGS=-DI2S_LOOPBACK=1'
+                sh 'for config in app_usb_aud_xk_316_mc/bin/**/*.xe; do mv -- "$config" "${config/%.xe/_loopback.xe}"; done'
+
                 // Build and archive the main app configs; doing each app separately is faster than xmake in top directory
                 sh 'xmake -C app_usb_aud_xk_316_mc -j16'
                 sh 'xmake -C app_usb_aud_xk_216_mc -j16'

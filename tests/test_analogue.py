@@ -8,6 +8,7 @@ import platform
 from usb_audio_test_utils import (
     check_analyzer_output,
     get_xtag_dut_and_harness,
+    get_xtag_dut,
     use_windows_builtin_driver,
     AudioAnalyzerHarness,
     XrunDut,
@@ -131,33 +132,56 @@ def test_analogue_output(pytestconfig, board, config):
     fail_str = ""
 
     with XrunDut(adapter_dut, board, config) as dut:
+        fs = 44100
+        with (
+            AudioAnalyzerHarness(adapter_harness, xscope="io") as harness,
+            XsigOutput(fs, None, xsig_config_path, dut.dev_name),
+        ):
+
+            time.sleep(duration)
+            harness.terminate()
+            xscope_lines = harness.get_output()
+
+        with open(xsig_config_path) as file:
+            xsig_json = json.load(file)
+        failures = check_analyzer_output(xscope_lines, xsig_json["out"])
+        if len(failures) > 0:
+            fail_str += f"Failure at sample rate {fs}\n"
+            fail_str += "\n".join(failures) + "\n\n"
+            fail_str += f"xscope stdout at sample rate {fs}\n"
+            fail_str += "\n".join(xscope_lines) + "\n\n"
+
+    if len(fail_str) > 0:
+        pytest.fail(fail_str)
+
+@pytest.mark.uncollect_if(func=analogue_output_uncollect)
+@pytest.mark.parametrize(["board", "config"], list_configs())
+def test_analogue_output_loopback(pytestconfig, board, config):
+    features = get_config_features(board, config)
+
+    xsig_config = f'mc_i2s_loopback_{features["analogue_o"]}ch'
+    if board == "xk_316_mc" and features["tdm8"]:
+        xsig_config = "mc_i2s_loopback_2ch"
+    xsig_config_path = Path(__file__).parent / "xsig_configs" / f"{xsig_config}.json"
+
+    adapter_dut = get_xtag_dut(pytestconfig, board)
+    duration = analogue_duration(pytestconfig.getoption("level"), features["partial"])
+    fail_str = ""
+
+    with XrunDut(adapter_dut, board, f"{config}_loopback") as dut:
         for fs in features["samp_freqs"]:
-            # Issue 120
-            if (
-                platform.system() == "Windows"
-                and board == "xk_316_mc"
-                and config == "2AMi8o8xxxxxx_winbuiltin"
-                and fs in [44100, 48000]
-            ):
-                continue
-
-            with (
-                AudioAnalyzerHarness(adapter_harness, xscope="io") as harness,
-                XsigOutput(fs, None, xsig_config_path, dut.dev_name),
-            ):
-
-                time.sleep(duration)
-                harness.terminate()
-                xscope_lines = harness.get_output()
-
+            with XsigInput(fs, duration, xsig_config_path, dut.dev_name) as xsig_proc:
+                time.sleep(duration + 6)
+                xsig_lines = xsig_proc.get_output()
             with open(xsig_config_path) as file:
                 xsig_json = json.load(file)
-            failures = check_analyzer_output(xscope_lines, xsig_json["out"])
-            if len(failures) > 0:
-                fail_str += f"Failure at sample rate {fs}\n"
-                fail_str += "\n".join(failures) + "\n\n"
-                fail_str += f"xscope stdout at sample rate {fs}\n"
-                fail_str += "\n".join(xscope_lines) + "\n\n"
+            failures = check_analyzer_output(xsig_lines, xsig_json["in"])
+        if len(failures) > 0:
+            fail_str += f"Failure at sample rate {fs}\n"
+            fail_str += "\n".join(failures) + "\n\n"
+            fail_str += f"xsig stdout at sample rate {fs}\n"
+            fail_str += "\n".join(xsig_lines) + "\n\n"
+
 
     if len(fail_str) > 0:
         pytest.fail(fail_str)
