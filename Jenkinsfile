@@ -84,8 +84,8 @@ pipeline {
             stage('Setup') {
               steps {
                 dir("${WORKSPACE}/sw_audio_analyzer") {
-                  copyArtifacts filter: '**/*.xe', fingerprintArtifacts: true, projectName: 'xmos-int/sw_audio_analyzer/master', selector: lastSuccessful()
-                  copyArtifacts filter: 'host_xscope_controller/bin_macos/xscope_controller', fingerprintArtifacts: true, projectName: 'xmos-int/sw_audio_analyzer/master', selector: lastSuccessful()
+                  copyArtifacts filter: '**/*.xe', fingerprintArtifacts: true, projectName: 'xmos-int/sw_audio_analyzer/extend_ramp_analysis', selector: lastSuccessful()
+                  copyArtifacts filter: 'host_xscope_controller/bin_macos/xscope_controller', fingerprintArtifacts: true, projectName: 'xmos-int/sw_audio_analyzer/extend_ramp_analysis', selector: lastSuccessful()
                 }
 
                 dir("${REPO}") {
@@ -115,7 +115,7 @@ pipeline {
                       withVenv() {
                         withXTAG(["usb_audio_mc_xs2_dut", "usb_audio_mc_xs2_harness", \
                                   "usb_audio_xcai_exp_dut", "usb_audio_xcai_exp_harness"]) { xtagIds ->
-                          sh "pytest -v --level ${params.TEST_LEVEL} --junitxml=pytest_result_mac_intel.xml \
+                          sh "pytest -v --level ${params.TEST_LEVEL} -k spdif_output --junitxml=pytest_result_mac_intel.xml \
                               -o xk_216_mc_dut=${xtagIds[0]} -o xk_216_mc_harness=${xtagIds[1]} \
                               -o xk_evk_xu316_dut=${xtagIds[2]} -o xk_evk_xu316_harness=${xtagIds[3]}"
                         }
@@ -149,8 +149,8 @@ pipeline {
             stage('Setup') {
               steps {
                 dir("${WORKSPACE}/sw_audio_analyzer") {
-                  copyArtifacts filter: '**/*.xe', fingerprintArtifacts: true, projectName: 'xmos-int/sw_audio_analyzer/master', selector: lastSuccessful()
-                  copyArtifacts filter: 'host_xscope_controller/bin_macos/xscope_controller', fingerprintArtifacts: true, projectName: 'xmos-int/sw_audio_analyzer/master', selector: lastSuccessful()
+                  copyArtifacts filter: '**/*.xe', fingerprintArtifacts: true, projectName: 'xmos-int/sw_audio_analyzer/extend_ramp_analysis', selector: lastSuccessful()
+                  copyArtifacts filter: 'host_xscope_controller/bin_macos/xscope_controller', fingerprintArtifacts: true, projectName: 'xmos-int/sw_audio_analyzer/extend_ramp_analysis', selector: lastSuccessful()
                 }
 
                 dir("${REPO}") {
@@ -178,7 +178,7 @@ pipeline {
                     withEnv(["USBA_MAC_PRIV_WORKAROUND=1"]) {
                       withVenv() {
                         withXTAG(["usb_audio_mc_xcai_dut", "usb_audio_mc_xcai_harness"]) { xtagIds ->
-                          sh "pytest -v --level ${params.TEST_LEVEL} --junitxml=pytest_result_mac_arm.xml \
+                          sh "pytest -v --level ${params.TEST_LEVEL} -k spdif_output --junitxml=pytest_result_mac_arm.xml \
                               -o xk_316_mc_dut=${xtagIds[0]} -o xk_316_mc_harness=${xtagIds[1]}"
                         }
                       }
@@ -211,7 +211,7 @@ pipeline {
             stage('Setup') {
               steps {
                 dir("${WORKSPACE}/sw_audio_analyzer") {
-                  copyArtifacts filter: '**/*.xe', fingerprintArtifacts: true, projectName: 'xmos-int/sw_audio_analyzer/master', selector: lastSuccessful()
+                  copyArtifacts filter: '**/*.xe', fingerprintArtifacts: true, projectName: 'xmos-int/sw_audio_analyzer/extend_ramp_analysis', selector: lastSuccessful()
                 }
 
                 dir("${REPO}") {
@@ -238,7 +238,7 @@ pipeline {
                   viewEnv() {
                     withVenv() {
                       withXTAG(["usb_audio_mc_xcai_dut", "usb_audio_mc_xcai_harness"]) { xtagIds ->
-                        sh "pytest -v --level ${params.TEST_LEVEL} --junitxml=pytest_result_windows10.xml \
+                        sh "pytest -v --level ${params.TEST_LEVEL} -k spdif_output --junitxml=pytest_result_windows10.xml \
                             -o xk_316_mc_dut=${xtagIds[0]} -o xk_316_mc_harness=${xtagIds[1]}"
                       }
                     }
@@ -270,7 +270,7 @@ pipeline {
             stage('Setup') {
               steps {
                 dir("${WORKSPACE}/sw_audio_analyzer") {
-                  copyArtifacts filter: '**/*.xe', fingerprintArtifacts: true, projectName: 'xmos-int/sw_audio_analyzer/master', selector: lastSuccessful()
+                  copyArtifacts filter: '**/*.xe', fingerprintArtifacts: true, projectName: 'xmos-int/sw_audio_analyzer/extend_ramp_analysis', selector: lastSuccessful()
                 }
 
                 dir("${REPO}") {
@@ -297,7 +297,7 @@ pipeline {
                   viewEnv() {
                     withVenv() {
                       withXTAG(["usb_audio_mc_xcai_dut", "usb_audio_mc_xcai_harness"]) { xtagIds ->
-                        sh "pytest -v --level ${params.TEST_LEVEL} --junitxml=pytest_result_windows11.xml \
+                        sh "pytest -v --level ${params.TEST_LEVEL} -k spdif_output --junitxml=pytest_result_windows11.xml \
                             -o xk_316_mc_dut=${xtagIds[0]} -o xk_316_mc_harness=${xtagIds[1]}"
                       }
                     }

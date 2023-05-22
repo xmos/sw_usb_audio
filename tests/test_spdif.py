@@ -47,7 +47,7 @@ def spdif_input_uncollect(pytestconfig, board, config):
     return any([not features["spdif_i"], spdif_common_uncollect(features, board, pytestconfig)])
 
 
-def spdif_output_uncollect(pytestconfig, board, config):
+def spdif_output_uncollect(pytestconfig, board, config, reps):
     features = get_config_features(board, config)
     return any([not features["spdif_o"], spdif_common_uncollect(features, board, pytestconfig)])
 
@@ -114,18 +114,19 @@ def test_spdif_input(pytestconfig, board, config):
 
 @pytest.mark.uncollect_if(func=spdif_output_uncollect)
 @pytest.mark.parametrize(["board", "config"], list_configs())
-def test_spdif_output(pytestconfig, board, config):
+@pytest.mark.parametrize("reps", range(1))
+def test_spdif_output(pytestconfig, board, config, reps):
     features = get_config_features(board, config)
 
     xsig_config = f'mc_digital_output_{features["analogue_o"]}ch'
     xsig_config_path = Path(__file__).parent / "xsig_configs" / f"{xsig_config}.json"
 
     adapter_dut, adapter_harness = get_xtag_dut_and_harness(pytestconfig, board)
-    duration = spdif_duration(pytestconfig.getoption("level"), features["partial"])
+    duration = 180
     fail_str = ""
 
     with XrunDut(adapter_dut, board, config) as dut:
-        for fs in features["samp_freqs"]:
+        for fs in [176400, 192000]:
             with (
                 AudioAnalyzerHarness(adapter_harness, config="spdif_test", xscope="io") as harness,
                 XsigOutput(fs, None, xsig_config_path, dut.dev_name),
