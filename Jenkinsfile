@@ -35,7 +35,7 @@ pipeline {
                 sh 'for folder in app_usb_aud_xk_316_mc/bin/?*; do mv "$folder" "${folder/%/_i2sloopback}"; done'
                 sh 'for config in app_usb_aud_xk_316_mc/bin/?*/*.xe; do mv "$config" "${config/%.xe/_i2sloopback.xe}"; done'
 
-                // xmake does not fully rebuild with when different build peramitars are given, so must be cleaned before building without loopback
+                // xmake does not fully rebuild when different build peramitars are given, so must be cleaned before building without loopback
                 sh 'xmake clean'
 
                 // Build and archive the main app configs; doing each app separately is faster than xmake in top directory

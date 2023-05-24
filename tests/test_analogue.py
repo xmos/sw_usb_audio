@@ -74,6 +74,10 @@ def analogue_output_loopback_uncollect(pytestconfig, board, config):
         and config.removesuffix("_i2sloopback") not in windows_smoke_configs
     ):
         return True
+    # XTAGs not present
+    xtag_ids = get_xtag_dut(pytestconfig, board)
+    if not all(xtag_ids):
+        return True
     if not features["i2s_loopback"]:
         return True
     return False
