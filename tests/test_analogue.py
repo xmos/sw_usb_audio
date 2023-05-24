@@ -49,6 +49,8 @@ def analogue_input_uncollect(pytestconfig, board, config):
     if not features["analogue_i"]:
         # No input channels
         return True
+    if features["i2s_loopback"]:
+        return True
     return False
 
 
@@ -59,8 +61,22 @@ def analogue_output_uncollect(pytestconfig, board, config):
     if not features["analogue_o"]:
         # No output channels
         return True
+    if features["i2s_loopback"]:
+        return True
     return False
 
+def analogue_output_loopback_uncollect(pytestconfig, board, config):
+    features = get_config_features(board, config)
+    level = pytestconfig.getoption("level")
+    if (
+        level == "smoke"
+        and platform.system() == "Windows"
+        and config.removesuffix("_i2sloopback") not in windows_smoke_configs
+    ):
+        return True
+    if not features["i2s_loopback"]:
+        return True
+    return False
 
 def analogue_duration(level, partial):
     if level == "weekend":
@@ -132,7 +148,7 @@ def test_analogue_output(pytestconfig, board, config):
     fail_str = ""
 
     with XrunDut(adapter_dut, board, config) as dut:
-        fs = 44100
+        fs = max(features["samp_freqs"])
         with (
             AudioAnalyzerHarness(adapter_harness, xscope="io") as harness,
             XsigOutput(fs, None, xsig_config_path, dut.dev_name),
@@ -154,7 +170,7 @@ def test_analogue_output(pytestconfig, board, config):
     if len(fail_str) > 0:
         pytest.fail(fail_str)
 
-@pytest.mark.uncollect_if(func=analogue_output_uncollect)
+@pytest.mark.uncollect_if(func=analogue_output_loopback_uncollect)
 @pytest.mark.parametrize(["board", "config"], list_configs())
 def test_analogue_output_loopback(pytestconfig, board, config):
     features = get_config_features(board, config)
@@ -168,7 +184,7 @@ def test_analogue_output_loopback(pytestconfig, board, config):
     duration = analogue_duration(pytestconfig.getoption("level"), features["partial"])
     fail_str = ""
 
-    with XrunDut(adapter_dut, board, f"{config}_loopback") as dut:
+    with XrunDut(adapter_dut, board, config) as dut:
         for fs in features["samp_freqs"]:
             with XsigInput(fs, duration, xsig_config_path, dut.dev_name) as xsig_proc:
                 time.sleep(duration + 6)

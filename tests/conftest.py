@@ -97,6 +97,7 @@ def parse_features(board, config):
     else:
         features["samp_freqs"] = samp_freqs_upto(192000)
 
+    features["i2s_loopback"] = False
     return features
 
 
@@ -145,6 +146,11 @@ def pytest_sessionstart(session):
             features["partial"] = config in partial_configs
             board_configs[f"{board}-{config}"] = features
 
+            # add in the i2s loopback configs used for testing on 316
+            if board == "xk_316_mc":
+                features_i2sloopback = features.copy()
+                features_i2sloopback["i2s_loopback"] = True
+                board_configs[f"{board}-{config}_i2sloopback"] = features_i2sloopback
 
 def list_configs():
     return [tuple(k.split("-", maxsplit=1)) for k in board_configs.keys()]
