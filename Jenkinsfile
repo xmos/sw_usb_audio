@@ -32,7 +32,11 @@ pipeline {
               dir("${REPO}") {
                 // Build the loopback version of the configs for 316 and rename them to have _i2sloopback
                 sh 'xmake -C app_usb_aud_xk_316_mc -j16 PARTIAL_TEST_CONFIGS=1 EXTRA_BUILD_FLAGS=-DI2S_LOOPBACK=1'
-                sh 'for config in app_usb_aud_xk_316_mc/bin/**/*.xe; do mv -- "$config" "${config/%.xe/_i2sloopback.xe}"; done'
+                sh 'for folder in app_usb_aud_xk_316_mc/bin/?*; do mv "$folder" "${folder/%/_i2sloopback}"; done'
+                sh 'for config in app_usb_aud_xk_316_mc/bin/?*/*.xe; do mv "$config" "${config/%.xe/_i2sloopback.xe}"; done'
+
+                // xmake does not fully rebuild with when different build peramitars are given, so must be cleaned before building without loopback
+                sh 'xmake clean'
 
                 // Build and archive the main app configs; doing each app separately is faster than xmake in top directory
                 sh 'xmake -C app_usb_aud_xk_316_mc -j16'
