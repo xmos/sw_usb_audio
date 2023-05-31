@@ -75,8 +75,8 @@ def analogue_output_loopback_uncollect(pytestconfig, board, config):
     ):
         return True
     # XTAGs not present
-    xtag_ids = get_xtag_dut(pytestconfig, board)
-    if not all(xtag_ids):
+    xtag_id = get_xtag_dut(pytestconfig, board)
+    if not xtag_id:
         return True
     if not features["i2s_loopback"]:
         return True
