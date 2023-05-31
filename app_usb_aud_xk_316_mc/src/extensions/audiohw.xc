@@ -455,46 +455,47 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, unsigned dsdMode, unsigned s
     }
     else
     {
-      // Do any changes to input clocks here
-      // The following divider generates the DAC clock from the master clock.
-      // DAC clock needs to be 5.6448MHz for 44.1/88.2/176.4kHz SRs and 6.144MHz for 48/96/192 SRs. So if using 22.5792/24.576 MCLK this needs to be 4. For 45.1584/49.152MHz this needs to be 8. Note to set a divider of 4 we write 0x03.
-      WriteAllDacRegs(PCM5122_DDAC,           0x03); // sets DAC clock divider NDAC to 4.
+        // Do any changes to input clocks here
+        // The following divider generates the DAC clock from the master clock.
+        // DAC clock needs to be 5.6448MHz for 44.1/88.2/176.4kHz SRs and 6.144MHz for 48/96/192 SRs. 
+        // So if using 22.5792/24.576 MCLK this needs to be 4. For 45.1584/49.152MHz this needs to be 8. Note to set a divider of 4 we write 0x03.
+        WriteAllDacRegs(PCM5122_DDAC,           0x03); // sets DAC clock divider NDAC to 4.
 
-      // IDAC is how many DSP clocks are present in an audio frame.
-      // DSP clock in this system is equal to Master clock (as NMAC = 1 set above).
-      // So IDAC becomes the ratio of Fs to MCLK.
-      // For 22.5792/24.576MHz MCLK this is 512 for 44.1/48, 256 for 88.2/96, 128 for 176.4/192 and 64 for 352.8/384.
-      // For 45.1584/49.152MHz MCLK this is 1024 for 44.1/48, 512 for 88.2/96, 256 for 176.4/192 and 128 for 352.8/384.
-      // Settings below are for 22.5792/24.576.
+        // IDAC is how many DSP clocks are present in an audio frame.
+        // DSP clock in this system is equal to Master clock (as NMAC = 1 set above).
+        // So IDAC becomes the ratio of Fs to MCLK.
+        // For 22.5792/24.576MHz MCLK this is 512 for 44.1/48, 256 for 88.2/96, 128 for 176.4/192 and 64 for 352.8/384.
+        // For 45.1584/49.152MHz MCLK this is 1024 for 44.1/48, 512 for 88.2/96, 256 for 176.4/192 and 128 for 352.8/384.
+        // Settings below are for 22.5792/24.576.
 
-      if ((samFreq >= 44100) && (samFreq <= 48000))
-      {
-        WriteAllDacRegs(PCM5122_DOSR,         0x07); // Set OSR divider to 8.
-        WriteAllDacRegs(PCM5122_I16E_FS,      0x00); // Set FS to single speed mode
-        WriteAllDacRegs(PCM5122_IDAC_MS,      0x02); // IDAC MS Byte
-        WriteAllDacRegs(PCM5122_IDAC_LS,      0x00); // IDAC LS Byte
-      }
-      else if ((samFreq > 48000) && (samFreq <= 96000))
-      {
-        WriteAllDacRegs(PCM5122_DOSR,         0x03); // Set OSR divider to 4.
-        WriteAllDacRegs(PCM5122_I16E_FS,      0x01); // Set FS to double speed mode
-        WriteAllDacRegs(PCM5122_IDAC_MS,      0x01); // IDAC MS Byte
-        WriteAllDacRegs(PCM5122_IDAC_LS,      0x00); // IDAC LS Byte
-      }
-      else if ((samFreq > 96000) && (samFreq <= 192000))
-      {
-        WriteAllDacRegs(PCM5122_DOSR,         0x01); // Set OSR divider to 2.
-        WriteAllDacRegs(PCM5122_I16E_FS,      0x02); // Set FS to quad speed mode
-        WriteAllDacRegs(PCM5122_IDAC_MS,      0x00); // IDAC MS Byte
-        WriteAllDacRegs(PCM5122_IDAC_LS,      0x80); // IDAC LS Byte
-      }
-      else if ((samFreq > 192000) && (samFreq <= 384000)) // In case we ever use this mode.
-      {
-        WriteAllDacRegs(PCM5122_DOSR,         0x00); // Set OSR divider to 1.
-        WriteAllDacRegs(PCM5122_I16E_FS,      0x03); // Set FS to octal speed mode
-        WriteAllDacRegs(PCM5122_IDAC_MS,      0x00); // IDAC MS Byte
-        WriteAllDacRegs(PCM5122_IDAC_LS,      0x40); // IDAC LS Byte
-      }
+        if(samFreq <= 48000)
+        {
+            WriteAllDacRegs(PCM5122_DOSR,         0x07); // Set OSR divider to 8.
+            WriteAllDacRegs(PCM5122_I16E_FS,      0x00); // Set FS to single speed mode
+            WriteAllDacRegs(PCM5122_IDAC_MS,      0x02); // IDAC MS Byte
+            WriteAllDacRegs(PCM5122_IDAC_LS,      0x00); // IDAC LS Byte
+        }
+        else if((samFreq > 48000) && (samFreq <= 96000))
+        {
+            WriteAllDacRegs(PCM5122_DOSR,         0x03); // Set OSR divider to 4.
+            WriteAllDacRegs(PCM5122_I16E_FS,      0x01); // Set FS to double speed mode
+            WriteAllDacRegs(PCM5122_IDAC_MS,      0x01); // IDAC MS Byte
+            WriteAllDacRegs(PCM5122_IDAC_LS,      0x00); // IDAC LS Byte
+        }
+        else if((samFreq > 96000) && (samFreq <= 192000))
+        {
+            WriteAllDacRegs(PCM5122_DOSR,         0x01); // Set OSR divider to 2.
+            WriteAllDacRegs(PCM5122_I16E_FS,      0x02); // Set FS to quad speed mode
+            WriteAllDacRegs(PCM5122_IDAC_MS,      0x00); // IDAC MS Byte
+            WriteAllDacRegs(PCM5122_IDAC_LS,      0x80); // IDAC LS Byte
+        }
+        else if((samFreq > 192000) && (samFreq <= 384000)) // In case we ever use this mode.
+        {
+            WriteAllDacRegs(PCM5122_DOSR,         0x00); // Set OSR divider to 1.
+            WriteAllDacRegs(PCM5122_I16E_FS,      0x03); // Set FS to octal speed mode
+            WriteAllDacRegs(PCM5122_IDAC_MS,      0x00); // IDAC MS Byte
+            WriteAllDacRegs(PCM5122_IDAC_LS,      0x40); // IDAC LS Byte
+        }
     }
 
     WriteAllDacRegs(PCM5122_STANDBY_PWDN,   0x00); // Set DAC in run mode (no standby or powerdown)
