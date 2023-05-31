@@ -138,11 +138,14 @@ def test_analogue_input(pytestconfig, board, config):
 @pytest.mark.uncollect_if(func=analogue_output_uncollect)
 @pytest.mark.parametrize(["board", "config"], list_configs())
 def test_analogue_output(pytestconfig, board, config):
-    features = get_config_features(board, config)
+    features_tmp = get_config_features(board, config)
+    features = features_tmp.copy()
 
     xsig_config = f'mc_analogue_output_{features["analogue_o"]}ch'
-    if board == "xk_316_mc" and features["tdm8"]:
-        xsig_config = "mc_analogue_output_2ch"
+    if board == "xk_316_mc":
+        features["samp_freqs"] = [max(features["samp_freqs"])] # only test against the analyser at max sample frequency when loopback is avalable
+        if features["tdm8"]:
+            xsig_config = "mc_analogue_output_2ch"
     elif board == "xk_216_mc" and features["tdm8"] and features["i2s"] == "S":
         xsig_config += "_paired"  # Pairs of channels can be swapped in hardware
     xsig_config_path = Path(__file__).parent / "xsig_configs" / f"{xsig_config}.json"
@@ -152,27 +155,37 @@ def test_analogue_output(pytestconfig, board, config):
     fail_str = ""
 
     with XrunDut(adapter_dut, board, config) as dut:
-        fs = max(features["samp_freqs"])
-        with (
-            AudioAnalyzerHarness(adapter_harness, xscope="io") as harness,
-            XsigOutput(fs, None, xsig_config_path, dut.dev_name),
-        ):
+        for fs in features["samp_freqs"]:
+            # Issue 120
+            if (
+                platform.system() == "Windows"
+                and board == "xk_316_mc"
+                and config == "2AMi8o8xxxxxx_winbuiltin"
+                and fs in [44100, 48000]
+            ):
+                continue
 
-            time.sleep(duration)
-            harness.terminate()
-            xscope_lines = harness.get_output()
+            with (
+                AudioAnalyzerHarness(adapter_harness, xscope="io") as harness,
+                XsigOutput(fs, None, xsig_config_path, dut.dev_name),
+            ):
 
-        with open(xsig_config_path) as file:
-            xsig_json = json.load(file)
-        failures = check_analyzer_output(xscope_lines, xsig_json["out"])
-        if len(failures) > 0:
-            fail_str += f"Failure at sample rate {fs}\n"
-            fail_str += "\n".join(failures) + "\n\n"
-            fail_str += f"xscope stdout at sample rate {fs}\n"
-            fail_str += "\n".join(xscope_lines) + "\n\n"
+                time.sleep(duration)
+                harness.terminate()
+                xscope_lines = harness.get_output()
+
+            with open(xsig_config_path) as file:
+                xsig_json = json.load(file)
+            failures = check_analyzer_output(xscope_lines, xsig_json["out"])
+            if len(failures) > 0:
+                fail_str += f"Failure at sample rate {fs}\n"
+                fail_str += "\n".join(failures) + "\n\n"
+                fail_str += f"xscope stdout at sample rate {fs}\n"
+                fail_str += "\n".join(xscope_lines) + "\n\n"
 
     if len(fail_str) > 0:
         pytest.fail(fail_str)
+
 
 @pytest.mark.uncollect_if(func=analogue_output_loopback_uncollect)
 @pytest.mark.parametrize(["board", "config"], list_configs())
