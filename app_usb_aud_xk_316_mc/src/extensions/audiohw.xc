@@ -414,14 +414,7 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, unsigned dsdMode, unsigned s
     }
     else
     {
-        if (samFreq % 22050 == 0)
-        {
-            AppPllEnable(MCLK_441);
-        }
-        else
-        {
-            AppPllEnable(MCLK_48);
-        }
+        AppPllEnable(mclk);
     }
 
     /* Set one DAC to I2S master */
