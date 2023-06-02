@@ -280,10 +280,37 @@ void AudioHwInit()
     WriteAllAdcRegs(PCM1865_PGA_VAL_CH2_L,  0xFC);
     WriteAllAdcRegs(PCM1865_PGA_VAL_CH2_R,  0xFC);
 
+    /* Convert N_BITS_I2S to ADC FMT bits */
+    int tx_wlen = 0; //32-bit
+#ifdef N_BITS_I2S
+#if !((N_BITS_I2S == 32) || (N_BITS_I2S == 24) || (N_BITS_I2S == 16))
+#error UNSUPPORTED N_BITS_I2S VALUE!
+#endif
+    switch(N_BITS_I2S)
+    {
+        case 32:
+            tx_wlen = 0b00;
+            break;
+        case 24:
+            tx_wlen = 0b01;
+            break;
+        case 16:
+            tx_wlen = 0b11;
+            break;
+    }
+#endif
+
     if (XUA_PCM_FORMAT == XUA_PCM_FORMAT_I2S)
     {   /* Only enable DOUT2 in I2S mode. In TDM mode it doesn't really make sense, wastes power (and data sheet states "not available") */
         WriteAllAdcRegs(PCM1865_GPIO01_FUN,     0x05); // Set GPIO1 as normal polarity, GPIO1 functionality. Set GPIO0 as normal polarity, DOUT2 functionality.
         WriteAllAdcRegs(PCM1865_GPIO01_DIR,     0x04); // Set GPIO1 as an input. Set GPIO0 as an output (used for I2S DOUT2).
+        
+        /* RX_WLEN:        24-bit (default)
+         * TDM_LRCLK_MODE: 0 (default)
+         * TX_WLEN:        N_BITS_I2S
+         * FMT:            I2S
+         */
+        WriteAllAdcRegs(PCM1865_FMT, 0b01000000 | (tx_wlen << 2));
     }
     else
     {
@@ -292,7 +319,7 @@ void AudioHwInit()
         assert(result == I2C_REGOP_SUCCESS && msg("ADC I2C write reg failed"));
         result = i2c_reg_write(PCM1865_1_I2C_DEVICE_ADDR, PCM1865_TX_TDM_OFFSET, 129);
         assert(result == I2C_REGOP_SUCCESS && msg("ADC I2C write reg failed"));
-
+        
         if(CODEC_MASTER)
         {
             /* PCM5122 drives a 1/2 duty cycle LRCLK for TDM */
