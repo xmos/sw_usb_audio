@@ -328,7 +328,7 @@ void AudioHwInit()
              * TX_WLEN:        32-bit
              * FMT:            TDM/DSP
              */
-            WriteAllAdcRegs(PCM1865_FMT, 0b01000011);
+            WriteAllAdcRegs(PCM1865_FMT, 0b01000011 | (tx_wlen << 2));
         }
         else
         {
@@ -338,7 +338,7 @@ void AudioHwInit()
              * TX_WLEN:        32-bit
              * FMT:            TDM/DSP
              */
-            WriteAllAdcRegs(PCM1865_FMT, 0b01010011);
+            WriteAllAdcRegs(PCM1865_FMT, 0b01010011 | (tx_wlen << 2));
         }
 
         /* TDM_OSEL:       4ch TDM
@@ -405,8 +405,24 @@ void AudioHwInit()
          * I2S MODE: SET ALL 2-3
          * TDM MODE: SET ALL 1-2, TDM SOURCE 3-4
          */
-        /* Set Format to TDM/DSP & 24bit */
-        WriteAllDacRegs(PCM5122_I2S, 0b00010011);
+        /* Set Format to TDM/DSP & 32bit */
+        int alen = 0b11;
+
+#ifdef N_BITS_I2S
+        switch(N_BITS_I2S)
+        {
+            case 16:
+                alen = 0b00;
+                break;
+            case 24: 
+                alen = 0b10;
+                break;
+            case 32:
+                alen = 0b11;
+                break;
+        }
+#endif
+        WriteAllDacRegs(PCM5122_I2S, 0b00010000 | (alen));
 
         /* Set offset to appropriately for each DAC */
         for(int dacAddr = PCM5122_0_I2C_DEVICE_ADDR; dacAddr < (PCM5122_0_I2C_DEVICE_ADDR+4); dacAddr++)
