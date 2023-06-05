@@ -280,13 +280,9 @@ void AudioHwInit()
     WriteAllAdcRegs(PCM1865_PGA_VAL_CH2_L,  0xFC);
     WriteAllAdcRegs(PCM1865_PGA_VAL_CH2_R,  0xFC);
 
-    /* Convert N_BITS_I2S to ADC FMT bits */
+    /* Convert XUA_I2S_N_BITS to ADC FMT bits */
     int tx_wlen = 0; //32-bit
-#ifdef N_BITS_I2S
-#if !((N_BITS_I2S == 32) || (N_BITS_I2S == 24) || (N_BITS_I2S == 16))
-#error UNSUPPORTED N_BITS_I2S VALUE!
-#endif
-    switch(N_BITS_I2S)
+    switch(XUA_I2S_N_BITS)
     {
         case 32:
             tx_wlen = 0b00;
@@ -298,8 +294,6 @@ void AudioHwInit()
             tx_wlen = 0b11;
             break;
     }
-#endif
-
     if (XUA_PCM_FORMAT == XUA_PCM_FORMAT_I2S)
     {   /* Only enable DOUT2 in I2S mode. In TDM mode it doesn't really make sense, wastes power (and data sheet states "not available") */
         WriteAllAdcRegs(PCM1865_GPIO01_FUN,     0x05); // Set GPIO1 as normal polarity, GPIO1 functionality. Set GPIO0 as normal polarity, DOUT2 functionality.
@@ -307,7 +301,7 @@ void AudioHwInit()
         
         /* RX_WLEN:        24-bit (default)
          * TDM_LRCLK_MODE: 0 (default)
-         * TX_WLEN:        N_BITS_I2S
+         * TX_WLEN:        XUA_I2S_N_BITS
          * FMT:            I2S
          */
         WriteAllAdcRegs(PCM1865_FMT, 0b01000000 | (tx_wlen << 2));
@@ -315,6 +309,7 @@ void AudioHwInit()
     else
     {
         /* Write offset such that ADC's do not drive against eachother */
+        /* Note, the ADCs do not support TDM with channel slots other than 32bit i.e. 256fs */
         result = i2c_reg_write(PCM1865_0_I2C_DEVICE_ADDR, PCM1865_TX_TDM_OFFSET, 1);
         assert(result == I2C_REGOP_SUCCESS && msg("ADC I2C write reg failed"));
         result = i2c_reg_write(PCM1865_1_I2C_DEVICE_ADDR, PCM1865_TX_TDM_OFFSET, 129);
@@ -328,7 +323,7 @@ void AudioHwInit()
              * TX_WLEN:        32-bit
              * FMT:            TDM/DSP
              */
-            WriteAllAdcRegs(PCM1865_FMT, 0b01000011 | (tx_wlen << 2));
+            WriteAllAdcRegs(PCM1865_FMT, 0b01000011);
         }
         else
         {
@@ -338,7 +333,7 @@ void AudioHwInit()
              * TX_WLEN:        32-bit
              * FMT:            TDM/DSP
              */
-            WriteAllAdcRegs(PCM1865_FMT, 0b01010011 | (tx_wlen << 2));
+            WriteAllAdcRegs(PCM1865_FMT, 0b01010011);
         }
 
         /* TDM_OSEL:       4ch TDM
@@ -408,8 +403,7 @@ void AudioHwInit()
         /* Set Format to TDM/DSP & 32bit */
         int alen = 0b11;
 
-#ifdef N_BITS_I2S
-        switch(N_BITS_I2S)
+        switch(XUA_I2S_N_BITS)
         {
             case 16:
                 alen = 0b00;
@@ -421,7 +415,7 @@ void AudioHwInit()
                 alen = 0b11;
                 break;
         }
-#endif
+        
         WriteAllDacRegs(PCM5122_I2S, 0b00010000 | (alen));
 
         /* Set offset to appropriately for each DAC */
@@ -484,11 +478,11 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, unsigned dsdMode, unsigned s
         result |= i2c_reg_write(dacAddr, PCM5122_BCK_LRCLK, 0x11);
 
         // Master mode BCK divider setting (making 64fs)
-        regVal = (mClk/(samFreq*I2S_CHANS_PER_FRAME*32))-1;
+        regVal = (mClk/(samFreq * I2S_CHANS_PER_FRAME * XUA_I2S_N_BITS))-1;
         result |= i2c_reg_write(dacAddr, PCM5122_DBCK, regVal);
 
         // Master mode LRCK divider setting (divide BCK by a further 64 (256 for TDM) to make 1fs)
-        regVal = (I2S_CHANS_PER_FRAME*32)-1;
+        regVal = (I2S_CHANS_PER_FRAME * XUA_I2S_N_BITS)-1;
         result |= i2c_reg_write(dacAddr, PCM5122_DLRCK, regVal);
 
         // Master mode BCK, LRCK divider reset release
