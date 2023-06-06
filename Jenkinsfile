@@ -36,7 +36,7 @@ pipeline {
                 sh 'for config in app_usb_aud_xk_316_mc/bin/?*/*.xe; do mv "$config" "${config/%.xe/_i2sloopback.xe}"; done'
 
                 // xmake does not fully rebuild when different build peramitars are given, so must be cleaned before building without loopback
-                sh 'xmake clean PARTIAL_TEST_CONFIGS=1 TEST_SUPPORT_CONFIGS=1'
+                sh 'xmake clean -j16 PARTIAL_TEST_CONFIGS=1 TEST_SUPPORT_CONFIGS=1'
 
                 // Build and archive the main app configs; doing each app separately is faster than xmake in top directory
                 sh 'xmake -C app_usb_aud_xk_316_mc -j16'
