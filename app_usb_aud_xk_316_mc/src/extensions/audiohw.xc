@@ -6,6 +6,10 @@
 #include "xua.h"
 #include "../../shared/apppll.h"
 
+#if (XUA_PCM_FORMAT == XUA_PCM_FORMAT_TDM) && (XUA_I2S_N_BITS != 32) 
+#warning ADC only supports TDM operation at 32 bits
+#endif
+
 port p_scl = PORT_I2C_SCL;
 port p_sda = PORT_I2C_SDA;
 out port p_ctrl = PORT_CTRL;
@@ -279,23 +283,25 @@ void AudioHwInit()
     WriteAllAdcRegs(PCM1865_PGA_VAL_CH1_R,  0xFC);
     WriteAllAdcRegs(PCM1865_PGA_VAL_CH2_L,  0xFC);
     WriteAllAdcRegs(PCM1865_PGA_VAL_CH2_R,  0xFC);
-
-    /* Convert XUA_I2S_N_BITS to ADC FMT bits */
-    int tx_wlen = 0; //32-bit
-    switch(XUA_I2S_N_BITS)
-    {
-        case 32:
-            tx_wlen = 0b00;
-            break;
-        case 24:
-            tx_wlen = 0b01;
-            break;
-        case 16:
-            tx_wlen = 0b11;
-            break;
-    }
+    
     if (XUA_PCM_FORMAT == XUA_PCM_FORMAT_I2S)
-    {   /* Only enable DOUT2 in I2S mode. In TDM mode it doesn't really make sense, wastes power (and data sheet states "not available") */
+    {   
+        /* Convert XUA_I2S_N_BITS to ADC FMT bits */
+        int tx_wlen = 0;
+        switch(XUA_I2S_N_BITS)
+        {
+            case 32:
+                tx_wlen = 0b00;
+                break;
+            case 24:
+                tx_wlen = 0b01;
+                break;
+            case 16:
+                tx_wlen = 0b11;
+                break;
+        }
+
+        /* Only enable DOUT2 in I2S mode. In TDM mode it doesn't really make sense, wastes power (and data sheet states "not available") */
         WriteAllAdcRegs(PCM1865_GPIO01_FUN,     0x05); // Set GPIO1 as normal polarity, GPIO1 functionality. Set GPIO0 as normal polarity, DOUT2 functionality.
         WriteAllAdcRegs(PCM1865_GPIO01_DIR,     0x04); // Set GPIO1 as an input. Set GPIO0 as an output (used for I2S DOUT2).
         
@@ -308,8 +314,8 @@ void AudioHwInit()
     }
     else
     {
-        /* Write offset such that ADC's do not drive against eachother */
         /* Note, the ADCs do not support TDM with channel slots other than 32bit i.e. 256fs */
+        /* Write offset such that ADC's do not drive against eachother */
         result = i2c_reg_write(PCM1865_0_I2C_DEVICE_ADDR, PCM1865_TX_TDM_OFFSET, 1);
         assert(result == I2C_REGOP_SUCCESS && msg("ADC I2C write reg failed"));
         result = i2c_reg_write(PCM1865_1_I2C_DEVICE_ADDR, PCM1865_TX_TDM_OFFSET, 129);
@@ -389,40 +395,39 @@ void AudioHwInit()
         WriteAllDacRegs(PCM5122_DNCP,           0x03); // sets charge pump divider NCP to 4. (same for all modes, this governs charge pump frequency (divided from *DAC* clock)).
     }
 
+    int alen = 0b11;
+    switch(XUA_I2S_N_BITS)
+    {
+        case 16:
+            alen = 0b00;
+            break;
+        case 24: 
+            alen = 0b10;
+            break;
+        case 32:
+            alen = 0b11;
+            break;
+    }
+
     if(XUA_PCM_FORMAT == XUA_PCM_FORMAT_I2S)
     {
-        // For basic I2S input we don't need any register setup. DACs will clock auto detect etc.
-        // It holds DAC in reset until it gets clocks anyway.
+        /* Set Format to I2S with word length XUA_I2S_N_BITS */
+        WriteAllDacRegs(PCM5122_I2S, 0b00000000 | (alen));
     }
-    else /* TDM */
+    else
     {
-        /* Note for TDM to work as expected for all DACs the jumpers marked "DAC I2S/TDM Config" need setting appropriately
+        /* Note, for TDM to work as expected for all DACs the jumpers on the board marked "DAC I2S/TDM Config" need setting appropriately
          * I2S MODE: SET ALL 2-3
          * TDM MODE: SET ALL 1-2, TDM SOURCE 3-4
          */
-        /* Set Format to TDM/DSP & 32bit */
-        int alen = 0b11;
-
-        switch(XUA_I2S_N_BITS)
-        {
-            case 16:
-                alen = 0b00;
-                break;
-            case 24: 
-                alen = 0b10;
-                break;
-            case 32:
-                alen = 0b11;
-                break;
-        }
-        
+        /* Set Format to TDM/DSP with word length XUA_I2S_N_BITS */
         WriteAllDacRegs(PCM5122_I2S, 0b00010000 | (alen));
 
         /* Set offset to appropriately for each DAC */
         for(int dacAddr = PCM5122_0_I2C_DEVICE_ADDR; dacAddr < (PCM5122_0_I2C_DEVICE_ADDR+4); dacAddr++)
         {
             const int dacOffset = dacAddr - PCM5122_0_I2C_DEVICE_ADDR;
-            result = i2c_reg_write(dacAddr, PCM5122_I2S_SHIFT, 1 + (dacOffset * 64));
+            result = i2c_reg_write(dacAddr, PCM5122_I2S_SHIFT, 1 + (dacOffset * XUA_I2S_N_BITS * 2));
             assert(result == I2C_REGOP_SUCCESS && msg("DAC I2C write reg failed"));
         }
     }
@@ -462,7 +467,7 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, unsigned dsdMode, unsigned s
         const int dacAddr = PCM5122_3_I2C_DEVICE_ADDR;
 
         //OSR CLK divider is set to one (as its based on the output from the DAC CLK, which is already PLL/16)
-        regVal = (mClk/(samFreq*I2S_CHANS_PER_FRAME*32))-1;
+        regVal = (mClk/(samFreq * I2S_CHANS_PER_FRAME * 32))-1;
         result |= i2c_reg_write(dacAddr, PCM5122_DOSR, regVal);
 
         //# FS setting should be set based on sample rate
