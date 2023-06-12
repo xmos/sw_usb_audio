@@ -1,4 +1,3 @@
-import sounddevice as sd
 import pytest
 import subprocess
 import tempfile
@@ -10,7 +9,6 @@ import stat
 import re
 import shutil
 import socket
-import signal
 
 from conftest import get_config_features
 
@@ -27,16 +25,17 @@ def use_windows_builtin_driver(board, config):
 
 
 def product_str_from_board_config(board, config):
-    if platform.system() == "Windows" and not use_windows_builtin_driver(board, config):
-        return "XMOS USB Audio Device"
-
     if board == "xk_216_mc":
         if config.startswith("1"):
             return "XMOS xCORE-200 MC (UAC1.0)"
         elif config.startswith("2"):
             return "XMOS xCORE-200 MC (UAC2.0)"
     elif board == "xk_316_mc":
-        if config.startswith('1'):
+        if platform.system() == "Windows" and not use_windows_builtin_driver(
+            board, config
+        ):
+            return "XMOS XK-AUDIO-316-MC"
+        elif config.startswith("1"):
             return "XMOS xCORE.ai MC (UAC1.0)"
         elif config.startswith("2"):
             return "XMOS xCORE.ai MC (UAC2.0)"
@@ -51,26 +50,68 @@ def product_str_from_board_config(board, config):
     pytest.fail(f"Unrecognised config {config} for {board}")
 
 
-def wait_for_portaudio(board, config, adapter_id):
+def query_device_found(name):
+    if platform.system() == "Windows":
+        desc_re = r"Device Description:\s+(.*)\n"
+        status_re = r"Status:\s+(.*)\n"
+        ret = subprocess.run(
+            ["pnputil", "/enum-devices", "/connected"],
+            capture_output=True,
+            text=True,
+            timeout=5,
+        )
+        for dev_block in ret.stdout.split("\n\n"):
+            match = re.search(desc_re, dev_block)
+            if not match:
+                continue
+
+            dev_desc = match.group(1)
+            if name not in dev_desc:
+                continue
+
+            match = re.search(status_re, dev_block)
+            if not match:
+                continue
+
+            if match.group(1) == "Started":
+                return True
+    elif platform.system() == "Darwin":
+        ret = subprocess.run(
+            ["system_profiler", "SPUSBDataType"],
+            capture_output=True,
+            text=True,
+            timeout=5,
+        )
+        for line in ret.stdout.split("\n"):
+            if name in line:
+                return True
+    else:
+        pytest.fail(f"Unsupported host platform {platform.system()}")
+
+    return False
+
+
+def wait_for_enumeration(board, config, adapter_id):
     timeout = 30
     prod_str = product_str_from_board_config(board, config)
 
     for _ in range(timeout):
         time.sleep(1)
 
-        # sounddevice must be terminated and re-initialised to get updated device info
-        sd._terminate()
-        sd._initialize()
-        for sd_dev in sd.query_devices():
-            if prod_str in sd_dev["name"]:
-                return sd_dev["name"]
+        if query_device_found(prod_str):
+            return prod_str
 
-    fail_str = f"Device ({prod_str}) not available via portaudio in {timeout}s\n"
+    fail_str = f"Device ({prod_str}) not enumerated after {timeout}s\n"
 
     # Device doesn't appear to have started, so dump the state of the xcore
     firmware = get_firmware_path(board, config)
-    ret = subprocess.run(["xrun", "--adapter-id", adapter_id, "--dump-state", firmware],
-                         text=True, timeout=10, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    ret = subprocess.run(
+        ["xrun", "--adapter-id", adapter_id, "--dump-state", firmware],
+        text=True,
+        timeout=10,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+    )
     fail_str += "Register and thread state of the xcore device\n"
     fail_str += "\n".join(ret.stdout.splitlines())
     pytest.fail(fail_str)
@@ -249,11 +290,11 @@ def get_xtag_dut_and_harness(pytestconfig, board):
 # is killed, and this connect via xgdb can recover it but it takes a while to reboot the XTAG
 def stop_xrun_app(adapter_id):
     subprocess.run(
-            ["xgdb", "-ex", f"connect --adapter-id {adapter_id}", "-ex", "quit"],
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL,
-            timeout=120,
-        )
+        ["xgdb", "-ex", f"connect --adapter-id {adapter_id}", "-ex", "quit"],
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+        timeout=120,
+    )
 
 
 class AudioAnalyzerHarness:
@@ -266,6 +307,7 @@ class AudioAnalyzerHarness:
     application to connect; the application that wants to connect should use the
     port number stored in the xscope_port member of this class.
     """
+
     def __init__(self, adapter_id, board="xcore200_mc", config=None, xscope=None):
         self.adapter_id = adapter_id
         xe_name = (
@@ -354,6 +396,7 @@ class XrunDut:
     PortAudio device. Then the device_name class member can be used by audio
     software to use this particular device.
     """
+
     def __init__(self, adapter_id, board, config):
         self.adapter_id = adapter_id
         self.board = board
@@ -365,11 +408,13 @@ class XrunDut:
     def __enter__(self):
         firmware = get_firmware_path(self.board, self.config)
         subprocess.run(["xrun", "--adapter-id", self.adapter_id, firmware])
-        self.dev_name = wait_for_portaudio(self.board, self.config, self.adapter_id)
-        if platform.system() == "Windows" and use_windows_builtin_driver(self.board, self.config):
-            # Select ASIO4ALL as device for built-in driver testing (cannot wait for this device
-            # name in wait_for_portaudio because it is always present)
-            self.dev_name = "ASIO4ALL v2"
+        self.dev_name = wait_for_enumeration(self.board, self.config, self.adapter_id)
+        # On Windows, need to set different device names based on which driver is being used
+        if platform.system() == "Windows":
+            if use_windows_builtin_driver(self.board, self.config):
+                self.dev_name = "ASIO4ALL v2"
+            else:
+                self.dev_name = "XMOS USB Audio Device"
         time.sleep(5)
         return self
 
@@ -401,18 +446,28 @@ class XsigProcess:
     The application requires a sample rate (fs), duration in seconds (can be zero for indefinite
     runtime), a configuration file and the name of the audio device to use.
     """
+
     def __init__(self, fs, duration, cfg_file, dev_name):
         self.duration = 0 if duration is None else duration
         binary_name = "xsig.exe" if platform.system() == "Windows" else "xsig"
         xsig = Path(__file__).parent / "tools" / binary_name
         if not xsig.exists():
             pytest.fail(f"xsig binary not present in {xsig.parent}")
-        self.xsig_cmd = [xsig, f"{fs}", f"{self.duration * 1000}", cfg_file, "--device", dev_name]
+        self.xsig_cmd = [
+            xsig,
+            f"{fs}",
+            f"{self.duration * 1000}",
+            cfg_file,
+            "--device",
+            dev_name,
+        ]
         self.proc = None
         self.output_file = None
 
     def __enter__(self):
-        self.proc = subprocess.Popen(self.xsig_cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        self.proc = subprocess.Popen(
+            self.xsig_cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT
+        )
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -436,8 +491,12 @@ class XsigInput(XsigProcess):
     As a workaround for MacOS privacy restrictions, a Python script can be created which will run
     the xsig command with a timeout; this is executed by a separate script running on the host.
     """
+
     def __enter__(self):
-        if platform.system() == "Darwin" and os.environ.get("USBA_MAC_PRIV_WORKAROUND", None) == "1":
+        if (
+            platform.system() == "Darwin"
+            and os.environ.get("USBA_MAC_PRIV_WORKAROUND", None) == "1"
+        ):
             self.output_file = tempfile.NamedTemporaryFile(mode="w+")
             # Create a Python script to run the xsig command
             with tempfile.NamedTemporaryFile(
@@ -458,7 +517,9 @@ class XsigInput(XsigProcess):
                 # fmt: on
                 script_file.write(script_text)
                 script_file.flush()
-                Path(script_file.name).chmod(stat.S_IREAD | stat.S_IWRITE | stat.S_IEXEC)
+                Path(script_file.name).chmod(
+                    stat.S_IREAD | stat.S_IWRITE | stat.S_IEXEC
+                )
             return self
         return super().__enter__()
 
@@ -469,7 +530,10 @@ class XsigInput(XsigProcess):
         super().__exit__(exc_type, exc_val, exc_tb)
 
     def get_output(self):
-        if platform.system() == "Darwin" and os.environ.get("USBA_MAC_PRIV_WORKAROUND", None) == "1":
+        if (
+            platform.system() == "Darwin"
+            and os.environ.get("USBA_MAC_PRIV_WORKAROUND", None) == "1"
+        ):
             self.output_file.seek(0)
             return [line.strip() for line in self.output_file.readlines()]
         return super().get_output()
@@ -482,4 +546,5 @@ class XsigOutput(XsigProcess):
     No output-specific logic is required, but this class should still be used instead of
     XsigProcess as it makes the direction of the test-code more obvious to the reader.
     """
+
     pass
