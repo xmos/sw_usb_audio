@@ -1,6 +1,13 @@
 sw_usb_audio Change Log
 =======================
 
+7.3.0
+-----
+
+  * CHANGE:    app_usb_aud_xk_316_mc: Respect XUA_I2S_N_BITS when configuring external audio hardware
+  * ADDED:     Support for 12.288MHz 11.2896MHz to xcore.ai AppPLL master clock options
+  * FIXED:     app_usb_aud_xk_316_mc: DAC settings not configured when sample rate is lower than 48kHz 
+
 7.2.0
 -----
 
