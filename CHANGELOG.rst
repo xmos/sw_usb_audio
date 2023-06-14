@@ -4,9 +4,40 @@ sw_usb_audio Change Log
 7.3.0
 -----
 
-  * CHANGE:    app_usb_aud_xk_316_mc: Respect XUA_I2S_N_BITS when configuring external audio hardware
-  * ADDED:     Support for 12.288MHz 11.2896MHz to xcore.ai AppPLL master clock options
-  * FIXED:     app_usb_aud_xk_316_mc: DAC settings not configured when sample rate is lower than 48kHz 
+  * CHANGE:    app_usb_aud_xk_316_mc: Respect XUA_I2S_N_BITS when configuring
+    external audio hardware
+  * ADDED:     Support for 12.288MHz 11.2896MHz to xcore.ai AppPLL master clock
+    options
+  * FIXED:     app_usb_aud_xk_316_mc: DAC settings not configured when sample
+    rate is lower than 48kHz
+
+  * Changes to dependencies:
+
+    - lib_spdif: 4.2.1 -> 5.0.0
+
+      + CHANGED:   Updated examples for new XK-AUDIO-316-MC board
+      + CHANGED:   Updated transmit to simplified implementation (note, no
+        longer supports XS1 based devices)
+      + CHANGED:   Removed headers SpdifReceive.h and SpdifTransmit.h. Users
+        should include spdif.h
+
+    - lib_xua: 3.4.0 -> 3.5.0
+
+      + ADDED:     Configurable word-length for I2S/TDM via XUA_I2S_N_BITS
+      + ADDED:     Support for statically defined custom HID descriptor
+      + CHANGED:   Rearranged main() such that adding custom code that uses
+        lib_xud is possible
+      + FIXED:     Memory corruption due to erroneous initialisation of mixer
+        weights when not in use (#152)
+      + FIXED:     UserHostActive() not being called as expected (#326)
+      + FIXED:     Exception when entering DSD mode (#327)
+
+    - lib_xud: 2.2.2 -> 2.2.3
+
+      + FIXED:     XUD_UserSuspend() and XUD_UserResume() now properly marked as
+        weak symbols (#374)
+      + FIXED:     Incorrect time reference used during device attach process
+        (#367)
 
 7.2.0
 -----
