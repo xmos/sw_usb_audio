@@ -24,6 +24,7 @@ windows_smoke_configs = [
     "2AMi10o10xssxxx",
     "2SSi8o8xxxxxx_tdm8",
     "2AMi8o8xxxxxx_winbuiltin",
+    "2AMi2o2xxxxxx_winbuiltin",
 ]
 
 
