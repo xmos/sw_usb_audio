@@ -13,8 +13,10 @@ sw_usb_audio Change Log
 
   * Changes to dependencies:
 
-    - lib_spdif: 4.2.1 -> 5.0.0
+    - lib_spdif: 4.2.1 -> 5.0.1
 
+      + FIXED:     Reinstated graceful handling of bad sample-rate/master-clock
+        pair
       + CHANGED:   Updated examples for new XK-AUDIO-316-MC board
       + CHANGED:   Updated transmit to simplified implementation (note, no
         longer supports XS1 based devices)
@@ -27,6 +29,8 @@ sw_usb_audio Change Log
       + ADDED:     Support for statically defined custom HID descriptor
       + CHANGED:   Rearranged main() such that adding custom code that uses
         lib_xud is possible
+      + CHANGED:   bNumConfigurations changed from 2 to 1, removing a
+        work-around to stop old Windows versions loading the composite driver
       + FIXED:     Memory corruption due to erroneous initialisation of mixer
         weights when not in use (#152)
       + FIXED:     UserHostActive() not being called as expected (#326)
@@ -34,7 +38,7 @@ sw_usb_audio Change Log
 
     - lib_xud: 2.2.2 -> 2.2.3
 
-      + FIXED:     XUD_UserSuspend() and XUD_UserResume() now properly marked as
+      + FIXED:     XUD_UserSuspend() and XUD_UserResume now properly marked as
         weak symbols (#374)
       + FIXED:     Incorrect time reference used during device attach process
         (#367)
