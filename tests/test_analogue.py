@@ -21,14 +21,14 @@ from conftest import list_configs, get_config_features
 # Run a reduced set of configs on Windows at the smoke level to keep the total duration reasonable
 windows_smoke_configs = [
     "1AMi2o2xxxxxx",
+    "2AMi2o2xxxxxx",
     "2AMi10o10xssxxx",
     "2SSi8o8xxxxxx_tdm8",
     "2AMi8o8xxxxxx_winbuiltin",
     "2AMi2o2xxxxxx_winbuiltin",
 ]
 
-
-def analogue_common_uncollect(features, board, config, pytestconfig):
+def analogue_OS_unclollect(features, board, config, pytestconfig):
     level = pytestconfig.getoption("level")
     if (
         level == "smoke"
@@ -36,50 +36,71 @@ def analogue_common_uncollect(features, board, config, pytestconfig):
         and config not in windows_smoke_configs
     ):
         return True
+    if (
+        platform.system() == "Darwin"
+        and "2AMi2o2xxxxxx" in config
+    ):
+        # macOS defaults to the 16-bit audio profile on this config and xsig and portaudio are not forcing a change in bit depth
+        return True
+    return False
+
+def analogue_require_dut_and_harness(features, board, config, pytestconfig):
     # XTAGs not present
     xtag_ids = get_xtag_dut_and_harness(pytestconfig, board)
     if not all(xtag_ids):
         return True
     return False
 
+def analogue_require_dut(features, board, config, pytestconfig):
+    # XTAGs not present
+    xtag_id = get_xtag_dut(pytestconfig, board)
+    if not xtag_id:
+        return True
+    
+def analogue_non_loopback_common_uncollect(features, board, config, pytestconfig):
+    if analogue_OS_unclollect(features, board, config, pytestconfig):
+        return True
+    if analogue_require_dut_and_harness(features, board, config, pytestconfig):
+        return True
+    if features["i2s_loopback"]:
+        return True
+    return False
+
+def analogue_loopback_common_uncollect(features, board, config, pytestconfig):
+    if analogue_OS_unclollect(features, board, config, pytestconfig):
+        return True
+    if analogue_require_dut(features, board, config, pytestconfig):
+        return True
+    if not features["i2s_loopback"]:
+        return True
+    return False
+
 
 def analogue_input_uncollect(pytestconfig, board, config):
     features = get_config_features(board, config)
-    if analogue_common_uncollect(features, board, config, pytestconfig):
+    if analogue_non_loopback_common_uncollect(features, board, config, pytestconfig):
         return True
     if not features["analogue_i"]:
         # No input channels
-        return True
-    if features["i2s_loopback"]:
         return True
     return False
 
 
 def analogue_output_uncollect(pytestconfig, board, config):
     features = get_config_features(board, config)
-    if analogue_common_uncollect(features, board, config, pytestconfig):
+    if analogue_non_loopback_common_uncollect(features, board, config, pytestconfig):
         return True
     if not features["analogue_o"]:
         # No output channels
-        return True
-    if features["i2s_loopback"]:
         return True
     return False
 
 def analogue_output_loopback_uncollect(pytestconfig, board, config):
     features = get_config_features(board, config)
-    level = pytestconfig.getoption("level")
-    if (
-        level == "smoke"
-        and platform.system() == "Windows"
-        and config.removesuffix("_i2sloopback") not in windows_smoke_configs
-    ):
+    if analogue_loopback_common_uncollect(features, board, config, pytestconfig):
         return True
-    # XTAGs not present
-    xtag_id = get_xtag_dut(pytestconfig, board)
-    if not xtag_id:
-        return True
-    if not features["i2s_loopback"]:
+    if not features["analogue_o"]:
+        # No output channels
         return True
     return False
 
