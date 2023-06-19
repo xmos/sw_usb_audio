@@ -33,7 +33,10 @@ def analogue_OS_unclollect(features, board, config, pytestconfig):
     if (
         level == "smoke"
         and platform.system() == "Windows"
-        and config not in windows_smoke_configs
+        and (
+            config not in windows_smoke_configs
+            or config.removesuffix("_i2sloopback") not in windows_smoke_configs
+        )
     ):
         return True
     if (
