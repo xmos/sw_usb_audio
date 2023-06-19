@@ -1,6 +1,6 @@
 #include <platform.h>
 
-/* This is provided as simple example but disabled due to the port clash with audiostream.xc */ 
+/* This is provided as simple example but disabled due to the port clash with audiostream.xc */
 
 #if 0
 on tile[0]: out port p_leds = XS1_PORT_4F;

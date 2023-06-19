@@ -6,7 +6,7 @@
 #include "xua.h"
 #include "../../shared/apppll.h"
 
-#if (XUA_PCM_FORMAT == XUA_PCM_FORMAT_TDM) && (XUA_I2S_N_BITS != 32) 
+#if (XUA_PCM_FORMAT == XUA_PCM_FORMAT_TDM) && (XUA_I2S_N_BITS != 32)
 #warning ADC only supports TDM operation at 32 bits
 #endif
 
@@ -283,9 +283,9 @@ void AudioHwInit()
     WriteAllAdcRegs(PCM1865_PGA_VAL_CH1_R,  0xFC);
     WriteAllAdcRegs(PCM1865_PGA_VAL_CH2_L,  0xFC);
     WriteAllAdcRegs(PCM1865_PGA_VAL_CH2_R,  0xFC);
-    
+
     if (XUA_PCM_FORMAT == XUA_PCM_FORMAT_I2S)
-    {   
+    {
         /* Convert XUA_I2S_N_BITS to ADC FMT bits */
         int tx_wlen = 0;
         switch(XUA_I2S_N_BITS)
@@ -304,7 +304,7 @@ void AudioHwInit()
         /* Only enable DOUT2 in I2S mode. In TDM mode it doesn't really make sense, wastes power (and data sheet states "not available") */
         WriteAllAdcRegs(PCM1865_GPIO01_FUN,     0x05); // Set GPIO1 as normal polarity, GPIO1 functionality. Set GPIO0 as normal polarity, DOUT2 functionality.
         WriteAllAdcRegs(PCM1865_GPIO01_DIR,     0x04); // Set GPIO1 as an input. Set GPIO0 as an output (used for I2S DOUT2).
-        
+
         /* RX_WLEN:        24-bit (default)
          * TDM_LRCLK_MODE: 0 (default)
          * TX_WLEN:        XUA_I2S_N_BITS
@@ -320,7 +320,7 @@ void AudioHwInit()
         assert(result == I2C_REGOP_SUCCESS && msg("ADC I2C write reg failed"));
         result = i2c_reg_write(PCM1865_1_I2C_DEVICE_ADDR, PCM1865_TX_TDM_OFFSET, 129);
         assert(result == I2C_REGOP_SUCCESS && msg("ADC I2C write reg failed"));
-        
+
         if(CODEC_MASTER)
         {
             /* PCM5122 drives a 1/2 duty cycle LRCLK for TDM */
@@ -401,7 +401,7 @@ void AudioHwInit()
         case 16:
             alen = 0b00;
             break;
-        case 24: 
+        case 24:
             alen = 0b10;
             break;
         case 32:
@@ -499,7 +499,7 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, unsigned dsdMode, unsigned s
     {
         // Do any changes to input clocks here
         // The following divider generates the DAC clock from the master clock.
-        // DAC clock needs to be 5.6448MHz for 44.1/88.2/176.4kHz SRs and 6.144MHz for 48/96/192 SRs. 
+        // DAC clock needs to be 5.6448MHz for 44.1/88.2/176.4kHz SRs and 6.144MHz for 48/96/192 SRs.
         // So if using 22.5792/24.576 MCLK this needs to be 4. For 45.1584/49.152MHz this needs to be 8. Note to set a divider of 4 we write 0x03.
         WriteAllDacRegs(PCM5122_DDAC,           0x03); // sets DAC clock divider NDAC to 4.
 

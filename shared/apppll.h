@@ -96,7 +96,7 @@ int AppPllEnable(int32_t clkFreq_hz)
             div = APP_PLL_DIV_49M;
             frac = APP_PLL_FRAC_49M;
             break;
-        
+
         default:
             assert(0);
             break;
