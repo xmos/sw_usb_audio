@@ -1,7 +1,7 @@
 XMOS USB Audio 2.0 Reference Design README
 ##########################################
 
-:Version: 7.3.0
+:Version: 7.3.1
 :Vendor: XMOS
 
 
