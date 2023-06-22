@@ -508,7 +508,7 @@ class XsigInput(XsigProcess):
                     'from pathlib import PosixPath\n'
                     f'with open("{self.output_file.name}", "w+") as f:\n'
                     '    try:\n'
-                    f'        ret = subprocess.run({self.xsig_cmd}, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout={self.duration+5})\n'
+                    f'        ret = subprocess.run({self.xsig_cmd}, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout={self.duration+5}, cwd=Path({str(self.xsig_cmd[0].parent)})\n'
                     f'    except subprocess.TimeoutExpired:\n'
                     f'        f.write("Timeout running command: {self.xsig_cmd}")\n'
                     '    else:\n'
@@ -548,3 +548,20 @@ class XsigOutput(XsigProcess):
     """
 
     pass
+
+
+def rename_xsig_artifacts(test_ident):
+    xsig_dir = Path(__file__).parent / "tools"
+    csv_files = xsig_dir.glob("*.csv")
+    for file in csv_files:
+        if file.startswith("glitch."):
+            target_file = f"glitch.{test_ident}.{file[7:]}"
+        elif file.startswith("peakhold."):
+            target_file = f"peakhold.{test_ident}.{file[9:]}"
+        else:
+            continue
+
+        # Rename file
+        initial = xsig_dir / file
+        target = xsig_dir / target_file
+        initial.rename(target)

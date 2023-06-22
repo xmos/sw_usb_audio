@@ -100,7 +100,7 @@ pipeline {
                     dir("tools") {
                       // Build test support application
                       sh 'make -C volcontrol'
-                      copyArtifacts filter: 'bin-macos-x86/xsig', fingerprintArtifacts: true, projectName: 'xmos-int/xsig/master', flatten: true, selector: lastSuccessful()
+                      copyArtifacts filter: 'bin-macos-x86/xsig', fingerprintArtifacts: true, projectName: 'xmos-int/xsig/glitch_sig_fft_data', flatten: true, selector: lastSuccessful()
                       copyArtifacts filter: 'OSX/x86/xmos_mixer', fingerprintArtifacts: true, projectName: 'XMOS/lib_xua/develop', flatten: true, selector: lastSuccessful()
                     }
                   }
@@ -129,6 +129,7 @@ pipeline {
           post {
             always {
               archiveArtifacts artifacts: "${REPO}/tests/pytest_result_mac_intel.xml", fingerprint: true, allowEmptyArchive: true
+              archiveArtifacts artifacts: "${REPO}/tests/tools/*.csv", fingerprint: true, allowEmptyArchive: true
               junit "${REPO}/tests/pytest_result_mac_intel.xml"
             }
             cleanup {
@@ -164,7 +165,7 @@ pipeline {
                     dir("tools") {
                       // Build test support application
                       sh 'make -C volcontrol'
-                      copyArtifacts filter: 'bin-macos-arm/xsig', fingerprintArtifacts: true, projectName: 'xmos-int/xsig/master', flatten: true, selector: lastSuccessful()
+                      copyArtifacts filter: 'bin-macos-arm/xsig', fingerprintArtifacts: true, projectName: 'xmos-int/xsig/glitch_sig_fft_data', flatten: true, selector: lastSuccessful()
                       copyArtifacts filter: 'OSX/x86/xmos_mixer', fingerprintArtifacts: true, projectName: 'XMOS/lib_xua/develop', flatten: true, selector: lastSuccessful()
                     }
                   }
@@ -191,6 +192,7 @@ pipeline {
           post {
             always {
               archiveArtifacts artifacts: "${REPO}/tests/pytest_result_mac_arm.xml", fingerprint: true, allowEmptyArchive: true
+              archiveArtifacts artifacts: "${REPO}/tests/tools/*.csv", fingerprint: true, allowEmptyArchive: true
               junit "${REPO}/tests/pytest_result_mac_arm.xml"
             }
             cleanup {
@@ -225,7 +227,7 @@ pipeline {
                     }
 
                     dir("tools") {
-                      copyArtifacts filter: 'bin-windows-x86/xsig.exe', fingerprintArtifacts: true, projectName: 'xmos-int/xsig/master', flatten: true, selector: lastSuccessful()
+                      copyArtifacts filter: 'bin-windows-x86/xsig.exe', fingerprintArtifacts: true, projectName: 'xmos-int/xsig/glitch_sig_fft_data', flatten: true, selector: lastSuccessful()
                       copyArtifacts filter: 'Win/x64/xmos_mixer.exe', fingerprintArtifacts: true, projectName: 'XMOS/lib_xua/develop', flatten: true, selector: lastSuccessful()
                     }
                   }
@@ -250,6 +252,7 @@ pipeline {
           post {
             always {
               archiveArtifacts artifacts: "${REPO}/tests/pytest_result_windows10.xml", fingerprint: true, allowEmptyArchive: true
+              archiveArtifacts artifacts: "${REPO}/tests/tools/*.csv", fingerprint: true, allowEmptyArchive: true
               junit "${REPO}/tests/pytest_result_windows10.xml"
             }
             cleanup {
@@ -284,7 +287,7 @@ pipeline {
                     }
 
                     dir("tools") {
-                      copyArtifacts filter: 'bin-windows-x86/xsig.exe', fingerprintArtifacts: true, projectName: 'xmos-int/xsig/master', flatten: true, selector: lastSuccessful()
+                      copyArtifacts filter: 'bin-windows-x86/xsig.exe', fingerprintArtifacts: true, projectName: 'xmos-int/xsig/glitch_sig_fft_data', flatten: true, selector: lastSuccessful()
                       copyArtifacts filter: 'Win/x64/xmos_mixer.exe', fingerprintArtifacts: true, projectName: 'XMOS/lib_xua/develop', flatten: true, selector: lastSuccessful()
                     }
                   }
@@ -309,6 +312,7 @@ pipeline {
           post {
             always {
               archiveArtifacts artifacts: "${REPO}/tests/pytest_result_windows11.xml", fingerprint: true, allowEmptyArchive: true
+              archiveArtifacts artifacts: "${REPO}/tests/tools/*.csv", fingerprint: true, allowEmptyArchive: true
               junit "${REPO}/tests/pytest_result_windows11.xml"
             }
             cleanup {

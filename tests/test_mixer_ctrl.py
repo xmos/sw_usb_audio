@@ -12,6 +12,7 @@ from usb_audio_test_utils import (
     XrunDut,
     XsigInput,
     XsigOutput,
+    rename_xsig_artifacts,
 )
 from conftest import list_configs, get_config_features
 
@@ -67,6 +68,8 @@ def test_routing_ctrl_input(pytestconfig, ctrl_app, board, config):
         with XsigInput(fs, duration, xsig_config_path, dut.dev_name) as xsig_proc:
             time.sleep(duration + 6)
             xsig_lines = xsig_proc.get_output()
+
+        rename_xsig_artifacts(f"routing_ctrl_input-{board}-{config}-{fs}")
 
     with open(xsig_config_path) as file:
         xsig_json = json.load(file)
@@ -164,6 +167,8 @@ def test_mixing_ctrl_input(pytestconfig, ctrl_app, board, config):
         with XsigInput(fs, duration, xsig_config_path, dut.dev_name) as xsig_proc:
             time.sleep(duration + 6)
             xsig_lines = xsig_proc.get_output()
+
+        rename_xsig_artifacts(f"mixing_ctrl_input-{board}-{config}-{fs}")
 
     with open(xsig_config_path) as file:
         xsig_json = json.load(file)
