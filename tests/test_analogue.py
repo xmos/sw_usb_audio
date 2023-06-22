@@ -96,7 +96,7 @@ def analogue_output_uncollect(pytestconfig, board, config):
         return True
     return False
 
-def analogue_output_loopback_uncollect(pytestconfig, board, config):
+def analogue_loopback_uncollect(pytestconfig, board, config):
     features = get_config_features(board, config)
     if analogue_loopback_common_uncollect(features, board, config, pytestconfig):
         return True
@@ -210,9 +210,9 @@ def test_analogue_output(pytestconfig, board, config):
         pytest.fail(fail_str)
 
 
-@pytest.mark.uncollect_if(func=analogue_output_loopback_uncollect)
+@pytest.mark.uncollect_if(func=analogue_loopback_uncollect)
 @pytest.mark.parametrize(["board", "config"], list_configs())
-def test_analogue_output_loopback(pytestconfig, board, config):
+def test_analogue_loopback(pytestconfig, board, config):
     features = get_config_features(board, config)
 
     xsig_config = f'mc_i2s_loopback_{features["analogue_o"]}ch'
