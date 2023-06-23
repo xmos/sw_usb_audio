@@ -51,12 +51,6 @@ def analogue_require_dut_and_harness(features, board, config, pytestconfig):
     if not all(xtag_ids):
         return True
     return False
-
-def analogue_require_dut(features, board, config, pytestconfig):
-    # XTAGs not present
-    xtag_id = get_xtag_dut(pytestconfig, board)
-    if not xtag_id:
-        return True
     
 def analogue_non_loopback_common_uncollect(features, board, config, pytestconfig):
     if analogue_OS_unclollect(features, board, config, pytestconfig):
@@ -67,16 +61,6 @@ def analogue_non_loopback_common_uncollect(features, board, config, pytestconfig
         return True
     return False
 
-def analogue_loopback_common_uncollect(features, board, config, pytestconfig):
-    if analogue_OS_unclollect(features, board, config, pytestconfig):
-        return True
-    if analogue_require_dut(features, board, config, pytestconfig):
-        return True
-    if not features["i2s_loopback"]:
-        return True
-    return False
-
-
 def analogue_input_uncollect(pytestconfig, board, config):
     features = get_config_features(board, config)
     if analogue_non_loopback_common_uncollect(features, board, config, pytestconfig):
@@ -85,7 +69,6 @@ def analogue_input_uncollect(pytestconfig, board, config):
         # No input channels
         return True
     return False
-
 
 def analogue_output_uncollect(pytestconfig, board, config):
     features = get_config_features(board, config)
@@ -98,7 +81,13 @@ def analogue_output_uncollect(pytestconfig, board, config):
 
 def analogue_loopback_uncollect(pytestconfig, board, config):
     features = get_config_features(board, config)
-    if analogue_loopback_common_uncollect(features, board, config, pytestconfig):
+    xtag_id = get_xtag_dut(pytestconfig, board)
+    if not xtag_id:
+        # XTAGs not present
+        return True
+    if analogue_OS_unclollect(features, board, config, pytestconfig):
+        return True
+    if not features["i2s_loopback"]:
         return True
     if not features["analogue_o"]:
         # No output channels
