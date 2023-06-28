@@ -39,6 +39,7 @@ def analogue_OS_unclollect(features, board, config, pytestconfig):
         return True
     if (
         platform.system() == "Darwin"
+        and board == "xk_316_mc"
         and "2AMi2o2xxxxxx" in config
     ):
         # macOS defaults to the 16-bit audio profile on this config and xsig and portaudio are not forcing a change in bit depth
