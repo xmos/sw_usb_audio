@@ -53,6 +53,12 @@ def analogue_require_dut_and_harness(features, board, config, pytestconfig):
     return False
     
 def analogue_non_loopback_common_uncollect(features, board, config, pytestconfig):
+    level = pytestconfig.getoption("level")
+    if (
+        level == "smoke"
+        and board == "xk_316_mc"
+    ):
+        return True
     if analogue_OS_unclollect(features, board, config, pytestconfig):
         return True
     if analogue_require_dut_and_harness(features, board, config, pytestconfig):
@@ -117,7 +123,7 @@ def test_analogue_input(pytestconfig, board, config):
     xsig_config_path = Path(__file__).parent / "xsig_configs" / f"{xsig_config}.json"
 
     adapter_dut, adapter_harness = get_xtag_dut_and_harness(pytestconfig, board)
-    duration = analogue_duration(pytestconfig.getoption("level"), features["partial"])
+    duration = analogue_duration(pytestconfig.getoption("level"), True)
     fail_str = ""
 
     with (
@@ -154,16 +160,14 @@ def test_analogue_output(pytestconfig, board, config):
     features = features_tmp.copy()
 
     xsig_config = f'mc_analogue_output_{features["analogue_o"]}ch'
-    if board == "xk_316_mc":
-        features["samp_freqs"] = [max(features["samp_freqs"])] # only test against the analyser at max sample frequency when loopback is avalable
-        if features["tdm8"]:
-            xsig_config = "mc_analogue_output_2ch"
+    if board == "xk_316_mc" and features["tdm8"]:
+        xsig_config = "mc_analogue_output_2ch"
     elif board == "xk_216_mc" and features["tdm8"] and features["i2s"] == "S":
         xsig_config += "_paired"  # Pairs of channels can be swapped in hardware
     xsig_config_path = Path(__file__).parent / "xsig_configs" / f"{xsig_config}.json"
 
     adapter_dut, adapter_harness = get_xtag_dut_and_harness(pytestconfig, board)
-    duration = analogue_duration(pytestconfig.getoption("level"), features["partial"])
+    duration = analogue_duration(pytestconfig.getoption("level"), True)
     fail_str = ""
 
     with XrunDut(adapter_dut, board, config) as dut:
