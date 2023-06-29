@@ -124,7 +124,8 @@ def test_analogue_input(pytestconfig, board, config):
     xsig_config_path = Path(__file__).parent / "xsig_configs" / f"{xsig_config}.json"
 
     adapter_dut, adapter_harness = get_xtag_dut_and_harness(pytestconfig, board)
-    duration = analogue_duration(pytestconfig.getoption("level"), True)
+    short_test = features["partial"] or board == "xk_316_mc"
+    duration = analogue_duration(pytestconfig.getoption("level"), short_test)
     fail_str = ""
 
     with (
@@ -168,7 +169,8 @@ def test_analogue_output(pytestconfig, board, config):
     xsig_config_path = Path(__file__).parent / "xsig_configs" / f"{xsig_config}.json"
 
     adapter_dut, adapter_harness = get_xtag_dut_and_harness(pytestconfig, board)
-    duration = analogue_duration(pytestconfig.getoption("level"), True)
+    short_test = features["partial"] or board == "xk_316_mc"
+    duration = analogue_duration(pytestconfig.getoption("level"), short_test)
     fail_str = ""
 
     with XrunDut(adapter_dut, board, config) as dut:
