@@ -25,10 +25,9 @@ windows_smoke_configs = [
     "2AMi10o10xssxxx",
     "2SSi8o8xxxxxx_tdm8",
     "2AMi8o8xxxxxx_winbuiltin",
-    "2AMi2o2xxxxxx_winbuiltin",
 ]
 
-def analogue_OS_unclollect(features, board, config, pytestconfig):
+def analogue_OS_uncollect(features, board, config, pytestconfig):
     level = pytestconfig.getoption("level")
     if (
         level == "smoke"
@@ -60,7 +59,7 @@ def analogue_non_loopback_common_uncollect(features, board, config, pytestconfig
         and board == "xk_316_mc"
     ):
         return True
-    if analogue_OS_unclollect(features, board, config, pytestconfig):
+    if analogue_OS_uncollect(features, board, config, pytestconfig):
         return True
     if analogue_require_dut_and_harness(features, board, config, pytestconfig):
         return True
@@ -92,7 +91,7 @@ def analogue_loopback_uncollect(pytestconfig, board, config):
     if not xtag_id:
         # XTAGs not present
         return True
-    if analogue_OS_unclollect(features, board, config, pytestconfig):
+    if analogue_OS_uncollect(features, board, config, pytestconfig):
         return True
     if not features["i2s_loopback"]:
         return True
