@@ -18,24 +18,7 @@ from usb_audio_test_utils import (
 from conftest import list_configs, get_config_features
 
 
-# Run a reduced set of configs on Windows at the smoke level to keep the total duration reasonable
-windows_smoke_configs = [
-    "1AMi2o2xxxxxx",
-    "2AMi2o2xxxxxx",
-    "2AMi10o10xssxxx",
-    "2SSi8o8xxxxxx_tdm8",
-    "2AMi8o8xxxxxx_winbuiltin",
-]
-
-def analogue_OS_uncollect(features, board, config, pytestconfig):
-    level = pytestconfig.getoption("level")
-    if (
-        level == "smoke"
-        and platform.system() == "Windows"
-        and config not in windows_smoke_configs
-        and config.removesuffix("_i2sloopback") not in windows_smoke_configs
-    ):
-        return True
+def analogue_OS_uncollect(features, board, config):
     if (
         platform.system() == "Darwin"
         and board == "xk_316_mc"
@@ -45,27 +28,27 @@ def analogue_OS_uncollect(features, board, config, pytestconfig):
         return True
     return False
 
+
 def analogue_require_dut_and_harness(features, board, config, pytestconfig):
     # XTAGs not present
     xtag_ids = get_xtag_dut_and_harness(pytestconfig, board)
     if not all(xtag_ids):
         return True
     return False
-    
+
+
 def analogue_non_loopback_common_uncollect(features, board, config, pytestconfig):
     level = pytestconfig.getoption("level")
-    if (
-        level == "smoke"
-        and board == "xk_316_mc"
-    ):
+    if level == "smoke" and board == "xk_316_mc":
         return True
-    if analogue_OS_uncollect(features, board, config, pytestconfig):
+    if analogue_OS_uncollect(features, board, config):
         return True
     if analogue_require_dut_and_harness(features, board, config, pytestconfig):
         return True
     if features["i2s_loopback"]:
         return True
     return False
+
 
 def analogue_input_uncollect(pytestconfig, board, config):
     features = get_config_features(board, config)
@@ -76,6 +59,7 @@ def analogue_input_uncollect(pytestconfig, board, config):
         return True
     return False
 
+
 def analogue_output_uncollect(pytestconfig, board, config):
     features = get_config_features(board, config)
     if analogue_non_loopback_common_uncollect(features, board, config, pytestconfig):
@@ -85,13 +69,14 @@ def analogue_output_uncollect(pytestconfig, board, config):
         return True
     return False
 
+
 def analogue_loopback_uncollect(pytestconfig, board, config):
     features = get_config_features(board, config)
     xtag_id = get_xtag_dut(pytestconfig, board)
     if not xtag_id:
         # XTAGs not present
         return True
-    if analogue_OS_uncollect(features, board, config, pytestconfig):
+    if analogue_OS_uncollect(features, board, config):
         return True
     if not features["i2s_loopback"]:
         return True
@@ -99,6 +84,7 @@ def analogue_loopback_uncollect(pytestconfig, board, config):
         # No output channels
         return True
     return False
+
 
 def analogue_duration(level, partial):
     if level == "weekend":
@@ -187,7 +173,6 @@ def test_analogue_output(pytestconfig, board, config):
                 AudioAnalyzerHarness(adapter_harness, xscope="io") as harness,
                 XsigOutput(fs, None, xsig_config_path, dut.dev_name),
             ):
-
                 time.sleep(duration)
                 harness.terminate()
                 xscope_lines = harness.get_output()
@@ -232,7 +217,6 @@ def test_analogue_loopback(pytestconfig, board, config):
             fail_str += "\n".join(failures) + "\n\n"
             fail_str += f"xsig stdout at sample rate {fs}\n"
             fail_str += "\n".join(xsig_lines) + "\n\n"
-
 
     if len(fail_str) > 0:
         pytest.fail(fail_str)
