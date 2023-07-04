@@ -36,6 +36,8 @@ def spdif_common_uncollect(features, board, pytestconfig):
     # XTAGs not present
     if not all(xtag_ids):
         return True
+    if features["i2s_loopback"]:
+        return True
     return False
 
 
