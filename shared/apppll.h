@@ -115,7 +115,7 @@ int AppPllEnable(int32_t clkFreq_hz)
     // Set the fractional divider if used
     write_node_config_reg(tile[0], XS1_SSWITCH_SS_APP_PLL_FRAC_N_DIVIDER_NUM, frac);
     // Wait for PLL output frequency to stabilise due to fractional divider enable
-    delay_microseconds(100);
+    delay_milliseconds(100);
     // Turn on the clock output
     write_node_config_reg(tile[0], XS1_SSWITCH_SS_APP_CLK_DIVIDER_NUM, div);
 
