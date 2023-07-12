@@ -9,50 +9,11 @@
 on tile[0]: port p_i2c_scl = XS1_PORT_1N;
 on tile[0]: port p_i2c_sda = XS1_PORT_1O;
 
-// CODEC reset line
+// CODEC reset port
 on tile[1]: out port p_codec_reset  = PORT_CODEC_RST_N;
 
-// CODEC Reset
-#define CODEC_RELEASE_RESET      (0x8) // Release codec from
-
-// App PLL setup
-#define APP_PLL_CTL_BYPASS       (0)   // 0 = no bypass, 1 = bypass.
-#define APP_PLL_CTL_INPUT_SEL    (0)   // 0 = XTAL, 1 = sysPLL
-#define APP_PLL_CTL_ENABLE       (1)   // 0 = disabled, 1 = enabled.
-
-// 24MHz in, 24.576MHz out, integer mode
-// Found exact solution:   IN  24000000.0, OUT  24576000.0, VCO 2457600000.0, RD  5, FD  512, OD 10, FOD  10
-#define APP_PLL_CTL_OD_48        (4)   // Output divider = (OD+1)
-#define APP_PLL_CTL_F_48         (511) // FB divider = (F+1)/2
-#define APP_PLL_CTL_R_48         (4)   // Ref divider = (R+1)
-
-#define APP_PLL_CTL_48           ((APP_PLL_CTL_BYPASS << 29) | (APP_PLL_CTL_INPUT_SEL << 28) | (APP_PLL_CTL_ENABLE << 27) |\
-                                    (APP_PLL_CTL_OD_48 << 23) | (APP_PLL_CTL_F_48 << 8) | APP_PLL_CTL_R_48)
-
-// Fractional divide is M/N
-#define APP_PLL_FRAC_EN_48             (0)   // 0 = disabled
-#define APP_PLL_FRAC_NPLUS1_CYCLES_48  (0)   // M value is this reg value + 1.
-#define APP_PLL_FRAC_TOTAL_CYCLES_48   (0)   // N value is this reg value + 1.
-#define APP_PLL_FRAC_48          ((APP_PLL_FRAC_EN_48 << 31) | (APP_PLL_FRAC_NPLUS1_CYCLES_48 << 8) | APP_PLL_FRAC_TOTAL_CYCLES_48)
-
-// 24MHz in, 22.5792MHz out (44.1kHz * 512), frac mode
-// Found exact solution:   IN  24000000.0, OUT  22579200.0, VCO 2257920000.0, RD  5, FD  470.400 (m =   2, n =   5), OD  5, FOD   10
-#define APP_PLL_CTL_OD_441       (4)   // Output divider = (OD+1)
-#define APP_PLL_CTL_F_441        (469) // FB divider = (F+1)/2
-#define APP_PLL_CTL_R_441        (4)   // Ref divider = (R+1)
-
-#define APP_PLL_CTL_441          ((APP_PLL_CTL_BYPASS << 29) | (APP_PLL_CTL_INPUT_SEL << 28) | (APP_PLL_CTL_ENABLE << 27) |\
-                                    (APP_PLL_CTL_OD_441 << 23) | (APP_PLL_CTL_F_441 << 8) | APP_PLL_CTL_R_441)
-
-#define APP_PLL_FRAC_EN_44             (1)   // 1 = enabled
-#define APP_PLL_FRAC_NPLUS1_CYCLES_44  (1)   // M value is this reg value + 1.
-#define APP_PLL_FRAC_TOTAL_CYCLES_44   (4)   // N value is this reg value + 1.define APP_PLL_CTL_R_441        (4)   // Ref divider = (R+1)
-#define APP_PLL_FRAC_44   ((APP_PLL_FRAC_EN_44 << 31) | (APP_PLL_FRAC_NPLUS1_CYCLES_44 << 8) | APP_PLL_FRAC_TOTAL_CYCLES_44)
-
-#define APP_PLL_DIV_INPUT_SEL    (1)   // 0 = sysPLL, 1 = app_PLL
-#define APP_PLL_DIV_DISABLE      (0)   // 1 = disabled (pin connected to X1D11), 0 = enabled divider output to pin.
-#define APP_PLL_DIV_VALUE        (4)   // Divide by N+1 - remember there's a /2 also afterwards for 50/50 duty cycle.
-#define APP_PLL_DIV              ((APP_PLL_DIV_INPUT_SEL << 31) | (APP_PLL_DIV_DISABLE << 16) | APP_PLL_DIV_VALUE)
+// CODEC reset line mask
+#define CODEC_RELEASE_RESET      (0x8)
 
 typedef enum
 {
@@ -149,7 +110,9 @@ void AudioHwInit()
     // Initiate SW reset (PLL is powered off as part of reset)
     CODEC_REGWRITE(AIC3204_SW_RST, 0x01);
 
+    //
     // Program clock settings
+    //
 
     // Default is CODEC_CLKIN is from MCLK pin. Don't need to change this.
     // Power up NDAC and set to 1
@@ -162,7 +125,7 @@ void AudioHwInit()
     CODEC_REGWRITE(AIC3204_NADC, 0x81);
 
     // Power up MADC and set to 4
-     CODEC_REGWRITE(AIC3204_MADC, 0x84);
+    CODEC_REGWRITE(AIC3204_MADC, 0x84);
 
     // Program DOSR = 128
     CODEC_REGWRITE(AIC3204_DOSR, 0x80);
@@ -181,10 +144,11 @@ void AudioHwInit()
     CODEC_REGWRITE(AIC3204_PAGE_CTRL, 0x01);
     // Enable the internal AVDD_LDO:
     CODEC_REGWRITE(AIC3204_LDO_CTRL, 0x09);
+
     //
     // Program Analog Blocks
-    // ---------------------
     //
+
     // Disable Internal Crude AVdd in presence of external AVdd supply or before powering up internal AVdd LDO
     CODEC_REGWRITE(AIC3204_PWR_CFG, 0x08);
     // Enable Master Analog Power Control
@@ -234,8 +198,8 @@ void AudioHwInit()
 
     //
     // Power Up DAC/ADC
-    // ----------------
     //
+
     // Select Page 0
     CODEC_REGWRITE(AIC3204_PAGE_CTRL, 0x00);
     // Power up the Left and Right DAC Channels. Route Left data to Left DAC and Right data to Right DAC.
@@ -248,85 +212,17 @@ void AudioHwInit()
     // Unmute Left and Right ADC Digital Volume Control.
     CODEC_REGWRITE(AIC3204_ADC_FGA_MUTE, 0x00);
 
-    delay_milliseconds(1);
-
-    // Set the AppPLL up to output MCLK.
-    // Disable the PLL
-    write_node_config_reg(tile[AUDIO_IO_TILE], XS1_SSWITCH_SS_APP_PLL_CTL_NUM, (APP_PLL_CTL_441 & 0xF7FFFFFF));
-    // Enable the PLL to invoke a reset on the appPLL.
-    write_node_config_reg(tile[AUDIO_IO_TILE], XS1_SSWITCH_SS_APP_PLL_CTL_NUM, APP_PLL_CTL_441);
-    // Must write the CTL register twice so that the F and R divider values are captured using a running clock.
-    write_node_config_reg(tile[AUDIO_IO_TILE], XS1_SSWITCH_SS_APP_PLL_CTL_NUM, APP_PLL_CTL_441);
-    // Now disable and re-enable the PLL so we get the full 5us reset time with the correct F and R values.
-    write_node_config_reg(tile[AUDIO_IO_TILE], XS1_SSWITCH_SS_APP_PLL_CTL_NUM, (APP_PLL_CTL_441 & 0xF7FFFFFF));
-    write_node_config_reg(tile[AUDIO_IO_TILE], XS1_SSWITCH_SS_APP_PLL_CTL_NUM, APP_PLL_CTL_441);
-
-    assert(DEFAULT_FREQ >= 22050);
-
-    // Set the fractional divider if used
-    if(DEFAULT_FREQ % 22050 == 0)
-    {
-        write_node_config_reg(tile[0], XS1_SSWITCH_SS_APP_PLL_FRAC_N_DIVIDER_NUM, APP_PLL_FRAC_44);
-    }
-    else
-    {
-        write_node_config_reg(tile[0], XS1_SSWITCH_SS_APP_PLL_FRAC_N_DIVIDER_NUM, APP_PLL_FRAC_48);
-    }
-
-    // Wait for PLL output frequency to stabilise due to fractional divider enable
-    delay_microseconds(100);
-
-    // Turn on the clock output
-    write_node_config_reg(tile[0], XS1_SSWITCH_SS_APP_CLK_DIVIDER_NUM, APP_PLL_DIV);
-
-    delay_milliseconds(1);
+    delay_milliseconds(2);
 
 }
 
-/* Configures the external audio hardware for the required sample frequency.
- * See gpio.h for I2C helper functions and gpio access
- */
+/* Configures the external audio hardware for the required sample frequenc etc */
 void AudioHwConfig(unsigned samFreq, unsigned mClk, unsigned dsdMode,
     unsigned sampRes_DAC, unsigned sampRes_ADC)
 {
-    assert(samFreq >= 22050);
-
-    // Set the AppPLL up to output MCLK.
-    if ((samFreq % 22050) == 0)
-    {
-        // Disable the PLL
-        write_node_config_reg(tile[1], XS1_SSWITCH_SS_APP_PLL_CTL_NUM, (APP_PLL_CTL_441 & 0xF7FFFFFF));
-        // Enable the PLL to invoke a reset on the appPLL.
-        write_node_config_reg(tile[1], XS1_SSWITCH_SS_APP_PLL_CTL_NUM, APP_PLL_CTL_441);
-        // Must write the CTL register twice so that the F and R divider values are captured using a running clock.
-        write_node_config_reg(tile[1], XS1_SSWITCH_SS_APP_PLL_CTL_NUM, APP_PLL_CTL_441);
-        // Now disable and re-enable the PLL so we get the full 5us reset time with the correct F and R values.
-        write_node_config_reg(tile[1], XS1_SSWITCH_SS_APP_PLL_CTL_NUM, (APP_PLL_CTL_441 & 0xF7FFFFFF));
-        write_node_config_reg(tile[1], XS1_SSWITCH_SS_APP_PLL_CTL_NUM, APP_PLL_CTL_441);
-
-        // Set the fractional divider if used
-        write_node_config_reg(tile[0], XS1_SSWITCH_SS_APP_PLL_FRAC_N_DIVIDER_NUM, APP_PLL_FRAC_44);
-    }
-    else if ((samFreq % 24000) == 0)
-    {
-        // Disable the PLL
-        write_node_config_reg(tile[1], XS1_SSWITCH_SS_APP_PLL_CTL_NUM, (APP_PLL_CTL_48 & 0xF7FFFFFF));
-        // Enable the PLL to invoke a reset on the appPLL.
-        write_node_config_reg(tile[1], XS1_SSWITCH_SS_APP_PLL_CTL_NUM, APP_PLL_CTL_48);
-        // Must write the CTL register twice so that the F and R divider values are captured using a running clock.
-        write_node_config_reg(tile[1], XS1_SSWITCH_SS_APP_PLL_CTL_NUM, APP_PLL_CTL_48);
-        // Now disable and re-enable the PLL so we get the full 5us reset time with the correct F and R values.
-        write_node_config_reg(tile[1], XS1_SSWITCH_SS_APP_PLL_CTL_NUM, (APP_PLL_CTL_48 & 0xF7FFFFFF));
-        write_node_config_reg(tile[1], XS1_SSWITCH_SS_APP_PLL_CTL_NUM, APP_PLL_CTL_48);
-
-        // Set the fractional divider if used
-        write_node_config_reg(tile[0], XS1_SSWITCH_SS_APP_PLL_FRAC_N_DIVIDER_NUM, APP_PLL_FRAC_48);
-    }
-
-    // Wait for PLL output frequency to stabilise due to fractional divider enable
-    delay_microseconds(100);
-
-    // Turn on the clock output
-    write_node_config_reg(tile[0], XS1_SSWITCH_SS_APP_CLK_DIVIDER_NUM, APP_PLL_DIV);
+    /* This function is empty since the CODEC is configured into "auto" mode
+     * and the app PLL internal to xcore.ai will be configured to generate the correct master clock frequency
+     * by lib_xua
+     */
 }
 
