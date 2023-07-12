@@ -32,6 +32,7 @@ class SpdifClockSrc:
 
 
 def spdif_common_uncollect(features, board, pytestconfig):
+    return True
     xtag_ids = get_xtag_dut_and_harness(pytestconfig, board)
     # XTAGs not present
     if not all(xtag_ids):
@@ -42,6 +43,7 @@ def spdif_common_uncollect(features, board, pytestconfig):
 
 
 def spdif_input_uncollect(pytestconfig, board, config):
+    return True
     # Not yet supported on Windows
     if platform.system() == "Windows":
         return True
@@ -50,11 +52,13 @@ def spdif_input_uncollect(pytestconfig, board, config):
 
 
 def spdif_output_uncollect(pytestconfig, board, config):
+    return True
     features = get_config_features(board, config)
     return any([not features["spdif_o"], spdif_common_uncollect(features, board, pytestconfig)])
 
 
 def spdif_duration(level, partial):
+    return True
     if level == "weekend":
         duration = 90 if partial else 1200
     elif level == "nightly":

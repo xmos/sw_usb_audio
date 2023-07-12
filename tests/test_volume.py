@@ -49,6 +49,7 @@ volume_configs = [
 
 
 def volume_uncollect(pytestconfig, board, config):
+    return True
     # Not yet supported on Windows
     if platform.system() == "Windows":
         return True

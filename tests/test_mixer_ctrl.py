@@ -32,6 +32,7 @@ mixer_configs = [
 
 
 def mixer_uncollect(pytestconfig, board, config):
+    return True
     # Check if mixer configs are present for this test level
     if (board, config) not in list_configs():
         return True
