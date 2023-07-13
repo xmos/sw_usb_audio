@@ -420,13 +420,25 @@ void AudioHwInit()
     }
 }
 
+/* Mute DACs and place in standby */
+void AudioHwConfig_Mute()
+{
+    WriteAllDacRegs(PCM5122_MUTE,           0x11); // Soft Mute both channels
+    delay_milliseconds(3);                         // Wait for mute to take effect. This takes 104 samples, this is 2.4ms @ 44.1kHz. So lets say 3ms to cover everything.
+    WriteAllDacRegs(PCM5122_STANDBY_PWDN,   0x10); // Request standby mode while we change regs
+}
+
+/* Place DACs in run mode and un-mute */
+void AudioHwConfig_Unmute()
+{
+    WriteAllDacRegs(PCM5122_STANDBY_PWDN,   0x00); // Set DAC in run mode (no standby or powerdown)
+    delay_milliseconds(1);
+    WriteAllDacRegs(PCM5122_MUTE,           0x00); // Un-mute both channels
+}
+
 /* Configures the external audio hardware for the required sample frequency */
 void AudioHwConfig(unsigned samFreq, unsigned mClk, unsigned dsdMode, unsigned sampRes_DAC, unsigned sampRes_ADC)
 {
-    WriteAllDacRegs(PCM5122_MUTE,           0x11); // Soft Mute both channels
-    delay_milliseconds(3);  // Wait for mute to take effect. This takes 104 samples, this is 2.4ms @ 44.1kHz. So lets say 3ms to cover everything.
-    WriteAllDacRegs(PCM5122_STANDBY_PWDN,   0x10); // Request standby mode while we change regs
-
     if (USE_FRACTIONAL_N)
     {
         timer t;
@@ -522,9 +534,5 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, unsigned dsdMode, unsigned s
             WriteAllDacRegs(PCM5122_IDAC_LS,      0x40); // IDAC LS Byte
         }
     }
-
-    WriteAllDacRegs(PCM5122_STANDBY_PWDN,   0x00); // Set DAC in run mode (no standby or powerdown)
-    delay_milliseconds(1);
-    WriteAllDacRegs(PCM5122_MUTE,           0x00); // Un-mute both channels
 }
 
