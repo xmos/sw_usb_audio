@@ -212,11 +212,11 @@ def test_analogue_loopback(pytestconfig, board, config):
             with open(xsig_config_path) as file:
                 xsig_json = json.load(file)
             failures = check_analyzer_output(xsig_lines, xsig_json["in"])
-        if len(failures) > 0:
-            fail_str += f"Failure at sample rate {fs}\n"
-            fail_str += "\n".join(failures) + "\n\n"
-            fail_str += f"xsig stdout at sample rate {fs}\n"
-            fail_str += "\n".join(xsig_lines) + "\n\n"
+            if len(failures) > 0:
+                fail_str += f"Failure at sample rate {fs}\n"
+                fail_str += "\n".join(failures) + "\n\n"
+                fail_str += f"xsig stdout at sample rate {fs}\n"
+                fail_str += "\n".join(xsig_lines) + "\n\n"
 
     if len(fail_str) > 0:
         pytest.fail(fail_str)
