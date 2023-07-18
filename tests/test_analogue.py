@@ -37,7 +37,7 @@ def analogue_require_dut_and_harness(features, board, config, pytestconfig):
     return False
 
 
-def analogue_non_loopback_common_uncollect(features, board, config, pytestconfig):
+def analogue_common_uncollect(features, board, config, pytestconfig):
     level = pytestconfig.getoption("level")
     if level == "smoke" and board == "xk_316_mc":
         return True
@@ -52,7 +52,7 @@ def analogue_non_loopback_common_uncollect(features, board, config, pytestconfig
 
 def analogue_input_uncollect(pytestconfig, board, config):
     features = get_config_features(board, config)
-    if analogue_non_loopback_common_uncollect(features, board, config, pytestconfig):
+    if analogue_common_uncollect(features, board, config, pytestconfig):
         return True
     if not features["analogue_i"]:
         # No input channels
@@ -62,7 +62,7 @@ def analogue_input_uncollect(pytestconfig, board, config):
 
 def analogue_output_uncollect(pytestconfig, board, config):
     features = get_config_features(board, config)
-    if analogue_non_loopback_common_uncollect(features, board, config, pytestconfig):
+    if analogue_common_uncollect(features, board, config, pytestconfig):
         return True
     if not features["analogue_o"]:
         # No output channels
@@ -70,7 +70,7 @@ def analogue_output_uncollect(pytestconfig, board, config):
     return False
 
 
-def analogue_loopback_uncollect(pytestconfig, board, config):
+def loopback_dac_uncollect(pytestconfig, board, config):
     features = get_config_features(board, config)
     xtag_id = get_xtag_dut(pytestconfig, board)
     if not xtag_id:
@@ -190,9 +190,9 @@ def test_analogue_output(pytestconfig, board, config):
         pytest.fail(fail_str)
 
 
-@pytest.mark.uncollect_if(func=analogue_loopback_uncollect)
+@pytest.mark.uncollect_if(func=loopback_dac_uncollect)
 @pytest.mark.parametrize(["board", "config"], list_configs())
-def test_analogue_loopback(pytestconfig, board, config):
+def test_loopback_dac(pytestconfig, board, config):
     features = get_config_features(board, config)
 
     xsig_config = f'mc_i2s_loopback_{features["analogue_o"]}ch'
