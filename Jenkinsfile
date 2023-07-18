@@ -30,11 +30,19 @@ pipeline {
           steps {
             viewEnv() {
               dir("${REPO}") {
+                // Build the loopback version of the configs for 316 and rename them to have _i2sloopback
+                sh 'xmake -C app_usb_aud_xk_316_mc -j16 PARTIAL_TEST_CONFIGS=1 TEST_SUPPORT_CONFIGS=1 EXTRA_BUILD_FLAGS=-DI2S_LOOPBACK=1'
+                sh 'for folder in app_usb_aud_xk_316_mc/bin/?*; do mv "$folder" "${folder/%/_i2sloopback}"; done'
+                sh 'for config in app_usb_aud_xk_316_mc/bin/?*/*.xe; do mv "$config" "${config/%.xe/_i2sloopback.xe}"; done'
+
+                // xmake does not fully rebuild when different build peramitars are given, so must be cleaned before building without loopback
+                sh 'xmake clean -j16 PARTIAL_TEST_CONFIGS=1 TEST_SUPPORT_CONFIGS=1'
+
                 // Build and archive the main app configs; doing each app separately is faster than xmake in top directory
                 sh 'xmake -C app_usb_aud_xk_316_mc -j16'
                 sh 'xmake -C app_usb_aud_xk_216_mc -j16'
                 sh 'xmake -C app_usb_aud_xk_evk_xu316 -j16'
-                archiveArtifacts artifacts: "app_usb_aud_*/bin/**/*.xe", fingerprint: true, allowEmptyArchive: false
+                archiveArtifacts artifacts: "app_usb_aud_*/bin/**/*.xe", excludes: "*_i2sloopback*" , fingerprint: true, allowEmptyArchive: false
 
                 // Build all other configs for testing and stash for stages on the later agents
                 sh 'xmake -C app_usb_aud_xk_316_mc -j16 BUILD_TEST_CONFIGS=1 TEST_SUPPORT_CONFIGS=1'
