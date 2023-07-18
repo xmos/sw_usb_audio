@@ -9,6 +9,7 @@ Requirements
 Test modules that run on a stand-alone device under test (DUT):
 
 * test_dfu
+* test_loopback
 
 Test modules that require the DUT to be connected to an xCORE-200 MCAB (the audio analyzer harness):
 
