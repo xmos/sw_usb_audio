@@ -423,13 +423,13 @@ void AudioHwInit()
 /* Mute DACs and place in standby */
 void AudioHwConfig_Mute()
 {
-    WriteAllDacRegs(PCM5122_MUTE,           0x11); // Soft Mute both channels
+    WriteAllDacRegs(PCM5122_MUTE,           0x11); // Soft mute both channels
     delay_milliseconds(3);                         // Wait for mute to take effect. This takes 104 samples, this is 2.4ms @ 44.1kHz. So lets say 3ms to cover everything.
     WriteAllDacRegs(PCM5122_STANDBY_PWDN,   0x10); // Request standby mode while we change regs
 }
 
 /* Place DACs in run mode and un-mute */
-void AudioHwConfig_Unmute()
+void AudioHwConfig_UnMute()
 {
     WriteAllDacRegs(PCM5122_STANDBY_PWDN,   0x00); // Set DAC in run mode (no standby or powerdown)
     delay_milliseconds(1);
