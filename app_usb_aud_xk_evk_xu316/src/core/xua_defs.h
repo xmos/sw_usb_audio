@@ -1,7 +1,6 @@
 /**
  * @file       xua_conf.h
- * @brief      Defines relating to device configuration and customisation.
- *             For xCORE.ai eXplorer
+ * @brief      Defines relating to configuration and customisation of lib_xua
  */
 #ifndef _XUA_CONF_H_
 #define _XUA_CONF_H_
@@ -9,9 +8,9 @@
 #include "../../../shared/version.h"
 
 /*
- * Device configuration option defines to override default defines found devicedefines.h
+ * Device configuration option defines to override default defines found in xua_conf_default.h
  *
- * Build can be customised but changing and adding defines here
+ * Build can be customised by changing and adding defines here
  *
  * Note, we check if they are already defined in Makefile
  */
@@ -34,6 +33,16 @@
 /* Mixing disabled by default */
 #ifndef MAX_MIX_COUNT
 #define MAX_MIX_COUNT      (0)
+#endif
+
+/* Device to host channel count */
+#ifndef NUM_USB_CHAN_IN
+#define NUM_USB_CHAN_IN    (2)
+#endif
+
+/* Host to device channel count */
+#ifndef NUM_USB_CHAN_OUT
+#define NUM_USB_CHAN_OUT   (2)
 #endif
 
 /* Board is self-powered i.e. not USB bus-powered */
@@ -126,71 +135,5 @@
 // DFU_FLASH_DEVICE is a comma-separated list of flash spec structures
 // This define is used in sc_usb_audio/module_usb_audio/flashlib_user.c
 #define DFU_FLASH_DEVICE FL_QUADDEVICE_AT25FF321A
-
-/* Calculate channel counts based on features */
-#if (XUA_SPDIF_TX_EN)
-#define SPDIF_TX_CHANS     (2)
-#else
-#define SPDIF_TX_CHANS     (0)
-#endif
-
-#if (XUA_SPDIF_RX_EN)
-#define SPDIF_RX_CHANS     (2)
-#else
-#define SPDIF_RX_CHANS     (0)
-#endif
-
-#if (XUA_ADAT_TX_EN)
-#define ADAT_TX_CHANS      (8)
-#else
-#define ADAT_TX_CHANS      (0)
-#endif
-
-#if (XUA_ADAT_RX_EN)
-#define ADAT_RX_CHANS      (8)
-#else
-#define ADAT_RX_CHANS      (0)
-#endif
-
-/* Defines relating to channel count and channel arrangement (Set to 0 for disable) */
-//:audio_defs
-/* Number of USB streaming channels - by default calculate by counting audio interfaces */
-#ifndef NUM_USB_CHAN_IN
-#define NUM_USB_CHAN_IN    (I2S_CHANS_ADC + SPDIF_RX_CHANS + ADAT_RX_CHANS)         /* Device to Host */
-#endif
-
-#ifndef NUM_USB_CHAN_OUT
-#define NUM_USB_CHAN_OUT   (I2S_CHANS_DAC + SPDIF_TX_CHANS + ADAT_TX_CHANS)         /* Host to Device */
-#endif
-
-/* Channel index of SPDIF Rx channels (duplicated DAC channels 1/2 when index is 0) */
-/* If we have enough channels then tag on the end as separate channels, otherwise
- * duplicate channels 1/2 */
-#if (NUM_USB_CHAN_OUT >= (I2S_CHANS_DAC+2))
-#define SPDIF_TX_INDEX     (I2S_CHANS_DAC)
-#else
-#define SPDIF_TX_INDEX     (0)
-#endif
-
-/* Channel index of SPDIF Rx channels */
-#if (NUM_USB_CHAN_IN >= (I2S_CHANS_ADC+2))
-#define SPDIF_RX_INDEX     (I2S_CHANS_ADC)
-#else
-#define SPDIF_RX_INDEX     (0)
-#endif
-
-/* Channel index of ADAT Tx channels */
-#if (XUA_SPDIF_TX_EN == 1)
-#define ADAT_TX_INDEX      (SPDIF_TX_INDEX + 2)
-#else
-#define ADAT_TX_INDEX      (I2S_CHANS_DAC)
-#endif
-
-/* Channel index of ADAT Rx channels */
-#if defined(XUA_SPDIF_RX_EN) && (XUA_SPDIF_RX_EN == 1)
-#define ADAT_RX_INDEX      (SPDIF_RX_INDEX + 2)
-#else
-#define ADAT_RX_INDEX      (I2S_CHANS_ADC)
-#endif
 
 #endif
