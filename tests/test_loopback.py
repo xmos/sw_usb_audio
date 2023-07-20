@@ -64,6 +64,14 @@ def test_loopback_dac(pytestconfig, board, config):
 
     with XrunDut(adapter_dut, board, config) as dut:
         for fs in features["samp_freqs"]:
+            # Issue 120
+            if (
+                platform.system() == "Windows"
+                and board == "xk_316_mc"
+                and "winbuiltin" in config
+                and fs in [44100, 48000]
+            ):
+                continue
             with XsigInput(fs, duration, xsig_config_path, dut.dev_name) as xsig_proc:
                 time.sleep(duration + 6)
                 xsig_lines = xsig_proc.get_output()
