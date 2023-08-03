@@ -429,11 +429,11 @@ void AudioHwInit()
     if(I2S_LOOPBACK)
     {
 
-        WriteAllAdcRegs(PCM1865_RESET, 0xFE);           //Reset all ADC registers.
-        WriteAllAdcRegs(PCM1865_PWR_STATE, 0x77);       //Sets ADCs into powerdown.
-        WriteAllAdcRegs(PCM1865_FMT, 0x47);             //Sets TDM mode.
-        WriteAllAdcRegs(PCM1865_TX_TDM_OFFSET, 0x42);   //Sets TX_TDM_OFFSET to 66.
-
+        WriteAllAdcRegs(PCM1865_RESET, 0xFE);           // Reset all ADC registers.
+        WriteAllAdcRegs(PCM1865_PWR_STATE, 0x77);       // Sets ADCs into powerdown.
+        WriteAllAdcRegs(PCM1865_FMT, 0b01010011);       // Sets 1/256 TDM mode, 32bit TX_WLEN
+        WriteAllAdcRegs(PCM1865_TX_TDM_OFFSET, 191);    // Sets TX_TDM_OFFSET to 191
+                                                        // Note, expect ADCs to clash with DAC channels 7/8 in loopback TDM mode
         WriteAllDacRegs(PMC5122_DE_SDOUT, 0x01);
         WriteAllDacRegs(PCM5122_GPIO_OUT_SEL, 0x07);
         WriteAllDacRegs(PMC5122_GPIO_ENABLE, 0x20);
