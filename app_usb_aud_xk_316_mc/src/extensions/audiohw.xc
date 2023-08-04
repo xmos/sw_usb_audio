@@ -426,20 +426,18 @@ void AudioHwInit()
             assert(result == I2C_REGOP_SUCCESS && msg("DAC I2C write reg failed"));
         }
     }
+
     if(I2S_LOOPBACK)
     {
-
         WriteAllAdcRegs(PCM1865_RESET, 0xFE);           // Reset all ADC registers.
         WriteAllAdcRegs(PCM1865_PWR_STATE, 0x77);       // Sets ADCs into powerdown.
         WriteAllAdcRegs(PCM1865_FMT, 0b01010011);       // Sets 1/256 TDM mode, 32bit TX_WLEN
         WriteAllAdcRegs(PCM1865_TX_TDM_OFFSET, 191);    // Sets TX_TDM_OFFSET to 191
                                                         // Note, expect ADCs to clash with DAC channels 7/8 in loopback TDM mode
-        /* Power down ADC's - sequence from 11.5.3 */
-        WriteAllAdcRegs( 0x00, 0x00);  // Select page0
-        WriteAllAdcRegs(0x70, 0x72);   // Enter sleep mode
-        WriteAllAdcRegs(0x00, 0xfd);   // Select page253
-        WriteAllAdcRegs(0x14, 0x10);   // Change global bias current
-        WriteAllAdcRegs(0x00, 0x00);   //Select page0
+
+        WriteAllDacRegs(PMC5122_DE_SDOUT, 0x01);
+        WriteAllDacRegs(PCM5122_GPIO_OUT_SEL, 0x07);
+        WriteAllDacRegs(PMC5122_GPIO_ENABLE, 0x20);
     }
 }
 
