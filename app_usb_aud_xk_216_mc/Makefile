@@ -1,4 +1,4 @@
-# The TARGET variable determines what target system the application is 
+# The TARGET variable determines what target system the application is
 # compiled for. It either refers to an XN file in the source directories
 # or a valid argument for the --target option when compiling.
 
@@ -10,7 +10,7 @@ APP_NAME =
 BUILD_FLAGS    = $(EXTRA_BUILD_FLAGS) -fcomment-asm -O3 -report -lquadflash -g -fxscope -march=xs2a -DUSB_TILE=tile[1] -DADAT_TX_USE_SHARED_BUFF=1 -DQUAD_SPI_FLASH=1
 
 # The USED_MODULES variable lists other module used by the application. These
-# modules will extend the SOURCE_DIRS, INCLUDE_DIRS and LIB_DIRS variables. 
+# modules will extend the SOURCE_DIRS, INCLUDE_DIRS and LIB_DIRS variables.
 # Modules are expected to be in the directory above the BASE_DIR directory.
 USED_MODULES = lib_xua lib_i2c
 
@@ -33,7 +33,7 @@ USED_MODULES = lib_xua lib_i2c
 # Fully tested build configs (Note these make use of the defaults in xua_conf.h)
 
 # Audio Class 1, I2S Master, 2xInput, 2xOutput
-INCLUDE_ONLY_IN_1AMi2o2xxxxxx = 
+INCLUDE_ONLY_IN_1AMi2o2xxxxxx =
 XCC_FLAGS_1AMi2o2xxxxxx = $(BUILD_FLAGS)        -DAUDIO_CLASS=1
 
 # Audio Class 2, I2S Master, 10xInput, 10xOutput, S/PDIF Rx, S/PDIF Tx
