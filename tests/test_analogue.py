@@ -99,7 +99,7 @@ def test_analogue_input(pytestconfig, board, config):
         AudioAnalyzerHarness(adapter_harness) as harness,
     ):
         for fs in features["samp_freqs"]:
-            with XsigInput(fs, duration, xsig_config_path, dut.dev_name) as xsig_proc:
+            with XsigInput(fs, duration, xsig_config_path, dut.dev_name, ident=f"analogue_input-{board}-{config}-{fs}") as xsig_proc:
                 # Sleep for a few extra seconds so that xsig will have completed
                 time.sleep(duration + 6)
                 xsig_lines = xsig_proc.get_output()

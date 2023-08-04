@@ -447,10 +447,11 @@ class XsigProcess:
     runtime), a configuration file and the name of the audio device to use.
     """
 
-    def __init__(self, fs, duration, cfg_file, dev_name):
+    def __init__(self, fs, duration, cfg_file, dev_name, ident=None):
         self.duration = 0 if duration is None else duration
         binary_name = "xsig.exe" if platform.system() == "Windows" else "xsig"
-        xsig = Path(__file__).parent / "tools" / binary_name
+        self.xsig_dir = Path(__file__).parent / "tools"
+        xsig = self.xsig_dir / binary_name
         if not xsig.exists():
             pytest.fail(f"xsig binary not present in {xsig.parent}")
         self.xsig_cmd = [
@@ -463,16 +464,32 @@ class XsigProcess:
         ]
         self.proc = None
         self.output_file = None
+        self.ident = ident
 
     def __enter__(self):
         self.proc = subprocess.Popen(
-            self.xsig_cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT
+            self.xsig_cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, cwd=self.xsig_cmd[0].parent
         )
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        if self.proc.poll() is None:
+        if self.proc and (self.proc.poll() is None):
             self.proc.terminate()
+
+        # Rename any glitch data csv files
+        if self.ident:
+            csv_files = self.xsig_dir.glob("*.csv")
+            for file in csv_files:
+                filename = file.name
+
+                # Glitch data files are called glitch.<chan>.sig.csv and glitch.<chan>.fft.csv
+                # Add in the ident string to make the filename unique for the test run
+                artifact_re = r"^(glitch\.)\d.*\.csv$"
+                match = re.search(artifact_re, filename)
+                if match:
+                    pre = match.group(1)
+                    target = self.xsig_dir / f"{pre}{self.ident}.{filename[len(pre):]}"
+                    file.rename(target)
 
     def get_output(self):
         try:
@@ -508,7 +525,7 @@ class XsigInput(XsigProcess):
                     'from pathlib import PosixPath\n'
                     f'with open("{self.output_file.name}", "w+") as f:\n'
                     '    try:\n'
-                    f'        ret = subprocess.run({self.xsig_cmd}, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout={self.duration+5})\n'
+                    f'        ret = subprocess.run({self.xsig_cmd}, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout={self.duration+5}, cwd=PosixPath("{self.xsig_dir}"))\n'
                     f'    except subprocess.TimeoutExpired:\n'
                     f'        f.write("Timeout running command: {self.xsig_cmd}")\n'
                     '    else:\n'
@@ -526,7 +543,6 @@ class XsigInput(XsigProcess):
     def __exit__(self, exc_type, exc_val, exc_tb):
         if self.proc is None:
             del self.output_file
-            return
         super().__exit__(exc_type, exc_val, exc_tb)
 
     def get_output(self):
