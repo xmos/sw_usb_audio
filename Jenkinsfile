@@ -1,4 +1,4 @@
-@Library('xmos_jenkins_shared_library@v0.26.0') _
+@Library('xmos_jenkins_shared_library@v0.27.0') _
 
 getApproval()
 
@@ -7,7 +7,7 @@ pipeline {
   options {
     skipDefaultCheckout()
     timestamps()
-    buildDiscarder(xmosDiscardBuildSettings())
+    buildDiscarder(xmosDiscardBuildSettings(onlyArtifacts=true))
   }
   parameters {
       choice(name: 'TEST_LEVEL', choices: ['smoke', 'nightly', 'weekend'],
