@@ -96,7 +96,7 @@ def test_volume_input(pytestconfig, board, config):
                 json.dump(xsig_json, xsig_file)
                 xsig_file.flush()
 
-                with XsigInput(fs, duration, Path(xsig_file.name), dut.dev_name) as xsig_proc:
+                with XsigInput(fs, duration, Path(xsig_file.name), dut.dev_name, ident=f"volume_input-{board}-{config}-{channel}") as xsig_proc:
                     start_time = time.time()
                     # Allow some extra time to ensure xsig has completed
                     end_time = start_time + duration + 7

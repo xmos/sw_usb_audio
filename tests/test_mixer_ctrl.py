@@ -64,7 +64,7 @@ def test_routing_ctrl_input(pytestconfig, ctrl_app, board, config):
             mixer_cmd = [ctrl_app, "--set-daw-channel-map", f"{ch}", f"{host_input}"]
             subprocess.run(mixer_cmd, timeout=10)
 
-        with XsigInput(fs, duration, xsig_config_path, dut.dev_name) as xsig_proc:
+        with XsigInput(fs, duration, xsig_config_path, dut.dev_name, ident=f"routing_ctrl_input-{board}-{config}") as xsig_proc:
             time.sleep(duration + 6)
             xsig_lines = xsig_proc.get_output()
 
@@ -161,7 +161,7 @@ def test_mixing_ctrl_input(pytestconfig, ctrl_app, board, config):
             mixer_cmd = [ctrl_app, "--set-value", "0", f"{(mixer_row * num_mixes) + ch}", "0"]
             subprocess.run(mixer_cmd, timeout=10)
 
-        with XsigInput(fs, duration, xsig_config_path, dut.dev_name) as xsig_proc:
+        with XsigInput(fs, duration, xsig_config_path, dut.dev_name, ident=f"mixing_ctrl_input-{board}-{config}") as xsig_proc:
             time.sleep(duration + 6)
             xsig_lines = xsig_proc.get_output()
 
