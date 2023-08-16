@@ -25,17 +25,16 @@ def use_windows_builtin_driver(board, config):
 
 
 def product_str_from_board_config(board, config):
+    if platform.system() == "Windows" and not use_windows_builtin_driver(board, config):
+        return "XMOS USB Audio Device"
+
     if board == "xk_216_mc":
         if config.startswith("1"):
             return "XMOS xCORE-200 MC (UAC1.0)"
         elif config.startswith("2"):
             return "XMOS xCORE-200 MC (UAC2.0)"
     elif board == "xk_316_mc":
-        if platform.system() == "Windows" and not use_windows_builtin_driver(
-            board, config
-        ):
-            return "XMOS XK-AUDIO-316-MC"
-        elif config.startswith("1"):
+        if config.startswith("1"):
             return "XMOS xCORE.ai MC (UAC1.0)"
         elif config.startswith("2"):
             return "XMOS xCORE.ai MC (UAC2.0)"
@@ -51,47 +50,23 @@ def product_str_from_board_config(board, config):
 
 
 def query_device_found(name):
-    if platform.system() == "Windows":
-        desc_re = r"Device Description:\s+(.*)\n"
-        status_re = r"Status:\s+(.*)\n"
-        ret = subprocess.run(
-            ["pnputil", "/enum-devices", "/connected"],
-            capture_output=True,
-            text=True,
-            timeout=5,
-        )
-        for dev_block in ret.stdout.split("\n\n"):
-            match = re.search(desc_re, dev_block)
-            if not match:
-                continue
+    binary_name = "xsig.exe" if platform.system() == "Windows" else "xsig"
+    xsig_bin = Path(__file__).parent / "tools" / binary_name
+    ret = subprocess.run(
+        [xsig_bin, "--list-devices"],
+        capture_output=True,
+        text=True,
+        timeout=5,
+    )
 
-            dev_desc = match.group(1)
-            if name not in dev_desc:
-                continue
-
-            match = re.search(status_re, dev_block)
-            if not match:
-                continue
-
-            if match.group(1) == "Started":
-                return True
-    elif platform.system() == "Darwin":
-        ret = subprocess.run(
-            ["system_profiler", "SPUSBDataType"],
-            capture_output=True,
-            text=True,
-            timeout=5,
-        )
-        for line in ret.stdout.split("\n"):
-            if name in line:
-                return True
-    else:
-        pytest.fail(f"Unsupported host platform {platform.system()}")
+    for line in ret.stdout.split("\n"):
+        if name in line:
+            return True
 
     return False
 
 
-def wait_for_enumeration(board, config, adapter_id):
+def wait_for_portaudio(board, config, adapter_id):
     timeout = 30
     prod_str = product_str_from_board_config(board, config)
 
@@ -407,15 +382,14 @@ class XrunDut:
 
     def __enter__(self):
         firmware = get_firmware_path(self.board, self.config)
-        subprocess.run(["xrun", "--adapter-id", self.adapter_id, firmware])
-        self.dev_name = wait_for_enumeration(self.board, self.config, self.adapter_id)
-        # On Windows, need to set different device names based on which driver is being used
-        if platform.system() == "Windows":
-            if use_windows_builtin_driver(self.board, self.config):
-                self.dev_name = "ASIO4ALL v2"
-            else:
-                self.dev_name = "XMOS USB Audio Device"
-        time.sleep(5)
+        subprocess.run(["xrun", "--adapter-id", self.adapter_id, firmware], timeout=30)
+        self.dev_name = wait_for_portaudio(self.board, self.config, self.adapter_id)
+        if platform.system() == "Windows" and use_windows_builtin_driver(
+            self.board, self.config
+        ):
+            # Select ASIO4ALL as device for built-in driver testing (cannot wait for this device
+            # name in wait_for_portaudio because it is always present)
+            self.dev_name = "ASIO4ALL v2"
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -468,7 +442,10 @@ class XsigProcess:
 
     def __enter__(self):
         self.proc = subprocess.Popen(
-            self.xsig_cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, cwd=self.xsig_cmd[0].parent
+            self.xsig_cmd,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            cwd=self.xsig_cmd[0].parent,
         )
         return self
 
