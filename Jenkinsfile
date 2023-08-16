@@ -44,7 +44,7 @@ pipeline {
                 sh 'xmake -C app_usb_aud_xk_316_mc -j16'
                 sh 'xmake -C app_usb_aud_xk_216_mc -j16'
                 sh 'xmake -C app_usb_aud_xk_evk_xu316 -j16'
-                archiveArtifacts artifacts: "app_usb_aud_*/bin/**/*.xe", excludes: "*_i2sloopback*" , fingerprint: true, allowEmptyArchive: false
+                archiveArtifacts artifacts: "app_usb_aud_*/bin/**/*.xe", excludes: "**/*_i2sloopback*" , fingerprint: true, allowEmptyArchive: false
 
                 // Build all other configs for testing and stash for stages on the later agents
                 sh 'xmake -C app_usb_aud_xk_316_mc -j16 BUILD_TEST_CONFIGS=1 TEST_SUPPORT_CONFIGS=1'
