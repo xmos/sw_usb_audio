@@ -4,6 +4,8 @@ sw_usb_audio Change Log
 7.3.1
 -----
 
+  * CHANGE:    app_usb_aud_xk_evk_xu316: Mixer disabled by default
+
   * Changes to dependencies:
 
     - lib_xua: 3.5.0 -> 3.5.1
