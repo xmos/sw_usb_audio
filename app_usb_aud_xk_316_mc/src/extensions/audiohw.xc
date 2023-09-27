@@ -10,9 +10,20 @@
 #warning ADC only supports TDM operation at 32 bits
 #endif
 
+#ifndef I2S_LOOPBACK
+#define I2S_LOOPBACK             (0)
+#endif
+
 port p_scl = PORT_I2C_SCL;
 port p_sda = PORT_I2C_SDA;
-out port p_ctrl = PORT_CTRL;
+out port p_ctrl = PORT_CTRL;                /* p_ctrl:
+                                             * [0:3] - Unused
+                                             * [4]   - EN_3v3_N    (1v0 hardware only)
+                                             * [5]   - EN_3v3A
+                                             * [6]   - EXT_PLL_SEL (CS2100:0, SI: 1)
+                                             * [7]   - MCLK_DIR    (Out:0, In: 1)
+                                             */
+
 on tile[0]: in port p_margin = XS1_PORT_1G;  /* CORE_POWER_MARGIN:   Driven 0:   0.925v
                                               *                      Pull down:  0.922v
                                               *                      High-z:     0.9v
@@ -28,34 +39,27 @@ on tile[0]: in port p_margin = XS1_PORT_1G;  /* CORE_POWER_MARGIN:   Driven 0:  
 #define USE_FRACTIONAL_N         (0)
 #endif
 
-/* p_ctrl:
- * [0:3] - Unused
- * [4]   - EN_3v3_N
- * [5]   - EN_3v3A
- * [6]   - EXT_PLL_SEL (CS2100:0, SI: 1)
- * [7]   - MCLK_DIR    (Out:0, In: 1)
- */
 #if (USE_FRACTIONAL_N)
 #define EXT_PLL_SEL__MCLK_DIR    (0x00)
 #else
 #define EXT_PLL_SEL__MCLK_DIR    (0x80)
 #endif
 
-#ifndef I2S_LOOPBACK
-#define I2S_LOOPBACK 0
-#endif
-void ctrlPort()
+/* Board setup for XU316 MC Audio (1v1) */
+void board_setup()
 {
-    // Drive control port to turn on 3V3 and set MCLK_DIR
-    // Note, "soft-start" to reduce current spike
-    // Note, 3v3_EN is inverted
-    for (int i = 0; i < 30; i++)
-    {
-        p_ctrl <: EXT_PLL_SEL__MCLK_DIR | 0x30; /* 3v3: off, 3v3A: on */
-        delay_microseconds(5);
-        p_ctrl <: EXT_PLL_SEL__MCLK_DIR | 0x20; /* 3v3: on, 3v3A: on */
-        delay_microseconds(5);
-    }
+    /* "Drive high mode" - drive high for 1, non-driving for 0 */
+    set_port_drive_high(p_ctrl);
+
+    /* Ensure high-z for 0.9v */
+    p_margin :> void;
+
+    /* Drive control port to turn on 3V3 and mclk direction appropriately.
+     * Bits set to low will be high-z, pulled down */
+    p_ctrl <: EXT_PLL_SEL__MCLK_DIR | 0x20;
+
+    /* Wait for power supplies to be up and stable */
+    delay_milliseconds(10);
 }
 
 /* Working around not being able to extend an unsafe interface (Bugzilla #18670)*/
