@@ -1,4 +1,4 @@
-# The TARGET variable determines what target system the application is 
+# The TARGET variable determines what target system the application is
 # compiled for. It either refers to an XN file in the source directories
 # or a valid argument for the --target option when compiling.
 
@@ -7,10 +7,10 @@ APP_NAME =
 
 # The flags passed to xcc when building the application
 # The EXTRA_BUILD_FLAGS variable can be used on the xmake command line to add options
-BUILD_FLAGS    = $(EXTRA_BUILD_FLAGS) -fcomment-asm -O3 -report -lquadflash -g -fxscope -DUSB_TILE=tile[0] -DADAT_TX_USE_SHARED_BUFF=1 -DQUAD_SPI_FLASH=1
+BUILD_FLAGS    = $(EXTRA_BUILD_FLAGS) -fcomment-asm -O3 -report -lquadflash -g -fxscope -DUSB_TILE=tile[0] -DADAT_TX_USE_SHARED_BUFF=1
 
 # The USED_MODULES variable lists other module used by the application. These
-# modules will extend the SOURCE_DIRS, INCLUDE_DIRS and LIB_DIRS variables. 
+# modules will extend the SOURCE_DIRS, INCLUDE_DIRS and LIB_DIRS variables.
 # Modules are expected to be in the directory above the BASE_DIR directory.
 USED_MODULES = lib_xua lib_i2c
 
@@ -57,7 +57,7 @@ XCC_FLAGS_2AMi8o8xxxxxx_mix8 = $(BUILD_FLAGS)   -DMAX_MIX_COUNT=8
 
 # Audio Class 2, Async, I2S Master, 8xInput, 8xOutput, TDM
 # TODO can run at 192kHz when AppPLL settings for 49MHz added
-INCLUDE_ONLY_IN_2AMi8o8xxxxxx_tdm8 = 
+INCLUDE_ONLY_IN_2AMi8o8xxxxxx_tdm8 =
 XCC_FLAGS_2AMi8o8xxxxxx_tdm8 = $(BUILD_FLAGS)   -DXUA_PCM_FORMAT=XUA_PCM_FORMAT_TDM \
                                                 -DMAX_FREQ=96000
 
