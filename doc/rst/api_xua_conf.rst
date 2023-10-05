@@ -8,7 +8,7 @@ An application using the USB audio framework provided by ``lib_xua``  needs to h
 Defaults for these defines are found in ``lib_xua`` in ``xua_conf_default.h``.
 
 An application should override these defines in an optional ``xua_conf.h`` file or in the ``Makefile``
-for a relevant build configuration. 
+for a relevant build configuration.
 
 This section documents commonly used defines, for full listings and documentation see the ``lib_xua``.
 
@@ -21,23 +21,27 @@ Code location (tile)
 .. doxygendefine:: MIDI_TILE
 .. doxygendefine:: PLL_REF_TILE
 .. doxygendefine:: SPDIF_TX_TILE
+.. doxygendefine:: PLL_REF_TILE
+
 
 Channel Counts
 ~~~~~~~~~~~~~~
 
-.. doxygendefine:: NUM_USB_CHAN_OUT 
-.. doxygendefine:: NUM_USB_CHAN_IN 
-.. doxygendefine:: I2S_CHANS_DAC 
-.. doxygendefine:: I2S_CHANS_ADC 
+.. doxygendefine:: NUM_USB_CHAN_OUT
+.. doxygendefine:: NUM_USB_CHAN_IN
+.. doxygendefine:: I2S_CHANS_DAC
+.. doxygendefine:: I2S_CHANS_ADC
 .. doxygendefine:: DSD_CHANS_DAC
 
-Frequencies and Clocks 
+Frequencies and Clocks
 ~~~~~~~~~~~~~~~~~~~~~~
 
 .. doxygendefine:: MAX_FREQ
 .. doxygendefine:: MIN_FREQ
+.. doxygendefine:: DEFAULT_FREQ
 .. doxygendefine:: MCLK_441
 .. doxygendefine:: MCLK_48
+.. doxygendefine:: XUA_USE_APP_PLL
 
 Audio Class
 ~~~~~~~~~~~

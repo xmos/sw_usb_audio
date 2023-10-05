@@ -30,6 +30,11 @@ USED_MODULES = lib_xua lib_i2c
 #
 # e.g. 2AMi10o10xxsxxx: Audio class 2.0, Asynchronous, I2S Master, input and output enabled (10 channels each), no MIDI, SPDIF output, no SPDIF input, no ADAT
 
+XCC_FLAGS_2AMi16o16xxxxxx_tdm8 = $(BUILD_FLAGS)	-DI2S_CHANS_DAC=16 -DI2S_CHANS_ADC=16 -DNUM_USB_CHAN_OUT=16 -DNUM_USB_CHAN_IN=16 \
+ 											  	-DMAX_FREQ=96000 -DXUA_PCM_FORMAT=XUA_PCM_FORMAT_TDM -DI2S_CHANS_PER_FRAME=8
+INCLUDE_ONLY_IN_2AMi16o16xxxxxx_tdm8  =
+
+
 #
 # Supported build configs (Note these make use of the defaults in xua_conf.h)
 #
@@ -91,6 +96,12 @@ XCC_FLAGS_1SMi2o2xxxxxx = $(BUILD_FLAGS)        -DAUDIO_CLASS=1 \
 # Audio Class 2, Sync, I2S Master, 8xInput, 8xOutput
 INCLUDE_ONLY_IN_2SMi8o8xxxxxx =
 XCC_FLAGS_2SMi8o8xxxxxx = $(BUILD_FLAGS)        -DXUA_SYNCMODE=XUA_SYNCMODE_SYNC
+
+# Audio Class 2, Sync, I2S Master,0xInput, 8xOutput
+INCLUDE_ONLY_IN_2SMi0o8xxxxxx =
+XCC_FLAGS_2SMi0o8xxxxxx = $(BUILD_FLAGS)        -DXUA_SYNCMODE=XUA_SYNCMODE_SYNC \
+												-DNUM_USB_CHAN_IN=0 \
+												-DI2S_CHANS_ADC=0
 
 # Audio Class 2, Sync, I2S Slave, 8xInput, 8xOutput
 INCLUDE_ONLY_IN_2SSi8o8xxxxxx =
