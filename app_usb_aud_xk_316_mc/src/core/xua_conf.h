@@ -10,7 +10,7 @@
 #include "../../../shared/version.h"
 
 /*
- * Device configuration option defines to override default defines found lib_xua/api/xua_conf_defaults.h
+ * Device configuration option defines to override default defines found in lib_xua/api/xua_conf_defaults.h
  *
  * Build can be customised but changing and adding defines here
  *
@@ -117,7 +117,12 @@
 #define MCLK_48            (512*48000)   /* 48, 96 etc */
 #endif
 
-/* Maximum frequency device runs at */
+/* Minumum sample frequency device runs at */
+#ifndef MIN_FREQ
+#define MIN_FREQ           (44100)
+#endif
+
+/* Maximum sample frequency device runs at */
 #ifndef MAX_FREQ
 #define MAX_FREQ           (192000)
 #endif

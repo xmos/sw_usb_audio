@@ -9,7 +9,7 @@
 #include "../../../shared/version.h"
 
 /*
- * Device configuration option defines to override default defines found devicedefines.h
+ * Device configuration option defines to override default defines found in lib_xua/api/xua_conf_defaults.h
  *
  * Build can be customised but changing and adding defines here
  *
