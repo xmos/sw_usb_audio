@@ -5,7 +5,7 @@ XCC_FLAGS_1AMi6o2xxxxxx = $(BUILD_FLAGS) -DAUDIO_CLASS=1 \
                                          -DNUM_USB_CHAN_IN_FS=6 \
                                          -DMAX_FREQ_FS=44100 \
                                          -DSTREAM_FORMAT_INPUT_1_RESOLUTION_BITS=16
-INCLUDE_ONLY_IN_1AMi8o2xxxxxx =
+INCLUDE_ONLY_IN_1AMi6o2xxxxxx =
 
 # Audio Class 2, Async, I2S Master, No I2s Input, No I2S Output, S/PDIF Tx
 XCC_FLAGS_2AXi0o2xxsxxx = $(BUILD_FLAGS) -DXUA_SPDIF_TX_EN=1 \
