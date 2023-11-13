@@ -1,7 +1,7 @@
 # Configs that have only had their build process tested
 
 # Audio Class 1, Async, I2S Master, 8xInput, 2xOutput
-XCC_FLAGS_1AMi8o2xxxxxx = $(BUILD_FLAGS) -DAUDIO_CLASS=1 \
+XCC_FLAGS_1AMi6o2xxxxxx = $(BUILD_FLAGS) -DAUDIO_CLASS=1 \
                                          -DNUM_USB_CHAN_IN_FS=6 \
                                          -DMAX_FREQ_FS=44100 \
                                          -DSTREAM_FORMAT_INPUT_1_RESOLUTION_BITS=16
