@@ -11,7 +11,7 @@ BUILD_FLAGS     = -fcomment-asm -Xmapper --map -Xmapper MAPFILE -Wall -O3 -repor
 # The USED_MODULES variable lists other module used by the application. These
 # modules will extend the SOURCE_DIRS, INCLUDE_DIRS and LIB_DIRS variables.
 # Modules are expected to be in the directory above the BASE_DIR directory.
-USED_MODULES = lib_xud lib_xua lib_i2c lib_i2s
+USED_MODULES = lib_xua lib_i2c lib_i2s
 
 
 # Build config naming scheme:
