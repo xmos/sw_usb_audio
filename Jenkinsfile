@@ -98,6 +98,7 @@ pipeline {
                 withEnv(["XMOS_CMAKE_PATH=${WORKSPACE}/xcommon_cmake"]) {
                   sh "cmake -G 'Unix Makefiles' -B build -D BUILD_TESTED_CONFIGS=TRUE"
                   sh "xmake -C build -j16"
+                  archiveArtifacts artifacts: "build/manifest.txt", fingerprint: true, allowEmptyArchive: false
                 }
               }
             }
