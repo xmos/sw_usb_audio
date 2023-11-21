@@ -1,9 +1,9 @@
-XMOS xcore.ai USB Audio
-=======================
+Extra I2S Pins Example
+======================
 
 :maintainer: Ross Owen
 :scope: Example
-:description: USB Audio application for xCORE.ai eXplorer board
+:description: USB Audio application for xCORE.ai eXplorer board with extra I2S pins
 :keywords: USB, UAC, I2S
 :boards: xCORE.ai eXplorer (rev 1.x)
 
