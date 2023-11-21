@@ -185,7 +185,7 @@ static inline void trigger_src(streaming chanend c_dsp[SSRC_N_INSTANCES],
                 c_dsp[i] :> sample;
                 unsafe
                 {
-                    error &= fifo_push(fifo, srcOutputBuff, sample);
+                    error |= fifo_push(fifo, srcOutputBuff, sample);
                 }
             }
             if(error)
@@ -267,7 +267,7 @@ void i2s_data(server i2s_frame_callback_if i_i2s, chanend c, streaming chanend c
                 /* Provide samples from the SRC output FIFO */
                 for(size_t i = 0; i < EXTRA_I2S_CHAN_COUNT_OUT; i++)
                 {
-                    error &= fifo_pop(fifo, srcOutputBuff, sample);
+                    error |= fifo_pop(fifo, srcOutputBuff, sample);
 
                     /* Send a 0 zero on FIFO error e.g. underflow */
                     if(error)
