@@ -6,6 +6,9 @@
 #include "i2s.h"
 #include "src.h"
 
+#ifndef USE_ASRC
+#define USE_ASRC (0)
+#endif
 
 #ifndef EXTRA_I2S_CHAN_COUNT_IN
 #define EXTRA_I2S_CHAN_COUNT_IN  (2)
@@ -31,32 +34,32 @@ unsafe chanend uc_i2s;
 
 /* Note, re-using I2S data lines on MC audio board for LR and Bit clocks */
 
-#if 0
-on tile[1]: out buffered port:32 p_i2s_dout[1] = {PORT_I2S_DAC1};
-on tile[1]: in buffered port:32 p_i2s_din[1] = {PORT_I2S_ADC1};
-on tile[1]: out port p_i2s_bclk =               PORT_I2S_BCLK;
-on tile[1]: out buffered port:32 p_i2s_lrclk =  PORT_I2S_LRCLK;
-#else
 on tile[1]: out buffered port:32 p_i2s_dout[1] = {PORT_I2S_DAC1};
 on tile[1]: in buffered port:32 p_i2s_din[1] =   {PORT_I2S_ADC1};
-on tile[1]: out port p_i2s_bclk =                 PORT_I2S_DAC2;
-on tile[1]: out buffered port:32 p_i2s_lrclk =    PORT_I2S_DAC3;
-#endif
-on tile[1]: clock clk_bclk = XS1_CLKBLK_1;
+on tile[1]: in port p_i2s_bclk =                 PORT_I2S_DAC2;
+on tile[1]: in buffered port:32 p_i2s_lrclk =    PORT_I2S_DAC3;
+on tile[1]: in port p_off_bclk =                 XS1_PORT_16A;
+on tile[1]: clock clk_bclk =                     XS1_CLKBLK_1;
 
 extern in port p_mclk_in;
 
-#define     SSRC_N_CHANNELS                  2  //Total number of audio channels to be processed by SRC (minimum 1)
+#define     SRC_N_CHANNELS                (2)   // Total number of audio channels to be processed by SRC (minimum 1)
+#define     SRC_N_INSTANCES               (2)   // Number of instances (each usually run a logical core) used to process audio (minimum 1)
+#define     SRC_CHANNELS_PER_INSTANCE     (SRC_N_CHANNELS/SRC_N_INSTANCES) // Calculated number of audio channels processed by each core
+#define     SRC_N_IN_SAMPLES              (4)   // Number of samples per channel in each block passed into SRC each call
+                                                // Must be a power of 2 and minimum value is 4 (due to two /2 decimation stages)
+#define     SRC_N_OUT_IN_RATIO_MAX        (5)   // Max ratio between samples out:in per processing step (44.1->192 is worst case)
+#define     SRC_DITHER_SETTING            (0)   // Enables or disables quantisation of output with dithering to 24b
+#define     SRC_MAX_NUM_SAMPS_OUT         (SRC_N_OUT_IN_RATIO_MAX * SRC_N_IN_SAMPLES)
+#define     SRC_OUT_BUFF_SIZE             (SRC_CHANNELS_PER_INSTANCE * SRC_MAX_NUM_SAMPS_OUT) // Size of output buffer for SRC for each instance
+#define     SRC_OUT_FIFO_SIZE             (SRC_N_CHANNELS * SRC_MAX_NUM_SAMPS_OUT * 8)        // Size of output FIFO for SRC
 
-#define     SSRC_N_INSTANCES                 2  //Number of instances (each usually run a logical core) used to process audio (minimum 1)
-#define     SSRC_CHANNELS_PER_INSTANCE       (SSRC_N_CHANNELS/SSRC_N_INSTANCES)
-                                                //Calcualted number of audio channels processed by each core
-#define     SSRC_N_IN_SAMPLES                4  //Number of samples per channel in each block passed into SRC each call
-                                                //Must be a power of 2 and minimum value is 4 (due to two /2 decimation stages)
-#define     SSRC_N_OUT_IN_RATIO_MAX          5  //Max ratio between samples out:in per processing step (44.1->192 is worst case)
-#define     SSRC_DITHER_SETTING              0  //Enables or disables quantisation of output with dithering to 24b
-#define     SSRC_MAX_NUM_SAMPS_OUT           (SSRC_N_OUT_IN_RATIO_MAX * SSRC_N_IN_SAMPLES)
-#define     SSRC_OUT_BUFF_SIZE               (SSRC_MAX_NUM_SAMPS_OUT * 8) //Size of FIFO on output of SSRC
+/* Stuff that must be defined for lib_src */
+#define SSRC_N_IN_SAMPLES                 (SRC_N_IN_SAMPLES) /* Used by SRC_STACK_LENGTH_MULT in src_mrhf_ssrc.h */
+#define ASRC_N_IN_SAMPLES                 (SRC_N_IN_SAMPLES) /* Used by SRC_STACK_LENGTH_MULT in src_mrhf_asrc.h */
+
+#define SSRC_N_CHANNELS                   (SRC_CHANNELS_PER_INSTANCE) /* Used by SRC_STACK_LENGTH_MULT in src_mrhf_ssrc.h */
+#define ASRC_N_CHANNELS                   (SRC_CHANNELS_PER_INSTANCE) /* Used by SRC_STACK_LENGTH_MULT in src_mrhf_asrc.h */
 
 typedef struct fifo_f
 {
@@ -66,7 +69,7 @@ typedef struct fifo_f
     int fill;
 } fifo_t;
 
-static void init_fifo(fifo_t &f, int array[size], int size)
+static void init_fifo(fifo_t &f, int array[size], unsigned size)
 {
     f.wrPtr = size/2;
     f.rdPtr = 0;
@@ -80,8 +83,11 @@ static void init_fifo(fifo_t &f, int array[size], int size)
     }
 }
 
+#pragma unsafe arrays
 static inline unsigned fifo_pop(fifo_t &f, int array[], int &sample)
 {
+    static int popCounter = 0;
+
     /* Check for FIFO empty */
     if (!f.fill)
     {
@@ -99,10 +105,19 @@ static inline unsigned fifo_pop(fifo_t &f, int array[], int &sample)
         f.rdPtr = 0;
     }
 
+    //popCounter++;
+
+    if(popCounter == 1000000)
+    {
+        printintln(f.fill);
+        popCounter= 0;
+    }
+
     return 0;
 }
 
-static inline unsigned fifo_push(fifo_t &f, int array[], int sample)
+#pragma unsafe arrays
+static inline unsigned fifo_push(fifo_t &f, int array[], const int sample)
 {
     /* Check for FIFO full */
     if(f.fill >= f.size)
@@ -115,7 +130,7 @@ static inline unsigned fifo_push(fifo_t &f, int array[], int sample)
     f.fill++;
 
     /* Check for wrap */
-    if(f.wrPtr >=f.size)
+    if(f.wrPtr >= f.size)
     {
         f.wrPtr = 0;
     }
@@ -144,22 +159,25 @@ void UserBufferManagement(unsigned sampsFromUsbToAudio[], unsigned sampsFromAudi
     }
 }
 
-static inline void trigger_src(streaming chanend c_dsp[SSRC_N_INSTANCES],
-                                int srcInputBuff[SSRC_N_INSTANCES][SSRC_N_IN_SAMPLES][SSRC_CHANNELS_PER_INSTANCE],
+static inline int trigger_src(streaming chanend c_src[SRC_N_INSTANCES],
+                                int srcInputBuff[SRC_N_INSTANCES][SRC_N_IN_SAMPLES][SRC_CHANNELS_PER_INSTANCE],
                                 fifo_t &fifo,
-                                int srcOutputBuff[SSRC_N_CHANNELS * SSRC_OUT_BUFF_SIZE * 2])
+                                int srcOutputBuff[SRC_OUT_FIFO_SIZE], uint64_t fsRatio)
 {
+
     int nSamps = 0;
 #pragma loop unroll
-    for (int i=0; i<SSRC_N_INSTANCES; i++)
+    for (int i=0; i<SRC_N_INSTANCES; i++)
     {
+        c_src[i] <: fsRatio;
+
 #pragma loop unroll
-        for (int j=0; j<SSRC_N_IN_SAMPLES; j++)
+        for (int j=0; j<SRC_N_IN_SAMPLES; j++)
         {
 #pragma loop unroll
-            for (int k=0; k<SSRC_CHANNELS_PER_INSTANCE; k++)
+            for (int k=0; k<SRC_CHANNELS_PER_INSTANCE; k++)
             {
-                c_dsp[i] <: srcInputBuff[i][j][k];
+                c_src[i] <: srcInputBuff[i][j][k];
             }
         }
     }
@@ -167,26 +185,23 @@ static inline void trigger_src(streaming chanend c_dsp[SSRC_N_INSTANCES],
     /* Get number of samples to receive from all SRC cores */
     /* Note, all nSamps should be equal */
 #pragma loop unroll
-    for (int i=0; i < SSRC_N_INSTANCES; i++)
+    for (int i=0; i < SRC_N_INSTANCES; i++)
     {
-        c_dsp[i] :> nSamps;
+        c_src[i] :> nSamps;
     }
 
-#pragma loop unroll
-    for (int i=0; i<SSRC_N_INSTANCES; i++)
+    unsigned error = 0;
+    for (int j=0; j < nSamps; j++)
     {
-        unsigned error = 0;
-        for (int j=0; j < nSamps; j++)
-        {
 #pragma loop unroll
-            for (int k=0; k<SSRC_CHANNELS_PER_INSTANCE; k++)
+        for (int k=0; k<SRC_CHANNELS_PER_INSTANCE; k++)
+        {
+            int sample;
+#pragma loop unroll
+            for (int i=0; i<SRC_N_INSTANCES; i++)
             {
-                int sample;
-                c_dsp[i] :> sample;
-                unsafe
-                {
-                    error |= fifo_push(fifo, srcOutputBuff, sample);
-                }
+                c_src[i] :> sample;
+                error |= fifo_push(fifo, srcOutputBuff, sample);
             }
             if(error)
             {
@@ -194,18 +209,35 @@ static inline void trigger_src(streaming chanend c_dsp[SSRC_N_INSTANCES],
             }
         }
     }
+
+    return nSamps;
 }
 
-void i2s_data(server i2s_frame_callback_if i_i2s, chanend c, streaming chanend c_src[SSRC_N_INSTANCES])
+void i2s_data(server i2s_frame_callback_if i_i2s, chanend c, streaming chanend c_src[SRC_N_INSTANCES])
 {
     unsigned tmp;
     unsigned samplesIn[EXTRA_I2S_CHAN_COUNT_IN];
 
-    int srcInputBuff[SSRC_N_INSTANCES][SSRC_N_IN_SAMPLES][SSRC_CHANNELS_PER_INSTANCE];
-    int srcOutputBuff[SSRC_N_CHANNELS * SSRC_OUT_BUFF_SIZE * 2];
+    int counter = 0;
+
+    int srcInputBuff[SRC_N_INSTANCES][SRC_N_IN_SAMPLES][SRC_CHANNELS_PER_INSTANCE];
+    int srcOutputBuff[SRC_OUT_FIFO_SIZE];
     int sampleIdx = 0;
 
     fifo_t fifo;
+
+    int usbCounter = 0;
+    int i2sCounter = 0;
+
+    uint64_t fsRatio = (uint64_t) (192/48) << 60;
+    float floatRatio = 4.0;
+
+    unsigned short lastPt = 0;
+
+    int asrcCounter = 0;
+
+    int phaseError = 0;
+    int phaseErrorInt = 0;
 
     init_fifo(fifo, srcOutputBuff, sizeof(srcOutputBuff)/sizeof(srcOutputBuff[0]));
 
@@ -219,7 +251,7 @@ void i2s_data(server i2s_frame_callback_if i_i2s, chanend c, streaming chanend c
 #pragma loop unroll
                 for(size_t i = 0; i< EXTRA_I2S_CHAN_COUNT_OUT; i++)
                 {
-                    srcInputBuff[i/SSRC_CHANNELS_PER_INSTANCE][sampleIdx][i % SSRC_CHANNELS_PER_INSTANCE] = inuint(c);
+                    srcInputBuff[i/SRC_CHANNELS_PER_INSTANCE][sampleIdx][i % SRC_CHANNELS_PER_INSTANCE] = inuint(c);
                 }
                 chkct(c, XS1_CT_END);
 
@@ -232,12 +264,63 @@ void i2s_data(server i2s_frame_callback_if i_i2s, chanend c, streaming chanend c
                 outct(c, XS1_CT_END);
 
                 sampleIdx++;
-                if(sampleIdx == SSRC_N_IN_SAMPLES)
+                if(sampleIdx == SRC_N_IN_SAMPLES)
                 {
                     sampleIdx = 0;
+                    usbCounter++;
+
+                    if(usbCounter == 100)
+                    {
+                        unsigned short pt;
+                        asm volatile(" getts %0, res[%1]" : "=r" (pt) : "r" (p_off_bclk));
+
+                        /* The number of bit clocks we expect on the output i2s */
+                        const unsigned short expectedDiff = 128 * 50 * 4;
+
+                        /* The actual number of bit clocks on the output i2s */
+                        int actualDiff = 0;
+
+                        if (porttimeafter(pt, lastPt))
+                        {
+                            actualDiff = -(short)(lastPt - pt);
+                        }
+                        else
+                        {
+                            actualDiff = (short)(pt - lastPt);
+                        }
+                        lastPt = pt;
+
+                        /* Ignore any large errors at start up */
+                        if(counter> 200)
+                        {
+                            int asrcClocks = asrcCounter * 64;
+                            int error = asrcClocks - (int)actualDiff;
+
+                            phaseError += error;
+
+                            float error_p = (float) (phaseError * 0.000001);
+                            float error_i = (float) (phaseErrorInt * 0.00025);
+
+                            float x = (error_p + error_i);
+
+                            floatRatio = (4.0 + x);
+
+                            /* Clamp ratio to 1000PPM error */
+                            if(floatRatio > 4.001)
+                                floatRatio = 4.001;
+                            if(floatRatio < 3.999)
+                                floatRatio = 3.999;
+
+                            fsRatio = (uint64_t) (floatRatio * (1LL << 60)) ;
+                        }
+
+                        counter++;
+                        usbCounter = 0;
+                        asrcCounter = 0;
+                    }
 
                     /* Send samples to SRC tasks. This function adds returned sample to FIFO */
-                    trigger_src(c_src, srcInputBuff, fifo, srcOutputBuff);
+                    asrcCounter += trigger_src(c_src, srcInputBuff, fifo, srcOutputBuff, fsRatio);
                 }
 
                 break;
@@ -264,6 +347,8 @@ void i2s_data(server i2s_frame_callback_if i_i2s, chanend c, streaming chanend c
                 int error = 0;
                 int sample;
 
+                i2sCounter++;
+
                 /* Provide samples from the SRC output FIFO */
                 for(size_t i = 0; i < EXTRA_I2S_CHAN_COUNT_OUT; i++)
                 {
@@ -287,22 +372,42 @@ void i2s_data(server i2s_frame_callback_if i_i2s, chanend c, streaming chanend c
 
 void src_task(streaming chanend c, int instance)
 {
-    int inputBuff[SSRC_N_IN_SAMPLES * SSRC_CHANNELS_PER_INSTANCE];
-    int outputBuff[SSRC_OUT_BUFF_SIZE];
+    int inputBuff[SRC_N_IN_SAMPLES * SRC_CHANNELS_PER_INSTANCE];
+    int outputBuff[SRC_OUT_BUFF_SIZE];
     int sampsOut = 0;
 
     memset(inputBuff, 0, sizeof(inputBuff));
     memset(outputBuff, 0, sizeof(outputBuff));
 
-    int inputFsCode = 5;  // 192k;
-    int outputFsCode = 1; // 48k
+    int inputFsCode = FS_CODE_192;
+    int outputFsCode = FS_CODE_48;
 
-    ssrc_state_t sSSRCState[SSRC_CHANNELS_PER_INSTANCE];                                     // State of SSRC module
-    int iSSRCStack[SSRC_CHANNELS_PER_INSTANCE][SSRC_STACK_LENGTH_MULT * SSRC_N_IN_SAMPLES];  // Buffers between processing stages
-    ssrc_ctrl_t sSSRCCtrl[SSRC_CHANNELS_PER_INSTANCE];                                       // SSRC Control structure
+#if USE_ASRC
+    asrc_state_t sASRCState[SRC_CHANNELS_PER_INSTANCE];                                   // ASRC state machine state
+    int iASRCStack[SRC_CHANNELS_PER_INSTANCE][ASRC_STACK_LENGTH_MULT * SRC_N_IN_SAMPLES * 100]; // Buffer between filter stages
+    asrc_ctrl_t sASRCCtrl[SRC_CHANNELS_PER_INSTANCE];                                     // Control structure
+    asrc_adfir_coefs_t asrc_adfir_coefs;                                                  // Adaptive filter coefficients
+    uint64_t fsRatio;
+
+    for(int ui = 0; ui < SRC_CHANNELS_PER_INSTANCE; ui++)
+    {
+        unsafe
+        {
+            // Set state, stack and coefs into ctrl structure
+            sASRCCtrl[ui].psState                   = &sASRCState[ui];
+            sASRCCtrl[ui].piStack                   = iASRCStack[ui];
+            sASRCCtrl[ui].piADCoefs                 = asrc_adfir_coefs.iASRCADFIRCoefs;
+        }
+    }
+
+    fsRatio = asrc_init(inputFsCode, outputFsCode, sASRCCtrl, SRC_CHANNELS_PER_INSTANCE, SRC_N_IN_SAMPLES, SRC_DITHER_SETTING);
+#else
+    ssrc_state_t sSSRCState[SRC_CHANNELS_PER_INSTANCE];                                     // State of SSRC module
+    int iSSRCStack[SRC_CHANNELS_PER_INSTANCE][SSRC_STACK_LENGTH_MULT * SRC_N_IN_SAMPLES];   // Buffers between processing stages
+    ssrc_ctrl_t sSSRCCtrl[SRC_CHANNELS_PER_INSTANCE];                                       // SSRC Control structure
 
     /* Set state, stack and coefs into ctrl structures */
-    for(int ui = 0; ui < SSRC_CHANNELS_PER_INSTANCE; ui++)
+    for(int ui = 0; ui < SRC_CHANNELS_PER_INSTANCE; ui++)
     {
         unsafe
         {
@@ -311,12 +416,17 @@ void src_task(streaming chanend c, int instance)
         }
     }
 
-    ssrc_init(inputFsCode, outputFsCode, sSSRCCtrl, SSRC_CHANNELS_PER_INSTANCE, SSRC_N_IN_SAMPLES, SSRC_DITHER_SETTING);
+    ssrc_init(inputFsCode, outputFsCode, sSSRCCtrl, SRC_CHANNELS_PER_INSTANCE, SRC_N_IN_SAMPLES, SRC_DITHER_SETTING);
+#endif
 
     while(1)
     {
+        uint64_t fsRatio_;
+
+        c :> fsRatio_;
+
         /* Receive samples to process */
-        for(int i=0; i<SSRC_N_IN_SAMPLES * SSRC_CHANNELS_PER_INSTANCE; i++)
+        for(int i=0; i<SRC_N_IN_SAMPLES * SRC_CHANNELS_PER_INSTANCE; i++)
         {
             c :> inputBuff[i];
         }
@@ -325,38 +435,33 @@ void src_task(streaming chanend c, int instance)
         c <: sampsOut;
 
         /* Send output samples */
-        for(int i = 0; i < sampsOut * SSRC_CHANNELS_PER_INSTANCE; i++)
+        for(int i = 0; i < sampsOut * SRC_CHANNELS_PER_INSTANCE; i++)
         {
             c <: outputBuff[i];
         }
 
         /* Process input buffer into output buffer */
+#if USE_ASRC
+        sampsOut = asrc_process(inputBuff, outputBuff, fsRatio_, sASRCCtrl);
+#else
         sampsOut = ssrc_process(inputBuff, outputBuff, sSSRCCtrl);
+#endif
+
     }
 }
-
 
 void i2s_driver(chanend c)
 {
     interface i2s_frame_callback_if i_i2s;
-    streaming chan c_src[SSRC_N_INSTANCES];
+    streaming chan c_src[SRC_N_INSTANCES];
 
-    set_clock_on(clk_bclk);
-
-    unsigned mclk_port;
-    int mclk_bclk_ratio = (MASTER_CLOCK_FREQUENCY / (SAMPLE_FREQUENCY*2*DATA_BITS));
-
-    /* Inline ASM to allow sharing of master clock port */
-    asm("ldw %0, dp[p_mclk_in]":"=r"(mclk_port));
-    asm("setclk res[%0], %1"::"r"(clk_bclk), "r"(mclk_port));
-
-    set_clock_div(clk_bclk, mclk_bclk_ratio >> 1);
+    set_port_clock(p_off_bclk, clk_bclk);
 
     par
     {
-        i2s_frame_master_external_clock(i_i2s, p_i2s_dout, 1, p_i2s_din, sizeof(p_i2s_din)/sizeof(p_i2s_din[0]), DATA_BITS, p_i2s_bclk, p_i2s_lrclk, clk_bclk);
+        i2s_frame_slave(i_i2s, p_i2s_dout, 1, p_i2s_din, sizeof(p_i2s_din)/sizeof(p_i2s_din[0]), DATA_BITS, p_i2s_bclk, p_i2s_lrclk, clk_bclk);
         i2s_data(i_i2s, c, c_src);
-        par (int i=0; i < SSRC_N_INSTANCES; i++)
+        par (int i=0; i < SRC_N_INSTANCES; i++)
         {
             src_task(c_src[i], i);
         }
