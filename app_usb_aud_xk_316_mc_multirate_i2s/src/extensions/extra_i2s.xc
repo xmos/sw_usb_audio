@@ -86,8 +86,6 @@ static void init_fifo(fifo_t &f, int array[size], unsigned size)
 #pragma unsafe arrays
 static inline unsigned fifo_pop(fifo_t &f, int array[], int &sample)
 {
-    static int popCounter = 0;
-
     /* Check for FIFO empty */
     if (!f.fill)
     {
@@ -103,14 +101,6 @@ static inline unsigned fifo_pop(fifo_t &f, int array[], int &sample)
     if (f.rdPtr >= f.size)
     {
         f.rdPtr = 0;
-    }
-
-    //popCounter++;
-
-    if(popCounter == 1000000)
-    {
-        printintln(f.fill);
-        popCounter= 0;
     }
 
     return 0;
