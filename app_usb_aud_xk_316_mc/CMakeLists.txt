@@ -51,6 +51,6 @@ include(${CMAKE_CURRENT_LIST_DIR}/configs_build.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/configs_test.cmake)
 
 set(APP_INCLUDES src src/core src/extensions)
-set(XMOS_DEPS_ROOT_DIR ${CMAKE_CURRENT_LIST_DIR}/../..)
+set(XMOS_SANDBOX_DIR ${CMAKE_CURRENT_LIST_DIR}/../..)
 
 XMOS_REGISTER_APP()
