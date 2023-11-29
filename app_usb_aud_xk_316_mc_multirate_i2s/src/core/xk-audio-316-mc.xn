@@ -28,18 +28,18 @@
             <Port Location="XS1_PORT_1L"  Name="PORT_I2C_SCL"/>
             <Port Location="XS1_PORT_1M"  Name="PORT_I2C_SDA"/>
 
-            <!-- Clocking --> 
+            <!-- Clocking -->
             <Port Location="XS1_PORT_16B" Name="PORT_MCLK_COUNT"/>
             <Port Location="XS1_PORT_1D"  Name="PORT_MCLK_IN_USB"/>
             <Port Location="XS1_PORT_1A"  Name="PORT_PLL_REF"/>
-            
-            <!-- Audio Ports: Digital -->         
-            <Port Location="XS1_PORT_1O"  Name="PORT_ADAT_IN"/>   <!-- N: Coax O: Optical --> 
-            <Port Location="XS1_PORT_1N"  Name="PORT_SPDIF_IN"/>  <!-- N: Coax O: Optical --> 
-            
+
+            <!-- Audio Ports: Digital -->
+            <Port Location="XS1_PORT_1O"  Name="PORT_ADAT_IN"/>   <!-- N: Coax O: Optical -->
+            <Port Location="XS1_PORT_1N"  Name="PORT_SPDIF_IN"/>  <!-- N: Coax O: Optical -->
+
           </Tile>
           <Tile Number="1" Reference="tile[1]">
-            <!-- Audio Ports: I2S -->         
+            <!-- Audio Ports: I2S -->
             <Port Location="XS1_PORT_1D"  Name="PORT_MCLK_IN"/>
             <Port Location="XS1_PORT_1B"  Name="PORT_I2S_LRCLK"/>
             <Port Location="XS1_PORT_1C"  Name="PORT_I2S_BCLK"/>
@@ -51,10 +51,10 @@
             <Port Location="XS1_PORT_1J"  Name="PORT_I2S_ADC1"/>
             <Port Location="XS1_PORT_1K"  Name="PORT_I2S_ADC2"/>
             <Port Location="XS1_PORT_1L"  Name="PORT_I2S_ADC3"/>
-            
-            <!-- Audio Ports: Digital -->         
-            <Port Location="XS1_PORT_1G"  Name="PORT_ADAT_OUT"/>  <!-- A: Coax G: Optical --> 
-            <Port Location="XS1_PORT_1A"  Name="PORT_SPDIF_OUT"/> <!-- A: Coax G: Optical --> 
+
+            <!-- Audio Ports: Digital -->
+            <Port Location="XS1_PORT_1G"  Name="PORT_ADAT_OUT"/>  <!-- A: Coax G: Optical -->
+            <Port Location="XS1_PORT_1A"  Name="PORT_SPDIF_OUT"/> <!-- A: Coax G: Optical -->
 
             <!-- MIDI -->
             <Port Location="XS1_PORT_1F"  Name="PORT_MIDI_IN"/>

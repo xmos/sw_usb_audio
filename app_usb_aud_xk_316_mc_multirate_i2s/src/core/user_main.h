@@ -32,12 +32,12 @@ extern port p_sda;
                         on tile[1]: {\
                                         par\
                                         {\
-                                            i2s_driver(c_i2s);\
                                             unsafe\
                                             {\
                                                 uc_i2s = (chanend) c_i2s;\
                                                 i_i2c_client = i2c[0];\
                                             }\
+                                            i2s_driver(c_i2s);\
                                         }\
                                     }
 #endif

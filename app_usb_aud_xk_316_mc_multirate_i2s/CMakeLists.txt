@@ -24,8 +24,9 @@ set(SW_USB_AUDIO_FLAGS ${EXTRA_BUILD_FLAGS} -fcomment-asm
                                             -DQUAD_SPI_FLASH=1
                                             -DXSCOPE
                                             -DUAC_FORCE_FEEDBACK=1
-                                            -DMAX_FREQ=192000
-                                            -DMIN_FREQ=192000)
+                                            -DMAX_FREQ=96000
+                                            -DMIN_FREQ=96000
+                                            -DMIXER=0)
 
 # Build config naming scheme:
 
