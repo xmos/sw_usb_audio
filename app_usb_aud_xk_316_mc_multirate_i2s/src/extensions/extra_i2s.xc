@@ -231,7 +231,7 @@ static inline int trigger_src(streaming chanend c_src[SRC_N_INSTANCES],
 }
 
 #ifndef LOG_CONTROLLER
-#define LOG_CONTROLLER (0)
+#define LOG_CONTROLLER (1)
 #endif
 
 #if LOG_CONTROLLER
@@ -256,23 +256,26 @@ void i2s_data(server i2s_frame_callback_if i_i2s, chanend c, streaming chanend c
     int srcOutputBuff_rec[SRC_OUT_FIFO_SIZE];
 
     int sampleIdx_play = 0;
-    int sampleIdx_rec = 0;
+    int sampleIdx_rec = 0; /* Run the two ASRC's out of phase */
 
     fifo_t fifo_play;
     fifo_t fifo_rec;
 
     int usbCounter = 0;
 
-    uint64_t fsRatio = (uint64_t) (MAX_FREQ/SAMPLE_FREQUENCY) << 60;
-    uint64_t fsRatio_rec = (uint64_t) 0.25 * (1LL << 60);
+    float floatRatio_play = (float) MAX_FREQ/SAMPLE_FREQUENCY;
+    float floatRatio_rec = (float) SAMPLE_FREQUENCY/MAX_FREQ;
 
-    float floatRatio = (float) MAX_FREQ/SAMPLE_FREQUENCY;
-    float floatRatio_rec = 0.25;
+    float idealFloatRatio_play = floatRatio_play;
+
+    /* Q60 representations of the above */
+    uint64_t fsRatio = (uint64_t) floatRatio_play * (1LL << 60);
+    uint64_t fsRatio_rec = (uint64_t) floatRatio_rec * (1LL << 60);
 
     unsigned short lastPt = 0;
 
     int asrcCounter_play = 0;
-    int asrcCounter_rec = 0;  /* Run the two asrc blocks out of phase */
+    int asrcCounter_rec = 0;
 
     int phaseError = 0;
     int phaseErrorInt = 0;
@@ -312,10 +315,7 @@ void i2s_data(server i2s_frame_callback_if i_i2s, chanend c, streaming chanend c
                 {
                     sampleIdx_play = 0;
 
-                    if(usbCounter == (400*2)) /* TODO change with SR rate
-                                                48: 200
-                                                96: 400
-                                                192: 800*/
+                    if(usbCounter == (200 * (MAX_FREQ/SAMPLE_FREQUENCY)))
                     {
                         usbCounter = 0;
 
@@ -323,15 +323,15 @@ void i2s_data(server i2s_frame_callback_if i_i2s, chanend c, streaming chanend c
                         asm volatile(" getts %0, res[%1]" : "=r" (pt) : "r" (p_off_bclk));
 
                         /* The actual number of bit clocks on the output i2s */
-                        int actualDiff = 0;
+                        int measuredClocks;
 
                         if (porttimeafter(pt, lastPt))
                         {
-                            actualDiff = -(short)(lastPt - pt);
+                            measuredClocks = -(short)(lastPt - pt);
                         }
                         else
                         {
-                            actualDiff = (short)(pt - lastPt);
+                            measuredClocks = (short)(pt - lastPt);
                         }
                         lastPt = pt;
 
@@ -339,7 +339,7 @@ void i2s_data(server i2s_frame_callback_if i_i2s, chanend c, streaming chanend c
                         int asrcClocks = asrcCounter_play * 64;
 
                         /* Calulate error */
-                        int error = asrcClocks - (int)actualDiff;
+                        int error = asrcClocks - (int)measuredClocks;
 
                         /* Ignore any large error - most likely an SR change occurred */
                         if((error < 300) && (error > -300))
@@ -352,28 +352,26 @@ void i2s_data(server i2s_frame_callback_if i_i2s, chanend c, streaming chanend c
 
                             float x = (error_p + error_i);
 
-                            floatRatio = (4.0 + x);
+                            floatRatio_play = (idealFloatRatio_play + x);
 
                             /* Clamp ratio to 1000PPM error */
-                            if(floatRatio > 4.001)
-                                floatRatio = 4.001;
-                            if(floatRatio < 3.999)
-                                floatRatio = 3.999;
+                            if(floatRatio_play > (idealFloatRatio_play + 0.001))
+                                floatRatio_play = idealFloatRatio_play + 0.001;
+                            if(floatRatio_play < (idealFloatRatio_play - 0.001))
+                                floatRatio_play = idealFloatRatio_play - 0.001;
 
                             /* Create a ratio for the record path */
-                            floatRatio_rec = ((4.0/floatRatio));
+                            floatRatio_rec = ((idealFloatRatio_play/floatRatio_play));
 
                             /* Convert FS ratio to fixed point */
-                            fsRatio = (uint64_t) (floatRatio * (1LL << 60));
-
-
+                            fsRatio = (uint64_t) (floatRatio_play * (1LL << 60));
                         }
 
 #if LOG_CONTROLLER
                         e[logCounter] = error;
                         f_p[logCounter] = fifo_play.fill;
                         f_r[logCounter] = fifo_rec.fill;
-                        r_p[logCounter] = floatRatio;
+                        r_p[logCounter] = floatRatio_play;
                         r_r[logCounter] = (float) fsRatio_rec/(1LL<<60);
 
                         logCounter++;
