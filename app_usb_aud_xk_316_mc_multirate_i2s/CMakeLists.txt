@@ -24,8 +24,6 @@ set(SW_USB_AUDIO_FLAGS ${EXTRA_BUILD_FLAGS} -fcomment-asm
                                             -DQUAD_SPI_FLASH=1
                                             -DXSCOPE
                                             -DUAC_FORCE_FEEDBACK=1
-                                            -DMAX_FREQ=96000
-                                            -DMIN_FREQ=96000
                                             -DMIXER=0)
 
 # Build config naming scheme:
@@ -44,19 +42,24 @@ set(SW_USB_AUDIO_FLAGS ${EXTRA_BUILD_FLAGS} -fcomment-asm
 #
 # e.g. 2AMi10o10xxsxxx: Audio class 2.0, Asynchronous, I2S Master, input and output enabled (10
 # channels each), no MIDI, SPDIF output, no SPDIF input, no ADAT
-set(APP_COMPILER_FLAGS_2AMi2o2xxxxxx_asrc ${SW_USB_AUDIO_FLAGS}
+
+set(APP_COMPILER_FLAGS_2AMi2o2xxxxxx_asrc_192 ${SW_USB_AUDIO_FLAGS}
                                      -DNUM_USB_CHAN_OUT=2
                                      -DNUM_USB_CHAN_IN=2
                                      -DI2S_CHANS_DAC=2
                                      -DI2S_CHANS_ADC=2
+                                     -DMAX_FREQ=192000
+                                     -DMIN_FREQ=192000
                                      -DUSE_ASRC=1)
 
-set(APP_COMPILER_FLAGS_2AMi2o2xxxxxx_ssrc ${SW_USB_AUDIO_FLAGS}
+set(APP_COMPILER_FLAGS_2AMi2o2xxxxxx_asrc_96 ${SW_USB_AUDIO_FLAGS}
                                      -DNUM_USB_CHAN_OUT=2
                                      -DNUM_USB_CHAN_IN=2
                                      -DI2S_CHANS_DAC=2
                                      -DI2S_CHANS_ADC=2
-                                     -DUSE_ASRC=0)
+                                     -DMAX_FREQ=96000
+                                     -DMIN_FREQ=96000
+                                     -DUSE_ASRC=1)
 
 set(APP_INCLUDES src src/core src/extensions)
 
