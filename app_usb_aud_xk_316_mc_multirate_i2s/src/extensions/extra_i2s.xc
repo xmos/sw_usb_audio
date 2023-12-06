@@ -9,18 +9,16 @@
 
 /* TODO
 
-- fix the 96k build
+- Fix operation when USB set to 44.1
+
+- General
+    - Seperate recording and playback SRC related defines
 
 - Optimise:
-    - Remove the divide for record path FS ratio
     - Optimise for 192kHz operation
 
 - Buffering:
     - Only push to fifo when "locked"
-
-- General
-    - Add support for SR change
-    - Seperate recording and playback SRC related defines
 
 */
 
@@ -107,7 +105,6 @@ static void init_fifo(fifo_t &f, int array[size], unsigned size)
     }
 }
 
-
 /* TODO check we don't have a channel swap issue on exiting overflow/underflow */
 #pragma unsafe arrays
 static inline unsigned fifo_pop(fifo_t &f, int array[], int &sample)
@@ -116,7 +113,7 @@ static inline unsigned fifo_pop(fifo_t &f, int array[], int &sample)
     {
         if(f.fill > (f.size/2))
         {
-            /* Exit undeflow */
+            /* Exit underflow */
             f.inUnderflow = 0;
         }
         else
@@ -141,7 +138,7 @@ static inline unsigned fifo_pop(fifo_t &f, int array[], int &sample)
 }
 
 #pragma unsafe arrays
-static inline unsigned fifo_push(fifo_t &f, int array[], const int sample)
+static inline void fifo_push(fifo_t &f, int array[], const int sample)
 {
     /* Check for FIFO full */
     if(f.fill >= f.size)
@@ -154,8 +151,24 @@ static inline unsigned fifo_push(fifo_t &f, int array[], const int sample)
     f.wrPtr++;
     if(f.wrPtr == SRC_OUT_FIFO_SIZE)
         f.wrPtr = 0;
+}
 
-    return 0;
+int g_usbSamFreq = DEFAULT_FREQ;
+
+void UserBufferManagementInit(unsigned samFreq)
+{
+    /* Check for sample-rate change */
+    if(g_usbSamFreq != samFreq)
+    {
+        g_usbSamFreq = samFreq;
+
+        unsafe
+        {
+            outuint((chanend) uc_i2s, 1);
+            outuint((chanend) uc_i2s, g_usbSamFreq);
+            outct((chanend) uc_i2s, XS1_CT_END);
+        }
+    }
 }
 
 #pragma unsafe arrays
@@ -163,7 +176,7 @@ void UserBufferManagement(unsigned sampsFromUsbToAudio[], unsigned sampsFromAudi
 {
     unsafe
     {
-        outuint((chanend) uc_i2s, 1);
+        outuint((chanend) uc_i2s, 0);
 
         for(size_t i = 0; i < EXTRA_I2S_CHAN_COUNT_OUT; i++)
         {
@@ -179,7 +192,6 @@ void UserBufferManagement(unsigned sampsFromUsbToAudio[], unsigned sampsFromAudi
     }
 }
 
-
 #pragma unsafe arrays
 static inline int trigger_src(streaming chanend c_src[SRC_N_INSTANCES],
                                 int srcInputBuff[SRC_N_INSTANCES][SRC_N_IN_SAMPLES][SRC_CHANNELS_PER_INSTANCE],
@@ -191,7 +203,7 @@ static inline int trigger_src(streaming chanend c_src[SRC_N_INSTANCES],
 #pragma loop unroll
     for (int i=0; i<SRC_N_INSTANCES; i++)
     {
-        c_src[i] <: fsRatio;
+        c_src[i] <: (uint64_t) fsRatio;
 
 #pragma loop unroll
         for (int j=0; j<SRC_N_IN_SAMPLES; j++)
@@ -222,7 +234,7 @@ static inline int trigger_src(streaming chanend c_src[SRC_N_INSTANCES],
             for (int i=0; i<SRC_N_INSTANCES; i++)
             {
                 c_src[i] :> sample;
-                int error = fifo_push(fifo, srcOutputBuff, sample);
+                fifo_push(fifo, srcOutputBuff, sample);
             }
         }
     }
@@ -231,23 +243,27 @@ static inline int trigger_src(streaming chanend c_src[SRC_N_INSTANCES],
 }
 
 #ifndef LOG_CONTROLLER
-#define LOG_CONTROLLER (1)
+#define LOG_CONTROLLER (0)
 #endif
 
 #if LOG_CONTROLLER
-#define CONT_LOG_SIZE 10000
+#define CONT_LOG_SIZE 15000
 int e[CONT_LOG_SIZE];
 int f_p[CONT_LOG_SIZE];
-int f_r[CONT_LOG_SIZE];
+//int f_r[CONT_LOG_SIZE];
 float r_p[CONT_LOG_SIZE];
-float r_r[CONT_LOG_SIZE];
+//float r_r[CONT_LOG_SIZE];
+//int sr[CONT_LOG_SIZE];
 int logCounter = 0;
 #endif
 
+int counter = 0;
+
+
 #pragma unsafe arrays
-void i2s_data(server i2s_frame_callback_if i_i2s, chanend c, streaming chanend c_src_play[SRC_N_INSTANCES], streaming chanend c_src_rec[SRC_N_INSTANCES])
+int i2s_data(server i2s_frame_callback_if i_i2s, chanend c, streaming chanend c_src_play[SRC_N_INSTANCES], streaming chanend c_src_rec[SRC_N_INSTANCES], int samFreq)
 {
-    unsigned tmp;
+    unsigned srChange = 0;
 
     int srcInputBuff_play[SRC_N_INSTANCES][SRC_N_IN_SAMPLES][SRC_CHANNELS_PER_INSTANCE];
     int srcInputBuff_rec[SRC_N_INSTANCES][SRC_N_IN_SAMPLES][SRC_CHANNELS_PER_INSTANCE];
@@ -256,17 +272,18 @@ void i2s_data(server i2s_frame_callback_if i_i2s, chanend c, streaming chanend c
     int srcOutputBuff_rec[SRC_OUT_FIFO_SIZE];
 
     int sampleIdx_play = 0;
-    int sampleIdx_rec = 0; /* Run the two ASRC's out of phase */
+    int sampleIdx_rec = 0;
 
     fifo_t fifo_play;
     fifo_t fifo_rec;
 
     int usbCounter = 0;
 
-    float floatRatio_play = (float) MAX_FREQ/SAMPLE_FREQUENCY;
-    float floatRatio_rec = (float) SAMPLE_FREQUENCY/MAX_FREQ;
+    float floatRatio_play = (float) samFreq/SAMPLE_FREQUENCY;
+    float floatRatio_rec = (float) SAMPLE_FREQUENCY/samFreq;
 
     float idealFloatRatio_play = floatRatio_play;
+    float idealFloatRatio_rec = floatRatio_rec;
 
     /* Q60 representations of the above */
     uint64_t fsRatio = (uint64_t) floatRatio_play * (1LL << 60);
@@ -280,127 +297,144 @@ void i2s_data(server i2s_frame_callback_if i_i2s, chanend c, streaming chanend c
     int phaseError = 0;
     int phaseErrorInt = 0;
 
+    int shutdown = 0;
+    int shutdownI2s = 0;
+
     init_fifo(fifo_play, srcOutputBuff_play, sizeof(srcOutputBuff_play)/sizeof(srcOutputBuff_play[0]));
     init_fifo(fifo_rec, srcOutputBuff_rec, sizeof(srcOutputBuff_rec)/sizeof(srcOutputBuff_rec[0]));
 
-    while (1)
+    int samplesToGo[EXTRA_I2S_CHAN_COUNT_IN];
+    while (!shutdown)
     {
         select
         {
-            case inuint_byref(c, tmp):
+            case inuint_byref(c, srChange):
 
-                /* Receive samples from USB audio (other side of the UserBufferManagement() comms) */
-#pragma loop unroll
-                for(size_t i = 0; i< EXTRA_I2S_CHAN_COUNT_OUT; i++)
+                if(srChange)
                 {
-                    srcInputBuff_play[i/SRC_CHANNELS_PER_INSTANCE][sampleIdx_play][i % SRC_CHANNELS_PER_INSTANCE] = inuint(c);
+                    samFreq = inuint(c);
+                    inct(c);
+                    shutdownI2s = 1;
                 }
-                chkct(c, XS1_CT_END);
-
-                /* Send samples to USB audio (other side of the UserBufferManagement() comms */
+                else
+                {
+                    /* Receive samples from USB audio (other side of the UserBufferManagement() comms) */
 #pragma loop unroll
-                for(size_t i = 0; i< EXTRA_I2S_CHAN_COUNT_IN; i++)
-                {
-                    int sample;
-                    int error = fifo_pop(fifo_rec, srcOutputBuff_rec, sample);
-                    outuint(c, sample);
-                }
-
-                outct(c, XS1_CT_END);
-
-                usbCounter++;
-                sampleIdx_play++;
-
-                if(sampleIdx_play == SRC_N_IN_SAMPLES)
-                {
-                    sampleIdx_play = 0;
-
-                    if(usbCounter == (200 * (MAX_FREQ/SAMPLE_FREQUENCY)))
+                    for(size_t i = 0; i< EXTRA_I2S_CHAN_COUNT_OUT; i++)
                     {
-                        usbCounter = 0;
+                        srcInputBuff_play[i/SRC_CHANNELS_PER_INSTANCE][sampleIdx_play][i % SRC_CHANNELS_PER_INSTANCE] = inuint(c);
+                    }
+                    chkct(c, XS1_CT_END);
 
-                        unsigned short pt;
-                        asm volatile(" getts %0, res[%1]" : "=r" (pt) : "r" (p_off_bclk));
-
-                        /* The actual number of bit clocks on the output i2s */
-                        int measuredClocks;
-
-                        if (porttimeafter(pt, lastPt))
-                        {
-                            measuredClocks = -(short)(lastPt - pt);
-                        }
-                        else
-                        {
-                            measuredClocks = (short)(pt - lastPt);
-                        }
-                        lastPt = pt;
-
-                        /* Convert ASRC sample counter to bit clock units */
-                        int asrcClocks = asrcCounter_play * 64;
-
-                        /* Calulate error */
-                        int error = asrcClocks - (int)measuredClocks;
-
-                        /* Ignore any large error - most likely an SR change occurred */
-                        if((error < 300) && (error > -300))
-                        {
-                            phaseError += error;
-                            phaseErrorInt += phaseError;
-
-                            float error_p = (float) (phaseError * 0.0000002);
-                            float error_i = (float) (phaseErrorInt * 0.00000004);
-
-                            float x = (error_p + error_i);
-
-                            floatRatio_play = (idealFloatRatio_play + x);
-
-                            /* Clamp ratio to 1000PPM error */
-                            if(floatRatio_play > (idealFloatRatio_play + 0.001))
-                                floatRatio_play = idealFloatRatio_play + 0.001;
-                            if(floatRatio_play < (idealFloatRatio_play - 0.001))
-                                floatRatio_play = idealFloatRatio_play - 0.001;
-
-                            /* Create a ratio for the record path */
-                            floatRatio_rec = ((idealFloatRatio_play/floatRatio_play));
-
-                            /* Convert FS ratio to fixed point */
-                            fsRatio = (uint64_t) (floatRatio_play * (1LL << 60));
-                        }
-
-#if LOG_CONTROLLER
-                        e[logCounter] = error;
-                        f_p[logCounter] = fifo_play.fill;
-                        f_r[logCounter] = fifo_rec.fill;
-                        r_p[logCounter] = floatRatio_play;
-                        r_r[logCounter] = (float) fsRatio_rec/(1LL<<60);
-
-                        logCounter++;
-
-                        if(logCounter == CONT_LOG_SIZE)
-                        {
-                            for(int i = 0; i < CONT_LOG_SIZE; i++)
-                            {
-                                printint(e[i]);
-                                printchar(' ');
-                                printint(f_p[i]);
-                                printchar(' ');
-                                printint(f_r[i]);
-                                printf(" %f", r_p[i]);
-                                printf(" %f\n", r_r[i]);
-                            }
-                            exit(1);
-                        }
-#endif
-
-                        asrcCounter_rec = 0;
-                        asrcCounter_play = 0;
+                    /* Send samples to USB audio (other side of the UserBufferManagement() comms */
+#pragma loop unroll
+                    for(size_t i = 0; i< EXTRA_I2S_CHAN_COUNT_IN; i++)
+                    {
+                        outuint(c, samplesToGo[i]);
                     }
 
+                    outct(c, XS1_CT_END);
+
+                    for(size_t i = 0; i< EXTRA_I2S_CHAN_COUNT_IN; i++)
+                    {
+                        int sample;
+                        int error = fifo_pop(fifo_rec, srcOutputBuff_rec, sample);
+                        samplesToGo[i] = sample;
+                    }
+
+                    sampleIdx_play++;
+
+                    if(sampleIdx_play == SRC_N_IN_SAMPLES)
+                    {
+                        sampleIdx_play = 0;
+
+                        usbCounter++;
+                        if(usbCounter == (25 * (samFreq/SAMPLE_FREQUENCY)))
+                        {
+                            usbCounter = 0;
+
+                            unsigned short pt;
+                            asm volatile(" getts %0, res[%1]" : "=r" (pt) : "r" (p_off_bclk));
+
+                            /* The actual number of bit clocks on the output i2s */
+                            int measuredClocks;
+
+                            if (porttimeafter(pt, lastPt))
+                            {
+                                measuredClocks = -(short)(lastPt - pt);
+                            }
+                            else
+                            {
+                                measuredClocks = (short)(pt - lastPt);
+                            }
+                            lastPt = pt;
+
+                            /* Convert ASRC sample counter to bit clock units */
+                            int asrcClocks = asrcCounter_play * 64;
+
+                            /* Calulate error */
+                            int error = asrcClocks - (int)measuredClocks;
+
+                            /* Ignore any large error - most likely an SR change occurred */
+                            if((error < 300) && (error > -300))
+                            {
+                                phaseError += error;
+                                phaseErrorInt += phaseError;
+
+                                float error_p = (float) (phaseError * 0.0000002);
+                                float error_i = (float) (phaseErrorInt * 0.000000004);
+
+                                float x = (error_p + error_i);
+
+                                floatRatio_play = (idealFloatRatio_play + (x * idealFloatRatio_play));
+                                floatRatio_rec = (idealFloatRatio_rec - (x * idealFloatRatio_rec));
+
+                                /* Note, ASRC will Clamp ratio to 1000PPM error */
+                                //if(floatRatio_play > (idealFloatRatio_play + 0.001))
+                                //    floatRatio_play = idealFloatRatio_play + 0.001;
+                                //if(floatRatio_play < (idealFloatRatio_play - 0.001))
+                                //    floatRatio_play = idealFloatRatio_play - 0.001;
+
+                                /* Convert FS ratio to fixed point */
+                                fsRatio_rec = (uint64_t) (floatRatio_rec * (1LL<<60));
+                            }
+
+#if LOG_CONTROLLER
+                            e[logCounter] = error;
+                            f_p[logCounter] = fifo_play.fill;
+                            //f_r[logCounter] = fifo_rec.fill;
+                            r_p[logCounter] = floatRatio_play;
+                            //r_r[logCounter] = floatRatio_rec;
+                            //sr[logCounter] = samFreq;
+
+                            logCounter++;
+
+                            if(logCounter >= CONT_LOG_SIZE)
+                            {
+                                for(int i = 0; i < CONT_LOG_SIZE; i++)
+                                {
+                                    //printint(sr[i]);
+                                    //printchar(' ');
+                                    printint(e[i]);
+                                    printchar(' ');
+                                    printint(f_p[i]);
+                                    //printchar(' ');
+                                    //printint(f_r[i]);
+                                    printf(" %f\n", r_p[i]);
+                                    //printf(" %f\n", r_r[i]);
+                                }
+                                exit(1);
+                            }
+#endif
+
+                            asrcCounter_play = 0;
+                        }
 
 #if (EXTRA_I2S_CHAN_COUNT_OUT > 0)
-                    /* Send samples to SRC tasks. This function adds returned sample to FIFO */
-                    asrcCounter_play += trigger_src(c_src_play, srcInputBuff_play, fifo_play, srcOutputBuff_play, fsRatio);
+                        /* Send samples to SRC tasks. This function adds returned sample to FIFO */
+                        asrcCounter_play += trigger_src(c_src_play, srcInputBuff_play, fifo_play, srcOutputBuff_play, fsRatio);
 #endif
+                    }
                 }
 
                 break;
@@ -409,12 +443,22 @@ void i2s_data(server i2s_frame_callback_if i_i2s, chanend c, streaming chanend c
                 i2s_config.mode = I2S_MODE_I2S;
                 break;
 
+            /* Inform the I2S slave whether it should restart or exit */
             case i_i2s.restart_check() -> i2s_restart_t restart:
-                /* Inform the I2S slave whether it should restart or exit */
-                restart = I2S_NO_RESTART;
+
+                if(shutdownI2s)
+                {
+                    restart = I2S_SHUTDOWN;
+                    shutdown = 1;
+                }
+                else
+                {
+                    restart = I2S_NO_RESTART;
+                }
                 break;
 
             case i_i2s.receive(size_t num_in, int32_t samples[num_in]):
+
 
 #pragma loop unroll
                 /* Add to recording path ASRC input buffer */
@@ -425,13 +469,14 @@ void i2s_data(server i2s_frame_callback_if i_i2s, chanend c, streaming chanend c
 
                 sampleIdx_rec++;
 
+                fsRatio = (uint64_t) (floatRatio_play * (1LL << 60));
+
                 /* Trigger_src for record path */
                 if(sampleIdx_rec == SRC_N_IN_SAMPLES)
                 {
                     sampleIdx_rec = 0;
 
-                    /* TODO we probably should synchronise this */
-                    fsRatio_rec = (uint64_t) (floatRatio_rec * (1LL<<58));
+                    /* TODO we probably should synchronise use of fsRatio_rec */
 
                     /* Note, currenly don't use the count here since we expect the record and playback rates to match*/
                     asrcCounter_rec += trigger_src(c_src_rec, srcInputBuff_rec, fifo_rec, srcOutputBuff_rec, fsRatio_rec);
@@ -441,19 +486,22 @@ void i2s_data(server i2s_frame_callback_if i_i2s, chanend c, streaming chanend c
             case i_i2s.send(size_t num_out, int32_t samples[num_out]):
             {
 #if (EXTRA_I2S_CHAN_COUNT_OUT > 0)
-
                 /* Provide samples from the SRC output FIFO */
                 for(size_t i = 0; i < EXTRA_I2S_CHAN_COUNT_OUT; i++)
                 {
                     int sample;
                     int error = fifo_pop(fifo_play, srcOutputBuff_play, sample);
                     samples[i] = sample;
+
                 }
 #endif
                 break;
             }
         }
     }
+
+    /* Return new sample frequency we need to switch to */
+    return samFreq;
 }
 
 void src_task(streaming chanend c, int instance, int inputFsCode, int outputFsCode)
@@ -482,7 +530,6 @@ void src_task(streaming chanend c, int instance, int inputFsCode, int outputFsCo
             sASRCCtrl[ui].piADCoefs                 = asrc_adfir_coefs.iASRCADFIRCoefs;
         }
     }
-
     fsRatio = asrc_init(inputFsCode, outputFsCode, sASRCCtrl, SRC_CHANNELS_PER_INSTANCE, SRC_N_IN_SAMPLES, SRC_DITHER_SETTING);
 #else
     ssrc_state_t sSSRCState[SRC_CHANNELS_PER_INSTANCE];                                     // State of SSRC module
@@ -505,6 +552,18 @@ void src_task(streaming chanend c, int instance, int inputFsCode, int outputFsCo
     while(1)
     {
         uint64_t fsRatio_;
+
+        /* Check for exit */
+        if(stestct(c))
+        {
+            sinct(c);
+            c :> inputFsCode;
+            c :> outputFsCode;
+
+            fsRatio = asrc_init(inputFsCode, outputFsCode, sASRCCtrl, SRC_CHANNELS_PER_INSTANCE, SRC_N_IN_SAMPLES, SRC_DITHER_SETTING);
+
+            continue;
+        }
 
         c :> fsRatio_;
 
@@ -531,18 +590,35 @@ void src_task(streaming chanend c, int instance, int inputFsCode, int outputFsCo
 #else
         sampsOut = ssrc_process(inputBuff, outputBuff, sSSRCCtrl);
 #endif
-
     }
 }
 
 fs_code_t sr_to_fscode(unsigned sr)
 {
-    if((sr %44100) == 0)
-        return sr/44100;
-    else if((sr % 48000) == 0)
-        return (sr/48000)+1;
-    else
-        assert(0);
+    switch (sr)
+    {
+        case 44100:
+            return FS_CODE_44;
+            break;
+        case 48000:
+            return FS_CODE_48;
+            break;
+        case 88200:
+            return FS_CODE_88;
+            break;
+        case 96000:
+            return FS_CODE_96;
+            break;
+        case 176400:
+            return FS_CODE_176;
+            break;
+        case 192000:
+            return FS_CODE_192;
+            break;
+        default:
+            assert(0);
+            break;
+    }
 }
 
 void i2s_driver(chanend c)
@@ -553,29 +629,54 @@ void i2s_driver(chanend c)
 
     set_port_clock(p_off_bclk, clk_bclk);
 
+    int usbSr = DEFAULT_FREQ;
+
     par
     {
+        while(1)
         {
-        i2s_frame_slave(i_i2s, p_i2s_dout, 1, p_i2s_din, sizeof(p_i2s_din)/sizeof(p_i2s_din[0]), DATA_BITS, p_i2s_bclk, p_i2s_lrclk, clk_bclk);
-        }
+            par
+            {
+                {
+                i2s_frame_slave(i_i2s, p_i2s_dout, 1, p_i2s_din, sizeof(p_i2s_din)/sizeof(p_i2s_din[0]), DATA_BITS, p_i2s_bclk, p_i2s_lrclk, clk_bclk);
+                }
+                {
+                    set_core_high_priority_on();
+                    usbSr = i2s_data(i_i2s, c, c_src_play, c_src_rec, usbSr);
+                    set_core_high_priority_off();
 
-        {
+                    for(int i=0; i < SRC_N_INSTANCES; i++)
+                    unsafe
+                    {
+                        soutct(c_src_play[i], XS1_CT_END);
+                        c_src_play[i] <: (int)sr_to_fscode(usbSr);
+                        c_src_play[i] <: (int)FS_CODE_48;
 
-        set_core_high_priority_on();
-        i2s_data(i_i2s, c, c_src_play, c_src_rec);
+                        soutct(c_src_rec[i], XS1_CT_END);
+                        c_src_rec[i] <: (int)FS_CODE_48;
+                        c_src_rec[i] <: (int)sr_to_fscode(usbSr);
+                    }
+                }
+            }
         }
 
 #if(EXTRA_I2S_CHAN_COUNT_OUT > 0)
         /* Playback SRC tasks */
         par (int i=0; i < SRC_N_INSTANCES; i++)
         {
-            src_task(c_src_play[i], i, sr_to_fscode(MAX_FREQ), FS_CODE_48);
+            unsafe
+            {
+                src_task(c_src_play[i], i, sr_to_fscode(usbSr), FS_CODE_48);
+            }
         }
 #endif
-         /* Record SRC tasks */
+        /* Record SRC tasks */
         par (int i = SRC_N_INSTANCES ; i < 2*SRC_N_INSTANCES; i++)
         {
-            src_task(c_src_rec[i-SRC_N_INSTANCES], i, FS_CODE_48, sr_to_fscode(MAX_FREQ));
+            unsafe
+            {
+                src_task(c_src_rec[i-SRC_N_INSTANCES], i, FS_CODE_48, sr_to_fscode(usbSr));
+            }
         }
     }
 }
