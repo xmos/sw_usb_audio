@@ -605,30 +605,32 @@ void src_task(streaming chanend c, int instance, int inputFsCode, int outputFsCo
 
 fs_code_t sr_to_fscode(unsigned sr)
 {
+    fs_code_t fsCode;
     switch (sr)
     {
         case 44100:
-            return FS_CODE_44;
+            fsCode = FS_CODE_44;
             break;
         case 48000:
-            return FS_CODE_48;
+            fsCode = FS_CODE_48;
             break;
         case 88200:
-            return FS_CODE_88;
+            fsCode = FS_CODE_88;
             break;
         case 96000:
-            return FS_CODE_96;
+            fsCode = FS_CODE_96;
             break;
         case 176400:
-            return FS_CODE_176;
+            fsCode = FS_CODE_176;
             break;
         case 192000:
-            return FS_CODE_192;
+            fsCode = FS_CODE_192;
             break;
         default:
             assert(0);
             break;
     }
+    return fsCode;
 }
 
 void i2s_driver(chanend c)
