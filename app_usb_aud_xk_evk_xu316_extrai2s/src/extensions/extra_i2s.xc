@@ -24,9 +24,9 @@
 
 unsafe chanend uc_i2s;
 
-void UserBufferManagementInit()
+void UserBufferManagementInit(unsigned sampFreq)
 {
-
+    (void)sampFreq;
 }
 
 unsigned counter = 0;
