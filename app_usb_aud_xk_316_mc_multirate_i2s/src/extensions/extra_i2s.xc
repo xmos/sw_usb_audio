@@ -384,17 +384,25 @@ int logCounterSub = 0;
                             /* Ignore any large error - most likely an SR change occurred */
                             if((error < 300) && (error > -300))
                             {
+#if 0
                                 phaseError += error;
                                 phaseErrorInt += phaseError;
 
                                 float error_p = (float) (phaseError * 0.0000002);
                                 float error_i = (float) (phaseErrorInt * 0.000000004);
-
                                 float x = (error_p + error_i);
 
                                 floatRatio_play = (idealFloatRatio_play + (x * idealFloatRatio_play));
                                 floatRatio_rec = (idealFloatRatio_rec - (x * idealFloatRatio_rec));
+#else
+                                float error_p = (float) (error *0.0000002);
+                                float error_i = (float) ((((fifo_play.size/2) - fifo_play.fill) * 0.00000004));
 
+                                floatRatio_play = floatRatio_play + (error_p * idealFloatRatio_play)  - (error_i * idealFloatRatio_play);
+
+                                error_i = (float) ((((fifo_rec.size/2) - fifo_rec.fill) * 0.00000004));
+                                floatRatio_rec = floatRatio_rec + (error_p * idealFloatRatio_rec)  - (error_i * idealFloatRatio_rec);
+#endif
                                 /* Note, ASRC will Clamp ratio to 1000PPM error */
                                 //if(floatRatio_play > (idealFloatRatio_play + 0.001))
                                 //    floatRatio_play = idealFloatRatio_play + 0.001;
@@ -402,7 +410,7 @@ int logCounterSub = 0;
                                 //    floatRatio_play = idealFloatRatio_play - 0.001;
 
                                 /* Convert FS ratio to fixed point */
-                                fsRatio_rec = (uint64_t) (floatRatio_rec * (1LL<<60));
+                                fsRatio = (uint64_t) (floatRatio_play * (1LL<<60));
                             }
 
 #if LOG_CONTROLLER
@@ -469,7 +477,6 @@ int logCounterSub = 0;
 
             case i_i2s.receive(size_t num_in, int32_t samples[num_in]):
 
-
 #pragma loop unroll
                 /* Add to recording path ASRC input buffer */
                 for(size_t i = 0; i < EXTRA_I2S_CHAN_COUNT_IN; i++)
@@ -479,7 +486,6 @@ int logCounterSub = 0;
 
                 sampleIdx_rec++;
 
-                fsRatio = (uint64_t) (floatRatio_play * (1LL << 60));
 
                 /* Trigger_src for record path */
                 if(sampleIdx_rec == SRC_N_IN_SAMPLES)
@@ -487,10 +493,14 @@ int logCounterSub = 0;
                     sampleIdx_rec = 0;
 
                     /* TODO we probably should synchronise use of fsRatio_rec */
+                    fsRatio_rec = (uint64_t) (floatRatio_rec * (1LL << 60));
 
                     /* Note, currenly don't use the count here since we expect the record and playback rates to match*/
                     asrcCounter_rec += trigger_src(c_src_rec, srcInputBuff_rec, fifo_rec, srcOutputBuff_rec, fsRatio_rec);
                 }
+
+                //for(int i = 0; i < num_in; i++)
+                 //   loopbackSamples[i] = samples[i];
                 break;
 
             case i_i2s.send(size_t num_out, int32_t samples[num_out]):
