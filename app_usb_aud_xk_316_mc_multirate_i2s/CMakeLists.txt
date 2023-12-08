@@ -48,8 +48,8 @@ set(APP_COMPILER_FLAGS_2AMi2o2xxxxxx_asrc ${SW_USB_AUDIO_FLAGS}
                                      -DNUM_USB_CHAN_IN=2
                                      -DI2S_CHANS_DAC=2
                                      -DI2S_CHANS_ADC=2
-                                     -DMAX_FREQ=192000
-                                     -DMIN_FREQ=48000
+                                     -DMAX_FREQ=96000
+                                     -DMIN_FREQ=44100
                                      -DUSE_ASRC=1)
 
 set(APP_COMPILER_FLAGS_2AMi2o2xxxxxx_asrc_192 ${SW_USB_AUDIO_FLAGS}
@@ -70,6 +70,15 @@ set(APP_COMPILER_FLAGS_2AMi2o2xxxxxx_asrc_176 ${SW_USB_AUDIO_FLAGS}
                                      -DMIN_FREQ=176400
                                      -DUSE_ASRC=1)
 
+set(APP_COMPILER_FLAGS_2AMi2o2xxxxxx_asrc_88 ${SW_USB_AUDIO_FLAGS}
+                                     -DNUM_USB_CHAN_OUT=2
+                                     -DNUM_USB_CHAN_IN=2
+                                     -DI2S_CHANS_DAC=2
+                                     -DI2S_CHANS_ADC=2
+                                     -DMAX_FREQ=88200
+                                     -DMIN_FREQ=88200
+                                     -DUSE_ASRC=1)
+
 set(APP_COMPILER_FLAGS_2AMi2o2xxxxxx_asrc_48 ${SW_USB_AUDIO_FLAGS}
                                      -DNUM_USB_CHAN_OUT=2
                                      -DNUM_USB_CHAN_IN=2
@@ -78,6 +87,16 @@ set(APP_COMPILER_FLAGS_2AMi2o2xxxxxx_asrc_48 ${SW_USB_AUDIO_FLAGS}
                                      -DMAX_FREQ=48000
                                      -DMIN_FREQ=48000
                                      -DUSE_ASRC=1)
+
+set(APP_COMPILER_FLAGS_2AMi2o2xxxxxx_asrc_44 ${SW_USB_AUDIO_FLAGS}
+                                     -DNUM_USB_CHAN_OUT=2
+                                     -DNUM_USB_CHAN_IN=2
+                                     -DI2S_CHANS_DAC=2
+                                     -DI2S_CHANS_ADC=2
+                                     -DMAX_FREQ=44100
+                                     -DMIN_FREQ=44100
+                                     -DUSE_ASRC=1)
+
 
 
 set(APP_INCLUDES src src/core src/extensions)

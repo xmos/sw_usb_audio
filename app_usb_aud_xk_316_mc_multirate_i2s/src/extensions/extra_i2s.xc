@@ -9,8 +9,6 @@
 
 /* TODO
 
-- Fix operation when USB set to 44.1
-
 - General
     - Seperate recording and playback SRC related defines
 
@@ -247,17 +245,18 @@ static inline int trigger_src(streaming chanend c_src[SRC_N_INSTANCES],
 #endif
 
 #if LOG_CONTROLLER
-#define CONT_LOG_SIZE 15000
+#define CONT_LOG_SIZE      (4000)
+#define CONT_LOG_SUBSAMPLE (100)
 int e[CONT_LOG_SIZE];
 int f_p[CONT_LOG_SIZE];
-//int f_r[CONT_LOG_SIZE];
+int f_r[CONT_LOG_SIZE];
 float r_p[CONT_LOG_SIZE];
-//float r_r[CONT_LOG_SIZE];
-//int sr[CONT_LOG_SIZE];
+float r_r[CONT_LOG_SIZE];
+int sr[CONT_LOG_SIZE];
 int logCounter = 0;
+int logCounterSub = 0;
 #endif
 
-int counter = 0;
 
 
 #pragma unsafe arrays
@@ -276,6 +275,11 @@ int i2s_data(server i2s_frame_callback_if i_i2s, chanend c, streaming chanend c_
 
     fifo_t fifo_play;
     fifo_t fifo_rec;
+int logCounterSub = 0;
+int logCounterSub = 0;
+int logCounterSub = 0;
+int logCounterSub = 0;
+int logCounterSub = 0;
 
     int usbCounter = 0;
 
@@ -349,7 +353,9 @@ int i2s_data(server i2s_frame_callback_if i_i2s, chanend c, streaming chanend c_
                         sampleIdx_play = 0;
 
                         usbCounter++;
-                        if(usbCounter == (25 * (samFreq/SAMPLE_FREQUENCY)))
+
+                        /* Run the control loop approx sample frequency independant of primary sample rate */
+                        if(usbCounter >= ((25 * (samFreq/SAMPLE_FREQUENCY))+1))
                         {
                             usbCounter = 0;
 
@@ -400,33 +406,37 @@ int i2s_data(server i2s_frame_callback_if i_i2s, chanend c, streaming chanend c_
                             }
 
 #if LOG_CONTROLLER
-                            e[logCounter] = error;
-                            f_p[logCounter] = fifo_play.fill;
-                            //f_r[logCounter] = fifo_rec.fill;
-                            r_p[logCounter] = floatRatio_play;
-                            //r_r[logCounter] = floatRatio_rec;
-                            //sr[logCounter] = samFreq;
-
-                            logCounter++;
-
-                            if(logCounter >= CONT_LOG_SIZE)
+                            logCounterSub++;
+                            if(logCounterSub == CONT_LOG_SUBSAMPLE)
                             {
-                                for(int i = 0; i < CONT_LOG_SIZE; i++)
+                                logCounterSub = 0;
+                                e[logCounter] = error;
+                                f_p[logCounter] = fifo_play.fill;
+                                f_r[logCounter] = fifo_rec.fill;
+                                r_p[logCounter] = floatRatio_play;
+                                r_r[logCounter] = floatRatio_rec;
+                                sr[logCounter] = samFreq;
+
+                                logCounter++;
+
+                                if(logCounter >= CONT_LOG_SIZE)
                                 {
-                                    //printint(sr[i]);
-                                    //printchar(' ');
-                                    printint(e[i]);
-                                    printchar(' ');
-                                    printint(f_p[i]);
-                                    //printchar(' ');
-                                    //printint(f_r[i]);
-                                    printf(" %f\n", r_p[i]);
-                                    //printf(" %f\n", r_r[i]);
+                                    for(int i = 0; i < CONT_LOG_SIZE; i++)
+                                    {
+                                        printint(sr[i]);
+                                        printchar(' ');
+                                        printint(e[i]);
+                                        printchar(' ');
+                                        printint(f_p[i]);
+                                        printchar(' ');
+                                        printint(f_r[i]);
+                                        printf(" %f", r_p[i]);
+                                        printf(" %f\n", r_r[i]);
+                                    }
+                                    exit(1);
                                 }
-                                exit(1);
                             }
 #endif
-
                             asrcCounter_play = 0;
                         }
 
