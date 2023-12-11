@@ -357,7 +357,6 @@ int logCounterSub = 0;
                         /* Run the control loop approx sample frequency independant of primary sample rate */
                         if(usbCounter >= ((25 * (samFreq/SAMPLE_FREQUENCY))+1))
                         {
-                            usbCounter = 0;
 
                             unsigned short pt;
                             asm volatile(" getts %0, res[%1]" : "=r" (pt) : "r" (p_off_bclk));
@@ -384,35 +383,25 @@ int logCounterSub = 0;
                             /* Ignore any large error - most likely an SR change occurred */
                             if((error < 300) && (error > -300))
                             {
-#if 0
-                                phaseError += error;
-                                phaseErrorInt += phaseError;
-
-                                float error_p = (float) (phaseError * 0.0000002);
-                                float error_i = (float) (phaseErrorInt * 0.000000004);
-                                float x = (error_p + error_i);
-
-                                floatRatio_play = (idealFloatRatio_play + (x * idealFloatRatio_play));
-                                floatRatio_rec = (idealFloatRatio_rec - (x * idealFloatRatio_rec));
-#else
                                 float error_p = (float) (error *0.0000002);
                                 float error_i = (float) ((((fifo_play.size/2) - fifo_play.fill) * 0.00000004));
+                                floatRatio_play = floatRatio_play + error_p - error_i;
 
-                                floatRatio_play = floatRatio_play + (error_p * idealFloatRatio_play)  - (error_i * idealFloatRatio_play);
+                                /* Convert FS ratio to fixed point */
+                                fsRatio = (uint64_t) (floatRatio_play * (1LL<<60));
 
-                                error_i = (float) ((((fifo_rec.size/2) - fifo_rec.fill) * 0.00000004));
-                                floatRatio_rec = floatRatio_rec + (error_p * idealFloatRatio_rec)  - (error_i * idealFloatRatio_rec);
-#endif
+                                asrcClocks = asrcCounter_rec * (64/4);
+                                error = asrcClocks - (int)measuredClocks;
+                                error_p = (float) (error * 0.0000000002);
+                                error_i = (float) ((((fifo_rec.size/2) - fifo_rec.fill) * 0.000000004));
+                                floatRatio_rec = floatRatio_rec - error_p - error_i;
+
                                 /* Note, ASRC will Clamp ratio to 1000PPM error */
                                 //if(floatRatio_play > (idealFloatRatio_play + 0.001))
                                 //    floatRatio_play = idealFloatRatio_play + 0.001;
                                 //if(floatRatio_play < (idealFloatRatio_play - 0.001))
                                 //    floatRatio_play = idealFloatRatio_play - 0.001;
-
-                                /* Convert FS ratio to fixed point */
-                                fsRatio = (uint64_t) (floatRatio_play * (1LL<<60));
                             }
-
 #if LOG_CONTROLLER
                             logCounterSub++;
                             if(logCounterSub == CONT_LOG_SUBSAMPLE)
@@ -446,6 +435,8 @@ int logCounterSub = 0;
                             }
 #endif
                             asrcCounter_play = 0;
+                            asrcCounter_rec = 0;
+                            usbCounter = 0;
                         }
 
 #if (EXTRA_I2S_CHAN_COUNT_OUT > 0)
