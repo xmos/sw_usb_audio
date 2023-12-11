@@ -275,11 +275,6 @@ int i2s_data(server i2s_frame_callback_if i_i2s, chanend c, streaming chanend c_
 
     fifo_t fifo_play;
     fifo_t fifo_rec;
-int logCounterSub = 0;
-int logCounterSub = 0;
-int logCounterSub = 0;
-int logCounterSub = 0;
-int logCounterSub = 0;
 
     int usbCounter = 0;
 
