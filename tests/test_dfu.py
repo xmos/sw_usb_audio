@@ -5,31 +5,19 @@ import pytest
 import subprocess
 import time
 import tempfile
-import configparser
 import os
 import re
 import stat
 import urllib.request
 
-from usb_audio_test_utils import get_firmware_path, get_xtag_dut, xtc_version, stop_xrun_app
+from usb_audio_test_utils import (
+    get_firmware_path,
+    get_xtag_dut,
+    xtc_version,
+    stop_xrun_app,
+    get_tusb_guid,
+)
 from conftest import get_config_features
-
-
-# For Windows DFU testing, the dfucons application from the tusbaudio SDK is used. To use dfucons,
-# a driver GUID is required, which can be found in custom.ini in the driver installation directory
-def get_tusb_guid():
-    ini_path = Path(os.environ["PROGRAMFILES"]) / "XMOS" / "USB Audio Device Driver" / "x64" / "custom.ini"
-    if not ini_path.exists():
-        pytest.fail(f"tusbaudio SDK custom.ini not found in expected location: {ini_path}")
-
-    with open(ini_path, "r") as f:
-        config = configparser.ConfigParser()
-        config.read_file(f)
-        try:
-            guid = config.get("DriverInterface", "InterfaceGUID")
-            return guid
-        except (configparser.NoSectionError, configparser.NoOptionError):
-            pytest.fail(f"Could not find InterfaceGUID in custom.ini")
 
 
 # Common options to subprocess: capture output as text, timeout after 300s
@@ -50,7 +38,15 @@ class DfuTester:
         platform_str = platform.system()
         if platform_str == "Windows":
             self.driver_guid = get_tusb_guid()
-            self.dfu_app = Path(os.environ["PROGRAMFILES"]) / "XMOS" / "tusbaudiosdk" / "bin" / "Debug" / "x64" / "dfucons.exe"
+            self.dfu_app = (
+                Path(os.environ["PROGRAMFILES"])
+                / "XMOS"
+                / "tusbaudiosdk"
+                / "bin"
+                / "Debug"
+                / "x64"
+                / "dfucons.exe"
+            )
             if not self.dfu_app.exists():
                 pytest.fail(f"dfucons.exe not found in location: {self.dfu_app}")
         elif platform_str in ["Darwin", "Linux"]:
@@ -140,7 +136,9 @@ class DfuTester:
         ret = subprocess.run(cmd, **common_opts)
         if ret.returncode:
             print(ret.stdout)
-            pytest.fail(f"Download of image {image_bin} failed (error {ret.returncode})")
+            pytest.fail(
+                f"Download of image {image_bin} failed (error {ret.returncode})"
+            )
 
     def upload(self):
         platform_str = platform.system()
@@ -153,7 +151,9 @@ class DfuTester:
         ret = subprocess.run(cmd, **common_opts)
         if ret.returncode:
             print(ret.stdout)
-            pytest.fail(f"Upload image to {self.upload_bin} failed (error {ret.returncode})")
+            pytest.fail(
+                f"Upload image to {self.upload_bin} failed (error {ret.returncode})"
+            )
 
     def revert_factory(self):
         platform_str = platform.system()
@@ -227,7 +227,8 @@ def test_dfu(pytestconfig, board, config):
         # xflash the factory image for the initial version
         firmware = get_firmware_path(board, config)
         subprocess.run(
-            ["xflash", "--adapter-id", dfu_test.xtag_id, "--factory", firmware], check=True
+            ["xflash", "--adapter-id", dfu_test.xtag_id, "--factory", firmware],
+            check=True,
         )
         initial_version = dfu_test.get_bcd_version()
         exp_version1 = "99.01"

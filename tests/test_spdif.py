@@ -9,6 +9,9 @@ import platform
 from usb_audio_test_utils import (
     check_analyzer_output,
     get_xtag_dut_and_harness,
+    get_volcontrol_path,
+    get_xscope_controller_path,
+    get_tusb_guid,
     AudioAnalyzerHarness,
     XrunDut,
     XsigInput,
@@ -19,16 +22,20 @@ from conftest import list_configs, get_config_features
 
 class SpdifClockSrc:
     def __init__(self):
-        self.volcontrol = Path(__file__).parent / "tools" / "volcontrol" / "volcontrol"
+        self.cmd = [get_volcontrol_path()]
+        if platform.system() == "Windows":
+            self.cmd.append(f"-g{get_tusb_guid()}")
 
     def __enter__(self):
-        subprocess.run([self.volcontrol, "--clock", "SPDIF"], timeout=10)
+        cmd = self.cmd + ["--clock", "SPDIF"]
+        subprocess.run(cmd, timeout=10)
         # Short delay to wait for clock source
         time.sleep(5)
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        subprocess.run([self.volcontrol, "--clock", "Internal"], timeout=10)
+        cmd = self.cmd + ["--clock", "Internal"]
+        subprocess.run(cmd, timeout=10)
 
 
 def spdif_common_uncollect(features, board, pytestconfig):
@@ -42,16 +49,17 @@ def spdif_common_uncollect(features, board, pytestconfig):
 
 
 def spdif_input_uncollect(pytestconfig, board, config):
-    # Not yet supported on Windows
-    if platform.system() == "Windows":
-        return True
     features = get_config_features(board, config)
-    return any([not features["spdif_i"], spdif_common_uncollect(features, board, pytestconfig)])
+    return any(
+        [not features["spdif_i"], spdif_common_uncollect(features, board, pytestconfig)]
+    )
 
 
 def spdif_output_uncollect(pytestconfig, board, config):
     features = get_config_features(board, config)
-    return any([not features["spdif_o"], spdif_common_uncollect(features, board, pytestconfig)])
+    return any(
+        [not features["spdif_o"], spdif_common_uncollect(features, board, pytestconfig)]
+    )
 
 
 def spdif_duration(level, partial):
@@ -78,24 +86,34 @@ def test_spdif_input(pytestconfig, board, config):
 
     with XrunDut(adapter_dut, board, config) as dut:
         for fs in features["samp_freqs"]:
-            with AudioAnalyzerHarness(adapter_harness, config="spdif_test", xscope="app") as harness:
-
-                xscope_controller = (
-                    Path(__file__).parents[2]
-                    / "sw_audio_analyzer"
-                    / "host_xscope_controller"
-                    / "bin_macos"
-                    / "xscope_controller"
+            with AudioAnalyzerHarness(
+                adapter_harness, config="spdif_test", xscope="app"
+            ) as harness:
+                xscope_controller = get_xscope_controller_path()
+                ret = subprocess.run(
+                    [
+                        xscope_controller,
+                        "localhost",
+                        f"{harness.xscope_port}",
+                        "0",
+                        f"f {fs}",
+                    ],
+                    timeout=30,
+                    capture_output=True,
+                    text=True,
                 )
-                subprocess.run([xscope_controller, "localhost", f"{harness.xscope_port}", "0", f"f {fs}"], timeout=10)
-                # Short delay to wait for the S/PDIF ramp to be generated before selecting the clock source
-                time.sleep(3)
+                if ret.returncode != 0:
+                    fail_str = f'xscope_controller command failed, cmds:["f {fs}"]\n'
+                    fail_str += f"stdout:\n{ret.stdout}\n"
+                    fail_str += f"stderr:\n{ret.stderr}\n"
+                    pytest.fail(fail_str)
 
                 with (
                     SpdifClockSrc(),
-                    XsigInput(fs, duration, xsig_config_path, dut.dev_name) as xsig_proc,
+                    XsigInput(
+                        fs, duration, xsig_config_path, dut.dev_name
+                    ) as xsig_proc,
                 ):
-
                     time.sleep(duration + 6)
                     xsig_lines = xsig_proc.get_output()
 
@@ -108,7 +126,14 @@ def test_spdif_input(pytestconfig, board, config):
                 fail_str += f"xsig stdout at sample rate {fs}\n"
                 fail_str += "\n".join(xsig_lines) + "\n\n"
                 fail_str += f"Audio analyzer stdout at sample rate {fs}\n"
-                fail_str += "\n".join(harness.get_output()) + "\n\n"
+                # Some of the analyzer output can be captured by the xscope_controller so
+                # include all the output from that application as well as the harness output
+                analyzer_lines = (
+                    ret.stdout.splitlines()
+                    + ret.stderr.splitlines()
+                    + harness.get_output()
+                )
+                fail_str += "\n".join(analyzer_lines) + "\n\n"
 
     if len(fail_str) > 0:
         pytest.fail(fail_str)
@@ -129,10 +154,11 @@ def test_spdif_output(pytestconfig, board, config):
     with XrunDut(adapter_dut, board, config) as dut:
         for fs in features["samp_freqs"]:
             with (
-                AudioAnalyzerHarness(adapter_harness, config="spdif_test", xscope="io") as harness,
+                AudioAnalyzerHarness(
+                    adapter_harness, config="spdif_test", xscope="io"
+                ) as harness,
                 XsigOutput(fs, None, xsig_config_path, dut.dev_name),
             ):
-
                 time.sleep(duration)
                 harness.terminate()
                 xscope_lines = harness.get_output()
