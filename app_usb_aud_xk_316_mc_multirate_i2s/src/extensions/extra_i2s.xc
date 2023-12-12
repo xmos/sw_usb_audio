@@ -245,8 +245,8 @@ static inline int trigger_src(streaming chanend c_src[SRC_N_INSTANCES],
 #endif
 
 #if LOG_CONTROLLER
-#define CONT_LOG_SIZE      (4000)
-#define CONT_LOG_SUBSAMPLE (100)
+#define CONT_LOG_SIZE      (9000)
+#define CONT_LOG_SUBSAMPLE (8*2)
 int e[CONT_LOG_SIZE];
 int f_p[CONT_LOG_SIZE];
 int f_r[CONT_LOG_SIZE];
@@ -256,8 +256,6 @@ int sr[CONT_LOG_SIZE];
 int logCounter = 0;
 int logCounterSub = 0;
 #endif
-
-
 
 #pragma unsafe arrays
 int i2s_data(server i2s_frame_callback_if i_i2s, chanend c, streaming chanend c_src_play[SRC_N_INSTANCES], streaming chanend c_src_rec[SRC_N_INSTANCES], int samFreq)
@@ -378,18 +376,28 @@ int i2s_data(server i2s_frame_callback_if i_i2s, chanend c, streaming chanend c_
                             /* Ignore any large error - most likely an SR change occurred */
                             if((error < 300) && (error > -300))
                             {
-                                float error_p = (float) (error *0.0000002);
+                                phaseError += error;
+#if 0
+                                phaseErrorInt += phaseError;
+                                float error_p = (float) (phaseError * 0.0000002);
+                                float error_i = (float) (phaseErrorInt * 0.000000004);
+                                float x = (error_p + error_i);
+                                floatRatio_play = (idealFloatRatio_play + (x * idealFloatRatio_play));
+                                floatRatio_rec = (idealFloatRatio_rec - (x * idealFloatRatio_rec));
+#else
+                                /* Playback path controller */
+                                float error_p = (float) (phaseError * 0.0000002);
                                 float error_i = (float) ((((fifo_play.size/2) - fifo_play.fill) * 0.00000004));
-                                floatRatio_play = floatRatio_play + error_p - error_i;
+                                float x = (error_p + error_i);
+                                floatRatio_play = (idealFloatRatio_play + (x * idealFloatRatio_play));
 
+                                /* Record path, note this is a bit of a cheat.. */
+                                error_i = (float) ((((fifo_rec.size/2) - fifo_rec.fill) * 0.0000001));
+                                x = (error_p + error_i);
+                                floatRatio_rec = (idealFloatRatio_rec - (x * idealFloatRatio_rec));
+#endif
                                 /* Convert FS ratio to fixed point */
                                 fsRatio = (uint64_t) (floatRatio_play * (1LL<<60));
-
-                                asrcClocks = asrcCounter_rec * (64/4);
-                                error = asrcClocks - (int)measuredClocks;
-                                error_p = (float) (error * 0.0000000002);
-                                error_i = (float) ((((fifo_rec.size/2) - fifo_rec.fill) * 0.000000004));
-                                floatRatio_rec = floatRatio_rec - error_p - error_i;
 
                                 /* Note, ASRC will Clamp ratio to 1000PPM error */
                                 //if(floatRatio_play > (idealFloatRatio_play + 0.001))
@@ -478,7 +486,6 @@ int i2s_data(server i2s_frame_callback_if i_i2s, chanend c, streaming chanend c_
                 {
                     sampleIdx_rec = 0;
 
-                    /* TODO we probably should synchronise use of fsRatio_rec */
                     fsRatio_rec = (uint64_t) (floatRatio_rec * (1LL << 60));
 
                     /* Note, currenly don't use the count here since we expect the record and playback rates to match*/

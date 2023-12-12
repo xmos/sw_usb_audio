@@ -52,6 +52,7 @@ set(APP_COMPILER_FLAGS_2AMi2o2xxxxxx_asrc ${SW_USB_AUDIO_FLAGS}
                                      -DMIN_FREQ=44100
                                      -DUSE_ASRC=1)
 
+#Fixed frequency binaries for test and debug
 set(APP_COMPILER_FLAGS_2AMi2o2xxxxxx_asrc_192 ${SW_USB_AUDIO_FLAGS}
                                      -DNUM_USB_CHAN_OUT=2
                                      -DNUM_USB_CHAN_IN=2
@@ -68,6 +69,15 @@ set(APP_COMPILER_FLAGS_2AMi2o2xxxxxx_asrc_176 ${SW_USB_AUDIO_FLAGS}
                                      -DI2S_CHANS_ADC=2
                                      -DMAX_FREQ=176400
                                      -DMIN_FREQ=176400
+                                     -DUSE_ASRC=1)
+
+set(APP_COMPILER_FLAGS_2AMi2o2xxxxxx_asrc_96 ${SW_USB_AUDIO_FLAGS}
+                                     -DNUM_USB_CHAN_OUT=2
+                                     -DNUM_USB_CHAN_IN=2
+                                     -DI2S_CHANS_DAC=2
+                                     -DI2S_CHANS_ADC=2
+                                     -DMAX_FREQ=96000
+                                     -DMIN_FREQ=96000
                                      -DUSE_ASRC=1)
 
 set(APP_COMPILER_FLAGS_2AMi2o2xxxxxx_asrc_88 ${SW_USB_AUDIO_FLAGS}
