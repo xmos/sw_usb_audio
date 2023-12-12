@@ -388,13 +388,11 @@ int i2s_data(server i2s_frame_callback_if i_i2s, chanend c, streaming chanend c_
                                 /* Playback path controller */
                                 float error_p = (float) (phaseError * 0.0000002);
                                 float error_i = (float) ((((fifo_play.size/2) - fifo_play.fill) * 0.00000004));
-                                float x = (error_p + error_i);
-                                floatRatio_play = (idealFloatRatio_play + (x * idealFloatRatio_play));
+                                floatRatio_play = (idealFloatRatio_play + (error_p * idealFloatRatio_play) + error_i);
 
                                 /* Record path, note this is a bit of a cheat.. */
                                 error_i = (float) ((((fifo_rec.size/2) - fifo_rec.fill) * 0.0000001));
-                                x = (error_p + error_i);
-                                floatRatio_rec = (idealFloatRatio_rec - (x * idealFloatRatio_rec));
+                                floatRatio_rec = (idealFloatRatio_rec - (error_p * idealFloatRatio_rec) - error_i);
 #endif
                                 /* Convert FS ratio to fixed point */
                                 fsRatio = (uint64_t) (floatRatio_play * (1LL<<60));
