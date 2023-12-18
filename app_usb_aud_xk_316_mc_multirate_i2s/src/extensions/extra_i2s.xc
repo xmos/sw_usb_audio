@@ -298,9 +298,6 @@ int i2s_data(server i2s_frame_callback_if i_i2s, chanend c, streaming chanend c_
     int phaseError = 0;
     int phaseErrorInt = 0;
 
-    int shutdown = 0;
-    int shutdownI2s = 0;
-
     init_fifo(fifo_play, srcOutputBuff_play, sizeof(srcOutputBuff_play)/sizeof(srcOutputBuff_play[0]));
     init_fifo(fifo_rec, srcOutputBuff_rec, sizeof(srcOutputBuff_rec)/sizeof(srcOutputBuff_rec[0]));
 
@@ -310,7 +307,7 @@ int i2s_data(server i2s_frame_callback_if i_i2s, chanend c, streaming chanend c_
     if(!startUp)
         outct(c, XS1_CT_END);
 
-    while (!shutdown)
+    while (1)
     {
         select
         {
@@ -320,7 +317,9 @@ int i2s_data(server i2s_frame_callback_if i_i2s, chanend c, streaming chanend c_
                 {
                     samFreq = inuint(c);
                     inct(c);
-                    shutdownI2s = 1;
+
+                    /* Return new sample frequency we need to switch to */
+                    return samFreq;
                 }
                 else
                 {
@@ -464,16 +463,7 @@ int i2s_data(server i2s_frame_callback_if i_i2s, chanend c, streaming chanend c_
 
             /* Inform the I2S slave whether it should restart or exit */
             case i_i2s.restart_check() -> i2s_restart_t restart:
-
-                if(shutdownI2s)
-                {
-                    restart = I2S_SHUTDOWN;
-                    shutdown = 1;
-                }
-                else
-                {
-                    restart = I2S_NO_RESTART;
-                }
+                restart = I2S_NO_RESTART;
                 break;
 
             case i_i2s.receive(size_t num_in, int32_t samples[num_in]):
@@ -520,8 +510,9 @@ int i2s_data(server i2s_frame_callback_if i_i2s, chanend c, streaming chanend c_
         }
     }
 
-    /* Return new sample frequency we need to switch to */
-    return samFreq;
+__builtin_unreachable();
+    /* Should never get here */
+    return 0;
 }
 
 void src_task(streaming chanend c, int instance, int inputFsCode, int outputFsCode)
@@ -658,34 +649,28 @@ void i2s_driver(chanend c)
 
     par
     {
+        i2s_frame_slave(i_i2s, p_i2s_dout, 1, p_i2s_din, sizeof(p_i2s_din)/sizeof(p_i2s_din[0]), DATA_BITS, p_i2s_bclk, p_i2s_lrclk, clk_bclk);
+
         while(1)
         {
-            par
-            {
-                {
-                    i2s_frame_slave(i_i2s, p_i2s_dout, 1, p_i2s_din, sizeof(p_i2s_din)/sizeof(p_i2s_din[0]), DATA_BITS, p_i2s_bclk, p_i2s_lrclk, clk_bclk);
-                }
-                {
-                    set_core_high_priority_on();
-                    usbSr = i2s_data(i_i2s, c, c_src_play, c_src_rec, usbSr, startUp);
-                    set_core_high_priority_off();
-                    startUp = 0;
+            set_core_high_priority_on();
+            usbSr = i2s_data(i_i2s, c, c_src_play, c_src_rec, usbSr, startUp);
+            set_core_high_priority_off();
+            startUp = 0;
 
-                    for(int i=0; i < SRC_N_INSTANCES; i++)
-                    unsafe
-                    {
-                        soutct(c_src_play[i], XS1_CT_END);
-                        c_src_play[i] <: (int)sr_to_fscode(usbSr);
-                        c_src_play[i] <: (int)FS_CODE_48;
-                        schkct(c_src_play[i], XS1_CT_END);
+            for(int i=0; i < SRC_N_INSTANCES; i++)
+                unsafe
+                {
+                    soutct(c_src_play[i], XS1_CT_END);
+                    c_src_play[i] <: (int)sr_to_fscode(usbSr);
+                    c_src_play[i] <: (int)FS_CODE_48;
+                    schkct(c_src_play[i], XS1_CT_END);
 
-                        soutct(c_src_rec[i], XS1_CT_END);
-                        c_src_rec[i] <: (int)FS_CODE_48;
-                        c_src_rec[i] <: (int)sr_to_fscode(usbSr);
-                        schkct(c_src_rec[i], XS1_CT_END);
-                    }
+                    soutct(c_src_rec[i], XS1_CT_END);
+                    c_src_rec[i] <: (int)FS_CODE_48;
+                    c_src_rec[i] <: (int)sr_to_fscode(usbSr);
+                    schkct(c_src_rec[i], XS1_CT_END);
                 }
-            }
         }
 
 #if(EXTRA_I2S_CHAN_COUNT_OUT > 0)
@@ -694,7 +679,7 @@ void i2s_driver(chanend c)
         {
             unsafe
             {
-                src_task(c_src_play[i], i, sr_to_fscode(usbSr), FS_CODE_48);
+                src_task(c_src_play[i], i, sr_to_fscode(DEFAULT_FREQ), FS_CODE_48);
             }
         }
 #endif
@@ -703,7 +688,7 @@ void i2s_driver(chanend c)
         {
             unsafe
             {
-                src_task(c_src_rec[i-SRC_N_INSTANCES], i, FS_CODE_48, sr_to_fscode(usbSr));
+                src_task(c_src_rec[i-SRC_N_INSTANCES], i, FS_CODE_48, sr_to_fscode(DEFAULT_FREQ));
             }
         }
     }
