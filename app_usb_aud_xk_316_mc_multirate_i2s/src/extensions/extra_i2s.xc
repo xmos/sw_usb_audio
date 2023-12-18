@@ -165,6 +165,9 @@ void UserBufferManagementInit(unsigned samFreq)
             outuint((chanend) uc_i2s, 1);
             outuint((chanend) uc_i2s, g_usbSamFreq);
             outct((chanend) uc_i2s, XS1_CT_END);
+
+            /* Wait for handshake */
+            chkct((chanend) uc_i2s, XS1_CT_END);
         }
     }
 }
@@ -175,13 +178,14 @@ void UserBufferManagement(unsigned sampsFromUsbToAudio[], unsigned sampsFromAudi
     unsafe
     {
         outuint((chanend) uc_i2s, 0);
-
+#pragma loop unroll
         for(size_t i = 0; i < EXTRA_I2S_CHAN_COUNT_OUT; i++)
         {
             outuint((chanend)uc_i2s, sampsFromUsbToAudio[i + EXTRA_I2S_CHAN_INDEX_OUT]);
         }
         outct((chanend)uc_i2s, XS1_CT_END);
 
+#pragma loop unroll
         for(size_t i = 0; i< EXTRA_I2S_CHAN_COUNT_IN; i++)
         {
             sampsFromAudioToUsb[i + EXTRA_I2S_CHAN_INDEX_IN] = inuint((chanend) uc_i2s);
@@ -258,7 +262,7 @@ int logCounterSub = 0;
 #endif
 
 #pragma unsafe arrays
-int i2s_data(server i2s_frame_callback_if i_i2s, chanend c, streaming chanend c_src_play[SRC_N_INSTANCES], streaming chanend c_src_rec[SRC_N_INSTANCES], int samFreq)
+int i2s_data(server i2s_frame_callback_if i_i2s, chanend c, streaming chanend c_src_play[SRC_N_INSTANCES], streaming chanend c_src_rec[SRC_N_INSTANCES], int samFreq, int startUp)
 {
     unsigned srChange = 0;
 
@@ -301,6 +305,11 @@ int i2s_data(server i2s_frame_callback_if i_i2s, chanend c, streaming chanend c_
     init_fifo(fifo_rec, srcOutputBuff_rec, sizeof(srcOutputBuff_rec)/sizeof(srcOutputBuff_rec[0]));
 
     int samplesToGo[EXTRA_I2S_CHAN_COUNT_IN];
+
+    /* Handshsake that we are ready to go after SR change */
+    if(!startUp)
+        outct(c, XS1_CT_END);
+
     while (!shutdown)
     {
         select
@@ -573,6 +582,8 @@ void src_task(streaming chanend c, int instance, int inputFsCode, int outputFsCo
 
             fsRatio = asrc_init(inputFsCode, outputFsCode, sASRCCtrl, SRC_CHANNELS_PER_INSTANCE, SRC_N_IN_SAMPLES, SRC_DITHER_SETTING);
 
+            /* Handshake back when init complete */
+            soutct(c, XS1_CT_END);
             continue;
         }
 
@@ -643,6 +654,7 @@ void i2s_driver(chanend c)
     set_port_clock(p_off_bclk, clk_bclk);
 
     int usbSr = DEFAULT_FREQ;
+    int startUp = 1;
 
     par
     {
@@ -651,12 +663,13 @@ void i2s_driver(chanend c)
             par
             {
                 {
-                i2s_frame_slave(i_i2s, p_i2s_dout, 1, p_i2s_din, sizeof(p_i2s_din)/sizeof(p_i2s_din[0]), DATA_BITS, p_i2s_bclk, p_i2s_lrclk, clk_bclk);
+                    i2s_frame_slave(i_i2s, p_i2s_dout, 1, p_i2s_din, sizeof(p_i2s_din)/sizeof(p_i2s_din[0]), DATA_BITS, p_i2s_bclk, p_i2s_lrclk, clk_bclk);
                 }
                 {
                     set_core_high_priority_on();
-                    usbSr = i2s_data(i_i2s, c, c_src_play, c_src_rec, usbSr);
+                    usbSr = i2s_data(i_i2s, c, c_src_play, c_src_rec, usbSr, startUp);
                     set_core_high_priority_off();
+                    startUp = 0;
 
                     for(int i=0; i < SRC_N_INSTANCES; i++)
                     unsafe
@@ -664,10 +677,12 @@ void i2s_driver(chanend c)
                         soutct(c_src_play[i], XS1_CT_END);
                         c_src_play[i] <: (int)sr_to_fscode(usbSr);
                         c_src_play[i] <: (int)FS_CODE_48;
+                        schkct(c_src_play[i], XS1_CT_END);
 
                         soutct(c_src_rec[i], XS1_CT_END);
                         c_src_rec[i] <: (int)FS_CODE_48;
                         c_src_rec[i] <: (int)sr_to_fscode(usbSr);
+                        schkct(c_src_rec[i], XS1_CT_END);
                     }
                 }
             }
