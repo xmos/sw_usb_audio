@@ -48,7 +48,7 @@ set(APP_COMPILER_FLAGS_2AMi2o2xxxxxx_asrc ${SW_USB_AUDIO_FLAGS}
                                      -DNUM_USB_CHAN_IN=2
                                      -DI2S_CHANS_DAC=2
                                      -DI2S_CHANS_ADC=2
-                                     -DMAX_FREQ=96000
+                                     -DMAX_FREQ=192000
                                      -DMIN_FREQ=44100
                                      -DUSE_ASRC=1)
 

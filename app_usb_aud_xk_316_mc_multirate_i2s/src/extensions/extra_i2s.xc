@@ -159,7 +159,7 @@ void UserBufferManagementInit(unsigned samFreq)
 
         unsafe
         {
-            outuint((chanend) uc_i2s, 1);
+            outuchar((chanend) uc_i2s, 1);
             outuint((chanend) uc_i2s, g_usbSamFreq);
             outct((chanend) uc_i2s, XS1_CT_END);
 
@@ -169,25 +169,41 @@ void UserBufferManagementInit(unsigned samFreq)
     }
 }
 
+int32_t inSamplesUsb[2][EXTRA_I2S_CHAN_COUNT_IN];
+int32_t outSamplesUsb[2][EXTRA_I2S_CHAN_COUNT_OUT];
+
+unsafe
+{
+    int32_t (* unsafe inSamplesUsb_ptr)[2] = inSamplesUsb;
+    int32_t (* unsafe outSamplesUsb_ptr)[2] = outSamplesUsb;
+}
 #pragma unsafe arrays
 void UserBufferManagement(unsigned sampsFromUsbToAudio[], unsigned sampsFromAudioToUsb[])
 {
-    unsafe
-    {
-        outuint((chanend) uc_i2s, 0);
-#pragma loop unroll
-        for(size_t i = 0; i < EXTRA_I2S_CHAN_COUNT_OUT; i++)
-        {
-            outuint((chanend)uc_i2s, sampsFromUsbToAudio[i + EXTRA_I2S_CHAN_INDEX_OUT]);
-        }
-        outct((chanend)uc_i2s, XS1_CT_END);
+    static int buffNum = 0;
 
 #pragma loop unroll
-        for(size_t i = 0; i< EXTRA_I2S_CHAN_COUNT_IN; i++)
-        {
-            sampsFromAudioToUsb[i + EXTRA_I2S_CHAN_INDEX_IN] = inuint((chanend) uc_i2s);
-        }
+    for(size_t i = 0; i < EXTRA_I2S_CHAN_COUNT_OUT; i++)
+    {
+        outSamplesUsb[buffNum][i] = sampsFromUsbToAudio[i + EXTRA_I2S_CHAN_INDEX_OUT];
+    }
+
+#pragma loop unroll
+    for(size_t i = 0; i< EXTRA_I2S_CHAN_COUNT_IN; i++)
+    {
+        sampsFromAudioToUsb[i + EXTRA_I2S_CHAN_INDEX_IN] = inSamplesUsb[buffNum][i];
+    }
+
+    unsafe
+    {
+        /* Wait until buffer is finished with */
         chkct((chanend)uc_i2s, XS1_CT_END);
+
+        /* Send new buffer */
+        outuchar((chanend) uc_i2s, 0); /* Send no SR change */
+        outuchar((chanend)uc_i2s, buffNum);
+        buffNum = !buffNum;
+
     }
 }
 
@@ -312,7 +328,7 @@ void i2s_data(server i2s_frame_callback_if i_i2s, chanend c)
 #pragma unsafe arrays
 int src_manager(chanend c_i2s, chanend c_usb, streaming chanend c_src_play[SRC_N_INSTANCES], streaming chanend c_src_rec[SRC_N_INSTANCES], int samFreq, int startUp)
 {
-    unsigned srChange = 0;
+    unsigned char srChange = 0;
 
     int srcInputBuff_play[SRC_N_INSTANCES][SRC_N_IN_SAMPLES][SRC_CHANNELS_PER_INSTANCE];
     int srcInputBuff_rec[SRC_N_INSTANCES][SRC_N_IN_SAMPLES][SRC_CHANNELS_PER_INSTANCE];
@@ -352,20 +368,23 @@ int src_manager(chanend c_i2s, chanend c_usb, streaming chanend c_src_play[SRC_N
     int samplesToGo[EXTRA_I2S_CHAN_COUNT_IN];
 
     unsigned i2sBuff;
+    unsigned usbBuff;
 
     if(startUp)
         /* Intial request for i2s data */
         outuint(c_i2s, 0);
-    else
-        /* Handshsake that we are ready to go after SR change */
-        outct(c_usb, XS1_CT_END);
+
+    /* Handshsake that we are ready to go after SR change */
+    /* OR inital request for usb data */
+    outct(c_usb, XS1_CT_END);
 
     while (1)
     {
         select
         {
-            case inuint_byref(c_usb, srChange):
+            case inuchar_byref(c_usb, srChange):
 
+                p1 <: 1;
                 if(srChange)
                 {
                     samFreq = inuint(c_usb);
@@ -376,29 +395,24 @@ int src_manager(chanend c_i2s, chanend c_usb, streaming chanend c_src_play[SRC_N
                 }
                 else
                 {
+                    usbBuff = (unsigned)inuchar(c_usb);
                     /* Receive samples from USB audio (other side of the UserBufferManagement() comms) */
 #pragma loop unroll
                     for(size_t i = 0; i< EXTRA_I2S_CHAN_COUNT_OUT; i++)
-                    {
-                        srcInputBuff_play[i/SRC_CHANNELS_PER_INSTANCE][sampleIdx_play][i % SRC_CHANNELS_PER_INSTANCE] = inuint(c_usb);
+                    unsafe{
+                        srcInputBuff_play[i/SRC_CHANNELS_PER_INSTANCE][sampleIdx_play][i % SRC_CHANNELS_PER_INSTANCE] = outSamplesUsb_ptr[usbBuff][i];
                     }
-                    chkct(c_usb, XS1_CT_END);
 
                     /* Send samples to USB audio (other side of the UserBufferManagement() comms */
-#pragma loop unroll
+
                     for(size_t i = 0; i< EXTRA_I2S_CHAN_COUNT_IN; i++)
-                    {
-                        outuint(c_usb, samplesToGo[i]);
+                    unsafe{
+                       int sample;
+                        fifo_pop(fifo_rec, srcOutputBuff_rec, sample);
+                        inSamplesUsb_ptr[usbBuff][i] = sample;
                     }
 
                     outct(c_usb, XS1_CT_END);
-
-                    for(size_t i = 0; i< EXTRA_I2S_CHAN_COUNT_IN; i++)
-                    {
-                        int sample;
-                        int error = fifo_pop(fifo_rec, srcOutputBuff_rec, sample);
-                        samplesToGo[i] = sample;
-                    }
 
                     sampleIdx_play++;
 
