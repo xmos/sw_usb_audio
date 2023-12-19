@@ -15,9 +15,6 @@
 - Optimise:
     - Optimise for 192kHz operation
 
-- Buffering:
-    - Only push to fifo when "locked"
-
 */
 
 
@@ -261,8 +258,59 @@ int logCounter = 0;
 int logCounterSub = 0;
 #endif
 
+int32_t inSamples[2][EXTRA_I2S_CHAN_COUNT_IN];
+int32_t outSamples[2][EXTRA_I2S_CHAN_COUNT_OUT];
+
+unsafe
+{
+    int32_t (* unsafe inSamples_ptr)[2] = inSamples;
+    int32_t (* unsafe outSamples_ptr)[2] = outSamples;
+}
+
+[[distributable]]
+void i2s_data(server i2s_frame_callback_if i_i2s, chanend c)
+{
+    int buffNum = 0;
+
+    while(1)
+    {
+        select
+        {
+            case i_i2s.init(i2s_config_t &?i2s_config, tdm_config_t &?tdm_config):
+                i2s_config.mode = I2S_MODE_I2S;
+                break;
+
+                /* Inform the I2S slave whether it should restart or exit */
+            case i_i2s.restart_check() -> i2s_restart_t restart:
+                restart = I2S_NO_RESTART;
+                break;
+
+            case i_i2s.receive(size_t num_in, int32_t samples[num_in]):
+                for(int i = 0; i < num_in; i++)
+                {
+                    inSamples[buffNum][i] = samples[i];
+                }
+                break;
+
+            case i_i2s.send(size_t num_out, int32_t samples[num_out]):
+                for(int i = 0; i < num_out; i++)
+                {
+                    samples[i] = outSamples[buffNum][i];
+                }
+
+                inuint(c);
+                outuint(c, buffNum);
+                buffNum = !buffNum;
+
+                break;
+        }
+    }
+}
+
+
+
 #pragma unsafe arrays
-int i2s_data(server i2s_frame_callback_if i_i2s, chanend c, streaming chanend c_src_play[SRC_N_INSTANCES], streaming chanend c_src_rec[SRC_N_INSTANCES], int samFreq, int startUp)
+int src_manager(chanend c_i2s, chanend c_usb, streaming chanend c_src_play[SRC_N_INSTANCES], streaming chanend c_src_rec[SRC_N_INSTANCES], int samFreq, int startUp)
 {
     unsigned srChange = 0;
 
@@ -303,20 +351,25 @@ int i2s_data(server i2s_frame_callback_if i_i2s, chanend c, streaming chanend c_
 
     int samplesToGo[EXTRA_I2S_CHAN_COUNT_IN];
 
-    /* Handshsake that we are ready to go after SR change */
-    if(!startUp)
-        outct(c, XS1_CT_END);
+    unsigned i2sBuff;
+
+    if(startUp)
+        /* Intial request for i2s data */
+        outuint(c_i2s, 0);
+    else
+        /* Handshsake that we are ready to go after SR change */
+        outct(c_usb, XS1_CT_END);
 
     while (1)
     {
         select
         {
-            case inuint_byref(c, srChange):
+            case inuint_byref(c_usb, srChange):
 
                 if(srChange)
                 {
-                    samFreq = inuint(c);
-                    inct(c);
+                    samFreq = inuint(c_usb);
+                    inct(c_usb);
 
                     /* Return new sample frequency we need to switch to */
                     return samFreq;
@@ -327,18 +380,18 @@ int i2s_data(server i2s_frame_callback_if i_i2s, chanend c, streaming chanend c_
 #pragma loop unroll
                     for(size_t i = 0; i< EXTRA_I2S_CHAN_COUNT_OUT; i++)
                     {
-                        srcInputBuff_play[i/SRC_CHANNELS_PER_INSTANCE][sampleIdx_play][i % SRC_CHANNELS_PER_INSTANCE] = inuint(c);
+                        srcInputBuff_play[i/SRC_CHANNELS_PER_INSTANCE][sampleIdx_play][i % SRC_CHANNELS_PER_INSTANCE] = inuint(c_usb);
                     }
-                    chkct(c, XS1_CT_END);
+                    chkct(c_usb, XS1_CT_END);
 
                     /* Send samples to USB audio (other side of the UserBufferManagement() comms */
 #pragma loop unroll
                     for(size_t i = 0; i< EXTRA_I2S_CHAN_COUNT_IN; i++)
                     {
-                        outuint(c, samplesToGo[i]);
+                        outuint(c_usb, samplesToGo[i]);
                     }
 
-                    outct(c, XS1_CT_END);
+                    outct(c_usb, XS1_CT_END);
 
                     for(size_t i = 0; i< EXTRA_I2S_CHAN_COUNT_IN; i++)
                     {
@@ -358,7 +411,6 @@ int i2s_data(server i2s_frame_callback_if i_i2s, chanend c, streaming chanend c_
                         /* Run the control loop approx sample frequency independant of primary sample rate */
                         if(usbCounter >= ((25 * (samFreq/SAMPLE_FREQUENCY))+1))
                         {
-
                             unsigned short pt;
                             asm volatile(" getts %0, res[%1]" : "=r" (pt) : "r" (p_off_bclk));
 
@@ -385,14 +437,6 @@ int i2s_data(server i2s_frame_callback_if i_i2s, chanend c, streaming chanend c_
                             if((error < 300) && (error > -300))
                             {
                                 phaseError += error;
-#if 0
-                                phaseErrorInt += phaseError;
-                                float error_p = (float) (phaseError * 0.0000002);
-                                float error_i = (float) (phaseErrorInt * 0.000000004);
-                                float x = (error_p + error_i);
-                                floatRatio_play = (idealFloatRatio_play + (x * idealFloatRatio_play));
-                                floatRatio_rec = (idealFloatRatio_rec - (x * idealFloatRatio_rec));
-#else
                                 /* Playback path controller */
                                 float error_p = (float) (phaseError * 0.0000002);
                                 float error_i = (float) ((((fifo_play.size/2) - fifo_play.fill) * 0.00000004));
@@ -401,15 +445,11 @@ int i2s_data(server i2s_frame_callback_if i_i2s, chanend c, streaming chanend c_
                                 /* Record path, note this is a bit of a cheat.. */
                                 error_i = (float) ((((fifo_rec.size/2) - fifo_rec.fill) * 0.0000001));
                                 floatRatio_rec = (idealFloatRatio_rec - (error_p * idealFloatRatio_rec) - error_i);
-#endif
+
                                 /* Convert FS ratio to fixed point */
+                                /* Note, ASRC will Clamp ratio to 1000PPM error */
                                 fsRatio = (uint64_t) (floatRatio_play * (1LL<<60));
 
-                                /* Note, ASRC will Clamp ratio to 1000PPM error */
-                                //if(floatRatio_play > (idealFloatRatio_play + 0.001))
-                                //    floatRatio_play = idealFloatRatio_play + 0.001;
-                                //if(floatRatio_play < (idealFloatRatio_play - 0.001))
-                                //    floatRatio_play = idealFloatRatio_play - 0.001;
                             }
 #if LOG_CONTROLLER
                             logCounterSub++;
@@ -454,29 +494,35 @@ int i2s_data(server i2s_frame_callback_if i_i2s, chanend c, streaming chanend c_
 #endif
                     }
                 }
-
                 break;
 
-            case i_i2s.init(i2s_config_t &?i2s_config, tdm_config_t &?tdm_config):
-                i2s_config.mode = I2S_MODE_I2S;
-                break;
-
-            /* Inform the I2S slave whether it should restart or exit */
-            case i_i2s.restart_check() -> i2s_restart_t restart:
-                restart = I2S_NO_RESTART;
-                break;
-
-            case i_i2s.receive(size_t num_in, int32_t samples[num_in]):
+            case inuint_byref(c_i2s, i2sBuff):
 
 #pragma loop unroll
                 /* Add to recording path ASRC input buffer */
                 for(size_t i = 0; i < EXTRA_I2S_CHAN_COUNT_IN; i++)
                 {
-                    srcInputBuff_rec[i/SRC_CHANNELS_PER_INSTANCE][sampleIdx_rec][i % SRC_CHANNELS_PER_INSTANCE] = samples[i];
+                    unsafe
+                    {
+                        srcInputBuff_rec[i/SRC_CHANNELS_PER_INSTANCE][sampleIdx_rec][i % SRC_CHANNELS_PER_INSTANCE] = inSamples_ptr[i2sBuff][i];
+                    }
                 }
 
-                sampleIdx_rec++;
+                /* Provide samples from the SRC output FIFO */
+                for(size_t i = 0; i < EXTRA_I2S_CHAN_COUNT_OUT; i++)
+                {
+                    int sample;
+                    int error = fifo_pop(fifo_play, srcOutputBuff_play, sample);
 
+                    unsafe
+                    {
+                        outSamples_ptr[i2sBuff][i] = sample;
+                    }
+                }
+
+                outuint(c_i2s, 0);
+
+                sampleIdx_rec++;
 
                 /* Trigger_src for record path */
                 if(sampleIdx_rec == SRC_N_IN_SAMPLES)
@@ -489,24 +535,7 @@ int i2s_data(server i2s_frame_callback_if i_i2s, chanend c, streaming chanend c_
                     asrcCounter_rec += trigger_src(c_src_rec, srcInputBuff_rec, fifo_rec, srcOutputBuff_rec, fsRatio_rec);
                 }
 
-                //for(int i = 0; i < num_in; i++)
-                 //   loopbackSamples[i] = samples[i];
                 break;
-
-            case i_i2s.send(size_t num_out, int32_t samples[num_out]):
-            {
-#if (EXTRA_I2S_CHAN_COUNT_OUT > 0)
-                /* Provide samples from the SRC output FIFO */
-                for(size_t i = 0; i < EXTRA_I2S_CHAN_COUNT_OUT; i++)
-                {
-                    int sample;
-                    int error = fifo_pop(fifo_play, srcOutputBuff_play, sample);
-                    samples[i] = sample;
-
-                }
-#endif
-                break;
-            }
         }
     }
 
@@ -636,7 +665,7 @@ fs_code_t sr_to_fscode(unsigned sr)
     return fsCode;
 }
 
-void i2s_driver(chanend c)
+void i2s_driver(chanend c_usb)
 {
     interface i2s_frame_callback_if i_i2s;
     streaming chan c_src_play[SRC_N_INSTANCES];
@@ -647,14 +676,20 @@ void i2s_driver(chanend c)
     int usbSr = DEFAULT_FREQ;
     int startUp = 1;
 
+    chan c_i2s;
+
     par
     {
-        i2s_frame_slave(i_i2s, p_i2s_dout, 1, p_i2s_din, sizeof(p_i2s_din)/sizeof(p_i2s_din[0]), DATA_BITS, p_i2s_bclk, p_i2s_lrclk, clk_bclk);
 
+        par
+        {
+            [[distribute]]i2s_data(i_i2s, c_i2s);
+            i2s_frame_slave(i_i2s, p_i2s_dout, 1, p_i2s_din, sizeof(p_i2s_din)/sizeof(p_i2s_din[0]), DATA_BITS, p_i2s_bclk, p_i2s_lrclk, clk_bclk);
+        }
         while(1)
         {
             set_core_high_priority_on();
-            usbSr = i2s_data(i_i2s, c, c_src_play, c_src_rec, usbSr, startUp);
+            usbSr = src_manager(c_i2s, c_usb, c_src_play, c_src_rec, usbSr, startUp);
             set_core_high_priority_off();
             startUp = 0;
 
