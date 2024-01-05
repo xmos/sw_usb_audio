@@ -41,6 +41,7 @@
           <Tile Number="1" Reference="tile[1]">
             <!-- Audio Ports: I2S -->         
             <Port Location="XS1_PORT_1D"  Name="PORT_MCLK_IN"/>
+            <Port Location="XS1_PORT_16B" Name="PORT_MCLK_COUNT_2"/>
             <Port Location="XS1_PORT_1B"  Name="PORT_I2S_LRCLK"/>
             <Port Location="XS1_PORT_1C"  Name="PORT_I2S_BCLK"/>
             <Port Location="XS1_PORT_1P"  Name="PORT_I2S_DAC0"/>
