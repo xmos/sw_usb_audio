@@ -21,7 +21,8 @@ pipeline {
   }
   environment {
     REPO = 'sw_usb_audio'
-    VIEW = getViewName(REPO)
+    VIEW = 'sw_usb_audio_sw_pll'
+    // VIEW = getViewName(REPO)
     TOOLS_VERSION = "15.2.1"
     XTAGCTL_VERSION = "v2.0.0"
   }
