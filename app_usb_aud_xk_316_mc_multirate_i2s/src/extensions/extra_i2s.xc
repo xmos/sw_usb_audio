@@ -6,6 +6,8 @@
 #include "i2s.h"
 #include "src.h"
 #include "xua.h"
+#include "asynchronous_fifo.h"
+
 
 /* TODO
 
@@ -211,7 +213,7 @@ void UserBufferManagement(unsigned sampsFromUsbToAudio[], unsigned sampsFromAudi
 static inline int trigger_src(streaming chanend c_src[SRC_N_INSTANCES],
                                 int srcInputBuff[SRC_N_INSTANCES][SRC_N_IN_SAMPLES][SRC_CHANNELS_PER_INSTANCE],
                                 fifo_t &fifo,
-                                int srcOutputBuff[SRC_OUT_FIFO_SIZE], uint64_t fsRatio)
+                                int srcOutputBuff[SRC_OUT_FIFO_SIZE], uint64_t fsRatio, asynchronous_fifo_t * unsafe a)
 {
 
     int nSamps = 0;
@@ -244,12 +246,16 @@ static inline int trigger_src(streaming chanend c_src[SRC_N_INSTANCES],
 #pragma loop unroll
         for (int k=0; k<SRC_CHANNELS_PER_INSTANCE; k++)
         {
-            int sample;
+            int32_t sample;
 #pragma loop unroll
             for (int i=0; i<SRC_N_INSTANCES; i++)
             {
                 c_src[i] :> sample;
                 fifo_push(fifo, srcOutputBuff, sample);
+                timer t;
+                int now;
+                t :> now;
+                int32_t error = asynchronous_fifo_produce(a, sample, now, 1);
             }
         }
     }
@@ -322,12 +328,21 @@ void i2s_data(server i2s_frame_callback_if i_i2s, chanend c)
         }
     }
 }
-
-
+#define FIFO_LENGTH (100)
+int64_t array[sizeof(asynchronous_fifo_t)/sizeof(int64_t) + FIFO_LENGTH/2+1];
+int64_t array_rec[sizeof(asynchronous_fifo_t)/sizeof(int64_t) + FIFO_LENGTH/2+1];
 
 #pragma unsafe arrays
 int src_manager(chanend c_i2s, chanend c_usb, streaming chanend c_src_play[SRC_N_INSTANCES], streaming chanend c_src_rec[SRC_N_INSTANCES], int samFreq, int startUp)
 {
+    unsafe
+    {
+        asynchronous_fifo_t * unsafe asynchronous_fifo_state = (asynchronous_fifo_t *)array;
+        asynchronous_fifo_init(asynchronous_fifo_state, 1, FIFO_LENGTH, 100000000/48000);
+
+        asynchronous_fifo_t * unsafe asynchronous_fifo_state_rec = (asynchronous_fifo_t *)array_rec;
+        asynchronous_fifo_init(asynchronous_fifo_state_rec, 1, FIFO_LENGTH, 100000000/48000);
+
     unsigned char srChange = 0;
 
     int srcInputBuff_play[SRC_N_INSTANCES][SRC_N_IN_SAMPLES][SRC_CHANNELS_PER_INSTANCE];
@@ -390,6 +405,8 @@ int src_manager(chanend c_i2s, chanend c_usb, streaming chanend c_src_play[SRC_N
                     samFreq = inuint(c_usb);
                     inct(c_usb);
 
+                    asynchronous_fifo_exit(asynchronous_fifo_state);
+
                     /* Return new sample frequency we need to switch to */
                     return samFreq;
                 }
@@ -417,6 +434,8 @@ int src_manager(chanend c_i2s, chanend c_usb, streaming chanend c_src_play[SRC_N
                     sampleIdx_play++;
 
                     if(sampleIdx_play == SRC_N_IN_SAMPLES)
+                    asynchronous_fifo_exit(asynchronous_fifo_state);
+
                     {
                         sampleIdx_play = 0;
 
@@ -504,7 +523,7 @@ int src_manager(chanend c_i2s, chanend c_usb, streaming chanend c_src_play[SRC_N
 
 #if (EXTRA_I2S_CHAN_COUNT_OUT > 0)
                         /* Send samples to SRC tasks. This function adds returned sample to FIFO */
-                        asrcCounter_play += trigger_src(c_src_play, srcInputBuff_play, fifo_play, srcOutputBuff_play, fsRatio);
+                        asrcCounter_play += trigger_src(c_src_play, srcInputBuff_play, fifo_play, srcOutputBuff_play, fsRatio, asynchronous_fifo_state);
 #endif
                     }
                 }
@@ -546,12 +565,16 @@ int src_manager(chanend c_i2s, chanend c_usb, streaming chanend c_src_play[SRC_N
                     fsRatio_rec = (uint64_t) (floatRatio_rec * (1LL << 60));
 
                     /* Note, currenly don't use the count here since we expect the record and playback rates to match*/
-                    asrcCounter_rec += trigger_src(c_src_rec, srcInputBuff_rec, fifo_rec, srcOutputBuff_rec, fsRatio_rec);
+                    asrcCounter_rec += trigger_src(c_src_rec, srcInputBuff_rec, fifo_rec, srcOutputBuff_rec, fsRatio_rec, asynchronous_fifo_state_rec);
                 }
 
                 break;
         }
     }
+
+    }
+
+
 
 __builtin_unreachable();
     /* Should never get here */
