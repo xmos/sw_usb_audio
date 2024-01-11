@@ -14,11 +14,9 @@
 - General
     - Seperate recording and playback SRC related defines
 
-- Optimise:
-    - Optimise for 192kHz operation
-
 */
 
+#define USE_SHARED_MEM 0
 
 #ifndef USE_ASRC
 #define USE_ASRC (0)
@@ -182,6 +180,26 @@ unsafe
 #pragma unsafe arrays
 void UserBufferManagement(unsigned sampsFromUsbToAudio[], unsigned sampsFromAudioToUsb[])
 {
+#if !USE_SHARED_MEM
+     unsafe
+    {
+        outuchar((chanend) uc_i2s, 0);
+#pragma loop unroll
+        for(size_t i = 0; i < EXTRA_I2S_CHAN_COUNT_OUT; i++)
+        {
+            outuint((chanend)uc_i2s, sampsFromUsbToAudio[i + EXTRA_I2S_CHAN_INDEX_OUT]);
+        }
+        outct((chanend)uc_i2s, XS1_CT_END);
+
+#pragma loop unroll
+        for(size_t i = 0; i< EXTRA_I2S_CHAN_COUNT_IN; i++)
+        {
+            sampsFromAudioToUsb[i + EXTRA_I2S_CHAN_INDEX_IN] = inuint((chanend) uc_i2s);
+        }
+        chkct((chanend)uc_i2s, XS1_CT_END);
+    }
+
+#else
     static int buffNum = 0;
 
 #pragma loop unroll
@@ -207,6 +225,7 @@ void UserBufferManagement(unsigned sampsFromUsbToAudio[], unsigned sampsFromAudi
         buffNum = !buffNum;
 
     }
+#endif
 }
 
 #pragma unsafe arrays
@@ -215,7 +234,6 @@ static inline int trigger_src(streaming chanend c_src[SRC_N_INSTANCES],
                                 fifo_t &fifo,
                                 int srcOutputBuff[SRC_OUT_FIFO_SIZE], uint64_t fsRatio, asynchronous_fifo_t * unsafe a)
 {
-
     int nSamps = 0;
 #pragma loop unroll
     for (int i=0; i<SRC_N_INSTANCES; i++)
@@ -388,10 +406,12 @@ int src_manager(chanend c_i2s, chanend c_usb, streaming chanend c_src_play[SRC_N
     if(startUp)
         /* Intial request for i2s data */
         outuint(c_i2s, 0);
-
-    /* Handshsake that we are ready to go after SR change */
-    /* OR inital request for usb data */
-    outct(c_usb, XS1_CT_END);
+#if !USE_SHARED_MEM
+    else
+#endif
+        /* Handshsake that we are ready to go after SR change */
+        /* OR inital request for usb data */
+        outct(c_usb, XS1_CT_END);
 
     while (1)
     {
@@ -399,7 +419,6 @@ int src_manager(chanend c_i2s, chanend c_usb, streaming chanend c_src_play[SRC_N
         {
             case inuchar_byref(c_usb, srChange):
 
-                p1 <: 1;
                 if(srChange)
                 {
                     samFreq = inuint(c_usb);
@@ -412,6 +431,22 @@ int src_manager(chanend c_i2s, chanend c_usb, streaming chanend c_src_play[SRC_N
                 }
                 else
                 {
+#if !USE_SHARED_MEM
+                    /* Receive samples from USB audio (other side of the UserBufferManagement() comms) */
+#pragma loop unroll
+                    for(size_t i = 0; i< EXTRA_I2S_CHAN_COUNT_OUT; i++)
+                    {
+                        srcInputBuff_play[i/SRC_CHANNELS_PER_INSTANCE][sampleIdx_play][i % SRC_CHANNELS_PER_INSTANCE] = inuint(c_usb);
+                    }
+                    chkct(c_usb, XS1_CT_END);
+
+                    /* Send samples to USB audio (other side of the UserBufferManagement() comms */
+#pragma loop unroll
+                    for(size_t i = 0; i< EXTRA_I2S_CHAN_COUNT_IN; i++)
+                    {
+                        outuint(c_usb, samplesToGo[i]);
+                    }
+#else
                     usbBuff = (unsigned)inuchar(c_usb);
                     /* Receive samples from USB audio (other side of the UserBufferManagement() comms) */
 #pragma loop unroll
@@ -428,7 +463,7 @@ int src_manager(chanend c_i2s, chanend c_usb, streaming chanend c_src_play[SRC_N
                         fifo_pop(fifo_rec, srcOutputBuff_rec, sample);
                         inSamplesUsb_ptr[usbBuff][i] = sample;
                     }
-
+#endif
                     outct(c_usb, XS1_CT_END);
 
                     sampleIdx_play++;
