@@ -12,7 +12,7 @@ set(SW_USB_AUDIO_FLAGS ${EXTRA_BUILD_FLAGS} -O3
                                             -fxscope
                                             -DUSB_TILE=tile[0]
                                             -DADAT_TX_USE_SHARED_BUFF=1
-                                            -DQUAD_SPI_FLASH=1
+                                            -DXUA_QUAD_SPI_FLASH=1
                                             -DUSE_SW_PLL=1)
 
 
