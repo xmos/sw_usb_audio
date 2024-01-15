@@ -54,30 +54,15 @@ on tile[0]: in port p_margin = XS1_PORT_1G;  /* CORE_POWER_MARGIN:   Driven 0:  
 /* Board setup for XU316 MC Audio (1v1) */
 void board_setup()
 {
+    /* "Drive high mode" - drive high for 1, non-driving for 0 */
+    set_port_drive_high(p_ctrl);
 
     /* Ensure high-z for 0.9v */
     p_margin :> void;
 
-// TEMP To enable running on old V1_0 board
-#if V2_0_HARDWARE
-    /* "Drive high mode" - drive high for 1, non-driving for 0 */
-    set_port_drive_high(p_ctrl);
-
     /* Drive control port to turn on 3V3 and mclk direction appropriately.
      * Bits set to low will be high-z, pulled down */
     p_ctrl <: EXT_PLL_SEL__MCLK_DIR | 0x20;
-#else
-    // Drive control port to turn on 3V3 and set MCLK_DIR
-    // Note, "soft-start" to reduce current spike
-    // Note, 3v3_EN is inverted
-    for (int i = 0; i < 30; i++)
-    {
-        p_ctrl <: EXT_PLL_SEL__MCLK_DIR | 0x30; /* 3v3: off, 3v3A: on */
-        delay_microseconds(5);
-        p_ctrl <: EXT_PLL_SEL__MCLK_DIR | 0x20; /* 3v3: on, 3v3A: on */
-        delay_microseconds(5);
-    }
-#endif
 
     /* Wait for power supplies to be up and stable */
     delay_milliseconds(10);
