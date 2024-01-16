@@ -31,9 +31,15 @@ on tile[0]: in port p_margin = XS1_PORT_1G;  /* CORE_POWER_MARGIN:   Driven 0:  
                                               *                      Driven 1:   0.85v
                                               */
 
-#if (XUA_SPDIF_RX_EN || XUA_ADAT_RX_EN || (XUA_SYNCMODE == XUA_SYNCMODE_SYNC))
+/* By default we use SW_PLL for Digital Rx configs in this app which runs on XCORE-AI */
+/* Note: SW_PLL not yet implemented for USB Synchronous mode */
+#ifndef USE_SW_PLL
+#define USE_SW_PLL  1
+#endif
+
+#if ((XUA_SYNCMODE == XUA_SYNCMODE_SYNC) || ((XUA_SPDIF_RX_EN || XUA_ADAT_RX_EN) && !USE_SW_PLL))
 /* If we have an external digital input interface or running in synchronous mode we need to configure the
- * external CS2100 device for master clock generation */
+ * external CS2100 device for master clock generation. We will use SW_PLL for digital Rx configs */
 #define USE_FRACTIONAL_N         (1)
 #else
 #define USE_FRACTIONAL_N         (0)
@@ -261,6 +267,10 @@ void AudioHwInit()
             PllInit(i_i2c_client);
         }
     }
+    else if((XUA_SPDIF_RX_EN || XUA_ADAT_RX_EN) && USE_SW_PLL)
+    {
+        /* Do nothing - the SW_PLL configures the AppPLL */
+    }
     else
     {
         /* Use xCORE Secondary PLL to generate *fixed* master clock */
@@ -478,6 +488,10 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, unsigned dsdMode, unsigned s
         t when timerafter(time+AUDIO_PLL_LOCK_DELAY) :> void;
 
         SetI2CMux(PCA9540B_CTRL_CHAN_0);
+    }
+    else if((XUA_SPDIF_RX_EN || XUA_ADAT_RX_EN) && USE_SW_PLL)
+    {
+        /* Do nothing - the SW_PLL configures the AppPLL */
     }
     else
     {
