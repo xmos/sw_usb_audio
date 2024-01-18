@@ -7,16 +7,18 @@
 #include "src.h"
 #include "xua.h"
 #include "asynchronous_fifo.h"
+#include "asrc_timestamp_interpolation.h"
 
+//on tile[1]: out port p = PORT_MIDI_OUT;
 
 /* TODO
-
-- General
+    - Add support for SR change
+    - Remove central thread and use full capabilty of async_fifo
     - Seperate recording and playback SRC related defines
 
 */
 
-#define USE_SHARED_MEM 0
+#define USE_SHARED_MEM 1
 
 #ifndef USE_ASRC
 #define USE_ASRC (0)
@@ -40,6 +42,9 @@
 
 #define DATA_BITS                (32)
 #define SAMPLE_FREQUENCY         (48000)
+
+#define FREQ_Q_SHIFT (8)
+#define FREQ_Q_VALUE (1<<FREQ_Q_SHIFT)
 
 void exit(int);
 
@@ -76,78 +81,6 @@ extern in port p_mclk_in;
 #define SSRC_N_CHANNELS                   (SRC_CHANNELS_PER_INSTANCE) /* Used by SRC_STACK_LENGTH_MULT in src_mrhf_ssrc.h */
 #define ASRC_N_CHANNELS                   (SRC_CHANNELS_PER_INSTANCE) /* Used by SRC_STACK_LENGTH_MULT in src_mrhf_asrc.h */
 
-typedef struct fifo_f
-{
-    unsigned wrPtr;
-    unsigned rdPtr;
-    int size;
-    int fill;
-    int inUnderflow;
-} fifo_t;
-
-static void init_fifo(fifo_t &f, int array[size], unsigned size)
-{
-    f.wrPtr = 0;
-    f.rdPtr = 0;
-    f.size = size;
-    f.fill = 0;
-    f.inUnderflow = 1;
-
-    unsafe
-    {
-        int * unsafe arrayPtr = &array[0];
-        memset(arrayPtr, 0xffffffff, size * (sizeof(array[0])));
-    }
-}
-
-/* TODO check we don't have a channel swap issue on exiting overflow/underflow */
-#pragma unsafe arrays
-static inline unsigned fifo_pop(fifo_t &f, int array[], int &sample)
-{
-    if (f.inUnderflow)
-    {
-        if(f.fill > (f.size/2))
-        {
-            /* Exit underflow */
-            f.inUnderflow = 0;
-        }
-        else
-        {
-            sample = 0;
-            return 1;
-        }
-    }
-
-    sample = array[f.rdPtr];
-
-    f.fill--;
-
-    /* Check if entering underflow */
-    f.inUnderflow = (f.fill == 0);
-
-    f.rdPtr++;
-    if(f.rdPtr == SRC_OUT_FIFO_SIZE)
-        f.rdPtr = 0;
-
-    return 0;
-}
-
-#pragma unsafe arrays
-static inline void fifo_push(fifo_t &f, int array[], const int sample)
-{
-    /* Check for FIFO full */
-    if(f.fill >= f.size)
-    {
-        f.rdPtr = (f.wrPtr + (f.size/2)) % f.size;
-        f.fill = f.size/2;
-    }
-    array[f.wrPtr] = sample;
-    f.fill++;
-    f.wrPtr++;
-    if(f.wrPtr == SRC_OUT_FIFO_SIZE)
-        f.wrPtr = 0;
-}
-
 int g_usbSamFreq = DEFAULT_FREQ;
 
 void UserBufferManagementInit(unsigned samFreq)
@@ -171,6 +104,7 @@ void UserBufferManagementInit(unsigned samFreq)
 
 int32_t inSamplesUsb[2][EXTRA_I2S_CHAN_COUNT_IN];
 int32_t outSamplesUsb[2][EXTRA_I2S_CHAN_COUNT_OUT];
+
 
 unsafe
 {
@@ -229,12 +163,14 @@ void UserBufferManagement(unsigned sampsFromUsbToAudio[], unsigned sampsFromAudi
 }
 
 #pragma unsafe arrays
-static inline int trigger_src(streaming chanend c_src[SRC_N_INSTANCES],
+int trigger_src(streaming chanend c_src[SRC_N_INSTANCES],
                                 int srcInputBuff[SRC_N_INSTANCES][SRC_N_IN_SAMPLES][SRC_CHANNELS_PER_INSTANCE],
-                                fifo_t &fifo,
                                 int srcOutputBuff[SRC_OUT_FIFO_SIZE], uint64_t fsRatio, asynchronous_fifo_t * unsafe a)
 {
+    int32_t error = 0;
     int nSamps = 0;
+    int32_t timestamp;
+    int32_t samples[SRC_CHANNELS_PER_INSTANCE*SRC_N_CHANNELS * SRC_MAX_NUM_SAMPS_OUT];
 #pragma loop unroll
     for (int i=0; i<SRC_N_INSTANCES; i++)
     {
@@ -257,8 +193,11 @@ static inline int trigger_src(streaming chanend c_src[SRC_N_INSTANCES],
     for (int i=0; i < SRC_N_INSTANCES; i++)
     {
         c_src[i] :> nSamps;
+        c_src[i] :> timestamp;
     }
 
+
+    int chanIdx = 0;
     for (int j=0; j < nSamps; j++)
     {
 #pragma loop unroll
@@ -269,16 +208,15 @@ static inline int trigger_src(streaming chanend c_src[SRC_N_INSTANCES],
             for (int i=0; i<SRC_N_INSTANCES; i++)
             {
                 c_src[i] :> sample;
-                fifo_push(fifo, srcOutputBuff, sample);
-                timer t;
-                int now;
-                t :> now;
-                int32_t error = asynchronous_fifo_produce(a, sample, now, 1);
+                samples[chanIdx++] = sample;
             }
         }
     }
 
-    return nSamps;
+    if(nSamps != 0)
+        error = asynchronous_fifo_produce(a, samples, nSamps, timestamp, 0);
+
+    return error;
 }
 
 #ifndef LOG_CONTROLLER
@@ -286,9 +224,8 @@ static inline int trigger_src(streaming chanend c_src[SRC_N_INSTANCES],
 #endif
 
 #if LOG_CONTROLLER
-#define CONT_LOG_SIZE      (9000)
-#define CONT_LOG_SUBSAMPLE (8*2)
-int e[CONT_LOG_SIZE];
+#define CONT_LOG_SIZE      (10000)
+#define CONT_LOG_SUBSAMPLE (16)
 int f_p[CONT_LOG_SIZE];
 int f_r[CONT_LOG_SIZE];
 float r_p[CONT_LOG_SIZE];
@@ -347,19 +284,21 @@ void i2s_data(server i2s_frame_callback_if i_i2s, chanend c)
     }
 }
 #define FIFO_LENGTH (100)
-int64_t array[sizeof(asynchronous_fifo_t)/sizeof(int64_t) + FIFO_LENGTH/2+1];
-int64_t array_rec[sizeof(asynchronous_fifo_t)/sizeof(int64_t) + FIFO_LENGTH/2+1];
+
+int64_t array[ASYNCHRONOUS_FIFO_INT64_ELEMENTS(FIFO_LENGTH, 2)];
+int64_t array_rec[ASYNCHRONOUS_FIFO_INT64_ELEMENTS(FIFO_LENGTH, 2)];
+
 
 #pragma unsafe arrays
 int src_manager(chanend c_i2s, chanend c_usb, streaming chanend c_src_play[SRC_N_INSTANCES], streaming chanend c_src_rec[SRC_N_INSTANCES], int samFreq, int startUp)
 {
     unsafe
     {
-        asynchronous_fifo_t * unsafe asynchronous_fifo_state = (asynchronous_fifo_t *)array;
-        asynchronous_fifo_init(asynchronous_fifo_state, 1, FIFO_LENGTH, 100000000/48000);
+        asynchronous_fifo_t * unsafe async_fifo_state_play = (asynchronous_fifo_t *)array;
+        asynchronous_fifo_init(async_fifo_state_play, 2, FIFO_LENGTH, 100000000/SAMPLE_FREQUENCY, 0.25, 0.5); //TODO needs changing for SR
 
-        asynchronous_fifo_t * unsafe asynchronous_fifo_state_rec = (asynchronous_fifo_t *)array_rec;
-        asynchronous_fifo_init(asynchronous_fifo_state_rec, 1, FIFO_LENGTH, 100000000/48000);
+        asynchronous_fifo_t * unsafe async_fifo_state_rec = (asynchronous_fifo_t *)array_rec;
+        asynchronous_fifo_init(async_fifo_state_rec, 2, FIFO_LENGTH, 100000000/SAMPLE_FREQUENCY, 0.25, 0.5); // TODO needs changing for SR
 
     unsigned char srChange = 0;
 
@@ -372,31 +311,15 @@ int src_manager(chanend c_i2s, chanend c_usb, streaming chanend c_src_play[SRC_N
     int sampleIdx_play = 0;
     int sampleIdx_rec = 0;
 
-    fifo_t fifo_play;
-    fifo_t fifo_rec;
-
-    int usbCounter = 0;
-
     float floatRatio_play = (float) samFreq/SAMPLE_FREQUENCY;
     float floatRatio_rec = (float) SAMPLE_FREQUENCY/samFreq;
 
-    float idealFloatRatio_play = floatRatio_play;
-    float idealFloatRatio_rec = floatRatio_rec;
-
     /* Q60 representations of the above */
-    uint64_t fsRatio = (uint64_t) floatRatio_play * (1LL << 60);
+    uint64_t fsRatio_play = (uint64_t) floatRatio_play * (1LL << 60);
     uint64_t fsRatio_rec = (uint64_t) floatRatio_rec * (1LL << 60);
 
-    unsigned short lastPt = 0;
-
-    int asrcCounter_play = 0;
-    int asrcCounter_rec = 0;
-
-    int phaseError = 0;
-    int phaseErrorInt = 0;
-
-    init_fifo(fifo_play, srcOutputBuff_play, sizeof(srcOutputBuff_play)/sizeof(srcOutputBuff_play[0]));
-    init_fifo(fifo_rec, srcOutputBuff_rec, sizeof(srcOutputBuff_rec)/sizeof(srcOutputBuff_rec[0]));
+    int idealFsRatio_play = fsRatio_play >> 32;
+    int idealFsRatio_rec = fsRatio_rec >> 32;
 
     int samplesToGo[EXTRA_I2S_CHAN_COUNT_IN];
 
@@ -424,7 +347,8 @@ int src_manager(chanend c_i2s, chanend c_usb, streaming chanend c_src_play[SRC_N
                     samFreq = inuint(c_usb);
                     inct(c_usb);
 
-                    asynchronous_fifo_exit(asynchronous_fifo_state);
+                    asynchronous_fifo_exit(async_fifo_state_play);
+                    asynchronous_fifo_exit(async_fifo_state_rec);
 
                     /* Return new sample frequency we need to switch to */
                     return samFreq;
@@ -456,116 +380,65 @@ int src_manager(chanend c_i2s, chanend c_usb, streaming chanend c_src_play[SRC_N
                     }
 
                     /* Send samples to USB audio (other side of the UserBufferManagement() comms */
-
-                    for(size_t i = 0; i< EXTRA_I2S_CHAN_COUNT_IN; i++)
-                    unsafe{
-                       int sample;
-                        fifo_pop(fifo_rec, srcOutputBuff_rec, sample);
-                        inSamplesUsb_ptr[usbBuff][i] = sample;
-                    }
+                    timer t;
+                    unsigned now;
+                    t :> now;
+                    asynchronous_fifo_consume(async_fifo_state_rec, inSamplesUsb_ptr[usbBuff], now);
 #endif
                     outct(c_usb, XS1_CT_END);
 
                     sampleIdx_play++;
 
                     if(sampleIdx_play == SRC_N_IN_SAMPLES)
-                    asynchronous_fifo_exit(asynchronous_fifo_state);
-
                     {
                         sampleIdx_play = 0;
-
-                        usbCounter++;
-
-                        /* Run the control loop approx sample frequency independant of primary sample rate */
-                        if(usbCounter >= ((25 * (samFreq/SAMPLE_FREQUENCY))+1))
-                        {
-                            unsigned short pt;
-                            asm volatile(" getts %0, res[%1]" : "=r" (pt) : "r" (p_off_bclk));
-
-                            /* The actual number of bit clocks on the output i2s */
-                            int measuredClocks;
-
-                            if (porttimeafter(pt, lastPt))
-                            {
-                                measuredClocks = -(short)(lastPt - pt);
-                            }
-                            else
-                            {
-                                measuredClocks = (short)(pt - lastPt);
-                            }
-                            lastPt = pt;
-
-                            /* Convert ASRC sample counter to bit clock units */
-                            int asrcClocks = asrcCounter_play * 64;
-
-                            /* Calulate error */
-                            int error = asrcClocks - (int)measuredClocks;
-
-                            /* Ignore any large error - most likely an SR change occurred */
-                            if((error < 300) && (error > -300))
-                            {
-                                phaseError += error;
-                                /* Playback path controller */
-                                float error_p = (float) (phaseError * 0.0000002);
-                                float error_i = (float) ((((fifo_play.size/2) - fifo_play.fill) * 0.00000004));
-                                floatRatio_play = (idealFloatRatio_play + (error_p * idealFloatRatio_play) + error_i);
-
-                                /* Record path, note this is a bit of a cheat.. */
-                                error_i = (float) ((((fifo_rec.size/2) - fifo_rec.fill) * 0.0000001));
-                                floatRatio_rec = (idealFloatRatio_rec - (error_p * idealFloatRatio_rec) - error_i);
-
-                                /* Convert FS ratio to fixed point */
-                                /* Note, ASRC will Clamp ratio to 1000PPM error */
-                                fsRatio = (uint64_t) (floatRatio_play * (1LL<<60));
-
-                            }
 #if LOG_CONTROLLER
-                            logCounterSub++;
-                            if(logCounterSub == CONT_LOG_SUBSAMPLE)
+                        logCounterSub++;
+                        if(logCounterSub == CONT_LOG_SUBSAMPLE)
+                        {
+                            logCounterSub = 0;
+                            int fillPlay = (async_fifo_state_play->write_ptr - async_fifo_state_play->read_ptr + async_fifo_state_play->max_fifo_depth) % async_fifo_state_play->max_fifo_depth;
+                            f_p[logCounter] = fillPlay;
+
+                            int fillRec = (async_fifo_state_rec->write_ptr - async_fifo_state_rec->read_ptr + async_fifo_state_rec->max_fifo_depth) % async_fifo_state_rec->max_fifo_depth;
+                            f_r[logCounter] = fillRec;
+
+                            r_p[logCounter] = (float) fsRatio_play / (float) (1LL<<60);
+                            r_r[logCounter] = (float) fsRatio_rec / (float) (1LL<<60);
+                            sr[logCounter] = samFreq;
+
+                            logCounter++;
+
+                            if(logCounter >= CONT_LOG_SIZE)
                             {
-                                logCounterSub = 0;
-                                e[logCounter] = error;
-                                f_p[logCounter] = fifo_play.fill;
-                                f_r[logCounter] = fifo_rec.fill;
-                                r_p[logCounter] = floatRatio_play;
-                                r_r[logCounter] = floatRatio_rec;
-                                sr[logCounter] = samFreq;
-
-                                logCounter++;
-
-                                if(logCounter >= CONT_LOG_SIZE)
+                                for(int i = 0; i < CONT_LOG_SIZE; i++)
                                 {
-                                    for(int i = 0; i < CONT_LOG_SIZE; i++)
-                                    {
-                                        printint(sr[i]);
-                                        printchar(' ');
-                                        printint(e[i]);
-                                        printchar(' ');
-                                        printint(f_p[i]);
-                                        printchar(' ');
-                                        printint(f_r[i]);
-                                        printf(" %f", r_p[i]);
-                                        printf(" %f\n", r_r[i]);
-                                    }
-                                    exit(1);
+                                    printint(sr[i]);
+                                    printchar(' ');
+                                    printint(f_p[i]);
+                                    printchar(' ');
+                                    printint(f_r[i]);
+                                    printf(" %f", r_p[i]);
+                                    printf(" %f\n", r_r[i]);
                                 }
+                                exit(1);
                             }
-#endif
-                            asrcCounter_play = 0;
-                            asrcCounter_rec = 0;
-                            usbCounter = 0;
                         }
+#endif
 
 #if (EXTRA_I2S_CHAN_COUNT_OUT > 0)
                         /* Send samples to SRC tasks. This function adds returned sample to FIFO */
-                        asrcCounter_play += trigger_src(c_src_play, srcInputBuff_play, fifo_play, srcOutputBuff_play, fsRatio, asynchronous_fifo_state);
+                        int32_t error;
+                        error = trigger_src(c_src_play, srcInputBuff_play, srcOutputBuff_play, fsRatio_play, async_fifo_state_play);
+
+                        /* Produce fsRatio from error */
+                        fsRatio_play = (((int64_t)idealFsRatio_play) << 32) + (error * (int64_t) idealFsRatio_play);
 #endif
                     }
                 }
                 break;
 
             case inuint_byref(c_i2s, i2sBuff):
-
 #pragma loop unroll
                 /* Add to recording path ASRC input buffer */
                 for(size_t i = 0; i < EXTRA_I2S_CHAN_COUNT_IN; i++)
@@ -577,30 +450,25 @@ int src_manager(chanend c_i2s, chanend c_usb, streaming chanend c_src_play[SRC_N
                 }
 
                 /* Provide samples from the SRC output FIFO */
-                for(size_t i = 0; i < EXTRA_I2S_CHAN_COUNT_OUT; i++)
-                {
-                    int sample;
-                    int error = fifo_pop(fifo_play, srcOutputBuff_play, sample);
-
-                    unsafe
-                    {
-                        outSamples_ptr[i2sBuff][i] = sample;
-                    }
-                }
+                int32_t samples[SRC_N_CHANNELS];
+                timer t;
+                unsigned now;
+                t :> now;
+                asynchronous_fifo_consume(async_fifo_state_play, outSamples_ptr[i2sBuff], now);
 
                 outuint(c_i2s, 0);
 
                 sampleIdx_rec++;
 
-                /* Trigger_src for record path */
                 if(sampleIdx_rec == SRC_N_IN_SAMPLES)
                 {
                     sampleIdx_rec = 0;
 
-                    fsRatio_rec = (uint64_t) (floatRatio_rec * (1LL << 60));
-
-                    /* Note, currenly don't use the count here since we expect the record and playback rates to match*/
-                    asrcCounter_rec += trigger_src(c_src_rec, srcInputBuff_rec, fifo_rec, srcOutputBuff_rec, fsRatio_rec, asynchronous_fifo_state_rec);
+                    /* Trigger_src for record path */
+                    int32_t error;
+                    error = trigger_src(c_src_rec, srcInputBuff_rec, srcOutputBuff_rec, fsRatio_rec, async_fifo_state_rec);
+                    /* Produce fsRatio from error */
+                    fsRatio_rec = (((int64_t)idealFsRatio_rec) << 32) + (error * (int64_t) idealFsRatio_rec);
                 }
 
                 break;
@@ -661,6 +529,9 @@ void src_task(streaming chanend c, int instance, int inputFsCode, int outputFsCo
     ssrc_init(inputFsCode, outputFsCode, sSSRCCtrl, SRC_CHANNELS_PER_INSTANCE, SRC_N_IN_SAMPLES, SRC_DITHER_SETTING);
 #endif
 
+    timer t;
+    int32_t tsIn = 0, tsOut = 0;
+
     while(1)
     {
         uint64_t fsRatio_;
@@ -691,6 +562,9 @@ void src_task(streaming chanend c, int instance, int inputFsCode, int outputFsCo
         /* Send out the number of samples we have to output */
         c <: sampsOut;
 
+        /* Send out the output timestamp */
+        c <: tsOut;
+
         /* Send output samples */
 #pragma loop unroll
         for(int i = 0; i < sampsOut * SRC_CHANNELS_PER_INSTANCE; i++)
@@ -700,7 +574,12 @@ void src_task(streaming chanend c, int instance, int inputFsCode, int outputFsCo
 
         /* Process input buffer into output buffer */
 #if USE_ASRC
+        t :> tsIn;
         sampsOut = asrc_process(inputBuff, outputBuff, fsRatio_, sASRCCtrl);
+        unsafe
+        {
+            tsOut = asrc_timestamp_interpolation(tsIn, &sASRCCtrl[0], 2083); // TODO needs changing based on SR
+        }
 #else
         sampsOut = ssrc_process(inputBuff, outputBuff, sSSRCCtrl);
 #endif
