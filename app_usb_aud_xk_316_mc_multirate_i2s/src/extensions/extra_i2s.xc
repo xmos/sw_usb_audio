@@ -102,7 +102,6 @@ void UserBufferManagementInit(unsigned samFreq)
 int32_t inSamplesUsb[2][EXTRA_I2S_CHAN_COUNT_IN];
 int32_t outSamplesUsb[2][EXTRA_I2S_CHAN_COUNT_OUT];
 
-
 unsafe
 {
     int32_t (* unsafe inSamplesUsb_ptr)[2] = inSamplesUsb;
@@ -560,60 +559,60 @@ void i2s_driver(chanend c_usb)
 
     unsafe
     {
-    asynchronous_fifo_t * unsafe async_fifo_state_play = (asynchronous_fifo_t *)array;
-    asynchronous_fifo_init(async_fifo_state_play, 2, FIFO_LENGTH, 100000000/SAMPLE_FREQUENCY, 1.0, 2.5); //TODO needs changing for SR
+        asynchronous_fifo_t * unsafe async_fifo_state_play = (asynchronous_fifo_t *)array;
+        asynchronous_fifo_init(async_fifo_state_play, 2, FIFO_LENGTH, 100000000/SAMPLE_FREQUENCY, 1.0, 2.5); //TODO needs changing for SR
 
-    asynchronous_fifo_t * unsafe async_fifo_state_rec = (asynchronous_fifo_t *)array_rec;
-    asynchronous_fifo_init(async_fifo_state_rec, 2, FIFO_LENGTH, 100000000/SAMPLE_FREQUENCY, 1.0, 2.0); // TODO needs changing for SR
-
-    par
-    {
+        asynchronous_fifo_t * unsafe async_fifo_state_rec = (asynchronous_fifo_t *)array_rec;
+        asynchronous_fifo_init(async_fifo_state_rec, 2, FIFO_LENGTH, 100000000/SAMPLE_FREQUENCY, 1.0, 2.0); // TODO needs changing for SR
 
         par
         {
-            [[distribute]]i2s_data(i_i2s, c_src_rec, async_fifo_state_play, async_fifo_state_rec);
-            i2s_frame_slave(i_i2s, p_i2s_dout, 1, p_i2s_din, sizeof(p_i2s_din)/sizeof(p_i2s_din[0]), DATA_BITS, p_i2s_bclk, p_i2s_lrclk, clk_bclk);
-        }
-        while(1)
-        {
-            set_core_high_priority_on();
-            usbSr = src_manager(c_usb, c_src_play, usbSr, startUp, async_fifo_state_play, async_fifo_state_rec);
-            set_core_high_priority_off();
-            startUp = 0;
 
-            for(int i=0; i < SRC_N_INSTANCES; i++)
-                unsafe
-                {
-                    soutct(c_src_play[i], XS1_CT_END);
-                    c_src_play[i] <: (int)sr_to_fscode(usbSr);
-                    c_src_play[i] <: (int)FS_CODE_48;
-                    schkct(c_src_play[i], XS1_CT_END);
+            par
+            {
+                [[distribute]]i2s_data(i_i2s, c_src_rec, async_fifo_state_play, async_fifo_state_rec);
+                i2s_frame_slave(i_i2s, p_i2s_dout, 1, p_i2s_din, sizeof(p_i2s_din)/sizeof(p_i2s_din[0]), DATA_BITS, p_i2s_bclk, p_i2s_lrclk, clk_bclk);
+            }
+            while(1)
+            {
+                set_core_high_priority_on();
+                usbSr = src_manager(c_usb, c_src_play, usbSr, startUp, async_fifo_state_play, async_fifo_state_rec);
+                set_core_high_priority_off();
+                startUp = 0;
 
-                    //soutct(c_src_rec[i], XS1_CT_END);
-                    //c_src_rec[i] <: (int)FS_CODE_48;
-                    //c_src_rec[i] <: (int)sr_to_fscode(usbSr);
-                    //schkct(c_src_rec[i], XS1_CT_END);
-                }
-        }
+                for(int i=0; i < SRC_N_INSTANCES; i++)
+                    unsafe
+                    {
+                        soutct(c_src_play[i], XS1_CT_END);
+                        c_src_play[i] <: (int)sr_to_fscode(usbSr);
+                        c_src_play[i] <: (int)FS_CODE_48;
+                        schkct(c_src_play[i], XS1_CT_END);
+
+                        //soutct(c_src_rec[i], XS1_CT_END);
+                        //c_src_rec[i] <: (int)FS_CODE_48;
+                        //c_src_rec[i] <: (int)sr_to_fscode(usbSr);
+                        //schkct(c_src_rec[i], XS1_CT_END);
+                    }
+            }
 
 #if(EXTRA_I2S_CHAN_COUNT_OUT > 0)
-        /* Playback SRC tasks */
-        par (int i=0; i < SRC_N_INSTANCES; i++)
-        {
-            unsafe
+            /* Playback SRC tasks */
+            par (int i=0; i < SRC_N_INSTANCES; i++)
             {
-                src_task(c_src_play[i], i, sr_to_fscode(DEFAULT_FREQ), FS_CODE_48);
+                unsafe
+                {
+                    src_task(c_src_play[i], i, sr_to_fscode(DEFAULT_FREQ), FS_CODE_48);
+                }
             }
-        }
 #endif
-        /* Record SRC tasks */
-        par (int i = SRC_N_INSTANCES ; i < 2*SRC_N_INSTANCES; i++)
-        {
-            unsafe
+            /* Record SRC tasks */
+            par (int i = SRC_N_INSTANCES ; i < 2*SRC_N_INSTANCES; i++)
             {
-                src_task(c_src_rec[i-SRC_N_INSTANCES], i, FS_CODE_48, sr_to_fscode(DEFAULT_FREQ));
+                unsafe
+                {
+                    src_task(c_src_rec[i-SRC_N_INSTANCES], i, FS_CODE_48, sr_to_fscode(DEFAULT_FREQ));
+                }
             }
-        }
-    } /* par */
+        } /* par */
     } /* unsafe */
 }
