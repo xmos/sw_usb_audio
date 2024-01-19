@@ -31,13 +31,7 @@ on tile[0]: in port p_margin = XS1_PORT_1G;  /* CORE_POWER_MARGIN:   Driven 0:  
                                               *                      Driven 1:   0.85v
                                               */
 
-/* By default we use SW_PLL for Digital Rx configs in this app which runs on XCORE-AI */
-/* Note: SW_PLL not yet implemented for USB Synchronous mode */
-#ifndef USE_SW_PLL
-#define USE_SW_PLL  1
-#endif
-
-#if ((XUA_SYNCMODE == XUA_SYNCMODE_SYNC) || ((XUA_SPDIF_RX_EN || XUA_ADAT_RX_EN) && !USE_SW_PLL))
+#if ((XUA_SYNCMODE == XUA_SYNCMODE_SYNC || XUA_SPDIF_RX_EN || XUA_ADAT_RX_EN) && !USE_SW_PLL)
 /* If we have an external digital input interface or running in synchronous mode we need to configure the
  * external CS2100 device for master clock generation. We will use SW_PLL for digital Rx configs */
 #define USE_FRACTIONAL_N         (1)
@@ -125,7 +119,7 @@ uint8_t i2c_reg_read(uint8_t device_addr, uint8_t reg, i2c_regop_res_t &result)
 
 /* The number of timer ticks to wait for the audio PLL to lock */
 /* CS2100 lists typical lock time as 100 * input period */
-#define     AUDIO_PLL_LOCK_DELAY     (40000000)
+#define AUDIO_PLL_LOCK_DELAY        (40000000)
 
 #define CS2100_REGWRITE(reg, val)                   {result = i2c_reg_write(CS2100_I2C_DEVICE_ADDR, reg, val);}
 #define CS2100_REGREAD_ASSERT(reg, data, expected)  {data[0] = i2c_reg_read(CS2100_I2C_DEVICE_ADDR, reg, result); assert(data[0] == expected);}
@@ -267,7 +261,7 @@ void AudioHwInit()
             PllInit(i_i2c_client);
         }
     }
-    else if((XUA_SPDIF_RX_EN || XUA_ADAT_RX_EN) && USE_SW_PLL)
+    else if((XUA_SYNCMODE == XUA_SYNCMODE_SYNC || XUA_SPDIF_RX_EN || XUA_ADAT_RX_EN) && USE_SW_PLL)
     {
         /* Do nothing - the SW_PLL configures the AppPLL */
     }
@@ -489,7 +483,7 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, unsigned dsdMode, unsigned s
 
         SetI2CMux(PCA9540B_CTRL_CHAN_0);
     }
-    else if((XUA_SPDIF_RX_EN || XUA_ADAT_RX_EN) && USE_SW_PLL)
+    else if((XUA_SYNCMODE == XUA_SYNCMODE_SYNC || XUA_SPDIF_RX_EN || XUA_ADAT_RX_EN) && USE_SW_PLL)
     {
         /* Do nothing - the SW_PLL configures the AppPLL */
     }
