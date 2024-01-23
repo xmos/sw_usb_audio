@@ -163,7 +163,6 @@ int trigger_src(streaming chanend c_src[SRC_N_INSTANCES],
         c_src[i] :> timestamp;
     }
 
-
     int chanIdx = 0;
     for (int j=0; j < nSamps; j++)
     {
@@ -229,13 +228,12 @@ void i2s_data(server i2s_frame_callback_if i_i2s,
     asynchronous_fifo_t * unsafe async_fifo_state_play,
     asynchronous_fifo_t * unsafe async_fifo_state_rec)
 {
-    //int buffNum = 0;
     int sampleIdx_rec = 0;
 
     int samFreq = 192000; // TODO
-    float floatRatio_rec = (float) SAMPLE_FREQUENCY/samFreq;
-    uint64_t fsRatio_rec = (uint64_t) floatRatio_rec * (1LL << 60);
-    int idealFsRatio_rec = fsRatio_rec >> 32;
+    float floatRatio_rec = (float) SAMPLE_FREQUENCY/(float)samFreq;
+    uint64_t fsRatio_rec = (uint64_t) (floatRatio_rec * (1LL << 60));
+    int idealFsRatio_rec = (fsRatio_rec + (1<<31)) >> 32;
 
     int srcInputBuff_rec[SRC_N_INSTANCES][SRC_N_IN_SAMPLES][SRC_CHANNELS_PER_INSTANCE];
 
@@ -271,6 +269,32 @@ void i2s_data(server i2s_frame_callback_if i_i2s,
                 {
                     sampleIdx_rec = 0;
 
+#if LOG_CONTROLLER_REC
+                        logCounterSubRec++;
+                        if(logCounterSubRec == CONT_LOG_SUBSAMPLE_REC)
+                        unsafe{
+                            logCounterSubRec = 0;
+                            int fillRec = (async_fifo_state_rec->write_ptr - async_fifo_state_rec->read_ptr + async_fifo_state_rec->max_fifo_depth)
+                                            % async_fifo_state_rec->max_fifo_depth;
+                            f_r[logCounterRec] = fillRec;
+                            r_r[logCounterRec] = (float) fsRatio_rec / (float) (1LL<<60);
+                            sr[logCounterRec] = samFreq;
+
+                            logCounterRec++;
+
+                            if(logCounterRec >= CONT_LOG_SIZE_REC)
+                            {
+                                for(int i = 0; i < CONT_LOG_SIZE_REC; i++)
+                                {
+                                    printint(sr[i]);
+                                    printchar(' ');
+                                    printint(f_r[i]);
+                                    printf(" %f\n", r_r[i]);
+                                }
+                                exit(1);
+                            }
+                        }
+#endif
                     /* Trigger_src for record path */
                     int32_t error;
                     error = trigger_src(c_src_rec, srcInputBuff_rec, fsRatio_rec, async_fifo_state_rec);
@@ -278,7 +302,6 @@ void i2s_data(server i2s_frame_callback_if i_i2s,
                     /* Produce fsRatio from error */
                     fsRatio_rec = (((int64_t)idealFsRatio_rec) << 32) + (error * (int64_t) idealFsRatio_rec);
                 }
-
                 break;
 
             case i_i2s.send(size_t num_out, int32_t samples[num_out]):
@@ -320,7 +343,7 @@ int src_manager(chanend c_usb,
     float floatRatio_play = (float) samFreq/SAMPLE_FREQUENCY;
     /* Q60 representations of the above */
     uint64_t fsRatio_play = (uint64_t) floatRatio_play * (1LL << 60);
-    int idealFsRatio_play = fsRatio_play >> 32;
+    int idealFsRatio_play = (fsRatio_play + (1<<31)) >> 32;
 
     if(!startUp)
         /* Handshsake that we are ready to go after SR change */
@@ -372,34 +395,27 @@ int src_manager(chanend c_usb,
                     if(sampleIdx_play == SRC_N_IN_SAMPLES)
                     {
                         sampleIdx_play = 0;
-#if LOG_CONTROLLER
-                        logCounterSub++;
-                        if(logCounterSub == CONT_LOG_SUBSAMPLE)
-                        {
-                            logCounterSub = 0;
+#if LOG_CONTROLLER_PLAY
+                        logCounterSubPlay++;
+                        if(logCounterSubPlay == CONT_LOG_SUBSAMPLE_PLAY)
+                        unsafe{
+                            logCounterSubPlay = 0;
                             int fillPlay = (async_fifo_state_play->write_ptr - async_fifo_state_play->read_ptr + async_fifo_state_play->max_fifo_depth) % async_fifo_state_play->max_fifo_depth;
-                            f_p[logCounter] = fillPlay;
+                            f_p[logCounterPlay] = fillPlay;
 
-                            int fillRec = (async_fifo_state_rec->write_ptr - async_fifo_state_rec->read_ptr + async_fifo_state_rec->max_fifo_depth) % async_fifo_state_rec->max_fifo_depth;
-                            f_r[logCounter] = fillRec;
+                            r_p[logCounterPlay] = (float) fsRatio_play / (float) (1LL<<60);
+                            sr[logCounterPlay] = samFreq;
 
-                            r_p[logCounter] = (float) fsRatio_play / (float) (1LL<<60);
-                            r_r[logCounter] = (float) fsRatio_rec / (float) (1LL<<60);
-                            sr[logCounter] = samFreq;
+                            logCounterPlay++;
 
-                            logCounter++;
-
-                            if(logCounter >= CONT_LOG_SIZE)
+                            if(logCounterPlay >= CONT_LOG_SIZE_PLAY)
                             {
-                                for(int i = 0; i < CONT_LOG_SIZE; i++)
+                                for(int i = 0; i < CONT_LOG_SIZE_PLAY; i++)
                                 {
                                     printint(sr[i]);
                                     printchar(' ');
                                     printint(f_p[i]);
-                                    printchar(' ');
-                                    printint(f_r[i]);
-                                    printf(" %f", r_p[i]);
-                                    printf(" %f\n", r_r[i]);
+                                    printf(" %f\n", r_p[i]);
                                 }
                                 exit(1);
                             }
@@ -426,11 +442,23 @@ __builtin_unreachable();
     return 0;
 }
 
+static int interpolation_ticks_2D[6][6] =
+{
+    {  2268, 2268, 2268, 2268, 2268, 2268},
+    {  2083, 2083, 2083, 2083, 2083, 2083},
+    {  2268, 2268, 1134, 1134, 1134, 1134},
+    {  2083, 2083, 1042, 1042, 1042, 1042},
+    {  2268, 2268, 1134, 1134,  567,  567},
+    {  2083, 2083, 1042, 1042,  521,  521}
+};
+
 void src_task(streaming chanend c, int instance, int inputFsCode, int outputFsCode)
 {
     int inputBuff[SRC_N_IN_SAMPLES * SRC_CHANNELS_PER_INSTANCE];
     int outputBuff[SRC_OUT_BUFF_SIZE];
     int sampsOut = 0;
+
+    int interpolation_ticks = interpolation_ticks_2D[inputFsCode][outputFsCode];
 
     memset(inputBuff, 0, sizeof(inputBuff));
     memset(outputBuff, 0, sizeof(outputBuff));
@@ -520,7 +548,7 @@ void src_task(streaming chanend c, int instance, int inputFsCode, int outputFsCo
         sampsOut = asrc_process(inputBuff, outputBuff, fsRatio_, sASRCCtrl);
         unsafe
         {
-            tsOut = asrc_timestamp_interpolation(tsIn, &sASRCCtrl[0], 2083); // TODO needs changing based on SR
+            tsOut = asrc_timestamp_interpolation(tsIn, &sASRCCtrl[0], interpolation_ticks);
         }
 #else
         sampsOut = ssrc_process(inputBuff, outputBuff, sSSRCCtrl);
@@ -572,10 +600,12 @@ void i2s_driver(chanend c_usb)
     unsafe
     {
         asynchronous_fifo_t * unsafe async_fifo_state_play = (asynchronous_fifo_t *)array;
-        asynchronous_fifo_init(async_fifo_state_play, 2, FIFO_LENGTH, 100000000/SAMPLE_FREQUENCY, 1.0, 2.5); //TODO needs changing for SR
+        asynchronous_fifo_init(async_fifo_state_play, 2, FIFO_LENGTH);
+        asynchronous_fifo_init_PID_fs_codes(async_fifo_state_play, sr_to_fscode(usbSr), sr_to_fscode(SAMPLE_FREQUENCY)); // TODO need to update with SR
 
         asynchronous_fifo_t * unsafe async_fifo_state_rec = (asynchronous_fifo_t *)array_rec;
-        asynchronous_fifo_init(async_fifo_state_rec, 2, FIFO_LENGTH, 100000000/SAMPLE_FREQUENCY, 1.0, 2.0); // TODO needs changing for SR
+        asynchronous_fifo_init(async_fifo_state_rec, 2, FIFO_LENGTH);
+        asynchronous_fifo_init_PID_fs_codes(async_fifo_state_rec, sr_to_fscode(SAMPLE_FREQUENCY), sr_to_fscode(usbSr));
 
         par
         {
