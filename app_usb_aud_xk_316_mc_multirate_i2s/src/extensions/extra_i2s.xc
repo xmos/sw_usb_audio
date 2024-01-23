@@ -186,20 +186,32 @@ int trigger_src(streaming chanend c_src[SRC_N_INSTANCES],
     return error;
 }
 
-#ifndef LOG_CONTROLLER
-#define LOG_CONTROLLER (0)
+#ifndef LOG_CONTROLLER_REC
+#define LOG_CONTROLLER_REC (0)
 #endif
 
-#if LOG_CONTROLLER
-#define CONT_LOG_SIZE      (10000)
-#define CONT_LOG_SUBSAMPLE (16)
-int f_p[CONT_LOG_SIZE];
-int f_r[CONT_LOG_SIZE];
-float r_p[CONT_LOG_SIZE];
-float r_r[CONT_LOG_SIZE];
-int sr[CONT_LOG_SIZE];
-int logCounter = 0;
-int logCounterSub = 0;
+#ifndef LOG_CONTROLLER_PLAY
+#define LOG_CONTROLLER_PLAY (0)
+#endif
+
+#if LOG_CONTROLLER_REC
+#define CONT_LOG_SIZE_REC      (15000)
+#define CONT_LOG_SUBSAMPLE_REC (16)
+int f_r[CONT_LOG_SIZE_REC];
+float r_r[CONT_LOG_SIZE_REC];
+int sr[CONT_LOG_SIZE_REC];
+int logCounterRec = 0;
+int logCounterSubRec = 0;
+#endif
+
+#if LOG_CONTROLLER_PLAY
+#define CONT_LOG_SIZE_PLAY      (12000)
+#define CONT_LOG_SUBSAMPLE_PLAY (32)
+int f_p[CONT_LOG_SIZE_PLAY];
+float r_p[CONT_LOG_SIZE_PLAY];
+int sr[CONT_LOG_SIZE_PLAY];
+int logCounterPlay = 0;
+int logCounterSubPlay = 0;
 #endif
 
 int32_t inSamples[2][EXTRA_I2S_CHAN_COUNT_IN];
