@@ -9,8 +9,6 @@
 #include "asynchronous_fifo.h"
 #include "asrc_timestamp_interpolation.h"
 
-//on tile[1]: out port p = PORT_MIDI_OUT;
-
 /* TODO
     - Add support for SR change
     - Seperate recording and playback SRC related defines
@@ -194,7 +192,7 @@ int trigger_src(streaming chanend c_src[SRC_N_INSTANCES],
 #endif
 
 #if LOG_CONTROLLER_REC
-#define CONT_LOG_SIZE_REC      (15000)
+#define CONT_LOG_SIZE_REC      (17000)
 #define CONT_LOG_SUBSAMPLE_REC (16)
 int f_r[CONT_LOG_SIZE_REC];
 float r_r[CONT_LOG_SIZE_REC];
@@ -204,7 +202,7 @@ int logCounterSubRec = 0;
 #endif
 
 #if LOG_CONTROLLER_PLAY
-#define CONT_LOG_SIZE_PLAY      (12000)
+#define CONT_LOG_SIZE_PLAY      (15000)
 #define CONT_LOG_SUBSAMPLE_PLAY (32)
 int f_p[CONT_LOG_SIZE_PLAY];
 float r_p[CONT_LOG_SIZE_PLAY];
@@ -237,8 +235,6 @@ void i2s_data(server i2s_frame_callback_if i_i2s,
 
     int srcInputBuff_rec[SRC_N_INSTANCES][SRC_N_IN_SAMPLES][SRC_CHANNELS_PER_INSTANCE];
 
-    int32_t playSamples[EXTRA_I2S_CHAN_COUNT_OUT];
-
     while(1)
     {
         select
@@ -256,10 +252,7 @@ void i2s_data(server i2s_frame_callback_if i_i2s,
 
                 for(size_t i = 0; i < EXTRA_I2S_CHAN_COUNT_IN; i++)
                 {
-                    unsafe
-                    {
-                        srcInputBuff_rec[i/SRC_CHANNELS_PER_INSTANCE][sampleIdx_rec][i % SRC_CHANNELS_PER_INSTANCE] = samples[i];
-                    }
+                    srcInputBuff_rec[i/SRC_CHANNELS_PER_INSTANCE][sampleIdx_rec][i % SRC_CHANNELS_PER_INSTANCE] = samples[i];
                 }
 
                 /* Add to recording path ASRC input buffer */
@@ -305,7 +298,7 @@ void i2s_data(server i2s_frame_callback_if i_i2s,
                 break;
 
             case i_i2s.send(size_t num_out, int32_t samples[num_out]):
-
+                int32_t playSamples[EXTRA_I2S_CHAN_COUNT_OUT];
                 timer t;
                 unsigned now;
                 t :> now;
@@ -400,9 +393,9 @@ int src_manager(chanend c_usb,
                         if(logCounterSubPlay == CONT_LOG_SUBSAMPLE_PLAY)
                         unsafe{
                             logCounterSubPlay = 0;
-                            int fillPlay = (async_fifo_state_play->write_ptr - async_fifo_state_play->read_ptr + async_fifo_state_play->max_fifo_depth) % async_fifo_state_play->max_fifo_depth;
+                            int fillPlay = (async_fifo_state_play->write_ptr - async_fifo_state_play->read_ptr + async_fifo_state_play->max_fifo_depth)
+                                % async_fifo_state_play->max_fifo_depth;
                             f_p[logCounterPlay] = fillPlay;
-
                             r_p[logCounterPlay] = (float) fsRatio_play / (float) (1LL<<60);
                             sr[logCounterPlay] = samFreq;
 
@@ -513,6 +506,8 @@ void src_task(streaming chanend c, int instance, int inputFsCode, int outputFsCo
             c :> inputFsCode;
             c :> outputFsCode;
 
+            interpolation_ticks = interpolation_ticks_2D[inputFsCode][outputFsCode];
+
             fsRatio = asrc_init(inputFsCode, outputFsCode, sASRCCtrl, SRC_CHANNELS_PER_INSTANCE, SRC_N_IN_SAMPLES, SRC_DITHER_SETTING);
 
             /* Handshake back when init complete */
@@ -609,7 +604,6 @@ void i2s_driver(chanend c_usb)
 
         par
         {
-
             par
             {
                 [[distribute]]i2s_data(i_i2s, c_src_rec, async_fifo_state_play, async_fifo_state_rec);
