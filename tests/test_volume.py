@@ -74,7 +74,10 @@ def test_volume_input(pytestconfig, board, config):
     fail_str = ""
     adapter_dut, adapter_harness = get_xtag_dut_and_harness(pytestconfig, board)
 
-    with XrunDut(adapter_dut, board, config) as dut:
+    with (
+        XrunDut(adapter_dut, board, config) as dut,
+        AudioAnalyzerHarness(adapter_harness),
+    ):
         for channel in test_chans:
             channels = range(num_chans) if channel == "m" else [channel]
 
@@ -88,11 +91,7 @@ def test_volume_input(pytestconfig, board, config):
                 if ch in channels:
                     xsig_json["in"][ch][0] = "volcheck"
 
-            with (
-                AudioAnalyzerHarness(adapter_harness) as harness,
-                tempfile.NamedTemporaryFile(mode="w") as xsig_file,
-            ):
-
+            with tempfile.NamedTemporaryFile(mode="w") as xsig_file:
                 json.dump(xsig_json, xsig_file)
                 xsig_file.flush()
 
@@ -124,10 +123,6 @@ def test_volume_input(pytestconfig, board, config):
                 fail_str += "\n".join(failures) + "\n\n"
                 fail_str += f"xsig stdout for channel {channel}\n"
                 fail_str += "\n".join(xsig_lines) + "\n\n"
-                harness_output = harness.get_output()
-                if len(harness_output) > 0:
-                    fail_str += f"Audio analyzer stdout for channel {channel}\n"
-                    fail_str += "\n".join(harness_output) + "\n\n"
 
     if len(fail_str) > 0:
         pytest.fail(fail_str)

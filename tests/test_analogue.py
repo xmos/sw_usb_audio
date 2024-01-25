@@ -96,7 +96,7 @@ def test_analogue_input(pytestconfig, board, config):
 
     with (
         XrunDut(adapter_dut, board, config) as dut,
-        AudioAnalyzerHarness(adapter_harness) as harness,
+        AudioAnalyzerHarness(adapter_harness),
     ):
         for fs in features["samp_freqs"]:
             with XsigInput(fs, duration, xsig_config_path, dut.dev_name, ident=f"analogue_input-{board}-{config}-{fs}") as xsig_proc:
@@ -114,10 +114,6 @@ def test_analogue_input(pytestconfig, board, config):
                 fail_str += "\n".join(xsig_lines) + "\n\n"
 
     if len(fail_str) > 0:
-        harness_output = harness.get_output()
-        if len(harness_output) > 0:
-            fail_str += "Audio analyzer stdout\n"
-            fail_str += "\n".join(harness_output)
         pytest.fail(fail_str)
 
 
