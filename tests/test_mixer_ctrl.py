@@ -54,7 +54,7 @@ def test_routing_ctrl_input(pytestconfig, ctrl_app, board, config):
 
     with (
         XrunDut(adapter_dut, board, config) as dut,
-        AudioAnalyzerHarness(adapter_harness) as harness,
+        AudioAnalyzerHarness(adapter_harness),
     ):
 
         # Route analogue inputs 0, 1, ..., N to host inputs N, N-1, ..., 0 respectively
@@ -75,10 +75,6 @@ def test_routing_ctrl_input(pytestconfig, ctrl_app, board, config):
         fail_str += "\n".join(failures) + "\n\n"
         fail_str += "xsig stdout\n"
         fail_str += "\n".join(xsig_lines)
-        harness_output = harness.get_output()
-        if len(harness_output) > 0:
-            fail_str += "\n\nAudio analyzer stdout\n"
-            fail_str += "\n".join(harness_output)
         pytest.fail(fail_str)
 
 
@@ -139,7 +135,7 @@ def test_mixing_ctrl_input(pytestconfig, ctrl_app, board, config):
 
     with (
         XrunDut(adapter_dut, board, config) as dut,
-        AudioAnalyzerHarness(adapter_harness) as harness,
+        AudioAnalyzerHarness(adapter_harness),
     ):
 
         num_mixes = 8
@@ -172,10 +168,6 @@ def test_mixing_ctrl_input(pytestconfig, ctrl_app, board, config):
         fail_str += "\n".join(failures) + "\n\n"
         fail_str += "xsig stdout\n"
         fail_str += "\n".join(xsig_lines)
-        harness_output = harness.get_output()
-        if len(harness_output) > 0:
-            fail_str += "\n\nAudio analyzer stdout\n"
-            fail_str += "\n".join(harness_output)
         pytest.fail(fail_str)
 
 
