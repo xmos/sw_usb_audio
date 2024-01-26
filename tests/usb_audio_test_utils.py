@@ -316,18 +316,27 @@ class AudioAnalyzerHarness:
         elif self.xscope == "io":
             xrun_cmd.append("--xscope")
         xrun_cmd.append(self.harness_firmware)
-        self.proc = subprocess.Popen(
-            xrun_cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT
-        )
 
-        if self.xscope == "app":
-            wait_for_xscope_port(self.xscope_port)
+        if self.xscope:
+            # If attaching via xscope, store the Popen object to terminate it later
+            self.proc = subprocess.Popen(
+                xrun_cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT
+            )
+
+            # Wait to allow the xrun command to start running
+            time.sleep(5)
+
+            if self.xscope == "app":
+                wait_for_xscope_port(self.xscope_port)
         else:
-            # Wait for a short delay to allow the analyzer app to start running before
-            # doing anything else; Windows seems to need a longer delay, otherwise xrun
-            # becomes very slow and a longer wait is required to reboot the XTAG.
-            delay_sec = 10 if platform.system() == "Windows" else 5
-            time.sleep(delay_sec)
+            # If not attaching via xscope, wait for the xrun command to complete
+            ret = subprocess.run(xrun_cmd, capture_output=True, text=True, timeout=60)
+            if ret.returncode != 0:
+                pytest.fail(
+                    f"Failed to launch audio analyzer, cmd {xrun_cmd}\n"
+                    + f"stdout:\n{ret.stdout}\n"
+                    + f"stderr:\n{ret.stderr}\n"
+                )
 
         return self
 
@@ -335,7 +344,7 @@ class AudioAnalyzerHarness:
         self.terminate()
 
     def terminate(self):
-        if self.proc.poll() is None:
+        if self.proc and self.proc.poll() is None:
             # Due to a bug in Tools 15.1.4, terminating xrun leaves xgdb running.
             # Kill all xgdb processes, since the xgdb process ID is unknown.
             self.proc.terminate()
@@ -353,6 +362,8 @@ class AudioAnalyzerHarness:
         stop_xrun_app(self.adapter_id)
 
     def get_output(self):
+        if not self.proc:
+            return []
         try:
             out, _ = self.proc.communicate(timeout=5)
         except subprocess.TimeoutExpired:
