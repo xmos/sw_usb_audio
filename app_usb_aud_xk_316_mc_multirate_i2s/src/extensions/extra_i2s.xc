@@ -128,9 +128,9 @@ void UserBufferManagement(unsigned sampsFromUsbToAudio[], unsigned sampsFromAudi
 }
 
 #pragma unsafe arrays
-int trigger_src(streaming chanend c_src[SRC_N_INSTANCES],
+{int, int, int} trigger_src(streaming chanend c_src[SRC_N_INSTANCES],
                                 int srcInputBuff[SRC_N_INSTANCES][SRC_N_IN_SAMPLES][SRC_CHANNELS_PER_INSTANCE],
-                                uint64_t fsRatio, asynchronous_fifo_t * unsafe a)
+                                uint64_t fsRatio, asynchronous_fifo_t * unsafe a, int32_t now)
 {
     int32_t error = 0;
     int nSamps = 0;
@@ -182,7 +182,7 @@ int trigger_src(streaming chanend c_src[SRC_N_INSTANCES],
     if(nSamps != 0)
         error = asynchronous_fifo_produce(a, samples, nSamps, timestamp, 0);
 
-    return error;
+    return {error, timestamp, tsin};
 }
 
 #ifndef LOG_CONTROLLER_REC
@@ -190,25 +190,30 @@ int trigger_src(streaming chanend c_src[SRC_N_INSTANCES],
 #endif
 
 #ifndef LOG_CONTROLLER_PLAY
-#define LOG_CONTROLLER_PLAY (0)
+#define LOG_CONTROLLER_PLAY (1)
 #endif
 
+
+#define CONT_LOG_DELAY     (65000)
+#define CONT_LOG_SIZE      (12000)
+#define CONT_LOG_SUBSAMPLE (256)
+
 #if LOG_CONTROLLER_REC
-#define CONT_LOG_SIZE_REC      (17000)
-#define CONT_LOG_SUBSAMPLE_REC (16)
-int f_r[CONT_LOG_SIZE_REC];
-float r_r[CONT_LOG_SIZE_REC];
-int sr[CONT_LOG_SIZE_REC];
+int f_r[CONT_LOG_SIZE];
+float r_r[CONT_LOG_SIZE];
+int sr[CONT_LOG_SIZE];
+int ns_r[CONT_LOG_SIZE];
+int ts_r[CONT_LOG_SIZE];
 int logCounterRec = 0;
 int logCounterSubRec = 0;
 #endif
 
 #if LOG_CONTROLLER_PLAY
-#define CONT_LOG_SIZE_PLAY      (15000)
-#define CONT_LOG_SUBSAMPLE_PLAY (32)
-int f_p[CONT_LOG_SIZE_PLAY];
-float r_p[CONT_LOG_SIZE_PLAY];
-int sr[CONT_LOG_SIZE_PLAY];
+int f_p[CONT_LOG_SIZE];
+//float r_p[CONT_LOG_SIZE];
+//int sr[CONT_LOG_SIZE];
+int ns_p[CONT_LOG_SIZE];
+int ts_p[CONT_LOG_SIZE];
 int logCounterPlay = 0;
 int logCounterSubPlay = 0;
 #endif
@@ -237,6 +242,11 @@ void i2s_data(server i2s_frame_callback_if i_i2s,
 
     int srcInputBuff_rec[SRC_N_INSTANCES][SRC_N_IN_SAMPLES][SRC_CHANNELS_PER_INSTANCE];
 
+    int32_t timestamp;
+    static int32_t lasttimestamp;
+    int32_t timestampdiff;
+    int32_t tsin;
+
     while(1)
     {
         select
@@ -252,6 +262,10 @@ void i2s_data(server i2s_frame_callback_if i_i2s,
 
             case i_i2s.receive(size_t num_in, int32_t samples[num_in]):
 
+                timer t;
+                int32_t now;
+                t :> now;
+
                 for(size_t i = 0; i < EXTRA_I2S_CHAN_COUNT_IN; i++)
                 {
                     srcInputBuff_rec[i/SRC_CHANNELS_PER_INSTANCE][sampleIdx_rec][i % SRC_CHANNELS_PER_INSTANCE] = samples[i];
@@ -266,7 +280,7 @@ void i2s_data(server i2s_frame_callback_if i_i2s,
 
 #if LOG_CONTROLLER_REC
                         logCounterSubRec++;
-                        if(logCounterSubRec == CONT_LOG_SUBSAMPLE_REC)
+                        if(logCounterSubRec == CONT_LOG_SUBSAMPLE)
                         unsafe{
                             logCounterSubRec = 0;
                             int fillRec = (async_fifo_state_rec->write_ptr - async_fifo_state_rec->read_ptr + async_fifo_state_rec->max_fifo_depth)
@@ -274,16 +288,20 @@ void i2s_data(server i2s_frame_callback_if i_i2s,
                             f_r[logCounterRec] = fillRec;
                             r_r[logCounterRec] = (float) fsRatio_rec / (float) (1LL<<60);
                             sr[logCounterRec] = samFreq;
+                            ts_r[logCounterRec] = timestamp;
+                            ns_r[logCounterRec] = tsin;
 
                             logCounterRec++;
 
-                            if(logCounterRec >= CONT_LOG_SIZE_REC)
+                            if(logCounterRec >= CONT_LOG_SIZE)
                             {
-                                for(int i = 0; i < CONT_LOG_SIZE_REC; i++)
+                                for(int i = 0; i < CONT_LOG_SIZE; i++)
                                 {
-                                    printint(sr[i]);
+                                    printintln(ns_r[i]);
                                     printchar(' ');
-                                    printint(f_r[i]);
+                                    printuint(f_r[i]);
+                                    printchar(' ');
+                                    printint(ts_r[i]);
                                     printf(" %f\n", r_r[i]);
                                 }
                                 exit(1);
@@ -292,7 +310,10 @@ void i2s_data(server i2s_frame_callback_if i_i2s,
 #endif
                     /* Trigger_src for record path */
                     int32_t error;
-                    error = trigger_src(c_src_rec, srcInputBuff_rec, fsRatio_rec, async_fifo_state_rec);
+                    {error, timestamp, tsin} = trigger_src(c_src_rec, srcInputBuff_rec, fsRatio_rec, async_fifo_state_rec, now);
+                    timestampdiff = lasttimestamp - timestamp;
+                    lasttimestamp = timestamp;
+
 
                     /* Produce fsRatio from error */
                     fsRatio_rec = (((int64_t)idealFsRatio_rec) << 32) + (error * (int64_t) idealFsRatio_rec);
@@ -345,6 +366,16 @@ int src_manager(chanend c_usb,
         /* OR inital request for usb data */
         outct(c_usb, XS1_CT_END);
 
+    int32_t timestamp;
+    static int32_t lasttimestamp;
+    int32_t timestampdiff;
+    int32_t tsin = 0;
+    static int32_t lasttsin;
+    int32_t tsindiff;
+    int32_t error;
+    int logCounterDelay = 0;
+    int logCounterGo = 0;
+
     while (1)
     {
         select
@@ -364,7 +395,11 @@ int src_manager(chanend c_usb,
                 }
                 else
                 {
-                    /* Receive samples from USB audio (other side of the UserBufferManagement() comms) */
+                    timer t;
+                    unsigned now;
+                    t :> now;
+
+                   /* Receive samples from USB audio (other side of the UserBufferManagement() comms) */
 #pragma loop unroll
                     for(size_t i = 0; i< EXTRA_I2S_CHAN_COUNT_OUT; i++)
                     {
@@ -372,9 +407,6 @@ int src_manager(chanend c_usb,
                     }
                     chkct(c_usb, XS1_CT_END);
 
-                    timer t;
-                    unsigned now;
-                    t :> now;
                     asynchronous_fifo_consume(async_fifo_state_rec, srcOutputBuff_rec, now);
 
                     /* Send samples to USB audio (other side of the UserBufferManagement() comms */
@@ -391,26 +423,33 @@ int src_manager(chanend c_usb,
                     {
                         sampleIdx_play = 0;
 #if LOG_CONTROLLER_PLAY
+                        logCounterDelay ++;
+                        if(logCounterDelay > CONT_LOG_DELAY)
+                            logCounterGo = 1;
+
+                        if(logCounterGo)
                         logCounterSubPlay++;
-                        if(logCounterSubPlay == CONT_LOG_SUBSAMPLE_PLAY)
+                        if(logCounterSubPlay == CONT_LOG_SUBSAMPLE)
                         unsafe{
                             logCounterSubPlay = 0;
                             int fillPlay = (async_fifo_state_play->write_ptr - async_fifo_state_play->read_ptr + async_fifo_state_play->max_fifo_depth)
                                 % async_fifo_state_play->max_fifo_depth;
-                            f_p[logCounterPlay] = fillPlay;
-                            r_p[logCounterPlay] = (float) fsRatio_play / (float) (1LL<<60);
-                            sr[logCounterPlay] = samFreq;
+                            f_p[logCounterPlay] = error;
+                            //r_p[logCounterPlay] = (float) fsRatio_play / (float) (1LL<<60);
+                           // sr[logCounterPlay] = samFreq;
+                            ts_p[logCounterPlay] = timestampdiff;
+                            ns_p[logCounterPlay] = tsindiff;
 
                             logCounterPlay++;
 
-                            if(logCounterPlay >= CONT_LOG_SIZE_PLAY)
+                            if(logCounterPlay >= CONT_LOG_SIZE)
                             {
-                                for(int i = 0; i < CONT_LOG_SIZE_PLAY; i++)
+                                for(int i = 0; i < CONT_LOG_SIZE; i++)
                                 {
-                                    printint(sr[i]);
-                                    printchar(' ');
-                                    printint(f_p[i]);
-                                    printf(" %f\n", r_p[i]);
+                                    //printint(sr[i]);
+                                    //printchar(' ');
+                                    printf("%d %d %d\n", ns_p[i], f_p[i], ts_p[i]);
+                                    //printf(" %f\n", r_p[i]);
                                 }
                                 exit(1);
                             }
@@ -419,8 +458,14 @@ int src_manager(chanend c_usb,
 
 #if (EXTRA_I2S_CHAN_COUNT_OUT > 0)
                         /* Send samples to SRC tasks. This function adds returned sample to FIFO */
-                        int32_t error;
-                        error = trigger_src(c_src_play, srcInputBuff_play, fsRatio_play, async_fifo_state_play);
+                        int x;
+                        {error, timestamp, x} = trigger_src(c_src_play, srcInputBuff_play, fsRatio_play, async_fifo_state_play, now);
+
+                        timestampdiff = lasttimestamp - timestamp;
+                        lasttimestamp = timestamp;
+
+                        tsindiff = lasttsin - now;
+                        lasttsin = now;
 
                         /* Produce fsRatio from error */
                         fsRatio_play = (((int64_t)idealFsRatio_play) << 32) + (error * (int64_t) idealFsRatio_play);
@@ -494,7 +539,7 @@ void src_task(streaming chanend c, int instance, int inputFsCode, int outputFsCo
     ssrc_init(inputFsCode, outputFsCode, sSSRCCtrl, SRC_CHANNELS_PER_INSTANCE, SRC_N_IN_SAMPLES, SRC_DITHER_SETTING);
 #endif
 
-    timer t;
+    //timer t;
     int32_t tsIn = 0, tsOut = 0;
 
     while(1)
@@ -531,6 +576,7 @@ void src_task(streaming chanend c, int instance, int inputFsCode, int outputFsCo
 
         /* Send out the output timestamp */
         c <: tsOut;
+        c :> tsIn;
 
         /* Send output samples */
 #pragma loop unroll
@@ -541,8 +587,8 @@ void src_task(streaming chanend c, int instance, int inputFsCode, int outputFsCo
 
         /* Process input buffer into output buffer */
 #if USE_ASRC
-        t :> tsIn;
         sampsOut = asrc_process(inputBuff, outputBuff, fsRatio_, sASRCCtrl);
+        if(sampsOut)
         unsafe
         {
             tsOut = asrc_timestamp_interpolation(tsIn, &sASRCCtrl[0], interpolation_ticks);
