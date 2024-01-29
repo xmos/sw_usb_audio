@@ -135,6 +135,7 @@ int trigger_src(streaming chanend c_src[SRC_N_INSTANCES],
     int32_t error = 0;
     int nSamps = 0;
     int32_t timestamp;
+    int32_t tsin;
     int32_t samples[SRC_CHANNELS_PER_INSTANCE*SRC_N_CHANNELS * SRC_MAX_NUM_SAMPS_OUT];
 #pragma loop unroll
     for (int i=0; i<SRC_N_INSTANCES; i++)
@@ -159,6 +160,7 @@ int trigger_src(streaming chanend c_src[SRC_N_INSTANCES],
     {
         c_src[i] :> nSamps;
         c_src[i] :> timestamp;
+        c_src[i] <: now;
     }
 
     int chanIdx = 0;
