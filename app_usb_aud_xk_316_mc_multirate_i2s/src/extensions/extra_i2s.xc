@@ -8,6 +8,7 @@
 #include "xua.h"
 #include "asynchronous_fifo.h"
 #include "asrc_timestamp_interpolation.h"
+#include <xscope.h>
 
 /* TODO
     - Add support for SR change
@@ -37,9 +38,6 @@
 
 #define DATA_BITS                (32)
 #define SAMPLE_FREQUENCY         (48000)
-
-#define FREQ_Q_SHIFT (8)
-#define FREQ_Q_VALUE (1<<FREQ_Q_SHIFT)
 
 void exit(int);
 
@@ -128,14 +126,13 @@ void UserBufferManagement(unsigned sampsFromUsbToAudio[], unsigned sampsFromAudi
 }
 
 #pragma unsafe arrays
-{int, int, int} trigger_src(streaming chanend c_src[SRC_N_INSTANCES],
+uint64_t trigger_src(streaming chanend c_src[SRC_N_INSTANCES],
                                 int srcInputBuff[SRC_N_INSTANCES][SRC_N_IN_SAMPLES][SRC_CHANNELS_PER_INSTANCE],
-                                uint64_t fsRatio, asynchronous_fifo_t * unsafe a, int32_t now)
+                                uint64_t fsRatio, asynchronous_fifo_t * unsafe a, int32_t now, int xscope_used, int idealFsRatio)
 {
     int32_t error = 0;
     int nSamps = 0;
     int32_t timestamp;
-    int32_t tsin;
     int32_t samples[SRC_CHANNELS_PER_INSTANCE*SRC_N_CHANNELS * SRC_MAX_NUM_SAMPS_OUT];
 #pragma loop unroll
     for (int i=0; i<SRC_N_INSTANCES; i++)
@@ -180,9 +177,14 @@ void UserBufferManagement(unsigned sampsFromUsbToAudio[], unsigned sampsFromAudi
     }
 
     if(nSamps != 0)
-        error = asynchronous_fifo_produce(a, samples, nSamps, timestamp, 0);
+    {
+        error = asynchronous_fifo_produce(a, samples, nSamps, timestamp, xscope_used);
 
-    return {error, timestamp, tsin};
+        /* Produce fsRatio from error */
+        fsRatio = (((int64_t)idealFsRatio) << 32) + (error * (int64_t) idealFsRatio);
+    }
+
+    return fsRatio;
 }
 
 #ifndef LOG_CONTROLLER_REC
@@ -193,27 +195,18 @@ void UserBufferManagement(unsigned sampsFromUsbToAudio[], unsigned sampsFromAudi
 #define LOG_CONTROLLER_PLAY (1)
 #endif
 
-
-#define CONT_LOG_DELAY     (65000)
-#define CONT_LOG_SIZE      (12000)
-#define CONT_LOG_SUBSAMPLE (256)
+#define CONT_LOG_DELAY     (0)
+#define CONT_LOG_SIZE      (18000)
+#define CONT_LOG_SUBSAMPLE (128)
 
 #if LOG_CONTROLLER_REC
-int f_r[CONT_LOG_SIZE];
-float r_r[CONT_LOG_SIZE];
-int sr[CONT_LOG_SIZE];
-int ns_r[CONT_LOG_SIZE];
-int ts_r[CONT_LOG_SIZE];
+uint64_t r_r[CONT_LOG_SIZE];
 int logCounterRec = 0;
 int logCounterSubRec = 0;
 #endif
 
 #if LOG_CONTROLLER_PLAY
-int f_p[CONT_LOG_SIZE];
-//float r_p[CONT_LOG_SIZE];
-//int sr[CONT_LOG_SIZE];
-int ns_p[CONT_LOG_SIZE];
-int ts_p[CONT_LOG_SIZE];
+uint64_t r_p[CONT_LOG_SIZE];
 int logCounterPlay = 0;
 int logCounterSubPlay = 0;
 #endif
@@ -241,11 +234,12 @@ void i2s_data(server i2s_frame_callback_if i_i2s,
     int idealFsRatio_rec = (fsRatio_rec + (1<<31)) >> 32;
 
     int srcInputBuff_rec[SRC_N_INSTANCES][SRC_N_IN_SAMPLES][SRC_CHANNELS_PER_INSTANCE];
-
-    int32_t timestamp;
-    static int32_t lasttimestamp;
-    int32_t timestampdiff;
-    int32_t tsin;
+#if LOG_CONTROLLER_REC
+    int logCounterDelay = 0;
+    int logCounterGo = 0;
+#endif
+    int32_t now;
+    timer t;
 
     while(1)
     {
@@ -262,8 +256,6 @@ void i2s_data(server i2s_frame_callback_if i_i2s,
 
             case i_i2s.receive(size_t num_in, int32_t samples[num_in]):
 
-                timer t;
-                int32_t now;
                 t :> now;
 
                 for(size_t i = 0; i < EXTRA_I2S_CHAN_COUNT_IN; i++)
@@ -279,17 +271,20 @@ void i2s_data(server i2s_frame_callback_if i_i2s,
                     sampleIdx_rec = 0;
 
 #if LOG_CONTROLLER_REC
-                        logCounterSubRec++;
+                        logCounterDelay ++;
+
+                        if(logCounterDelay > CONT_LOG_DELAY)
+                            logCounterGo = 1;
+
+                        if(logCounterGo)
+                            logCounterSubRec++;
+
+
                         if(logCounterSubRec == CONT_LOG_SUBSAMPLE)
                         unsafe{
                             logCounterSubRec = 0;
-                            int fillRec = (async_fifo_state_rec->write_ptr - async_fifo_state_rec->read_ptr + async_fifo_state_rec->max_fifo_depth)
-                                            % async_fifo_state_rec->max_fifo_depth;
-                            f_r[logCounterRec] = fillRec;
-                            r_r[logCounterRec] = (float) fsRatio_rec / (float) (1LL<<60);
-                            sr[logCounterRec] = samFreq;
-                            ts_r[logCounterRec] = timestamp;
-                            ns_r[logCounterRec] = tsin;
+                            r_r[logCounterRec] = fsRatio_rec;
+                            ns_r[logCounterRec] = nsamps;
 
                             logCounterRec++;
 
@@ -297,34 +292,20 @@ void i2s_data(server i2s_frame_callback_if i_i2s,
                             {
                                 for(int i = 0; i < CONT_LOG_SIZE; i++)
                                 {
-                                    printintln(ns_r[i]);
-                                    printchar(' ');
-                                    printuint(f_r[i]);
-                                    printchar(' ');
-                                    printint(ts_r[i]);
-                                    printf(" %f\n", r_r[i]);
+                                    float ratio = (float) r_r[i] / (float) (1LL<<60);
+                                    printf("%d %f\n", ns_r[i], ratio);
                                 }
                                 exit(1);
                             }
                         }
 #endif
                     /* Trigger_src for record path */
-                    int32_t error;
-                    {error, timestamp, tsin} = trigger_src(c_src_rec, srcInputBuff_rec, fsRatio_rec, async_fifo_state_rec, now);
-                    timestampdiff = lasttimestamp - timestamp;
-                    lasttimestamp = timestamp;
-
-
-                    /* Produce fsRatio from error */
-                    fsRatio_rec = (((int64_t)idealFsRatio_rec) << 32) + (error * (int64_t) idealFsRatio_rec);
+                    fsRatio_rec = trigger_src(c_src_rec, srcInputBuff_rec, fsRatio_rec, async_fifo_state_rec, now, 0, idealFsRatio_rec);
                 }
                 break;
 
             case i_i2s.send(size_t num_out, int32_t samples[num_out]):
                 int32_t playSamples[EXTRA_I2S_CHAN_COUNT_OUT];
-                timer t;
-                unsigned now;
-                t :> now;
 
                 asynchronous_fifo_consume(async_fifo_state_play, playSamples, now);
 
@@ -361,20 +342,14 @@ int src_manager(chanend c_usb,
     uint64_t fsRatio_play = (uint64_t) floatRatio_play * (1LL << 60);
     int idealFsRatio_play = (fsRatio_play + (1<<31)) >> 32;
 
+#if LOG_CONTROLLER_PLAY
+    int logCounterDelay = 0;
+    int logCounterGo = 0;
+#endif
     if(!startUp)
         /* Handshsake that we are ready to go after SR change */
         /* OR inital request for usb data */
         outct(c_usb, XS1_CT_END);
-
-    int32_t timestamp;
-    static int32_t lasttimestamp;
-    int32_t timestampdiff;
-    int32_t tsin = 0;
-    static int32_t lasttsin;
-    int32_t tsindiff;
-    int32_t error;
-    int logCounterDelay = 0;
-    int logCounterGo = 0;
 
     while (1)
     {
@@ -398,6 +373,7 @@ int src_manager(chanend c_usb,
                     timer t;
                     unsigned now;
                     t :> now;
+
 
                    /* Receive samples from USB audio (other side of the UserBufferManagement() comms) */
 #pragma loop unroll
@@ -424,51 +400,41 @@ int src_manager(chanend c_usb,
                         sampleIdx_play = 0;
 #if LOG_CONTROLLER_PLAY
                         logCounterDelay ++;
-                        if(logCounterDelay > CONT_LOG_DELAY)
-                            logCounterGo = 1;
 
                         if(logCounterGo)
-                        logCounterSubPlay++;
+                            logCounterSubPlay++;
+                        if(logCounterDelay > CONT_LOG_DELAY)
+                             logCounterGo = 1;
+
                         if(logCounterSubPlay == CONT_LOG_SUBSAMPLE)
                         unsafe{
                             logCounterSubPlay = 0;
                             int fillPlay = (async_fifo_state_play->write_ptr - async_fifo_state_play->read_ptr + async_fifo_state_play->max_fifo_depth)
                                 % async_fifo_state_play->max_fifo_depth;
-                            f_p[logCounterPlay] = error;
-                            //r_p[logCounterPlay] = (float) fsRatio_play / (float) (1LL<<60);
-                           // sr[logCounterPlay] = samFreq;
-                            ts_p[logCounterPlay] = timestampdiff;
-                            ns_p[logCounterPlay] = tsindiff;
+                            r_p[logCounterPlay] = fsRatio_play;
 
                             logCounterPlay++;
 
                             if(logCounterPlay >= CONT_LOG_SIZE)
                             {
-                                for(int i = 0; i < CONT_LOG_SIZE; i++)
+                                if(logCounterGo)
                                 {
-                                    //printint(sr[i]);
-                                    //printchar(' ');
-                                    printf("%d %d %d\n", ns_p[i], f_p[i], ts_p[i]);
-                                    //printf(" %f\n", r_p[i]);
+                                    for(int i = 0; i < CONT_LOG_SIZE; i++)
+                                    {
+                                        float ratio = (float) r_p[i] / (float) (1LL<<60);
+                                        printf("%f\n", ratio);
+                                    }
+                                    exit(1);
                                 }
-                                exit(1);
+                                else
+                                    logCounterPlay = 0;
                             }
                         }
 #endif
 
 #if (EXTRA_I2S_CHAN_COUNT_OUT > 0)
                         /* Send samples to SRC tasks. This function adds returned sample to FIFO */
-                        int x;
-                        {error, timestamp, x} = trigger_src(c_src_play, srcInputBuff_play, fsRatio_play, async_fifo_state_play, now);
-
-                        timestampdiff = lasttimestamp - timestamp;
-                        lasttimestamp = timestamp;
-
-                        tsindiff = lasttsin - now;
-                        lasttsin = now;
-
-                        /* Produce fsRatio from error */
-                        fsRatio_play = (((int64_t)idealFsRatio_play) << 32) + (error * (int64_t) idealFsRatio_play);
+                        fsRatio_play = trigger_src(c_src_play, srcInputBuff_play, fsRatio_play, async_fifo_state_play, now, 0, idealFsRatio_play);
 #endif
                     }
                 }
@@ -539,7 +505,6 @@ void src_task(streaming chanend c, int instance, int inputFsCode, int outputFsCo
     ssrc_init(inputFsCode, outputFsCode, sSSRCCtrl, SRC_CHANNELS_PER_INSTANCE, SRC_N_IN_SAMPLES, SRC_DITHER_SETTING);
 #endif
 
-    //timer t;
     int32_t tsIn = 0, tsOut = 0;
 
     while(1)
