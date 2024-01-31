@@ -1,3 +1,4 @@
+import configparser
 import pytest
 import subprocess
 import tempfile
@@ -121,7 +122,7 @@ def check_analyzer_output(analyzer_output, xsig_config):
     failures = []
     # Check for any errors
     for line in analyzer_output:
-        if re.match(".*ERROR|.*error|.*Error|.*Problem", line):
+        if re.match(".*(?<!no )(error|problem)", line.lower()):
             failures.append(line)
 
     num_chans = len(xsig_config)
@@ -270,6 +271,59 @@ def stop_xrun_app(adapter_id):
         stderr=subprocess.DEVNULL,
         timeout=120,
     )
+
+
+def get_volcontrol_path():
+    base_dir = Path(__file__).parent / "tools" / "volcontrol"
+    if platform.system() == "Windows":
+        app_path = base_dir / "x64" / "Release" / "volcontrol.exe"
+    else:
+        app_path = base_dir / "build" / "volcontrol"
+    if not app_path.exists():
+        pytest.fail(f"volcontrol not present at {app_path}")
+    return app_path
+
+
+def get_xscope_controller_path():
+    base_dir = (
+        Path(__file__).parents[2] / "sw_audio_analyzer" / "host_xscope_controller"
+    )
+    platform_str = platform.system()
+    if platform_str == "Windows":
+        app_path = base_dir / "bin_windows" / "xscope_controller.exe"
+    elif platform_str == "Darwin":
+        app_path = base_dir / "bin_macos" / "xscope_controller"
+    else:
+        pytest.fail(f"xscope_controller not supported on platform {platform_str}")
+
+    if not app_path.exists():
+        pytest.fail(f"xscope_controller not present at {app_path}")
+    return app_path
+
+
+# Windows host applications require the tusbaudio driver GUID, which can be found in custom.ini
+# in the driver installation directory
+def get_tusb_guid():
+    ini_path = (
+        Path(os.environ["PROGRAMFILES"])
+        / "XMOS"
+        / "USB Audio Device Driver"
+        / "x64"
+        / "custom.ini"
+    )
+    if not ini_path.exists():
+        pytest.fail(
+            f"tusbaudio SDK custom.ini not found in expected location: {ini_path}"
+        )
+
+    with open(ini_path, "r") as f:
+        config = configparser.ConfigParser()
+        config.read_file(f)
+        try:
+            guid = config.get("DriverInterface", "InterfaceGUID")
+            return guid
+        except (configparser.NoSectionError, configparser.NoOptionError):
+            pytest.fail(f"Could not find InterfaceGUID in custom.ini")
 
 
 class AudioAnalyzerHarness:

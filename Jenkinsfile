@@ -186,7 +186,10 @@ pipeline {
               dir("tests") {
                 dir("tools") {
                   // Build test support application
-                  sh 'make -C volcontrol'
+                  dir("volcontrol") {
+                    sh 'cmake -B build'
+                    sh 'make -C build'
+                  }
                   copyArtifacts filter: 'bin-macos-x86/xsig', fingerprintArtifacts: true, projectName: 'xmos-int/xsig/master', flatten: true, selector: lastSuccessful()
                   copyArtifacts filter: 'OSX/x86/xmos_mixer', fingerprintArtifacts: true, projectName: 'XMOS/lib_xua/develop', flatten: true, selector: lastSuccessful()
                 }
@@ -246,7 +249,10 @@ pipeline {
               dir("tests") {
                 dir("tools") {
                   // Build test support application
-                  sh 'make -C volcontrol'
+                  dir("volcontrol") {
+                    sh 'cmake -B build'
+                    sh 'make -C build'
+                  }
                   copyArtifacts filter: 'bin-macos-arm/xsig', fingerprintArtifacts: true, projectName: 'xmos-int/xsig/master', flatten: true, selector: lastSuccessful()
                   copyArtifacts filter: 'OSX/x86/xmos_mixer', fingerprintArtifacts: true, projectName: 'XMOS/lib_xua/develop', flatten: true, selector: lastSuccessful()
                 }
@@ -289,6 +295,7 @@ pipeline {
 
             dir("sw_audio_analyzer") {
               copyArtifacts filter: '**/*.xe', fingerprintArtifacts: true, projectName: 'xmos-int/sw_audio_analyzer/master', selector: lastSuccessful()
+              copyArtifacts filter: 'host_xscope_controller/bin_windows/xscope_controller.exe', fingerprintArtifacts: true, projectName: 'xmos-int/sw_audio_analyzer/master', selector: lastSuccessful()
             }
 
             dir("${REPO}") {
@@ -302,6 +309,11 @@ pipeline {
 
               dir("tests") {
                 dir("tools") {
+                  dir("volcontrol") {
+                    withVS() {
+                      bat 'msbuild volcontrol.vcxproj /property:Configuration=Release /property:Platform=x64'
+                    }
+                  }
                   copyArtifacts filter: 'bin-windows-x86/xsig.exe', fingerprintArtifacts: true, projectName: 'xmos-int/xsig/master', flatten: true, selector: lastSuccessful()
                   copyArtifacts filter: 'Win/x64/xmos_mixer.exe', fingerprintArtifacts: true, projectName: 'XMOS/lib_xua/develop', flatten: true, selector: lastSuccessful()
                 }
@@ -344,6 +356,7 @@ pipeline {
 
             dir("sw_audio_analyzer") {
               copyArtifacts filter: '**/*.xe', fingerprintArtifacts: true, projectName: 'xmos-int/sw_audio_analyzer/master', selector: lastSuccessful()
+              copyArtifacts filter: 'host_xscope_controller/bin_windows/xscope_controller.exe', fingerprintArtifacts: true, projectName: 'xmos-int/sw_audio_analyzer/master', selector: lastSuccessful()
             }
 
             dir("${REPO}") {
@@ -357,6 +370,11 @@ pipeline {
 
               dir("tests") {
                 dir("tools") {
+                  dir("volcontrol") {
+                    withVS() {
+                      bat 'msbuild volcontrol.vcxproj /property:Configuration=Release /property:Platform=x64'
+                    }
+                  }
                   copyArtifacts filter: 'bin-windows-x86/xsig.exe', fingerprintArtifacts: true, projectName: 'xmos-int/xsig/master', flatten: true, selector: lastSuccessful()
                   copyArtifacts filter: 'Win/x64/xmos_mixer.exe', fingerprintArtifacts: true, projectName: 'XMOS/lib_xua/develop', flatten: true, selector: lastSuccessful()
                 }
