@@ -176,13 +176,10 @@ uint64_t trigger_src(streaming chanend c_src[SRC_N_INSTANCES],
         }
     }
 
-    if(nSamps != 0)
-    {
-        error = asynchronous_fifo_produce(a, samples, nSamps, timestamp, xscope_used);
+    error = asynchronous_fifo_produce(a, samples, nSamps, timestamp, xscope_used);
 
-        /* Produce fsRatio from error */
-        fsRatio = (((int64_t)idealFsRatio) << 32) + (error * (int64_t) idealFsRatio);
-    }
+    /* Produce fsRatio from error */
+    fsRatio = (((int64_t)idealFsRatio) << 32) + (error * (int64_t) idealFsRatio);
 
     return fsRatio;
 }
