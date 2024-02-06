@@ -42,9 +42,18 @@ void exit(int);
 unsafe chanend uc_i2s;
 
 /* Note, re-using I2S data lines on MC audio board for LR and Bit clocks */
-
+#if (EXTRA_I2S_CHAN_COUNT_OUT > 0)
 on tile[1]: out buffered port:32 p_i2s_dout[1] = {PORT_I2S_DAC1};
+#else
+#define p_i2s_dout null
+#endif
+
+#if (EXTRA_I2S_CHAN_COUNT_IN > 0)
 on tile[1]: in buffered port:32 p_i2s_din[1] =   {PORT_SPDIF_OUT};
+#else
+#define p_i2s_din null
+#endif
+
 on tile[1]: in port p_i2s_bclk =                 PORT_I2S_DAC2;
 on tile[1]: in buffered port:32 p_i2s_lrclk =    PORT_I2S_DAC3;
 on tile[1]: in port p_off_bclk =                 XS1_PORT_16A;
@@ -278,6 +287,7 @@ void i2s_data(server i2s_frame_callback_if i_i2s,
 
                 t :> now;
 
+#if (EXTRA_I2S_CHAN_COUNT_IN > 0)
                 /* Check for SR Change */
                 unsafe
                 {
@@ -347,6 +357,7 @@ void i2s_data(server i2s_frame_callback_if i_i2s,
                     /* Trigger_src for record path */
                     fsRatio_rec = trigger_src(c_src_rec, srcInputBuff_rec, fsRatio_rec, async_fifo_state_rec, now, 0, idealFsRatio_rec);
                 }
+#endif
                 break;
 
             case i_i2s.send(size_t num_out, int32_t samples[num_out]):
@@ -634,7 +645,7 @@ void i2s_driver(chanend c_usb)
             par
             {
                 [[distribute]]i2s_data(i_i2s, c_src_rec, async_fifo_state_play, async_fifo_state_rec);
-                i2s_frame_slave(i_i2s, p_i2s_dout, 1, p_i2s_din, sizeof(p_i2s_din)/sizeof(p_i2s_din[0]), DATA_BITS, p_i2s_bclk, p_i2s_lrclk, clk_bclk);
+                i2s_frame_slave(i_i2s, p_i2s_dout, (EXTRA_I2S_CHAN_COUNT_OUT/2), p_i2s_din, (EXTRA_I2S_CHAN_COUNT_IN/2), DATA_BITS, p_i2s_bclk, p_i2s_lrclk, clk_bclk);
             }
             while(1)
             {
@@ -648,6 +659,7 @@ void i2s_driver(chanend c_usb)
                     *g_usbSamFreqPtr = usbSr;
                 }
 
+#if(EXTRA_I2S_CHAN_COUNT_OUT > 0)
                 asynchronous_fifo_reset_producer(async_fifo_state_play);
                 asynchronous_fifo_init_PID_fs_codes(async_fifo_state_play, sr_to_fscode(usbSr), sr_to_fscode(SAMPLE_FREQUENCY));
 
@@ -659,6 +671,7 @@ void i2s_driver(chanend c_usb)
                         c_src_play[i] <: (int)FS_CODE_48;
                         schkct(c_src_play[i], XS1_CT_END);
                     }
+#endif
             }
 
 #if(EXTRA_I2S_CHAN_COUNT_OUT > 0)
@@ -671,6 +684,7 @@ void i2s_driver(chanend c_usb)
                 }
             }
 #endif
+#if(EXTRA_I2S_CHAN_COUNT_IN > 0)
             /* Record SRC tasks */
             par (int i = SRC_N_INSTANCES ; i < 2*SRC_N_INSTANCES; i++)
             {
@@ -679,6 +693,7 @@ void i2s_driver(chanend c_usb)
                     src_task(c_src_rec[i-SRC_N_INSTANCES], i, FS_CODE_48, sr_to_fscode(DEFAULT_FREQ));
                 }
             }
+#endif
         } /* par */
     } /* unsafe */
 }
