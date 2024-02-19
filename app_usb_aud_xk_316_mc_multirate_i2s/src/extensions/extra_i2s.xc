@@ -130,65 +130,6 @@ void UserBufferManagement(unsigned sampsFromUsbToAudio[], unsigned sampsFromAudi
     }
 }
 
-#pragma unsafe arrays
-static inline uint64_t trigger_src(streaming chanend c_src[SRC_N_INSTANCES],
-                                int srcInputBuff[SRC_N_INSTANCES][SRC_N_IN_SAMPLES][SRC_CHANNELS_PER_INSTANCE],
-                                uint64_t fsRatio, asynchronous_fifo_t * unsafe a, int32_t now, int xscope_used, int idealFsRatio)
-{
-    int32_t error = 0;
-    int nSamps = 0;
-    int32_t timestamp;
-    int32_t samples[SRC_CHANNELS_PER_INSTANCE*SRC_N_CHANNELS * SRC_MAX_NUM_SAMPS_OUT];
-#pragma loop unroll
-    for (int i=0; i<SRC_N_INSTANCES; i++)
-    {
-        c_src[i] <: (uint64_t) fsRatio;
-
-#pragma loop unroll
-        for (int j=0; j<SRC_N_IN_SAMPLES; j++)
-        {
-#pragma loop unroll
-            for (int k=0; k<SRC_CHANNELS_PER_INSTANCE; k++)
-            {
-                c_src[i] <: srcInputBuff[i][j][k];
-            }
-        }
-    }
-
-    /* Get number of samples to receive from all SRC cores */
-    /* Note, all nSamps should be equal */
-#pragma loop unroll
-    for (int i=0; i < SRC_N_INSTANCES; i++)
-    {
-        c_src[i] :> nSamps;
-        c_src[i] :> timestamp;
-        c_src[i] <: now;
-    }
-
-    int chanIdx = 0;
-    for (int j=0; j < nSamps; j++)
-    {
-#pragma loop unroll
-        for (int k=0; k<SRC_CHANNELS_PER_INSTANCE; k++)
-        {
-            int32_t sample;
-#pragma loop unroll
-            for (int i=0; i<SRC_N_INSTANCES; i++)
-            {
-                c_src[i] :> sample;
-                samples[chanIdx++] = sample;
-            }
-        }
-    }
-
-    error = asynchronous_fifo_producer_put(a, samples, nSamps, timestamp, xscope_used);
-
-    /* Produce fsRatio from error */
-    fsRatio = (((int64_t)idealFsRatio) << 32) + (error * (int64_t) idealFsRatio);
-
-    return fsRatio;
-}
-
 #ifndef LOG_CONTROLLER_REC
 #define LOG_CONTROLLER_REC (0)
 #endif
@@ -232,6 +173,11 @@ void i2s_data(server i2s_frame_callback_if i_i2s,
     uint64_t fsRatio_rec = (uint64_t) (floatRatio_rec * (1LL << 60));
     int idealFsRatio_rec = (fsRatio_rec + (1<<31)) >> 32;
 
+    src_task_t srcTask_rec;
+    srcTask_rec.xscopeUsed = 0;
+    srcTask_rec.fsRatio = fsRatio_rec;
+    srcTask_rec.idealFsRatio = idealFsRatio_rec;
+
     int srcInputBuff_rec[SRC_N_INSTANCES][SRC_N_IN_SAMPLES][SRC_CHANNELS_PER_INSTANCE];
 #if LOG_CONTROLLER_REC
     int logCounterDelay = 0;
@@ -250,6 +196,10 @@ void i2s_data(server i2s_frame_callback_if i_i2s,
                 floatRatio_rec = (float) SAMPLE_FREQUENCY/(float)samFreq;
                 fsRatio_rec = (uint64_t) (floatRatio_rec * (1LL << 60));
                 idealFsRatio_rec = (fsRatio_rec + (1<<31)) >> 32;
+
+                srcTask_rec.xscopeUsed = 0;
+                srcTask_rec.fsRatio = fsRatio_rec;
+                srcTask_rec.idealFsRatio = idealFsRatio_rec;
 
                 asynchronous_fifo_reset_producer(async_fifo_state_rec);
                 asynchronous_fifo_init_PID_fs_codes(async_fifo_state_rec, sr_to_fscode(SAMPLE_FREQUENCY), sr_to_fscode(samFreq));
@@ -319,7 +269,7 @@ void i2s_data(server i2s_frame_callback_if i_i2s,
                         }
 #endif
                     /* Trigger_src for record path */
-                    fsRatio_rec = trigger_src(c_src_rec, srcInputBuff_rec, fsRatio_rec, async_fifo_state_rec, now, 0, idealFsRatio_rec);
+                    src_trigger(c_src_rec, srcInputBuff_rec, async_fifo_state_rec, now, &srcTask_rec);
                 }
 #endif
                 break;
@@ -363,6 +313,11 @@ int src_manager(chanend c_usb,
     uint64_t fsRatio_play = (uint64_t) (floatRatio_play * (1LL << 60));
     int idealFsRatio_play = (fsRatio_play + (1<<31)) >> 32;
     timer t;
+
+    src_task_t srcTask_play;
+    srcTask_play.xscopeUsed = 0;
+    srcTask_play.fsRatio = fsRatio_play;
+    srcTask_play.idealFsRatio = idealFsRatio_play;
 
 #if LOG_CONTROLLER_PLAY
     int logCounterDelay = 0;
@@ -451,7 +406,7 @@ int src_manager(chanend c_usb,
 
 #if (EXTRA_I2S_CHAN_COUNT_OUT > 0)
                         /* Send samples to SRC tasks. This function adds returned sample to FIFO */
-                        fsRatio_play = trigger_src(c_src_play, srcInputBuff_play, fsRatio_play, async_fifo_state_play, now, 0, idealFsRatio_play);
+                        src_trigger(c_src_play, srcInputBuff_play, async_fifo_state_play, now, &srcTask_play);
 #endif
                     }
                 }
