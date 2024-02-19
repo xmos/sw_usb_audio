@@ -254,14 +254,15 @@ void i2s_data(server i2s_frame_callback_if i_i2s,
                 asynchronous_fifo_reset_producer(async_fifo_state_rec);
                 asynchronous_fifo_init_PID_fs_codes(async_fifo_state_rec, sr_to_fscode(SAMPLE_FREQUENCY), sr_to_fscode(samFreq));
 
-                for(int i=0; i < SRC_N_INSTANCES; i++)
-                unsafe
-                {
-                    soutct(c_src_rec[i], XS1_CT_END);
-                    c_src_rec[i] <: (int)FS_CODE_48;
-                    c_src_rec[i] <: (int)sr_to_fscode(samFreq);
-                    schkct(c_src_rec[i], XS1_CT_END);
-                }
+                src_change_worker_freqs(c_src_rec, SRC_N_INSTANCES, 48000, samFreq);
+                //for(int i=0; i < SRC_N_INSTANCES; i++)
+                //unsafe
+                //{
+                //    soutct(c_src_rec[i], XS1_CT_END);
+                //    c_src_rec[i] <: (int)FS_CODE_48;
+                //    c_src_rec[i] <: (int)sr_to_fscode(samFreq);
+                //    schkct(c_src_rec[i], XS1_CT_END);
+                //}
                 break;
 
             /* Inform the I2S slave whether it should restart or exit */
@@ -458,7 +459,7 @@ int src_manager(chanend c_usb,
 
 #if (EXTRA_I2S_CHAN_COUNT_OUT > 0)
                         /* Send samples to SRC tasks. This function adds returned sample to FIFO */
-                        fsRatio_play = trigger_src(c_src_play, srcInputBuff_play, fsRatio_play, async_fifo_state_play, now, 0, idealFsRatio_play);
+                        fsRatio_play = trigger_src(c_src_play, srcInputBuff_play, fsRatio_play, async_fifo_state_play, now, 1, idealFsRatio_play);
 #endif
                     }
                 }
@@ -470,123 +471,6 @@ int src_manager(chanend c_usb,
 __builtin_unreachable();
     /* Should never get here */
     return 0;
-}
-
-static int interpolation_ticks_2D[6][6] =
-{
-    {  2268, 2268, 2268, 2268, 2268, 2268},
-    {  2083, 2083, 2083, 2083, 2083, 2083},
-    {  2268, 2268, 1134, 1134, 1134, 1134},
-    {  2083, 2083, 1042, 1042, 1042, 1042},
-    {  2268, 2268, 1134, 1134,  567,  567},
-    {  2083, 2083, 1042, 1042,  521,  521}
-};
-
-void src_task_(streaming chanend c, int instance, int inputFsCode, int outputFsCode)
-{
-    int inputBuff[SRC_N_IN_SAMPLES * SRC_CHANNELS_PER_INSTANCE];
-    int outputBuff[SRC_OUT_BUFF_SIZE];
-    int sampsOut = 0;
-
-    int interpolation_ticks = interpolation_ticks_2D[inputFsCode][outputFsCode];
-
-    memset(inputBuff, 0, sizeof(inputBuff));
-    memset(outputBuff, 0, sizeof(outputBuff));
-
-#if USE_ASRC
-    asrc_state_t sASRCState[SRC_CHANNELS_PER_INSTANCE];                                   // ASRC state machine state
-    int iASRCStack[SRC_CHANNELS_PER_INSTANCE][ASRC_STACK_LENGTH_MULT * SRC_N_IN_SAMPLES]; // Buffer between filter stages
-    asrc_ctrl_t sASRCCtrl[SRC_CHANNELS_PER_INSTANCE];                                     // Control structure
-    asrc_adfir_coefs_t asrc_adfir_coefs;                                                  // Adaptive filter coefficients
-    uint64_t fsRatio;
-
-    for(int ui = 0; ui < SRC_CHANNELS_PER_INSTANCE; ui++)
-    {
-        unsafe
-        {
-            // Set state, stack and coefs into ctrl structure
-            sASRCCtrl[ui].psState                   = &sASRCState[ui];
-            sASRCCtrl[ui].piStack                   = iASRCStack[ui];
-            sASRCCtrl[ui].piADCoefs                 = asrc_adfir_coefs.iASRCADFIRCoefs;
-        }
-    }
-    fsRatio = asrc_init(inputFsCode, outputFsCode, sASRCCtrl, SRC_CHANNELS_PER_INSTANCE, SRC_N_IN_SAMPLES, SRC_DITHER_SETTING);
-
-#else
-    ssrc_state_t sSSRCState[SRC_CHANNELS_PER_INSTANCE];                                     // State of SSRC module
-    int iSSRCStack[SRC_CHANNELS_PER_INSTANCE][SSRC_STACK_LENGTH_MULT * SRC_N_IN_SAMPLES];   // Buffers between processing stages
-    ssrc_ctrl_t sSSRCCtrl[SRC_CHANNELS_PER_INSTANCE];                                       // SSRC Control structure
-
-    /* Set state, stack and coefs into ctrl structures */
-    for(int ui = 0; ui < SRC_CHANNELS_PER_INSTANCE; ui++)
-    {
-        unsafe
-        {
-            sSSRCCtrl[ui].psState                   = &sSSRCState[ui];
-            sSSRCCtrl[ui].piStack                   = iSSRCStack[ui];
-        }
-    }
-
-    ssrc_init(inputFsCode, outputFsCode, sSSRCCtrl, SRC_CHANNELS_PER_INSTANCE, SRC_N_IN_SAMPLES, SRC_DITHER_SETTING);
-#endif
-
-    int32_t tsIn = 0, tsOut = 0;
-
-    while(1)
-    {
-        uint64_t fsRatio_;
-
-        /* Check for exit */
-        if(stestct(c))
-        {
-            sinct(c);
-            c :> inputFsCode;
-            c :> outputFsCode;
-
-            interpolation_ticks = interpolation_ticks_2D[inputFsCode][outputFsCode];
-
-            fsRatio = asrc_init(inputFsCode, outputFsCode, sASRCCtrl, SRC_CHANNELS_PER_INSTANCE, SRC_N_IN_SAMPLES, SRC_DITHER_SETTING);
-
-            /* Handshake back when init complete */
-            soutct(c, XS1_CT_END);
-            continue;
-        }
-
-        c :> fsRatio_;
-
-#pragma loop unroll
-        /* Receive samples to process */
-        for(int i=0; i<SRC_N_IN_SAMPLES * SRC_CHANNELS_PER_INSTANCE; i++)
-        {
-            c :> inputBuff[i];
-        }
-
-        /* Send out the number of samples we have to output */
-        c <: sampsOut;
-
-        /* Send out the output timestamp */
-        c <: tsOut;
-        c :> tsIn;
-
-        /* Send output samples */
-#pragma loop unroll
-        for(int i = 0; i < sampsOut * SRC_CHANNELS_PER_INSTANCE; i++)
-        {
-            c <: outputBuff[i];
-        }
-
-        /* Process input buffer into output buffer */
-#if USE_ASRC
-        sampsOut = asrc_process(inputBuff, outputBuff, fsRatio_, sASRCCtrl);
-        if(sampsOut)
-        unsafe
-        {
-            tsOut = asrc_timestamp_interpolation(tsIn, &sASRCCtrl[0], interpolation_ticks);
-        }
-#else
-        sampsOut = ssrc_process(inputBuff, outputBuff, sSSRCCtrl);
-#endif
-    }
 }
 
 void i2s_driver(chanend c_usb)
@@ -634,36 +518,17 @@ void i2s_driver(chanend c_usb)
                 asynchronous_fifo_reset_producer(async_fifo_state_play);
                 asynchronous_fifo_init_PID_fs_codes(async_fifo_state_play, sr_to_fscode(usbSr), sr_to_fscode(SAMPLE_FREQUENCY));
 
-                for(int i=0; i < SRC_N_INSTANCES; i++)
-                    unsafe
-                    {
-                        soutct(c_src_play[i], XS1_CT_END);
-                        c_src_play[i] <: (int)sr_to_fscode(usbSr);
-                        c_src_play[i] <: (int)FS_CODE_48;
-                        schkct(c_src_play[i], XS1_CT_END);
-                    }
+                src_change_worker_freqs(c_src_play, SRC_N_INSTANCES, usbSr, 48000);
 #endif
             }
 
 #if(EXTRA_I2S_CHAN_COUNT_OUT > 0)
             /* Playback SRC tasks */
-            par (int i=0; i < SRC_N_INSTANCES; i++)
-            {
-                unsafe
-                {
-                    src_task_(c_src_play[i], i, sr_to_fscode(DEFAULT_FREQ), FS_CODE_48);
-                }
-            }
+            src_task(c_src_play, SRC_N_INSTANCES, DEFAULT_FREQ, 48000);
 #endif
 #if(EXTRA_I2S_CHAN_COUNT_IN > 0)
             /* Record SRC tasks */
-            par (int i = SRC_N_INSTANCES ; i < 2*SRC_N_INSTANCES; i++)
-            {
-                unsafe
-                {
-                    src_task_(c_src_rec[i-SRC_N_INSTANCES], i, FS_CODE_48, sr_to_fscode(DEFAULT_FREQ));
-                }
-            }
+            src_task(c_src_rec, SRC_N_INSTANCES, 48000, DEFAULT_FREQ);
 #endif
         } /* par */
     } /* unsafe */
