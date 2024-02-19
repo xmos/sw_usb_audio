@@ -255,14 +255,6 @@ void i2s_data(server i2s_frame_callback_if i_i2s,
                 asynchronous_fifo_init_PID_fs_codes(async_fifo_state_rec, sr_to_fscode(SAMPLE_FREQUENCY), sr_to_fscode(samFreq));
 
                 src_change_worker_freqs(c_src_rec, SRC_N_INSTANCES, 48000, samFreq);
-                //for(int i=0; i < SRC_N_INSTANCES; i++)
-                //unsafe
-                //{
-                //    soutct(c_src_rec[i], XS1_CT_END);
-                //    c_src_rec[i] <: (int)FS_CODE_48;
-                //    c_src_rec[i] <: (int)sr_to_fscode(samFreq);
-                //    schkct(c_src_rec[i], XS1_CT_END);
-                //}
                 break;
 
             /* Inform the I2S slave whether it should restart or exit */
@@ -459,7 +451,7 @@ int src_manager(chanend c_usb,
 
 #if (EXTRA_I2S_CHAN_COUNT_OUT > 0)
                         /* Send samples to SRC tasks. This function adds returned sample to FIFO */
-                        fsRatio_play = trigger_src(c_src_play, srcInputBuff_play, fsRatio_play, async_fifo_state_play, now, 1, idealFsRatio_play);
+                        fsRatio_play = trigger_src(c_src_play, srcInputBuff_play, fsRatio_play, async_fifo_state_play, now, 0, idealFsRatio_play);
 #endif
                     }
                 }
