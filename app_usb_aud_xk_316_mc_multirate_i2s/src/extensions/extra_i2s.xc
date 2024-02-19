@@ -81,36 +81,6 @@ extern in port p_mclk_in;
 #define SSRC_N_CHANNELS                   (SRC_CHANNELS_PER_INSTANCE) /* Used by SRC_STACK_LENGTH_MULT in src_mrhf_ssrc.h */
 #define ASRC_N_CHANNELS                   (SRC_CHANNELS_PER_INSTANCE) /* Used by SRC_STACK_LENGTH_MULT in src_mrhf_asrc.h */
 
-fs_code_t sr_to_fscode(unsigned sr)
-{
-    fs_code_t fsCode;
-    switch (sr)
-    {
-        case 44100:
-            fsCode = FS_CODE_44;
-            break;
-        case 48000:
-            fsCode = FS_CODE_48;
-            break;
-        case 88200:
-            fsCode = FS_CODE_88;
-            break;
-        case 96000:
-            fsCode = FS_CODE_96;
-            break;
-        case 176400:
-            fsCode = FS_CODE_176;
-            break;
-        case 192000:
-            fsCode = FS_CODE_192;
-            break;
-        default:
-            assert(0);
-            break;
-    }
-    return fsCode;
-}
-
 /* Current rate of USB input/output */
 int g_usbSamFreq = DEFAULT_FREQ;
 
@@ -211,7 +181,7 @@ static inline uint64_t trigger_src(streaming chanend c_src[SRC_N_INSTANCES],
         }
     }
 
-    error = asynchronous_fifo_produce(a, samples, nSamps, timestamp, xscope_used);
+    error = asynchronous_fifo_producer_put(a, samples, nSamps, timestamp, xscope_used);
 
     /* Produce fsRatio from error */
     fsRatio = (((int64_t)idealFsRatio) << 32) + (error * (int64_t) idealFsRatio);
@@ -276,11 +246,36 @@ void i2s_data(server i2s_frame_callback_if i_i2s,
         {
             case i_i2s.init(i2s_config_t &?i2s_config, tdm_config_t &?tdm_config):
                 i2s_config.mode = I2S_MODE_I2S;
+
+                floatRatio_rec = (float) SAMPLE_FREQUENCY/(float)samFreq;
+                fsRatio_rec = (uint64_t) (floatRatio_rec * (1LL << 60));
+                idealFsRatio_rec = (fsRatio_rec + (1<<31)) >> 32;
+
+                asynchronous_fifo_reset_producer(async_fifo_state_rec);
+                asynchronous_fifo_init_PID_fs_codes(async_fifo_state_rec, sr_to_fscode(SAMPLE_FREQUENCY), sr_to_fscode(samFreq));
+
+                for(int i=0; i < SRC_N_INSTANCES; i++)
+                unsafe
+                {
+                    soutct(c_src_rec[i], XS1_CT_END);
+                    c_src_rec[i] <: (int)FS_CODE_48;
+                    c_src_rec[i] <: (int)sr_to_fscode(samFreq);
+                    schkct(c_src_rec[i], XS1_CT_END);
+                }
                 break;
 
             /* Inform the I2S slave whether it should restart or exit */
             case i_i2s.restart_check() -> i2s_restart_t restart:
-                restart = I2S_NO_RESTART;
+
+                /* Check for SR Change */
+                unsafe
+                {
+                    newSamFreq = *g_usbSamFreqPtr;
+                }
+                if(samFreq != newSamFreq)
+                    restart = I2S_RESTART;
+                else
+                    restart = I2S_NO_RESTART;
                 break;
 
             case i_i2s.receive(size_t num_in, int32_t samples[num_in]):
@@ -288,30 +283,6 @@ void i2s_data(server i2s_frame_callback_if i_i2s,
                 t :> now;
 
 #if (EXTRA_I2S_CHAN_COUNT_IN > 0)
-                /* Check for SR Change */
-                unsafe
-                {
-                    newSamFreq = *g_usbSamFreqPtr;
-                }
-                if(samFreq != newSamFreq)
-                {
-                    samFreq = newSamFreq;
-                    floatRatio_rec = (float) SAMPLE_FREQUENCY/(float)samFreq;
-                    fsRatio_rec = (uint64_t) (floatRatio_rec * (1LL << 60));
-                    idealFsRatio_rec = (fsRatio_rec + (1<<31)) >> 32;
-
-                    asynchronous_fifo_reset_producer(async_fifo_state_rec);
-                    asynchronous_fifo_init_PID_fs_codes(async_fifo_state_rec, sr_to_fscode(SAMPLE_FREQUENCY), sr_to_fscode(samFreq));
-
-                    for(int i=0; i < SRC_N_INSTANCES; i++)
-                    unsafe
-                    {
-                        soutct(c_src_rec[i], XS1_CT_END);
-                        c_src_rec[i] <: (int)FS_CODE_48;
-                        c_src_rec[i] <: (int)sr_to_fscode(samFreq);
-                        schkct(c_src_rec[i], XS1_CT_END);
-                    }
-                }
 
                 for(size_t i = 0; i < EXTRA_I2S_CHAN_COUNT_IN; i++)
                 {
@@ -365,7 +336,7 @@ void i2s_data(server i2s_frame_callback_if i_i2s,
 #if (EXTRA_I2S_CHAN_COUNT_OUT > 0)
                 int32_t playSamples[EXTRA_I2S_CHAN_COUNT_OUT];
 
-                asynchronous_fifo_consume(async_fifo_state_play, playSamples, now);
+                asynchronous_fifo_consumer_get(async_fifo_state_play, playSamples, now);
 
                 for(int i = 0; i < num_out; i++)
                 {
@@ -436,7 +407,7 @@ int src_manager(chanend c_usb,
                     }
                     chkct(c_usb, XS1_CT_END);
 
-                    asynchronous_fifo_consume(async_fifo_state_rec, srcOutputBuff_rec, now);
+                    asynchronous_fifo_consumer_get(async_fifo_state_rec, srcOutputBuff_rec, now);
 
                     /* Send samples to USB audio (other side of the UserBufferManagement() comms */
 #pragma loop unroll
@@ -511,7 +482,7 @@ static int interpolation_ticks_2D[6][6] =
     {  2083, 2083, 1042, 1042,  521,  521}
 };
 
-void src_task(streaming chanend c, int instance, int inputFsCode, int outputFsCode)
+void src_task_(streaming chanend c, int instance, int inputFsCode, int outputFsCode)
 {
     int inputBuff[SRC_N_IN_SAMPLES * SRC_CHANNELS_PER_INSTANCE];
     int outputBuff[SRC_OUT_BUFF_SIZE];
@@ -680,7 +651,7 @@ void i2s_driver(chanend c_usb)
             {
                 unsafe
                 {
-                    src_task(c_src_play[i], i, sr_to_fscode(DEFAULT_FREQ), FS_CODE_48);
+                    src_task_(c_src_play[i], i, sr_to_fscode(DEFAULT_FREQ), FS_CODE_48);
                 }
             }
 #endif
@@ -690,7 +661,7 @@ void i2s_driver(chanend c_usb)
             {
                 unsafe
                 {
-                    src_task(c_src_rec[i-SRC_N_INSTANCES], i, FS_CODE_48, sr_to_fscode(DEFAULT_FREQ));
+                    src_task_(c_src_rec[i-SRC_N_INSTANCES], i, FS_CODE_48, sr_to_fscode(DEFAULT_FREQ));
                 }
             }
 #endif
