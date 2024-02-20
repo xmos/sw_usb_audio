@@ -216,7 +216,10 @@ void i2s_data(server i2s_frame_callback_if i_i2s,
                     newSamFreq = *g_usbSamFreqPtr;
                 }
                 if(samFreq != newSamFreq)
+                {
                     restart = I2S_RESTART;
+                    samFreq = newSamFreq;
+                }
                 else
                     restart = I2S_NO_RESTART;
                 break;
