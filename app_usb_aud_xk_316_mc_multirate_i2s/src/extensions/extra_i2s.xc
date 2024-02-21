@@ -130,31 +130,6 @@ void UserBufferManagement(unsigned sampsFromUsbToAudio[], unsigned sampsFromAudi
     }
 }
 
-#ifndef LOG_CONTROLLER_REC
-#define LOG_CONTROLLER_REC (0)
-#endif
-
-#ifndef LOG_CONTROLLER_PLAY
-#define LOG_CONTROLLER_PLAY (0)
-#endif
-
-#define CONT_LOG_DELAY     (0)
-#define CONT_LOG_SIZE      (18000)
-#define CONT_LOG_SUBSAMPLE (128)
-
-#if LOG_CONTROLLER_REC
-uint64_t r_r[CONT_LOG_SIZE];
-int logCounterRec = 0;
-int logCounterSubRec = 0;
-#endif
-
-#if LOG_CONTROLLER_PLAY
-uint64_t r_p[CONT_LOG_SIZE];
-int logCounterPlay = 0;
-int logCounterSubPlay = 0;
-#endif
-
-
 [[distributable]]
 void i2s_data(server i2s_frame_callback_if i_i2s,
     streaming chanend c_src_rec[SRC_N_INSTANCES],
@@ -179,10 +154,6 @@ void i2s_data(server i2s_frame_callback_if i_i2s,
     srcTask_rec.idealFsRatio = idealFsRatio_rec;
 
     int srcInputBuff_rec[SRC_N_INSTANCES][SRC_N_IN_SAMPLES][SRC_CHANNELS_PER_INSTANCE];
-#if LOG_CONTROLLER_REC
-    int logCounterDelay = 0;
-    int logCounterGo = 0;
-#endif
     int32_t now;
     timer t;
 
@@ -242,35 +213,6 @@ void i2s_data(server i2s_frame_callback_if i_i2s,
                 {
                     sampleIdx_rec = 0;
 
-#if LOG_CONTROLLER_REC
-                        logCounterDelay ++;
-
-                        if(logCounterDelay > CONT_LOG_DELAY)
-                            logCounterGo = 1;
-
-                        if(logCounterGo)
-                            logCounterSubRec++;
-
-
-                        if(logCounterSubRec == CONT_LOG_SUBSAMPLE)
-                        unsafe{
-                            logCounterSubRec = 0;
-                            r_r[logCounterRec] = fsRatio_rec;
-                            ns_r[logCounterRec] = nsamps;
-
-                            logCounterRec++;
-
-                            if(logCounterRec >= CONT_LOG_SIZE)
-                            {
-                                for(int i = 0; i < CONT_LOG_SIZE; i++)
-                                {
-                                    float ratio = (float) r_r[i] / (float) (1LL<<60);
-                                    printf("%d %f\n", ns_r[i], ratio);
-                                }
-                                exit(1);
-                            }
-                        }
-#endif
                     /* Trigger_src for record path */
                     src_trigger(c_src_rec, srcInputBuff_rec, async_fifo_state_rec, now, &srcTask_rec);
                 }
@@ -303,7 +245,8 @@ int src_manager(chanend c_usb,
     streaming chanend c_src_play[SRC_N_INSTANCES],
     int samFreq, int startUp,
     asynchronous_fifo_t * unsafe async_fifo_state_play,
-    asynchronous_fifo_t * unsafe async_fifo_state_rec)
+    asynchronous_fifo_t * unsafe async_fifo_state_rec,
+    src_task_t * unsafe srcTask_play)
 {
 
     unsigned char srChange;
@@ -311,21 +254,8 @@ int src_manager(chanend c_usb,
     int srcInputBuff_play[SRC_N_INSTANCES][SRC_N_IN_SAMPLES][SRC_CHANNELS_PER_INSTANCE];
     int32_t srcOutputBuff_rec[EXTRA_I2S_CHAN_COUNT_IN];
     int sampleIdx_play = 0;
-    float floatRatio_play = (float) samFreq/(float) SAMPLE_FREQUENCY;
-    /* Q60 representations of the above */
-    uint64_t fsRatio_play = (uint64_t) (floatRatio_play * (1LL << 60));
-    int idealFsRatio_play = (fsRatio_play + (1<<31)) >> 32;
-    timer t;
+        timer t;
 
-    src_task_t srcTask_play;
-    srcTask_play.xscopeUsed = 0;
-    srcTask_play.fsRatio = fsRatio_play;
-    srcTask_play.idealFsRatio = idealFsRatio_play;
-
-#if LOG_CONTROLLER_PLAY
-    int logCounterDelay = 0;
-    int logCounterGo = 0;
-#endif
     if(!startUp)
         /* Handshsake that we are ready to go after SR change */
         /* OR inital request for usb data */
@@ -373,43 +303,10 @@ int src_manager(chanend c_usb,
                     if(sampleIdx_play == SRC_N_IN_SAMPLES)
                     {
                         sampleIdx_play = 0;
-#if LOG_CONTROLLER_PLAY
-                        logCounterDelay ++;
-
-                        if(logCounterGo)
-                            logCounterSubPlay++;
-                        if(logCounterDelay > CONT_LOG_DELAY)
-                             logCounterGo = 1;
-
-                        if(logCounterSubPlay == CONT_LOG_SUBSAMPLE)
-                        unsafe{
-                            logCounterSubPlay = 0;
-                            int fillPlay = (async_fifo_state_play->write_ptr - async_fifo_state_play->read_ptr + async_fifo_state_play->max_fifo_depth)
-                                % async_fifo_state_play->max_fifo_depth;
-                            r_p[logCounterPlay] = fsRatio_play;
-
-                            logCounterPlay++;
-
-                            if(logCounterPlay >= CONT_LOG_SIZE)
-                            {
-                                if(logCounterGo)
-                                {
-                                    for(int i = 0; i < CONT_LOG_SIZE; i++)
-                                    {
-                                        float ratio = (float) r_p[i] / (float) (1LL<<60);
-                                        printf("%f\n", ratio);
-                                    }
-                                    exit(1);
-                                }
-                                else
-                                    logCounterPlay = 0;
-                            }
-                        }
-#endif
 
 #if (EXTRA_I2S_CHAN_COUNT_OUT > 0)
                         /* Send samples to SRC tasks. This function adds returned sample to FIFO */
-                        src_trigger(c_src_play, srcInputBuff_play, async_fifo_state_play, now, &srcTask_play);
+                        src_trigger(c_src_play, srcInputBuff_play, async_fifo_state_play, now, srcTask_play);
 #endif
                     }
                 }
@@ -454,22 +351,21 @@ void i2s_driver(chanend c_usb)
             }
             while(1)
             {
+#if(EXTRA_I2S_CHAN_COUNT_OUT > 0)
+                src_task_t srcTask_play;
+                src_task_init(&srcTask_play, usbSr, SAMPLE_FREQUENCY, 0, c_src_play, SRC_N_INSTANCES);
 
+                asynchronous_fifo_reset_producer(async_fifo_state_play);
+                asynchronous_fifo_init_PID_fs_codes(async_fifo_state_play, sr_to_fscode(usbSr), sr_to_fscode(SAMPLE_FREQUENCY));
+#endif
                 /* This task produces into fifo for play and consumes from fifo for record */
-                usbSr = src_manager(c_usb, c_src_play, usbSr, startUp, async_fifo_state_play, async_fifo_state_rec);
+                usbSr = src_manager(c_usb, c_src_play, usbSr, startUp, async_fifo_state_play, async_fifo_state_rec, &srcTask_play);
                 startUp = 0;
 
                 unsafe
                 {
                     *g_usbSamFreqPtr = usbSr;
                 }
-
-#if(EXTRA_I2S_CHAN_COUNT_OUT > 0)
-                asynchronous_fifo_reset_producer(async_fifo_state_play);
-                asynchronous_fifo_init_PID_fs_codes(async_fifo_state_play, sr_to_fscode(usbSr), sr_to_fscode(SAMPLE_FREQUENCY));
-
-                src_change_worker_freqs(c_src_play, SRC_N_INSTANCES, usbSr, 48000);
-#endif
             }
 
 #if(EXTRA_I2S_CHAN_COUNT_OUT > 0)
