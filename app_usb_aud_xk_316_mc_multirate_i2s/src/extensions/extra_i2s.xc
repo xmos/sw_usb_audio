@@ -214,7 +214,7 @@ void i2s_data(server i2s_frame_callback_if i_i2s,
                     sampleIdx_rec = 0;
 
                     /* Trigger_src for record path */
-                    src_trigger(c_src_rec, srcInputBuff_rec, async_fifo_state_rec, now, &srcTask_rec);
+                    src_trigger_(c_src_rec, srcInputBuff_rec, async_fifo_state_rec, now, &srcTask_rec);
                 }
 #endif
                 break;
@@ -244,7 +244,7 @@ int64_t array_rec[ASYNCHRONOUS_FIFO_INT64_ELEMENTS(FIFO_LENGTH, 2)];
 int src_manager(chanend c_usb,
     streaming chanend c_src_play[SRC_N_INSTANCES],
     int samFreq, int startUp,
-    asynchronous_fifo_t * unsafe async_fifo_state_play,
+    //asynchronous_fifo_t * unsafe async_fifo_state_play,
     asynchronous_fifo_t * unsafe async_fifo_state_rec,
     src_task_t * unsafe srcTask_play)
 {
@@ -306,7 +306,7 @@ int src_manager(chanend c_usb,
 
 #if (EXTRA_I2S_CHAN_COUNT_OUT > 0)
                         /* Send samples to SRC tasks. This function adds returned sample to FIFO */
-                        src_trigger(c_src_play, srcInputBuff_play, async_fifo_state_play, now, srcTask_play);
+                        src_trigger(c_src_play, srcInputBuff_play, now, srcTask_play);
 #endif
                     }
                 }
@@ -333,33 +333,33 @@ void i2s_driver(chanend c_usb)
 
     unsafe
     {
-        asynchronous_fifo_t * unsafe async_fifo_state_play = (asynchronous_fifo_t *)array;
+        src_task_t srcTask_play;
+        src_task_init(&srcTask_play, array, 2, FIFO_LENGTH, 1);
+        src_task_t * unsafe srcTaskPlay_ptr = &srcTask_play;
+        //asynchronous_fifo_t * unsafe async_fifo_state_play = (asynchronous_fifo_t *)array;
+        //asynchronous_fifo_init(async_fifo_state_play, 2, FIFO_LENGTH);
+        //asynchronous_fifo_init_PID_fs_codes(async_fifo_state_play, sr_to_fscode(usbSr), sr_to_fscode(SAMPLE_FREQUENCY));
+
         asynchronous_fifo_t * unsafe async_fifo_state_rec = (asynchronous_fifo_t *)array_rec;
 
-        asynchronous_fifo_init(async_fifo_state_play, 2, FIFO_LENGTH);
         asynchronous_fifo_init(async_fifo_state_rec, 2, FIFO_LENGTH);
 
-        asynchronous_fifo_init_PID_fs_codes(async_fifo_state_play, sr_to_fscode(usbSr), sr_to_fscode(SAMPLE_FREQUENCY));
         asynchronous_fifo_init_PID_fs_codes(async_fifo_state_rec, sr_to_fscode(SAMPLE_FREQUENCY), sr_to_fscode(usbSr));
 
         par
         {
             par
             {
-                [[distribute]]i2s_data(i_i2s, c_src_rec, async_fifo_state_play, async_fifo_state_rec);
+                [[distribute]]i2s_data(i_i2s, c_src_rec, srcTaskPlay_ptr->async_fifo, async_fifo_state_rec);
                 i2s_frame_slave(i_i2s, p_i2s_dout, (EXTRA_I2S_CHAN_COUNT_OUT/2), p_i2s_din, (EXTRA_I2S_CHAN_COUNT_IN/2), DATA_BITS, p_i2s_bclk, p_i2s_lrclk, clk_bclk);
             }
             while(1)
             {
 #if(EXTRA_I2S_CHAN_COUNT_OUT > 0)
-                src_task_t srcTask_play;
-                src_task_init(&srcTask_play, usbSr, SAMPLE_FREQUENCY, 0, c_src_play, SRC_N_INSTANCES);
-
-                asynchronous_fifo_reset_producer(async_fifo_state_play);
-                asynchronous_fifo_init_PID_fs_codes(async_fifo_state_play, sr_to_fscode(usbSr), sr_to_fscode(SAMPLE_FREQUENCY));
+                src_task_set_sr(&srcTask_play, usbSr, SAMPLE_FREQUENCY, c_src_play, SRC_N_INSTANCES);
 #endif
                 /* This task produces into fifo for play and consumes from fifo for record */
-                usbSr = src_manager(c_usb, c_src_play, usbSr, startUp, async_fifo_state_play, async_fifo_state_rec, &srcTask_play);
+                usbSr = src_manager(c_usb, c_src_play, usbSr, startUp, async_fifo_state_rec, srcTaskPlay_ptr);
                 startUp = 0;
 
                 unsafe
