@@ -133,8 +133,8 @@ void UserBufferManagement(unsigned sampsFromUsbToAudio[], unsigned sampsFromAudi
 [[distributable]]
 void i2s_data(server i2s_frame_callback_if i_i2s,
     streaming chanend c_src_rec[SRC_N_INSTANCES],
-    asynchronous_fifo_t * unsafe async_fifo_state_play,
-    asynchronous_fifo_t * unsafe async_fifo_state_rec)
+    src_task_t * unsafe srcTask_play,
+    src_task_t * unsafe srcTask_rec)
 {
     int sampleIdx_rec = 0;
     int samFreq;
@@ -143,15 +143,6 @@ void i2s_data(server i2s_frame_callback_if i_i2s,
         samFreq = *g_usbSamFreqPtr;
     }
     int newSamFreq = samFreq;
-
-    float floatRatio_rec = (float) SAMPLE_FREQUENCY/(float)samFreq;
-    uint64_t fsRatio_rec = (uint64_t) (floatRatio_rec * (1LL << 60));
-    int idealFsRatio_rec = (fsRatio_rec + (1<<31)) >> 32;
-
-    src_task_t srcTask_rec;
-    srcTask_rec.xscopeUsed = 0;
-    srcTask_rec.fsRatio = fsRatio_rec;
-    srcTask_rec.idealFsRatio = idealFsRatio_rec;
 
     int srcInputBuff_rec[SRC_N_INSTANCES][SRC_N_IN_SAMPLES][SRC_CHANNELS_PER_INSTANCE];
     int32_t now;
@@ -163,19 +154,7 @@ void i2s_data(server i2s_frame_callback_if i_i2s,
         {
             case i_i2s.init(i2s_config_t &?i2s_config, tdm_config_t &?tdm_config):
                 i2s_config.mode = I2S_MODE_I2S;
-
-                floatRatio_rec = (float) SAMPLE_FREQUENCY/(float)samFreq;
-                fsRatio_rec = (uint64_t) (floatRatio_rec * (1LL << 60));
-                idealFsRatio_rec = (fsRatio_rec + (1<<31)) >> 32;
-
-                srcTask_rec.xscopeUsed = 0;
-                srcTask_rec.fsRatio = fsRatio_rec;
-                srcTask_rec.idealFsRatio = idealFsRatio_rec;
-
-                asynchronous_fifo_reset_producer(async_fifo_state_rec);
-                asynchronous_fifo_init_PID_fs_codes(async_fifo_state_rec, sr_to_fscode(SAMPLE_FREQUENCY), sr_to_fscode(samFreq));
-
-                src_change_worker_freqs(c_src_rec, SRC_N_INSTANCES, 48000, samFreq);
+                src_task_set_sr(srcTask_rec, SAMPLE_FREQUENCY, samFreq, c_src_rec, SRC_N_INSTANCES);
                 break;
 
             /* Inform the I2S slave whether it should restart or exit */
@@ -214,7 +193,7 @@ void i2s_data(server i2s_frame_callback_if i_i2s,
                     sampleIdx_rec = 0;
 
                     /* Trigger_src for record path */
-                    src_trigger_(c_src_rec, srcInputBuff_rec, async_fifo_state_rec, now, &srcTask_rec);
+                    src_task_write(c_src_rec, srcInputBuff_rec, now, srcTask_rec);
                 }
 #endif
                 break;
@@ -224,8 +203,10 @@ void i2s_data(server i2s_frame_callback_if i_i2s,
 #if (EXTRA_I2S_CHAN_COUNT_OUT > 0)
                 int32_t playSamples[EXTRA_I2S_CHAN_COUNT_OUT];
 
-                asynchronous_fifo_consumer_get(async_fifo_state_play, playSamples, now);
+                /* Read samples from SRC buffer */
+                src_task_read(srcTask_play, playSamples, now);
 
+                /* Copy samples into I2S buffer */
                 for(int i = 0; i < num_out; i++)
                 {
                     samples[i] = playSamples[i];
@@ -244,8 +225,8 @@ int64_t array_rec[ASYNCHRONOUS_FIFO_INT64_ELEMENTS(FIFO_LENGTH, 2)];
 int src_manager(chanend c_usb,
     streaming chanend c_src_play[SRC_N_INSTANCES],
     int samFreq, int startUp,
-    //asynchronous_fifo_t * unsafe async_fifo_state_play,
-    asynchronous_fifo_t * unsafe async_fifo_state_rec,
+    //asynchronous_fifo_t * unsafe async_fifo_state_rec,
+    src_task_t * unsafe srcTask_rec,
     src_task_t * unsafe srcTask_play)
 {
 
@@ -288,7 +269,8 @@ int src_manager(chanend c_usb,
                     }
                     chkct(c_usb, XS1_CT_END);
 
-                    asynchronous_fifo_consumer_get(async_fifo_state_rec, srcOutputBuff_rec, now);
+                    /* Read samples from record path SRC buffer */
+                    src_task_read(srcTask_rec, srcOutputBuff_rec, now);
 
                     /* Send samples to USB audio (other side of the UserBufferManagement() comms */
 #pragma loop unroll
@@ -306,7 +288,7 @@ int src_manager(chanend c_usb,
 
 #if (EXTRA_I2S_CHAN_COUNT_OUT > 0)
                         /* Send samples to SRC tasks. This function adds returned sample to FIFO */
-                        src_trigger(c_src_play, srcInputBuff_play, now, srcTask_play);
+                        src_task_write(c_src_play, srcInputBuff_play, now, srcTask_play);
 #endif
                     }
                 }
@@ -336,21 +318,16 @@ void i2s_driver(chanend c_usb)
         src_task_t srcTask_play;
         src_task_init(&srcTask_play, array, 2, FIFO_LENGTH, 1);
         src_task_t * unsafe srcTaskPlay_ptr = &srcTask_play;
-        //asynchronous_fifo_t * unsafe async_fifo_state_play = (asynchronous_fifo_t *)array;
-        //asynchronous_fifo_init(async_fifo_state_play, 2, FIFO_LENGTH);
-        //asynchronous_fifo_init_PID_fs_codes(async_fifo_state_play, sr_to_fscode(usbSr), sr_to_fscode(SAMPLE_FREQUENCY));
 
-        asynchronous_fifo_t * unsafe async_fifo_state_rec = (asynchronous_fifo_t *)array_rec;
-
-        asynchronous_fifo_init(async_fifo_state_rec, 2, FIFO_LENGTH);
-
-        asynchronous_fifo_init_PID_fs_codes(async_fifo_state_rec, sr_to_fscode(SAMPLE_FREQUENCY), sr_to_fscode(usbSr));
+        src_task_t srcTask_rec;
+        src_task_init(&srcTask_rec, array_rec, 2, FIFO_LENGTH, 1);
+        src_task_t * unsafe srcTaskRec_ptr = &srcTask_rec;
 
         par
         {
             par
             {
-                [[distribute]]i2s_data(i_i2s, c_src_rec, srcTaskPlay_ptr->async_fifo, async_fifo_state_rec);
+                [[distribute]]i2s_data(i_i2s, c_src_rec, srcTaskPlay_ptr, srcTaskRec_ptr);
                 i2s_frame_slave(i_i2s, p_i2s_dout, (EXTRA_I2S_CHAN_COUNT_OUT/2), p_i2s_din, (EXTRA_I2S_CHAN_COUNT_IN/2), DATA_BITS, p_i2s_bclk, p_i2s_lrclk, clk_bclk);
             }
             while(1)
@@ -359,7 +336,7 @@ void i2s_driver(chanend c_usb)
                 src_task_set_sr(&srcTask_play, usbSr, SAMPLE_FREQUENCY, c_src_play, SRC_N_INSTANCES);
 #endif
                 /* This task produces into fifo for play and consumes from fifo for record */
-                usbSr = src_manager(c_usb, c_src_play, usbSr, startUp, async_fifo_state_rec, srcTaskPlay_ptr);
+                usbSr = src_manager(c_usb, c_src_play, usbSr, startUp, srcTaskRec_ptr, srcTaskPlay_ptr);
                 startUp = 0;
 
                 unsafe
