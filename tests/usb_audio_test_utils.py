@@ -207,7 +207,8 @@ def check_analyzer_output(analyzer_output, xsig_config):
 
         elif channel_config[0] == "zero":
             if len(analyzer_channels[idx]):
-                failures.append(analyzer_channels[idx])
+                for line in analyzer_channels[idx]:
+                    failures.append(line)
 
         else:
             failures.append(f"Invalid channel config {channel_config}")
