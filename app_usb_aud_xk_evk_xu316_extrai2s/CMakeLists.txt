@@ -4,7 +4,6 @@ project(app_usb_aud_xk_evk_xu316_extrai2s)
 
 set(APP_HW_TARGET XK-EVK-XU316)
 include(${CMAKE_CURRENT_LIST_DIR}/../deps.cmake)
-list(APPEND APP_DEPENDENT_MODULES "lib_i2s(5.1.0)")
 set(APP_PCA_ENABLE ON)
 set(SW_USB_AUDIO_FLAGS ${EXTRA_BUILD_FLAGS} -fcomment-asm
                                             -Wall
@@ -22,7 +21,6 @@ set(SW_USB_AUDIO_FLAGS ${EXTRA_BUILD_FLAGS} -fcomment-asm
 set(APP_COMPILER_FLAGS_1AMi2o2xxxxxx ${SW_USB_AUDIO_FLAGS} -DAUDIO_CLASS=1)
 
 set(APP_COMPILER_FLAGS_2AMi2o2xxxxxx ${SW_USB_AUDIO_FLAGS})
-
 
 set(APP_INCLUDES src src/core src/extensions)
 set(XMOS_SANDBOX_DIR ${CMAKE_CURRENT_LIST_DIR}/../..)
