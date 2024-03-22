@@ -9,20 +9,27 @@ Build System
 ++++++++++++
 
 The `XMOS USB Audio Reference Design` software and associated libraries employ the `XMOS XCOMMON` build system. The `XCOMMON` build
-system is built on top of the GNU Makefile build system. The `XCOMMON` build system accelerates the development of xCORE 
+system is built on top of the GNU Makefile build system. The `XCOMMON` build system accelerates the development of xCORE
 applications. Instead of having to express dependencies explicitly in Makefiles, users should follow a particular folder
 structures and naming convention, from which dependencies are inferred automatically.
 
 The `XCOMMON` build system depends on use of of the tool `XMAKE
-<https://www.xmos.ai/documentation/XM-014363-PC-7/html/tools-guide/tools-ref/cmd-line-tools/xmake-manual/xmake-manual.html#xmake>`_ 
+<https://www.xmos.ai/documentation/XM-014363-PC-7/html/tools-guide/tools-ref/cmd-line-tools/xmake-manual/xmake-manual.html#xmake>`_
 specifically. It cannot currently be used with a generic port of GNU Make.
+
+.. note::
+
+   Support is included for an updated, cmake-based, build sytem; ``xcommon_cmake``. Whilst this is
+   available for evaluation use, the recommended and verified build flow is still the
+   ``xmake/xcommon`` based flow as documented. Further details and documentation regarding
+   ``xcommon_cmake`` can be found `here <https://www.github.com/xmos/xcommon_cmake>`_
 
 
 Applications and Libraries
 ++++++++++++++++++++++++++
 
 The ``sw_usb_audio`` `GIT <https://git-scm.com>`_ repository includes multiple application directories that in turn contain Makefiles that
-build into executables. Typically you can expect to see one application directory per hardware platform. 
+build into executables. Typically you can expect to see one application directory per hardware platform.
 Applications and there respective hardware platforms are listed in :ref:`proj_app_boards`.
 
 .. _proj_app_boards:
@@ -40,13 +47,13 @@ Applications and there respective hardware platforms are listed in :ref:`proj_ap
    * - `app_usb_aud_xk_evk_xu316`
      - xcore.ai Evaluation Kit
 
-The code is split into several modules (or `library`) directories, each their own GIT repository. The code for these 
-libraries is included in the build by adding the library name to the ``USED_MODULES`` define in an application Makefile. 
+The code is split into several modules (or `library`) directories, each their own GIT repository. The code for these
+libraries is included in the build by adding the library name to the ``USED_MODULES`` define in an application Makefile.
 
-Each library has a ``module_build_info`` file that lists it's dependencies in ``DEPENDENT_MODULES``. This allows dependency 
-trees and nesting. 
+Each library has a ``module_build_info`` file that lists it's dependencies in ``DEPENDENT_MODULES``. This allows dependency
+trees and nesting.
 
-Most of the core code is contained in the `XMOS USB Audio Library` (``lib_xua``). A full list of core dependencies is shown 
+Most of the core code is contained in the `XMOS USB Audio Library` (``lib_xua``). A full list of core dependencies is shown
 in :ref:`proj_core_libs`.
 
 .. _proj_core_libs:
@@ -54,7 +61,7 @@ in :ref:`proj_core_libs`.
 .. list-table:: Core dependencies of USB Audio
    :header-rows: 1
    :widths: 20 80
-    
+
    * - Library
      - Description
    * - `lib_xua`
@@ -70,7 +77,7 @@ in :ref:`proj_core_libs`.
    * - `lib_xassert`
      - Lightweight assertions library
 
-.. note:: 
+.. note::
 
    Some of these core dependencies will have their own dependencies, for example ``lib_mic_array`` depnds on ``lib_xassert`` (see above), ``lib_logging`` (a lightweight print library) and ``lib_dsp`` (a DSP library).
 
@@ -82,9 +89,9 @@ For example, the application for XK-AUDIO-316-MC uses the additional dependencie
 .. list-table:: Example additonal dependencies
    :header-rows: 1
    :widths: 20 80
-    
+
    * - Library
      - Description
    * - `lib_i2c`
      - I2C interface, used to configure DACs/ADCs etc
- 
+
