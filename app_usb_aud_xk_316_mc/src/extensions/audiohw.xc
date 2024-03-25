@@ -33,7 +33,7 @@ on tile[0]: in port p_margin = XS1_PORT_1G;  /* CORE_POWER_MARGIN:   Driven 0:  
 
 #if ((XUA_SYNCMODE == XUA_SYNCMODE_SYNC || XUA_SPDIF_RX_EN || XUA_ADAT_RX_EN) && !XUA_USE_SW_PLL)
 /* Recover external clock using sw_pll by default when using digital Rx or sync mode.
-   Use CS2100 if XUA_USE_SW_PLL is set to 0. All other configs used a fixed clock 
+   Use CS2100 if XUA_USE_SW_PLL is set to 0. All other configs used a fixed clock
    generared by sw_pll */
 #define USE_FRACTIONAL_N         (1)
 #else

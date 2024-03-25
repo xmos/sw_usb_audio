@@ -27,7 +27,7 @@ AudioDeviceHandle getXMOSDeviceID();
 
 float getVolume(AudioDeviceHandle deviceID, uint32_t scope, uint32_t channel);
 
-void setVolume(AudioDeviceHandle deviceID, uint32_t scope, 
+void setVolume(AudioDeviceHandle deviceID, uint32_t scope,
 	       uint32_t channel, float volume);
 
 void setClock(AudioDeviceHandle deviceID, uint32_t clockId);
