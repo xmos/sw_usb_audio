@@ -5,11 +5,117 @@ sw_usb_audio Change Log
 -----
 
   * ADDED:     Support for XCommon CMake build system
-  * CHANGED:   Windows control app now take GUID via a -g option, accommodating latest Thesycon driver packages
-  * CHANGED:   app_usb_aud_xk_316_mc defaults to using xcore.ai AppPLL for master clock generation
-    when syncing to digital streams or in USB sync mode, rather than the external CS2100 device
-  * CHANGED:   UserBufferManagmentInit() implementations updated to match API change in lib_xua (now takes a sample rate value)
-  * CHANGED:   app_usb_aud_xk_316_mc: Improvements in interaction with on-board power control circuitry 
+  * CHANGED:   Windows control app now take GUID via a -g option, accommodating
+    latest Thesycon driver packages
+  * CHANGED:   app_usb_aud_xk_316_mc defaults to using xcore.ai AppPLL for
+    master clock generation when syncing to digital streams or in USB sync mode,
+    rather than the external CS2100 device
+  * CHANGED:   UserBufferManagmentInit() implementations updated to match API
+    change in lib_xua (now takes a sample rate value)
+  * CHANGED:   app_usb_aud_xk_316_mc: Improvements in interaction with on-board
+    power control circuitry
+
+  * Changes to dependencies:
+
+    - lib_adat: 1.0.1 -> 1.1.0
+
+      + ADDED: Support for XCommon CMake build system
+
+    - lib_dsp: 6.2.1 -> 6.3.0
+
+      + ADDED:   Support for XCommon CMake build system
+
+    - lib_i2c: 6.1.1 -> 6.2.0
+
+      + ADDED: Support for XCommon CMake build system
+      + REMOVED: Unused dependency lib_logging
+
+    - lib_i2s: 5.0.0 -> 5.1.0
+
+      + ADDED: Support for XCommon CMake build system
+      + RESOLVED: Added missing shutdown feature to i2s_frame_slave
+      + FIXED: Allow input and output ports in the 4-bit port implementation to
+        be nullable
+      + FIXED: Behaviour of the restart_check() callback function in the example
+        applications
+      + REMOVED: Unused dependency lib_logging
+      + ADDED: Frame synch error field in i2s_config_t for I2S slave
+
+    - lib_locks: 2.1.0 -> 2.2.0
+
+      + ADDED: Tests now run on xcore.ai as well as xcore-200
+      + ADDED: Support for XCommon CMake build system
+
+    - lib_logging: 3.1.1 -> 3.2.0
+
+      + ADDED:   Support for XCommon CMake build system
+
+    - lib_mic_array: 4.5.0 -> 4.6.0
+
+      + ADDED: Support for XCommon CMake build system
+
+    - lib_spdif: 5.0.1 -> 6.1.0
+
+      + ADDED:     Support for XCommon CMake build system
+      + ADDED:     Support for transmit at 32kHz
+      + RESOLVED:  Coding optimisations not properly enabled in receiver
+      + RESOLVED:  Receiver timing issues for sample rates greater than 96kHz
+      + RESOLVED:  Failure to select correct receive sample rate when the sample
+        rate of the incoming stream changes
+      + ADDED:     Shutdown function for S/PDIF transmitter
+      + CHANGED:   Receiver rearchitected for improved performance and jitter
+        tolerance
+      + CHANGED:   API function names updated for uniformity between rx and tx
+
+    - lib_sw_pll: Added dependency 2.1.0
+
+      + ADDED: Support for XCommon CMake build system
+      + ADDED: Reset PI controller state API
+      + ADDED: Fixed frequency (non phase-locked) clock PLL API
+      + FIXED: Init resets PI controller state
+      + FIXED: Now compiles from XC using XCommon
+      + ADDED: Guard source code with __XS3A__ to allow library inclusion in
+        non- xcore-ai projects
+      + CHANGED: Reduce PLL initialisation stabilisation delay from 10 ms to 500
+        us
+      + ADDED: Split SDM init function to allow separation across tiles
+      + FIXED: Use non-ACK write to PLL in Sigma Delta Modulator
+
+    - lib_xassert: 4.1.0 -> 4.2.0
+
+      + ADDED: Support for XCommon CMake build system
+
+    - lib_xua: 3.5.1 -> 4.0.0
+
+      + ADDED:     Support for XCommon CMake build system
+      + FIXED:     Output volume control not enabled by default when MIXER
+        disabled
+      + FIXED:     Full 32bit result of volume processing not calculated when
+        required
+      + FIXED:     Input stream sending an erroneous zero-length packet when
+        exiting underflow state
+      + FIXED      Build failures when XUA_USB_EN = 0
+      + FIXED:     Clock configuration issues when ADAT and S/PDIF receive are
+        enabled (#352)
+      + FIXED:     Repeated old S/PDIF and ADAT samples when entering underflow
+        state
+      + CHANGED:   QUAD_SPI_FLASH replaced by XUA_QUAD_SPI_FLASH (default: 1)
+      + CHANGED:   UserBufferManagementInit() now takes a sample rate parameter
+      + CHANGED:   xcore.ai targets use sigma-delta software PLL for clock
+        recovery of digital Rx streams and synchronous USB audio by default
+      + CHANGED:   Windows host mixer control application now requires driver
+        GUID option
+
+    - lib_xud: 2.2.3 -> 2.3.1
+
+      + FIXED:     XS3A based devices not responding to IN packets in SE0_NAK
+        test mode
+      + ADDED:     XMOS proprietary test mode XMOS_IN_ADDR1
+      + ADDED:     Support for XCommon CMake build system
+      + CHANGE:    Removed definition and use of REF_CLK_FREQ in favour of
+        PLATFORM_REFERENCE_MHZ from platform.h
+      + FIXED:     Do not include implementations of inline functions when
+        XUD_WEAK_API is set
 
 7.3.1
 -----
@@ -59,7 +165,7 @@ sw_usb_audio Change Log
 
     - lib_xud: 2.2.2 -> 2.2.3
 
-      + FIXED:     XUD_UserSuspend() and XUD_UserResume now properly marked as
+      + FIXED:     XUD_UserSuspend() and XUD_UserResume() now properly marked as
         weak symbols (#374)
       + FIXED:     Incorrect time reference used during device attach process
         (#367)
@@ -125,7 +231,7 @@ sw_usb_audio Change Log
     - lib_spdif: 4.1.0 -> 4.2.1
 
       + CHANGED:   Documentation updates
-      + ADDED:     Added shutdown function for S/PDIF Receiver
+      + ADDED:     Shutdown function for S/PDIF receiver
       + CHANGED:   spdif_tx_example updated to use XK-AUDIO-216-MC
 
     - lib_xua: 3.2.0 -> 3.3.1
