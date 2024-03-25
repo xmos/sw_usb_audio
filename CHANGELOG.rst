@@ -5,10 +5,10 @@ sw_usb_audio Change Log
 -----
 
   * ADDED:     Support for XCommon CMake build system
-  * CHANGED:   Windows control app now take GUID via a -g option
+  * CHANGED:   Windows control app now take GUID via a -g option, accommodating latest Thesycon driver packages
   * CHANGED:   app_usb_aud_xk_316_mc defaults to using xcore.ai AppPLL for master clock generation
     when syncing to digital streams or in USB sync mode, rather than the external CS2100 device
-  * CHANGED:   Accommodate latest UserBufferManagmentInit() API change in lib_xua (now takes a sample rate value)
+  * CHANGED:   UserBufferManagmentInit() implementations updated to match API change in lib_xua (now takes a sample rate value)
   * CHANGED:   app_usb_aud_xk_316_mc: Improvements in interaction with on-board power control circuitry 
 
 7.3.1
