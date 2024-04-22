@@ -4,15 +4,15 @@
 # Asynchronous Mode Configs
 #
 # Audio Class 2, Async, I2S Master, 8xInput, 8xOutput
-INCLUDE_ONLY_IN_2AMi8o8xxxxxx = 
-XCC_FLAGS_2AMi8o8xxxxxx = $(BUILD_FLAGS)		
+INCLUDE_ONLY_IN_2AMi8o8xxxxxx =
+XCC_FLAGS_2AMi8o8xxxxxx = $(BUILD_FLAGS)
 
 # Audio Class 2, Async, I2S Slave, 8xInput, 8xOutput
 XCC_FLAGS_2ASi8o8xxxxxx = $(BUILD_FLAGS)		-DCODEC_MASTER=1
 INCLUDE_ONLY_IN_2ASi8o8xxxxxx =
 
 # Audio Class 2, Async, I2S Master, 32xInput, 32xOutput, TDM
-INCLUDE_ONLY_IN_2AMi32o32xxxxxx_tdm8 = 
+INCLUDE_ONLY_IN_2AMi32o32xxxxxx_tdm8 =
 XCC_FLAGS_2AMi32o32xxxxxx_tdm8 = $(BUILD_FLAGS)	-DXUA_PCM_FORMAT=XUA_PCM_FORMAT_TDM \
 												-DNUM_USB_CHAN_OUT=32 \
 												-DI2S_CHANS_DAC=32 \
@@ -41,6 +41,10 @@ XCC_FLAGS_2AMi10o8xsxxxx = $(BUILD_FLAGS) 		-DXUA_SPDIF_RX_EN=1
 # Audio Class 2, Async, I2S Master, 16xInput, 8xOutput, ADAT Rx
 INCLUDE_ONLY_IN_2AMi16o8xxxaxx =
 XCC_FLAGS_2AMi16o8xxxaxx = $(BUILD_FLAGS) 		-DXUA_ADAT_RX_EN=1
+INCLUDE_ONLY_IN_2AMi16o8xxxaxx_48 =
+XCC_FLAGS_2AMi16o8xxxaxx_44_48 = $(BUILD_FLAGS) 		-DXUA_ADAT_RX_EN=1 \
+                                                    -DMAX_FREQ=44100 \
+                                                    -DMIN_FREQ=48000
 
 # Audio Class 2, Async, I2S master, 8xInput, 16xOutput, ADAT Tx
 INCLUDE_ONLY_IN_2AMi8o16xxxxax =
