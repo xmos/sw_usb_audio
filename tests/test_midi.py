@@ -96,7 +96,8 @@ def test_midi_loopback(pytestconfig, board, config):
 
             t1 = time.time()
             usb_msg_size = 4
-            bytes_per_second = usb_msg_size * msg_count / (t1 - t0)
+            elapsed = (t1 - t0) if (t1 - t0) > 0 else 0.001 # Avoid div by zero
+            bytes_per_second = usb_msg_size * msg_count / elapsed
             print(f"Sending took: {t1-t0} for {msg_count} midi messages ({bytes_per_second:.2f} B/s)")
 
             # Receive MIDI files (will be throttled to 3125Bps by UART)
