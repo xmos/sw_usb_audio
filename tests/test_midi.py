@@ -29,7 +29,7 @@ def midi_common_uncollect(features, board, pytestconfig):
 def midi_loopback_uncollect(pytestconfig, board, config):
     features = get_config_features(board, config)
     return any(
-        [not features["midi_o"], midi_common_uncollect(features, board, pytestconfig)]
+        [not features["midi"], midi_common_uncollect(features, board, pytestconfig)]
     )
 
 
@@ -51,7 +51,7 @@ def find_xmos_midi_device(devices):
     return None
 
 
-@pytest.mark.uncollect_if(func=midi_output_uncollect)
+@pytest.mark.uncollect_if(func=midi_loopback_uncollect)
 @pytest.mark.parametrize(["board", "config"], list_configs())
 def test_midi_loopback(pytestconfig, board, config):
 
