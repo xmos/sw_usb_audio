@@ -43,8 +43,8 @@ INCLUDE_ONLY_IN_2AMi16o8xxxaxx =
 XCC_FLAGS_2AMi16o8xxxaxx = $(BUILD_FLAGS) 		-DXUA_ADAT_RX_EN=1
 INCLUDE_ONLY_IN_2AMi16o8xxxaxx_44_48 =
 XCC_FLAGS_2AMi16o8xxxaxx_44_48 = $(BUILD_FLAGS) 		-DXUA_ADAT_RX_EN=1 \
-                                                    -DMAX_FREQ=44100 \
-                                                    -DMIN_FREQ=48000
+                                                    -DMIN_FREQ=44100 \
+                                                    -DMAX_FREQ=48000
 
 # Audio Class 2, Async, I2S master, 8xInput, 16xOutput, ADAT Tx
 INCLUDE_ONLY_IN_2AMi8o16xxxxax =
