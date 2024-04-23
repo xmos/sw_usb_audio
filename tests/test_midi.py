@@ -18,7 +18,6 @@ from conftest import list_configs, get_config_features
 
 def midi_common_uncollect(features, board, pytestconfig):
     xtag_ids = get_xtag_dut_and_harness(pytestconfig, board)
-    print(xtag_ids)
 
     # Skip loopback
     if features["i2s_loopback"]:
@@ -63,10 +62,6 @@ def test_midi_loopback(pytestconfig, board, config):
     input_midi_file_name = 'tools/midifiles/Bach.mid'
     output_midi_file_name = 'tools/midifiles/Bach_loopback.mid'
 
-
-    midi_file_in = mido.MidiFile(input_midi_file_name)
-    midi_file_out = mido.MidiFile()
-
     features = get_config_features(board, config)
 
     adapter_dut, adapter_harness = get_xtag_dut_and_harness(pytestconfig, board)
@@ -74,6 +69,8 @@ def test_midi_loopback(pytestconfig, board, config):
     fail_str = ""
 
     with XrunDut(adapter_dut, board, config) as dut:
+        midi_file_in = mido.MidiFile(input_midi_file_name)
+        midi_file_out = mido.MidiFile()
 
         in_port = mido.open_input(find_xmos_midi_device(mido.get_input_names()))
         out_port = mido.open_output(find_xmos_midi_device(mido.get_output_names()))
@@ -110,7 +107,7 @@ def test_midi_loopback(pytestconfig, board, config):
 
                 output_track.append(msg_in)
             t1 = time.time()
-            print(t1-t0)
+
             bytes_per_second = usb_msg_size * msg_count / (t1 - t0)
             print(f"Receiving took: {t1-t0} for {msg_count} messages ({bytes_per_second:.2f} B/s)")
 
