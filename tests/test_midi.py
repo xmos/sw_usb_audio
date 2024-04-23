@@ -18,6 +18,7 @@ from conftest import list_configs, get_config_features
 
 def midi_common_uncollect(features, board, pytestconfig):
     xtag_ids = get_xtag_dut_and_harness(pytestconfig, board)
+    print(xtag_ids)
 
     # Skip loopback
     if features["i2s_loopback"]:
@@ -31,8 +32,6 @@ def midi_common_uncollect(features, board, pytestconfig):
 
 def midi_loopback_uncollect(pytestconfig, board, config):
     features = get_config_features(board, config)
-
-    print(features["midi"])
 
     return any(
         [not features["midi"], midi_common_uncollect(features, board, pytestconfig)]
@@ -61,9 +60,6 @@ def find_xmos_midi_device(devices):
 @pytest.mark.parametrize(["board", "config"], list_configs())
 def test_midi_loopback(pytestconfig, board, config):
 
-    in_port = mido.open_input(find_xmos_midi_device(mido.get_input_names()))
-    out_port = mido.open_output(find_xmos_midi_device(mido.get_output_names()))
-
     input_midi_file_name = 'tools/midifiles/Bach.mid'
     output_midi_file_name = 'tools/midifiles/Bach_loopback.mid'
 
@@ -78,6 +74,10 @@ def test_midi_loopback(pytestconfig, board, config):
     fail_str = ""
 
     with XrunDut(adapter_dut, board, config) as dut:
+
+        in_port = mido.open_input(find_xmos_midi_device(mido.get_input_names()))
+        out_port = mido.open_output(find_xmos_midi_device(mido.get_output_names()))
+
 
         for i, track in enumerate(midi_file_in.tracks):
             print(f'Found track {i}: {track.name}')
