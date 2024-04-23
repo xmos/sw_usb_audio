@@ -46,7 +46,7 @@ def adat_common_uncollect(features, board, pytestconfig):
     return False
 
 
-def adat_input_uncollect(pytestconfig, board, config):
+def adat_input_uncollect(pytestconfig, board, config, reps):
     features = get_config_features(board, config)
     return any(
         [not features["adat_i"], adat_common_uncollect(features, board, pytestconfig)]
@@ -71,7 +71,8 @@ def adat_duration(level, partial):
 
 @pytest.mark.uncollect_if(func=adat_input_uncollect)
 @pytest.mark.parametrize(["board", "config"], list_configs())
-def test_adat_input(pytestconfig, board, config):
+@pytest.mark.parametrize("reps", range(20))
+def test_adat_input(pytestconfig, board, config, reps):
     features = get_config_features(board, config)
 
     if config.endswith("44_48"):
