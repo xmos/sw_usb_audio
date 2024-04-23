@@ -70,13 +70,15 @@ def adat_duration(level, partial):
     return duration
 
 @pytest.mark.uncollect_if(func=adat_input_uncollect)
-@pytest.mark.parametrize(["board", "config"], list_configs())
 @pytest.mark.parametrize("reps", range(20))
+@pytest.mark.parametrize(["board", "config"], list_configs())
 def test_adat_input(pytestconfig, board, config, reps):
     features = get_config_features(board, config)
 
     if config.endswith("44_48"):
         xsig_config = f'mc_digital_input_{features["analogue_i"]}ch_adat' # Test 8 channels of ADAT only when enumerating as a 44/48 KHz, 16ch device
+    elif config.endswith("88_96"):
+        xsig_config = f'mc_digital_input_{features["analogue_i"]}ch_adat_4ch' # Test 8 channels of ADAT only when enumerating as a 44/48 KHz, 16ch device
     else:
         # test only 2 channels ADAT when enumerating as a 44-192 KHz, with 3 vailable interfaces (10, 12 or 16 channels) device.
         # Since we're not able to select the interface from the test, 2 channels of ADAT would be available on all 3 interface, so test only 2 channels
