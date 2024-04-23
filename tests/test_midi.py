@@ -18,16 +18,22 @@ from conftest import list_configs, get_config_features
 
 def midi_common_uncollect(features, board, pytestconfig):
     xtag_ids = get_xtag_dut_and_harness(pytestconfig, board)
+
+    # Skip loopback
+    if features["i2s_loopback"]:
+        return True
+
     # XTAGs not present
     if not all(xtag_ids):
-        return True
-    if features["i2s_loopback"]:
         return True
     return False
 
 
 def midi_loopback_uncollect(pytestconfig, board, config):
     features = get_config_features(board, config)
+
+    print(features["midi"])
+
     return any(
         [not features["midi"], midi_common_uncollect(features, board, pytestconfig)]
     )
@@ -55,8 +61,8 @@ def find_xmos_midi_device(devices):
 @pytest.mark.parametrize(["board", "config"], list_configs())
 def test_midi_loopback(pytestconfig, board, config):
 
-    in_port = mido.open_input(find_xmos_device(mido.get_input_names()))
-    out_port = mido.open_output(find_xmos_device(mido.get_output_names()))
+    in_port = mido.open_input(find_xmos_midi_device(mido.get_input_names()))
+    out_port = mido.open_output(find_xmos_midi_device(mido.get_output_names()))
 
     input_midi_file_name = 'tools/midifiles/Bach.mid'
     output_midi_file_name = 'tools/midifiles/Bach_loopback.mid'
@@ -110,6 +116,7 @@ def test_midi_loopback(pytestconfig, board, config):
 
 
         midi_file_out.save(output_midi_file_name)
-                
+        
+        # Do binary diff
         assert filecmp.cmp(input_midi_file_name, output_midi_file_name)
 
