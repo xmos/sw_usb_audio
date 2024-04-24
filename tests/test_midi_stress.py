@@ -16,6 +16,8 @@ from usb_audio_test_utils import (
     check_analyzer_output,
     get_xtag_dut_and_harness,
     AudioAnalyzerHarness,
+    wait_for_midi_ports,
+    find_xmos_midi_device,
     XrunDut,
     XsigInput,
     XsigOutput,
@@ -67,8 +69,9 @@ def test_midi_loopback_stress(pytestconfig, board, config):
                 AudioAnalyzerHarness(
                     adapter_harness, xscope="io"
                 ) as harness,
-                XsigOutput(fs_audio, None, xsig_config_path, dut.dev_name),
-            ):
+                XsigInput(fs_audio, duration, xsig_config_path, dut.dev_name, ident=f"analogue_input-{board}-{config}-{fs}") as xsig_proc_in
+                ):
+
                 # Ensure firmware is up and enumerated as MIDI
                 wait_for_midi_ports()
                 
@@ -76,8 +79,13 @@ def test_midi_loopback_stress(pytestconfig, board, config):
                 with (mido.open_input(find_xmos_midi_device(mido.get_input_names())) as in_port,
                       mido.open_output(find_xmos_midi_device(mido.get_output_names())) as out_port):
                 
-                    time.sleep(duration)
+                    # Sleep for a few extra seconds so that xsig will have completed
+                    xsig_completion_time_s = 6
+                    time.sleep(duration + xsig_completion_time_s)
 
+
+                xsig_lines = xsig_proc_in.get_output()
+                # TODO process these
 
                 harness.terminate()
                 xscope_lines = harness.get_output()
