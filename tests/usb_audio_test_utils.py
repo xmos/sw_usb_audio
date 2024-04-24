@@ -327,6 +327,14 @@ def get_tusb_guid():
             pytest.fail(f"Could not find InterfaceGUID in custom.ini")
 
 
+def find_xmos_midi_device(devices):
+    for device in devices:
+        if "XMOS" in device:
+            return device
+
+    return None
+    
+
 class AudioAnalyzerHarness:
     """
     Run the audio analyzer harness
