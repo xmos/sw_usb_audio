@@ -10,6 +10,7 @@ import stat
 import re
 import shutil
 import socket
+import mido
 
 from conftest import get_config_features
 
@@ -327,13 +328,22 @@ def get_tusb_guid():
             pytest.fail(f"Could not find InterfaceGUID in custom.ini")
 
 
+def wait_for_midi_ports(timeout_s=10):
+    for i in range(timeout_s):
+        if find_xmos_midi_device(mido.get_input_names()) is not None and find_xmos_midi_device(mido.get_output_names()) is not None:
+            return
+
+    pytest.fail(f"No XMOS MID ports found: {mido.get_input_names()}, {mido.get_output_names()}")
+
+
+
 def find_xmos_midi_device(devices):
     for device in devices:
         if "XMOS" in device:
             return device
 
     return None
-    
+
 
 class AudioAnalyzerHarness:
     """

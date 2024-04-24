@@ -61,7 +61,7 @@ def test_midi_loopback_stress(pytestconfig, board, config):
                 AudioAnalyzerHarness(
                     adapter_harness, xscope="io"
                 ) as harness,
-                XsigOutput(fs, None, xsig_config_path, dut.dev_name),
+                XsigOutput(fs_audio, None, xsig_config_path, dut.dev_name),
             ):
                 
                 # DO MIDI TEST HERE
@@ -75,9 +75,9 @@ def test_midi_loopback_stress(pytestconfig, board, config):
                 xsig_json = json.load(file)
             failures = check_analyzer_output(xscope_lines, xsig_json["out"])
             if len(failures) > 0:
-                fail_str += f"Failure at sample rate {fs}\n"
+                fail_str += f"Failure at sample rate {fs_audio}\n"
                 fail_str += "\n".join(failures) + "\n\n"
-                fail_str += f"xscope stdout at sample rate {fs}\n"
+                fail_str += f"xscope stdout at sample rate {fs_audio}\n"
                 fail_str += "\n".join(xscope_lines) + "\n\n"
 
     if len(fail_str) > 0:

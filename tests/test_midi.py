@@ -13,6 +13,7 @@ from usb_audio_test_utils import (
     check_analyzer_output,
     get_xtag_dut_and_harness,
     XrunDut,
+    wait_for_midi_ports,
     find_xmos_midi_device
 )
 from conftest import list_configs, get_config_features
@@ -65,6 +66,8 @@ def test_midi_loopback(pytestconfig, board, config):
     time_start = time.time()
 
     with XrunDut(adapter_dut, board, config) as dut:
+        wait_for_midi_ports()
+
         with (mido.open_input(find_xmos_midi_device(mido.get_input_names())) as in_port,
               mido.open_output(find_xmos_midi_device(mido.get_output_names())) as out_port):
 
