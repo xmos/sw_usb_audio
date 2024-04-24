@@ -205,7 +205,7 @@ pipeline {
                         //     -o xk_216_mc_dut=${xtagIds[0]} -o xk_216_mc_harness=${xtagIds[1]} \
                         //     -o xk_evk_xu316_dut=${xtagIds[2]} -o xk_evk_xu316_harness=${xtagIds[3]}"
                         // Only test MIDI for now
-                        sh "pytest test_midi.py -v --level ${params.TEST_LEVEL} --junitxml=pytest_result_mac_intel.xml \
+                        sh "pytest test_midi.py test_midi_stress.py -s -v --level ${params.TEST_LEVEL} --junitxml=pytest_result_mac_intel.xml \
                             -o xk_216_mc_dut=${xtagIds[0]} -o xk_216_mc_harness=${xtagIds[1]} \
                             -o xk_evk_xu316_dut=${xtagIds[2]} -o xk_evk_xu316_harness=${xtagIds[3]}"
                       }
@@ -270,7 +270,7 @@ pipeline {
                         // sh "pytest -v --level ${params.TEST_LEVEL} --junitxml=pytest_result_mac_arm.xml \
                         //     -o xk_316_mc_dut=${xtagIds[0]} -o xk_316_mc_harness=${xtagIds[1]}"
                         // Only test MIDI for now
-                        sh "pytest test_midi.py -v --level ${params.TEST_LEVEL} --junitxml=pytest_result_mac_arm.xml \
+                        sh "pytest test_midi.py test_midi_stress.py -s -v --level ${params.TEST_LEVEL} --junitxml=pytest_result_mac_arm.xml \
                             -o xk_316_mc_dut=${xtagIds[0]} -o xk_316_mc_harness=${xtagIds[1]}"
                       }
                     }
@@ -334,7 +334,7 @@ pipeline {
                       // sh "pytest -v --level ${params.TEST_LEVEL} --junitxml=pytest_result_windows10.xml \
                       //     -o xk_316_mc_dut=${xtagIds[0]} -o xk_316_mc_harness=${xtagIds[1]}"
                       // Only test MIDI for now
-                      sh "pytest test_midi.py -v --level ${params.TEST_LEVEL} --junitxml=pytest_result_windows10.xml \
+                      sh "pytest test_midi.py test_midi_stress.py -s -v --level ${params.TEST_LEVEL} --junitxml=pytest_result_windows10.xml \
                           -o xk_316_mc_dut=${xtagIds[0]} -o xk_316_mc_harness=${xtagIds[1]}"
                     }
                   }
@@ -398,7 +398,7 @@ pipeline {
                       // sh "pytest -v --level ${params.TEST_LEVEL} --junitxml=pytest_result_windows11.xml \
                       //     -o xk_316_mc_dut=${xtagIds[0]} -o xk_316_mc_harness=${xtagIds[1]}"
                       // Only test MIDI for now
-                      sh "pytest test_midi.py -v --level ${params.TEST_LEVEL} --junitxml=pytest_result_windows11.xml \
+                      sh "pytest test_midi.py test_midi_stress.py -s -v --level ${params.TEST_LEVEL} --junitxml=pytest_result_windows11.xml \
                           -o xk_316_mc_dut=${xtagIds[0]} -o xk_316_mc_harness=${xtagIds[1]}"
                           
                     }
