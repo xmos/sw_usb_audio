@@ -333,7 +333,7 @@ def wait_for_midi_ports(timeout_s=10):
         if find_xmos_midi_device(mido.get_input_names()) is not None and find_xmos_midi_device(mido.get_output_names()) is not None:
             return
 
-    pytest.fail(f"No XMOS MID ports found: {mido.get_input_names()}, {mido.get_output_names()}")
+    pytest.fail(f"No XMOS MIDI ports found: {mido.get_input_names()}, {mido.get_output_names()}")
 
 
 

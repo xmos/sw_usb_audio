@@ -18,6 +18,12 @@ from usb_audio_test_utils import (
 )
 from conftest import list_configs, get_config_features
 
+
+# This track takes about 0.9s to send across MIDI
+input_midi_file_name = 'tools/midifiles/Bach.mid'
+output_midi_file_name = 'tools/midifiles/Bach_loopback.mid'
+
+
 def midi_common_uncollect(features, board, pytestconfig):
     xtag_ids = get_xtag_dut_and_harness(pytestconfig, board)
 
@@ -49,14 +55,60 @@ def midi_duration(level, partial):
     return duration
 
 
+def run_midi_test(input_midi_file_name, output_midi_file_name, in_port, out_port):
+    midi_file_in = mido.MidiFile(input_midi_file_name)
+    midi_file_out = mido.MidiFile()
+
+    # Send each track in the file
+    for i, track in enumerate(midi_file_in.tracks):
+        print(f'Found track {i}: {track.name}')
+
+        output_track = mido.MidiTrack()
+        midi_file_out.tracks.append(track)
+
+        # Send MIDI file at full speed (heavily uses H2D firmware FIFO)
+        msg_count = 0
+        t0 = time.time()
+        for msg in track:
+            if msg.is_meta:
+                # print("Meta message: ", msg)
+                continue
+            else:
+                # print("Sent:", msg)
+                out_port.send(msg)
+                msg_count += 1
+
+        t1 = time.time()
+        usb_msg_size = 4
+        elapsed = (t1 - t0) if (t1 - t0) > 0 else 0.001 # Avoid div by zero
+        bytes_per_second = usb_msg_size * msg_count / elapsed
+        print(f"Sending took: {t1-t0} for {msg_count} midi messages ({bytes_per_second:.2f} B/s)")
+
+        # Receive MIDI files (will be throttled to 3125Bps by UART)
+        t0 = time.time()
+        for msg_num in range(msg_count):
+            msg_in = in_port.receive()
+            # print("Received:", msg_in)
+
+            output_track.append(msg_in)
+        t1 = time.time()
+
+        elapsed = (t1 - t0) if (t1 - t0) > 0 else 0.001 # Avoid div by zero
+        bytes_per_second = usb_msg_size * msg_count / elapsed
+        print(f"Receiving took: {t1-t0} for {msg_count} midi messages ({bytes_per_second:.2f} B/s)")
+
+        # We know that the MIDI file will have completed looping back at this point so OK to iterate
+
+    # Save received file
+    midi_file_out.save(output_midi_file_name)
+
+    # Do binary diff on files
+    assert filecmp.cmp(input_midi_file_name, output_midi_file_name), "MIDI Test failed - diff between input and output files"
+
 
 @pytest.mark.uncollect_if(func=midi_loopback_uncollect)
 @pytest.mark.parametrize(["board", "config"], list_configs())
 def test_midi_loopback(pytestconfig, board, config):
-
-    # This track takes about 0.9s to send across MIDI
-    input_midi_file_name = 'tools/midifiles/Bach.mid'
-    output_midi_file_name = 'tools/midifiles/Bach_loopback.mid'
 
     features = get_config_features(board, config)
 
@@ -73,52 +125,5 @@ def test_midi_loopback(pytestconfig, board, config):
 
             # Keep looping test until time up
             while time.time() < time_start + duration:
-                midi_file_in = mido.MidiFile(input_midi_file_name)
-                midi_file_out = mido.MidiFile()
-
-                # Send each track in the file
-                for i, track in enumerate(midi_file_in.tracks):
-                    print(f'Found track {i}: {track.name}')
-
-                    output_track = mido.MidiTrack()
-                    midi_file_out.tracks.append(track)
-
-                    # Send MIDI file at full speed (heavily uses H2D firmware FIFO)
-                    msg_count = 0
-                    t0 = time.time()
-                    for msg in track:
-                        if msg.is_meta:
-                            # print("Meta message: ", msg)
-                            continue
-                        else:
-                            # print("Sent:", msg)
-                            out_port.send(msg)
-                            msg_count += 1
-
-                    t1 = time.time()
-                    usb_msg_size = 4
-                    elapsed = (t1 - t0) if (t1 - t0) > 0 else 0.001 # Avoid div by zero
-                    bytes_per_second = usb_msg_size * msg_count / elapsed
-                    print(f"Sending took: {t1-t0} for {msg_count} midi messages ({bytes_per_second:.2f} B/s)")
-
-                    # Receive MIDI files (will be throttled to 3125Bps by UART)
-                    t0 = time.time()
-                    for msg_num in range(msg_count):
-                        msg_in = in_port.receive()
-                        # print("Received:", msg_in)
-
-                        output_track.append(msg_in)
-                    t1 = time.time()
-
-                    elapsed = (t1 - t0) if (t1 - t0) > 0 else 0.001 # Avoid div by zero
-                    bytes_per_second = usb_msg_size * msg_count / elapsed
-                    print(f"Receiving took: {t1-t0} for {msg_count} midi messages ({bytes_per_second:.2f} B/s)")
-
-                    # We know that the MIDI file will have completed looping back at this point so OK to iterate
-
-                # Save received file
-                midi_file_out.save(output_midi_file_name)
-
-                # Do binary diff on files
-                assert filecmp.cmp(input_midi_file_name, output_midi_file_name)
+                run_midi_test(input_midi_file_name, output_midi_file_name, in_port, out_port)
 
