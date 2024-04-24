@@ -69,7 +69,7 @@ def test_midi_loopback_stress(pytestconfig, board, config):
                 AudioAnalyzerHarness(
                     adapter_harness, xscope="io"
                 ) as harness,
-                XsigInput(fs_audio, duration, xsig_config_path, dut.dev_name, ident=f"analogue_input-{board}-{config}-{fs}") as xsig_proc_in
+                XsigInput(fs_audio, duration, xsig_config_path, dut.dev_name, ident=f"analogue_input-{board}-{config}-{fs_audio}") as xsig_proc_in
                 ):
 
                 # Ensure firmware is up and enumerated as MIDI
