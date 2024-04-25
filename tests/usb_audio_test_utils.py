@@ -14,6 +14,8 @@ import mido
 
 from conftest import get_config_features
 
+# This is a hand-tuned time to allow xsig to complete
+xsig_completion_time_s = 6
 
 def use_windows_builtin_driver(board, config):
     # Use the builtin driver for:
@@ -328,10 +330,12 @@ def get_tusb_guid():
             pytest.fail(f"Could not find InterfaceGUID in custom.ini")
 
 
-def wait_for_midi_ports(timeout_s=10):
+def wait_for_midi_ports(timeout_s=15):
     for i in range(timeout_s):
         if find_xmos_midi_device(mido.get_input_names()) is not None and find_xmos_midi_device(mido.get_output_names()) is not None:
+            print(f"Hooray! XMOS MIDI ports found: {find_xmos_midi_device(mido.get_input_names())}, {find_xmos_midi_device(mido.get_output_names())}")
             return
+
         time.sleep(1)
         print(f"MIDI ports not found... retrying {i+1} of {timeout_s}")
 

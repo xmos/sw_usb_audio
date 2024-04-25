@@ -5,6 +5,7 @@ import subprocess
 import time
 import json
 import platform
+import mido
 
 from test_midi import (
     input_midi_file_name,
@@ -21,6 +22,7 @@ from usb_audio_test_utils import (
     XrunDut,
     XsigInput,
     XsigOutput,
+    xsig_completion_time_s
 )
 from conftest import list_configs, get_config_features
 
@@ -54,6 +56,12 @@ def midi_duration(level, partial):
 @pytest.mark.uncollect_if(func=midi_output_uncollect)
 @pytest.mark.parametrize(["board", "config"], list_configs())
 def test_midi_loopback_stress(pytestconfig, board, config):
+    """
+    This test streams 8ch audio in/out at 192kHz in order to stress the system and then runs the 
+    standard test_midi.py test whilst doing so. Note we only check the xsig input for analog
+    (not the harness xscope output) because as soon as you stop either the harness or xsig the 
+    other will throw an error due to real-time checking.
+    """
     features = get_config_features(board, config)
 
     xsig_config = f'mc_midi_stress_8ch'
@@ -69,35 +77,36 @@ def test_midi_loopback_stress(pytestconfig, board, config):
                 AudioAnalyzerHarness(
                     adapter_harness, xscope="io"
                 ) as harness,
+                # Due to in and out in xsig config this works in both directions
                 XsigInput(fs_audio, duration, xsig_config_path, dut.dev_name, ident=f"analogue_input-{board}-{config}-{fs_audio}") as xsig_proc_in
                 ):
 
                 # Ensure firmware is up and enumerated as MIDI
                 wait_for_midi_ports()
                 
-                # DO MIDI TEST HERE
                 with (mido.open_input(find_xmos_midi_device(mido.get_input_names())) as in_port,
                       mido.open_output(find_xmos_midi_device(mido.get_output_names())) as out_port):
                 
-                    # Sleep for a few extra seconds so that xsig will have completed
-                    xsig_completion_time_s = 6
+                    # DO MIDI TEST HERE
                     time.sleep(duration + xsig_completion_time_s)
 
-
-                xsig_lines = xsig_proc_in.get_output()
-                # TODO process these
-
-                harness.terminate()
-                xscope_lines = harness.get_output()
+            # Stop the harness
+            harness.terminate()
+            xscope_lines = harness.get_output() # This will always see a loss of signal at the end but useful for debug
+            xsig_lines = xsig_proc_in.get_output()
 
             with open(xsig_config_path) as file:
                 xsig_json = json.load(file)
-            failures = check_analyzer_output(xscope_lines, xsig_json["out"])
+
+            # xsig outout parsing for D2H streaming
+            failures = check_analyzer_output(xsig_lines, xsig_json["in"])
             if len(failures) > 0:
                 fail_str += f"Failure at sample rate {fs_audio}\n"
                 fail_str += "\n".join(failures) + "\n\n"
                 fail_str += f"xscope stdout at sample rate {fs_audio}\n"
                 fail_str += "\n".join(xscope_lines) + "\n\n"
+                fail_str += f"xsig stdout at sample rate {fs_audio}\n"
+                fail_str += "\n".join(xsig_lines) + "\n\n"
 
     if len(fail_str) > 0:
         print(fail_str)
