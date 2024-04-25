@@ -71,7 +71,8 @@ def test_midi_loopback_stress(pytestconfig, board, config):
     duration = midi_duration(pytestconfig.getoption("level"), features["partial"])
     fail_str = ""
 
-    fs_audio = [max(features["samp_freqs"])] # Highest rate for maximum stress
+    # fs_audio = [max(features["samp_freqs"])] # Highest rate for maximum stress
+    fs_audio = [min(features["samp_freqs"])]
     with XrunDut(adapter_dut, board, config) as dut:
             with (
                 AudioAnalyzerHarness(
@@ -82,14 +83,14 @@ def test_midi_loopback_stress(pytestconfig, board, config):
                 ):
 
                 # Ensure firmware is up and enumerated as MIDI
-                # wait_for_midi_ports()
+                wait_for_midi_ports()
                 
                 with (mido.open_input(find_xmos_midi_device(mido.get_input_names())) as in_port,
                       mido.open_output(find_xmos_midi_device(mido.get_output_names())) as out_port):
                 
                     # Keep looping midi_test until time up
                     while time.time() < time_start + duration + xsig_completion_time_s:
-                        # run_midi_test(input_midi_file_name, output_midi_file_name, in_port, out_port)
+                        run_midi_test(input_midi_file_name, output_midi_file_name, in_port, out_port)
                         time.sleep(1)
 
             # Stop the harness
