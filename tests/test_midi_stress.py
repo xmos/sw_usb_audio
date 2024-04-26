@@ -77,10 +77,6 @@ def test_midi_loopback_stress(pytestconfig, board, config):
         # Ensure firmware is up and enumerated as MIDI
         wait_for_midi_ports()
 
-        # DEBUG for windows
-        op = subprocess.run("wmic sounddev list full".split(), capture_output = True, text = True)
-        print(op.stdout)
-
         time_start = time.time()
         with (
             AudioAnalyzerHarness(
