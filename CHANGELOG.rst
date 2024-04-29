@@ -1,6 +1,11 @@
 sw_usb_audio Change Log
 =======================
 
+UNRELEASED
+----------
+
+  * FIXED:     Use correct number of flash pages for XK-AUDIO-316-MC
+
 8.0.0
 -----
 
