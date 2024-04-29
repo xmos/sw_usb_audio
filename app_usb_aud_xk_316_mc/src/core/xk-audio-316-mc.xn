@@ -10,7 +10,7 @@
   </Declarations>
 
   <Packages>
-    <Package id="0" Type="XS3-UnA-1024-FB265">
+    <Package id="0" Type="XS3-UnA-1024-TQ128">
       <Nodes>
         <Node Id="0" InPackageId="0" Type="XS3-L16A-1024" Oscillator="24MHz" SystemFrequency="600MHz" ReferenceFrequency="100MHz">
           <Boot>
