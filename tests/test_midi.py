@@ -8,6 +8,7 @@ import platform
 import mido
 import time
 import filecmp
+import random
 
 from usb_audio_test_utils import (
     check_analyzer_output,
@@ -54,8 +55,31 @@ def midi_duration(level, partial):
         duration = 10
     return duration
 
+def run_sysex_message(in_port, out_port, length=2048):
+    print(f"Testing sysex message of {length} bytes")
+    payload = [random.randrange(0, 128, 1) for i in range(length)]
+    ref_msg = mido.Message('sysex', data=payload)
 
-def run_midi_test(input_midi_file_name, output_midi_file_name, in_port, out_port):
+    t0 = time.time()
+    out_port.send(ref_msg)
+    t1 = time.time()
+
+    elapsed = (t1 - t0) if (t1 - t0) > 0 else 0.001 # Avoid div by zero
+    bytes_per_second = length / elapsed
+    print(f"Sending took: {t1-t0:.2f}s for {length} B midi sysex message ({bytes_per_second:.2f} B/s)")
+
+    t0 = time.time()
+    dut_msg = in_port.receive()
+    t1 = time.time()
+    elapsed = (t1 - t0) if (t1 - t0) > 0 else 0.001 # Avoid div by zero
+    bytes_per_second = length / elapsed
+    print(f"Receiving took: {t1-t0:.2f}s for {length} B midi sysex message ({bytes_per_second:.2f} B/s)")
+
+    assert ref_msg.bytes() == dut_msg.bytes()
+
+def run_midi_test_file(input_midi_file_name, output_midi_file_name, in_port, out_port):
+    print(f"Testing MIDI loopback of file {input_midi_file_name}")
+
     midi_file_in = mido.MidiFile(input_midi_file_name)
     midi_file_out = mido.MidiFile()
 
@@ -82,7 +106,7 @@ def run_midi_test(input_midi_file_name, output_midi_file_name, in_port, out_port
         usb_msg_size = 4
         elapsed = (t1 - t0) if (t1 - t0) > 0 else 0.001 # Avoid div by zero
         bytes_per_second = usb_msg_size * msg_count / elapsed
-        print(f"Sending took: {t1-t0} for {msg_count} midi messages ({bytes_per_second:.2f} B/s)")
+        print(f"Sending took: {t1-t0:.2f}s for {msg_count} midi messages ({bytes_per_second:.2f} B/s)")
 
         # Receive MIDI files (will be throttled to 3125Bps by UART)
         t0 = time.time()
@@ -95,7 +119,7 @@ def run_midi_test(input_midi_file_name, output_midi_file_name, in_port, out_port
 
         elapsed = (t1 - t0) if (t1 - t0) > 0 else 0.001 # Avoid div by zero
         bytes_per_second = usb_msg_size * msg_count / elapsed
-        print(f"Receiving took: {t1-t0} for {msg_count} midi messages ({bytes_per_second:.2f} B/s)")
+        print(f"Receiving took: {t1-t0:.2f}s for {msg_count} midi messages ({bytes_per_second:.2f} B/s)")
 
         # We know that the MIDI file will have completed looping back at this point so OK to iterate
 
@@ -124,5 +148,6 @@ def test_midi_loopback(pytestconfig, board, config):
 
             # Keep looping test until time up
             while time.time() < time_start + duration:
-                run_midi_test(input_midi_file_name, output_midi_file_name, in_port, out_port)
-
+                run_midi_test_file(input_midi_file_name, output_midi_file_name, in_port, out_port)
+                max_sysex_length = 3092
+                run_sysex_message(in_port, out_port, length=random.randrange(1, max_sysex_length + 1, 1))
