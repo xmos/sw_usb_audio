@@ -31,6 +31,11 @@ def midi_common_uncollect(features, board, pytestconfig):
     # XTAGs not present
     if not all(xtag_ids):
         return True
+
+    # Until we fix Jenkins user permissions for MIDI on Mac https://xmosjira.atlassian.net/browse/UA-254
+    if platform.system() == "Darwin":
+        return True
+
     if features["i2s_loopback"]:
         return True
     return False

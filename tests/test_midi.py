@@ -28,6 +28,10 @@ output_midi_file_name = 'tools/midifiles/Bach_loopback.mid'
 def midi_common_uncollect(features, board, pytestconfig):
     xtag_ids = get_xtag_dut_and_harness(pytestconfig, board)
 
+    # Until we fix Jenkins user permissions for MIDI on Mac https://xmosjira.atlassian.net/browse/UA-254
+    if platform.system() == "Darwin":
+        return True
+
     # Skip loopback
     if features["i2s_loopback"]:
         return True
