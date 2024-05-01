@@ -117,5 +117,4 @@ def test_midi_loopback_stress(pytestconfig, board, config):
             fail_str += "\n".join(xsig_lines) + "\n\n"
 
     if len(fail_str) > 0:
-        print(fail_str)
-        # pytest.fail(fail_str)
+        pytest.fail(fail_str)
