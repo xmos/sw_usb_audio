@@ -18,13 +18,13 @@ Overview
  +---------------------------------+---------------------------------------------------------------------------------------------+
  |   USB                           | USB 2.0 (Full-speed and High-speed)                                                         |
  |                                 +---------------------------------------------------------------------------------------------+
- |                                 | `USB Audio Class 1.0 <https://www.usb.org/sites/default/files/audio10.pdf>`_            |
+ |                                 | `USB Audio Class 1.0 <https://www.usb.org/sites/default/files/audio10.pdf>`_                |
  |                                 +---------------------------------------------------------------------------------------------+
- |                                 | `USB Audio Class 2.0 <https://www.usb.org/sites/default/files/Audio2.0_final.zip>`_     |
+ |                                 | `USB Audio Class 2.0 <https://www.usb.org/sites/default/files/Audio2.0_final.zip>`_         |
  |                                 +---------------------------------------------------------------------------------------------+
- |                                 | `USB Firmware Upgrade (DFU) 1.1 <https://www.usb.org/sites/default/files/DFU_1.1.pdf>`_ |
+ |                                 | `USB Firmware Upgrade (DFU) 1.1 <https://www.usb.org/sites/default/files/DFU_1.1.pdf>`_     |
  |                                 +---------------------------------------------------------------------------------------------+
- |                                 | `USB MIDI Device Class 1.0 <https://www.usb.org/sites/default/files/midi10.pdf>`_       |
+ |                                 | `USB MIDI Device Class 1.0 <https://www.usb.org/sites/default/files/midi10.pdf>`_           |
  +---------------------------------+---------------------------------------------------------------------------------------------+
  |   Audio                         |   I2S/TDM                                                                                   |
  |                                 +---------------------------------------------------------------------------------------------+
