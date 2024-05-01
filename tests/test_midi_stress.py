@@ -30,7 +30,7 @@ from conftest import list_configs, get_config_features
 def midi_stress_uncollect(pytestconfig, board, config):
     features = get_config_features(board, config)
     xtag_ids = get_xtag_dut_and_harness(pytestconfig, board)
-    
+
     # XTAGs not present
     if not all(xtag_ids):
         return True
@@ -42,7 +42,7 @@ def midi_stress_uncollect(pytestconfig, board, config):
     if features["i2s_loopback"]:
         return True
 
-    if not features["midi"]
+    if not features["midi"]:
         return True
 
     return False

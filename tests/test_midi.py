@@ -25,10 +25,6 @@ input_midi_file_name = 'tools/midifiles/Bach.mid'
 output_midi_file_name = 'tools/midifiles/Bach_loopback.mid'
 
 
-def midi_common_uncollect(features, board, pytestconfig):
-
-
-
 def midi_loopback_uncollect(pytestconfig, board, config):
     features = get_config_features(board, config)
     xtag_ids = get_xtag_dut_and_harness(pytestconfig, board)
@@ -47,6 +43,7 @@ def midi_loopback_uncollect(pytestconfig, board, config):
 
     if not features["midi"]:
         return True
+
     return False
 
 
