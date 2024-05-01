@@ -26,8 +26,11 @@ from usb_audio_test_utils import (
 )
 from conftest import list_configs, get_config_features
 
-def midi_common_uncollect(features, board, pytestconfig):
+
+def midi_stress_uncollect(pytestconfig, board, config):
+    features = get_config_features(board, config)
     xtag_ids = get_xtag_dut_and_harness(pytestconfig, board)
+    
     # XTAGs not present
     if not all(xtag_ids):
         return True
@@ -38,14 +41,11 @@ def midi_common_uncollect(features, board, pytestconfig):
 
     if features["i2s_loopback"]:
         return True
+
+    if not features["midi"]
+        return True
+
     return False
-
-
-def midi_output_uncollect(pytestconfig, board, config):
-    features = get_config_features(board, config)
-    return any(
-        [not features["midi"], midi_common_uncollect(features, board, pytestconfig)]
-    )
 
 
 def midi_duration(level, partial):
@@ -58,7 +58,7 @@ def midi_duration(level, partial):
     return duration
 
 
-@pytest.mark.uncollect_if(func=midi_output_uncollect)
+@pytest.mark.uncollect_if(func=midi_stress_uncollect)
 @pytest.mark.parametrize(["board", "config"], list_configs())
 def test_midi_loopback_stress(pytestconfig, board, config):
     """
@@ -88,7 +88,7 @@ def test_midi_loopback_stress(pytestconfig, board, config):
                 adapter_harness, xscope="io"
             ) as harness,
             # Due to in and out in xsig config this streams audio in both directions for max stress
-            XsigInput(fs_audio, duration, xsig_config_path, dut.dev_name, ident=f"analogue_input-{board}-{config}-{fs_audio}") as xsig_proc_in
+            XsigInput(fs_audio, duration, xsig_config_path, dut.dev_name, ident=f"midi-stress-{board}-{config}-{fs_audio}") as xsig_proc_in
             ):
             
             with (mido.open_input(find_xmos_midi_device(mido.get_input_names())) as in_port,

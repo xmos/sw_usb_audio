@@ -26,6 +26,11 @@ output_midi_file_name = 'tools/midifiles/Bach_loopback.mid'
 
 
 def midi_common_uncollect(features, board, pytestconfig):
+
+
+
+def midi_loopback_uncollect(pytestconfig, board, config):
+    features = get_config_features(board, config)
     xtag_ids = get_xtag_dut_and_harness(pytestconfig, board)
 
     # Until we fix Jenkins user permissions for MIDI on Mac https://xmosjira.atlassian.net/browse/UA-254
@@ -39,15 +44,10 @@ def midi_common_uncollect(features, board, pytestconfig):
     # XTAGs not present
     if not all(xtag_ids):
         return True
+
+    if not features["midi"]:
+        return True
     return False
-
-
-def midi_loopback_uncollect(pytestconfig, board, config):
-    features = get_config_features(board, config)
-
-    return any(
-        [not features["midi"], midi_common_uncollect(features, board, pytestconfig)]
-    )
 
 
 def midi_duration(level, partial):
