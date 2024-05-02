@@ -130,7 +130,6 @@ def run_midi_test_file(input_midi_file_name, output_midi_file_name, in_port, out
     # Do binary diff on files
     assert filecmp.cmp(input_midi_file_name, output_midi_file_name), "MIDI Test failed - diff between input and output files"
 
-@pytest.mark.order(1) # Run first to avoid MIDI disappearing due to cahced devices on windows
 @pytest.mark.uncollect_if(func=midi_loopback_uncollect)
 @pytest.mark.parametrize(["board", "config"], list_configs())
 def test_midi_loopback(pytestconfig, board, config):

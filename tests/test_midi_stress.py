@@ -57,7 +57,6 @@ def midi_duration(level, partial):
         duration = 10
     return duration
 
-@pytest.mark.order(2) # Run at beginning to avoid MIDI disappearing due to cahced devices on windows
 @pytest.mark.uncollect_if(func=midi_stress_uncollect)
 @pytest.mark.parametrize(["board", "config"], list_configs())
 def test_midi_loopback_stress(pytestconfig, board, config):
