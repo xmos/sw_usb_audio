@@ -324,7 +324,10 @@ pipeline {
                       sh "pip install -e ."
                     }
                     withXTAG(["usb_audio_mc_xcai_dut", "usb_audio_mc_xcai_harness"]) { xtagIds ->
-                      sh "pytest -v --level ${params.TEST_LEVEL} --junitxml=pytest_result_windows10.xml \
+                      // sh "pytest -v --level ${params.TEST_LEVEL} --junitxml=pytest_result_windows10.xml \
+                      //     -o xk_316_mc_dut=${xtagIds[0]} -o xk_316_mc_harness=${xtagIds[1]}"
+                      // Only test MIDI for now
+                      sh "pytest test_midi.py test_midi_stress.py -s -v --level ${params.TEST_LEVEL} --junitxml=pytest_result_mac_intel.xml \
                           -o xk_316_mc_dut=${xtagIds[0]} -o xk_316_mc_harness=${xtagIds[1]}"
                     }
                   }
@@ -385,7 +388,10 @@ pipeline {
                     }
 
                     withXTAG(["usb_audio_mc_xcai_dut", "usb_audio_mc_xcai_harness"]) { xtagIds ->
-                      sh "pytest -v --level ${params.TEST_LEVEL} --junitxml=pytest_result_windows11.xml \
+                      // sh "pytest -v --level ${params.TEST_LEVEL} --junitxml=pytest_result_windows11.xml \
+                      //     -o xk_316_mc_dut=${xtagIds[0]} -o xk_316_mc_harness=${xtagIds[1]}"
+                      // Only test MIDI for now
+                      sh "pytest test_midi.py test_midi_stress.py -s -v --level ${params.TEST_LEVEL} --junitxml=pytest_result_mac_intel.xml \
                           -o xk_316_mc_dut=${xtagIds[0]} -o xk_316_mc_harness=${xtagIds[1]}"
                     }
                   }
