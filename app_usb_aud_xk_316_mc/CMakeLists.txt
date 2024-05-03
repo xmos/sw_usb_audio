@@ -30,7 +30,7 @@ set(APP_COMPILER_FLAGS_2ASi8o8xxxxxx_tdm8 ${SW_USB_AUDIO_FLAGS} -DCODEC_MASTER=1
                                                                 -DXUA_PCM_FORMAT=XUA_PCM_FORMAT_TDM
                                                                 -DMAX_FREQ=96000)
 
-set(APP_COMPILER_FLAGS_2AMi8o8mxxxxx ${SW_USB_AUDIO_FLAGS} -DMIDI=1 -DPID_AUDIO_2=0x0015)
+set(APP_COMPILER_FLAGS_2AMi8o8mxxxxx ${SW_USB_AUDIO_FLAGS} -DMIDI=1)
 
 set(APP_COMPILER_FLAGS_2AMi10o10xssxxx ${SW_USB_AUDIO_FLAGS} -DXUA_SPDIF_TX_EN=1
                                                              -DXUA_SPDIF_RX_EN=1)
