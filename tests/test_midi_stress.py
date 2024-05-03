@@ -7,6 +7,7 @@ import json
 import platform
 import mido
 
+
 from test_midi import (
     input_midi_file_name,
     output_midi_file_name,
