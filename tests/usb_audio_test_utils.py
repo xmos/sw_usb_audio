@@ -70,8 +70,7 @@ def query_device_found(name):
     return False
 
 
-def wait_for_portaudio(board, config, adapter_id):
-    timeout = 30
+def wait_for_portaudio(board, config, adapter_id, timeout=30):
     prod_str = product_str_from_board_config(board, config)
 
     for _ in range(timeout):
@@ -462,18 +461,19 @@ class XrunDut:
     software to use this particular device.
     """
 
-    def __init__(self, adapter_id, board, config):
+    def __init__(self, adapter_id, board, config, timeout=30):
         self.adapter_id = adapter_id
         self.board = board
         self.config = config
         features = get_config_features(board, config)
         self.pid = features["pid"]
         self.dev_name = None
+        self.timeout = timeout
 
     def __enter__(self):
         firmware = get_firmware_path(self.board, self.config)
-        subprocess.run(["xrun", "--adapter-id", self.adapter_id, firmware], timeout=30)
-        self.dev_name = wait_for_portaudio(self.board, self.config, self.adapter_id)
+        subprocess.run(["xrun", "--adapter-id", self.adapter_id, firmware], timeout=self.timeout)
+        self.dev_name = wait_for_portaudio(self.board, self.config, self.adapter_id, timeout=self.timeout)
         if platform.system() == "Windows" and use_windows_builtin_driver(
             self.board, self.config
         ):
