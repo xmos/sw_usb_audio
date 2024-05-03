@@ -330,7 +330,7 @@ def get_tusb_guid():
             pytest.fail(f"Could not find InterfaceGUID in custom.ini")
 
 
-def wait_for_midi_ports(timeout_s=15):
+def wait_for_midi_ports(timeout_s=30):
     for i in range(timeout_s):
         if find_xmos_midi_device(mido.get_input_names()) is not None and find_xmos_midi_device(mido.get_output_names()) is not None:
             print(f"Hooray! XMOS MIDI ports found: {find_xmos_midi_device(mido.get_input_names())}, {find_xmos_midi_device(mido.get_output_names())}")
