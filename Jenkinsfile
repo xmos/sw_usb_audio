@@ -324,15 +324,6 @@ pipeline {
                       sh "pip install -e ."
                     }
                     withXTAG(["usb_audio_mc_xcai_dut", "usb_audio_mc_xcai_harness"]) { xtagIds ->
-                      // // Only test MIDI first
-                      // sh "pytest -k \"MIDI\" -s -v --level ${params.TEST_LEVEL} --junitxml=pytest_result_mac_intel.xml \
-                      //     -o xk_316_mc_dut=${xtagIds[0]} -o xk_316_mc_harness=${xtagIds[1]}"
-
-                      // // Now test all others excluding MIDI
-                      // sh "pytest -k \"not MIDI\" -v --level ${params.TEST_LEVEL} --junitxml=pytest_result_windows10.xml \
-                      //     -o xk_316_mc_dut=${xtagIds[0]} -o xk_316_mc_harness=${xtagIds[1]}"
-
-                      // Test all
                       sh "pytest -v --level ${params.TEST_LEVEL} --junitxml=pytest_result_windows10.xml \
                           -o xk_316_mc_dut=${xtagIds[0]} -o xk_316_mc_harness=${xtagIds[1]}"
                     }
@@ -394,16 +385,6 @@ pipeline {
                     }
 
                     withXTAG(["usb_audio_mc_xcai_dut", "usb_audio_mc_xcai_harness"]) { xtagIds ->
-
-                      // // Only test MIDI first 
-                      // sh "pytest -k \"MIDI\" -s -v --level ${params.TEST_LEVEL} --junitxml=pytest_result_mac_intel.xml \
-                      //     -o xk_316_mc_dut=${xtagIds[0]} -o xk_316_mc_harness=${xtagIds[1]}"
-
-                      // // Now test all others excluding MIDI
-                      // sh "pytest -k \"not MIDI\" -v --level ${params.TEST_LEVEL} --junitxml=pytest_result_windows11.xml \
-                      //     -o xk_316_mc_dut=${xtagIds[0]} -o xk_316_mc_harness=${xtagIds[1]}"
-
-                      // Test all
                       sh "pytest -v --level ${params.TEST_LEVEL} --junitxml=pytest_result_windows10.xml \
                           -o xk_316_mc_dut=${xtagIds[0]} -o xk_316_mc_harness=${xtagIds[1]}"
                     }
