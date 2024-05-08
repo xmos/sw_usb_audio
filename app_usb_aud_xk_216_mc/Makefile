@@ -59,6 +59,17 @@ XCC_FLAGS_2ASi16o16xxxxxx_tdm8 = $(BUILD_FLAGS) -DI2S_CHANS_ADC=16 \
                                                 -DCODEC_MASTER=1 \
                                                 -DOUT_VOLUME_IN_MIXER=0
 
+# Audio Class 2, Async, I2S Master, 16xInput, 8xOutput, ADAT Rx
+INCLUDE_ONLY_IN_2AMi16o8xxxaxx =
+XCC_FLAGS_2AMi16o8xxxaxx = $(BUILD_FLAGS)       -DXUA_ADAT_RX_EN=1
+
+# Audio Class 2, Async, I2S Master, 16xInput, 8xOutput, ADAT Rx, sampling freq 44100 and 48000
+INCLUDE_ONLY_IN_2AMi16o8xxxaxx_44_48 =
+XCC_FLAGS_2AMi16o8xxxaxx_44_48 = $(BUILD_FLAGS) -DXUA_ADAT_RX_EN=1 \
+                                                -DMIN_FREQ=44100 \
+                                                -DMAX_FREQ=48000
+
+
 
 ifneq ($(CONFIG),)
 BUILD_TEST_CONFIGS = 1
