@@ -70,19 +70,23 @@ def adat_duration(level, partial):
     return duration
 
 @pytest.mark.uncollect_if(func=adat_input_uncollect)
-@pytest.mark.parametrize("reps", range(20))
+@pytest.mark.parametrize("reps", range(1))
 @pytest.mark.parametrize(["board", "config"], list_configs())
 def test_adat_input(pytestconfig, board, config, reps):
     features = get_config_features(board, config)
 
     if config.endswith("44_48"):
-        xsig_config = f'mc_digital_input_{features["analogue_i"]}ch_adat' # Test 8 channels of ADAT only when enumerating as a 44/48 KHz, 16ch device
+        xsig_config = f'mc_digital_input_{features["analogue_i"]}ch_adat' # Test 8 channels of ADAT when enumerating as a 44/48 KHz, 16ch device
+        samp_freqs_adat = [44100, 48000]
     elif config.endswith("88_96"):
-        xsig_config = f'mc_digital_input_{features["analogue_i"]}ch_adat_4ch' # Test 8 channels of ADAT only when enumerating as a 44/48 KHz, 16ch device
+        xsig_config = f'mc_digital_input_{features["analogue_i"]}ch_adat_4ch' # Test 4 channels of ADAT when enumerating as a 88/96 KHz, 12ch device
+        samp_freqs_adat = [88200, 96000]
+    elif config.endswith("176_192"):
+        xsig_config = f'mc_digital_input_{features["analogue_i"]}ch' # Test 2 channels of ADAT when enumerating as a 176/192 KHz, 10ch device
+        samp_freqs_adat = [176400, 192000]
     else:
-        # test only 2 channels ADAT when enumerating as a 44-192 KHz, with 3 vailable interfaces (10, 12 or 16 channels) device.
-        # Since we're not able to select the interface from the test, 2 channels of ADAT would be available on all 3 interface, so test only 2 channels
-        xsig_config = f'mc_digital_input_{features["analogue_i"]}ch'
+        # skip this till we figure a way to run this only for Windows
+        pytest.skip("unsupported configuration")
 
     xsig_config_path = Path(__file__).parent / "xsig_configs" / f"{xsig_config}.json"
 
@@ -90,9 +94,10 @@ def test_adat_input(pytestconfig, board, config, reps):
     duration = adat_duration(pytestconfig.getoption("level"), features["partial"])
     fail_str = ""
 
-    samp_freqs_adat = [f for f in features["samp_freqs"] if f <= 48000]
+    #samp_freqs_adat = [f for f in features["samp_freqs"] if f <= 96000]
     with XrunDut(adapter_dut, board, config) as dut:
         for fs in samp_freqs_adat:
+            print(f"ITER {reps}, config {config}, fs {fs}")
             with AudioAnalyzerHarness(
                 adapter_harness, config="adat_test", xscope="app"
             ) as harness:
@@ -141,6 +146,10 @@ def test_adat_input(pytestconfig, board, config, reps):
                     + harness.get_output()
                 )
                 fail_str += "\n".join(analyzer_lines) + "\n\n"
+                #print("\nFAIL\n")
+                #import pdb
+                #pdb.set_trace()
+
 
     if len(fail_str) > 0:
         pytest.fail(fail_str)

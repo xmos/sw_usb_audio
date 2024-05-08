@@ -42,9 +42,21 @@ XCC_FLAGS_2AMi10o8xsxxxx = $(BUILD_FLAGS) 		-DXUA_SPDIF_RX_EN=1
 INCLUDE_ONLY_IN_2AMi16o8xxxaxx =
 XCC_FLAGS_2AMi16o8xxxaxx = $(BUILD_FLAGS) 		-DXUA_ADAT_RX_EN=1
 INCLUDE_ONLY_IN_2AMi16o8xxxaxx_44_48 =
-XCC_FLAGS_2AMi16o8xxxaxx_44_48 = $(BUILD_FLAGS) 		-DXUA_ADAT_RX_EN=1 \
+XCC_FLAGS_2AMi16o8xxxaxx_44_48 = $(BUILD_FLAGS) 	-DXUA_ADAT_RX_EN=1 \
                                                     -DMIN_FREQ=44100 \
                                                     -DMAX_FREQ=48000
+
+INCLUDE_ONLY_IN_2AMi12o8xxxaxx_88_96 =
+XCC_FLAGS_2AMi12o8xxxaxx_88_96 = $(BUILD_FLAGS) 	-DXUA_ADAT_RX_EN=1 \
+                                                    -DMIN_FREQ=88200 \
+                                                    -DMAX_FREQ=96000 \
+                                                    -DNUM_USB_CHAN_IN=12
+
+INCLUDE_ONLY_IN_2AMi10o8xxxaxx_176_192 =
+XCC_FLAGS_2AMi10o8xxxaxx_176_192 = $(BUILD_FLAGS) 	-DXUA_ADAT_RX_EN=1 \
+                                                    -DMIN_FREQ=176400 \
+                                                    -DMAX_FREQ=192000 \
+                                                    -DNUM_USB_CHAN_IN=10
 
 # Audio Class 2, Async, I2S master, 8xInput, 16xOutput, ADAT Tx
 INCLUDE_ONLY_IN_2AMi8o16xxxxax =
