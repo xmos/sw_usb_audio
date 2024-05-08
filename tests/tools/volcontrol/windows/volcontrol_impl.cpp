@@ -188,6 +188,45 @@ void setClock(AudioDeviceHandle deviceID, uint32_t clockId)
     }
 }
 
+// Maximum number of formats supported by TUSB SDK
+#define MAX_FORMAT_COUNT   (32)
+
+void setStreamFormat(AudioDeviceHandle deviceID, uint32_t scope, int sample_rate, unsigned num_chans, unsigned bit_depth)
+{
+    // Windows implementation doesn't set the sample rate
+    (void)sample_rate;
+
+    TUsbAudioStatus err;
+    TUsbAudioStreamFormat formats[MAX_FORMAT_COUNT];
+    unsigned num_formats;
+
+    err = gDrvApi.TUSBAUDIO_GetSupportedStreamFormats(deviceID, scope == ScopeInput, MAX_FORMAT_COUNT, formats, &num_formats);
+    if (0 != err) {
+        printf("Error: failed to get supported stream formats, error %d\n", err);
+        exit(1);
+    }
+
+    unsigned i, format_id;
+    for (i = 0; i < num_formats; ++i) {
+        if ((formats[i].numberOfChannels == num_chans) &&
+            (formats[i].bitsPerSample == bit_depth))
+        {
+            format_id = formats[i].formatId;
+            break;
+        }
+    }
+    if (i == num_formats) {
+        printf("Error: no format matching %u channels with %u bit resolution\n", num_chans, bit_depth);
+        exit(1);
+    }
+
+    err = gDrvApi.TUSBAUDIO_SetCurrentStreamFormat(deviceID, scope == ScopeInput, format_id);
+    if (0 != err) {
+        printf("Error %d setting stream format\n", err);
+        exit(1);
+    }
+}
+
 AudioDeviceHandle getXMOSDeviceID(TCHAR guid[GUID_STR_LEN])
 {
     TUsbAudioStatus st;

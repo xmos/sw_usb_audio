@@ -13,6 +13,9 @@ struct volcontrol {
   int channel_index;
   float volume;
   uint32_t clock_src;
+  int sample_rate;
+  unsigned num_chans;
+  unsigned bit_depth;
 #ifdef _WIN32
   TCHAR driver_guid[GUID_STR_LEN];
 #endif
@@ -25,6 +28,7 @@ void help(void) {
     printf("  --set [input|output] channel_index volume   Set volume of channel index\n");
     printf("  --showall                    Show all volumes\n");
     printf("  --clock < \"Internal\" | \"SPDIF\" | \"ADAT\" >\n");
+    printf("  --set-format [input|output] <sample-rate> <num-channels> <bit-depth>\n");
 #ifdef _WIN32
     printf("  -g<GUID>      Driver GUID string, eg. -g{E5A2658B-817D-4A02-A1DE-B628A93DDF5D}\n");
 #endif
@@ -129,6 +133,46 @@ int main(int argc, char const* argv[])
             }
             ++i;
         }
+        else if (strcmp(argv[i], "--set-format") == 0) {
+            ++i;
+            v.op = SET_STREAM_FORMAT;
+            if (i >= argc) {
+                help();
+            }
+
+            if (strcmp(argv[i], "input") == 0) {
+                ++i;
+                v.scope = ScopeInput;
+            }
+            else if (strcmp(argv[i], "output") == 0) {
+                ++i;
+                v.scope = ScopeOutput;
+            }
+            else {
+                help();
+            }
+
+            if (i >= argc) {
+                help();
+            }
+
+            v.sample_rate = atoi(argv[i]);
+            ++i;
+
+            if (i >= argc) {
+                help();
+            }
+
+            v.num_chans = atoi(argv[i]);
+            ++i;
+
+            if (i >= argc) {
+                help();
+            }
+
+            v.bit_depth = atoi(argv[i]);
+            ++i;
+        }
 #ifdef _WIN32
         else if (strncmp(argv[i], "-g", 2) == 0) {
             const char *str_ptr;
@@ -179,6 +223,10 @@ int main(int argc, char const* argv[])
 
         case SET_CLOCK:
             setClock(deviceID, v.clock_src);
+            break;
+
+        case SET_STREAM_FORMAT:
+            setStreamFormat(deviceID, v.scope, v.sample_rate, v.num_chans, v.bit_depth);
             break;
     }
 

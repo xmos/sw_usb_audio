@@ -1,6 +1,8 @@
 #include <volcontrol.h>
 #import <AudioToolbox/AudioServices.h>
 
+#include <string.h>
+
 const char *gClockNameString[3] =
 {
   "Internal",
@@ -257,6 +259,52 @@ void setClock(AudioDeviceHandle deviceID, uint32_t clockId)
   }
   // Looks like clock not found
   printf("Clock source '%s' not found\n", gClockNameString[clockId - 1]);
+  exit(1);
+}
+
+void setStreamFormat(AudioDeviceHandle deviceID, uint32_t scope, int sample_rate, unsigned num_chans, unsigned bit_depth) {
+  UInt32 size;
+  int err = AudioDeviceGetPropertyInfo(deviceID, 0, scope == ScopeInput, kAudioDevicePropertyStreamFormats, &size, NULL);
+  if (kAudioHardwareNoError != err) {
+    printf("Error: failed to get supported stream formats, error %d\n", err);
+    exit(1);
+  }
+
+  int num_formats = size / sizeof(AudioStreamBasicDescription);
+  AudioStreamBasicDescription *descs = (AudioStreamBasicDescription *)calloc(num_formats, sizeof(AudioStreamBasicDescription));
+  if (!descs) {
+    printf("Error: failed to allocate memory for supported stream formats\n");
+    exit(1);
+  }
+
+  err = AudioDeviceGetProperty(deviceID, 0, scope == ScopeInput, kAudioDevicePropertyStreamFormats, &size, descs);
+  if (kAudioHardwareNoError != err) {
+    printf("Error: failed to populate supported stream format data, error %d\n", err);
+    goto err_free;
+  }
+
+  int i;
+  for (i = 0; i < num_formats; ++i) {
+    if (((int)descs[i].mSampleRate == sample_rate) && (descs[i].mChannelsPerFrame == num_chans) && (descs[i].mBitsPerChannel == bit_depth)) {
+      break;
+    }
+  }
+  if (i == num_formats) {
+    printf("Error: no supported format matching %d channels, %d bit resolution at sample rate %d\n", num_chans, bit_depth, sample_rate);
+    goto err_free;
+  }
+
+  err = AudioDeviceSetProperty(deviceID, 0, 0, scope == ScopeInput, kAudioDevicePropertyStreamFormat, sizeof(AudioStreamBasicDescription), &descs[i]);
+  if (kAudioHardwareNoError != err) {
+    printf("Error: failed to set stream format, error %d\n", err);
+    goto err_free;
+  }
+
+  free(descs);
+  return;
+
+err_free:
+  free(descs);
   exit(1);
 }
 
