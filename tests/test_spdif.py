@@ -77,7 +77,9 @@ def spdif_duration(level, partial):
 def test_spdif_input(pytestconfig, board, config):
     features = get_config_features(board, config)
 
-    xsig_config = f'mc_digital_input_{features["analogue_i"]}ch'
+    num_dig_in_channels = features["chan_i"] - features["analogue_i"]
+
+    xsig_config = f'mc_digital_input_analog_{features["analogue_i"]}ch_dig_{num_dig_in_channels}ch'
     xsig_config_path = Path(__file__).parent / "xsig_configs" / f"{xsig_config}.json"
 
     adapter_dut, adapter_harness = get_xtag_dut_and_harness(pytestconfig, board)

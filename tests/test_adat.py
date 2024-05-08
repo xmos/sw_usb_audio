@@ -75,17 +75,11 @@ def adat_duration(level, partial):
 def test_adat_input(pytestconfig, board, config, reps):
     features = get_config_features(board, config)
 
-    if config.endswith("44_48"):
-        xsig_config = f'mc_digital_input_{features["analogue_i"]}ch_adat' # Test 8 channels of ADAT when enumerating as a 44/48 KHz, 16ch device
-        samp_freqs_adat = [44100, 48000]
-    elif config.endswith("88_96"):
-        xsig_config = f'mc_digital_input_{features["analogue_i"]}ch_adat_4ch' # Test 4 channels of ADAT when enumerating as a 88/96 KHz, 12ch device
-        samp_freqs_adat = [88200, 96000]
-    elif config.endswith("176_192"):
-        xsig_config = f'mc_digital_input_{features["analogue_i"]}ch' # Test 2 channels of ADAT when enumerating as a 176/192 KHz, 10ch device
-        samp_freqs_adat = [176400, 192000]
-    else:
-        # skip this till we figure a way to run this only for Windows
+    num_dig_in_channels = features["chan_i"] - features["analogue_i"]
+
+    xsig_config = f'mc_digital_input_analog_{features["analogue_i"]}ch_dig_{num_dig_in_channels}ch'
+
+    if not (config.endswith("44_48") or config.endswith("88_96") or config.endswith("176_192")):
         pytest.skip("unsupported configuration")
 
     xsig_config_path = Path(__file__).parent / "xsig_configs" / f"{xsig_config}.json"
@@ -96,7 +90,7 @@ def test_adat_input(pytestconfig, board, config, reps):
 
     #samp_freqs_adat = [f for f in features["samp_freqs"] if f <= 96000]
     with XrunDut(adapter_dut, board, config) as dut:
-        for fs in samp_freqs_adat:
+        for fs in features["samp_freqs"]:
             print(f"ITER {reps}, config {config}, fs {fs}")
             with AudioAnalyzerHarness(
                 adapter_harness, config="adat_test", xscope="app"
