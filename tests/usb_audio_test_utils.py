@@ -154,7 +154,7 @@ def check_analyzer_output(analyzer_output, xsig_config):
                 )
                 continue
 
-            initial_volume = int(vol_changes.pop(0))
+            _ = int(vol_changes.pop(0))
             initial_change = int(vol_changes.pop(0))
             if initial_change >= 0:
                 failures.append(
@@ -324,7 +324,7 @@ def get_tusb_guid():
             guid = config.get("DriverInterface", "InterfaceGUID")
             return guid
         except (configparser.NoSectionError, configparser.NoOptionError):
-            pytest.fail(f"Could not find InterfaceGUID in custom.ini")
+            pytest.fail("Could not find InterfaceGUID in custom.ini")
 
 
 def stream_format_setup(direction, samp_freq, num_chans, bit_depth):

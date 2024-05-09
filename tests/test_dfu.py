@@ -4,7 +4,6 @@ import platform
 import pytest
 import subprocess
 import time
-import tempfile
 import os
 import re
 import stat

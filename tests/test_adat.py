@@ -1,21 +1,15 @@
 # Copyright (c) 2022, XMOS Ltd, All rights reserved
 from pathlib import Path
 import pytest
-import subprocess
 import time
 import json
-import platform
 
 from usb_audio_test_utils import (
     check_analyzer_output,
     get_xtag_dut_and_harness,
-    get_volcontrol_path,
-    get_xscope_controller_path,
-    get_tusb_guid,
     stream_format_setup,
     AudioAnalyzerHarness,
     XrunDut,
-    XsigInput,
     XsigOutput,
 )
 from conftest import list_configs, get_config_features
