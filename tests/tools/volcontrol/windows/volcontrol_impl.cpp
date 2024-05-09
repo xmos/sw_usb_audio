@@ -191,11 +191,11 @@ void setClock(AudioDeviceHandle deviceID, uint32_t clockId)
 // Maximum number of formats supported by TUSB SDK
 #define MAX_FORMAT_COUNT   (32)
 
-void setStreamFormat(AudioDeviceHandle deviceID, uint32_t scope, int sample_rate, unsigned num_chans, unsigned bit_depth)
-{
-    // Windows implementation doesn't set the sample rate
-    (void)sample_rate;
+// Maximum number of supported sample frequencies
+#define MAX_SUPPORTED_SAMP_FREQS  (6)
 
+void setStreamFormat(AudioDeviceHandle deviceID, uint32_t scope, unsigned sample_rate, unsigned num_chans, unsigned bit_depth)
+{
     TUsbAudioStatus err;
     TUsbAudioStreamFormat formats[MAX_FORMAT_COUNT];
     unsigned num_formats;
@@ -222,7 +222,32 @@ void setStreamFormat(AudioDeviceHandle deviceID, uint32_t scope, int sample_rate
 
     err = gDrvApi.TUSBAUDIO_SetCurrentStreamFormat(deviceID, scope == ScopeInput, format_id);
     if (0 != err) {
-        printf("Error %d setting stream format\n", err);
+        printf("Error: failed to set the stream format, error %d\n", err);
+        exit(1);
+    }
+
+    unsigned samp_freqs[MAX_SUPPORTED_SAMP_FREQS];
+    unsigned num_samp_freqs;
+    err = gDrvApi.TUSBAUDIO_GetSupportedSampleRates(deviceID, MAX_SUPPORTED_SAMP_FREQS, samp_freqs, &num_samp_freqs);
+    if (0 != err) {
+        printf("Error: failed to get supported sample rates, error %d\n", err);
+        exit(1);
+    }
+
+    unsigned j;
+    for (j = 0; j < num_samp_freqs; ++j) {
+        if (sample_rate == samp_freqs[j]) {
+            break;
+        }
+    }
+    if (j == num_samp_freqs) {
+        printf("Error: sample rate %u not supported\n", sample_rate);
+        exit(1);
+    }
+
+    err = gDrvApi.TUSBAUDIO_SetSampleRate(deviceID, sample_rate);
+    if (0 != err) {
+        printf("Error: failed to set the sample rate, error %d\n", err);
         exit(1);
     }
 }

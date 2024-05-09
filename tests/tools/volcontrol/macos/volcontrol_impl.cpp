@@ -262,7 +262,7 @@ void setClock(AudioDeviceHandle deviceID, uint32_t clockId)
   exit(1);
 }
 
-void setStreamFormat(AudioDeviceHandle deviceID, uint32_t scope, int sample_rate, unsigned num_chans, unsigned bit_depth) {
+void setStreamFormat(AudioDeviceHandle deviceID, uint32_t scope, unsigned sample_rate, unsigned num_chans, unsigned bit_depth) {
   UInt32 size;
   int err = AudioDeviceGetPropertyInfo(deviceID, 0, scope == ScopeInput, kAudioDevicePropertyStreamFormats, &size, NULL);
   if (kAudioHardwareNoError != err) {
@@ -285,12 +285,12 @@ void setStreamFormat(AudioDeviceHandle deviceID, uint32_t scope, int sample_rate
 
   int i;
   for (i = 0; i < num_formats; ++i) {
-    if (((int)descs[i].mSampleRate == sample_rate) && (descs[i].mChannelsPerFrame == num_chans) && (descs[i].mBitsPerChannel == bit_depth)) {
+    if (((unsigned)descs[i].mSampleRate == sample_rate) && (descs[i].mChannelsPerFrame == num_chans) && (descs[i].mBitsPerChannel == bit_depth)) {
       break;
     }
   }
   if (i == num_formats) {
-    printf("Error: no supported format matching %d channels, %d bit resolution at sample rate %d\n", num_chans, bit_depth, sample_rate);
+    printf("Error: no supported format matching %u channels, %u bit resolution at sample rate %u\n", num_chans, bit_depth, sample_rate);
     goto err_free;
   }
 

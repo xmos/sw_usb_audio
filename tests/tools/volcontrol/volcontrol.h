@@ -33,7 +33,7 @@ void setVolume(AudioDeviceHandle deviceID, uint32_t scope,
 
 void setClock(AudioDeviceHandle deviceID, uint32_t clockId);
 
-void setStreamFormat(AudioDeviceHandle deviceID, uint32_t scope, int sample_rate, unsigned num_chans, unsigned bit_depth);
+void setStreamFormat(AudioDeviceHandle deviceID, uint32_t scope, unsigned sample_rate, unsigned num_chans, unsigned bit_depth);
 
 void finish(void);
 #endif  // _volcontrol_h_
