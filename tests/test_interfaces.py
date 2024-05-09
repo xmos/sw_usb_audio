@@ -32,22 +32,24 @@ class interface_control:
 
         return result.returncode
 
+# Determine what interfaces we would expect from the FW
 def get_expected_interfaces(direction, features):
     if direction == "input":
         if "adat_i" in features:
-            interfaces = [
-            ]
+            interfaces = [  [direction, features["chan_i"] - 0, 24],
+                            [direction, features["chan_i"] - 4, 24],
+                            [direction, features["chan_i"] - 6, 24] ]
         else:
-            interfaces = [
-            ]
+            interfaces = [  [direction, features["chan_i"], 24],
+                            [direction, features["chan_i"], 16] ]
 
     elif direction == "output":
         if "adat_o" in features:
-            interfaces = [
-            ]
+            interfaces = [  [direction, features["chan_o"] - 0, 24],
+                            [direction, features["chan_o"] - 4, 24],
+                            [direction, features["chan_o"] - 6, 24] ]
         else:
-            interfaces = [
-            ]
+            interfaces = [  [direction, features["chan_o"], 24]]
     else:
         assert 0, f"Invalid direction sent: {direction}"
     
@@ -83,17 +85,16 @@ def test_interfaces(pytestconfig, board, config):
         AudioAnalyzerHarness(adapter_harness),
     ):
         for direction in ("input", "output"):
-        stream_format_setup("input", fs, features["chan_i"], 24)
+            expected_interfaces = get_expected_interfaces(direction, features)
 
-        if_ctrl = interface_control()
-        expected_interfaces = get_expected_interfaces(direction, features)
+            stream_format_setup("input", fs, features["chan_i"], 24)
 
-        # failures = check_analyzer_output(xsig_lines, xsig_json["in"])
-        # if len(failures) > 0:
-        #     fail_str += f"Failure for channel {channel}\n"
-        #     fail_str += "\n".join(failures) + "\n\n"
-        #     fail_str += f"xsig stdout for channel {channel}\n"
-        #     fail_str += "\n".join(xsig_lines) + "\n\n"
+            if_ctrl = interface_control()
+            for expected_if in expected_interfaces:
+                result = if_ctrl.set(*expected_interface)
+
+                if result != 0:
+                    fail_str += f"Failure selecting: {expected_if} in firmware: {config}\n"
 
     if len(fail_str) > 0:
         pytest.fail(fail_str)
