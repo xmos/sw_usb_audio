@@ -8,6 +8,7 @@ import platform
 from usb_audio_test_utils import (
     check_analyzer_output,
     get_xtag_dut_and_harness,
+    stream_format_setup,
     AudioAnalyzerHarness,
     XrunDut,
     XsigInput,
@@ -99,6 +100,7 @@ def test_analogue_input(pytestconfig, board, config):
         AudioAnalyzerHarness(adapter_harness),
     ):
         for fs in features["samp_freqs"]:
+            stream_format_setup("input", fs, features["chan_i"], 24)
             with XsigInput(fs, duration, xsig_config_path, dut.dev_name, ident=f"analogue_input-{board}-{config}-{fs}") as xsig_proc:
                 # Sleep for a few extra seconds so that xsig will have completed
                 time.sleep(duration + 6)
@@ -145,6 +147,8 @@ def test_analogue_output(pytestconfig, board, config):
                 and fs in [44100, 48000]
             ):
                 continue
+
+            stream_format_setup("output", fs, features["chan_o"], 24)
 
             with (
                 AudioAnalyzerHarness(adapter_harness, xscope="io") as harness,

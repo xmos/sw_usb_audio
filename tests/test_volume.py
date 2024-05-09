@@ -13,6 +13,7 @@ from usb_audio_test_utils import (
     get_volcontrol_path,
     get_xscope_controller_path,
     get_tusb_guid,
+    stream_format_setup,
     AudioAnalyzerHarness,
     XrunDut,
     XsigInput,
@@ -81,6 +82,8 @@ def test_volume_input(pytestconfig, board, config):
         XrunDut(adapter_dut, board, config) as dut,
         AudioAnalyzerHarness(adapter_harness),
     ):
+        stream_format_setup("input", fs, features["chan_i"], 24)
+
         for channel in test_chans:
             channels = range(num_chans) if channel == "m" else [channel]
 
@@ -156,6 +159,8 @@ def test_volume_output(pytestconfig, board, config):
     fail_str = ""
 
     with XrunDut(adapter_dut, board, config) as dut:
+        stream_format_setup("output", fs, features["chan_o"], 24)
+
         for channel in test_chans:
             channels = range(num_chans) if channel == "m" else [channel]
 

@@ -9,6 +9,7 @@ from usb_audio_test_utils import (
     check_analyzer_output,
     get_xtag_dut_and_harness,
     get_tusb_guid,
+    stream_format_setup,
     AudioAnalyzerHarness,
     XrunDut,
     XsigInput,
@@ -61,6 +62,8 @@ def test_routing_ctrl_input(pytestconfig, ctrl_app, board, config):
         XrunDut(adapter_dut, board, config) as dut,
         AudioAnalyzerHarness(adapter_harness),
     ):
+        stream_format_setup("input", fs, features["chan_i"], 24)
+
         # Route analogue inputs 0, 1, ..., N to host inputs N, N-1, ..., 0 respectively
         num_chans = features["analogue_i"]
         for ch in range(num_chans):
@@ -104,6 +107,8 @@ def test_routing_ctrl_output(pytestconfig, ctrl_app, board, config):
         XrunDut(adapter_dut, board, config) as dut,
         AudioAnalyzerHarness(adapter_harness, xscope="io") as harness,
     ):
+        stream_format_setup("output", fs, features["chan_o"], 24)
+
         # Route host outputs 0, 1, ..., N to analogue outputs N, N-1, ..., 0 respectively
         num_chans = features["analogue_o"]
         for ch in range(num_chans):
@@ -150,6 +155,8 @@ def test_mixing_ctrl_input(pytestconfig, ctrl_app, board, config):
         XrunDut(adapter_dut, board, config) as dut,
         AudioAnalyzerHarness(adapter_harness),
     ):
+        stream_format_setup("input", fs, features["chan_i"], 24)
+
         num_mixes = 8
         num_chans = features["analogue_i"]
         if num_chans > num_mixes:
@@ -217,6 +224,8 @@ def test_mixing_ctrl_output(pytestconfig, ctrl_app, board, config):
         XrunDut(adapter_dut, board, config) as dut,
         AudioAnalyzerHarness(adapter_harness, xscope="io") as harness,
     ):
+        stream_format_setup("output", fs, features["chan_o"], 24)
+
         num_mixes = 8
         num_chans = features["analogue_o"]
         if num_chans > num_mixes:
@@ -284,6 +293,8 @@ def test_mixing_multi_channel_output(pytestconfig, ctrl_app, board, config):
         XrunDut(adapter_dut, board, config) as dut,
         AudioAnalyzerHarness(adapter_harness, xscope="io") as harness,
     ):
+        stream_format_setup("output", fs, features["chan_o"], 24)
+
         num_mixes = 8
         num_chans = features["analogue_o"]
         if num_chans > num_mixes:
@@ -364,6 +375,8 @@ def test_routing_daw_out_mix_input(pytestconfig, ctrl_app, board, config):
         XrunDut(adapter_dut, board, config) as dut,
         AudioAnalyzerHarness(adapter_harness, xscope="io") as harness,
     ):
+        stream_format_setup("output", fs, features["chan_o"], 24)
+
         num_mixes = 8
         num_chans = features["analogue_i"]
         if num_chans > num_mixes:

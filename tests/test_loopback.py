@@ -8,6 +8,7 @@ import platform
 from usb_audio_test_utils import (
     check_analyzer_output,
     get_xtag_dut,
+    stream_format_setup,
     XrunDut,
     XsigInput,
 )
@@ -72,6 +73,10 @@ def test_loopback_dac(pytestconfig, board, config):
                 and fs in [44100, 48000]
             ):
                 continue
+
+            stream_format_setup("input", fs, features["chan_i"], 24)
+            stream_format_setup("output", fs, features["chan_o"], 24)
+
             with XsigInput(fs, duration, xsig_config_path, dut.dev_name) as xsig_proc:
                 time.sleep(duration + 6)
                 xsig_lines = xsig_proc.get_output()

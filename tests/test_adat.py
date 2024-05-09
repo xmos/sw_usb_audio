@@ -12,6 +12,7 @@ from usb_audio_test_utils import (
     get_volcontrol_path,
     get_xscope_controller_path,
     get_tusb_guid,
+    stream_format_setup,
     AudioAnalyzerHarness,
     XrunDut,
     XsigInput,
@@ -68,6 +69,7 @@ def test_adat_output(pytestconfig, board, config):
     fs_adat = [fs for fs in features["samp_freqs"] if fs <= 48000]
     with XrunDut(adapter_dut, board, config) as dut:
         for fs in fs_adat:
+            stream_format_setup("output", fs, features["chan_o"], 24)
             with (
                 AudioAnalyzerHarness(
                     adapter_harness, config="adat_test", xscope="io"
