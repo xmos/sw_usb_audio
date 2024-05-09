@@ -55,6 +55,12 @@ XCC_FLAGS_2AMi12o8xxxaxx_88_96 = $(BUILD_FLAGS) 	-DXUA_ADAT_RX_EN=1 \
                                                     -DMAX_FREQ=96000 \
                                                     -DNUM_USB_CHAN_IN=12
 
+INCLUDE_ONLY_IN_2AMi10o8xxxaxx_176_192 =
+XCC_FLAGS_2AMi10o8xxxaxx_176_192 = $(BUILD_FLAGS) 	-DXUA_ADAT_RX_EN=1 \
+                                                    -DMIN_FREQ=176400 \
+                                                    -DMAX_FREQ=192000 \
+                                                    -DNUM_USB_CHAN_IN=10
+
 # Audio Class 2, Sync, I2S Master, 8xInput, 8xOutput
 INCLUDE_ONLY_IN_2SMi8o8xxxxxx =
 XCC_FLAGS_2SMi8o8xxxxxx = $(BUILD_FLAGS)		-DXUA_SYNCMODE=XUA_SYNCMODE_SYNC

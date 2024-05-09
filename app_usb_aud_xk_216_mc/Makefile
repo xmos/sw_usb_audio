@@ -76,6 +76,13 @@ XCC_FLAGS_2AMi12o8xxxaxx_88_96 = $(BUILD_FLAGS) -DXUA_ADAT_RX_EN=1 \
                                                 -DMAX_FREQ=96000 \
 												-DNUM_USB_CHAN_IN=12
 
+# Audio Class 2, Async, I2S Master, 12xInput, 8xOutput, ADAT Rx, sampling freq 176400 and 192000
+INCLUDE_ONLY_IN_2AMi10o8xxxaxx_176_192 =
+XCC_FLAGS_2AMi10o8xxxaxx_176_192 = $(BUILD_FLAGS) -DXUA_ADAT_RX_EN=1 \
+                                                -DMIN_FREQ=176400 \
+                                                -DMAX_FREQ=192000 \
+												-DNUM_USB_CHAN_IN=10
+
 ifneq ($(CONFIG),)
 BUILD_TEST_CONFIGS = 1
 endif
