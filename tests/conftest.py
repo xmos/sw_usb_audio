@@ -85,12 +85,6 @@ def parse_features(board, config):
             features["samp_freqs"] = samp_freqs_upto(48000)
         else:
             features["samp_freqs"] = samp_freqs_upto(96000)
-    elif config.endswith("44_48"):
-        features["samp_freqs"] = [44100, 48000]
-    elif config.endswith("88_96"):
-        features["samp_freqs"] = [88200, 96000]
-    elif config.endswith("176_192"):
-        features["samp_freqs"] = [176400, 192000]
     elif features["chan_i"] >= 32 or features["chan_o"] >= 32:
         features["samp_freqs"] = samp_freqs_upto(48000)
     elif features["chan_i"] >= 16 or features["chan_o"] >= 16:
