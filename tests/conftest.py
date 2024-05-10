@@ -50,7 +50,7 @@ def parse_features(board, config):
     for k in ["midi", "spdif_i", "spdif_o", "adat_i", "adat_o", "dsd", "tdm8"]:
         features[k] = features[k] not in ["", "x"]
 
-    if not features["uac"] in [1, 2]:
+    if features["uac"] not in [1, 2]:
         pytest.exit(f"Error: Invalid UAC in {config}")
 
     if board == "xk_216_mc":
@@ -62,7 +62,7 @@ def parse_features(board, config):
         if config.startswith("1"):
             features["pid"] = 0x17
         else:
-            features["pid"] = 0x16 if not "_winbuiltin" in config else 0x1a
+            features["pid"] = 0x16 if "_winbuiltin" not in config else 0x1a
     elif board == "xk_evk_xu316":
         if config.startswith("1"):
             features["pid"] = 0x19

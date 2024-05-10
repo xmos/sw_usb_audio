@@ -19,10 +19,6 @@ INCLUDE_ONLY_IN_2ASi8o8xxxxxx =
 XCC_FLAGS_2AMi8o10xxsxxx = $(BUILD_FLAGS)       -DXUA_SPDIF_TX_EN=1
 INCLUDE_ONLY_IN_2AMi8o10xxsxxx =
 
-# Audio Class 2, Async, I2S Master, 8xInput, 10xOutput, MIDI, S/PDIF Tx
-INCLUDE_ONLY_IN_2AMi8o10mxsxxx =
-XCC_FLAGS_2AMi8o10mxsxxx = $(BUILD_FLAGS) 		-DMIDI=1 \
-												-DXUA_SPDIF_TX_EN=1
 
 # Audio Class 2, Async, I2S Master, 8xInput, 8xOutput, DSD
 INCLUDE_ONLY_IN_2AMi8o8xxxxxd =
@@ -60,7 +56,6 @@ XCC_FLAGS_2AMi10o8xxxaxx_176_192 = $(BUILD_FLAGS) 	-DXUA_ADAT_RX_EN=1 \
                                                     -DMIN_FREQ=176400 \
                                                     -DMAX_FREQ=192000 \
                                                     -DNUM_USB_CHAN_IN=10
-
 # Audio Class 2, Sync, I2S Master, 8xInput, 8xOutput
 INCLUDE_ONLY_IN_2SMi8o8xxxxxx =
 XCC_FLAGS_2SMi8o8xxxxxx = $(BUILD_FLAGS)		-DXUA_SYNCMODE=XUA_SYNCMODE_SYNC

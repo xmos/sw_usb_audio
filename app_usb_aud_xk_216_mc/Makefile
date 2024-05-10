@@ -47,6 +47,11 @@ XCC_FLAGS_2ASi10o10xssxxx = $(BUILD_FLAGS)      -DXUA_SPDIF_RX_EN=1 \
                                                 -DXUA_SPDIF_TX_EN=1 \
                                                 -DCODEC_MASTER=1
 
+# Audio Class 2, Async, I2S Master, 8xInput, 10xOutput, MIDI, S/PDIF Tx
+INCLUDE_ONLY_IN_2AMi8o10mxsxxx =  
+XCC_FLAGS_2AMi8o10mxsxxx = $(BUILD_FLAGS) 		-DMIDI=1 \
+												-DXUA_SPDIF_TX_EN=1
+
 # Audio Class 2, Async, I2S Slave, 16xInput 16xOutput (TDM)
 # Note, TDM requires more MIPs than I2S so we do volume processin in the decouple task
 INCLUDE_ONLY_IN_2ASi16o16xxxxxx_tdm8 =

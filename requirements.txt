@@ -2,3 +2,5 @@
 # pip_version 23.0.1
 
 pytest==7.1.2
+python-rtmidi==1.5.8
+mido==1.3.2

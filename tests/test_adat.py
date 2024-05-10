@@ -1,9 +1,9 @@
 # Copyright (c) 2022, XMOS Ltd, All rights reserved
 from pathlib import Path
 import pytest
-import subprocess
 import time
 import json
+import subprocess
 import platform
 
 from usb_audio_test_utils import (
@@ -75,15 +75,6 @@ def adat_duration(level, partial):
 def test_adat_input(pytestconfig, board, config, reps):
     features = get_config_features(board, config)
 
-    num_dig_in_channels = features["chan_i"] - features["analogue_i"]
-
-    xsig_config = f'mc_digital_input_analog_{features["analogue_i"]}ch_dig_{num_dig_in_channels}ch'
-
-    if not (config.endswith("44_48") or config.endswith("88_96") or config.endswith("176_192")):
-        pytest.skip("unsupported configuration")
-
-    xsig_config_path = Path(__file__).parent / "xsig_configs" / f"{xsig_config}.json"
-
     adapter_dut, adapter_harness = get_xtag_dut_and_harness(pytestconfig, board)
     duration = adat_duration(pytestconfig.getoption("level"), features["partial"])
     fail_str = ""
@@ -91,7 +82,22 @@ def test_adat_input(pytestconfig, board, config, reps):
     #samp_freqs_adat = [f for f in features["samp_freqs"] if f <= 96000]
     with XrunDut(adapter_dut, board, config) as dut:
         for fs in features["samp_freqs"]:
-            print(f"ITER {reps}, config {config}, fs {fs}")
+            assert features["analogue_i"] == 8
+            if fs <= 48000:
+                num_in_channels = 16
+            elif fs <= 96000:
+                num_in_channels = 12
+            else:
+                num_in_channels = 10
+
+            num_dig_in_channels = num_in_channels - features["analogue_i"]
+
+            print(f"ITER {reps}, config {config}, fs {fs}, num_in_ch {num_in_channels}")
+
+            xsig_config = f'mc_digital_input_analog_{features["analogue_i"]}ch_dig_{num_dig_in_channels}ch'
+            xsig_config_path = Path(__file__).parent / "xsig_configs" / f"{xsig_config}.json"
+
+            dut.set_stream_format("input", fs, num_in_channels, 24)
             with AudioAnalyzerHarness(
                 adapter_harness, config="adat_test", xscope="app"
             ) as harness:
@@ -163,6 +169,7 @@ def test_adat_output(pytestconfig, board, config):
     fs_adat = [fs for fs in features["samp_freqs"] if fs <= 48000]
     with XrunDut(adapter_dut, board, config) as dut:
         for fs in fs_adat:
+            dut.set_stream_format("output", fs, features["chan_o"], 24)
             with (
                 AudioAnalyzerHarness(
                     adapter_harness, config="adat_test", xscope="io"

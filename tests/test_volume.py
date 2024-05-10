@@ -81,6 +81,8 @@ def test_volume_input(pytestconfig, board, config):
         XrunDut(adapter_dut, board, config) as dut,
         AudioAnalyzerHarness(adapter_harness),
     ):
+        dut.set_stream_format("input", fs, features["chan_i"], 24)
+
         for channel in test_chans:
             channels = range(num_chans) if channel == "m" else [channel]
 
@@ -156,6 +158,8 @@ def test_volume_output(pytestconfig, board, config):
     fail_str = ""
 
     with XrunDut(adapter_dut, board, config) as dut:
+        dut.set_stream_format("output", fs, features["chan_o"], 24)
+
         for channel in test_chans:
             channels = range(num_chans) if channel == "m" else [channel]
 
