@@ -12,7 +12,6 @@ from usb_audio_test_utils import (
     get_volcontrol_path,
     get_xscope_controller_path,
     get_tusb_guid,
-    stream_format_setup,
     AudioAnalyzerHarness,
     XrunDut,
     XsigInput,
@@ -87,7 +86,7 @@ def test_spdif_input(pytestconfig, board, config):
 
     with XrunDut(adapter_dut, board, config) as dut:
         for fs in features["samp_freqs"]:
-            stream_format_setup("input", fs, features["chan_i"], 24)
+            dut.set_stream_format("input", fs, features["chan_i"], 24)
 
             with AudioAnalyzerHarness(
                 adapter_harness, config="spdif_test", xscope="app"
@@ -156,7 +155,7 @@ def test_spdif_output(pytestconfig, board, config):
 
     with XrunDut(adapter_dut, board, config) as dut:
         for fs in features["samp_freqs"]:
-            stream_format_setup("output", fs, features["chan_o"], 24)
+            dut.set_stream_format("output", fs, features["chan_o"], 24)
 
             with (
                 AudioAnalyzerHarness(

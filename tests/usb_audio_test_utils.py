@@ -327,16 +327,6 @@ def get_tusb_guid():
             pytest.fail("Could not find InterfaceGUID in custom.ini")
 
 
-def stream_format_setup(direction, samp_freq, num_chans, bit_depth):
-    cmd = [get_volcontrol_path()]
-    if platform.system() == "Windows":
-        cmd.append(f"-g{get_tusb_guid()}")
-    cmd += ["--set-format", direction, f"{samp_freq}", f"{num_chans}", f"{bit_depth}"]
-    ret = subprocess.run(cmd, timeout=30, capture_output=True, text=True)
-    if ret.returncode != 0:
-        pytest.fail(f"failed to setup stream format: {direction}, {samp_freq} fs, {num_chans} channels, {bit_depth} bit\n{ret.stdout}\n{ret.stderr}")
-
-
 class AudioAnalyzerHarness:
     """
     Run the audio analyzer harness
@@ -485,6 +475,19 @@ class XrunDut:
                     ],
                     timeout=10,
                 )
+
+    def set_stream_format(self, direction, samp_freq, num_chans, bit_depth):
+        if platform.system() == "Windows" and use_windows_builtin_driver(self.board, self.config):
+            # Cannot change the stream format
+            return
+
+        cmd = [get_volcontrol_path()]
+        if platform.system() == "Windows":
+            cmd.append(f"-g{get_tusb_guid()}")
+        cmd += ["--set-format", direction, f"{samp_freq}", f"{num_chans}", f"{bit_depth}"]
+        ret = subprocess.run(cmd, timeout=30, capture_output=True, text=True)
+        if ret.returncode != 0:
+            pytest.fail(f"failed to setup stream format: {direction}, {samp_freq} fs, {num_chans} channels, {bit_depth} bit\n{ret.stdout}\n{ret.stderr}")
 
 
 class XsigProcess:
