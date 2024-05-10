@@ -10,9 +10,12 @@ import stat
 import re
 import shutil
 import socket
+import mido
 
 from conftest import get_config_features
 
+# This is a hand-tuned time to allow xsig to complete
+xsig_completion_time_s = 6
 
 def use_windows_builtin_driver(board, config):
     # Use the builtin driver for:
@@ -67,8 +70,7 @@ def query_device_found(name):
     return False
 
 
-def wait_for_portaudio(board, config, adapter_id):
-    timeout = 30
+def wait_for_portaudio(board, config, adapter_id, timeout=30):
     prod_str = product_str_from_board_config(board, config)
 
     for _ in range(timeout):
@@ -327,6 +329,27 @@ def get_tusb_guid():
             pytest.fail("Could not find InterfaceGUID in custom.ini")
 
 
+def wait_for_midi_ports(timeout_s=30):
+    for i in range(timeout_s):
+        if find_xmos_midi_device(mido.get_input_names()) is not None and find_xmos_midi_device(mido.get_output_names()) is not None:
+            print(f"Hooray! XMOS MIDI ports found: {find_xmos_midi_device(mido.get_input_names())}, {find_xmos_midi_device(mido.get_output_names())}")
+            return
+
+        time.sleep(1)
+        print(f"MIDI ports not found... retrying {i+1} of {timeout_s}")
+
+    pytest.fail(f"No XMOS MIDI ports found: {mido.get_input_names()}, {mido.get_output_names()}")
+
+
+
+def find_xmos_midi_device(devices):
+    for device in devices:
+        if "XMOS" in device:
+            return device
+
+    return None
+
+
 class AudioAnalyzerHarness:
     """
     Run the audio analyzer harness
@@ -438,18 +461,19 @@ class XrunDut:
     software to use this particular device.
     """
 
-    def __init__(self, adapter_id, board, config):
+    def __init__(self, adapter_id, board, config, timeout=30):
         self.adapter_id = adapter_id
         self.board = board
         self.config = config
         features = get_config_features(board, config)
         self.pid = features["pid"]
         self.dev_name = None
+        self.timeout = timeout
 
     def __enter__(self):
         firmware = get_firmware_path(self.board, self.config)
-        subprocess.run(["xrun", "--adapter-id", self.adapter_id, firmware], timeout=30)
-        self.dev_name = wait_for_portaudio(self.board, self.config, self.adapter_id)
+        subprocess.run(["xrun", "--adapter-id", self.adapter_id, firmware], timeout=self.timeout)
+        self.dev_name = wait_for_portaudio(self.board, self.config, self.adapter_id, timeout=self.timeout)
         if platform.system() == "Windows" and use_windows_builtin_driver(
             self.board, self.config
         ):

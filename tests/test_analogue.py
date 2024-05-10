@@ -12,6 +12,7 @@ from usb_audio_test_utils import (
     XrunDut,
     XsigInput,
     XsigOutput,
+    xsig_completion_time_s
 )
 from conftest import list_configs, get_config_features
 
@@ -103,7 +104,7 @@ def test_analogue_input(pytestconfig, board, config):
 
             with XsigInput(fs, duration, xsig_config_path, dut.dev_name, ident=f"analogue_input-{board}-{config}-{fs}") as xsig_proc:
                 # Sleep for a few extra seconds so that xsig will have completed
-                time.sleep(duration + 6)
+                time.sleep(duration + xsig_completion_time_s)
                 xsig_lines = xsig_proc.get_output()
 
             with open(xsig_config_path) as file:
