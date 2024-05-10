@@ -34,21 +34,11 @@ INCLUDE_ONLY_IN_2AMi8o10xxsxxd =
 XCC_FLAGS_2AMi8o10xxsxxd = $(BUILD_FLAGS) 		-DXUA_SPDIF_TX_EN=1 \
 												-DDSD_CHANS_DAC=2
 
-# Audio Class 2, Async, I2S Master, 16xInput, 8xOutput, ADAT Rx
-# Sample rate restricted to 96kHz fit in USB bandwidth
-INCLUDE_ONLY_IN_2AMi16o8xxxaxx =
-XCC_FLAGS_2AMi16o8xxxaxx = $(BUILD_FLAGS) 		-DXUA_ADAT_RX_EN=1 \
-												-DMAX_FREQ=96000
 
 # Audio Class 2, Sync, I2S Master, 8xInput, 8xOutput
 INCLUDE_ONLY_IN_2SMi8o8xxxxxx =
 XCC_FLAGS_2SMi8o8xxxxxx = $(BUILD_FLAGS)		-DXUA_SYNCMODE=XUA_SYNCMODE_SYNC
 
-# Audio Class 2, Async, I2S Master, 8xInput, 16xOutput, ADAT Tx
-# Sample rate restriced to 96kHz fit in USB bandwidth
-INCLUDE_ONLY_IN_2AMi8o16xxxxax =
-XCC_FLAGS_2AMi8o16xxxxax = $(BUILD_FLAGS) -DXUA_ADAT_TX_EN=1 \
-                                          -DMAX_FREQ=96000
 
 # Audio Class 2, Async, I2S Master, 16xInput, 16xOutput, ADAT Rx, ADAT Tx
 # Sample rate restriced to 96kHz fit in USB bandwidth

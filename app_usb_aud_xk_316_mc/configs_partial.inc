@@ -34,13 +34,6 @@ XCC_FLAGS_2ASi10o10xssxxx = $(BUILD_FLAGS)		-DXUA_SPDIF_TX_EN=1 \
 INCLUDE_ONLY_IN_2AMi10o8xsxxxx =
 XCC_FLAGS_2AMi10o8xsxxxx = $(BUILD_FLAGS) 		-DXUA_SPDIF_RX_EN=1
 
-# Audio Class 2, Async, I2S Master, 16xInput, 8xOutput, ADAT Rx
-INCLUDE_ONLY_IN_2AMi16o8xxxaxx =
-XCC_FLAGS_2AMi16o8xxxaxx = $(BUILD_FLAGS) 		-DXUA_ADAT_RX_EN=1
-
-# Audio Class 2, Async, I2S master, 8xInput, 16xOutput, ADAT Tx
-INCLUDE_ONLY_IN_2AMi8o16xxxxax =
-XCC_FLAGS_2AMi8o16xxxxax = $(BUILD_FLAGS) 		-DXUA_ADAT_TX_EN=1
 
 # Audio Class 2, Async, I2S Master, 8xInput, 10xOutput, S/PDIF Tx (8 mixes)
 INCLUDE_ONLY_IN_2AMi8o10xxsxxx_mix8 =
