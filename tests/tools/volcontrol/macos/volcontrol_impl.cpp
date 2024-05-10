@@ -262,6 +262,69 @@ void setClock(AudioDeviceHandle deviceID, uint32_t clockId)
   exit(1);
 }
 
+void printSupportedStreamFormats(AudioStreamBasicDescription *formats, unsigned num_formats) {
+  for (unsigned i = 0; i < num_formats; ++i) {
+    printf("channels: %2u, bit-depth: %2u, sample-rate: %6u\n", formats[i].mChannelsPerFrame,
+           formats[i].mBitsPerChannel, (unsigned)formats[i].mSampleRate);
+  }
+}
+
+void showStreamFormats(AudioDeviceHandle deviceID) {
+  UInt32 size;
+  int err = AudioDeviceGetPropertyInfo(deviceID, 0, 1, kAudioDevicePropertyStreamFormats, &size, NULL);
+  if (kAudioHardwareNoError != err) {
+    printf("Error: failed to get supported input stream formats, error %d\n", err);
+    exit(1);
+  }
+
+  int num_formats = size / sizeof(AudioStreamBasicDescription);
+  auto formats = (AudioStreamBasicDescription *)calloc(num_formats, sizeof(AudioStreamBasicDescription));
+  if (!formats) {
+    printf("Error: failed to allocate memory for supported input stream formats\n");
+    exit(1);
+  }
+
+  err = AudioDeviceGetProperty(deviceID, 0, 1, kAudioDevicePropertyStreamFormats, &size, formats);
+  if (kAudioHardwareNoError != err) {
+    printf("Error: failed to populate supported input stream format data, error %d\n", err);
+    goto err_free;
+  }
+
+  printf("Input stream formats:\n");
+  printSupportedStreamFormats(formats, num_formats);
+
+  free(formats);
+
+  err = AudioDeviceGetPropertyInfo(deviceID, 0, 0, kAudioDevicePropertyStreamFormats, &size, NULL);
+  if (kAudioHardwareNoError != err) {
+    printf("Error: failed to get supported output stream formats, error %d\n", err);
+    exit(1);
+  }
+
+  num_formats = size / sizeof(AudioStreamBasicDescription);
+  formats = (AudioStreamBasicDescription *)calloc(num_formats, sizeof(AudioStreamBasicDescription));
+  if (!formats) {
+    printf("Error: failed to allocate memory for supported output stream formats\n");
+    exit(1);
+  }
+
+  err = AudioDeviceGetProperty(deviceID, 0, 0, kAudioDevicePropertyStreamFormats, &size, formats);
+  if (kAudioHardwareNoError != err) {
+    printf("Error: failed to populate supported output stream format data, error %d\n", err);
+    goto err_free;
+  }
+
+  printf("\nOutput stream formats:\n");
+  printSupportedStreamFormats(formats, num_formats);
+
+  free(formats);
+  return;
+
+err_free:
+  free(formats);
+  exit(1);
+}
+
 void setStreamFormat(AudioDeviceHandle deviceID, uint32_t scope, unsigned sample_rate, unsigned num_chans, unsigned bit_depth) {
   UInt32 size;
   int err = AudioDeviceGetPropertyInfo(deviceID, 0, scope == ScopeInput, kAudioDevicePropertyStreamFormats, &size, NULL);
@@ -271,13 +334,13 @@ void setStreamFormat(AudioDeviceHandle deviceID, uint32_t scope, unsigned sample
   }
 
   int num_formats = size / sizeof(AudioStreamBasicDescription);
-  AudioStreamBasicDescription *descs = (AudioStreamBasicDescription *)calloc(num_formats, sizeof(AudioStreamBasicDescription));
-  if (!descs) {
+  auto formats = (AudioStreamBasicDescription *)calloc(num_formats, sizeof(AudioStreamBasicDescription));
+  if (!formats) {
     printf("Error: failed to allocate memory for supported stream formats\n");
     exit(1);
   }
 
-  err = AudioDeviceGetProperty(deviceID, 0, scope == ScopeInput, kAudioDevicePropertyStreamFormats, &size, descs);
+  err = AudioDeviceGetProperty(deviceID, 0, scope == ScopeInput, kAudioDevicePropertyStreamFormats, &size, formats);
   if (kAudioHardwareNoError != err) {
     printf("Error: failed to populate supported stream format data, error %d\n", err);
     goto err_free;
@@ -285,26 +348,28 @@ void setStreamFormat(AudioDeviceHandle deviceID, uint32_t scope, unsigned sample
 
   int i;
   for (i = 0; i < num_formats; ++i) {
-    if (((unsigned)descs[i].mSampleRate == sample_rate) && (descs[i].mChannelsPerFrame == num_chans) && (descs[i].mBitsPerChannel == bit_depth)) {
+    if (((unsigned)formats[i].mSampleRate == sample_rate) && (formats[i].mChannelsPerFrame == num_chans) && (formats[i].mBitsPerChannel == bit_depth)) {
       break;
     }
   }
   if (i == num_formats) {
     printf("Error: no supported format matching %u channels, %u bit resolution at sample rate %u\n", num_chans, bit_depth, sample_rate);
+    printf("Supported %s stream formats:\n", scope == ScopeInput ? "input" : "output");
+    printSupportedStreamFormats(formats, num_formats);
     goto err_free;
   }
 
-  err = AudioDeviceSetProperty(deviceID, 0, 0, scope == ScopeInput, kAudioDevicePropertyStreamFormat, sizeof(AudioStreamBasicDescription), &descs[i]);
+  err = AudioDeviceSetProperty(deviceID, 0, 0, scope == ScopeInput, kAudioDevicePropertyStreamFormat, sizeof(AudioStreamBasicDescription), &formats[i]);
   if (kAudioHardwareNoError != err) {
     printf("Error: failed to set stream format, error %d\n", err);
     goto err_free;
   }
 
-  free(descs);
+  free(formats);
   return;
 
 err_free:
-  free(descs);
+  free(formats);
   exit(1);
 }
 
