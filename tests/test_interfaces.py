@@ -16,40 +16,26 @@ from usb_audio_test_utils import (
 from conftest import get_config_features
 
 
-class interface_control:
-    def __init__(self):
-        self.cmd = [get_volcontrol_path()]
-        if platform.system() == "Windows":
-            self.cmd.append(f"-g{get_tusb_guid()}")
-
-    def set(self, input_output, num_chans, bit_depth):
-        cmd = self.cmd + ["--set-format", input_output, str(num_chans), str(value)]
-        result = subprocess.run(
-            cmd,
-            check=True,
-            timeout=10,
-        )
-
-        return result.returncode
 
 # Determine what interfaces we would expect from the FW
 def get_expected_interfaces(direction, features):
+    fs = 48000
     if direction == "input":
-        if "adat_i" in features:
-            interfaces = [  [direction, features["chan_i"] - 0, 24],
-                            [direction, features["chan_i"] - 4, 24],
-                            [direction, features["chan_i"] - 6, 24] ]
+        if features["adat_i"]:
+            interfaces = [  [direction, fs, features["chan_i"] - 0, 24],
+                            [direction, fs, features["chan_i"] - 4, 24],
+                            [direction, fs, features["chan_i"] - 6, 24] ]
         else:
-            interfaces = [  [direction, features["chan_i"], 24],
-                            [direction, features["chan_i"], 16] ]
+            interfaces = [  [direction, fs, features["chan_i"], 24]]
 
     elif direction == "output":
-        if "adat_o" in features:
-            interfaces = [  [direction, features["chan_o"] - 0, 24],
-                            [direction, features["chan_o"] - 4, 24],
-                            [direction, features["chan_o"] - 6, 24] ]
+        if features["adat_o"]:
+            interfaces = [  [direction, fs, features["chan_o"] - 0, 24],
+                            [direction, fs, features["chan_o"] - 4, 24],
+                            [direction, fs, features["chan_o"] - 6, 24] ]
         else:
-            interfaces = [  [direction, features["chan_o"], 24]]
+            interfaces = [  [direction, fs, features["chan_o"], 24],
+                            [direction, fs, features["chan_o"], 16] ]
     else:
         assert 0, f"Invalid direction sent: {direction}"
     
@@ -58,6 +44,8 @@ def get_expected_interfaces(direction, features):
 # Test cases are defined by a tuple of (board, config)
 interface_configs = [
     ("xk_316_mc", "2AMi10o10xssxxx"),
+    ("xk_316_mc", "2AMi16o8xxxaxx"),
+    ("xk_316_mc", "2AMi8o16xxxxax"),
     ("xk_evk_xu316", "2AMi2o2xxxxxx"),
 ]
 
@@ -80,21 +68,15 @@ def test_interfaces(pytestconfig, board, config):
     fail_str = ""
     adapter_dut, adapter_harness = get_xtag_dut_and_harness(pytestconfig, board)
 
-    with (
-        XrunDut(adapter_dut, board, config) as dut,
-        AudioAnalyzerHarness(adapter_harness),
-    ):
+    with (XrunDut(adapter_dut, board, config) as dut):
         for direction in ("input", "output"):
             expected_interfaces = get_expected_interfaces(direction, features)
 
-            stream_format_setup("input", fs, features["chan_i"], 24)
-
-            if_ctrl = interface_control()
             for expected_if in expected_interfaces:
-                result = if_ctrl.set(*expected_interface)
+                result = stream_format_setup(*expected_if, fail_on_err=False)
 
                 if result != 0:
-                    fail_str += f"Failure selecting: {expected_if} in firmware: {config}\n"
+                    fail_str += f"selecting {expected_if} in firmware {config}\n"
 
     if len(fail_str) > 0:
         pytest.fail(fail_str)
