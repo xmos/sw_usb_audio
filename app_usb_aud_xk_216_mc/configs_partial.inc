@@ -19,10 +19,6 @@ INCLUDE_ONLY_IN_2ASi8o8xxxxxx =
 XCC_FLAGS_2AMi8o10xxsxxx = $(BUILD_FLAGS)       -DXUA_SPDIF_TX_EN=1
 INCLUDE_ONLY_IN_2AMi8o10xxsxxx =
 
-# Audio Class 2, Async, I2S Master, 8xInput, 10xOutput, MIDI, S/PDIF Tx
-INCLUDE_ONLY_IN_2AMi8o10mxsxxx =  
-XCC_FLAGS_2AMi8o10mxsxxx = $(BUILD_FLAGS) 		-DMIDI=1 \
-												-DXUA_SPDIF_TX_EN=1
 
 # Audio Class 2, Async, I2S Master, 8xInput, 8xOutput, DSD
 INCLUDE_ONLY_IN_2AMi8o8xxxxxd =

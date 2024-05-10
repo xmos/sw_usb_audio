@@ -24,10 +24,6 @@ XCC_FLAGS_2AMi32o32xxxxxx_tdm8 = $(BUILD_FLAGS)	-DXUA_PCM_FORMAT=XUA_PCM_FORMAT_
 INCLUDE_ONLY_IN_2AMi8o10xxsxxx =
 XCC_FLAGS_2AMi8o10xxsxxx = $(BUILD_FLAGS)		-DXUA_SPDIF_TX_EN=1
 
-# Audio Class 2, Async, I2S Master, 8xInput, 8xOutput, MIDI
-INCLUDE_ONLY_IN_2AMi8o8mxxxxx =
-XCC_FLAGS_2AMi8o8mxxxxx = $(BUILD_FLAGS)		-DMIDI=1
-
 # Audio Class 2, Async, I2S Slave, 10xInput, 10xOutput, S/PDIF Tx, S/PDIF Rx
 INCLUDE_ONLY_IN_2ASi10o10xssxxx =
 XCC_FLAGS_2ASi10o10xssxxx = $(BUILD_FLAGS)		-DXUA_SPDIF_TX_EN=1 \
