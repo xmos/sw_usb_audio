@@ -40,10 +40,3 @@ INCLUDE_ONLY_IN_2SMi8o8xxxxxx =
 XCC_FLAGS_2SMi8o8xxxxxx = $(BUILD_FLAGS)		-DXUA_SYNCMODE=XUA_SYNCMODE_SYNC
 
 
-# Audio Class 2, Async, I2S Master, 16xInput, 16xOutput, ADAT Rx, ADAT Tx
-# Sample rate restriced to 96kHz fit in USB bandwidth
-INCLUDE_ONLY_IN_2AMi16o16xxxaax =
-XCC_FLAGS_2AMi16o16xxxaax = $(BUILD_FLAGS) -DXUA_ADAT_RX_EN=1 \
-                                           -DXUA_ADAT_TX_EN=1 \
-                                           -DMAX_FREQ=96000
-
