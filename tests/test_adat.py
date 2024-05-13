@@ -61,7 +61,6 @@ def adat_output_uncollect(pytestconfig, board, config):
 
 
 def adat_duration(level, partial):
-    return 180
     if level == "weekend":
         duration = 90 if partial else 1200
     elif level == "nightly":
