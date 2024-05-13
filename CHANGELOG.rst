@@ -5,6 +5,7 @@ UNRELEASED
 ----------
 
   * FIXED:     Use correct number of flash pages for XK-AUDIO-316-MC
+  * FIXED:     Links to usb.org in documentation
 
 8.0.0
 -----
