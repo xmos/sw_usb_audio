@@ -56,6 +56,14 @@ def midi_duration(level, partial):
         duration = 10
     return duration
 
+def midi_receive_with_timeout(in_port, timeout_s=10):
+    for s in range(timeout_s):
+        msg = in_port.receive(block=False)
+        is msg is not None:
+            return msg
+
+    pytest.fail(f"MIDI receive message failed after {timeout_s}s.")
+
 def run_sysex_message(in_port, out_port, length=2048):
     print(f"Testing sysex message of {length} bytes")
     payload = [random.randrange(0, 128, 1) for i in range(length)]
@@ -70,7 +78,7 @@ def run_sysex_message(in_port, out_port, length=2048):
     print(f"Sending took: {t1-t0:.2f}s for {length} B midi sysex message ({bytes_per_second:.2f} B/s)")
 
     t0 = time.time()
-    dut_msg = in_port.receive()
+    dut_msg = midi_receive_with_timeout(in_port)
     t1 = time.time()
     elapsed = (t1 - t0) if (t1 - t0) > 0 else 0.001 # Avoid div by zero
     bytes_per_second = length / elapsed
@@ -112,7 +120,7 @@ def run_midi_test_file(input_midi_file_name, output_midi_file_name, in_port, out
         # Receive MIDI files (will be throttled to 3125Bps by UART)
         t0 = time.time()
         for msg_num in range(msg_count):
-            msg_in = in_port.receive()
+            msg_in = midi_receive_with_timeout(in_port)
             # print("Received:", msg_in)
 
             output_track.append(msg_in)
