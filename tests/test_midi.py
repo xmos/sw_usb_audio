@@ -59,7 +59,7 @@ def midi_duration(level, partial):
 def midi_receive_with_timeout(in_port, timeout_s=10):
     for s in range(timeout_s):
         msg = in_port.receive(block=False)
-        is msg is not None:
+        if msg is not None:
             return msg
 
     pytest.fail(f"MIDI receive message failed after {timeout_s}s.")
