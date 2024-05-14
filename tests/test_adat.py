@@ -1,20 +1,14 @@
 # Copyright (c) 2022, XMOS Ltd, All rights reserved
 from pathlib import Path
 import pytest
-import subprocess
 import time
 import json
-import platform
 
 from usb_audio_test_utils import (
     check_analyzer_output,
     get_xtag_dut_and_harness,
-    get_volcontrol_path,
-    get_xscope_controller_path,
-    get_tusb_guid,
     AudioAnalyzerHarness,
     XrunDut,
-    XsigInput,
     XsigOutput,
 )
 from conftest import list_configs, get_config_features
@@ -68,6 +62,7 @@ def test_adat_output(pytestconfig, board, config):
     fs_adat = [fs for fs in features["samp_freqs"] if fs <= 48000]
     with XrunDut(adapter_dut, board, config) as dut:
         for fs in fs_adat:
+            dut.set_stream_format("output", fs, features["chan_o"], 24)
             with (
                 AudioAnalyzerHarness(
                     adapter_harness, config="adat_test", xscope="io"

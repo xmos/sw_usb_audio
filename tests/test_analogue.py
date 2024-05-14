@@ -100,6 +100,8 @@ def test_analogue_input(pytestconfig, board, config):
         AudioAnalyzerHarness(adapter_harness),
     ):
         for fs in features["samp_freqs"]:
+            dut.set_stream_format("input", fs, features["chan_i"], 24)
+
             with XsigInput(fs, duration, xsig_config_path, dut.dev_name, ident=f"analogue_input-{board}-{config}-{fs}") as xsig_proc:
                 # Sleep for a few extra seconds so that xsig will have completed
                 time.sleep(duration + xsig_completion_time_s)
@@ -146,6 +148,8 @@ def test_analogue_output(pytestconfig, board, config):
                 and fs in [44100, 48000]
             ):
                 continue
+
+            dut.set_stream_format("output", fs, features["chan_o"], 24)
 
             with (
                 AudioAnalyzerHarness(adapter_harness, xscope="io") as harness,

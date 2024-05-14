@@ -79,6 +79,9 @@ def test_midi_loopback_stress(pytestconfig, board, config):
     fs_audio = max(features["samp_freqs"]) # Highest rate for maximum stress
     with XrunDut(adapter_dut, board, config) as dut:
 
+        dut.set_stream_format("input", fs_audio, features["chan_i"], 24)
+        dut.set_stream_format("output", fs_audio, features["chan_o"], 24)
+
         # Ensure firmware is up and enumerated as MIDI
         wait_for_midi_ports()
 

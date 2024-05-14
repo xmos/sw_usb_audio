@@ -72,6 +72,10 @@ def test_loopback_dac(pytestconfig, board, config):
                 and fs in [44100, 48000]
             ):
                 continue
+
+            dut.set_stream_format("input", fs, features["chan_i"], 24)
+            dut.set_stream_format("output", fs, features["chan_o"], 24)
+
             with XsigInput(fs, duration, xsig_config_path, dut.dev_name) as xsig_proc:
                 time.sleep(duration + 6)
                 xsig_lines = xsig_proc.get_output()

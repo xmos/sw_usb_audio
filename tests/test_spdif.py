@@ -86,6 +86,8 @@ def test_spdif_input(pytestconfig, board, config):
 
     with XrunDut(adapter_dut, board, config) as dut:
         for fs in features["samp_freqs"]:
+            dut.set_stream_format("input", fs, features["chan_i"], 24)
+
             with AudioAnalyzerHarness(
                 adapter_harness, config="spdif_test", xscope="app"
             ) as harness:
@@ -153,6 +155,8 @@ def test_spdif_output(pytestconfig, board, config):
 
     with XrunDut(adapter_dut, board, config) as dut:
         for fs in features["samp_freqs"]:
+            dut.set_stream_format("output", fs, features["chan_o"], 24)
+
             with (
                 AudioAnalyzerHarness(
                     adapter_harness, config="spdif_test", xscope="io"
