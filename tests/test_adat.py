@@ -144,8 +144,6 @@ def test_adat_input(pytestconfig, board, config):
                     + harness.get_output()
                 )
                 fail_str += "\n".join(analyzer_lines) + "\n\n"
-                #import pdb
-                #pdb.set_trace()
 
 
     if len(fail_str) > 0:

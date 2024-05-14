@@ -139,7 +139,10 @@ def test_analogue_output(pytestconfig, board, config):
     duration = analogue_duration(pytestconfig.getoption("level"), short_test)
     fail_str = ""
 
-    samp_freqs = [f for f in features["samp_freqs"] if f <= 96000] # TODO Extend to 192KHz, 10ch as part of ADAT output for SMUX > 1 testing
+    if (features["adat_i"] == True) or (features["adat_o"] == True):
+        samp_freqs = [f for f in features["samp_freqs"] if f <= 96000] # TODO Extend to 192KHz, 10ch as part of ADAT output for SMUX > 1 testing
+    else:
+        samp_freqs = features["samp_freqs"]
     with XrunDut(adapter_dut, board, config) as dut:
         for fs in samp_freqs:
             # Issue 120
