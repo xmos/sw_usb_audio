@@ -46,7 +46,7 @@ def adat_common_uncollect(features, board, pytestconfig):
     return False
 
 
-def adat_input_uncollect(pytestconfig, board, config, reps):
+def adat_input_uncollect(pytestconfig, board, config):
     features = get_config_features(board, config)
     return any(
         [not features["adat_i"], adat_common_uncollect(features, board, pytestconfig)]
@@ -70,16 +70,14 @@ def adat_duration(level, partial):
     return duration
 
 @pytest.mark.uncollect_if(func=adat_input_uncollect)
-@pytest.mark.parametrize("reps", range(1))
 @pytest.mark.parametrize(["board", "config"], list_configs())
-def test_adat_input(pytestconfig, board, config, reps):
+def test_adat_input(pytestconfig, board, config):
     features = get_config_features(board, config)
 
     adapter_dut, adapter_harness = get_xtag_dut_and_harness(pytestconfig, board)
     duration = adat_duration(pytestconfig.getoption("level"), features["partial"])
     fail_str = ""
 
-    #samp_freqs_adat = [f for f in features["samp_freqs"] if f <= 96000]
     with XrunDut(adapter_dut, board, config) as dut:
         for fs in features["samp_freqs"]:
             assert features["analogue_i"] == 8
@@ -92,7 +90,7 @@ def test_adat_input(pytestconfig, board, config, reps):
 
             num_dig_in_channels = num_in_channels - features["analogue_i"]
 
-            print(f"ITER {reps}, config {config}, fs {fs}, num_in_ch {num_in_channels}")
+            print(f"adat_input: config {config}, fs {fs}, num_in_ch {num_in_channels}")
 
             xsig_config = f'mc_digital_input_analog_{features["analogue_i"]}ch_dig_{num_dig_in_channels}ch'
             xsig_config_path = Path(__file__).parent / "xsig_configs" / f"{xsig_config}.json"
@@ -146,7 +144,6 @@ def test_adat_input(pytestconfig, board, config, reps):
                     + harness.get_output()
                 )
                 fail_str += "\n".join(analyzer_lines) + "\n\n"
-                #print("\nFAIL\n")
                 #import pdb
                 #pdb.set_trace()
 
