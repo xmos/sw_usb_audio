@@ -67,6 +67,8 @@ def test_midi_loopback_stress(pytestconfig, board, config):
     (not the harness xscope output) because as soon as you stop either the harness or xsig the 
     other will throw an error due to real-time checking.
     """
+    print(f"*** starting test_midi_loopback_stress:  {board} {config}")
+
     features = get_config_features(board, config)
 
     xsig_config = f'mc_midi_stress_8ch'
@@ -93,7 +95,9 @@ def test_midi_loopback_stress(pytestconfig, board, config):
             
             with (mido.open_input(find_xmos_midi_device(mido.get_input_names())) as in_port,
                   mido.open_output(find_xmos_midi_device(mido.get_output_names())) as out_port):
-            
+                print(f"*** Looping test_midi_loopback_stress....")
+
+
                 # Keep looping midi_test until time up
                 while time.time() < time_start + duration + xsig_completion_time_s:
                     run_midi_test_file(input_midi_file_name, output_midi_file_name, in_port, out_port)

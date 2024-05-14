@@ -141,6 +141,7 @@ def run_midi_test_file(input_midi_file_name, output_midi_file_name, in_port, out
 @pytest.mark.uncollect_if(func=midi_loopback_uncollect)
 @pytest.mark.parametrize(["board", "config"], list_configs())
 def test_midi_loopback(pytestconfig, board, config):
+    print(f"*** starting test_midi_loopback {board} {config}")
 
     features = get_config_features(board, config)
 
