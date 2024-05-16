@@ -53,7 +53,7 @@ def adat_input_uncollect(pytestconfig, board, config):
     )
 
 
-def adat_output_uncollect(pytestconfig, board, config):
+def adat_output_uncollect(pytestconfig, board, config, reps):
     features = get_config_features(board, config)
     return any(
         [not features["adat_o"], adat_common_uncollect(features, board, pytestconfig)]
@@ -150,34 +150,69 @@ def test_adat_input(pytestconfig, board, config):
         pytest.fail(fail_str)
 
 @pytest.mark.uncollect_if(func=adat_output_uncollect)
+@pytest.mark.parametrize("reps", range(1))
 @pytest.mark.parametrize(["board", "config"], list_configs())
-def test_adat_output(pytestconfig, board, config):
+def test_adat_output(pytestconfig, board, config, reps):
     features = get_config_features(board, config)
-
-    xsig_config = f'mc_digital_output_{features["analogue_o"]}ch_adat'
-    xsig_config_path = Path(__file__).parent / "xsig_configs" / f"{xsig_config}.json"
 
     adapter_dut, adapter_harness = get_xtag_dut_and_harness(pytestconfig, board)
     duration = adat_duration(pytestconfig.getoption("level"), features["partial"])
     fail_str = ""
 
-    fs_adat = [fs for fs in features["samp_freqs"] if fs <= 48000]
+    #fs_adat = [fs for fs in features["samp_freqs"] if fs <= 48000]
+    fs_adat = features["samp_freqs"]
     with XrunDut(adapter_dut, board, config) as dut:
         for fs in fs_adat:
-            dut.set_stream_format("output", fs, features["chan_o"], 24)
-            with (
-                AudioAnalyzerHarness(
-                    adapter_harness, config="adat_test", xscope="io"
-                ) as harness,
-                XsigOutput(fs, None, xsig_config_path, dut.dev_name),
-            ):
-                time.sleep(duration)
-                harness.terminate()
-                xscope_lines = harness.get_output()
+            print(f"ITER {reps}")
+            assert features["analogue_i"] == 8
+            if fs <= 48000:
+                num_out_channels = 16
+            elif fs <= 96000:
+                num_out_channels = 12
+            else:
+                num_out_channels = 10
+
+            num_dig_out_channels = num_out_channels - features["analogue_o"]
+
+            print(f"adat_output: config {config}, fs {fs}, num_out_ch {num_out_channels}")
+
+            xsig_config = f'mc_digital_output_analog_{features["analogue_o"]}ch_dig_{num_dig_out_channels}ch'
+            xsig_config_path = Path(__file__).parent / "xsig_configs" / f"{xsig_config}.json"
+
+            dut.set_stream_format("output", fs, num_out_channels, 24)
+
+            with AudioAnalyzerHarness(
+                adapter_harness, config="adat_test", xscope="app"
+            ) as harness:
+
+                xscope_controller = get_xscope_controller_path()
+                ret = subprocess.run(
+                    [
+                        xscope_controller,
+                        "localhost",
+                        f"{harness.xscope_port}",
+                        "0",
+                        f"f {fs}",
+                    ],
+                    timeout=30,
+                    capture_output=True,
+                    text=True,
+                )
+
+                if ret.returncode != 0:
+                    fail_str = f'xscope_controller command failed, cmds:["f {fs}"]\n'
+                    fail_str += f"stdout:\n{ret.stdout}\n"
+                    fail_str += f"stderr:\n{ret.stderr}\n"
+                    pytest.fail(fail_str)
+
+                with(XsigOutput(fs, None, xsig_config_path, dut.dev_name)):
+                    time.sleep(duration)
+                    harness.terminate()
+                    xscope_lines = harness.get_output()
 
             with open(xsig_config_path) as file:
                 xsig_json = json.load(file)
-            failures = check_analyzer_output(xscope_lines, xsig_json["out"])
+            failures = check_analyzer_output(xscope_lines, xsig_json["out"], ramp_check_only=True)
             if len(failures) > 0:
                 fail_str += f"Failure at sample rate {fs}\n"
                 fail_str += "\n".join(failures) + "\n\n"

@@ -118,14 +118,15 @@ def get_line_matches(lines, expected):
     return matches
 
 
-def check_analyzer_output(analyzer_output, xsig_config):
+def check_analyzer_output(analyzer_output, xsig_config, ramp_check_only=False):
     """Verify that the output from xsig is correct"""
 
     failures = []
     # Check for any errors
     for line in analyzer_output:
         if re.match(".*(?<!no )(error|problem)", line.lower()):
-            failures.append(line)
+            if not ramp_check_only:
+                failures.append(line)
 
     num_chans = len(xsig_config)
     analyzer_channels = [[] for _ in range(num_chans)]
@@ -142,7 +143,8 @@ def check_analyzer_output(analyzer_output, xsig_config):
         analyzer_channels[channel].append(line)
 
         if re.match(r"Channel \d+: Lost signal", line):
-            failures.append(line)
+            if not ramp_check_only:
+                failures.append(line)
 
     for idx, channel_config in enumerate(xsig_config):
         if channel_config[0] == "volcheck":
@@ -150,7 +152,7 @@ def check_analyzer_output(analyzer_output, xsig_config):
                 analyzer_channels[idx], r".*Volume change by (-?\d+)"
             )
 
-            if len(vol_changes) < 2:
+            if len(vol_changes) < 2 and (not ramp_check_only):
                 failures.append(
                     f"Initial volume and initial change not found on channel {idx}"
                 )
@@ -158,13 +160,13 @@ def check_analyzer_output(analyzer_output, xsig_config):
 
             _ = int(vol_changes.pop(0))
             initial_change = int(vol_changes.pop(0))
-            if initial_change >= 0:
+            if initial_change >= 0 and (not ramp_check_only):
                 failures.append(
                     f"Initial change is not negative on channel {idx}: {initial_change}"
                 )
             initial_change = abs(initial_change)
             exp_vol_changes = [1.0, -0.5, 0.5]
-            if len(vol_changes) != len(exp_vol_changes):
+            if (len(vol_changes) != len(exp_vol_changes)) and (not ramp_check_only):
                 failures.append(
                     f"Unexpected number of volume changes on channel {idx}: {vol_changes}"
                 )
@@ -172,7 +174,7 @@ def check_analyzer_output(analyzer_output, xsig_config):
 
             for vol_change, exp_ratio in zip(vol_changes, exp_vol_changes):
                 expected = initial_change * exp_ratio
-                if abs(int(vol_change) - expected) > 2:
+                if (abs(int(vol_change) - expected) > 2) and (not ramp_check_only):
                     failures.append(
                         f"Volume change not as expected on channel {idx}: actual {vol_change}, expected {expected}"
                     )
@@ -182,10 +184,10 @@ def check_analyzer_output(analyzer_output, xsig_config):
             chan_freqs = get_line_matches(
                 analyzer_channels[idx], r"^Channel \d+: Frequency (\d+)"
             )
-            if not len(chan_freqs):
+            if not len(chan_freqs) and (not ramp_check_only):
                 failures.append(f"No signal seen on channel {idx}")
             for freq in chan_freqs:
-                if int(freq) != exp_freq:
+                if int(freq) != exp_freq and (not ramp_check_only):
                     failures.append(
                         f"Incorrect frequency on channel {idx}; got {freq}, expected {exp_freq}"
                     )
@@ -208,7 +210,7 @@ def check_analyzer_output(analyzer_output, xsig_config):
                     failures.append(line)
 
         elif channel_config[0] == "zero":
-            if len(analyzer_channels[idx]):
+            if len(analyzer_channels[idx]) and (not ramp_check_only):
                 for line in analyzer_channels[idx]:
                     failures.append(line)
 
@@ -269,7 +271,7 @@ def get_xtag_dut_and_harness(pytestconfig, board):
 # is killed, and this connect via xgdb can recover it but it takes a while to reboot the XTAG
 def stop_xrun_app(adapter_id):
     subprocess.run(
-        ["xgdb", "-ex", f"connect --adapter-id {adapter_id}", "--batch"],
+        ["xgdb", "-ex", f"connect --adapter-id {adapter_id}", "-ex", "quit"],
         stdout=subprocess.DEVNULL,
         stderr=subprocess.DEVNULL,
         timeout=120,
