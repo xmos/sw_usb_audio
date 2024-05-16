@@ -71,7 +71,7 @@ def test_interfaces(pytestconfig, board, config):
             expected_interfaces = get_expected_interfaces(direction, features)
 
             for expected_if in expected_interfaces:
-                result = dut.stream_format_setup(*expected_if, fail_on_err=False)
+                result = dut.set_stream_format(*expected_if, fail_on_err=False)
 
                 if result != 0:
                     fail_str += f"selecting {expected_if} in firmware {config}\n"
