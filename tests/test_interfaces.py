@@ -9,7 +9,6 @@ from usb_audio_test_utils import (
     get_xtag_dut_and_harness,
     get_tusb_guid,
     get_volcontrol_path,
-    stream_format_setup,
     AudioAnalyzerHarness,
     XrunDut,
 )
