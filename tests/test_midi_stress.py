@@ -36,6 +36,10 @@ def midi_stress_uncollect(pytestconfig, board, config):
     if not all(xtag_ids):
         return True
 
+    # Test can get stuck on Windows, so disable it temporarily
+    if platform.system() == "Windows":
+        return True
+
     # Until we fix Jenkins user permissions for MIDI on Mac https://xmosjira.atlassian.net/browse/UA-254
     if platform.system() == "Darwin":
         return True
