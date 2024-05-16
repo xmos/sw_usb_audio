@@ -271,7 +271,7 @@ def get_xtag_dut_and_harness(pytestconfig, board):
 # is killed, and this connect via xgdb can recover it but it takes a while to reboot the XTAG
 def stop_xrun_app(adapter_id):
     subprocess.run(
-        ["xgdb", "-ex", f"connect --adapter-id {adapter_id}", "-ex", "quit"],
+        ["xgdb", "-ex", f"connect --adapter-id {adapter_id}", "--batch"],
         stdout=subprocess.DEVNULL,
         stderr=subprocess.DEVNULL,
         timeout=120,
