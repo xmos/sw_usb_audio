@@ -500,7 +500,7 @@ class XrunDut:
                     timeout=10,
                 )
 
-    def set_stream_format(self, direction, samp_freq, num_chans, bit_depth):
+    def set_stream_format(self, direction, samp_freq, num_chans, bit_depth, fail_on_err=True):
         if platform.system() == "Windows" and use_windows_builtin_driver(self.board, self.config):
             # Cannot change the stream format
             return
@@ -510,9 +510,10 @@ class XrunDut:
             cmd.append(f"-g{get_tusb_guid()}")
         cmd += ["--set-format", direction, f"{samp_freq}", f"{num_chans}", f"{bit_depth}"]
         ret = subprocess.run(cmd, timeout=30, capture_output=True, text=True)
-        if ret.returncode != 0:
+        if fail_on_err and ret.returncode != 0:
             pytest.fail(f"failed to setup stream format: {direction}, {samp_freq} fs, {num_chans} channels, {bit_depth} bit\n{ret.stdout}\n{ret.stderr}")
 
+        return ret.returncode
 
 class XsigProcess:
     """
