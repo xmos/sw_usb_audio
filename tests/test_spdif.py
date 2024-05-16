@@ -12,7 +12,6 @@ from usb_audio_test_utils import (
     get_volcontrol_path,
     get_xscope_controller_path,
     get_tusb_guid,
-    stream_format_setup,
     AudioAnalyzerHarness,
     XrunDut,
     XsigInput,
@@ -78,7 +77,9 @@ def spdif_duration(level, partial):
 def test_spdif_input(pytestconfig, board, config):
     features = get_config_features(board, config)
 
-    xsig_config = f'mc_digital_input_{features["analogue_i"]}ch'
+    num_dig_in_channels = features["chan_i"] - features["analogue_i"]
+
+    xsig_config = f'mc_digital_input_analog_{features["analogue_i"]}ch_dig_{num_dig_in_channels}ch'
     xsig_config_path = Path(__file__).parent / "xsig_configs" / f"{xsig_config}.json"
 
     adapter_dut, adapter_harness = get_xtag_dut_and_harness(pytestconfig, board)
@@ -87,7 +88,7 @@ def test_spdif_input(pytestconfig, board, config):
 
     with XrunDut(adapter_dut, board, config) as dut:
         for fs in features["samp_freqs"]:
-            stream_format_setup("input", fs, features["chan_i"], 24)
+            dut.set_stream_format("input", fs, features["chan_i"], 24)
 
             with AudioAnalyzerHarness(
                 adapter_harness, config="spdif_test", xscope="app"
@@ -156,7 +157,7 @@ def test_spdif_output(pytestconfig, board, config):
 
     with XrunDut(adapter_dut, board, config) as dut:
         for fs in features["samp_freqs"]:
-            stream_format_setup("output", fs, features["chan_o"], 24)
+            dut.set_stream_format("output", fs, features["chan_o"], 24)
 
             with (
                 AudioAnalyzerHarness(

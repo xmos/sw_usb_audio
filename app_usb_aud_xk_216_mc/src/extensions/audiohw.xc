@@ -15,7 +15,7 @@
 /* CS2100 lists typical lock time as 100 * input period */
 #define     AUDIO_PLL_LOCK_DELAY     (40000000)
 
-#if (XUA_SPDIF_RX_EN || ADAT_RX || (XUA_SYNCMODE == XUA_SYNCMODE_SYNC))
+#if (XUA_SPDIF_RX_EN || XUA_ADAT_RX_EN || (XUA_SYNCMODE == XUA_SYNCMODE_SYNC))
 #define USE_FRACTIONAL_N 1
 #endif
 
@@ -26,7 +26,7 @@ port p_i2c = PORT_I2C;
 #define DAC_REGWRITE(reg, val) {result = i2c.write_reg(CS4384_I2C_ADDR, reg, val);}
 #define ADC_REGWRITE(reg, val) {result = i2c.write_reg(CS5368_I2C_ADDR, reg, val);}
 
-#if !(XUA_SPDIF_RX_EN || ADAT_RX) && defined(USE_FRACTIONAL_N)
+#if !(XUA_SPDIF_RX_EN || XUA_ADAT_RX_EN) && defined(USE_FRACTIONAL_N)
 on tile[AUDIO_IO_TILE] : clock clk_pll_sync = XS1_CLKBLK_5;
 extern out port p_pll_ref;
 #endif
@@ -42,7 +42,7 @@ void wait_us(int microseconds)
 
 void AudioHwInit()
 {
-#if !(XUA_SPDIF_RX_EN || ADAT_RX) && defined(USE_FRACTIONAL_N) && (XUA_SYNCMODE != XUA_SYNCMODE_SYNC)
+#if !(XUA_SPDIF_RX_EN || XUA_ADAT_RX_EN) && defined(USE_FRACTIONAL_N) && (XUA_SYNCMODE != XUA_SYNCMODE_SYNC)
     /* Output a fixed sync clock to the pll */
     configure_clock_rate(clk_pll_sync, 100, 100/(PLL_SYNC_FREQ/1000000));
     configure_port_clock_output(p_pll_ref, clk_pll_sync);

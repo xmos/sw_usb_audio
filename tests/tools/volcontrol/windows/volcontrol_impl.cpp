@@ -191,6 +191,36 @@ void setClock(AudioDeviceHandle deviceID, uint32_t clockId)
 // Maximum number of formats supported by TUSB SDK
 #define MAX_FORMAT_COUNT   (32)
 
+void printSupportedStreamFormats(TUsbAudioStreamFormat formats[MAX_FORMAT_COUNT], unsigned num_formats) {
+    for (unsigned i = 0; i < num_formats; ++i) {
+        printf("channels: %2u, bit-depth: %2u\n", formats[i].numberOfChannels, formats[i].bitsPerSample);
+    }
+}
+
+void showStreamFormats(AudioDeviceHandle deviceID) {
+    TUsbAudioStatus err;
+    TUsbAudioStreamFormat formats[MAX_FORMAT_COUNT];
+    unsigned num_formats;
+
+    err = gDrvApi.TUSBAUDIO_GetSupportedStreamFormats(deviceID, 1, MAX_FORMAT_COUNT, formats, &num_formats);
+    if (0 != err) {
+        printf("Error: failed to get supported input stream formats, error %d\n", err);
+        exit(1);
+    }
+
+    printf("Input stream formats:\n");
+    printSupportedStreamFormats(formats, num_formats);
+
+    err = gDrvApi.TUSBAUDIO_GetSupportedStreamFormats(deviceID, 0, MAX_FORMAT_COUNT, formats, &num_formats);
+    if (0 != err) {
+        printf("Error: failed to get supported output stream formats, error %d\n", err);
+        exit(1);
+    }
+
+    printf("\nOutput stream formats:\n");
+    printSupportedStreamFormats(formats, num_formats);
+}
+
 // Maximum number of supported sample frequencies
 #define MAX_SUPPORTED_SAMP_FREQS  (6)
 
@@ -217,6 +247,8 @@ void setStreamFormat(AudioDeviceHandle deviceID, uint32_t scope, unsigned sample
     }
     if (i == num_formats) {
         printf("Error: no format matching %u channels with %u bit resolution\n", num_chans, bit_depth);
+        printf("Supported %s stream formats:\n", scope == ScopeInput ? "input" : "output");
+        printSupportedStreamFormats(formats, num_formats);
         exit(1);
     }
 

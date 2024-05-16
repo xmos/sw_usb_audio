@@ -9,6 +9,7 @@ enum operation {
   SET_VOLUME,
   SHOW_ALL,
   SET_CLOCK,
+  SHOW_STREAM_FORMATS,
   SET_STREAM_FORMAT,
 };
 
@@ -32,6 +33,8 @@ void setVolume(AudioDeviceHandle deviceID, uint32_t scope,
 	       uint32_t channel, float volume);
 
 void setClock(AudioDeviceHandle deviceID, uint32_t clockId);
+
+void showStreamFormats(AudioDeviceHandle deviceID);
 
 void setStreamFormat(AudioDeviceHandle deviceID, uint32_t scope, unsigned sample_rate, unsigned num_chans, unsigned bit_depth);
 

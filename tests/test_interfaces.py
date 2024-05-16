@@ -16,7 +16,6 @@ from usb_audio_test_utils import (
 from conftest import get_config_features
 
 
-
 # Determine what interfaces we would expect from the FW
 def get_expected_interfaces(direction, features):
     fs = 48000
@@ -73,7 +72,7 @@ def test_interfaces(pytestconfig, board, config):
             expected_interfaces = get_expected_interfaces(direction, features)
 
             for expected_if in expected_interfaces:
-                result = stream_format_setup(*expected_if, fail_on_err=False)
+                result = dut.stream_format_setup(*expected_if, fail_on_err=False)
 
                 if result != 0:
                     fail_str += f"selecting {expected_if} in firmware {config}\n"
