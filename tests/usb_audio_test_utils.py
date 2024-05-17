@@ -572,7 +572,7 @@ class XsigProcess:
                     target = self.xsig_dir / f"{pre}{self.ident}.{filename[len(pre):]}"
                     file.rename(target)
 
-def get_output(self):
+    def get_output(self):
         try:
             out, _ = self.proc.communicate(timeout=15)
         except subprocess.TimeoutExpired:
