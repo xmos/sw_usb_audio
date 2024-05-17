@@ -167,10 +167,13 @@ def test_adat_output(pytestconfig, board, config, reps):
             assert features["analogue_i"] == 8
             if fs <= 48000:
                 num_out_channels = 16
+                smux = 1
             elif fs <= 96000:
                 num_out_channels = 12
+                smux = 2
             else:
                 num_out_channels = 10
+                smux = 4
 
             num_dig_out_channels = num_out_channels - features["analogue_o"]
 
@@ -178,6 +181,9 @@ def test_adat_output(pytestconfig, board, config, reps):
 
             xsig_config = f'mc_digital_output_analog_{features["analogue_o"]}ch_dig_{num_dig_out_channels}ch'
             xsig_config_path = Path(__file__).parent / "xsig_configs" / f"{xsig_config}.json"
+
+            if fs >= 176400 and features["chan_i"] > 10:
+                dut.set_stream_format("input", fs, num_out_channels, 24)
 
             dut.set_stream_format("output", fs, num_out_channels, 24)
 
@@ -192,7 +198,7 @@ def test_adat_output(pytestconfig, board, config, reps):
                         "localhost",
                         f"{harness.xscope_port}",
                         "0",
-                        f"f {fs}",
+                        f"x {smux}",
                     ],
                     timeout=30,
                     capture_output=True,
@@ -212,7 +218,7 @@ def test_adat_output(pytestconfig, board, config, reps):
 
             with open(xsig_config_path) as file:
                 xsig_json = json.load(file)
-            failures = check_analyzer_output(xscope_lines, xsig_json["out"], ramp_check_only=True)
+            failures = check_analyzer_output(xscope_lines, xsig_json["out"])
             if len(failures) > 0:
                 fail_str += f"Failure at sample rate {fs}\n"
                 fail_str += "\n".join(failures) + "\n\n"

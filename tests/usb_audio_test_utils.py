@@ -118,15 +118,14 @@ def get_line_matches(lines, expected):
     return matches
 
 
-def check_analyzer_output(analyzer_output, xsig_config, ramp_check_only=False):
+def check_analyzer_output(analyzer_output, xsig_config):
     """Verify that the output from xsig is correct"""
 
     failures = []
     # Check for any errors
     for line in analyzer_output:
         if re.match(".*(?<!no )(error|problem)", line.lower()):
-            if not ramp_check_only:
-                failures.append(line)
+            failures.append(line)
 
     num_chans = len(xsig_config)
     analyzer_channels = [[] for _ in range(num_chans)]
@@ -143,8 +142,7 @@ def check_analyzer_output(analyzer_output, xsig_config, ramp_check_only=False):
         analyzer_channels[channel].append(line)
 
         if re.match(r"Channel \d+: Lost signal", line):
-            if not ramp_check_only:
-                failures.append(line)
+            failures.append(line)
 
     for idx, channel_config in enumerate(xsig_config):
         if channel_config[0] == "volcheck":
@@ -152,7 +150,7 @@ def check_analyzer_output(analyzer_output, xsig_config, ramp_check_only=False):
                 analyzer_channels[idx], r".*Volume change by (-?\d+)"
             )
 
-            if len(vol_changes) < 2 and (not ramp_check_only):
+            if len(vol_changes) < 2:
                 failures.append(
                     f"Initial volume and initial change not found on channel {idx}"
                 )
@@ -160,13 +158,13 @@ def check_analyzer_output(analyzer_output, xsig_config, ramp_check_only=False):
 
             _ = int(vol_changes.pop(0))
             initial_change = int(vol_changes.pop(0))
-            if initial_change >= 0 and (not ramp_check_only):
+            if initial_change >= 0:
                 failures.append(
                     f"Initial change is not negative on channel {idx}: {initial_change}"
                 )
             initial_change = abs(initial_change)
             exp_vol_changes = [1.0, -0.5, 0.5]
-            if (len(vol_changes) != len(exp_vol_changes)) and (not ramp_check_only):
+            if len(vol_changes) != len(exp_vol_changes):
                 failures.append(
                     f"Unexpected number of volume changes on channel {idx}: {vol_changes}"
                 )
@@ -174,7 +172,7 @@ def check_analyzer_output(analyzer_output, xsig_config, ramp_check_only=False):
 
             for vol_change, exp_ratio in zip(vol_changes, exp_vol_changes):
                 expected = initial_change * exp_ratio
-                if (abs(int(vol_change) - expected) > 2) and (not ramp_check_only):
+                if abs(int(vol_change) - expected) > 2:
                     failures.append(
                         f"Volume change not as expected on channel {idx}: actual {vol_change}, expected {expected}"
                     )
@@ -184,10 +182,10 @@ def check_analyzer_output(analyzer_output, xsig_config, ramp_check_only=False):
             chan_freqs = get_line_matches(
                 analyzer_channels[idx], r"^Channel \d+: Frequency (\d+)"
             )
-            if not len(chan_freqs) and (not ramp_check_only):
+            if not len(chan_freqs):
                 failures.append(f"No signal seen on channel {idx}")
             for freq in chan_freqs:
-                if int(freq) != exp_freq and (not ramp_check_only):
+                if int(freq) != exp_freq:
                     failures.append(
                         f"Incorrect frequency on channel {idx}; got {freq}, expected {exp_freq}"
                     )
@@ -210,7 +208,7 @@ def check_analyzer_output(analyzer_output, xsig_config, ramp_check_only=False):
                     failures.append(line)
 
         elif channel_config[0] == "zero":
-            if len(analyzer_channels[idx]) and (not ramp_check_only):
+            if len(analyzer_channels[idx]):
                 for line in analyzer_channels[idx]:
                     failures.append(line)
 
@@ -574,9 +572,9 @@ class XsigProcess:
                     target = self.xsig_dir / f"{pre}{self.ident}.{filename[len(pre):]}"
                     file.rename(target)
 
-    def get_output(self):
+def get_output(self):
         try:
-            out, _ = self.proc.communicate(timeout=5)
+            out, _ = self.proc.communicate(timeout=15)
         except subprocess.TimeoutExpired:
             pytest.fail("Error: timeout getting xsig output")
         return out.decode().splitlines()
