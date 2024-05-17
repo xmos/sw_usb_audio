@@ -50,7 +50,7 @@ def parse_features(board, config):
     for k in ["midi", "spdif_i", "spdif_o", "adat_i", "adat_o", "dsd", "tdm8"]:
         features[k] = features[k] not in ["", "x"]
 
-    if not features["uac"] in [1, 2]:
+    if features["uac"] not in [1, 2]:
         pytest.exit(f"Error: Invalid UAC in {config}")
 
     if board == "xk_216_mc":
@@ -62,7 +62,7 @@ def parse_features(board, config):
         if config.startswith("1"):
             features["pid"] = 0x17
         else:
-            features["pid"] = 0x16 if not "_winbuiltin" in config else 0x1a
+            features["pid"] = 0x16 if "_winbuiltin" not in config else 0x1a
     elif board == "xk_evk_xu316":
         if config.startswith("1"):
             features["pid"] = 0x19
@@ -87,7 +87,7 @@ def parse_features(board, config):
             features["samp_freqs"] = samp_freqs_upto(96000)
     elif features["chan_i"] >= 32 or features["chan_o"] >= 32:
         features["samp_freqs"] = samp_freqs_upto(48000)
-    elif features["chan_i"] >= 16 or features["chan_o"] >= 16:
+    elif (features["adat_i"] == False and features["chan_i"] >= 16) or (features["adat_o"] == False and features["chan_o"] >= 16):
         features["samp_freqs"] = samp_freqs_upto(96000)
     elif features["tdm8"]:
         features["samp_freqs"] = samp_freqs_upto(96000)
@@ -137,6 +137,7 @@ def pytest_sessionstart(session):
             configs += [cfg for cfg in ret.stdout.split() if "_winbuiltin" in cfg]
 
         partial_configs = [config for config in configs if config not in full_configs]
+
         for config in configs:
             global board_configs
             features = parse_features(board, config)

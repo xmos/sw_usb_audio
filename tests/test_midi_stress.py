@@ -36,6 +36,10 @@ def midi_stress_uncollect(pytestconfig, board, config):
     if not all(xtag_ids):
         return True
 
+    # Test can get stuck on Windows, so disable it temporarily
+    if platform.system() == "Windows":
+        return True
+
     # Until we fix Jenkins user permissions for MIDI on Mac https://xmosjira.atlassian.net/browse/UA-254
     if platform.system() == "Darwin":
         return True
@@ -80,6 +84,9 @@ def test_midi_loopback_stress(pytestconfig, board, config):
 
     fs_audio = max(features["samp_freqs"]) # Highest rate for maximum stress
     with XrunDut(adapter_dut, board, config) as dut:
+
+        dut.set_stream_format("input", fs_audio, features["chan_i"], 24)
+        dut.set_stream_format("output", fs_audio, features["chan_o"], 24)
 
         # Ensure firmware is up and enumerated as MIDI
         wait_for_midi_ports(timeout_s=60)

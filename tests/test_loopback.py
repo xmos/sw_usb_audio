@@ -62,8 +62,13 @@ def test_loopback_dac(pytestconfig, board, config):
     duration = analogue_duration(pytestconfig.getoption("level"), features["partial"])
     fail_str = ""
 
+    if (features["adat_i"] == True) or (features["adat_o"] == True):
+        samp_freqs = [f for f in features["samp_freqs"] if f <= 96000] # TODO Extend to 192KHz, 10ch as part of ADAT output for SMUX > 1 testing
+    else:
+        samp_freqs = features["samp_freqs"]
+    print(samp_freqs)
     with XrunDut(adapter_dut, board, config) as dut:
-        for fs in features["samp_freqs"]:
+        for fs in samp_freqs:
             # Issue 120
             if (
                 platform.system() == "Windows"
@@ -72,6 +77,10 @@ def test_loopback_dac(pytestconfig, board, config):
                 and fs in [44100, 48000]
             ):
                 continue
+
+            dut.set_stream_format("input", fs, features["chan_i"], 24)
+            dut.set_stream_format("output", fs, features["chan_o"], 24)
+
             with XsigInput(fs, duration, xsig_config_path, dut.dev_name) as xsig_proc:
                 time.sleep(duration + 6)
                 xsig_lines = xsig_proc.get_output()

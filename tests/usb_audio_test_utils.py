@@ -156,7 +156,7 @@ def check_analyzer_output(analyzer_output, xsig_config):
                 )
                 continue
 
-            initial_volume = int(vol_changes.pop(0))
+            _ = int(vol_changes.pop(0))
             initial_change = int(vol_changes.pop(0))
             if initial_change >= 0:
                 failures.append(
@@ -269,7 +269,7 @@ def get_xtag_dut_and_harness(pytestconfig, board):
 # is killed, and this connect via xgdb can recover it but it takes a while to reboot the XTAG
 def stop_xrun_app(adapter_id):
     subprocess.run(
-        ["xgdb", "-ex", f"connect --adapter-id {adapter_id}", "-ex", "quit"],
+        ["xgdb", "-ex", f"connect --adapter-id {adapter_id}", "--batch"],
         stdout=subprocess.DEVNULL,
         stderr=subprocess.DEVNULL,
         timeout=120,
@@ -326,7 +326,7 @@ def get_tusb_guid():
             guid = config.get("DriverInterface", "InterfaceGUID")
             return guid
         except (configparser.NoSectionError, configparser.NoOptionError):
-            pytest.fail(f"Could not find InterfaceGUID in custom.ini")
+            pytest.fail("Could not find InterfaceGUID in custom.ini")
 
 
 def wait_for_midi_ports(timeout_s=30):
@@ -500,6 +500,20 @@ class XrunDut:
                     timeout=10,
                 )
 
+    def set_stream_format(self, direction, samp_freq, num_chans, bit_depth, fail_on_err=True):
+        if platform.system() == "Windows" and use_windows_builtin_driver(self.board, self.config):
+            # Cannot change the stream format
+            return
+
+        cmd = [get_volcontrol_path()]
+        if platform.system() == "Windows":
+            cmd.append(f"-g{get_tusb_guid()}")
+        cmd += ["--set-format", direction, f"{samp_freq}", f"{num_chans}", f"{bit_depth}"]
+        ret = subprocess.run(cmd, timeout=30, capture_output=True, text=True)
+        if fail_on_err and ret.returncode != 0:
+            pytest.fail(f"failed to setup stream format: {direction}, {samp_freq} fs, {num_chans} channels, {bit_depth} bit\n{ret.stdout}\n{ret.stderr}")
+
+        return ret.returncode
 
 class XsigProcess:
     """
