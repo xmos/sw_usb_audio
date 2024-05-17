@@ -36,10 +36,6 @@ def midi_stress_uncollect(pytestconfig, board, config):
     if not all(xtag_ids):
         return True
 
-    # Test can get stuck on Windows, so disable it temporarily
-    if platform.system() == "Windows":
-        return True
-
     # Until we fix Jenkins user permissions for MIDI on Mac https://xmosjira.atlassian.net/browse/UA-254
     if platform.system() == "Darwin":
         return True
@@ -108,8 +104,6 @@ def test_midi_loopback_stress(pytestconfig, board, config):
                 # Keep looping midi_test until time up
                 while time.time() < time_start + duration + xsig_completion_time_s:
                     run_midi_test_file(input_midi_file_name, output_midi_file_name, in_port, out_port)
-                    #time.sleep(1)
-                    #print(time.time() - (time_start + duration + xsig_completion_time_s))
 
         # Stop the harness
         harness.terminate()
