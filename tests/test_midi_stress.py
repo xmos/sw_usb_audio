@@ -82,7 +82,7 @@ def test_midi_loopback_stress(pytestconfig, board, config):
     with XrunDut(adapter_dut, board, config) as dut:
 
         # Ensure firmware is up and enumerated as MIDI
-        wait_for_midi_ports()
+        wait_for_midi_ports(timeout_s=60)
 
         time_start = time.time()
         with (
@@ -101,6 +101,8 @@ def test_midi_loopback_stress(pytestconfig, board, config):
                 # Keep looping midi_test until time up
                 while time.time() < time_start + duration + xsig_completion_time_s:
                     run_midi_test_file(input_midi_file_name, output_midi_file_name, in_port, out_port)
+                    #time.sleep(1)
+                    #print(time.time() - (time_start + duration + xsig_completion_time_s))
 
         # Stop the harness
         harness.terminate()

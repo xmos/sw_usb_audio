@@ -57,10 +57,13 @@ def midi_duration(level, partial):
     return duration
 
 def midi_receive_with_timeout(in_port, timeout_s=10):
-    for s in range(timeout_s):
+    time_start = time.time()
+    while(time.time() < time_start + timeout_s):
         msg = in_port.receive(block=False)
         if msg is not None:
             return msg
+        #print("midi rx no msg yet")
+        time.sleep(0.1)
 
     pytest.fail(f"MIDI receive message failed after {timeout_s}s.")
 
@@ -104,10 +107,10 @@ def run_midi_test_file(input_midi_file_name, output_midi_file_name, in_port, out
         t0 = time.time()
         for msg in track:
             if msg.is_meta:
-                # print("Meta message: ", msg)
+                #print("Meta message: ", msg)
                 continue
             else:
-                # print("Sent:", msg)
+                #print("Sent:", msg)
                 out_port.send(msg)
                 msg_count += 1
 
