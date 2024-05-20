@@ -465,8 +465,7 @@ class XrunDut:
         self.adapter_id = adapter_id
         self.board = board
         self.config = config
-        features = get_config_features(board, config)
-        self.pid = features["pid"]
+        self.features = get_config_features(board, config)
         self.dev_name = None
         self.timeout = timeout
 
@@ -495,16 +494,11 @@ class XrunDut:
                         usbdeview_path,
                         "/RunAsAdmin",
                         "/remove_by_pid",
-                        f"0x20b1;{hex(self.pid)}",
+                        f"0x20b1;{hex(self.features["pid"])}",
                     ],
                     timeout=10,
                 )
-
-    def set_stream_format(self, direction, samp_freq, num_chans, bit_depth, fail_on_err=True):
-        if platform.system() == "Windows" and use_windows_builtin_driver(self.board, self.config):
-            # Cannot change the stream format
-            return
-
+    def _set_stream_format(self, direction, samp_freq, num_chans, bit_depth, fail_on_err):
         cmd = [get_volcontrol_path()]
         if platform.system() == "Windows":
             cmd.append(f"-g{get_tusb_guid()}")
@@ -514,6 +508,22 @@ class XrunDut:
             pytest.fail(f"failed to setup stream format: {direction}, {samp_freq} fs, {num_chans} channels, {bit_depth} bit\n{ret.stdout}\n{ret.stderr}")
 
         return ret.returncode
+
+    def set_stream_format(self, direction, samp_freq, num_chans, bit_depth, fail_on_err=True):
+        if platform.system() == "Windows" and use_windows_builtin_driver(self.board, self.config):
+            # Cannot change the stream format
+            return
+
+        if samp_freq >= 176400:
+            assert num_chans <= 10 # USB BW limitation
+            # Check the number of channels in the input interface
+            if direction == "output" and self.features["chan_i"] > 10: # When setting interface in the output direction, first limit the number of channels on the input interface, otherwise Windows complains
+                ret = self._set_stream_format("input", samp_freq, num_chans, bit_depth, fail_on_err)
+                if ret:
+                    return ret
+
+        # Set the stream format that the user has asked for
+        return self._set_stream_format(direction, samp_freq, num_chans, bit_depth, fail_on_err)
 
 class XsigProcess:
     """

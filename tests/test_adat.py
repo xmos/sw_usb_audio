@@ -182,9 +182,6 @@ def test_adat_output(pytestconfig, board, config, reps):
             xsig_config = f'mc_digital_output_analog_{features["analogue_o"]}ch_dig_{num_dig_out_channels}ch'
             xsig_config_path = Path(__file__).parent / "xsig_configs" / f"{xsig_config}.json"
 
-            if fs >= 176400 and features["chan_i"] > 10:
-                dut.set_stream_format("input", fs, num_out_channels, 24)
-
             dut.set_stream_format("output", fs, num_out_channels, 24)
 
             with AudioAnalyzerHarness(
