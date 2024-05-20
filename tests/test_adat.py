@@ -53,7 +53,7 @@ def adat_input_uncollect(pytestconfig, board, config):
     )
 
 
-def adat_output_uncollect(pytestconfig, board, config, reps):
+def adat_output_uncollect(pytestconfig, board, config):
     features = get_config_features(board, config)
     return any(
         [not features["adat_o"], adat_common_uncollect(features, board, pytestconfig)]
@@ -149,20 +149,16 @@ def test_adat_input(pytestconfig, board, config):
         pytest.fail(fail_str)
 
 @pytest.mark.uncollect_if(func=adat_output_uncollect)
-@pytest.mark.parametrize("reps", range(1))
 @pytest.mark.parametrize(["board", "config"], list_configs())
-def test_adat_output(pytestconfig, board, config, reps):
+def test_adat_output(pytestconfig, board, config):
     features = get_config_features(board, config)
 
     adapter_dut, adapter_harness = get_xtag_dut_and_harness(pytestconfig, board)
     duration = adat_duration(pytestconfig.getoption("level"), features["partial"])
     fail_str = ""
 
-    #fs_adat = [fs for fs in features["samp_freqs"] if fs <= 48000]
-    fs_adat = features["samp_freqs"]
     with XrunDut(adapter_dut, board, config) as dut:
-        for fs in fs_adat:
-            print(f"ITER {reps}")
+        for fs in features["samp_freqs"]:
             assert features["analogue_i"] == 8
             if fs <= 48000:
                 num_out_channels = 16

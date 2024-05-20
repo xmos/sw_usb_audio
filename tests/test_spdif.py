@@ -148,7 +148,8 @@ def test_spdif_input(pytestconfig, board, config):
 def test_spdif_output(pytestconfig, board, config):
     features = get_config_features(board, config)
 
-    xsig_config = f'mc_digital_output_{features["analogue_o"]}ch'
+    num_dig_out_channels = features["chan_o"] - features["analogue_o"]
+    xsig_config = f'mc_digital_output_analog_{features["analogue_o"]}ch_dig_{num_dig_out_channels}ch'
     xsig_config_path = Path(__file__).parent / "xsig_configs" / f"{xsig_config}.json"
 
     adapter_dut, adapter_harness = get_xtag_dut_and_harness(pytestconfig, board)
