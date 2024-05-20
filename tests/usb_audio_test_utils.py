@@ -494,7 +494,7 @@ class XrunDut:
                         usbdeview_path,
                         "/RunAsAdmin",
                         "/remove_by_pid",
-                        f"0x20b1;{hex(self.features["pid"])}",
+                        f"0x20b1;{hex(self.features['pid'])}",
                     ],
                     timeout=10,
                 )
