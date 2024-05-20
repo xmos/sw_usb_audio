@@ -37,4 +37,10 @@ set(APP_COMPILER_FLAGS_2AMi10o8xsxxxx ${SW_USB_AUDIO_FLAGS} -DXUA_SPDIF_RX_EN=1)
 set(APP_COMPILER_FLAGS_2AMi8o10xxsxxx_mix8 ${SW_USB_AUDIO_FLAGS} -DXUA_SPDIF_TX_EN=1
                                                                  -DMAX_MIX_COUNT=8)
 
+# Audio Class 2, Async, I2S Master, 16xInput, 8xOutput, ADAT Rx
+set(APP_COMPILER_FLAGS_2AMi16o8xxxaxx ${SW_USB_AUDIO_FLAGS}  -DXUA_ADAT_RX_EN=1)
+
+# Audio Class 2, Async, I2S master, 8xInput, 16xOutput, ADAT Tx
+set(APP_COMPILER_FLAGS_2AMi8o16xxxxax ${SW_USB_AUDIO_FLAGS}  -DXUA_ADAT_TX_EN=1)
+
 endif()

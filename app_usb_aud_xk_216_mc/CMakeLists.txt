@@ -35,10 +35,6 @@ set(APP_COMPILER_FLAGS_2ASi16o16xxxxxx_tdm8 ${SW_USB_AUDIO_FLAGS} -DI2S_CHANS_AD
                                                                   -DCODEC_MASTER=1
                                                                   -DOUT_VOLUME_IN_MIXER=0)
 
-set(APP_COMPILER_FLAGS_2AMi16o8xxxaxx ${SW_USB_AUDIO_FLAGS} -DXUA_ADAT_RX_EN=1)
-
-set(APP_COMPILER_FLAGS_2AMi8o16xxxxax ${SW_USB_AUDIO_FLAGS} -DXUA_ADAT_TX_EN=1)
-
 set(APP_COMPILER_FLAGS_2AMi16o16xxxaax ${SW_USB_AUDIO_FLAGS} -DXUA_ADAT_RX_EN=1 -DXUA_ADAT_TX_EN=1)
 
 
