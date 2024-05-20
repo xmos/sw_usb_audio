@@ -36,10 +36,6 @@ def midi_stress_uncollect(pytestconfig, board, config):
     if not all(xtag_ids):
         return True
 
-    # Test can get stuck on Windows, so disable it temporarily
-    if platform.system() == "Windows":
-        return True
-
     # Until we fix Jenkins user permissions for MIDI on Mac https://xmosjira.atlassian.net/browse/UA-254
     if platform.system() == "Darwin":
         return True
@@ -71,6 +67,8 @@ def test_midi_loopback_stress(pytestconfig, board, config):
     (not the harness xscope output) because as soon as you stop either the harness or xsig the 
     other will throw an error due to real-time checking.
     """
+    print(f"*** starting test_midi_loopback_stress:  {board} {config}")
+
     features = get_config_features(board, config)
 
     xsig_config = f'mc_midi_stress_8ch'
@@ -87,7 +85,7 @@ def test_midi_loopback_stress(pytestconfig, board, config):
         dut.set_stream_format("output", fs_audio, features["chan_o"], 24)
 
         # Ensure firmware is up and enumerated as MIDI
-        wait_for_midi_ports()
+        wait_for_midi_ports(timeout_s=60)
 
         time_start = time.time()
         with (
@@ -100,7 +98,9 @@ def test_midi_loopback_stress(pytestconfig, board, config):
             
             with (mido.open_input(find_xmos_midi_device(mido.get_input_names())) as in_port,
                   mido.open_output(find_xmos_midi_device(mido.get_output_names())) as out_port):
-            
+                print(f"*** Looping test_midi_loopback_stress....")
+
+
                 # Keep looping midi_test until time up
                 while time.time() < time_start + duration + xsig_completion_time_s:
                     run_midi_test_file(input_midi_file_name, output_midi_file_name, in_port, out_port)
