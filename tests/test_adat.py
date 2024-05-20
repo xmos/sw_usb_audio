@@ -145,7 +145,6 @@ def test_adat_input(pytestconfig, board, config):
                 )
                 fail_str += "\n".join(analyzer_lines) + "\n\n"
 
-
     if len(fail_str) > 0:
         pytest.fail(fail_str)
 
