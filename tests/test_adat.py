@@ -120,9 +120,6 @@ def test_adat_input(pytestconfig, board, config):
 
                 with (
                     AdatClockSrc(),
-                    XsigInput(
-                        fs, duration, xsig_config_path, dut.dev_name
-                    ) as xsig_proc,
                 ):
                     with(
                         XsigInput(
