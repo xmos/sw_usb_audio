@@ -36,14 +36,13 @@ def get_expected_interfaces(direction, features):
                             [direction, fs, features["chan_o"], 16] ]
     else:
         assert 0, f"Invalid direction sent: {direction}"
-    
+
     return interfaces
 
 # Test cases are defined by a tuple of (board, config)
 interface_configs = [
     ("xk_316_mc", "2AMi10o10xssxxx"),
-    ("xk_316_mc", "2AMi16o8xxxaxx"),
-    ("xk_316_mc", "2AMi8o16xxxxax"),
+    ("xk_316_mc", "2AMi16o16xxxaax"),
     ("xk_evk_xu316", "2AMi2o2xxxxxx"),
 ]
 
@@ -62,7 +61,7 @@ def interface_uncollect(pytestconfig, board, config):
 @pytest.mark.parametrize(["board", "config"], interface_configs)
 def test_interfaces(pytestconfig, board, config):
     features = get_config_features(board, config)
-    
+
     fail_str = ""
     adapter_dut, adapter_harness = get_xtag_dut_and_harness(pytestconfig, board)
 
