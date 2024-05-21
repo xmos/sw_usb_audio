@@ -96,6 +96,7 @@ def test_adat_input(pytestconfig, board, config):
             xsig_config_path = Path(__file__).parent / "xsig_configs" / f"{xsig_config}.json"
 
             dut.set_stream_format("input", fs, num_in_channels, 24)
+            dut.set_stream_format("output", fs, num_in_channels, 24)
             with AudioAnalyzerHarness(
                 adapter_harness, config="adat_test", xscope="app"
             ) as harness:
