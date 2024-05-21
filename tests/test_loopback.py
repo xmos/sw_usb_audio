@@ -72,15 +72,13 @@ def test_loopback_dac(pytestconfig, board, config):
                 and fs in [44100, 48000]
             ):
                 continue
-            if fs <= 48000:
-                max_num_channels = 16
-            elif fs <= 96000:
-                max_num_channels = 12
-            else:
+            if fs > 96000:
                 max_num_channels = 10
-
-            dut.set_stream_format("input", fs, min(max_num_channels, features["chan_i"]), 24)
-            dut.set_stream_format("output", fs, min(max_num_channels, features["chan_o"]), 24)
+                dut.set_stream_format("input", fs, min(max_num_channels, features["chan_i"]), 24)
+                dut.set_stream_format("output", fs, min(max_num_channels, features["chan_o"]), 24)
+            else:
+                dut.set_stream_format("input", fs, features["chan_i"], 24)
+                dut.set_stream_format("output", fs, features["chan_o"], 24)
 
             with XsigInput(fs, duration, xsig_config_path, dut.dev_name) as xsig_proc:
                 time.sleep(duration + 6)

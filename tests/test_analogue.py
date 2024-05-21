@@ -95,13 +95,16 @@ def test_analogue_input(pytestconfig, board, config):
     duration = analogue_duration(pytestconfig.getoption("level"), short_test)
     fail_str = ""
 
-    samp_freqs = [f for f in features["samp_freqs"] if f <= 96000] # TODO Extend to 192KHz, 10ch as part of ADAT output for SMUX > 1 testing
     with (
         XrunDut(adapter_dut, board, config) as dut,
         AudioAnalyzerHarness(adapter_harness),
     ):
-        for fs in samp_freqs:
-            dut.set_stream_format("input", fs, features["chan_i"], 24)
+        for fs in features["samp_freqs"]:
+            if fs > 96000:
+                max_num_channels = 10
+                dut.set_stream_format("input", fs, min(max_num_channels, features["chan_i"]), 24)
+            else:
+                dut.set_stream_format("input", fs, features["chan_i"], 24)
 
             with XsigInput(fs, duration, xsig_config_path, dut.dev_name, ident=f"analogue_input-{board}-{config}-{fs}") as xsig_proc:
                 # Sleep for a few extra seconds so that xsig will have completed
@@ -139,12 +142,8 @@ def test_analogue_output(pytestconfig, board, config):
     duration = analogue_duration(pytestconfig.getoption("level"), short_test)
     fail_str = ""
 
-    if (features["adat_i"] == True) or (features["adat_o"] == True):
-        samp_freqs = [f for f in features["samp_freqs"] if f <= 96000] # TODO Extend to 192KHz, 10ch as part of ADAT output for SMUX > 1 testing
-    else:
-        samp_freqs = features["samp_freqs"]
     with XrunDut(adapter_dut, board, config) as dut:
-        for fs in samp_freqs:
+        for fs in features["samp_freqs"]:
             # Issue 120
             if (
                 platform.system() == "Windows"
@@ -154,7 +153,11 @@ def test_analogue_output(pytestconfig, board, config):
             ):
                 continue
 
-            dut.set_stream_format("output", fs, features["chan_o"], 24)
+            if fs > 96000:
+                max_num_channels = 10
+                dut.set_stream_format("output", fs, min(max_num_channels, features["chan_o"]), 24)
+            else:
+                dut.set_stream_format("output", fs, features["chan_o"], 24)
 
             with (
                 AudioAnalyzerHarness(adapter_harness, xscope="io") as harness,
