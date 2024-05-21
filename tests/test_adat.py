@@ -124,26 +124,35 @@ def test_adat_input(pytestconfig, board, config):
                         fs, duration, xsig_config_path, dut.dev_name
                     ) as xsig_proc,
                 ):
-                    time.sleep(duration + 6)
-                    xsig_lines = xsig_proc.get_output()
+                    with(
+                        XsigInput(
+                        fs, duration, xsig_config_path, dut.dev_name
+                    ) as xsig_proc,
+                    ):
+                        time.sleep(duration + 6)
+                        xsig_lines = xsig_proc.get_output()
 
-            with open(xsig_config_path) as file:
-                xsig_json = json.load(file)
-            failures = check_analyzer_output(xsig_lines, xsig_json["in"])
-            if len(failures) > 0:
-                fail_str += f"Failure at sample rate {fs}\n"
-                fail_str += "\n".join(failures) + "\n\n"
-                fail_str += f"xsig stdout at sample rate {fs}\n"
-                fail_str += "\n".join(xsig_lines) + "\n\n"
-                fail_str += f"Audio analyzer stdout at sample rate {fs}\n"
-                # Some of the analyzer output can be captured by the xscope_controller so
-                # include all the output from that application as well as the harness output
-                analyzer_lines = (
-                    ret.stdout.splitlines()
-                    + ret.stderr.splitlines()
-                    + harness.get_output()
-                )
-                fail_str += "\n".join(analyzer_lines) + "\n\n"
+                    with open(xsig_config_path) as file:
+                        xsig_json = json.load(file)
+                    failures = check_analyzer_output(xsig_lines, xsig_json["in"])
+                    if len(failures) > 0:
+                        fail_str += f"Failure at sample rate {fs}\n"
+                        fail_str += "\n".join(failures) + "\n\n"
+                        fail_str += f"xsig stdout at sample rate {fs}\n"
+                        fail_str += "\n".join(xsig_lines) + "\n\n"
+                        fail_str += f"Audio analyzer stdout at sample rate {fs}\n"
+                        # Some of the analyzer output can be captured by the xscope_controller so
+                        # include all the output from that application as well as the harness output
+                        analyzer_lines = (
+                            ret.stdout.splitlines()
+                            + ret.stderr.splitlines()
+                            #+ harness.get_output()
+                        )
+                        fail_str += "\n".join(analyzer_lines) + "\n\n"
+                        print(f"fail_str = {fail_str}")
+                        import pdb
+                        pdb.set_trace()
+                        pytest.fail(fail_str)
 
     if len(fail_str) > 0:
         pytest.fail(fail_str)
