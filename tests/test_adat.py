@@ -149,8 +149,8 @@ def test_adat_input(pytestconfig, board, config):
                         )
                         fail_str += "\n".join(analyzer_lines) + "\n\n"
                         print(f"fail_str = {fail_str}")
-                        import pdb
-                        pdb.set_trace()
+                        #import pdb
+                        #pdb.set_trace()
                         pytest.fail(fail_str)
 
     if len(fail_str) > 0:
