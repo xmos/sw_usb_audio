@@ -81,18 +81,22 @@ def test_adat_input(pytestconfig, board, config):
     with XrunDut(adapter_dut, board, config) as dut:
         for fs in features["samp_freqs"]:
             assert features["analogue_i"] == 8
+
             if fs <= 48000:
-                num_in_channels = 16
+                num_in_channels = features["analogue_i"] + (2 * features["spdif_i"]) + 8
+                assert(num_in_channels == features["chan_i"])
             elif fs <= 96000:
-                num_in_channels = 12
+                num_in_channels = features["analogue_i"] + (2 * features["spdif_i"]) + 4
             else:
-                num_in_channels = 10
+                num_in_channels = features["analogue_i"] + (2 * features["spdif_i"]) + 2
 
             num_dig_in_channels = num_in_channels - features["analogue_i"]
 
             print(f"adat_input: config {config}, fs {fs}, num_in_ch {num_in_channels}")
 
             xsig_config = f'mc_digital_input_analog_{features["analogue_i"]}ch_dig_{num_dig_in_channels}ch'
+            if(features["spdif_i"]): # If SPDIF is also enabled use the _adat version of the xsig config which checks for ramps only on the ADAT channels
+                xsig_config = xsig_config + "_adat"
             xsig_config_path = Path(__file__).parent / "xsig_configs" / f"{xsig_config}.json"
 
             dut.set_stream_format("input", fs, num_in_channels, 24)
@@ -131,27 +135,24 @@ def test_adat_input(pytestconfig, board, config):
                         time.sleep(duration + 6)
                         xsig_lines = xsig_proc.get_output()
 
-                    with open(xsig_config_path) as file:
-                        xsig_json = json.load(file)
-                    failures = check_analyzer_output(xsig_lines, xsig_json["in"])
-                    if len(failures) > 0:
-                        fail_str += f"Failure at sample rate {fs}\n"
-                        fail_str += "\n".join(failures) + "\n\n"
-                        fail_str += f"xsig stdout at sample rate {fs}\n"
-                        fail_str += "\n".join(xsig_lines) + "\n\n"
-                        fail_str += f"Audio analyzer stdout at sample rate {fs}\n"
-                        # Some of the analyzer output can be captured by the xscope_controller so
-                        # include all the output from that application as well as the harness output
-                        analyzer_lines = (
-                            ret.stdout.splitlines()
-                            + ret.stderr.splitlines()
-                            #+ harness.get_output()
-                        )
-                        fail_str += "\n".join(analyzer_lines) + "\n\n"
-                        print(f"fail_str = {fail_str}")
-                        #import pdb
-                        #pdb.set_trace()
-                        pytest.fail(fail_str)
+            with open(xsig_config_path) as file:
+                xsig_json = json.load(file)
+
+            failures = check_analyzer_output(xsig_lines, xsig_json["in"])
+            if len(failures) > 0:
+                fail_str += f"Failure at sample rate {fs}\n"
+                fail_str += "\n".join(failures) + "\n\n"
+                fail_str += f"xsig stdout at sample rate {fs}\n"
+                fail_str += "\n".join(xsig_lines) + "\n\n"
+                fail_str += f"Audio analyzer stdout at sample rate {fs}\n"
+                # Some of the analyzer output can be captured by the xscope_controller so
+                # include all the output from that application as well as the harness output
+                analyzer_lines = (
+                    ret.stdout.splitlines()
+                    + ret.stderr.splitlines()
+                    + harness.get_output()
+                )
+                fail_str += "\n".join(analyzer_lines) + "\n\n"
 
     if len(fail_str) > 0:
         pytest.fail(fail_str)
@@ -169,13 +170,14 @@ def test_adat_output(pytestconfig, board, config):
         for fs in features["samp_freqs"]:
             assert features["analogue_i"] == 8
             if fs <= 48000:
-                num_out_channels = 16
+                num_out_channels = features["analogue_o"] + (2 * features["spdif_o"]) + 8
+                assert(num_out_channels == features["chan_o"])
                 smux = 1
             elif fs <= 96000:
-                num_out_channels = 12
+                num_out_channels = features["analogue_o"] + (2 * features["spdif_o"]) + 4
                 smux = 2
             else:
-                num_out_channels = 10
+                num_out_channels = features["analogue_o"] + (2 * features["spdif_o"]) + 2
                 smux = 4
 
             num_dig_out_channels = num_out_channels - features["analogue_o"]
@@ -183,6 +185,8 @@ def test_adat_output(pytestconfig, board, config):
             print(f"adat_output: config {config}, fs {fs}, num_out_ch {num_out_channels}")
 
             xsig_config = f'mc_digital_output_analog_{features["analogue_o"]}ch_dig_{num_dig_out_channels}ch'
+            if features["spdif_o"]:
+                xsig_config = xsig_config + "_adat" # If SPDIF is also enabled use the _adat version of the xsig config which checks for ramps only on the ADAT channels
             xsig_config_path = Path(__file__).parent / "xsig_configs" / f"{xsig_config}.json"
 
             if features["chan_i"] > num_out_channels:
@@ -220,6 +224,11 @@ def test_adat_output(pytestconfig, board, config):
 
             with open(xsig_config_path) as file:
                 xsig_json = json.load(file)
+                if features["spdif_o"]: # If spdif is also enabled, rearrange xsig_json so adat output is expected channel 8 onwards since that's how the analyser prints it
+                    for i in range(8, num_out_channels-2):
+                        xsig_json['out'][i] = xsig_json['out'][i+2]
+                    for i in range(num_out_channels-2, num_out_channels):
+                        xsig_json['out'][i] = ["zero"]
             failures = check_analyzer_output(xscope_lines, xsig_json["out"])
             if len(failures) > 0:
                 fail_str += f"Failure at sample rate {fs}\n"
