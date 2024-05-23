@@ -48,6 +48,10 @@ interface_configs = [
 
 
 def interface_uncollect(pytestconfig, board, config):
+    if pytestconfig.getoption("level") == "smoke":
+        # Don't run test_interfaces at smoke level
+        return True
+
     xtag_ids = get_xtag_dut_and_harness(pytestconfig, board)
     # XTAGs not present
     if not all(xtag_ids):
