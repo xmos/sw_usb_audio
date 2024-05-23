@@ -36,7 +36,7 @@ mixer_configs = [
 ]
 
 
-def mixer_uncollect(pytestconfig, board, config):
+def mixer_common_uncollect(pytestconfig, board, config):
     # Check if mixer configs are present for this test level
     if (board, config) not in list_configs():
         return True
@@ -47,7 +47,19 @@ def mixer_uncollect(pytestconfig, board, config):
     return False
 
 
-@pytest.mark.uncollect_if(func=mixer_uncollect)
+def mixing_ctrl_output_uncollect(pytestconfig, board, config):
+    return mixer_common_uncollect(pytestconfig, board, config)
+
+
+def mixer_not_smoke_uncollect(pytestconfig, board, config):
+    if pytestconfig.getoption("level") == "smoke":
+        # Don't run at smoke level
+        return True
+
+    return mixer_common_uncollect(pytestconfig, board, config)
+
+
+@pytest.mark.uncollect_if(func=mixer_not_smoke_uncollect)
 @pytest.mark.parametrize(["board", "config"], mixer_configs)
 def test_routing_ctrl_input(pytestconfig, ctrl_app, board, config):
     features = get_config_features(board, config)
@@ -90,7 +102,7 @@ def test_routing_ctrl_input(pytestconfig, ctrl_app, board, config):
         pytest.fail(fail_str)
 
 
-@pytest.mark.uncollect_if(func=mixer_uncollect)
+@pytest.mark.uncollect_if(func=mixer_not_smoke_uncollect)
 @pytest.mark.parametrize(["board", "config"], mixer_configs)
 def test_routing_ctrl_output(pytestconfig, ctrl_app, board, config):
     features = get_config_features(board, config)
@@ -139,7 +151,7 @@ def clear_default_mixes(ctrl_app, num_mixes):
         subprocess.run(mixer_cmd, timeout=10)
 
 
-@pytest.mark.uncollect_if(func=mixer_uncollect)
+@pytest.mark.uncollect_if(func=mixer_not_smoke_uncollect)
 @pytest.mark.parametrize(["board", "config"], mixer_configs)
 def test_mixing_ctrl_input(pytestconfig, ctrl_app, board, config):
     features = get_config_features(board, config)
@@ -206,7 +218,7 @@ def test_mixing_ctrl_input(pytestconfig, ctrl_app, board, config):
         pytest.fail(fail_str)
 
 
-@pytest.mark.uncollect_if(func=mixer_uncollect)
+@pytest.mark.uncollect_if(func=mixing_ctrl_output_uncollect)
 @pytest.mark.parametrize(["board", "config"], mixer_configs)
 def test_mixing_ctrl_output(pytestconfig, ctrl_app, board, config):
     features = get_config_features(board, config)
@@ -273,7 +285,7 @@ def test_mixing_ctrl_output(pytestconfig, ctrl_app, board, config):
         pytest.fail(fail_str)
 
 
-@pytest.mark.uncollect_if(func=mixer_uncollect)
+@pytest.mark.uncollect_if(func=mixer_not_smoke_uncollect)
 @pytest.mark.parametrize(["board", "config"], mixer_configs)
 def test_mixing_multi_channel_output(pytestconfig, ctrl_app, board, config):
     features = get_config_features(board, config)
@@ -357,7 +369,7 @@ def test_mixing_multi_channel_output(pytestconfig, ctrl_app, board, config):
         pytest.fail(fail_str)
 
 
-@pytest.mark.uncollect_if(func=mixer_uncollect)
+@pytest.mark.uncollect_if(func=mixer_not_smoke_uncollect)
 @pytest.mark.parametrize(["board", "config"], mixer_configs)
 def test_routing_daw_out_mix_input(pytestconfig, ctrl_app, board, config):
     features = get_config_features(board, config)
