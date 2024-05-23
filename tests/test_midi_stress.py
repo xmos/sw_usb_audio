@@ -32,6 +32,10 @@ def midi_stress_uncollect(pytestconfig, board, config):
     features = get_config_features(board, config)
     xtag_ids = get_xtag_dut_and_harness(pytestconfig, board)
 
+    if pytestconfig.getoption("level") == "smoke":
+        # Don't run MIDI stress at smoke level
+        return True
+
     # XTAGs not present
     if not all(xtag_ids):
         return True
