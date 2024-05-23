@@ -4,7 +4,10 @@
 #include "xassert.h"
 #include "i2c.h"
 #include "xua.h"
-#include "../../shared/apppll.h"
+
+extern "C" {
+    #include "sw_pll.h"
+}
 
 #if (XUA_PCM_FORMAT == XUA_PCM_FORMAT_TDM) && (XUA_I2S_N_BITS != 32)
 #warning ADC only supports TDM operation at 32 bits
@@ -271,11 +274,11 @@ void AudioHwInit()
         /* Use xCORE Secondary PLL to generate *fixed* master clock */
         if (DEFAULT_FREQ % 22050 == 0)
         {
-            AppPllEnable(MCLK_441);
+            sw_pll_fixed_clock(MCLK_441);
         }
         else
         {
-            AppPllEnable(MCLK_48);
+            sw_pll_fixed_clock(MCLK_48);
         }
     }
 
@@ -490,7 +493,7 @@ void AudioHwConfig(unsigned samFreq, unsigned mClk, unsigned dsdMode, unsigned s
     }
     else
     {
-        AppPllEnable(mClk);
+        sw_pll_fixed_clock(mClk);
     }
 
     /* Set one DAC to I2S master */

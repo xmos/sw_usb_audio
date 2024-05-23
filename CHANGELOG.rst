@@ -4,6 +4,7 @@ sw_usb_audio Change Log
 UNRELEASED
 ----------
 
+  * CHANGED:   Use lib_sw_pll code for configuring the application PLL
   * FIXED:     Use correct number of flash pages for XK-AUDIO-316-MC
   * FIXED:     Links to usb.org in documentation
 
