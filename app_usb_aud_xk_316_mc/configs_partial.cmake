@@ -10,6 +10,13 @@ endif()
 
 if(PARTIAL_TESTED_CONFIGS)
 
+# Audio Class 1, Async, I2S Master, 2xInput, 2xOutput
+set(APP_COMPILER_FLAGS_1AMi2o2xxxxxx ${SW_USB_AUDIO_FLAGS} -DAUDIO_CLASS=1)
+
+# Audio Class 2, Async, I2S Master, 2xInput, 2xOutput
+set(APP_COMPILER_FLAGS_2AMi2o2xxxxxx ${SW_USB_AUDIO_FLAGS} -DI2S_CHANS_DAC=2
+                                                           -DI2S_CHANS_ADC=2)
+
 # Audio Class 2, Async, I2S Slave, 8xInput, 8xOutput
 set(APP_COMPILER_FLAGS_2ASi8o8xxxxxx ${SW_USB_AUDIO_FLAGS} -DCODEC_MASTER=1)
 
@@ -23,6 +30,12 @@ set(APP_COMPILER_FLAGS_2AMi32o32xxxxxx_tdm8 ${SW_USB_AUDIO_FLAGS} -DXUA_PCM_FORM
 
 # Audio Class 2, Async, I2S Master, 8xInput, 10xOutput, S/PDIF Tx
 set(APP_COMPILER_FLAGS_2AMi8o10xxsxxx ${SW_USB_AUDIO_FLAGS} -DXUA_SPDIF_TX_EN=1)
+
+# Audio Class 2, Async, I2S Master, 8xInput, 16xOutput, ADAT Tx
+set(APP_COMPILER_FLAGS_2AMi8o16xxxxax ${SW_USB_AUDIO_FLAGS} -DXUA_ADAT_TX_EN=1)
+
+# Audio Class 2, Async, I2S Master, 16xInput, 8xOutput, ADAT Rx
+set(APP_COMPILER_FLAGS_2AMi16o8xxxaxx ${SW_USB_AUDIO_FLAGS} -DXUA_ADAT_RX_EN=1)
 
 
 # Audio Class 2, Async, I2S Slave, 10xInput, 10xOutput, S/PDIF Tx, S/PDIF Rx
