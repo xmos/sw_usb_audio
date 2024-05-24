@@ -201,7 +201,7 @@ pipeline {
 
                       withXTAG(["usb_audio_mc_xs2_dut", "usb_audio_mc_xs2_harness", \
                                 "usb_audio_xcai_exp_dut", "usb_audio_xcai_exp_harness"]) { xtagIds ->
-                        sh "pytest -v --level ${params.TEST_LEVEL} --junitxml=pytest_result_mac_intel.xml \
+                        sh "pytest -s -v --level ${params.TEST_LEVEL} --junitxml=pytest_result_mac_intel.xml \
                             -o xk_216_mc_dut=${xtagIds[0]} -o xk_216_mc_harness=${xtagIds[1]} \
                             -o xk_evk_xu316_dut=${xtagIds[2]} -o xk_evk_xu316_harness=${xtagIds[3]}"
                       }
@@ -263,7 +263,7 @@ pipeline {
                       sh "pip install -e ${WORKSPACE}/xtagctl"
 
                       withXTAG(["usb_audio_mc_xcai_dut", "usb_audio_mc_xcai_harness"]) { xtagIds ->
-                        sh "pytest -v --level ${params.TEST_LEVEL} --junitxml=pytest_result_mac_arm.xml \
+                        sh "pytest -s -v --level ${params.TEST_LEVEL} --junitxml=pytest_result_mac_arm.xml \
                             -o xk_316_mc_dut=${xtagIds[0]} -o xk_316_mc_harness=${xtagIds[1]}"
                       }
                     }
@@ -324,7 +324,7 @@ pipeline {
                       sh "pip install -e ."
                     }
                     withXTAG(["usb_audio_mc_xcai_dut", "usb_audio_mc_xcai_harness"]) { xtagIds ->
-                      sh "pytest -v --level ${params.TEST_LEVEL} --junitxml=pytest_result_windows10.xml \
+                      sh "pytest -s -v --level ${params.TEST_LEVEL} --junitxml=pytest_result_windows10.xml \
                           -o xk_316_mc_dut=${xtagIds[0]} -o xk_316_mc_harness=${xtagIds[1]}"
                     }
                   }
@@ -385,7 +385,7 @@ pipeline {
                     }
 
                     withXTAG(["usb_audio_mc_xcai_dut", "usb_audio_mc_xcai_harness"]) { xtagIds ->
-                      sh "pytest -v --level ${params.TEST_LEVEL} --junitxml=pytest_result_windows11.xml \
+                      sh "pytest -s -v --level ${params.TEST_LEVEL} --junitxml=pytest_result_windows11.xml \
                           -o xk_316_mc_dut=${xtagIds[0]} -o xk_316_mc_harness=${xtagIds[1]}"
                     }
                   }

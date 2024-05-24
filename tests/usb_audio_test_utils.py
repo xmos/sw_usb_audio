@@ -329,7 +329,7 @@ def get_tusb_guid():
             pytest.fail("Could not find InterfaceGUID in custom.ini")
 
 
-def wait_for_midi_ports(timeout_s=30):
+def wait_for_midi_ports(timeout_s=60): # Win 11 agent has been seen to take up to 40s
     for i in range(timeout_s):
         if find_xmos_midi_device(mido.get_input_names()) is not None and find_xmos_midi_device(mido.get_output_names()) is not None:
             print(f"Hooray! XMOS MIDI ports found: {find_xmos_midi_device(mido.get_input_names())}, {find_xmos_midi_device(mido.get_output_names())}")

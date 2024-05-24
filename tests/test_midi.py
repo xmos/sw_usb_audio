@@ -29,10 +29,6 @@ def midi_loopback_uncollect(pytestconfig, board, config):
     features = get_config_features(board, config)
     xtag_ids = get_xtag_dut_and_harness(pytestconfig, board)
 
-    # Test can get stuck on Windows, so disable it temporarily
-    if platform.system() == "Windows":
-        return True
-
     # Until we fix Jenkins user permissions for MIDI on Mac https://xmosjira.atlassian.net/browse/UA-254
     if platform.system() == "Darwin":
         return True
@@ -60,6 +56,17 @@ def midi_duration(level, partial):
         duration = 10
     return duration
 
+def midi_receive_with_timeout(in_port, timeout_s=10):
+    time_start = time.time()
+    while(time.time() < time_start + timeout_s):
+        msg = in_port.receive(block=False)
+        if msg is not None:
+            return msg
+        #print("midi rx no msg yet")
+        time.sleep(0.1)
+
+    pytest.fail(f"MIDI receive message failed after {timeout_s}s.")
+
 def run_sysex_message(in_port, out_port, length=2048):
     print(f"Testing sysex message of {length} bytes")
     payload = [random.randrange(0, 128, 1) for i in range(length)]
@@ -74,7 +81,7 @@ def run_sysex_message(in_port, out_port, length=2048):
     print(f"Sending took: {t1-t0:.2f}s for {length} B midi sysex message ({bytes_per_second:.2f} B/s)")
 
     t0 = time.time()
-    dut_msg = in_port.receive()
+    dut_msg = midi_receive_with_timeout(in_port)
     t1 = time.time()
     elapsed = (t1 - t0) if (t1 - t0) > 0 else 0.001 # Avoid div by zero
     bytes_per_second = length / elapsed
@@ -100,10 +107,10 @@ def run_midi_test_file(input_midi_file_name, output_midi_file_name, in_port, out
         t0 = time.time()
         for msg in track:
             if msg.is_meta:
-                # print("Meta message: ", msg)
+                #print("Meta message: ", msg)
                 continue
             else:
-                # print("Sent:", msg)
+                #print("Sent:", msg)
                 out_port.send(msg)
                 msg_count += 1
 
@@ -116,7 +123,7 @@ def run_midi_test_file(input_midi_file_name, output_midi_file_name, in_port, out
         # Receive MIDI files (will be throttled to 3125Bps by UART)
         t0 = time.time()
         for msg_num in range(msg_count):
-            msg_in = in_port.receive()
+            msg_in = midi_receive_with_timeout(in_port)
             # print("Received:", msg_in)
 
             output_track.append(msg_in)
@@ -137,6 +144,7 @@ def run_midi_test_file(input_midi_file_name, output_midi_file_name, in_port, out
 @pytest.mark.uncollect_if(func=midi_loopback_uncollect)
 @pytest.mark.parametrize(["board", "config"], list_configs())
 def test_midi_loopback(pytestconfig, board, config):
+    print(f"*** starting test_midi_loopback {board} {config}")
 
     features = get_config_features(board, config)
 
