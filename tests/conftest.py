@@ -89,6 +89,8 @@ def parse_features(board, config):
         features["samp_freqs"] = samp_freqs_upto(48000)
     elif (features["adat_i"] == False and features["chan_i"] >= 16) or (features["adat_o"] == False and features["chan_o"] >= 16):
         features["samp_freqs"] = samp_freqs_upto(96000)
+    elif (features["adat_i"] == True and features["chan_i"] > 16) or (features["adat_o"] == True and features["chan_i"] > 16): #i18o18 build
+        features["samp_freqs"] = samp_freqs_upto(96000)
     elif features["tdm8"]:
         features["samp_freqs"] = samp_freqs_upto(96000)
     else:

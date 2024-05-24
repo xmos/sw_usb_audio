@@ -77,18 +77,31 @@ def spdif_duration(level, partial):
 def test_spdif_input(pytestconfig, board, config):
     features = get_config_features(board, config)
 
-    num_dig_in_channels = features["chan_i"] - features["analogue_i"]
-
-    xsig_config = f'mc_digital_input_analog_{features["analogue_i"]}ch_dig_{num_dig_in_channels}ch'
-    xsig_config_path = Path(__file__).parent / "xsig_configs" / f"{xsig_config}.json"
-
     adapter_dut, adapter_harness = get_xtag_dut_and_harness(pytestconfig, board)
     duration = spdif_duration(pytestconfig.getoption("level"), features["partial"])
     fail_str = ""
 
     with XrunDut(adapter_dut, board, config) as dut:
         for fs in features["samp_freqs"]:
-            dut.set_stream_format("input", fs, features["chan_i"], 24)
+            assert features["analogue_i"] == 8
+            if fs <= 48000:
+                num_in_channels = features["analogue_i"] + 2 + (8 * features["adat_i"])
+                assert num_in_channels == features["chan_i"]
+            elif fs <= 96000:
+                num_in_channels = features["analogue_i"] + 2 + (4 * features["adat_i"])
+            elif fs <= 192000:
+                num_in_channels = features["analogue_i"] + 2 + (2 * features["adat_i"])
+
+            num_dig_in_channels = num_in_channels - features["analogue_i"]
+            xsig_config = f'mc_digital_input_analog_{features["analogue_i"]}ch_dig_{num_dig_in_channels}ch'
+            if features["adat_i"]:
+                xsig_config = xsig_config + "_spdif" # If adat is also enabled use a config that only tests spdif
+            xsig_config_path = Path(__file__).parent / "xsig_configs" / f"{xsig_config}.json"
+
+            if features["chan_o"] > num_in_channels:
+                dut.set_stream_format("output", fs, num_in_channels, 24)
+
+            dut.set_stream_format("input", fs, num_in_channels, 24)
 
             with AudioAnalyzerHarness(
                 adapter_harness, config="spdif_test", xscope="app"
@@ -148,16 +161,31 @@ def test_spdif_input(pytestconfig, board, config):
 def test_spdif_output(pytestconfig, board, config):
     features = get_config_features(board, config)
 
-    xsig_config = f'mc_digital_output_{features["analogue_o"]}ch'
-    xsig_config_path = Path(__file__).parent / "xsig_configs" / f"{xsig_config}.json"
-
     adapter_dut, adapter_harness = get_xtag_dut_and_harness(pytestconfig, board)
     duration = spdif_duration(pytestconfig.getoption("level"), features["partial"])
     fail_str = ""
 
     with XrunDut(adapter_dut, board, config) as dut:
         for fs in features["samp_freqs"]:
-            dut.set_stream_format("output", fs, features["chan_o"], 24)
+            assert features["analogue_o"] == 8
+            if fs <= 48000:
+                num_out_channels = features["analogue_o"] + 2 + (8 * features["adat_o"])
+                assert num_out_channels == features["chan_o"]
+            elif fs <= 96000:
+                num_out_channels = features["analogue_o"] + 2 + (4 * features["adat_o"])
+            elif fs <= 192000:
+                num_out_channels = features["analogue_o"] + 2 + (2 * features["adat_o"])
+
+            num_dig_out_channels = num_out_channels - features["analogue_o"]
+            xsig_config = f'mc_digital_output_analog_{features["analogue_o"]}ch_dig_{num_dig_out_channels}ch'
+            if features["adat_o"]:
+                xsig_config = xsig_config + "_spdif" # When adat is also enabled check only spdif channels
+            xsig_config_path = Path(__file__).parent / "xsig_configs" / f"{xsig_config}.json"
+
+            if(features["chan_i"] > num_out_channels):
+                dut.set_stream_format("input", fs, num_out_channels, 24)
+
+            dut.set_stream_format("output", fs, num_out_channels, 24)
 
             with (
                 AudioAnalyzerHarness(

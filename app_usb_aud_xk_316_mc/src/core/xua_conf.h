@@ -95,11 +95,7 @@
 
 /* Channel index of ADAT Tx channels: separate channels after S/PDIF channels (if they fit) */
 #ifndef ADAT_TX_INDEX
-    #if (I2S_CHANS_DAC + 2*XUA_SPDIF_TX_EN + 8*XUA_ADAT_TX_EN) <= NUM_USB_CHAN_OUT
-        #define ADAT_TX_INDEX    (I2S_CHANS_DAC + 2*XUA_SPDIF_TX_EN)
-    #else
-        #define ADAT_TX_INDEX    (0)
-    #endif
+    #define ADAT_TX_INDEX    (I2S_CHANS_DAC + 2*XUA_SPDIF_TX_EN)
 #endif
 
 /* Channel index of ADAT Rx channels: separate channels after S/PDIF channels */
