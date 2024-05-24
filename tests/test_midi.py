@@ -151,15 +151,17 @@ def test_midi_loopback(pytestconfig, board, config):
     adapter_dut, adapter_harness = get_xtag_dut_and_harness(pytestconfig, board)
     duration = midi_duration(pytestconfig.getoption("level"), features["partial"])
 
-    time_start = time.time()
-
     with XrunDut(adapter_dut, board, config, timeout=120) as dut:
         wait_for_midi_ports(timeout_s=60)
         with (mido.open_input(find_xmos_midi_device(mido.get_input_names())) as in_port,
               mido.open_output(find_xmos_midi_device(mido.get_output_names())) as out_port):
 
+            time_start = time.time()
+
+            max_sysex_length = 1022 # test only works for sysex payload <= 1022
             # Keep looping test until time up
             while time.time() < time_start + duration:
                 run_midi_test_file(input_midi_file_name, output_midi_file_name, in_port, out_port)
-                max_sysex_length = 3092
                 run_sysex_message(in_port, out_port, length=random.randrange(1, max_sysex_length + 1, 1))
+
+            run_sysex_message(in_port, out_port, length=max_sysex_length) # make sure we test the largest supported size
