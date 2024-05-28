@@ -39,6 +39,12 @@ set(APP_COMPILER_FLAGS_2AMi16o16xxxaax ${SW_USB_AUDIO_FLAGS} -DXUA_ADAT_RX_EN=1 
 
 set(APP_COMPILER_FLAGS_2AMi18o18xssaax ${SW_USB_AUDIO_FLAGS} -DXUA_ADAT_RX_EN=1 -DXUA_ADAT_TX_EN=1 -DXUA_SPDIF_TX_EN=1 -DXUA_SPDIF_RX_EN=1 -DMAX_FREQ=96000)
 
+# Audio Class 2, Async, I2S Master, 16xInput, 8xOutput, ADAT Rx
+set(APP_COMPILER_FLAGS_2AMi16o8xxxaxx ${SW_USB_AUDIO_FLAGS}  -DXUA_ADAT_RX_EN=1)
+
+# Audio Class 2, Async, I2S master, 8xInput, 16xOutput, ADAT Tx
+set(APP_COMPILER_FLAGS_2AMi8o16xxxxax ${SW_USB_AUDIO_FLAGS}  -DXUA_ADAT_TX_EN=1)
+
 include(${CMAKE_CURRENT_LIST_DIR}/configs_partial.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/configs_build.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/configs_test.cmake)

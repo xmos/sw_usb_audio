@@ -513,15 +513,6 @@ class XrunDut:
         if platform.system() == "Windows" and use_windows_builtin_driver(self.board, self.config):
             # Cannot change the stream format
             return
-
-        if samp_freq >= 176400:
-            assert num_chans <= 10 # USB BW limitation
-            # Check the number of channels in the input interface
-            if direction == "output" and self.features["chan_i"] > 10: # When setting interface in the output direction, first limit the number of channels on the input interface, otherwise Windows complains
-                ret = self._set_stream_format("input", samp_freq, num_chans, bit_depth, fail_on_err)
-                if ret:
-                    return ret
-
         # Set the stream format that the user has asked for
         return self._set_stream_format(direction, samp_freq, num_chans, bit_depth, fail_on_err)
 
