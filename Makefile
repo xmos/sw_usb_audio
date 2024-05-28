@@ -4,7 +4,6 @@
 BUILD_SUBDIRS =  ./app_usb_aud_xk_evk_xu316_extrai2s \
 				 ./app_usb_aud_xk_216_mc \
 				 ./app_usb_aud_xk_316_mc \
-				 ./app_usb_aud_xk_316_mc \
 				 ./app_usb_aud_xk_evk_xu316
 
 # This variable should contain a space separated list of all
