@@ -1,4 +1,4 @@
 set(APP_DEPENDENT_MODULES "lib_sw_pll(develop)"
-                          "lib_xua(develop)"
+                          "shuchitak/lib_xua(midi_ct_pause)"
                           "lib_i2c(6.2.0)"
                           "lib_i2s(5.1.0)")
