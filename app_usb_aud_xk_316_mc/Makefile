@@ -101,7 +101,6 @@ INCLUDE_ONLY_IN_2SSi8o8xxxxxx =
 XCC_FLAGS_2SSi8o8xxxxxx = $(BUILD_FLAGS)        -DXUA_SYNCMODE=XUA_SYNCMODE_SYNC \
                                                 -DCODEC_MASTER=1
 
-
 ifneq ($(CONFIG),)
 BUILD_TEST_CONFIGS = 1
 endif
