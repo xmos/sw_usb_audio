@@ -36,10 +36,6 @@ def midi_stress_uncollect(pytestconfig, board, config):
     if not all(xtag_ids):
         return True
 
-    # Until we fix Jenkins user permissions for MIDI on Mac https://xmosjira.atlassian.net/browse/UA-254
-    if platform.system() == "Darwin":
-        return True
-
     if features["i2s_loopback"]:
         return True
 

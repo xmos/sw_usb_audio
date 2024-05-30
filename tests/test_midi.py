@@ -29,10 +29,6 @@ def midi_loopback_uncollect(pytestconfig, board, config):
     features = get_config_features(board, config)
     xtag_ids = get_xtag_dut_and_harness(pytestconfig, board)
 
-    # Until we fix Jenkins user permissions for MIDI on Mac https://xmosjira.atlassian.net/browse/UA-254
-    if platform.system() == "Darwin":
-        return True
-
     # Skip loopback
     if features["i2s_loopback"]:
         return True
