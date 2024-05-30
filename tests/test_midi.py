@@ -56,7 +56,7 @@ def midi_duration(level, partial):
         duration = 10
     return duration
 
-def midi_receive_with_timeout(in_port, timeout_s=10):
+def midi_receive_with_timeout(in_port, timeout_s=10, fail_on_timeout=True):
     time_start = time.time()
     while(time.time() < time_start + timeout_s):
         msg = in_port.receive(block=False)
@@ -65,7 +65,10 @@ def midi_receive_with_timeout(in_port, timeout_s=10):
         #print("midi rx no msg yet")
         time.sleep(0.1)
 
-    pytest.fail(f"MIDI receive message failed after {timeout_s}s.")
+    if fail_on_timeout:
+        pytest.fail(f"MIDI receive message failed after {timeout_s}s.")
+    else:
+        return None
 
 def run_sysex_message(in_port, out_port, length=2048):
     print(f"Testing sysex message of {length} bytes")
@@ -156,6 +159,10 @@ def test_midi_loopback(pytestconfig, board, config):
         with (mido.open_input(find_xmos_midi_device(mido.get_input_names())) as in_port,
               mido.open_output(find_xmos_midi_device(mido.get_output_names())) as out_port):
 
+            while True: # receive the first few messages that only seem to arrive when testing on MacOs
+                dut_msg = midi_receive_with_timeout(in_port, fail_on_timeout=False)
+                if dut_msg is None:
+                    break
             time_start = time.time()
 
             max_sysex_length = 1022 # test only works for sysex payload <= 1022
@@ -163,5 +170,4 @@ def test_midi_loopback(pytestconfig, board, config):
             while time.time() < time_start + duration:
                 run_midi_test_file(input_midi_file_name, output_midi_file_name, in_port, out_port)
                 run_sysex_message(in_port, out_port, length=random.randrange(1, max_sysex_length + 1, 1))
-
             run_sysex_message(in_port, out_port, length=max_sysex_length) # make sure we test the largest supported size
