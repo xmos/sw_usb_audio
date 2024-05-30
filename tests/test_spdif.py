@@ -98,10 +98,10 @@ def test_spdif_input(pytestconfig, board, config):
                 xsig_config = xsig_config + "_spdif" # If adat is also enabled use a config that only tests spdif
             xsig_config_path = Path(__file__).parent / "xsig_configs" / f"{xsig_config}.json"
 
+            dut.set_stream_format("input", fs, num_in_channels, 24)
+
             if features["chan_o"] > num_in_channels:
                 dut.set_stream_format("output", fs, num_in_channels, 24)
-
-            dut.set_stream_format("input", fs, num_in_channels, 24)
 
             with AudioAnalyzerHarness(
                 adapter_harness, config="spdif_test", xscope="app"
