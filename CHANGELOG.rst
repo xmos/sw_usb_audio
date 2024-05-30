@@ -1,12 +1,44 @@
 sw_usb_audio Change Log
 =======================
 
-UNRELEASED
-----------
+8.1.0
+-----
 
   * CHANGED:   Use lib_sw_pll code for configuring the application PLL
   * FIXED:     Use correct number of flash pages for XK-AUDIO-316-MC
   * FIXED:     Links to usb.org in documentation
+
+  * Changes to dependencies:
+
+    - lib_adat: 1.1.0 -> 1.2.0
+
+      + CHANGED: example applications now run on xcore.ai hardware
+      + CHANGED: example applications build using XCommon CMake
+
+    - lib_sw_pll: 2.1.0 -> 2.2.0
+
+      + FIXED: Enable PLL output after delay to allow it to settle
+      + FIXED: Fixed frequency settings for 11,289,600Hz
+
+    - lib_xua: 4.0.0 -> 4.1.0
+
+      + ADDED:     MIDI unit and sub-system tests
+      + CHANGED:   Only the minimum number of ADAT input formats are enabled
+        based on the supported sample rates
+      + CHANGED:   Enabling ADAT tx enables different channel count interface
+        alts, based on sample rate
+      + CHANGED:   Input audio buffer size and the exit condition underflow
+        modified to to fix buffer underflow in some configurations
+      + CHANGED:   CT_END token based handshake in MIDI channels transactions,
+        reducing opportuninity for deadlock
+      + FIXED:     Device fails to enumerate when ADAT and S/PDIF transmit are
+        enabled
+      + FIXED:     Update software PLL at the correct rate for ADAT S/MUX
+      + FIXED:     Incorrect internal input EP count for input only devices
+      + FIXED:     Samples transferred to ADAT tx too frequently in TDM mode
+      + FIXED:     S/MUX not initialised to a value based on DEFAULT_FREQ in
+        clockgen
+      + FIXED:     Trap when moving to DSD mode on XS3A based devices
 
 8.0.0
 -----
