@@ -4,6 +4,9 @@ sw_usb_audio Change Log
 8.1.0
 -----
 
+  * ADDED:     2AMi18o18mssaax build config (MIDI, SPDIF Rx/Tx & ADAT Rx/Tx)
+  * ADDED:     2AMi16o16xxxaax build config (ADAT Rx/Tx)
+  * ADDED:     2AMi18o8_mxxxxx build config (MIDI)
   * CHANGED:   Use lib_sw_pll code for configuring the application PLL
   * FIXED:     Use correct number of flash pages for XK-AUDIO-316-MC
   * FIXED:     Links to usb.org in documentation
