@@ -10,7 +10,7 @@ Please see CHANGELOG.rst for detailed change listing.
 
 For full software documentation please see the USB Audio User Guide document.
 
-This release is built and tested using version 15.1.4 of the XMOS tool set.  Build or functionality issues could be experienced with any other version.
+This release is built and tested using version 15.2.1 of the XMOS tool set.  Build or functionality issues could be experienced with any other version.
 
 This repository contains applications (or instances) of the XMOS USB Audio Reference Design framework.  These applications
 typically relate to a specific hardware platform.  This repository contains the following:
@@ -94,11 +94,11 @@ Release Quality & QA
 +---------------------------+--------------------------+
 | S/PDIF Transmit           | Release                  |
 +---------------------------+--------------------------+
-| ADAT Receive              | Beta                     |
+| ADAT Receive              | Release                  |
 +---------------------------+--------------------------+
-| ADAT Transmit             | Beta                     |
+| ADAT Transmit             | Release                  |
 +---------------------------+--------------------------+
-| MIDI I/O                  | Beta                     |
+| MIDI I/O                  | Release                  |
 +---------------------------+--------------------------+
 | DSD Playback              | Beta                     |
 +---------------------------+--------------------------+
