@@ -18,7 +18,7 @@
 **/*venv/*
 
 # XMOS temp files
-**/.build*/*
+**/*build*/*
 */bin/*
 _build
 **/flash_bin_node*
