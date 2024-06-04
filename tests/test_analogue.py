@@ -81,7 +81,7 @@ def analogue_duration(level, partial):
     elif level == "nightly":
         duration = 15 if partial else 180
     else:
-        duration = 10
+        duration = 5
     return duration
 
 

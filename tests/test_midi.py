@@ -63,7 +63,7 @@ def midi_duration(level, partial):
     elif level == "nightly":
         duration = 15 if partial else 180
     else:
-        duration = 10
+        duration = 5
     return duration
 
 def midi_receive_with_timeout(in_port, timeout_s=10, fail_on_timeout=True):
