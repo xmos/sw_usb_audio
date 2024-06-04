@@ -285,6 +285,12 @@ pipeline {
         }  // MacOS ARM
 
         stage('Windows 10') {
+          when {
+            expression {
+              params.TEST_LEVEL == "nightly" ||
+              params.TEST_LEVEL == "weekend"
+            }
+          }
           agent {
             label 'usb_audio && windows10 && xcore.ai-mcab'
           }
@@ -345,6 +351,12 @@ pipeline {
         }  // Windows 10
 
         stage('Windows 11') {
+          when {
+            expression {
+              params.TEST_LEVEL == "nightly" ||
+              params.TEST_LEVEL == "weekend"
+            }
+          }
           agent {
             label 'usb_audio && windows11 && xcore.ai-mcab'
           }
