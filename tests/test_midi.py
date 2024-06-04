@@ -25,6 +25,10 @@ input_midi_file_name = 'tools/midifiles/Bach.mid'
 output_midi_file_name = 'tools/midifiles/Bach_loopback.mid'
 
 
+midi_loopback_smoke_configs = [
+    ("xk_316_mc", "2AMi18o18mssaax"),
+]
+
 def midi_loopback_uncollect(pytestconfig, board, config):
     features = get_config_features(board, config)
     xtag_ids = get_xtag_dut_and_harness(pytestconfig, board)
@@ -42,6 +46,12 @@ def midi_loopback_uncollect(pytestconfig, board, config):
         return True
 
     if not features["midi"]:
+        return True
+
+    if (
+        pytestconfig.getoption("level") == "smoke"
+        and (board, config) not in midi_loopback_smoke_configs
+    ):
         return True
 
     return False
