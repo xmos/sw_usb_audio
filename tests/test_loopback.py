@@ -14,6 +14,13 @@ from usb_audio_test_utils import (
 from conftest import list_configs, get_config_features
 
 
+loopback_smoke_configs = [
+    ("xk_316_mc", "2AMi18o18mssaax_i2sloopback"),
+    ("xk_316_mc", "2AMi8o8xxxxxx_mix8_i2sloopback"),
+    ("xk_316_mc", "2SSi8o8xxxxxx_i2sloopback"),
+]
+
+
 def OS_uncollect(features, board, config):
     if (
         platform.system() == "Darwin"
@@ -36,6 +43,8 @@ def loopback_dac_uncollect(pytestconfig, board, config):
         return True
     if not features["analogue_o"]:
         # No output channels
+        return True
+    if pytestconfig.getoption("level") == "smoke" and (board, config) not in loopback_smoke_configs:
         return True
     return False
 
