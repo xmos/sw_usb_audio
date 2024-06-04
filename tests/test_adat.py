@@ -19,6 +19,7 @@ from usb_audio_test_utils import (
 )
 from conftest import list_configs, get_config_features
 
+
 class AdatClockSrc:
     def __init__(self):
         self.cmd = [get_volcontrol_path()]
@@ -36,12 +37,24 @@ class AdatClockSrc:
         cmd = self.cmd + ["--clock", "Internal"]
         subprocess.run(cmd, timeout=10)
 
-def adat_common_uncollect(features, board, pytestconfig):
+
+adat_smoke_configs = [
+    ("xk_216_mc", "2AMi18o18mssaax"),
+    ("xk_316_mc", "2AMi16o16xxxaax"),
+]
+
+
+def adat_common_uncollect(features, board, config, pytestconfig):
     xtag_ids = get_xtag_dut_and_harness(pytestconfig, board)
     # XTAGs not present
     if not all(xtag_ids):
         return True
     if features["i2s_loopback"]:
+        return True
+    if (
+        pytestconfig.getoption("level") == "smoke"
+        and (board, config) not in adat_smoke_configs
+    ):
         return True
     return False
 
@@ -49,14 +62,14 @@ def adat_common_uncollect(features, board, pytestconfig):
 def adat_input_uncollect(pytestconfig, board, config):
     features = get_config_features(board, config)
     return any(
-        [not features["adat_i"], adat_common_uncollect(features, board, pytestconfig)]
+        [not features["adat_i"], adat_common_uncollect(features, board, config, pytestconfig)]
     )
 
 
 def adat_output_uncollect(pytestconfig, board, config):
     features = get_config_features(board, config)
     return any(
-        [not features["adat_o"], adat_common_uncollect(features, board, pytestconfig)]
+        [not features["adat_o"], adat_common_uncollect(features, board, config, pytestconfig)]
     )
 
 
