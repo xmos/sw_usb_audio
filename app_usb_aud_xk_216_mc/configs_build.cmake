@@ -14,8 +14,6 @@ set(APP_COMPILER_FLAGS_2AXi0o2xxsxxx ${SW_USB_AUDIO_FLAGS} -DXUA_SPDIF_TX_EN=1
 
 set(APP_COMPILER_FLAGS_2AMi32o32xxxxxx_tdm8 ${SW_USB_AUDIO_FLAGS} -DI2S_CHANS_ADC=32
                                                                   -DI2S_CHANS_DAC=32
-                                                                  -DNUM_USB_CHAN_IN=32
-                                                                  -DNUM_USB_CHAN_OUT=32
                                                                   -DXUA_PCM_FORMAT=XUA_PCM_FORMAT_TDM
                                                                   -DMAX_FREQ=48000)
 
@@ -26,8 +24,6 @@ set(APP_COMPILER_FLAGS_2ASi0o8xxxxxx_tdm8 ${SW_USB_AUDIO_FLAGS} -DI2S_CHANS_ADC=
 
 set(APP_COMPILER_FLAGS_2AMi16o16xxxxxx_tdm8 ${SW_USB_AUDIO_FLAGS} -DI2S_CHANS_DAC=16
                                                                   -DI2S_CHANS_ADC=16
-                                                                  -DNUM_USB_CHAN_IN=16
-                                                                  -DNUM_USB_CHAN_OUT=16
                                                                   -DXUA_PCM_FORMAT=XUA_PCM_FORMAT_TDM
                                                                   -DMAX_FREQ=96000)
 

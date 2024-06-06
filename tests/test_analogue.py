@@ -17,6 +17,13 @@ from usb_audio_test_utils import (
 from conftest import list_configs, get_config_features
 
 
+analogue_smoke_configs = [
+    ("xk_216_mc", "2AMi18o18mssaax"),
+    ("xk_216_mc", "2ASi10o10xssxxx"),
+    ("xk_evk_xu316", "1AMi2o2xxxxxx"),
+]
+
+
 def analogue_OS_uncollect(features, board, config):
     if (
         platform.system() == "Darwin"
@@ -38,7 +45,7 @@ def analogue_require_dut_and_harness(features, board, config, pytestconfig):
 
 def analogue_common_uncollect(features, board, config, pytestconfig):
     level = pytestconfig.getoption("level")
-    if level == "smoke" and board == "xk_316_mc":
+    if level == "smoke" and (board, config) not in analogue_smoke_configs:
         return True
     if analogue_OS_uncollect(features, board, config):
         return True
@@ -74,7 +81,7 @@ def analogue_duration(level, partial):
     elif level == "nightly":
         duration = 15 if partial else 180
     else:
-        duration = 10
+        duration = 5
     return duration
 
 

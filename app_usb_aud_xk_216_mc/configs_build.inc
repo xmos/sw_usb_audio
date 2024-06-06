@@ -28,40 +28,12 @@ XCC_FLAGS_2AMi32o32xxxxxx_tdm8  = $(BUILD_FLAGS) -DI2S_CHANS_DAC=32 \
                                                 -DMAX_FREQ=48000
 INCLUDE_ONLY_IN_2AMi32o32xxxxxx_tdm8 =
 
-# Audio Class 2, Async, I2S Master, 32xInput, 32xOutput, S/PDIF Tx, TDM
-XCC_FLAGS_2AMi32o32xxsxxx_tdm8 = $(BUILD_FLAGS) -DXUA_SPDIF_TX_EN=1 \
-                                                -DI2S_CHANS_ADC=32 \
-                                                -DI2S_CHANS_DAC=32 \
-                                                -DNUM_USB_CHAN_OUT=32 \
-                                                -DNUM_USB_CHAN_IN=32 \
-                                                -DXUA_PCM_FORMAT=XUA_PCM_FORMAT_TDM \
-                                                -DMAX_FREQ=48000
-INCLUDE_ONLY_IN_2AMi32o32xxsxxx_tdm8 =
-
-# Audio Class 2, Async, I2S Master, 32xInput 32xOutput (TDM)
-INCLUDE_ONLY_IN_2AMi32o32xxxxxx_tdm8 =
-XCC_FLAGS_2AMi32o32xxxxxx_tdm8 = $(BUILD_FLAGS) -DI2S_CHANS_ADC=32 \
-                                                -DI2S_CHANS_DAC=32 \
-                                                -DNUM_USB_CHAN_IN=32 \
-                                                -DNUM_USB_CHAN_OUT=32 \
-                                                -DXUA_PCM_FORMAT=XUA_PCM_FORMAT_TDM \
-                                                -DMAX_FREQ=48000
-
 # Audio Class 2, Async, I2S Slave, 0xInput, 8xOutput, TDM
 XCC_FLAGS_2ASi0o8xxxxxx_tdm8 = $(BUILD_FLAGS) -DI2S_CHANS_ADC=0 \
                                               -DXUA_PCM_FORMAT=XUA_PCM_FORMAT_TDM \
                                               -DMAX_FREQ=96000 \
                                               -DCODEC_MASTER=1
 INCLUDE_ONLY_IN_2ASi0o8xxxxxx_tdm8 =
-
-# Audio Class 2, Async, I2S Master, 16xInput 16xOutput (TDM)
-INCLUDE_ONLY_IN_2AMi16o16xxxxxx_tdm8 =
-XCC_FLAGS_2AMi16o16xxxxxx_tdm8 = $(BUILD_FLAGS) -DI2S_CHANS_ADC=16 \
-                                                                                                -DI2S_CHANS_DAC=16 \
-                                                                                                -DNUM_USB_CHAN_IN=16 \
-                                                                                                -DNUM_USB_CHAN_OUT=16 \
-                                                                                                -DXUA_PCM_FORMAT=XUA_PCM_FORMAT_TDM \
-                                                                                                -DMAX_FREQ=96000
 
 # Audio Class 2, Async, I2S Master, 32xInput 32xOutput, S/PDIF Tx (TDM)
 INCLUDE_ONLY_IN_2AMi32o32xxsxxx_tdm8 =

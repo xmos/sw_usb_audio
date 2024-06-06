@@ -25,13 +25,13 @@ input_midi_file_name = 'tools/midifiles/Bach.mid'
 output_midi_file_name = 'tools/midifiles/Bach_loopback.mid'
 
 
+midi_loopback_smoke_configs = [
+    ("xk_316_mc", "2AMi18o18mssaax"),
+]
+
 def midi_loopback_uncollect(pytestconfig, board, config):
     features = get_config_features(board, config)
     xtag_ids = get_xtag_dut_and_harness(pytestconfig, board)
-
-    # Until we fix Jenkins user permissions for MIDI on Mac https://xmosjira.atlassian.net/browse/UA-254
-    if platform.system() == "Darwin":
-        return True
 
     # Skip loopback
     if features["i2s_loopback"]:
@@ -44,6 +44,12 @@ def midi_loopback_uncollect(pytestconfig, board, config):
     if not features["midi"]:
         return True
 
+    if (
+        pytestconfig.getoption("level") == "smoke"
+        and (board, config) not in midi_loopback_smoke_configs
+    ):
+        return True
+
     return False
 
 
@@ -53,7 +59,7 @@ def midi_duration(level, partial):
     elif level == "nightly":
         duration = 15 if partial else 180
     else:
-        duration = 10
+        duration = 5
     return duration
 
 def midi_receive_with_timeout(in_port, timeout_s=10, fail_on_timeout=True):

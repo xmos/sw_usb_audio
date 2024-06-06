@@ -38,15 +38,6 @@ USED_MODULES = lib_sw_pll lib_xua lib_i2c
 # Asynchronous Mode Configs
 #
 
-# Audio Class 1, Async, I2S Master, 2xInput, 2xOutput
-INCLUDE_ONLY_IN_1AMi2o2xxxxxx =
-XCC_FLAGS_1AMi2o2xxxxxx = $(BUILD_FLAGS)        -DAUDIO_CLASS=1
-
-# Audio Class 2, Async, I2S Master, 2xInput, 2xOutput
-INCLUDE_ONLY_IN_2AMi2o2xxxxxx =
-XCC_FLAGS_2AMi2o2xxxxxx = $(BUILD_FLAGS)        -DI2S_CHANS_DAC=2 \
-                                                -DI2S_CHANS_ADC=2
-
 # Audio Class 2, Async, I2S Master, 8xInput, 8xOutput
 INCLUDE_ONLY_IN_2AMi8o8xxxxxx =
 XCC_FLAGS_2AMi8o8xxxxxx = $(BUILD_FLAGS)
@@ -69,7 +60,7 @@ XCC_FLAGS_2ASi8o8xxxxxx_tdm8 = $(BUILD_FLAGS)   -DCODEC_MASTER=1 \
 
 # Audio Class 2, Async, I2S Master, 8xInput, 8xOutput, MIDI
 INCLUDE_ONLY_IN_2AMi8o8mxxxxx =
-XCC_FLAGS_2AMi8o8mxxxxx = $(BUILD_FLAGS)		-DMIDI=1
+XCC_FLAGS_2AMi8o8mxxxxx = $(BUILD_FLAGS)               -DMIDI=1
 
 # Audio Class 2, Async, I2S Master, 10xInput, 10xOutput, S/PDIF Tx, S/PDIF Rx
 INCLUDE_ONLY_IN_2AMi10o10xssxxx =
@@ -87,11 +78,6 @@ XCC_FLAGS_2AMi18o18mssaax = $(BUILD_FLAGS)      -DMIDI=1 -DXUA_ADAT_TX_EN=1 -DXU
 #
 # Synchronous Mode Configs
 #
-# Audio Class 1, Sync, I2S Master, 2xInput, 2xOutput
-INCLUDE_ONLY_IN_1SMi2o2xxxxxx =
-XCC_FLAGS_1SMi2o2xxxxxx = $(BUILD_FLAGS)        -DAUDIO_CLASS=1 \
-                                                -DXUA_SYNCMODE=XUA_SYNCMODE_SYNC
-
 # Audio Class 2, Sync, I2S Master, 8xInput, 8xOutput
 INCLUDE_ONLY_IN_2SMi8o8xxxxxx =
 XCC_FLAGS_2SMi8o8xxxxxx = $(BUILD_FLAGS)        -DXUA_SYNCMODE=XUA_SYNCMODE_SYNC

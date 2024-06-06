@@ -32,12 +32,12 @@ def midi_stress_uncollect(pytestconfig, board, config):
     features = get_config_features(board, config)
     xtag_ids = get_xtag_dut_and_harness(pytestconfig, board)
 
-    # XTAGs not present
-    if not all(xtag_ids):
+    if pytestconfig.getoption("level") == "smoke":
+        # Don't run MIDI stress at smoke level
         return True
 
-    # Until we fix Jenkins user permissions for MIDI on Mac https://xmosjira.atlassian.net/browse/UA-254
-    if platform.system() == "Darwin":
+    # XTAGs not present
+    if not all(xtag_ids):
         return True
 
     if features["i2s_loopback"]:
@@ -49,13 +49,13 @@ def midi_stress_uncollect(pytestconfig, board, config):
     return False
 
 
-def midi_duration(level, partial):
+def midi_stress_duration(level, partial):
     if level == "weekend":
         duration = 90 if partial else 1200
     elif level == "nightly":
         duration = 15 if partial else 180
     else:
-        duration = 10
+        duration = 5
     return duration
 
 @pytest.mark.uncollect_if(func=midi_stress_uncollect)
@@ -75,7 +75,7 @@ def test_midi_loopback_stress(pytestconfig, board, config):
     xsig_config_path = Path(__file__).parent / "xsig_configs" / f"{xsig_config}.json"
 
     adapter_dut, adapter_harness = get_xtag_dut_and_harness(pytestconfig, board)
-    duration = midi_duration(pytestconfig.getoption("level"), features["partial"])
+    duration = midi_stress_duration(pytestconfig.getoption("level"), features["partial"])
     fail_str = ""
 
     fs_audio = max(features["samp_freqs"]) # Highest rate for maximum stress
