@@ -12,10 +12,6 @@ INCLUDE_ONLY_IN_2AMi2o2xxxxxx =
 XCC_FLAGS_2AMi2o2xxxxxx = $(BUILD_FLAGS)        -DI2S_CHANS_DAC=2 \
                                                 -DI2S_CHANS_ADC=2
 
-# Audio Class 2, Async, I2S Master, 8xInput, 8xOutput
-INCLUDE_ONLY_IN_2AMi8o8xxxxxx =
-XCC_FLAGS_2AMi8o8xxxxxx = $(BUILD_FLAGS)
-
 # Audio Class 2, Async, I2S Slave, 8xInput, 8xOutput
 XCC_FLAGS_2ASi8o8xxxxxx = $(BUILD_FLAGS)		-DCODEC_MASTER=1
 INCLUDE_ONLY_IN_2ASi8o8xxxxxx =
@@ -32,14 +28,6 @@ XCC_FLAGS_2AMi32o32xxxxxx_tdm8 = $(BUILD_FLAGS)	-DXUA_PCM_FORMAT=XUA_PCM_FORMAT_
 # Audio Class 2, Async, I2S Master, 8xInput, 10xOutput, S/PDIF Tx
 INCLUDE_ONLY_IN_2AMi8o10xxsxxx =
 XCC_FLAGS_2AMi8o10xxsxxx = $(BUILD_FLAGS)		-DXUA_SPDIF_TX_EN=1
-
-# Audio Class 2, Async, I2S Master, 16xInput, 8xOutput, ADAT Rx
-INCLUDE_ONLY_IN_2AMi16o8xxxaxx =
-XCC_FLAGS_2AMi16o8xxxaxx = $(BUILD_FLAGS)       -DXUA_ADAT_RX_EN=1
-
-# Audio Class 2, Async, I2S master, 8xInput, 16xOutput, ADAT Tx
-INCLUDE_ONLY_IN_2AMi8o16xxxxax =
-XCC_FLAGS_2AMi8o16xxxxax = $(BUILD_FLAGS)       -DXUA_ADAT_TX_EN=1
 
 # Audio Class 2, Async, I2S Slave, 10xInput, 10xOutput, S/PDIF Tx, S/PDIF Rx
 INCLUDE_ONLY_IN_2ASi10o10xssxxx =

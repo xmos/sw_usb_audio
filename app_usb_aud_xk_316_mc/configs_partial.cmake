@@ -31,13 +31,6 @@ set(APP_COMPILER_FLAGS_2AMi32o32xxxxxx_tdm8 ${SW_USB_AUDIO_FLAGS} -DXUA_PCM_FORM
 # Audio Class 2, Async, I2S Master, 8xInput, 10xOutput, S/PDIF Tx
 set(APP_COMPILER_FLAGS_2AMi8o10xxsxxx ${SW_USB_AUDIO_FLAGS} -DXUA_SPDIF_TX_EN=1)
 
-# Audio Class 2, Async, I2S Master, 8xInput, 16xOutput, ADAT Tx
-set(APP_COMPILER_FLAGS_2AMi8o16xxxxax ${SW_USB_AUDIO_FLAGS} -DXUA_ADAT_TX_EN=1)
-
-# Audio Class 2, Async, I2S Master, 16xInput, 8xOutput, ADAT Rx
-set(APP_COMPILER_FLAGS_2AMi16o8xxxaxx ${SW_USB_AUDIO_FLAGS} -DXUA_ADAT_RX_EN=1)
-
-
 # Audio Class 2, Async, I2S Slave, 10xInput, 10xOutput, S/PDIF Tx, S/PDIF Rx
 set(APP_COMPILER_FLAGS_2ASi10o10xssxxx ${SW_USB_AUDIO_FLAGS} -DXUA_SPDIF_TX_EN=1
                                                              -DXUA_SPDIF_RX_EN=1
