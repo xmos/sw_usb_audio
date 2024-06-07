@@ -1,10 +1,8 @@
 # Copyright (c) 2024, XMOS Ltd, All rights reserved
 from pathlib import Path
 import pytest
-import subprocess
 import time
 import json
-import platform
 import mido
 
 
@@ -22,7 +20,6 @@ from usb_audio_test_utils import (
     find_xmos_midi_device,
     XrunDut,
     XsigInput,
-    XsigOutput,
     xsig_completion_time_s
 )
 from conftest import list_configs, get_config_features
@@ -71,7 +68,7 @@ def test_midi_loopback_stress(pytestconfig, board, config):
 
     features = get_config_features(board, config)
 
-    xsig_config = f'mc_midi_stress_8ch'
+    xsig_config = 'mc_midi_stress_8ch'
     xsig_config_path = Path(__file__).parent / "xsig_configs" / f"{xsig_config}.json"
 
     adapter_dut, adapter_harness = get_xtag_dut_and_harness(pytestconfig, board)
@@ -95,20 +92,19 @@ def test_midi_loopback_stress(pytestconfig, board, config):
             # Due to in and out in xsig config this streams audio in both directions for max stress
             XsigInput(fs_audio, duration, xsig_config_path, dut.dev_name, ident=f"midi-stress-{board}-{config}-{fs_audio}") as xsig_proc_in
             ):
-            
+
             with (mido.open_input(find_xmos_midi_device(mido.get_input_names())) as in_port,
                   mido.open_output(find_xmos_midi_device(mido.get_output_names())) as out_port):
-                print(f"*** Looping test_midi_loopback_stress....")
-
+                print("*** Looping test_midi_loopback_stress....")
 
                 # Keep looping midi_test until time up
                 while time.time() < time_start + duration + xsig_completion_time_s:
                     run_midi_test_file(input_midi_file_name, output_midi_file_name, in_port, out_port)
 
-        # Stop the harness
-        harness.terminate()
-        xscope_lines = harness.get_output() # This will always see a loss of signal at the end but useful for debug
-        xsig_lines = xsig_proc_in.get_output()
+            xsig_lines = xsig_proc_in.get_output()
+            # Stop the harness
+            harness.terminate()
+            xscope_lines = harness.get_output() # This will always see a loss of signal at the end but useful for debug
 
         with open(xsig_config_path) as file:
             xsig_json = json.load(file)
