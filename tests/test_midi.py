@@ -1,18 +1,12 @@
 # Copyright (c) 2024, XMOS Ltd, All rights reserved
-from pathlib import Path
 import pytest
-import subprocess
 import time
-import json
-import platform
 import mido
-import time
 import filecmp
 import random
 
 from usb_audio_test_utils import (
-    check_analyzer_output,
-    get_xtag_dut_and_harness,
+    get_xtag_dut,
     XrunDut,
     wait_for_midi_ports,
     find_xmos_midi_device
@@ -31,14 +25,14 @@ midi_loopback_smoke_configs = [
 
 def midi_loopback_uncollect(pytestconfig, board, config):
     features = get_config_features(board, config)
-    xtag_ids = get_xtag_dut_and_harness(pytestconfig, board)
+    xtag_id = get_xtag_dut(pytestconfig, board)
 
     # Skip loopback
     if features["i2s_loopback"]:
         return True
 
     # XTAGs not present
-    if not all(xtag_ids):
+    if not xtag_id:
         return True
 
     if not features["midi"]:
@@ -157,10 +151,10 @@ def test_midi_loopback(pytestconfig, board, config):
 
     features = get_config_features(board, config)
 
-    adapter_dut, adapter_harness = get_xtag_dut_and_harness(pytestconfig, board)
+    adapter_dut = get_xtag_dut(pytestconfig, board)
     duration = midi_duration(pytestconfig.getoption("level"), features["partial"])
 
-    with XrunDut(adapter_dut, board, config, timeout=120) as dut:
+    with XrunDut(adapter_dut, board, config, timeout=120):
         wait_for_midi_ports(timeout_s=60)
         with (mido.open_input(find_xmos_midi_device(mido.get_input_names())) as in_port,
               mido.open_output(find_xmos_midi_device(mido.get_output_names())) as out_port):
