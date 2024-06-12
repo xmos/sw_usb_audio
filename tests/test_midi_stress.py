@@ -4,6 +4,7 @@ import pytest
 import time
 import json
 import mido
+import platform
 
 
 from test_midi import (
@@ -60,9 +61,9 @@ def midi_stress_duration(level, partial):
 @pytest.mark.parametrize(["board", "config"], list_configs())
 def test_midi_loopback_stress(pytestconfig, board, config):
     """
-    This test streams 8ch audio in/out at 192kHz in order to stress the system and then runs the 
+    This test streams 8ch audio in/out at 192kHz in order to stress the system and then runs the
     standard test_midi.py test whilst doing so. Note we only check the xsig input for analog
-    (not the harness xscope output) because as soon as you stop either the harness or xsig the 
+    (not the harness xscope output) because as soon as you stop either the harness or xsig the
     other will throw an error due to real-time checking.
     """
     print(f"*** starting test_midi_loopback_stress:  {board} {config}")
@@ -77,16 +78,21 @@ def test_midi_loopback_stress(pytestconfig, board, config):
     fail_str = ""
 
     fs_audio = max(features["samp_freqs"]) # Highest rate for maximum stress
-    
+    if platform.system() == "Windows":
+        midi_port_wait_timeout = 60
+    else:
+        midi_port_wait_timeout = 10
+
     test_pass = 0
     for i in range(6):
+        print(f"ITER {i}")
         with XrunDut(adapter_dut, board, config) as dut:
 
             dut.set_stream_format("input", fs_audio, features["chan_i"], 24)
             dut.set_stream_format("output", fs_audio, features["chan_o"], 24)
 
             # Ensure firmware is up and enumerated as MIDI
-            ret = wait_for_midi_ports(timeout_s=6)
+            ret = wait_for_midi_ports(timeout_s=midi_port_wait_timeout)
             if ret:
                 continue
             else:
@@ -125,11 +131,10 @@ def test_midi_loopback_stress(pytestconfig, board, config):
                     fail_str += f"xsig stdout at sample rate {fs_audio}\n"
                     fail_str += "\n".join(xsig_lines) + "\n\n"
 
-            if len(fail_str) > 0:
-                #pytest.fail(fail_str)
-                print(fail_str)
-            else:
-                test_pass = 1
-                break
+        if len(fail_str) > 0:
+            pytest.fail(fail_str)
+        else:
+            test_pass = 1
+            break
     if test_pass == 0:
         pytest.fail(f"No XMOS MIDI ports found after multiple tries: {mido.get_input_names()}, {mido.get_output_names()}")

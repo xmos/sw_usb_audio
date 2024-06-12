@@ -268,7 +268,6 @@ def get_xtag_dut_and_harness(pytestconfig, board):
 # Allow a long timeout here because sometimes an XTAG can get stuck in a USB transaction when xrun
 # is killed, and this connect via xgdb can recover it but it takes a while to reboot the XTAG
 def stop_xrun_app(adapter_id):
-    print("In stop_xrun_app")
     subprocess.run(
         ["xgdb", "-ex", f"connect --adapter-id {adapter_id}", "--batch"],
         stdout=subprocess.DEVNULL,
@@ -331,16 +330,13 @@ def get_tusb_guid():
 
 
 def wait_for_midi_ports(timeout_s=60): # Win 11 agent has been seen to take up to 40s
-    import mido
     for i in range(timeout_s):
         if find_xmos_midi_device(mido.get_input_names()) is not None and find_xmos_midi_device(mido.get_output_names()) is not None:
             print(f"Hooray! XMOS MIDI ports found: {find_xmos_midi_device(mido.get_input_names())}, {find_xmos_midi_device(mido.get_output_names())}")
             return 0
-
         time.sleep(1)
         print(f"MIDI ports not found... retrying {i+1} of {timeout_s}")
 
-    #pytest.fail(f"No XMOS MIDI ports found: {mido.get_input_names()}, {mido.get_output_names()}")
     print(f"No XMOS MIDI ports found: {mido.get_input_names()}, {mido.get_output_names()}")
     return 1
 
