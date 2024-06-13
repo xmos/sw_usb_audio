@@ -161,7 +161,7 @@ def test_midi_loopback(pytestconfig, board, config):
         midi_port_wait_timeout = 60
     else:
         midi_port_wait_timeout = 10
-    for i in range(6):
+    for i in range(15):
         print(f"ITER {i}")
         with XrunDut(adapter_dut, board, config, timeout=120):
             ret = wait_for_midi_ports(timeout_s=midi_port_wait_timeout)
