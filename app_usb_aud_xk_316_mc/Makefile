@@ -69,11 +69,17 @@ XCC_FLAGS_2AMi10o10xssxxx = $(BUILD_FLAGS)      -DXUA_SPDIF_TX_EN=1 \
 
 # Audio Class 2, Async, I2S Master, 16xInput, 16xOutput, ADAT Tx, ADAT Rx
 INCLUDE_ONLY_IN_2AMi16o16xxxaax =
-XCC_FLAGS_2AMi16o16xxxaax = $(BUILD_FLAGS)      -DXUA_ADAT_TX_EN=1 -DXUA_ADAT_RX_EN=1
+XCC_FLAGS_2AMi16o16xxxaax = $(BUILD_FLAGS)      -DXUA_ADAT_TX_EN=1 \
+                                                -DXUA_ADAT_RX_EN=1
 
 # Audio Class 2, Async, I2S Master, 18xInput, 18xOutput, ADAT Tx, ADAT Rx, S/PDIF Tx, S/PDIF Rx
 INCLUDE_ONLY_IN_2AMi18o18mssaax =
-XCC_FLAGS_2AMi18o18mssaax = $(BUILD_FLAGS)      -DMIDI=1 -DXUA_ADAT_TX_EN=1 -DXUA_ADAT_RX_EN=1 -DXUA_SPDIF_TX_EN=1 -DXUA_SPDIF_RX_EN=1 -DMAX_FREQ=96000
+XCC_FLAGS_2AMi18o18mssaax = $(BUILD_FLAGS)      -DMIDI=1 \
+                                                -DXUA_ADAT_TX_EN=1 \
+                                                -DXUA_ADAT_RX_EN=1 \
+                                                -DXUA_SPDIF_TX_EN=1 \
+                                                -DXUA_SPDIF_RX_EN=1 \
+                                                -DMAX_FREQ=96000
 
 #
 # Synchronous Mode Configs

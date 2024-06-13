@@ -49,4 +49,9 @@ set(APP_COMPILER_FLAGS_2AMi16o8xxxaxx ${SW_USB_AUDIO_FLAGS}  -DXUA_ADAT_RX_EN=1)
 # Audio Class 2, Async, I2S master, 8xInput, 16xOutput, ADAT Tx
 set(APP_COMPILER_FLAGS_2AMi8o16xxxxax ${SW_USB_AUDIO_FLAGS}  -DXUA_ADAT_TX_EN=1)
 
+set(APP_COMPILER_FLAGS_2AMi16o16xxxaax_tdm8 ${SW_USB_AUDIO_FLAGS} -DXUA_ADAT_RX_EN=1
+                                                                  -DXUA_ADAT_TX_EN=1
+                                                                  -DXUA_PCM_FORMAT=XUA_PCM_FORMAT_TDM
+                                                                  -DMAX_FREQ=96000)
+
 endif()
