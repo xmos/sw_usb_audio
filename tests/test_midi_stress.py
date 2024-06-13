@@ -59,9 +59,9 @@ def midi_stress_duration(level, partial):
 @pytest.mark.parametrize(["board", "config"], list_configs())
 def test_midi_loopback_stress(pytestconfig, board, config):
     """
-    This test streams 8ch audio in/out at 192kHz in order to stress the system and then runs the 
+    This test streams 8ch audio in/out at 192kHz in order to stress the system and then runs the
     standard test_midi.py test whilst doing so. Note we only check the xsig input for analog
-    (not the harness xscope output) because as soon as you stop either the harness or xsig the 
+    (not the harness xscope output) because as soon as you stop either the harness or xsig the
     other will throw an error due to real-time checking.
     """
     print(f"*** starting test_midi_loopback_stress:  {board} {config}")
@@ -98,7 +98,7 @@ def test_midi_loopback_stress(pytestconfig, board, config):
                 print("*** Looping test_midi_loopback_stress....")
 
                 # Keep looping midi_test until time up
-                while time.time() < time_start + duration + xsig_completion_time_s:
+                while time.time() < time_start + duration + xsig_completion_time_s + 5:
                     run_midi_test_file(input_midi_file_name, output_midi_file_name, in_port, out_port)
 
             xsig_lines = xsig_proc_in.get_output()
