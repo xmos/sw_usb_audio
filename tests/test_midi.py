@@ -49,7 +49,6 @@ def midi_loopback_uncollect(pytestconfig, board, config):
 
 
 def midi_duration(level, partial):
-    return 10
     if level == "weekend":
         duration = 90 if partial else 1200
     elif level == "nightly":
