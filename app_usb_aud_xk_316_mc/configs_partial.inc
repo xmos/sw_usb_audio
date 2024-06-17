@@ -57,3 +57,10 @@ XCC_FLAGS_2AMi8o16xxxxax = $(BUILD_FLAGS)       -DXUA_ADAT_TX_EN=1
 INCLUDE_ONLY_IN_1SMi2o2xxxxxx =
 XCC_FLAGS_1SMi2o2xxxxxx = $(BUILD_FLAGS)        -DAUDIO_CLASS=1 \
                                                 -DXUA_SYNCMODE=XUA_SYNCMODE_SYNC
+
+# Audio Class 2, Async, I2S Master, 16xInput, 16xOutput, ADAT Tx, ADAT Rx, TDM
+INCLUDE_ONLY_IN_2AMi16o16xxxaax_tdm8 =
+XCC_FLAGS_2AMi16o16xxxaax_tdm8 = $(BUILD_FLAGS) -DXUA_ADAT_TX_EN=1 \
+                                                -DXUA_ADAT_RX_EN=1 \
+                                                -DXUA_PCM_FORMAT=XUA_PCM_FORMAT_TDM \
+                                                -DMAX_FREQ=96000
