@@ -1,4 +1,4 @@
-rXMOS xCORE-AI USB Audio
+XMOS xCORE-AI USB Audio
 =======================
 
 :scope: Example
