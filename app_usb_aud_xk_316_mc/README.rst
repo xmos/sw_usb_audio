@@ -1,4 +1,4 @@
-XMOS xCORE-AI USB Audio
+rXMOS xCORE-AI USB Audio
 =======================
 
 :scope: Example
@@ -32,7 +32,7 @@ The app_usb_aud_xk_316_mc application is designed to run on the xCORE-AI MC Audi
 Known Issues
 ............
 
-- Currently this application uses the internal Application PLL to generate fixed master clock frequencies only. Therefore syncing to any external stream is not possible (i.e. ADAT/SPDIF Rx)
+- None
 
 See README in sw_usb_audio for general issues.
 
