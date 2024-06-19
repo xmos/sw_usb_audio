@@ -23,18 +23,6 @@ analogue_smoke_configs = [
     ("xk_evk_xu316", "1AMi2o2xxxxxx"),
 ]
 
-
-def analogue_OS_uncollect(features, board, config):
-    if (
-        platform.system() == "Darwin"
-        and board == "xk_316_mc"
-        and "2AMi2o2xxxxxx" in config
-    ):
-        # macOS defaults to the 16-bit audio profile on this config and xsig and portaudio are not forcing a change in bit depth
-        return True
-    return False
-
-
 def analogue_require_dut_and_harness(features, board, config, pytestconfig):
     # XTAGs not present
     xtag_ids = get_xtag_dut_and_harness(pytestconfig, board)
@@ -46,8 +34,6 @@ def analogue_require_dut_and_harness(features, board, config, pytestconfig):
 def analogue_common_uncollect(features, board, config, pytestconfig):
     level = pytestconfig.getoption("level")
     if level == "smoke" and (board, config) not in analogue_smoke_configs:
-        return True
-    if analogue_OS_uncollect(features, board, config):
         return True
     if analogue_require_dut_and_harness(features, board, config, pytestconfig):
         return True
