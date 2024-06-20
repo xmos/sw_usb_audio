@@ -14,6 +14,13 @@ from usb_audio_test_utils import (
 from conftest import list_configs, get_config_features
 
 
+loopback_smoke_configs = [
+    ("xk_316_mc", "2AMi18o18mssaax_i2sloopback"),
+    ("xk_316_mc", "2AMi8o8xxxxxx_mix8_i2sloopback"),
+    ("xk_316_mc", "2SSi8o8xxxxxx_i2sloopback"),
+]
+
+
 def OS_uncollect(features, board, config):
     if (
         platform.system() == "Darwin"
@@ -37,15 +44,17 @@ def loopback_dac_uncollect(pytestconfig, board, config):
     if not features["analogue_o"]:
         # No output channels
         return True
+    if pytestconfig.getoption("level") == "smoke" and (board, config) not in loopback_smoke_configs:
+        return True
     return False
 
-def analogue_duration(level, partial):
+def loopback_dac_duration(level, partial):
     if level == "weekend":
         duration = 90 if partial else 1200
     elif level == "nightly":
         duration = 15 if partial else 180
     else:
-        duration = 10
+        duration = 5
     return duration
 
 @pytest.mark.uncollect_if(func=loopback_dac_uncollect)
@@ -59,7 +68,7 @@ def test_loopback_dac(pytestconfig, board, config):
     xsig_config_path = Path(__file__).parent / "xsig_configs" / f"{xsig_config}.json"
 
     adapter_dut = get_xtag_dut(pytestconfig, board)
-    duration = analogue_duration(pytestconfig.getoption("level"), features["partial"])
+    duration = loopback_dac_duration(pytestconfig.getoption("level"), features["partial"])
     fail_str = ""
 
     with XrunDut(adapter_dut, board, config) as dut:

@@ -31,6 +31,7 @@ board_configs = {}
 
 all_freqs = [44100, 48000, 88200, 96000, 176400, 192000]
 
+
 def samp_freqs_upto(max):
     return [fs for fs in all_freqs if fs <= max]
 
@@ -62,7 +63,7 @@ def parse_features(board, config):
         if config.startswith("1"):
             features["pid"] = 0x17
         else:
-            features["pid"] = 0x16 if "_winbuiltin" not in config else 0x1a
+            features["pid"] = 0x16 if "_winbuiltin" not in config else 0x1A
     elif board == "xk_evk_xu316":
         if config.startswith("1"):
             features["pid"] = 0x19
@@ -87,7 +88,9 @@ def parse_features(board, config):
             features["samp_freqs"] = samp_freqs_upto(96000)
     elif features["chan_i"] >= 32 or features["chan_o"] >= 32:
         features["samp_freqs"] = samp_freqs_upto(48000)
-    elif (features["adat_i"] == False and features["chan_i"] >= 16) or (features["adat_o"] == False and features["chan_o"] >= 16):
+    elif (not features["adat_i"] and features["chan_i"] >= 16) or (
+        not features["adat_o"] and features["chan_o"] >= 16
+    ):
         features["samp_freqs"] = samp_freqs_upto(96000)
     elif (features["adat_i"] == True and features["chan_i"] > 16) or (features["adat_o"] == True and features["chan_i"] > 16): #i18o18 build
         features["samp_freqs"] = samp_freqs_upto(96000)
@@ -130,14 +133,6 @@ def pytest_sessionstart(session):
         else:
             configs = full_configs
 
-        # On Windows also collect special configs that will use the built-in driver
-        if platform.system() == "Windows":
-            winconfigs_cmd = ["xmake", "TEST_SUPPORT_CONFIGS=1", "allconfigs"]
-            ret = subprocess.run(
-                winconfigs_cmd, capture_output=True, text=True, cwd=app_dir
-            )
-            configs += [cfg for cfg in ret.stdout.split() if "_winbuiltin" in cfg]
-
         partial_configs = [config for config in configs if config not in full_configs]
 
         for config in configs:
@@ -153,6 +148,22 @@ def pytest_sessionstart(session):
                 features_i2sloopback["i2s_loopback"] = True
                 features_i2sloopback["analogue_i"] = 0
                 board_configs[f"{board}-{config}_i2sloopback"] = features_i2sloopback
+
+        # On Windows also collect special configs that will use the built-in driver
+        if platform.system() == "Windows" and test_level in ["nightly", "weekend"]:
+            winconfigs_cmd = ["xmake", "TEST_SUPPORT_CONFIGS=1", "allconfigs"]
+            ret = subprocess.run(
+                winconfigs_cmd, capture_output=True, text=True, cwd=app_dir
+            )
+            winbuiltin_configs = [
+                cfg for cfg in ret.stdout.split() if "_winbuiltin" in cfg
+            ]
+
+            for config in winbuiltin_configs:
+                features = parse_features(board, config)
+                features["partial"] = True
+                board_configs[f"{board}-{config}"] = features
+
 
 def list_configs():
     return [tuple(k.split("-", maxsplit=1)) for k in board_configs.keys()]

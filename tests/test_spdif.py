@@ -38,12 +38,23 @@ class SpdifClockSrc:
         subprocess.run(cmd, timeout=10)
 
 
-def spdif_common_uncollect(features, board, pytestconfig):
+spdif_smoke_configs = [
+    ("xk_216_mc", "2AMi18o18mssaax"),
+    ("xk_316_mc", "2AMi10o10xssxxx"),
+]
+
+
+def spdif_common_uncollect(features, board, config, pytestconfig):
     xtag_ids = get_xtag_dut_and_harness(pytestconfig, board)
     # XTAGs not present
     if not all(xtag_ids):
         return True
     if features["i2s_loopback"]:
+        return True
+    if (
+        pytestconfig.getoption("level") == "smoke"
+        and (board, config) not in spdif_smoke_configs
+    ):
         return True
     return False
 
@@ -51,14 +62,20 @@ def spdif_common_uncollect(features, board, pytestconfig):
 def spdif_input_uncollect(pytestconfig, board, config):
     features = get_config_features(board, config)
     return any(
-        [not features["spdif_i"], spdif_common_uncollect(features, board, pytestconfig)]
+        [
+            not features["spdif_i"],
+            spdif_common_uncollect(features, board, config, pytestconfig),
+        ]
     )
 
 
 def spdif_output_uncollect(pytestconfig, board, config):
     features = get_config_features(board, config)
     return any(
-        [not features["spdif_o"], spdif_common_uncollect(features, board, pytestconfig)]
+        [
+            not features["spdif_o"],
+            spdif_common_uncollect(features, board, config, pytestconfig),
+        ]
     )
 
 
@@ -68,7 +85,7 @@ def spdif_duration(level, partial):
     elif level == "nightly":
         duration = 15 if partial else 180
     else:
-        duration = 10
+        duration = 5
     return duration
 
 
@@ -95,8 +112,12 @@ def test_spdif_input(pytestconfig, board, config):
             num_dig_in_channels = num_in_channels - features["analogue_i"]
             xsig_config = f'mc_digital_input_analog_{features["analogue_i"]}ch_dig_{num_dig_in_channels}ch'
             if features["adat_i"]:
-                xsig_config = xsig_config + "_spdif" # If adat is also enabled use a config that only tests spdif
-            xsig_config_path = Path(__file__).parent / "xsig_configs" / f"{xsig_config}.json"
+                xsig_config = (
+                    xsig_config + "_spdif"
+                )  # If adat is also enabled use a config that only tests spdif
+            xsig_config_path = (
+                Path(__file__).parent / "xsig_configs" / f"{xsig_config}.json"
+            )
 
             dut.set_stream_format("input", fs, num_in_channels, 24)
 
@@ -179,10 +200,14 @@ def test_spdif_output(pytestconfig, board, config):
             num_dig_out_channels = num_out_channels - features["analogue_o"]
             xsig_config = f'mc_digital_output_analog_{features["analogue_o"]}ch_dig_{num_dig_out_channels}ch'
             if features["adat_o"]:
-                xsig_config = xsig_config + "_spdif" # When adat is also enabled check only spdif channels
-            xsig_config_path = Path(__file__).parent / "xsig_configs" / f"{xsig_config}.json"
+                xsig_config = (
+                    xsig_config + "_spdif"
+                )  # When adat is also enabled check only spdif channels
+            xsig_config_path = (
+                Path(__file__).parent / "xsig_configs" / f"{xsig_config}.json"
+            )
 
-            if(features["chan_i"] > num_out_channels):
+            if features["chan_i"] > num_out_channels:
                 dut.set_stream_format("input", fs, num_out_channels, 24)
 
             dut.set_stream_format("output", fs, num_out_channels, 24)

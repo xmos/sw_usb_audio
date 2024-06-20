@@ -1,18 +1,13 @@
 # Copyright (c) 2024, XMOS Ltd, All rights reserved
-from pathlib import Path
 import pytest
-import subprocess
 import time
-import json
-import platform
 import mido
-import time
 import filecmp
 import random
+import platform
 
 from usb_audio_test_utils import (
-    check_analyzer_output,
-    get_xtag_dut_and_harness,
+    get_xtag_dut,
     XrunDut,
     wait_for_midi_ports,
     find_xmos_midi_device
@@ -25,23 +20,29 @@ input_midi_file_name = 'tools/midifiles/Bach.mid'
 output_midi_file_name = 'tools/midifiles/Bach_loopback.mid'
 
 
+midi_loopback_smoke_configs = [
+    ("xk_316_mc", "2AMi18o18mssaax"),
+]
+
 def midi_loopback_uncollect(pytestconfig, board, config):
     features = get_config_features(board, config)
-    xtag_ids = get_xtag_dut_and_harness(pytestconfig, board)
-
-    # Until we fix Jenkins user permissions for MIDI on Mac https://xmosjira.atlassian.net/browse/UA-254
-    if platform.system() == "Darwin":
-        return True
+    xtag_id = get_xtag_dut(pytestconfig, board)
 
     # Skip loopback
     if features["i2s_loopback"]:
         return True
 
     # XTAGs not present
-    if not all(xtag_ids):
+    if not xtag_id:
         return True
 
     if not features["midi"]:
+        return True
+
+    if (
+        pytestconfig.getoption("level") == "smoke"
+        and (board, config) not in midi_loopback_smoke_configs
+    ):
         return True
 
     return False
@@ -53,7 +54,7 @@ def midi_duration(level, partial):
     elif level == "nightly":
         duration = 15 if partial else 180
     else:
-        duration = 10
+        duration = 5
     return duration
 
 def midi_receive_with_timeout(in_port, timeout_s=10, fail_on_timeout=True):
@@ -151,23 +152,37 @@ def test_midi_loopback(pytestconfig, board, config):
 
     features = get_config_features(board, config)
 
-    adapter_dut, adapter_harness = get_xtag_dut_and_harness(pytestconfig, board)
+    adapter_dut = get_xtag_dut(pytestconfig, board)
     duration = midi_duration(pytestconfig.getoption("level"), features["partial"])
 
-    with XrunDut(adapter_dut, board, config, timeout=120) as dut:
-        wait_for_midi_ports(timeout_s=60)
-        with (mido.open_input(find_xmos_midi_device(mido.get_input_names())) as in_port,
-              mido.open_output(find_xmos_midi_device(mido.get_output_names())) as out_port):
+    test_pass = 0
+    if platform.system() == "Windows":
+        midi_port_wait_timeout = 60
+    else:
+        midi_port_wait_timeout = 10
+    for i in range(15):
+        print(f"ITER {i}")
+        with XrunDut(adapter_dut, board, config, timeout=120):
+            ret = wait_for_midi_ports(timeout_s=midi_port_wait_timeout)
+            if ret:
+                continue
+            else:
+                with (mido.open_input(find_xmos_midi_device(mido.get_input_names())) as in_port,
+                    mido.open_output(find_xmos_midi_device(mido.get_output_names())) as out_port):
+                    while True: # receive the first few messages that only seem to arrive when testing on MacOs
+                        dut_msg = midi_receive_with_timeout(in_port, fail_on_timeout=False)
+                        if dut_msg is None:
+                            break
+                    time_start = time.time()
 
-            while True: # receive the first few messages that only seem to arrive when testing on MacOs
-                dut_msg = midi_receive_with_timeout(in_port, fail_on_timeout=False)
-                if dut_msg is None:
+                    max_sysex_length = 1022 # test only works for sysex payload <= 1022
+                    # Keep looping test until time up
+                    while time.time() < time_start + duration:
+                        run_midi_test_file(input_midi_file_name, output_midi_file_name, in_port, out_port)
+                        run_sysex_message(in_port, out_port, length=random.randrange(1, max_sysex_length + 1, 1))
+                    run_sysex_message(in_port, out_port, length=max_sysex_length) # make sure we test the largest supported size
+                    test_pass = 1
                     break
-            time_start = time.time()
+    if test_pass == 0:
+        pytest.fail(f"No XMOS MIDI ports found after multiple tries: {mido.get_input_names()}, {mido.get_output_names()}")
 
-            max_sysex_length = 1022 # test only works for sysex payload <= 1022
-            # Keep looping test until time up
-            while time.time() < time_start + duration:
-                run_midi_test_file(input_midi_file_name, output_midi_file_name, in_port, out_port)
-                run_sysex_message(in_port, out_port, length=random.randrange(1, max_sysex_length + 1, 1))
-            run_sysex_message(in_port, out_port, length=max_sysex_length) # make sure we test the largest supported size

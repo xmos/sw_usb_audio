@@ -32,10 +32,6 @@ USED_MODULES = lib_xua lib_i2c
 
 # Fully tested build configs (Note these make use of the defaults in xua_conf.h)
 
-# Audio Class 1, I2S Master, 2xInput, 2xOutput
-INCLUDE_ONLY_IN_1AMi2o2xxxxxx =
-XCC_FLAGS_1AMi2o2xxxxxx = $(BUILD_FLAGS)        -DAUDIO_CLASS=1
-
 # Audio Class 2, I2S Master, 10xInput, 10xOutput, S/PDIF Rx, S/PDIF Tx
 INCLUDE_ONLY_IN_2AMi10o10xssxxx =
 XCC_FLAGS_2AMi10o10xssxxx = $(BUILD_FLAGS)      -DXUA_SPDIF_RX_EN=1 \
@@ -51,18 +47,6 @@ XCC_FLAGS_2ASi10o10xssxxx = $(BUILD_FLAGS)      -DXUA_SPDIF_RX_EN=1 \
 INCLUDE_ONLY_IN_2AMi8o10mxsxxx =
 XCC_FLAGS_2AMi8o10mxsxxx = $(BUILD_FLAGS) 		-DMIDI=1 \
 												-DXUA_SPDIF_TX_EN=1
-
-# Audio Class 2, Async, I2S Slave, 16xInput 16xOutput (TDM)
-# Note, TDM requires more MIPs than I2S so we do volume processin in the decouple task
-INCLUDE_ONLY_IN_2ASi16o16xxxxxx_tdm8 =
-XCC_FLAGS_2ASi16o16xxxxxx_tdm8 = $(BUILD_FLAGS) -DI2S_CHANS_ADC=16 \
-                                                -DI2S_CHANS_DAC=16 \
-                                                -DNUM_USB_CHAN_IN=16 \
-                                                -DNUM_USB_CHAN_OUT=16 \
-                                                -DXUA_PCM_FORMAT=XUA_PCM_FORMAT_TDM \
-                                                -DMAX_FREQ=96000 \
-                                                -DCODEC_MASTER=1 \
-                                                -DOUT_VOLUME_IN_MIXER=0
 
 # Audio Class 2, Async, I2S Master, 16xInput, 16xOutput, ADAT Tx, ADAT Rx
 INCLUDE_ONLY_IN_2AMi16o16xxxaax =

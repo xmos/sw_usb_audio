@@ -23,5 +23,5 @@ XCC_FLAGS_2AMi8o8xxxxxx_mix8_vol_after = $(BUILD_FLAGS)    -DMAX_MIX_COUNT=8 \
 # Audio Class 2, Async, I2S Master, 8xInput, 8xOutput, Mixer (mixer does volume processing before mix)
 INCLUDE_ONLY_IN_2AMi8o8xxxxxx_mix8_vol_before = 
 XCC_FLAGS_2AMi8o8xxxxxx_mix8_vol_before = $(BUILD_FLAGS)   -DMAX_MIX_COUNT=8 \
-                                                           -DOUT_VOLUME_IN_MIXER=1 -DIN_VOLUME_IN_MIXER=1 
+                                                           -DOUT_VOLUME_IN_MIXER=1 -DIN_VOLUME_IN_MIXER=1 \
                                                            -DOUT_VOLUME_AFTER_MIX=0 -DIN_VOLUME_AFTER_MIX=0

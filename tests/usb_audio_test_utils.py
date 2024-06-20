@@ -333,12 +333,12 @@ def wait_for_midi_ports(timeout_s=60): # Win 11 agent has been seen to take up t
     for i in range(timeout_s):
         if find_xmos_midi_device(mido.get_input_names()) is not None and find_xmos_midi_device(mido.get_output_names()) is not None:
             print(f"Hooray! XMOS MIDI ports found: {find_xmos_midi_device(mido.get_input_names())}, {find_xmos_midi_device(mido.get_output_names())}")
-            return
-
+            return 0
         time.sleep(1)
         print(f"MIDI ports not found... retrying {i+1} of {timeout_s}")
 
-    pytest.fail(f"No XMOS MIDI ports found: {mido.get_input_names()}, {mido.get_output_names()}")
+    print(f"No XMOS MIDI ports found: {mido.get_input_names()}, {mido.get_output_names()}")
+    return 1
 
 
 

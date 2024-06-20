@@ -14,11 +14,6 @@ set(SW_USB_AUDIO_FLAGS ${EXTRA_BUILD_FLAGS} -O3
                                             -DADAT_TX_USE_SHARED_BUFF=1
                                             -DXUA_QUAD_SPI_FLASH=1)
 
-set(APP_COMPILER_FLAGS_1AMi2o2xxxxxx ${SW_USB_AUDIO_FLAGS} -DAUDIO_CLASS=1)
-
-set(APP_COMPILER_FLAGS_2AMi2o2xxxxxx ${SW_USB_AUDIO_FLAGS} -DI2S_CHANS_DAC=2
-                                                           -DI2S_CHANS_ADC=2)
-
 set(APP_COMPILER_FLAGS_2AMi8o8xxxxxx ${SW_USB_AUDIO_FLAGS})
 
 set(APP_COMPILER_FLAGS_2AMi8o8xxxxxx_mix8 ${SW_USB_AUDIO_FLAGS} -DMAX_MIX_COUNT=8)
@@ -35,9 +30,15 @@ set(APP_COMPILER_FLAGS_2AMi8o8mxxxxx ${SW_USB_AUDIO_FLAGS} -DMIDI=1)
 set(APP_COMPILER_FLAGS_2AMi10o10xssxxx ${SW_USB_AUDIO_FLAGS} -DXUA_SPDIF_TX_EN=1
                                                              -DXUA_SPDIF_RX_EN=1)
 
-set(APP_COMPILER_FLAGS_2AMi16o16xxxaax ${SW_USB_AUDIO_FLAGS} -DXUA_ADAT_RX_EN=1 -DXUA_ADAT_TX_EN=1)
+set(APP_COMPILER_FLAGS_2AMi16o16xxxaax ${SW_USB_AUDIO_FLAGS} -DXUA_ADAT_RX_EN=1
+                                                             -DXUA_ADAT_TX_EN=1)
 
-set(APP_COMPILER_FLAGS_2AMi18o18mssaax ${SW_USB_AUDIO_FLAGS} -DMIDI=1 -DXUA_ADAT_RX_EN=1 -DXUA_ADAT_TX_EN=1 -DXUA_SPDIF_TX_EN=1 -DXUA_SPDIF_RX_EN=1 -DMAX_FREQ=96000)
+set(APP_COMPILER_FLAGS_2AMi18o18mssaax ${SW_USB_AUDIO_FLAGS} -DMIDI=1
+                                                             -DXUA_ADAT_RX_EN=1
+                                                             -DXUA_ADAT_TX_EN=1
+                                                             -DXUA_SPDIF_TX_EN=1
+                                                             -DXUA_SPDIF_RX_EN=1
+                                                             -DMAX_FREQ=96000)
 
 set(APP_COMPILER_FLAGS_1SMi2o2xxxxxx ${SW_USB_AUDIO_FLAGS} -DAUDIO_CLASS=1
                                                            -DXUA_SYNCMODE=XUA_SYNCMODE_SYNC)
