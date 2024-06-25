@@ -2,7 +2,7 @@
 # compiled for. It either refers to an XN file in the source directories
 # or a valid argument for the --target option when compiling.
 
-TARGET = XK-EVK-XU316
+TARGET = XK-EVK-XU316.xn
 APP_NAME =
 
 # The flags passed to xcc when building the application
@@ -12,7 +12,7 @@ BUILD_FLAGS    = $(EXTRA_BUILD_FLAGS) -fcomment-asm -Xmapper --map -Xmapper MAPF
 # The USED_MODULES variable lists other module used by the application. These
 # modules will extend the SOURCE_DIRS, INCLUDE_DIRS and LIB_DIRS variables.
 # Modules are expected to be in the directory above the BASE_DIR directory.
-USED_MODULES = lib_sw_pll lib_xua lib_i2c
+USED_MODULES = lib_sw_pll lib_xua lib_i2c lib_board_support
 
 # Build config naming scheme:
 

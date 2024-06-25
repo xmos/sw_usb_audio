@@ -46,3 +46,4 @@ legacy_tests/generated_*.wav
 doc/pdf/sw_usb_audio.pdf
 toplevel_doc
 Bach_loopback.mid
+.gdb_history
