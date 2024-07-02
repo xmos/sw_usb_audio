@@ -1,7 +1,7 @@
 XMOS USB Audio 2.0 Reference Design README
 ##########################################
 
-:Version: 8.0.0
+:Version: 8.1.0
 :Vendor: XMOS
 
 Please note, Alpha and Beta releases may not accurately reflect the final release and documentation may not be complete. These early releases are not suitable for a production context, and are provided for evaluation purposes only. See 'Release Quality & QA'.
@@ -160,6 +160,7 @@ The firmware provides a Device Firmware Upgrade (DFU) interface compliant to the
 Required Software (dependencies)
 ================================
 
+  * lib_sw_pll (www.github.com/xmos/lib_sw_pll)
   * lib_xua (www.github.com/xmos/lib_xua)
   * lib_adat (www.github.com/xmos/lib_adat)
   * lib_locks (www.github.com/xmos/lib_locks)
@@ -168,7 +169,6 @@ Required Software (dependencies)
   * lib_xassert (www.github.com/xmos/lib_xassert)
   * lib_dsp (www.github.com/xmos/lib_dsp)
   * lib_spdif (www.github.com/xmos/lib_spdif)
-  * lib_sw_pll (www.github.com/xmos/lib_sw_pll)
   * lib_xud (www.github.com/xmos/lib_xud)
   * lib_i2c (www.github.com/xmos/lib_i2c)
   * lib_i2s (www.github.com/xmos/lib_i2s)
