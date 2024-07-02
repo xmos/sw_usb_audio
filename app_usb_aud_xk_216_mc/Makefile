@@ -12,7 +12,7 @@ BUILD_FLAGS    = $(EXTRA_BUILD_FLAGS) -fcomment-asm -O3 -report -lquadflash -g -
 # The USED_MODULES variable lists other module used by the application. These
 # modules will extend the SOURCE_DIRS, INCLUDE_DIRS and LIB_DIRS variables.
 # Modules are expected to be in the directory above the BASE_DIR directory.
-USED_MODULES = lib_xua lib_i2c
+USED_MODULES = lib_xua lib_i2c lib_board_support
 
 # Build config naming scheme:
 

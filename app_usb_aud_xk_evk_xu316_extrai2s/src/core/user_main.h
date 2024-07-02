@@ -3,6 +3,8 @@
 #define _USER_MAIN_H_
 
 #ifdef __XC__
+
+#include <xk_evk_xu316/ports.h>
 void i2s_driver(chanend c);
 void AudioHwRemote(chanend c);
 
