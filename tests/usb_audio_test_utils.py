@@ -17,6 +17,7 @@ from conftest import get_config_features
 # This is a hand-tuned time to allow xsig to complete
 xsig_completion_time_s = 6
 
+
 def use_windows_builtin_driver(board, config):
     # Use the builtin driver for:
     #  - configs with the"_winbuiltin" keyword
@@ -60,7 +61,7 @@ def query_device_found(name):
         [xsig_bin, "--list-devices"],
         capture_output=True,
         text=True,
-        timeout=5,
+        timeout=30,
     )
 
     for line in ret.stdout.split("\n"):
@@ -86,7 +87,7 @@ def wait_for_portaudio(board, config, adapter_id, timeout=30):
     ret = subprocess.run(
         ["xrun", "--adapter-id", adapter_id, "--dump-state", firmware],
         text=True,
-        timeout=10,
+        timeout=30,
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
     )
@@ -472,6 +473,11 @@ class XrunDut:
     def __enter__(self):
         firmware = get_firmware_path(self.board, self.config)
         subprocess.run(["xrun", "--adapter-id", self.adapter_id, firmware], timeout=self.timeout)
+
+        if platform.system() == "Windows":
+            # Delay to allow the Windows Audio service to set up the new device
+            time.sleep(40)
+
         self.dev_name = wait_for_portaudio(self.board, self.config, self.adapter_id, timeout=self.timeout)
         if platform.system() == "Windows" and use_windows_builtin_driver(
             self.board, self.config
@@ -483,6 +489,10 @@ class XrunDut:
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         stop_xrun_app(self.adapter_id)
+
+        if platform.system() == "Windows":
+            # Delay to allow the Windows Audio service to settle after the device is removed
+            time.sleep(15)
 
         # If usbdeview program is present on Windows, uninstall the device to force
         # re-enumeration next time and avoid caching of device features by the OS
@@ -498,6 +508,7 @@ class XrunDut:
                     ],
                     timeout=10,
                 )
+
     def _set_stream_format(self, direction, samp_freq, num_chans, bit_depth, fail_on_err):
         cmd = [get_volcontrol_path()]
         if platform.system() == "Windows":

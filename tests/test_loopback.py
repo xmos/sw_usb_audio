@@ -20,24 +20,11 @@ loopback_smoke_configs = [
     ("xk_316_mc", "2SSi8o8xxxxxx_i2sloopback"),
 ]
 
-
-def OS_uncollect(features, board, config):
-    if (
-        platform.system() == "Darwin"
-        and board == "xk_316_mc"
-        and "2AMi2o2xxxxxx" in config
-    ):
-        # macOS defaults to the 16-bit audio profile on this config and xsig and portaudio are not forcing a change in bit depth
-        return True
-    return False
-
 def loopback_dac_uncollect(pytestconfig, board, config):
     features = get_config_features(board, config)
     xtag_id = get_xtag_dut(pytestconfig, board)
     if not xtag_id:
         # XTAGs not present
-        return True
-    if OS_uncollect(features, board, config):
         return True
     if not features["i2s_loopback"]:
         return True
