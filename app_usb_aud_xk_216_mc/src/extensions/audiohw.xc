@@ -3,26 +3,16 @@
 #include "app_usb_aud_xk_216_mc.h"
 #include <xk_audio_216_mc_ab/board.h>
 
-#if (XUA_SPDIF_RX_EN || XUA_ADAT_RX_EN || (XUA_SYNCMODE == XUA_SYNCMODE_SYNC))
-    #if XUA_SYNCMODE == XUA_SYNCMODE_SYNC
-        #define CLK_MODE AUD_216_CLK_EXTERNAL_PLL_USB
-    #else
-        #define CLK_MODE AUD_216_CLK_EXTERNAL_PLL
-    #endif
-#else
-    #define CLK_MODE AUD_216_CLK_FIXED
-#endif
-
-
 #if (XUA_SYNCMODE == XUA_SYNCMODE_SYNC)
+    #define CLK_MODE AUD_216_CLK_EXTERNAL_PLL_USB
     #define PLL_SYNC_FREQ           (500)
-#else
-    #if (XUA_SPDIF_RX_EN || XUA_ADAT_RX_EN)
+#elif (XUA_SPDIF_RX_EN || XUA_ADAT_RX_EN)
+    #define CLK_MODE AUD_216_CLK_EXTERNAL_PLL
     /* Choose a frequency the xcore can easily generate internally */
     #define PLL_SYNC_FREQ           (300)
-    #else
+#else
+    #define CLK_MODE AUD_216_CLK_FIXED
     #define PLL_SYNC_FREQ           (1000000)
-    #endif
 #endif
 
 static const xk_audio_216_mc_ab_config_t config = {

@@ -4,7 +4,7 @@ project(app_usb_aud_xk_evk_xu316)
 
 set(APP_HW_TARGET XK-EVK-XU316.xn)
 include(${CMAKE_CURRENT_LIST_DIR}/../deps.cmake)
-set(APP_PCA_ENABLE OFF)
+set(APP_PCA_ENABLE ON)
 set(SW_USB_AUDIO_FLAGS ${EXTRA_BUILD_FLAGS} -fcomment-asm
                                             -Wall
                                             -O3
