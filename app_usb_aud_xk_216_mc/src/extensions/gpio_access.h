@@ -3,7 +3,7 @@
 
 #include "app_usb_aud_xk_216_mc.h"
 
-#include <xk_audio_216_mc_ab/ports.h>
+#include <platform.h>
 
 void set_gpio(unsigned bit, unsigned value);
 void p_gpio_lock();

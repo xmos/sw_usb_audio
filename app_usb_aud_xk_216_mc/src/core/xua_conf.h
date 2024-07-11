@@ -8,7 +8,7 @@
 #define _XUA_CONF_H_
 
 #ifndef __ASSEMBLER__
-#include <xk_audio_216_mc_ab/ports.h>
+#include <platform.h>
 #endif
 #include "../../../shared/version.h"
 

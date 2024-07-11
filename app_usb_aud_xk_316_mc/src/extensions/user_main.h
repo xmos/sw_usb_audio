@@ -4,7 +4,7 @@
 #ifdef __XC__
 
 #include "i2c.h"
-#include <xk_audio_316_mc_ab/ports.h>
+#include <platform.h>
 #include <xk_audio_316_mc_ab/board.h>
 
 extern unsafe client interface i2c_master_if i_i2c_client;

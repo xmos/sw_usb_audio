@@ -3,7 +3,7 @@
 
 #ifdef __XC__
 
-#include <xk_audio_216_mc_ab/ports.h>
+#include <platform.h>
 #if HID_CONTROLS > 0
 void UserHIDPoll();
 

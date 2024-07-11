@@ -4,7 +4,7 @@
 
 #ifdef __XC__
 
-#include <xk_evk_xu316/ports.h>
+#include <platform.h>
 
 void AudioHwRemote(chanend c);
 

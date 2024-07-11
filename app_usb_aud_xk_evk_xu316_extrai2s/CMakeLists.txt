@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.21)
 include($ENV{XMOS_CMAKE_PATH}/xcommon.cmake)
 project(app_usb_aud_xk_evk_xu316_extrai2s)
 
-set(APP_HW_TARGET XK-EVK-XU316.xn)
+set(APP_HW_TARGET XK-EVK-XU316)
 include(${CMAKE_CURRENT_LIST_DIR}/../deps.cmake)
 set(APP_PCA_ENABLE ON)
 set(SW_USB_AUDIO_FLAGS ${EXTRA_BUILD_FLAGS} -fcomment-asm
@@ -12,6 +12,7 @@ set(SW_USB_AUDIO_FLAGS ${EXTRA_BUILD_FLAGS} -fcomment-asm
                                             -lquadflash
                                             -g
                                             -fxscope
+                                            -DBOARD_SUPPORT_BOARD=XK_EVK_XU316
                                             -DUSB_TILE=tile[0]
                                             -DADAT_TX_USE_SHARED_BUFF=1
                                             -DXUA_QUAD_SPI_FLASH=1
