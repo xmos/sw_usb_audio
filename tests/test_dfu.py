@@ -122,33 +122,44 @@ class DfuTester:
 
         pytest.fail(f"Failed to get device version after {timeout}s")
 
-    def download(self, image_bin):
-        platform_str = platform.system()
-        if platform_str in ["Darwin", "Linux"]:
-            cmd = [self.dfu_app, f"{hex(self.pid)}", "--download", image_bin]
-        elif platform_str == "Windows":
-            # Issue 122: need a delay before DFU download, otherwise dfucons can fail
-            time.sleep(10)
-            cmd = [self.dfu_app, "download", image_bin, f"-g{self.driver_guid}"]
+    def download(self, image_bin, dfuapp="custom"):
+        if dfuapp == "dfu-util":
+            cmd = ["dfu-util", "-d", f"0x20b1:{hex(self.pid)}", "-D", image_bin, "-R"]
+            check = False # dfu-util download despite succeeding returns retcode -5 (LIBUSB_ERROR_NOT_FOUND) when it tries
+            # to reset the device after detaching post download (https://github.com/Stefan-Schmidt/dfu-util/blob/master/src/main.c#L1163)
         else:
-            pytest.fail(f"Unsupported platform: {platform_str}")
+            check = True
+            platform_str = platform.system()
+            if platform_str in ["Darwin", "Linux"]:
+                cmd = [self.dfu_app, f"{hex(self.pid)}", "--download", image_bin]
+            elif platform_str == "Windows":
+                # Issue 122: need a delay before DFU download, otherwise dfucons can fail
+                time.sleep(10)
+                cmd = [self.dfu_app, "download", image_bin, f"-g{self.driver_guid}"]
+            else:
+                pytest.fail(f"Unsupported platform: {platform_str}")
         ret = subprocess.run(cmd, **common_opts)
-        if ret.returncode:
-            print(ret.stdout)
+        print(ret.stdout)
+        if ret.returncode and check:
             pytest.fail(
                 f"Download of image {image_bin} failed (error {ret.returncode})"
             )
 
-    def upload(self):
-        platform_str = platform.system()
-        if platform_str in ["Darwin", "Linux"]:
-            cmd = [self.dfu_app, f"{hex(self.pid)}", "--upload", self.upload_bin]
-        elif platform_str == "Windows":
-            cmd = [self.dfu_app, "upload", self.upload_bin, f"-g{self.driver_guid}"]
+    def upload(self, dfuapp="custom"):
+        if dfuapp == "dfu-util":
+            cmd = ["dfu-util", "-d", f"0x20b1:{hex(self.pid)}", "-U", self.upload_bin, "-R"]
+            check = False # See comment in download()
         else:
-            pytest.fail(f"Unsupported platform: {platform_str}")
+            check = True
+            platform_str = platform.system()
+            if platform_str in ["Darwin", "Linux"]:
+                cmd = [self.dfu_app, f"{hex(self.pid)}", "--upload", self.upload_bin]
+            elif platform_str == "Windows":
+                cmd = [self.dfu_app, "upload", self.upload_bin, f"-g{self.driver_guid}"]
+            else:
+                pytest.fail(f"Unsupported platform: {platform_str}")
         ret = subprocess.run(cmd, **common_opts)
-        if ret.returncode:
+        if ret.returncode and check:
             print(ret.stdout)
             pytest.fail(
                 f"Upload image to {self.upload_bin} failed (error {ret.returncode})"
@@ -207,7 +218,7 @@ dfu_testcases = [
 ]
 
 
-def dfu_uncollect(pytestconfig, board, config):
+def dfu_uncollect(pytestconfig, board, config, dfuapp):
     # XTAG not present
     xtag_id = get_xtag_dut(pytestconfig, board)
     if not xtag_id:
@@ -215,13 +226,16 @@ def dfu_uncollect(pytestconfig, board, config):
     level = pytestconfig.getoption("level")
     if level == "smoke":
         # Just run on xk_316_mc at smoke level
-        return board not in ["xk_316_mc"]
+        return board not in ["xk_316_mc", "xk_216_mc"]
+    if platform.system() == "Windows" and dfuapp == "dfu-util":
+        return True
     return False
 
 
 @pytest.mark.uncollect_if(func=dfu_uncollect)
 @pytest.mark.parametrize(["board", "config"], dfu_testcases)
-def test_dfu(pytestconfig, board, config):
+@pytest.mark.parametrize("dfuapp", ["custom", "dfu-util"])
+def test_dfu(pytestconfig, board, config, dfuapp):
     with DfuTester(pytestconfig, board, config) as dfu_test:
         # xflash the factory image for the initial version
         firmware = get_firmware_path(board, config)
@@ -235,19 +249,19 @@ def test_dfu(pytestconfig, board, config):
 
         # perform the first upgrade
         dfu_bin1 = create_dfu_bin(board, "upgrade1")
-        dfu_test.download(dfu_bin1)
+        dfu_test.download(dfu_bin1, dfuapp=dfuapp)
         version = dfu_test.get_bcd_version()
         if version != exp_version1:
             pytest.fail(f"Unexpected version {version} after first upgrade")
 
         # perform the second upgrade
         dfu_bin2 = create_dfu_bin(board, "upgrade2")
-        dfu_test.download(dfu_bin2)
+        dfu_test.download(dfu_bin2, dfuapp=dfuapp)
         version = dfu_test.get_bcd_version()
         if version != exp_version2:
             pytest.fail(f"Unexpected version {version} after second upgrade")
 
-        dfu_test.upload()
+        dfu_test.upload(dfuapp=dfuapp)
         version = dfu_test.get_bcd_version()
         if version != exp_version2:
             pytest.fail(f"Unexpected version {version} after reading upgrade image")
@@ -259,7 +273,7 @@ def test_dfu(pytestconfig, board, config):
                 f"After factory reset, version {version} didn't match initial {initial_version}"
             )
 
-        dfu_test.download(dfu_test.upload_bin)
+        dfu_test.download(dfu_test.upload_bin, dfuapp=dfuapp)
         version = dfu_test.get_bcd_version()
         if version != exp_version2:
             pytest.fail(
