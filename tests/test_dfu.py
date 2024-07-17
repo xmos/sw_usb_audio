@@ -123,7 +123,10 @@ class DfuTester:
         pytest.fail(f"Failed to get device version after {timeout}s")
 
     def download(self, image_bin, dfuapp="custom"):
+        my_env = os.environ
         if dfuapp == "dfu-util":
+            lib_path = my_env.pop("DYLD_LIBRARY_PATH", None)   # The copy of libusb in tools 15.2.1 doesn't work with dfu-util. TODO Remove this when migrating to tools 15.3
+            print(f"lib_path = {lib_path}")
             cmd = ["dfu-util", "-d", f"0x20b1:{hex(self.pid)}", "-D", image_bin, "-R"]
             check = False # dfu-util download despite succeeding returns retcode -5 (LIBUSB_ERROR_NOT_FOUND) when it tries
             # to reset the device after detaching post download (https://github.com/Stefan-Schmidt/dfu-util/blob/master/src/main.c#L1163)
@@ -138,7 +141,7 @@ class DfuTester:
                 cmd = [self.dfu_app, "download", image_bin, f"-g{self.driver_guid}"]
             else:
                 pytest.fail(f"Unsupported platform: {platform_str}")
-        ret = subprocess.run(cmd, **common_opts)
+        ret = subprocess.run(cmd, env=my_env, **common_opts)
         print(ret.stdout)
         if ret.returncode and check:
             pytest.fail(
@@ -146,7 +149,9 @@ class DfuTester:
             )
 
     def upload(self, dfuapp="custom"):
+        my_env = os.environ
         if dfuapp == "dfu-util":
+            my_env.pop("DYLD_LIBRARY_PATH", None)   # The copy of libusb in tools 15.2.1 doesn't work with dfu-util. TODO Remove this when migrating to tools 15.3
             cmd = ["dfu-util", "-d", f"0x20b1:{hex(self.pid)}", "-U", self.upload_bin, "-R"]
             check = False # See comment in download()
         else:
@@ -158,7 +163,7 @@ class DfuTester:
                 cmd = [self.dfu_app, "upload", self.upload_bin, f"-g{self.driver_guid}"]
             else:
                 pytest.fail(f"Unsupported platform: {platform_str}")
-        ret = subprocess.run(cmd, **common_opts)
+        ret = subprocess.run(cmd, env=my_env, **common_opts)
         if ret.returncode and check:
             print(ret.stdout)
             pytest.fail(
