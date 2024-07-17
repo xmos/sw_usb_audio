@@ -1,0 +1,3 @@
+[submodule "tests/tools/hardware_test_tools"]
+	path = tests/tools/hardware_test_tools
+	url = git@github.com:xmos/hardware_test_tools
