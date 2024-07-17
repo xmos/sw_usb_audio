@@ -123,7 +123,7 @@ class DfuTester:
         pytest.fail(f"Failed to get device version after {timeout}s")
 
     def download(self, image_bin, dfuapp="custom"):
-        my_env = os.environ
+        my_env = os.environ.copy()
         if dfuapp == "dfu-util":
             lib_path = my_env.pop("DYLD_LIBRARY_PATH", None)   # The copy of libusb in tools 15.2.1 doesn't work with dfu-util. TODO Remove this when migrating to tools 15.3
             print(f"lib_path = {lib_path}")
@@ -149,7 +149,7 @@ class DfuTester:
             )
 
     def upload(self, dfuapp="custom"):
-        my_env = os.environ
+        my_env = os.environ.copy()
         if dfuapp == "dfu-util":
             my_env.pop("DYLD_LIBRARY_PATH", None)   # The copy of libusb in tools 15.2.1 doesn't work with dfu-util. TODO Remove this when migrating to tools 15.3
             cmd = ["dfu-util", "-d", f"0x20b1:{hex(self.pid)}", "-U", self.upload_bin, "-R"]
