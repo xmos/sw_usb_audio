@@ -11,6 +11,8 @@ enum operation {
   SET_CLOCK,
   SHOW_STREAM_FORMATS,
   SET_STREAM_FORMAT,
+  SHOW_CURRENT_STREAM_FORMAT,
+  SET_FULL_STREAM_FORMAT
 };
 
 enum scope {
@@ -37,6 +39,12 @@ void setClock(AudioDeviceHandle deviceID, uint32_t clockId);
 void showStreamFormats(AudioDeviceHandle deviceID);
 
 void setStreamFormat(AudioDeviceHandle deviceID, uint32_t scope, unsigned sample_rate, unsigned num_chans, unsigned bit_depth);
+
+void showCurrentStreamFormat(AudioDeviceHandle deviceID);
+
+void setFullStreamFormat(AudioDeviceHandle deviceID, unsigned sample_rate,
+                         unsigned in_num_chans, unsigned in_bit_depth,
+                         unsigned out_num_chans, unsigned out_bit_depth);
 
 void finish(void);
 #endif  // _volcontrol_h_

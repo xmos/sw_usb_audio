@@ -14,8 +14,8 @@ struct volcontrol {
   float volume;
   uint32_t clock_src;
   int sample_rate;
-  unsigned num_chans;
-  unsigned bit_depth;
+  unsigned num_chans[2];
+  unsigned bit_depth[2];
 #ifdef _WIN32
   TCHAR driver_guid[GUID_STR_LEN];
 #endif
@@ -30,6 +30,8 @@ void help(void) {
     printf("  --clock < \"Internal\" | \"SPDIF\" | \"ADAT\" >\n");
     printf("  --showall-formats            List the supported stream formats\n");
     printf("  --set-format [input|output] <sample-rate> <num-channels> <bit-depth>\n");
+    printf("  --show-current-format            List the current stream format (sampling rate, input num_channels and bit-depth, output num channels and bit-depth\n");
+    printf("  --set-full-format <sample-rate> <input num-channels> <input bit-depth> <output num-channels> <output bit-depth>\n");
 #ifdef _WIN32
     printf("  -g<GUID>      Driver GUID string, eg. -g{E5A2658B-817D-4A02-A1DE-B628A93DDF5D}\n");
 #endif
@@ -138,6 +140,10 @@ int main(int argc, char const* argv[])
             ++i;
             v.op = SHOW_STREAM_FORMATS;
         }
+        else if (strcmp(argv[i], "--show-current-format") == 0) {
+            ++i;
+            v.op = SHOW_CURRENT_STREAM_FORMAT;
+        }
         else if (strcmp(argv[i], "--set-format") == 0) {
             ++i;
             v.op = SET_STREAM_FORMAT;
@@ -168,15 +174,53 @@ int main(int argc, char const* argv[])
                 help();
             }
 
-            v.num_chans = atoi(argv[i]);
+            v.num_chans[0] = atoi(argv[i]);
             ++i;
 
             if (i >= argc) {
                 help();
             }
 
-            v.bit_depth = atoi(argv[i]);
+            v.bit_depth[0] = atoi(argv[i]);
             ++i;
+        }
+        else if (strcmp(argv[i], "--set-full-format") == 0) {
+            ++i;
+            v.op = SET_FULL_STREAM_FORMAT;
+            if (i >= argc) {
+                help();
+            }
+
+            v.sample_rate = atoi(argv[i]);
+            ++i;
+
+            if (i >= argc) {
+                help();
+            }
+
+            v.num_chans[0] = atoi(argv[i]);
+            ++i;
+
+            if (i >= argc) {
+                help();
+            }
+
+            v.bit_depth[0] = atoi(argv[i]);
+            ++i;
+            if (i >= argc) {
+                help();
+            }
+
+            v.num_chans[1] = atoi(argv[i]);
+            ++i;
+
+            if (i >= argc) {
+                help();
+            }
+
+            v.bit_depth[1] = atoi(argv[i]);
+            ++i;
+
         }
 #ifdef _WIN32
         else if (strncmp(argv[i], "-g", 2) == 0) {
@@ -235,7 +279,15 @@ int main(int argc, char const* argv[])
             break;
 
         case SET_STREAM_FORMAT:
-            setStreamFormat(deviceID, v.scope, v.sample_rate, v.num_chans, v.bit_depth);
+            setStreamFormat(deviceID, v.scope, v.sample_rate, v.num_chans[0], v.bit_depth[0]);
+            break;
+
+        case SHOW_CURRENT_STREAM_FORMAT:
+            showCurrentStreamFormat(deviceID);
+            break;
+
+        case SET_FULL_STREAM_FORMAT:
+            setFullStreamFormat(deviceID, v.sample_rate, v.num_chans[0], v.bit_depth[0], v.num_chans[1], v.bit_depth[1]);
             break;
     }
 
