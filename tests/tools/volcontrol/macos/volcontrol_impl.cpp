@@ -263,10 +263,32 @@ void setClock(AudioDeviceHandle deviceID, uint32_t clockId)
 }
 
 void printSupportedStreamFormats(AudioStreamBasicDescription *formats, unsigned num_formats) {
-  for (unsigned i = 0; i < num_formats; ++i) {
-    printf("channels: %2u, bit-depth: %2u, sample-rate: %6u\n", formats[i].mChannelsPerFrame,
-           formats[i].mBitsPerChannel, (unsigned)formats[i].mSampleRate);
+  #define NUM_SAMPLING_RATES  (6)
+  unsigned int possible_sample_rates[NUM_SAMPLING_RATES] = {44100, 48000, 88200, 96000, 176400, 192000};
+
+  for(unsigned i=0; i<NUM_SAMPLING_RATES; i++)
+  {
+    unsigned sr = possible_sample_rates[i];
+    unsigned found_first = 0;
+
+    for (unsigned i = 0; i < num_formats; ++i) {
+      if(formats[i].mSampleRate == sr)
+      {
+        if(!found_first)
+        {
+          printf("Sampling rate %6u:\n", sr);
+          found_first = 1;
+        }
+        printf("channels: %2u, bit-depth: %2u\n", formats[i].mChannelsPerFrame,
+            formats[i].mBitsPerChannel, (unsigned)formats[i].mSampleRate);
+      }
+    }
+    if(found_first)
+    {
+      printf("\n");
+    }
   }
+
 }
 
 void showStreamFormats(AudioDeviceHandle deviceID) {
@@ -375,4 +397,50 @@ err_free:
 
 void finish(void) {
 
+}
+
+void showCurrentStreamFormat(AudioDeviceHandle deviceID)
+{
+  UInt32 size;
+  int err = AudioDeviceGetPropertyInfo(deviceID, 0, 1, kAudioDevicePropertyStreamFormat, &size, NULL);
+  if (kAudioHardwareNoError != err) {
+    printf("Error: AudioDeviceGetPropertyInfo() failed for property kAudioDevicePropertyStreamFormat, error %d\n", err);
+    exit(1);
+  }
+  if(size != sizeof(AudioStreamBasicDescription))
+  {
+    printf("Unexpected size (%u) of kAudioDevicePropertyStreamFormat property. Expected %u\n", size, sizeof(AudioStreamBasicDescription));
+    exit(1);
+  }
+
+  AudioStreamBasicDescription in_fmt, out_fmt;
+
+  err = AudioDeviceGetProperty(deviceID, 0, 1, kAudioDevicePropertyStreamFormat, &size, &in_fmt);
+  if (kAudioHardwareNoError != err) {
+    printf("Error: AudioDeviceGetProperty() failed for property kAudioDevicePropertyStreamFormat, error %d\n", err);
+    exit(1);
+  }
+  err = AudioDeviceGetProperty(deviceID, 0, 0, kAudioDevicePropertyStreamFormat, &size, &out_fmt);
+  if (kAudioHardwareNoError != err) {
+    printf("Error: AudioDeviceGetProperty() failed for property kAudioDevicePropertyStreamFormat, error %d\n", err);
+    exit(1);
+  }
+  if((unsigned)in_fmt.mSampleRate != (unsigned)out_fmt.mSampleRate)
+  {
+    printf("Error: Sample rate different on input (%6u) and output (%6u) interfaces.\n", (unsigned)in_fmt.mSampleRate, (unsigned)out_fmt.mSampleRate);
+    exit(1);
+  }
+  printf("\nCurrent stream format:\nSampling rate: %6u\n", (unsigned)in_fmt.mSampleRate);
+  printf("Input number of channels: %2u\n", (unsigned)in_fmt.mChannelsPerFrame);
+  printf("Input bit depth: %2u\n", (unsigned)in_fmt.mBitsPerChannel);
+  printf("Output number of channels: %2u\n", (unsigned)out_fmt.mChannelsPerFrame);
+  printf("Output bit depth: %2u\n", (unsigned)out_fmt.mBitsPerChannel);
+}
+
+void setFullStreamFormat(AudioDeviceHandle deviceID, unsigned sample_rate,
+                         unsigned in_num_chans, unsigned in_bit_depth,
+                         unsigned out_num_chans, unsigned out_bit_depth)
+{
+  setStreamFormat(deviceID, ScopeInput, sample_rate, in_num_chans, in_bit_depth);
+  setStreamFormat(deviceID, ScopeOutput, sample_rate, out_num_chans, out_bit_depth);
 }

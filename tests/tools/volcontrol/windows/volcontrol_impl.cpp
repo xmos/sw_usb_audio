@@ -220,11 +220,11 @@ void showCurrentStreamFormat(AudioDeviceHandle deviceID)
         exit(1);
     }
 
-    printf("\nCurrent stream format:\nSampling rate: %u\n", sample_rate);
-    printf("Input number of channels: %u\n", in_fmt.numberOfChannels);
-    printf("Input bit depth: %u\n", in_fmt.bitsPerSample);
-    printf("Output number of channels: %u\n", out_fmt.numberOfChannels);
-    printf("Output bit depth: %u\n", out_fmt.bitsPerSample);
+    printf("\nCurrent stream format:\nSampling rate: %6u\n", sample_rate);
+    printf("Input number of channels: %2u\n", in_fmt.numberOfChannels);
+    printf("Input bit depth: %2u\n", in_fmt.bitsPerSample);
+    printf("Output number of channels: %2u\n", out_fmt.numberOfChannels);
+    printf("Output bit depth: %2u\n", out_fmt.bitsPerSample);
 }
 
 // Maximum number of supported sample frequencies
@@ -262,7 +262,7 @@ void showStreamFormats(AudioDeviceHandle deviceID) {
         exit(1);
     }
     for (unsigned i = 0; i < num_samp_freqs; ++i) {
-        printf("%u\n", samp_freqs[i]);
+        printf("%6u\n", samp_freqs[i]);
     }
 }
 
