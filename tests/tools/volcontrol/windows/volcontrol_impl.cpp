@@ -205,7 +205,7 @@ void showCurrentStreamFormat(AudioDeviceHandle deviceID)
     if (0 != err) {
         printf("Error: TUSBAUDIO_GetCurrentSampleRate(), error %d\n", err);
         exit(1);
-    }    
+    }
 
     TUsbAudioStreamFormat in_fmt, out_fmt;
     err = gDrvApi.TUSBAUDIO_GetCurrentStreamFormat(deviceID, 1, &in_fmt);
@@ -382,7 +382,7 @@ void setFullStreamFormat(AudioDeviceHandle deviceID, unsigned sample_rate,
             break;
         }
     }
-    
+
     if (j == num_samp_freqs) {
         printf("Error: sample rate %u not supported. Supported rates: ", sample_rate);
         for (j = 0; j < num_samp_freqs; ++j) {
