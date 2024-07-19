@@ -96,7 +96,6 @@ def test_analogue_input(pytestconfig, board, config):
             if fs > 96000:
                 max_num_channels = 10
                 dut.set_stream_format("input", fs, min(max_num_channels, features["chan_i"]), 24)
-                dut.set_stream_format("output", fs, min(max_num_channels, features["chan_o"]), 24)
             else:
                 dut.set_stream_format("input", fs, features["chan_i"], 24)
 
@@ -149,7 +148,6 @@ def test_analogue_output(pytestconfig, board, config):
 
             if fs > 96000:
                 max_num_channels = 10
-                dut.set_stream_format("input", fs, min(max_num_channels, features["chan_i"]), 24)
                 dut.set_stream_format("output", fs, min(max_num_channels, features["chan_o"]), 24)
             else:
                 dut.set_stream_format("output", fs, features["chan_o"], 24)

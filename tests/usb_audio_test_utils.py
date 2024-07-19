@@ -517,14 +517,66 @@ class XrunDut:
         ret = subprocess.run(cmd, timeout=30, capture_output=True, text=True)
         if fail_on_err and ret.returncode != 0:
             pytest.fail(f"failed to setup stream format: {direction}, {samp_freq} fs, {num_chans} channels, {bit_depth} bit\n{ret.stdout}\n{ret.stderr}")
-
         return ret.returncode
+
+    def _set_full_stream_format(self, samp_freq, in_chans, in_bit_depth, out_chans, out_bit_depth, fail_on_err):
+        cmd = [get_volcontrol_path()]
+        if platform.system() == "Windows":
+            cmd.append(f"-g{get_tusb_guid()}")
+        cmd += ["--set-full-format", f"{samp_freq}", f"{in_chans}", f"{in_bit_depth}", f"{out_chans}", f"{out_bit_depth}"]
+        ret = subprocess.run(cmd, timeout=30, capture_output=True, text=True)
+        if fail_on_err and ret.returncode != 0:
+            pytest.fail(f"failed to setup full stream format: {samp_freq} fs, {in_chans} in channels, {in_bit_depth} in bit-depth, {out_chans} out channels, {out_bit_depth} out bit-depth.\n{ret.stdout}\n{ret.stderr}")
+        return ret.returncode
+
+    def _get_current_stream_format(self):
+        cmd = [get_volcontrol_path()]
+        if platform.system() == "Windows":
+            cmd.append(f"-g{get_tusb_guid()}")
+        cmd.append("--show-current-format")
+
+        ret = subprocess.run(cmd, timeout=30, capture_output=True, text=True)
+        if ret.returncode:
+            pytest.fail(f"failed to get current stream format:",f"\n{ret.stdout}\n{ret.stderr}")
+
+        for l in ret.stdout.splitlines():
+            m = re.search(r"^Sampling rate:\s*([0-9]+)", l)
+            if m:
+                sample_rate = int(m.group(1))
+            m = re.search(r"^Input number of channels:\s*([0-9]+)", l)
+            if m:
+                in_chans = int(m.group(1))
+            m = re.search(r"^Input bit depth:\s*([0-9]+)", l)
+            if m:
+                in_bit_depth = int(m.group(1))
+            m = re.search(r"^Output number of channels:\s*([0-9]+)", l)
+            if m:
+                out_chans = int(m.group(1))
+            m = re.search(r"^Output bit depth:\s*([0-9]+)", l)
+            if m:
+                out_bit_depth = int(m.group(1))
+
+        return sample_rate, in_chans, in_bit_depth, out_chans, out_bit_depth
+
 
     def set_stream_format(self, direction, samp_freq, num_chans, bit_depth, fail_on_err=True):
         if platform.system() == "Windows" and use_windows_builtin_driver(self.board, self.config):
             # Cannot change the stream format
             return
-        # Set the stream format that the user has asked for
+        if samp_freq > 96000: # USB spec limits interfaces to max 10 channels when samp_freq > 96000
+            if num_chans > 10:
+                pytest.fail(f"Cannot set more than 10 channels ({num_chans}) for samp_freq > 96000 ({samp_freq})")
+            # Get the current input and output format
+            _, in_chans, in_bit_depth, out_chans, out_bit_depth = self._get_current_stream_format()
+            # If the number of channels in the other direction is more than 10, limit it to 10
+            if direction == "input":
+                if out_chans > 10:
+                    return self._set_full_stream_format(samp_freq, num_chans, bit_depth, 10, out_bit_depth, fail_on_err)
+            elif direction == "output":
+                if in_chans > 10:
+                    return self._set_full_stream_format(samp_freq, 10, in_bit_depth, num_chans, bit_depth, fail_on_err)
+
+        # If we've got here, just set the stream format that the user has asked for
         return self._set_stream_format(direction, samp_freq, num_chans, bit_depth, fail_on_err)
 
 class XsigProcess:
