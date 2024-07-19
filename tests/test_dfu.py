@@ -228,12 +228,12 @@ def dfu_uncollect(pytestconfig, board, config, dfuapp):
     xtag_id = get_xtag_dut(pytestconfig, board)
     if not xtag_id:
         return True
+    if platform.system() == "Windows" and dfuapp == "dfu-util":
+        return True
     level = pytestconfig.getoption("level")
     if level == "smoke":
         # Just run on xk_316_mc at smoke level
         return board not in ["xk_316_mc", "xk_216_mc"]
-    if platform.system() == "Windows" and dfuapp == "dfu-util":
-        return True
     return False
 
 
