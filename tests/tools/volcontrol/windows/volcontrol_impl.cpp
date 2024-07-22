@@ -186,6 +186,23 @@ void setClock(AudioDeviceHandle deviceID, uint32_t clockId)
         printf("Error: failed to select clock\n");
         exit(1);
     }
+    Sleep(1000);
+    TUsbAudioClockSource current_clock_source;
+    int ret = gDrvApi.TUSBAUDIO_GetCurrentClockSource(deviceID, &current_clock_source);
+    if(ret)
+    {
+        printf("TUSBAUDIO_GetCurrentClockSource() returned error %d\n", ret);
+    }
+    if(current_clock_source.clockSourceId != unitId)
+    {
+        printf("Error: Clock change didn't stick. Expected %d, received %d\n", unitId, current_clock_source.clockSourceId);
+        exit(1);
+    }
+    if(!current_clock_source.clockIsValid)
+    {
+        printf("Error: ClockID %d not valid\n", current_clock_source.clockSourceId);
+        exit(1);
+    }
 }
 
 // Maximum number of formats supported by TUSB SDK
