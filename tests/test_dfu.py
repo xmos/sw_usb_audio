@@ -51,12 +51,7 @@ class DfuTester:
         elif platform_str in ["Darwin", "Linux"]:
             xmosdfu_path = Path(__file__).parent / "tools" / "xmosdfu"
             if not xmosdfu_path.exists():
-                os_dir = "macos" if platform_str == "Darwin" else "linux"
-                xmosdfu_url = f"http://intranet.xmos.local/projects/usb_audio_regression_files/xmosdfu/{os_dir}/xmosdfu"
-                r = urllib.request.urlopen(xmosdfu_url)
-                with open(xmosdfu_path, "wb") as f:
-                    f.write(r.read())
-                xmosdfu_path.chmod(stat.S_IREAD | stat.S_IWRITE | stat.S_IEXEC)
+                pytest.fail(f"xmosdfu not found in location: {xmosdfu_path}")
             self.dfu_app = xmosdfu_path
 
     def __enter__(self):
