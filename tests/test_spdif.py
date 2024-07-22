@@ -28,14 +28,16 @@ class SpdifClockSrc:
 
     def __enter__(self):
         cmd = self.cmd + ["--clock", "SPDIF"]
-        subprocess.run(cmd, timeout=10)
+        ret = subprocess.run(cmd, timeout=20)
+        assert ret.returncode == 0, f"Setting clock source to SPDIF failed\nstdout:\n{ret.stdout}\nstderr\n{ret.stderr}"
         # Short delay to wait for clock source
         time.sleep(5)
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         cmd = self.cmd + ["--clock", "Internal"]
-        subprocess.run(cmd, timeout=10)
+        ret = subprocess.run(cmd, timeout=20)
+        assert ret.returncode == 0, f"Setting clock source to Internal failed\nstdout:\n{ret.stdout}\nstderr\n{ret.stderr}"
 
 
 spdif_smoke_configs = [

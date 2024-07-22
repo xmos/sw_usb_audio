@@ -240,19 +240,28 @@ void setClock(AudioDeviceHandle deviceID, uint32_t clockId)
       exit(1);
     } else {
       sleep(1);
+
+      unsigned retries = 0;
+      unsigned retry_count = 10;
       // Check if the clock stick
       UInt32 currentClockSource = 0;
-      result = AudioObjectGetPropertyData(deviceID, &prop, 0, NULL, &dataSize, &currentClockSource);
-      if(kAudioHardwareNoError != result) {
-        printf("Error checking the set clock source\n");
-        exit(1);
-      }
-      printf("Current clock ID: %u\n", currentClockSource);
+      do {
+        result = AudioObjectGetPropertyData(deviceID, &prop, 0, NULL, &dataSize, &currentClockSource);
+        if(kAudioHardwareNoError != result) {
+          printf("Error checking the set clock source\n");
+          exit(1);
+        }
+        printf("Current clock ID: %u, retry count %d\n", currentClockSource, retries);
+        sleep(1);
+        retries += 1;
+      }while((currentClockSource != clockSources[i]) && (retries < retry_count));
+
       if(currentClockSource != clockSources[i]) {
         // Clock didn't stick
-        printf("Error '%s' clock is not valid yet\n", gClockNameString[clockId - 1]);
+        printf("Error '%s' clock didn't stick after %d retries\n", gClockNameString[clockId - 1], retry_count);
         exit(1);
       }
+
       printf("Clock source set to %s\n", gClockNameString[clockId - 1]);
       return;
     }
