@@ -234,37 +234,45 @@ void setClock(AudioDeviceHandle deviceID, uint32_t clockId)
 
     prop.mSelector = kAudioDevicePropertyClockSource;
 
-    result = AudioObjectSetPropertyData(deviceID, &prop, 0, NULL, sizeof(UInt32), &clockSources[i]);
-    if(kAudioHardwareNoError != result) {
-      printf("Error setting clock to %s\n", gClockNameString[clockId - 1]);
-      exit(1);
-    } else {
-      sleep(1);
+    UInt32 currentClockSource = 0;
+    unsigned set_retries = 0;
+    unsigned set_retry_count = 5;
 
-      unsigned retries = 0;
-      unsigned retry_count = 10;
-      // Check if the clock stick
-      UInt32 currentClockSource = 0;
-      do {
-        result = AudioObjectGetPropertyData(deviceID, &prop, 0, NULL, &dataSize, &currentClockSource);
-        if(kAudioHardwareNoError != result) {
-          printf("Error checking the set clock source\n");
-          exit(1);
-        }
-        printf("Current clock ID: %u, retry count %d\n", currentClockSource, retries);
-        sleep(1);
-        retries += 1;
-      }while((currentClockSource != clockSources[i]) && (retries < retry_count));
-
-      if(currentClockSource != clockSources[i]) {
-        // Clock didn't stick
-        printf("Error '%s' clock didn't stick after %d retries\n", gClockNameString[clockId - 1], retry_count);
+    while(set_retries++ < set_retry_count)
+    {
+      result = AudioObjectSetPropertyData(deviceID, &prop, 0, NULL, sizeof(UInt32), &clockSources[i]);
+      if(kAudioHardwareNoError != result) {
+        printf("Error setting clock to %s\n", gClockNameString[clockId - 1]);
         exit(1);
       }
+      else
+      {
+        sleep(1);
 
-      printf("Clock source set to %s\n", gClockNameString[clockId - 1]);
-      return;
+        unsigned check_retries = 0;
+        unsigned check_retry_count = 5;
+        // Check if the clock stick
+        do {
+          result = AudioObjectGetPropertyData(deviceID, &prop, 0, NULL, &dataSize, &currentClockSource);
+          if(kAudioHardwareNoError != result) {
+            printf("Error checking the set clock source\n");
+            exit(1);
+          }
+          printf("Current clock ID: %u, retry count %d\n", currentClockSource, check_retries);
+          sleep(1);
+          check_retries += 1;
+        }while((currentClockSource != clockSources[i]) && (check_retries < check_retry_count));
+
+        if(currentClockSource == clockSources[i]) {
+          printf("Clock source set to %s\n", gClockNameString[clockId - 1]);
+          return;
+        }
+      }
     }
+    // Clock didn't stick
+    printf("Error Unable to change clock to '%s'\n", gClockNameString[clockId - 1]);
+    exit(1);
+
   }
   // Looks like clock not found
   printf("Clock source '%s' not found\n", gClockNameString[clockId - 1]);
