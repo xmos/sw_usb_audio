@@ -194,9 +194,11 @@ pipeline {
                     dir("xsig") {
                       copyArtifacts filter: 'bin-macos-x86/xsig', fingerprintArtifacts: true, projectName: 'xmos-int/xsig/master', flatten: true, selector: lastSuccessful()
                     }
+                    dir("xmosdfu") {
+                      copyArtifacts filter: 'OSX/x86/xmosdfu', fingerprintArtifacts: true, projectName: 'XMOS/lib_xua/PR-404', flatten: true, selector: lastSuccessful()
+                    }
                   }
                   copyArtifacts filter: 'OSX/x86/xmos_mixer', fingerprintArtifacts: true, projectName: 'XMOS/lib_xua/develop', flatten: true, selector: lastSuccessful()
-                  copyArtifacts filter: 'OSX/x86/xmosdfu', fingerprintArtifacts: true, projectName: 'XMOS/lib_xua/PR-404', flatten: true, selector: lastSuccessful()
                 }
 
                 withTools("${env.TOOLS_VERSION}") {
@@ -262,9 +264,11 @@ pipeline {
                     dir("xsig") {
                       copyArtifacts filter: 'bin-macos-arm/xsig', fingerprintArtifacts: true, projectName: 'xmos-int/xsig/master', flatten: true, selector: lastSuccessful()
                     }
+                    dir("xmosdfu") {
+                      copyArtifacts filter: 'OSX/x86/xmosdfu', fingerprintArtifacts: true, projectName: 'XMOS/lib_xua/PR-404', flatten: true, selector: lastSuccessful()
+                    }
                   }
                   copyArtifacts filter: 'OSX/x86/xmos_mixer', fingerprintArtifacts: true, projectName: 'XMOS/lib_xua/develop', flatten: true, selector: lastSuccessful()
-                  copyArtifacts filter: 'OSX/x86/xmosdfu', fingerprintArtifacts: true, projectName: 'XMOS/lib_xua/PR-404', flatten: true, selector: lastSuccessful()
                 }
 
                 withTools("${env.TOOLS_VERSION}") {
