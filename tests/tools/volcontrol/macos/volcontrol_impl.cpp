@@ -250,7 +250,7 @@ void setClock(AudioDeviceHandle deviceID, uint32_t clockId)
         sleep(1);
 
         unsigned check_retries = 0;
-        unsigned check_retry_count = 5;
+        unsigned check_retry_count = 3;
         // Check if the clock stick
         do {
           result = AudioObjectGetPropertyData(deviceID, &prop, 0, NULL, &dataSize, &currentClockSource);
