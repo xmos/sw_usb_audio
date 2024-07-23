@@ -1,43 +1,13 @@
 # Copyright (c) 2022, XMOS Ltd, All rights reserved
 from pathlib import Path
 import pytest
-import subprocess
 import time
 import json
-import platform
 
-from usb_audio_test_utils import (
-    check_analyzer_output,
-    get_xtag_dut_and_harness,
-    get_volcontrol_path,
-    get_xscope_controller_path,
-    get_tusb_guid,
-    AudioAnalyzerHarness,
-    XrunDut,
-    XsigInput,
-    XsigOutput,
-)
-from conftest import list_configs, get_config_features
-
-
-class SpdifClockSrc:
-    def __init__(self):
-        self.cmd = [get_volcontrol_path()]
-        if platform.system() == "Windows":
-            self.cmd.append(f"-g{get_tusb_guid()}")
-
-    def __enter__(self):
-        cmd = self.cmd + ["--clock", "SPDIF"]
-        ret = subprocess.run(cmd, timeout=20)
-        assert ret.returncode == 0, f"Setting clock source to SPDIF failed\nstdout:\n{ret.stdout}\nstderr\n{ret.stderr}"
-        # Short delay to wait for clock source
-        time.sleep(5)
-        return self
-
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        cmd = self.cmd + ["--clock", "Internal"]
-        ret = subprocess.run(cmd, timeout=20)
-        assert ret.returncode == 0, f"Setting clock source to Internal failed\nstdout:\n{ret.stdout}\nstderr\n{ret.stderr}"
+from hardware_test_tools.check_analyzer_output import check_analyzer_output
+from hardware_test_tools.AudioAnalyzerHarness import AudioAnalyzerHarness
+from hardware_test_tools.Xsig import XsigInput, XsigOutput
+from conftest import list_configs, get_config_features, AppUsbAudDut, get_xtag_dut_and_harness
 
 
 spdif_smoke_configs = [
@@ -100,7 +70,7 @@ def test_spdif_input(pytestconfig, board, config):
     duration = spdif_duration(pytestconfig.getoption("level"), features["partial"])
     fail_str = ""
 
-    with XrunDut(adapter_dut, board, config) as dut:
+    with AppUsbAudDut(adapter_dut, board, config) as dut:
         for fs in features["samp_freqs"]:
             assert features["analogue_i"] == 8
             if fs <= 48000:
@@ -127,35 +97,22 @@ def test_spdif_input(pytestconfig, board, config):
                 dut.set_stream_format("output", fs, num_in_channels, 24)
 
             with AudioAnalyzerHarness(
-                adapter_harness, config="spdif_test", xscope="app"
+                adapter_harness, Path(__file__).parents[2] / "sw_audio_analyzer", config="spdif_test", attach="xscope_app"
             ) as harness:
-                xscope_controller = get_xscope_controller_path()
-                ret = subprocess.run(
-                    [
-                        xscope_controller,
-                        "localhost",
-                        f"{harness.xscope_port}",
-                        "0",
-                        f"f {fs}",
-                    ],
-                    timeout=30,
-                    capture_output=True,
-                    text=True,
-                )
-                if ret.returncode != 0:
-                    fail_str = f'xscope_controller command failed, cmds:["f {fs}"]\n'
-                    fail_str += f"stdout:\n{ret.stdout}\n"
-                    fail_str += f"stderr:\n{ret.stderr}\n"
-                    pytest.fail(fail_str)
+                ctrl_out, ctrl_err = harness.xscope_controller_cmd([f"f {fs}"])
+
+                dut.set_clock_src("SPDIF")
 
                 with (
-                    SpdifClockSrc(),
                     XsigInput(
                         fs, duration, xsig_config_path, dut.dev_name
                     ) as xsig_proc,
                 ):
                     time.sleep(duration + 6)
-                    xsig_lines = xsig_proc.get_output()
+
+                dut.set_clock_src("Internal")
+
+            xsig_lines = xsig_proc.proc_output
 
             with open(xsig_config_path) as file:
                 xsig_json = json.load(file)
@@ -164,16 +121,12 @@ def test_spdif_input(pytestconfig, board, config):
                 fail_str += f"Failure at sample rate {fs}\n"
                 fail_str += "\n".join(failures) + "\n\n"
                 fail_str += f"xsig stdout at sample rate {fs}\n"
-                fail_str += "\n".join(xsig_lines) + "\n\n"
+                fail_str += xsig_lines + "\n\n"
                 fail_str += f"Audio analyzer stdout at sample rate {fs}\n"
                 # Some of the analyzer output can be captured by the xscope_controller so
                 # include all the output from that application as well as the harness output
-                analyzer_lines = (
-                    ret.stdout.splitlines()
-                    + ret.stderr.splitlines()
-                    + harness.get_output()
-                )
-                fail_str += "\n".join(analyzer_lines) + "\n\n"
+                analyzer_lines = ctrl_out + ctrl_err + harness.proc_stdout + harness.proc_stderr
+                fail_str += analyzer_lines + "\n"
 
     if len(fail_str) > 0:
         pytest.fail(fail_str)
@@ -188,7 +141,7 @@ def test_spdif_output(pytestconfig, board, config):
     duration = spdif_duration(pytestconfig.getoption("level"), features["partial"])
     fail_str = ""
 
-    with XrunDut(adapter_dut, board, config) as dut:
+    with AppUsbAudDut(adapter_dut, board, config) as dut:
         for fs in features["samp_freqs"]:
             assert features["analogue_o"] == 8
             if fs <= 48000:
@@ -216,13 +169,13 @@ def test_spdif_output(pytestconfig, board, config):
 
             with (
                 AudioAnalyzerHarness(
-                    adapter_harness, config="spdif_test", xscope="io"
+                    adapter_harness, Path(__file__).parents[2] / "sw_audio_analyzer", config="spdif_test", attach="xscope"
                 ) as harness,
                 XsigOutput(fs, None, xsig_config_path, dut.dev_name),
             ):
                 time.sleep(duration)
                 harness.terminate()
-                xscope_lines = harness.get_output()
+                xscope_lines = harness.proc_stdout + harness.proc_stderr
 
             with open(xsig_config_path) as file:
                 xsig_json = json.load(file)
@@ -231,7 +184,7 @@ def test_spdif_output(pytestconfig, board, config):
                 fail_str += f"Failure at sample rate {fs}\n"
                 fail_str += "\n".join(failures) + "\n\n"
                 fail_str += f"xscope stdout at sample rate {fs}\n"
-                fail_str += "\n".join(xscope_lines) + "\n\n"
+                fail_str += xscope_lines + "\n"
 
     if len(fail_str) > 0:
         pytest.fail(fail_str)

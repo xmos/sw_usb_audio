@@ -13,18 +13,13 @@ from test_midi import (
     run_midi_test_file
     )
 
-from usb_audio_test_utils import (
-    check_analyzer_output,
-    get_xtag_dut_and_harness,
-    AudioAnalyzerHarness,
-    wait_for_midi_ports,
-    find_xmos_midi_device,
-    XrunDut,
-    XsigInput,
-    xsig_completion_time_s
-)
-from conftest import list_configs, get_config_features
+from hardware_test_tools.check_analyzer_output import check_analyzer_output
+from hardware_test_tools.AudioAnalyzerHarness import AudioAnalyzerHarness
+from hardware_test_tools.Xsig import XsigInput
+from conftest import list_configs, get_config_features, AppUsbAudDut, get_xtag_dut_and_harness
 
+
+xsig_completion_time_s = 6
 
 def midi_stress_uncollect(pytestconfig, board, config):
     features = get_config_features(board, config)
@@ -82,58 +77,46 @@ def test_midi_loopback_stress(pytestconfig, board, config):
     else:
         midi_port_wait_timeout = 10
 
-    test_pass = 0
-    for i in range(15):
-        print(f"ITER {i}")
-        with XrunDut(adapter_dut, board, config) as dut:
+    with AppUsbAudDut(adapter_dut, board, config) as dut:
 
-            dut.set_stream_format("input", fs_audio, features["chan_i"], 24)
-            dut.set_stream_format("output", fs_audio, features["chan_o"], 24)
+        dut.set_stream_format("input", fs_audio, features["chan_i"], 24)
+        dut.set_stream_format("output", fs_audio, features["chan_o"], 24)
 
-            # Ensure firmware is up and enumerated as MIDI
-            ret = wait_for_midi_ports(timeout_s=midi_port_wait_timeout)
-            if ret:
-                continue
-            else:
-                time_start = time.time()
-                with (
-                    AudioAnalyzerHarness(
-                        adapter_harness, xscope="io"
-                    ) as harness,
-                    # Due to in and out in xsig config this streams audio in both directions for max stress
-                    XsigInput(fs_audio, duration, xsig_config_path, dut.dev_name, ident=f"midi-stress-{board}-{config}-{fs_audio}") as xsig_proc_in
-                    ):
+        # Ensure firmware is up and enumerated as MIDI
+        ret = dut.wait_for_midi_ports(timeout_s=midi_port_wait_timeout)
+        if not ret:
+            pytest.fail(f"No XMOS MIDI ports found after multiple tries: {mido.get_input_names()}, {mido.get_output_names()}")
 
-                    with (mido.open_input(find_xmos_midi_device(mido.get_input_names())) as in_port,
-                        mido.open_output(find_xmos_midi_device(mido.get_output_names())) as out_port):
-                        print("*** Looping test_midi_loopback_stress....")
+        time_start = time.time()
+        with (
+            AudioAnalyzerHarness(
+                adapter_harness, Path(__file__).parents[2] / "sw_audio_analyzer", attach="xscope"
+            ) as harness,
+            # Due to in and out in xsig config this streams audio in both directions for max stress
+            XsigInput(fs_audio, duration, xsig_config_path, dut.dev_name, ident=f"midi-stress-{board}-{config}-{fs_audio}") as xsig_proc_in
+        ):
 
-                        # Keep looping midi_test until time up
-                        while time.time() < time_start + duration + xsig_completion_time_s + 10:
-                            run_midi_test_file(input_midi_file_name, output_midi_file_name, in_port, out_port)
+            with (mido.open_input(dut.midi_in) as in_port,
+                mido.open_output(dut.midi_out) as out_port):
+                print("*** Looping test_midi_loopback_stress....")
 
-                    xsig_lines = xsig_proc_in.get_output()
-                    # Stop the harness
-                    harness.terminate()
-                    xscope_lines = harness.get_output() # This will always see a loss of signal at the end but useful for debug
+                # Keep looping midi_test until time up
+                while time.time() < time_start + duration + xsig_completion_time_s + 10:
+                    run_midi_test_file(input_midi_file_name, output_midi_file_name, in_port, out_port)
 
-                with open(xsig_config_path) as file:
-                    xsig_json = json.load(file)
+        xsig_lines = xsig_proc_in.proc_output
+        xscope_lines = harness.proc_stdout  # This will always see a loss of signal at the end but useful for debug
 
-                # xsig outout parsing for D2H streaming
-                failures = check_analyzer_output(xsig_lines, xsig_json["in"])
-                if len(failures) > 0:
-                    fail_str += f"Failure at sample rate {fs_audio}\n"
-                    fail_str += "\n".join(failures) + "\n\n"
-                    fail_str += f"xscope stdout at sample rate {fs_audio}\n"
-                    fail_str += "\n".join(xscope_lines) + "\n\n"
-                    fail_str += f"xsig stdout at sample rate {fs_audio}\n"
-                    fail_str += "\n".join(xsig_lines) + "\n\n"
+        with open(xsig_config_path) as file:
+            xsig_json = json.load(file)
 
-        if len(fail_str) > 0:
+        # xsig outout parsing for D2H streaming
+        failures = check_analyzer_output(xsig_lines, xsig_json["in"])
+        if len(failures) > 0:
+            fail_str += f"Failure at sample rate {fs_audio}\n"
+            fail_str += "\n".join(failures) + "\n\n"
+            fail_str += f"xscope stdout at sample rate {fs_audio}\n"
+            fail_str += xscope_lines + "\n"
+            fail_str += f"xsig stdout at sample rate {fs_audio}\n"
+            fail_str += xsig_lines + "\n"
             pytest.fail(fail_str)
-        else:
-            test_pass = 1
-            break
-    if test_pass == 0:
-        pytest.fail(f"No XMOS MIDI ports found after multiple tries: {mido.get_input_names()}, {mido.get_output_names()}")

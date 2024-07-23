@@ -175,6 +175,7 @@ pipeline {
 
             dir("${REPO}") {
               checkout scm
+              sh "git submodule update --init"
               createVenv("requirements.txt")
               withVenv() {
                 sh "pip install -r requirements.txt"
@@ -186,11 +187,14 @@ pipeline {
               dir("tests") {
                 dir("tools") {
                   // Build test support application
-                  dir("volcontrol") {
-                    sh 'cmake -B build'
-                    sh 'make -C build'
+                  dir("hardware_test_tools") {
+                    sh 'cmake -B build -G Ninja'
+                    sh 'ninja -C build'
+
+                    dir("xsig") {
+                      copyArtifacts filter: 'bin-macos-x86/xsig', fingerprintArtifacts: true, projectName: 'xmos-int/xsig/master', flatten: true, selector: lastSuccessful()
+                    }
                   }
-                  copyArtifacts filter: 'bin-macos-x86/xsig', fingerprintArtifacts: true, projectName: 'xmos-int/xsig/master', flatten: true, selector: lastSuccessful()
                   copyArtifacts filter: 'OSX/x86/xmos_mixer', fingerprintArtifacts: true, projectName: 'XMOS/lib_xua/develop', flatten: true, selector: lastSuccessful()
                   copyArtifacts filter: 'OSX/x86/xmosdfu', fingerprintArtifacts: true, projectName: 'XMOS/lib_xua/PR-404', flatten: true, selector: lastSuccessful()
                 }
@@ -240,6 +244,7 @@ pipeline {
 
             dir("${REPO}") {
               checkout scm
+              sh "git submodule update --init"
               createVenv("requirements.txt")
               withVenv() {
                 sh "pip install -r requirements.txt"
@@ -250,11 +255,14 @@ pipeline {
               dir("tests") {
                 dir("tools") {
                   // Build test support application
-                  dir("volcontrol") {
-                    sh 'cmake -B build'
-                    sh 'make -C build'
+                  dir("hardware_test_tools") {
+                    sh 'cmake -B build -G Ninja'
+                    sh 'ninja -C build'
+
+                    dir("xsig") {
+                      copyArtifacts filter: 'bin-macos-arm/xsig', fingerprintArtifacts: true, projectName: 'xmos-int/xsig/master', flatten: true, selector: lastSuccessful()
+                    }
                   }
-                  copyArtifacts filter: 'bin-macos-arm/xsig', fingerprintArtifacts: true, projectName: 'xmos-int/xsig/master', flatten: true, selector: lastSuccessful()
                   copyArtifacts filter: 'OSX/x86/xmos_mixer', fingerprintArtifacts: true, projectName: 'XMOS/lib_xua/develop', flatten: true, selector: lastSuccessful()
                   copyArtifacts filter: 'OSX/x86/xmosdfu', fingerprintArtifacts: true, projectName: 'XMOS/lib_xua/PR-404', flatten: true, selector: lastSuccessful()
                 }
@@ -308,6 +316,7 @@ pipeline {
 
             dir("${REPO}") {
               checkout scm
+              sh "git submodule update --init"
               createVenv("requirements.txt")
               withVenv() {
                 sh "pip install -r requirements.txt"
@@ -317,12 +326,16 @@ pipeline {
 
               dir("tests") {
                 dir("tools") {
-                  dir("volcontrol") {
+                  dir("hardware_test_tools") {
                     withVS() {
-                      bat 'msbuild volcontrol.vcxproj /property:Configuration=Release /property:Platform=x64'
+                      sh "cmake -B build -G Ninja"
+                      sh "ninja -C build"
+                    }
+
+                    dir("xsig") {
+                      copyArtifacts filter: 'bin-windows-x86/xsig.exe', fingerprintArtifacts: true, projectName: 'xmos-int/xsig/master', flatten: true, selector: lastSuccessful()
                     }
                   }
-                  copyArtifacts filter: 'bin-windows-x86/xsig.exe', fingerprintArtifacts: true, projectName: 'xmos-int/xsig/master', flatten: true, selector: lastSuccessful()
                   copyArtifacts filter: 'Win/x64/xmos_mixer.exe', fingerprintArtifacts: true, projectName: 'XMOS/lib_xua/develop', flatten: true, selector: lastSuccessful()
                 }
 
@@ -374,6 +387,7 @@ pipeline {
 
             dir("${REPO}") {
               checkout scm
+              sh "git submodule update --init"
               createVenv("requirements.txt")
               withVenv() {
                 sh "pip install -r requirements.txt"
@@ -383,12 +397,16 @@ pipeline {
 
               dir("tests") {
                 dir("tools") {
-                  dir("volcontrol") {
+                  dir("hardware_test_tools") {
                     withVS() {
-                      bat 'msbuild volcontrol.vcxproj /property:Configuration=Release /property:Platform=x64'
+                      sh "cmake -B build -G Ninja"
+                      sh "ninja -C build"
+                    }
+
+                    dir("xsig") {
+                      copyArtifacts filter: 'bin-windows-x86/xsig.exe', fingerprintArtifacts: true, projectName: 'xmos-int/xsig/master', flatten: true, selector: lastSuccessful()
                     }
                   }
-                  copyArtifacts filter: 'bin-windows-x86/xsig.exe', fingerprintArtifacts: true, projectName: 'xmos-int/xsig/master', flatten: true, selector: lastSuccessful()
                   copyArtifacts filter: 'Win/x64/xmos_mixer.exe', fingerprintArtifacts: true, projectName: 'XMOS/lib_xua/develop', flatten: true, selector: lastSuccessful()
                 }
 

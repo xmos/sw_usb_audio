@@ -1,18 +1,7 @@
 # Copyright (c) 2024, XMOS Ltd, All rights reserved
-from pathlib import Path
 import pytest
-import time
-import subprocess
-import platform
 
-from usb_audio_test_utils import (
-    get_xtag_dut_and_harness,
-    get_tusb_guid,
-    get_volcontrol_path,
-    AudioAnalyzerHarness,
-    XrunDut,
-)
-from conftest import get_config_features
+from conftest import get_config_features, AppUsbAudDut, get_xtag_dut
 
 
 # Determine what interfaces we would expect from the FW
@@ -52,12 +41,11 @@ def interface_uncollect(pytestconfig, board, config):
         # Don't run test_interfaces at smoke level
         return True
 
-    xtag_ids = get_xtag_dut_and_harness(pytestconfig, board)
+    xtag_id = get_xtag_dut(pytestconfig, board)
     # XTAGs not present
-    if not all(xtag_ids):
+    if not xtag_id:
         return True
-    # if pytestconfig.getoption("level") == "smoke":
-    #     return board != "xk_evk_xu316"
+
     return False
 
 
@@ -67,9 +55,9 @@ def test_interfaces(pytestconfig, board, config):
     features = get_config_features(board, config)
 
     fail_str = ""
-    adapter_dut, adapter_harness = get_xtag_dut_and_harness(pytestconfig, board)
+    adapter_dut = get_xtag_dut(pytestconfig, board)
 
-    with (XrunDut(adapter_dut, board, config) as dut):
+    with (AppUsbAudDut(adapter_dut, board, config) as dut):
         for direction in ("input", "output"):
             expected_interfaces = get_expected_interfaces(direction, features)
 

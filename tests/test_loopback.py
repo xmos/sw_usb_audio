@@ -5,13 +5,9 @@ import time
 import json
 import platform
 
-from usb_audio_test_utils import (
-    check_analyzer_output,
-    get_xtag_dut,
-    XrunDut,
-    XsigInput,
-)
-from conftest import list_configs, get_config_features
+from hardware_test_tools.check_analyzer_output import check_analyzer_output
+from hardware_test_tools.Xsig import XsigInput
+from conftest import list_configs, get_config_features, AppUsbAudDut, get_xtag_dut
 
 
 loopback_smoke_configs = [
@@ -58,7 +54,7 @@ def test_loopback_dac(pytestconfig, board, config):
     duration = loopback_dac_duration(pytestconfig.getoption("level"), features["partial"])
     fail_str = ""
 
-    with XrunDut(adapter_dut, board, config) as dut:
+    with AppUsbAudDut(adapter_dut, board, config) as dut:
         for fs in features["samp_freqs"]:
             # Issue 120
             if (
@@ -78,7 +74,9 @@ def test_loopback_dac(pytestconfig, board, config):
 
             with XsigInput(fs, duration, xsig_config_path, dut.dev_name) as xsig_proc:
                 time.sleep(duration + 6)
-                xsig_lines = xsig_proc.get_output()
+
+            xsig_lines = xsig_proc.proc_output
+
             with open(xsig_config_path) as file:
                 xsig_json = json.load(file)
             failures = check_analyzer_output(xsig_lines, xsig_json["in"])
@@ -86,7 +84,7 @@ def test_loopback_dac(pytestconfig, board, config):
                 fail_str += f"Failure at sample rate {fs}\n"
                 fail_str += "\n".join(failures) + "\n\n"
                 fail_str += f"xsig stdout at sample rate {fs}\n"
-                fail_str += "\n".join(xsig_lines) + "\n\n"
+                fail_str += xsig_lines + "\n"
 
     if len(fail_str) > 0:
         pytest.fail(fail_str)
