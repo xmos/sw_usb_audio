@@ -5,17 +5,12 @@ import time
 import json
 import platform
 
-from usb_audio_test_utils import (
-    check_analyzer_output,
-    get_xtag_dut_and_harness,
-    AudioAnalyzerHarness,
-    XrunDut,
-    XsigInput,
-    XsigOutput,
-    xsig_completion_time_s
-)
-from conftest import list_configs, get_config_features
+from hardware_test_tools.check_analyzer_output import check_analyzer_output
+from hardware_test_tools.AudioAnalyzerHarness import AudioAnalyzerHarness
+from hardware_test_tools.Xsig import XsigInput, XsigOutput
+from conftest import list_configs, get_config_features, AppUsbAudDut, get_xtag_dut_and_harness
 
+xsig_completion_time_s = 6
 
 analogue_smoke_configs = [
     ("xk_216_mc", "2AMi18o18mssaax"),
@@ -89,8 +84,8 @@ def test_analogue_input(pytestconfig, board, config):
     fail_str = ""
 
     with (
-        XrunDut(adapter_dut, board, config) as dut,
-        AudioAnalyzerHarness(adapter_harness),
+        AppUsbAudDut(adapter_dut, board, config) as dut,
+        AudioAnalyzerHarness(adapter_harness, Path(__file__).parents[2] / "sw_audio_analyzer"),
     ):
         for fs in features["samp_freqs"]:
             if fs > 96000:
@@ -103,8 +98,8 @@ def test_analogue_input(pytestconfig, board, config):
             with XsigInput(fs, duration, xsig_config_path, dut.dev_name, ident=f"analogue_input-{board}-{config}-{fs}") as xsig_proc:
                 # Sleep for a few extra seconds so that xsig will have completed
                 time.sleep(duration + xsig_completion_time_s)
-                xsig_lines = xsig_proc.get_output()
 
+            xsig_lines = xsig_proc.proc_output
             with open(xsig_config_path) as file:
                 xsig_json = json.load(file)
             failures = check_analyzer_output(xsig_lines, xsig_json["in"])
@@ -112,7 +107,7 @@ def test_analogue_input(pytestconfig, board, config):
                 fail_str += f"Failure at sample rate {fs}\n"
                 fail_str += "\n".join(failures) + "\n\n"
                 fail_str += f"xsig stdout at sample rate {fs}\n"
-                fail_str += "\n".join(xsig_lines) + "\n\n"
+                fail_str += xsig_lines + "\n"
 
     if len(fail_str) > 0:
         pytest.fail(fail_str)
@@ -136,7 +131,7 @@ def test_analogue_output(pytestconfig, board, config):
     duration = analogue_duration(pytestconfig.getoption("level"), short_test)
     fail_str = ""
 
-    with XrunDut(adapter_dut, board, config) as dut:
+    with AppUsbAudDut(adapter_dut, board, config) as dut:
         for fs in features["samp_freqs"]:
             # Issue 120
             if (
@@ -155,12 +150,12 @@ def test_analogue_output(pytestconfig, board, config):
                 dut.set_stream_format("output", fs, features["chan_o"], 24)
 
             with (
-                AudioAnalyzerHarness(adapter_harness, xscope="io") as harness,
+                AudioAnalyzerHarness(adapter_harness, Path(__file__).parents[2] / "sw_audio_analyzer", attach="xscope") as harness,
                 XsigOutput(fs, None, xsig_config_path, dut.dev_name),
             ):
                 time.sleep(duration)
                 harness.terminate()
-                xscope_lines = harness.get_output()
+                xscope_lines = harness.proc_stdout + harness.proc_stderr
 
             with open(xsig_config_path) as file:
                 xsig_json = json.load(file)
@@ -169,7 +164,7 @@ def test_analogue_output(pytestconfig, board, config):
                 fail_str += f"Failure at sample rate {fs}\n"
                 fail_str += "\n".join(failures) + "\n\n"
                 fail_str += f"xscope stdout at sample rate {fs}\n"
-                fail_str += "\n".join(xscope_lines) + "\n\n"
+                fail_str += xscope_lines + "\n"
 
     if len(fail_str) > 0:
         pytest.fail(fail_str)

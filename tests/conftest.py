@@ -5,6 +5,8 @@ import platform
 import re
 import shutil
 
+from hardware_test_tools.UaDut import UaDut
+
 
 def pytest_addoption(parser):
     parser.addoption(
@@ -92,7 +94,7 @@ def parse_features(board, config):
         not features["adat_o"] and features["chan_o"] >= 16
     ):
         features["samp_freqs"] = samp_freqs_upto(96000)
-    elif (features["adat_i"] == True and features["chan_i"] > 16) or (features["adat_o"] == True and features["chan_i"] > 16): #i18o18 build
+    elif (features["adat_i"] and features["chan_i"] > 16) or (features["adat_o"] and features["chan_i"] > 16): #i18o18 build
         features["samp_freqs"] = samp_freqs_upto(96000)
     elif features["tdm8"]:
         features["samp_freqs"] = samp_freqs_upto(96000)
@@ -214,3 +216,56 @@ def pytest_terminal_summary(terminalreporter):
         terminalreporter.write(
             "usbdeview not on PATH so test device data has not been cleared"
         )
+
+
+def get_firmware_path(board, config):
+    # XE can be called app_usb_aud_{board}.xe or app_usb_aud_{board}_{config}.xe
+    xe_name = f"app_usb_aud_{board}_{config}.xe"
+    if config:
+        fw_path_base = Path(__file__).parents[1] / f"app_usb_aud_{board}" / "bin" / config
+        fw_path = fw_path_base / xe_name
+    else:
+        xe_name = f"app_usb_aud_{board}.xe"
+        fw_path = fw_path_base / xe_name
+    if not fw_path.exists():
+        pytest.fail(f"Firmware not present at {fw_path}")
+    return fw_path
+
+
+class AppUsbAudDut(UaDut):
+    def __init__(self, adapter_id, board, config, xflash=False):
+        fw_path = get_firmware_path(board, config)
+
+        if platform.system() == "Windows" and not (config.startswith("1") or "_winbuiltin" in config):
+            prod_str = "XMOS USB Audio Device"
+        elif board == "xk_216_mc":
+            if config.startswith("1"):
+                prod_str = "XMOS xCORE-200 MC (UAC1.0)"
+            elif config.startswith("2"):
+                prod_str = "XMOS xCORE-200 MC (UAC2.0)"
+        elif board == "xk_316_mc":
+            if config.startswith("1"):
+                prod_str = "XMOS xCORE.ai MC (UAC1.0)"
+            elif config.startswith("2"):
+                prod_str = "XMOS xCORE.ai MC (UAC2.0)"
+        elif board == "xk_evk_xu316":
+            if config.startswith("1"):
+                prod_str = "XMOS xCORE (UAC1.0)"
+            elif config.startswith("2"):
+                prod_str = "XMOS xCORE (UAC2.0)"
+        else:
+            pytest.fail(f"Unrecognised board {board}")
+
+        self.features = get_config_features(board, config)
+
+        super().__init__(adapter_id, fw_path, self.features["pid"], prod_str, self.features["chan_i"], self.features["chan_o"], xflash=xflash)
+
+
+def get_xtag_dut(pytestconfig, board):
+    return pytestconfig.getini(f"{board}_dut")
+
+
+def get_xtag_dut_and_harness(pytestconfig, board):
+    dut = pytestconfig.getini(f"{board}_dut")
+    harness = pytestconfig.getini(f"{board}_harness")
+    return dut, harness

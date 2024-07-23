@@ -3,48 +3,12 @@ from pathlib import Path
 import pytest
 import time
 import json
-import subprocess
 import tempfile
-import platform
 
-from usb_audio_test_utils import (
-    check_analyzer_output,
-    get_xtag_dut_and_harness,
-    get_volcontrol_path,
-    get_xscope_controller_path,
-    get_tusb_guid,
-    AudioAnalyzerHarness,
-    XrunDut,
-    XsigInput,
-    XsigOutput,
-)
-from conftest import get_config_features
-
-
-class Volcontrol:
-    def __init__(self, input_output, num_chans, channel=None, master=False):
-        self.cmd = [get_volcontrol_path()]
-        if platform.system() == "Windows":
-            self.cmd.append(f"-g{get_tusb_guid()}")
-        self.channel = "0" if master else f"{channel + 1}"
-        self.reset_chans = f"{num_chans + 1}"
-        self.input_output = input_output
-
-    def reset(self):
-        cmd = self.cmd + ["--resetall", self.reset_chans]
-        subprocess.run(cmd, check=True, timeout=10)
-        # sleep after resetting to allow the analyzer to detect the change
-        time.sleep(3)
-
-    def set(self, value):
-        cmd = self.cmd + ["--set", self.input_output, self.channel, f"{value}"]
-        subprocess.run(
-            cmd,
-            check=True,
-            timeout=10,
-        )
-        # sleep after setting the volume to allow the analyzer to detect the change
-        time.sleep(3)
+from hardware_test_tools.check_analyzer_output import check_analyzer_output
+from hardware_test_tools.AudioAnalyzerHarness import AudioAnalyzerHarness
+from hardware_test_tools.Xsig import XsigInput, XsigOutput
+from conftest import get_config_features, AppUsbAudDut, get_xtag_dut_and_harness
 
 
 # Test cases are defined by a tuple of (board, config)
@@ -78,8 +42,8 @@ def test_volume_input(pytestconfig, board, config):
     adapter_dut, adapter_harness = get_xtag_dut_and_harness(pytestconfig, board)
 
     with (
-        XrunDut(adapter_dut, board, config) as dut,
-        AudioAnalyzerHarness(adapter_harness),
+        AppUsbAudDut(adapter_dut, board, config) as dut,
+        AudioAnalyzerHarness(adapter_harness, Path(__file__).parents[2] / "sw_audio_analyzer"),
     ):
         dut.set_stream_format("input", fs, features["chan_i"], 24)
 
@@ -115,29 +79,29 @@ def test_volume_input(pytestconfig, board, config):
 
                     time.sleep(5)
 
-                    if channel == "m":
-                        vol_in = Volcontrol("input", num_chans, master=True)
-                    else:
-                        vol_in = Volcontrol("input", num_chans, channel=int(channel))
+                    dut.volume_reset()
+                    time.sleep(3)
 
-                    vol_in.reset()
                     vol_changes = [0.5, 1.0, 0.75, 1.0]
                     for vol_change in vol_changes:
-                        vol_in.set(vol_change)
+                        if channel == "m":
+                            dut.volume_set_master("input", vol_change)
+                        else:
+                            dut.volume_set("input", channel, vol_change)
+                        time.sleep(3)
 
                     current_time = time.time()
                     if current_time < end_time:
                         time.sleep(end_time - current_time)
-                    xsig_lines = xsig_proc.get_output()
 
+                xsig_lines = xsig_proc.proc_output
                 Path(xsig_file.name).unlink()
 
             failures = check_analyzer_output(xsig_lines, xsig_json["in"])
             if len(failures) > 0:
                 fail_str += f"Failure for channel {channel}\n"
                 fail_str += "\n".join(failures) + "\n\n"
-                fail_str += f"xsig stdout for channel {channel}\n"
-                fail_str += "\n".join(xsig_lines) + "\n\n"
+                fail_str += f"xsig stdout for channel {channel}\n{xsig_lines}\n"
 
     if len(fail_str) > 0:
         pytest.fail(fail_str)
@@ -157,57 +121,35 @@ def test_volume_output(pytestconfig, board, config):
     adapter_dut, adapter_harness = get_xtag_dut_and_harness(pytestconfig, board)
     fail_str = ""
 
-    with XrunDut(adapter_dut, board, config) as dut:
+    with AppUsbAudDut(adapter_dut, board, config) as dut:
         dut.set_stream_format("output", fs, features["chan_o"], 24)
 
         for channel in test_chans:
             channels = range(num_chans) if channel == "m" else [channel]
 
             with (
-                AudioAnalyzerHarness(adapter_harness, xscope="app") as harness,
+                AudioAnalyzerHarness(adapter_harness, Path(__file__).parents[2] / "sw_audio_analyzer", attach="xscope_app") as harness,
                 XsigOutput(fs, None, xsig_config_path, dut.dev_name),
             ):
                 # Set the channels being tested to 'volume' mode on the analyzer
                 analyser_cmds = [f"m {ch} v" for ch in channels]
-                xscope_controller = get_xscope_controller_path()
-                ret = subprocess.run(
-                    [
-                        xscope_controller,
-                        "localhost",
-                        f"{harness.xscope_port}",
-                        "5",  # short timeout to record initial volume value after mode change
-                        *analyser_cmds,
-                    ],
-                    timeout=30,
-                    capture_output=True,
-                    text=True,
-                )
-                if ret.returncode != 0:
-                    fail_str = (
-                        f"xscope_controller command failed, cmds:{analyser_cmds}\n"
-                    )
-                    fail_str += f"stdout:\n{ret.stdout}\n"
-                    fail_str += f"stderr:\n{ret.stderr}\n"
-                    pytest.fail(fail_str)
+                ctrl_out, ctrl_err = harness.xscope_controller_cmd(analyser_cmds, cmd_timeout=5)
 
-                if channel == "m":
-                    vol_out = Volcontrol("output", num_chans, master=True)
-                else:
-                    vol_out = Volcontrol("output", num_chans, channel=channel)
+                dut.volume_reset()
+                time.sleep(3)
 
-                vol_out.reset()
                 vol_changes = [0.5, 1.0, 0.75, 1.0]
                 for vol_change in vol_changes:
-                    vol_out.set(vol_change)
+                    if channel == "m":
+                        dut.volume_set_master("output", vol_change)
+                    else:
+                        dut.volume_set("output", channel, vol_change)
+                    time.sleep(3)
 
                 harness.terminate()
                 # Some of the volume measurement prints from the analyzer can be captured by the xscope_controller
                 # so include all the output from that application as well as the harness output
-                xscope_lines = (
-                    ret.stdout.splitlines()
-                    + ret.stderr.splitlines()
-                    + harness.get_output()
-                )
+                xscope_lines = ctrl_out + ctrl_err + harness.proc_stdout + harness.proc_stderr
 
             # Load JSON xsig config data
             with open(xsig_config_path) as file:
@@ -221,8 +163,7 @@ def test_volume_output(pytestconfig, board, config):
             if len(failures) > 0:
                 fail_str += f"Failure for channel {channel}\n"
                 fail_str += "\n".join(failures) + "\n\n"
-                fail_str += f"xscope stdout for channel {channel}\n"
-                fail_str += "\n".join(xscope_lines) + "\n\n"
+                fail_str += f"xscope stdout for channel {channel}\n{xscope_lines}\n"
 
     if len(fail_str) > 0:
         pytest.fail(fail_str)
