@@ -78,7 +78,7 @@ def test_dfu(pytestconfig, board, config, dfuapp):
     adapter_dut = get_xtag_dut(pytestconfig, board)
 
     with AppUsbAudDut(adapter_dut, board, config, xflash=True) as dut:
-        dfu_test = UaDfuApp(dut.driver_guid, dut.features["pid"])
+        dfu_test = UaDfuApp(dut.driver_guid, dut.features["pid"], dfu_app_type=dfuapp)
 
         initial_version = dfu_test.get_bcd_version()
         exp_version1 = "99.01"
@@ -86,20 +86,20 @@ def test_dfu(pytestconfig, board, config, dfuapp):
 
         # perform the first upgrade
         dfu_bin1 = create_dfu_bin(board, "upgrade1")
-        dfu_test.download(dfu_bin1, dfu_app=dfuapp)
+        dfu_test.download(dfu_bin1)
         version = dfu_test.get_bcd_version()
         if version != exp_version1:
             pytest.fail(f"Unexpected version {version} after first upgrade")
 
         # perform the second upgrade
         dfu_bin2 = create_dfu_bin(board, "upgrade2")
-        dfu_test.download(dfu_bin2, dfu_app=dfuapp)
+        dfu_test.download(dfu_bin2)
         version = dfu_test.get_bcd_version()
         if version != exp_version2:
             pytest.fail(f"Unexpected version {version} after second upgrade")
 
         upload_file = Path(__file__).parent / "test_dfu_upload.bin"
-        dfu_test.upload(upload_file, dfu_app=dfuapp)
+        dfu_test.upload(upload_file)
         version = dfu_test.get_bcd_version()
         if version != exp_version2:
             pytest.fail(f"Unexpected version {version} after reading upgrade image")
@@ -111,7 +111,7 @@ def test_dfu(pytestconfig, board, config, dfuapp):
                 f"After factory reset, version {version} didn't match initial {initial_version}"
             )
 
-        dfu_test.download(upload_file, dfu_app=dfuapp)
+        dfu_test.download(upload_file)
         upload_file.unlink()
         version = dfu_test.get_bcd_version()
         if version != exp_version2:
