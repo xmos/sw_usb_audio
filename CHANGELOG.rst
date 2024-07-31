@@ -6,6 +6,7 @@ UNRELEASED
 
   * ADDED:     app_usb_aud_xk_316_mc: 2AMi16o16xxxaax_tdm8 build config (ADAT
     Rx/Tx, TDM master)
+  * CHANGED:   Extracted the board setup code from audiohw.xc to a new library: lib_board_support
 
 8.1.0
 -----
