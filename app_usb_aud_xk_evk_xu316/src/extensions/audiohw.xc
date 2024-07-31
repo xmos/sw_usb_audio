@@ -1,5 +1,5 @@
 #include "xua.h"
-#include <xk_evk_xu316/board.h>
+#include "xk_evk_xu316/board.h"
 
 
 #if !(DEFAULT_FREQ >= 22050)
