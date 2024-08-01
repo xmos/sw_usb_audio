@@ -5,11 +5,6 @@
 #warning ADC only supports TDM operation at 32 bits
 #endif
 
-
-#if (XUA_PCM_FORMAT == XUA_PCM_FORMAT_TDM) && (XUA_I2S_N_BITS != 32)
-#warning ADC only supports TDM operation at 32 bits
-#endif
-
 /* TODO this is a key frequency and should be moved into lib_xua */
 #if (XUA_SYNCMODE == XUA_SYNCMODE_SYNC)
     #define PLL_SYNC_FREQ           (500)
