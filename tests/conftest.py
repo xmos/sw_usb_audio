@@ -236,7 +236,12 @@ class AppUsbAudDut(UaDut):
     def __init__(self, adapter_id, board, config, xflash=False):
         fw_path = get_firmware_path(board, config)
 
-        if platform.system() == "Windows" and not (config.startswith("1") or "_winbuiltin" in config):
+        if platform.system() == "Windows" and (config.startswith("1") or "_winbuiltin" in config):
+            winbuiltin = True
+        else:
+            winbuiltin = False
+
+        if platform.system() == "Windows" and not winbuiltin:
             prod_str = "XMOS USB Audio Device"
         elif board == "xk_216_mc":
             if config.startswith("1"):
@@ -258,7 +263,7 @@ class AppUsbAudDut(UaDut):
 
         self.features = get_config_features(board, config)
 
-        super().__init__(adapter_id, fw_path, self.features["pid"], prod_str, self.features["chan_i"], self.features["chan_o"], xflash=xflash)
+        super().__init__(adapter_id, fw_path, self.features["pid"], prod_str, self.features["chan_i"], self.features["chan_o"], winbuiltin=winbuiltin, xflash=xflash)
 
 
 def get_xtag_dut(pytestconfig, board):
