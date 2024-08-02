@@ -3,6 +3,9 @@
 #define _USER_MAIN_H_
 
 #ifdef __XC__
+
+#include <platform.h>
+
 void AudioHwRemote(chanend c);
 
 extern unsafe chanend uc_audiohw;

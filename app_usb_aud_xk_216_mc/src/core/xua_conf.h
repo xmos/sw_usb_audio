@@ -7,6 +7,9 @@
 #ifndef _XUA_CONF_H_
 #define _XUA_CONF_H_
 
+#ifndef __ASSEMBLER__
+#include <platform.h>
+#endif
 #include "../../../shared/version.h"
 
 /*

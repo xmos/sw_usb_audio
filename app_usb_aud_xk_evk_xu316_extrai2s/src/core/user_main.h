@@ -3,6 +3,8 @@
 #define _USER_MAIN_H_
 
 #ifdef __XC__
+
+#include <platform.h>
 void i2s_driver(chanend c);
 void AudioHwRemote(chanend c);
 
