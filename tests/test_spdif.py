@@ -10,7 +10,6 @@ from hardware_test_tools.Xsig import XsigInput, XsigOutput
 from conftest import list_configs, get_config_features, AppUsbAudDut, get_xtag_dut_and_harness
 
 
-
 spdif_smoke_configs = [
     ("xk_216_mc", "2AMi18o18mssaax"),
     ("xk_316_mc", "2AMi10o10xssxxx"),

@@ -3,6 +3,7 @@ from pathlib import Path
 import pytest
 import re
 import subprocess
+import platform
 
 from hardware_test_tools.UaDfuApp import UaDfuApp
 from conftest import get_firmware_path, AppUsbAudDut, get_xtag_dut
@@ -56,10 +57,12 @@ dfu_testcases = [
 ]
 
 
-def dfu_uncollect(pytestconfig, board, config):
+def dfu_uncollect(pytestconfig, board, config, dfuapp):
     # XTAG not present
     xtag_id = get_xtag_dut(pytestconfig, board)
     if not xtag_id:
+        return True
+    if platform.system() == "Windows" and dfuapp == "dfu-util": # DFU with dfu-util doesn't work on Windows with the current TUSB audio driver
         return True
     level = pytestconfig.getoption("level")
     if level == "smoke":
@@ -70,11 +73,12 @@ def dfu_uncollect(pytestconfig, board, config):
 
 @pytest.mark.uncollect_if(func=dfu_uncollect)
 @pytest.mark.parametrize(["board", "config"], dfu_testcases)
-def test_dfu(pytestconfig, board, config):
+@pytest.mark.parametrize("dfuapp", ["custom", "dfu-util"])
+def test_dfu(pytestconfig, board, config, dfuapp):
     adapter_dut = get_xtag_dut(pytestconfig, board)
 
     with AppUsbAudDut(adapter_dut, board, config, xflash=True) as dut:
-        dfu_test = UaDfuApp(dut.driver_guid, dut.features["pid"])
+        dfu_test = UaDfuApp(dut.driver_guid, dut.features["pid"], dfu_app_type=dfuapp)
 
         initial_version = dfu_test.get_bcd_version()
         exp_version1 = "99.01"
