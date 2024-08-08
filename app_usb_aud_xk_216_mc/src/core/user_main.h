@@ -3,6 +3,7 @@
 
 #ifdef __XC__
 
+#include <platform.h>
 #if HID_CONTROLS > 0
 void UserHIDPoll();
 
