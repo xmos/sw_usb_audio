@@ -54,6 +54,7 @@ dfu_testcases = [
     ("xk_216_mc", "2AMi10o10xssxxx"),
     ("xk_316_mc", "2AMi10o10xssxxx"),
     ("xk_316_mc", "2AMi8o8xxxxxx_winbuiltin"),
+    ("xk_216_mc", "2AMi8o8xxxxxx_winbuiltin"),
     ("xk_evk_xu316", "2AMi2o2xxxxxx"),
 ]
 
@@ -64,19 +65,16 @@ def dfu_uncollect(pytestconfig, board, config, dfuapp):
     if not xtag_id:
         return True
 
-    if platform.system() != "Windows": # Test the winbuiltin config only on Windows when testing with dfu-util
-        if config == "2AMi8o8xxxxxx_winbuiltin":
+    if dfuapp == "dfu-util": # Use only the winbuiltin config when testing with dfu-util. Uncollect everything else
+        if config != "2AMi8o8xxxxxx_winbuiltin":
             return True
-    else:
-        if dfuapp == "dfu-util" and config != "2AMi8o8xxxxxx_winbuiltin":
-            return True
-        if dfuapp == "custom" and config == "2AMi8o8xxxxxx_winbuiltin":
-            return True
+    elif config == "2AMi8o8xxxxxx_winbuiltin": # when not testing with dfu-util uncollect the winbuiltin config
+        return True
 
     level = pytestconfig.getoption("level")
     if level == "smoke":
         # Just run on xk_316_mc at smoke level
-        return board not in ["xk_316_mc"]
+        return board not in ["xk_316_mc", "xk_216_mc"]
     return False
 
 

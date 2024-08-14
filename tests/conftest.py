@@ -151,20 +151,19 @@ def pytest_sessionstart(session):
                 features_i2sloopback["analogue_i"] = 0
                 board_configs[f"{board}-{config}_i2sloopback"] = features_i2sloopback
 
-        # On Windows also collect special configs that will use the built-in driver
-        if platform.system() == "Windows" and test_level in ["nightly", "weekend", "smoke"]:
-            winconfigs_cmd = ["xmake", "TEST_SUPPORT_CONFIGS=1", "allconfigs"]
-            ret = subprocess.run(
-                winconfigs_cmd, capture_output=True, text=True, cwd=app_dir
-            )
-            winbuiltin_configs = [
-                cfg for cfg in ret.stdout.split() if "_winbuiltin" in cfg
-            ]
+        # Collect special configs that will use the built-in driver pn Windows
+        winconfigs_cmd = ["xmake", "TEST_SUPPORT_CONFIGS=1", "allconfigs"]
+        ret = subprocess.run(
+            winconfigs_cmd, capture_output=True, text=True, cwd=app_dir
+        )
+        winbuiltin_configs = [
+            cfg for cfg in ret.stdout.split() if "_winbuiltin" in cfg
+        ]
 
-            for config in winbuiltin_configs:
-                features = parse_features(board, config)
-                features["partial"] = True
-                board_configs[f"{board}-{config}"] = features
+        for config in winbuiltin_configs:
+            features = parse_features(board, config)
+            features["partial"] = True
+            board_configs[f"{board}-{config}"] = features
 
 
 def list_configs():
