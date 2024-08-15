@@ -152,7 +152,7 @@ def pytest_sessionstart(session):
                 board_configs[f"{board}-{config}_i2sloopback"] = features_i2sloopback
 
         # On Windows also collect special configs that will use the built-in driver
-        if platform.system() == "Windows" and test_level in ["nightly", "weekend"]:
+        if platform.system() == "Windows":
             winconfigs_cmd = ["xmake", "TEST_SUPPORT_CONFIGS=1", "allconfigs"]
             ret = subprocess.run(
                 winconfigs_cmd, capture_output=True, text=True, cwd=app_dir

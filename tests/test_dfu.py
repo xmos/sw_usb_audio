@@ -53,6 +53,7 @@ def xtc_version():
 dfu_testcases = [
     ("xk_216_mc", "2AMi10o10xssxxx"),
     ("xk_316_mc", "2AMi10o10xssxxx"),
+    ("xk_316_mc", "2AMi8o8xxxxxx_winbuiltin"),
     ("xk_evk_xu316", "2AMi2o2xxxxxx"),
 ]
 
@@ -62,8 +63,17 @@ def dfu_uncollect(pytestconfig, board, config, dfuapp):
     xtag_id = get_xtag_dut(pytestconfig, board)
     if not xtag_id:
         return True
-    if platform.system() == "Windows" and dfuapp == "dfu-util": # DFU with dfu-util doesn't work on Windows with the current TUSB audio driver
-        return True
+
+    if platform.system() == "Windows":
+        if dfuapp == "dfu-util": # On Windows, use only the winbuiltin config when testing with dfu-util. Uncollect everything else
+            if config != "2AMi8o8xxxxxx_winbuiltin":
+                return True
+        elif config == "2AMi8o8xxxxxx_winbuiltin": # when testing with Thesycon DFU app, uncollect the winbuiltin config
+            return True
+    else: # not on Windows
+        if config == "2AMi8o8xxxxxx_winbuiltin": # Uncollect the winbuiltin config since it's only built for Windows
+            return True
+
     level = pytestconfig.getoption("level")
     if level == "smoke":
         # Just run on xk_316_mc at smoke level
@@ -85,14 +95,22 @@ def test_dfu(pytestconfig, board, config, dfuapp):
         exp_version2 = "99.02"
 
         # perform the first upgrade
-        dfu_bin1 = create_dfu_bin(board, "upgrade1")
+        if "winbuiltin" in config:
+            dfu_bin1 = create_dfu_bin(board, "winbuiltin_upgrade1")
+        else:
+            dfu_bin1 = create_dfu_bin(board, "upgrade1")
+
         dfu_test.download(dfu_bin1)
         version = dfu_test.get_bcd_version()
         if version != exp_version1:
             pytest.fail(f"Unexpected version {version} after first upgrade")
 
         # perform the second upgrade
-        dfu_bin2 = create_dfu_bin(board, "upgrade2")
+        if "winbuiltin" in config:
+            dfu_bin2 = create_dfu_bin(board, "winbuiltin_upgrade2")
+        else:
+            dfu_bin2 = create_dfu_bin(board, "upgrade2")
+
         dfu_test.download(dfu_bin2)
         version = dfu_test.get_bcd_version()
         if version != exp_version2:
