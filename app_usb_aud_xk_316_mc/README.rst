@@ -1,21 +1,21 @@
-XMOS xCORE-AI USB Audio
+XMOS xcore.ai USB Audio
 =======================
 
 :scope: Example
 :description: USB Audio application for xCORE-AI MC Audio
 :keywords: USB, UAC
-:boards: XCORE-AI MC AUDIO (rev 1.0)
+:boards: XK-AUDIO-316-MC
 
 Overview
 ........
 
-The firmware provides a high-speed USB Audio device designed to be compliant to version 2.0 of the USB Audio Class Specification based on the XMOS AI device.
+The firmware provides a high-speed USB Audio device designed to be compliant to version 2.0 of the USB Audio Class Specification based on the xcore.ai device.
 
 
 Key Features
 ............
 
-The app_usb_aud_xk_316_mc application is designed to run on the xCORE-AI MC Audio Board in. It uses the XMOS USB Audio framework to implement a USB Audio device with the following key features:
+The app_usb_aud_xk_316_mc application is designed to run on the xcore.ai Multichannel Audio Board. It uses the XMOS USB Audio framework to implement a USB Audio device with the following key features:
 
 - USB Audio Class 1.0/2.0 Compliant
 
