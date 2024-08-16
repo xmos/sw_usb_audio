@@ -77,7 +77,7 @@ def dfu_uncollect(pytestconfig, board, config, dfuapp):
     level = pytestconfig.getoption("level")
     if level == "smoke":
         # Just run on xk_316_mc at smoke level
-        return board not in ["xk_316_mc"]
+        return board not in ["xk_316_mc", "xk_216_mc"]
     return False
 
 
