@@ -87,25 +87,23 @@ def test_midi_loopback_stress(pytestconfig, board, config):
         if not ret:
             pytest.fail(f"No XMOS MIDI ports found after multiple tries: {mido.get_input_names()}, {mido.get_output_names()}")
 
-        time_start = time.time()
         with (
             AudioAnalyzerHarness(
-                adapter_harness, Path(__file__).parents[2] / "sw_audio_analyzer", attach="xscope"
+                adapter_harness, Path(__file__).parents[2] / "sw_audio_analyzer",
             ) as harness,
-            # Due to in and out in xsig config this streams audio in both directions for max stress
             XsigInput(fs_audio, duration, xsig_config_path, dut.dev_name, ident=f"midi-stress-{board}-{config}-{fs_audio}") as xsig_proc_in
         ):
 
             with (mido.open_input(dut.midi_in) as in_port,
                 mido.open_output(dut.midi_out) as out_port):
                 print("*** Looping test_midi_loopback_stress....")
+                time_start = time.time()
 
                 # Keep looping midi_test until time up
                 while time.time() < time_start + duration + xsig_completion_time_s + 10:
                     run_midi_test_file(input_midi_file_name, output_midi_file_name, in_port, out_port)
 
         xsig_lines = xsig_proc_in.proc_output
-        xscope_lines = harness.proc_stdout  # This will always see a loss of signal at the end but useful for debug
 
         with open(xsig_config_path) as file:
             xsig_json = json.load(file)
@@ -115,8 +113,6 @@ def test_midi_loopback_stress(pytestconfig, board, config):
         if len(failures) > 0:
             fail_str += f"Failure at sample rate {fs_audio}\n"
             fail_str += "\n".join(failures) + "\n\n"
-            fail_str += f"xscope stdout at sample rate {fs_audio}\n"
-            fail_str += xscope_lines + "\n"
             fail_str += f"xsig stdout at sample rate {fs_audio}\n"
             fail_str += xsig_lines + "\n"
             pytest.fail(fail_str)
