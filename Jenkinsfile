@@ -1,10 +1,5 @@
 @Library('xmos_jenkins_shared_library@v0.27.0') _
 
-// Get XCommon CMake and log a record of the git commit
-def get_xcommon_cmake() {
-  sh "git clone -b develop git@github.com:xmos/xcommon_cmake"
-  sh "git -C xcommon_cmake rev-parse HEAD"
-}
 
 getApproval()
 
@@ -22,7 +17,7 @@ pipeline {
   environment {
     REPO = 'sw_usb_audio'
     VIEW = getViewName(REPO)
-    TOOLS_VERSION = "15.2.1"
+    TOOLS_VERSION = "15.3.0"
     XTAGCTL_VERSION = "v2.0.0"
   }
   stages {
@@ -35,43 +30,40 @@ pipeline {
           }
           steps {
             println "Stage running on ${env.NODE_NAME}"
-            get_xcommon_cmake()
 
             dir("${REPO}") {
               checkout scm
 
               withTools("${env.TOOLS_VERSION}") {
-                withEnv(["XMOS_CMAKE_PATH=${WORKSPACE}/xcommon_cmake"]) {
-                  // Fetch all dependencies using XCommon CMake
-                  sh "cmake -G 'Unix Makefiles' -B build"
+                // Fetch all dependencies using XCommon CMake
+                sh "cmake -G 'Unix Makefiles' -B build"
 
-                  // Build the loopback version of the configs for 316 and rename them to have _i2sloopback
-                  sh 'xmake -C app_usb_aud_xk_316_mc -j16 PARTIAL_TEST_CONFIGS=1 TEST_SUPPORT_CONFIGS=1 EXTRA_BUILD_FLAGS=-DI2S_LOOPBACK=1'
-                  sh 'for folder in app_usb_aud_xk_316_mc/bin/?*; do mv "$folder" "${folder/%/_i2sloopback}"; done'
-                  sh 'for config in app_usb_aud_xk_316_mc/bin/?*/*.xe; do mv "$config" "${config/%.xe/_i2sloopback.xe}"; done'
+                // Build the loopback version of the configs for 316 and rename them to have _i2sloopback
+                sh 'xmake -C app_usb_aud_xk_316_mc -j16 PARTIAL_TEST_CONFIGS=1 TEST_SUPPORT_CONFIGS=1 EXTRA_BUILD_FLAGS=-DI2S_LOOPBACK=1'
+                sh 'for folder in app_usb_aud_xk_316_mc/bin/?*; do mv "$folder" "${folder/%/_i2sloopback}"; done'
+                sh 'for config in app_usb_aud_xk_316_mc/bin/?*/*.xe; do mv "$config" "${config/%.xe/_i2sloopback.xe}"; done'
 
-                  // xmake does not fully rebuild when different build parameters are given, so must be cleaned before building without loopback
-                  sh 'xmake -C app_usb_aud_xk_316_mc -j16 PARTIAL_TEST_CONFIGS=1 TEST_SUPPORT_CONFIGS=1 clean'
+                // xmake does not fully rebuild when different build parameters are given, so must be cleaned before building without loopback
+                sh 'xmake -C app_usb_aud_xk_316_mc -j16 PARTIAL_TEST_CONFIGS=1 TEST_SUPPORT_CONFIGS=1 clean'
 
-                  // Build and archive the main app configs; doing each app separately is faster than xmake in top directory
-                  sh 'xmake -C app_usb_aud_xk_316_mc -j16'
-                  sh 'xmake -C app_usb_aud_xk_216_mc -j16'
-                  sh 'xmake -C app_usb_aud_xk_evk_xu316 -j16'
-                  archiveArtifacts artifacts: "app_usb_aud_*/bin/**/*.xe", excludes: "**/*_i2sloopback*" , fingerprint: true, allowEmptyArchive: false
+                // Build and archive the main app configs; doing each app separately is faster than xmake in top directory
+                sh 'xmake -C app_usb_aud_xk_316_mc -j16'
+                sh 'xmake -C app_usb_aud_xk_216_mc -j16'
+                sh 'xmake -C app_usb_aud_xk_evk_xu316 -j16'
+                archiveArtifacts artifacts: "app_usb_aud_*/bin/**/*.xe", excludes: "**/*_i2sloopback*" , fingerprint: true, allowEmptyArchive: false
 
-                  // Build all other configs for testing and stash for stages on the later agents
-                  sh 'xmake -C app_usb_aud_xk_316_mc -j16 BUILD_TEST_CONFIGS=1 TEST_SUPPORT_CONFIGS=1'
-                  stash includes: 'app_usb_aud_xk_316_mc/bin/**/*.xe', name: 'xk_316_mc_bin', useDefaultExcludes: false
+                // Build all other configs for testing and stash for stages on the later agents
+                sh 'xmake -C app_usb_aud_xk_316_mc -j16 BUILD_TEST_CONFIGS=1 TEST_SUPPORT_CONFIGS=1'
+                stash includes: 'app_usb_aud_xk_316_mc/bin/**/*.xe', name: 'xk_316_mc_bin', useDefaultExcludes: false
 
-                  sh 'xmake -C app_usb_aud_xk_216_mc -j16 BUILD_TEST_CONFIGS=1 TEST_SUPPORT_CONFIGS=1'
-                  stash includes: 'app_usb_aud_xk_216_mc/bin/**/*.xe', name: 'xk_216_mc_bin', useDefaultExcludes: false
+                sh 'xmake -C app_usb_aud_xk_216_mc -j16 BUILD_TEST_CONFIGS=1 TEST_SUPPORT_CONFIGS=1'
+                stash includes: 'app_usb_aud_xk_216_mc/bin/**/*.xe', name: 'xk_216_mc_bin', useDefaultExcludes: false
 
-                  sh 'xmake -C app_usb_aud_xk_evk_xu316 -j16 BUILD_TEST_CONFIGS=1 TEST_SUPPORT_CONFIGS=1'
-                  stash includes: 'app_usb_aud_xk_evk_xu316/bin/**/*.xe', name: 'xk_evk_xu316_bin', useDefaultExcludes: false
+                sh 'xmake -C app_usb_aud_xk_evk_xu316 -j16 BUILD_TEST_CONFIGS=1 TEST_SUPPORT_CONFIGS=1'
+                stash includes: 'app_usb_aud_xk_evk_xu316/bin/**/*.xe', name: 'xk_evk_xu316_bin', useDefaultExcludes: false
 
-                  // Build untested app
-                  sh 'xmake -C app_usb_aud_xk_evk_xu316_extrai2s -j16'
-                }
+                // Build untested app
+                sh 'xmake -C app_usb_aud_xk_evk_xu316_extrai2s -j16'
               }
             }
           }
@@ -89,17 +81,14 @@ pipeline {
           }
           steps {
             println "Stage running on ${env.NODE_NAME}"
-            get_xcommon_cmake()
 
             dir("${REPO}") {
               checkout scm
 
               withTools("${env.TOOLS_VERSION}") {
-                withEnv(["XMOS_CMAKE_PATH=${WORKSPACE}/xcommon_cmake"]) {
-                  sh "cmake -G 'Unix Makefiles' -B build -D BUILD_TESTED_CONFIGS=TRUE"
-                  sh "xmake -C build -j16"
-                  archiveArtifacts artifacts: "build/manifest.txt", fingerprint: true, allowEmptyArchive: false
-                }
+                sh "cmake -G 'Unix Makefiles' -B build -D BUILD_TESTED_CONFIGS=TRUE"
+                sh "xmake -C build -j16"
+                archiveArtifacts artifacts: "build/manifest.txt", fingerprint: true, allowEmptyArchive: false
               }
             }
           }
@@ -116,7 +105,6 @@ pipeline {
           }
           steps {
             println "Stage running on ${env.NODE_NAME}"
-            get_xcommon_cmake()
 
             // Temporary: get repos for xdoc until this project switches to xmosdoc
             sh "git clone -b swapps14 git@github.com:xmos/infr_scripts_pl"
@@ -136,13 +124,11 @@ pipeline {
 
               viewEnv {
                 withTools("${env.TOOLS_VERSION}") {
-                  withEnv(["XMOS_CMAKE_PATH=${WORKSPACE}/xcommon_cmake"]) {
-                    sh "cmake -G 'Unix Makefiles' -B build"
+                  sh "cmake -G 'Unix Makefiles' -B build"
 
-                    dir("doc") {
-                      sh 'xdoc xmospdf'
-                      archiveArtifacts artifacts: "pdf/*.pdf", fingerprint: true, allowEmptyArchive: false
-                    }
+                  dir("doc") {
+                    sh 'xdoc xmospdf'
+                    archiveArtifacts artifacts: "pdf/*.pdf", fingerprint: true, allowEmptyArchive: false
                   }
                 }
               }
