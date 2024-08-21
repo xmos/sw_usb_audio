@@ -27,12 +27,12 @@ set(APP_COMPILER_FLAGS_winbuiltin_upgrade2 ${SW_USB_AUDIO_FLAGS} -DPID_AUDIO_2=0
 
 # UAC1.0 DFU upgrade test configs
 set(APP_COMPILER_FLAGS_uac1_upgrade1 ${SW_USB_AUDIO_FLAGS} -DAUDIO_CLASS=1
-                                                      -DBCD_DEVICE_J=0x77
+                                                      -DBCD_DEVICE_J=0x99
                                                       -DBCD_DEVICE_M=0x0
                                                       -DBCD_DEVICE_N=0x1)
 
 set(APP_COMPILER_FLAGS_uac1_upgrade2 ${SW_USB_AUDIO_FLAGS} -DAUDIO_CLASS=1
-                                                      -DBCD_DEVICE_J=0x77
+                                                      -DBCD_DEVICE_J=0x99
                                                       -DBCD_DEVICE_M=0x0
                                                       -DBCD_DEVICE_N=0x2)
 

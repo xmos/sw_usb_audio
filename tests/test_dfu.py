@@ -54,6 +54,7 @@ dfu_testcases = [
     ("xk_216_mc", "2AMi10o10xssxxx"),
     ("xk_316_mc", "2AMi10o10xssxxx"),
     ("xk_316_mc", "2AMi8o8xxxxxx_winbuiltin"),
+    ("xk_316_mc", "1SMi2o2xxxxxx"),
     ("xk_evk_xu316", "2AMi2o2xxxxxx"),
 ]
 
@@ -64,14 +65,15 @@ def dfu_uncollect(pytestconfig, board, config, dfuapp):
     if not xtag_id:
         return True
 
+    winbuiltin_configs = ["2AMi8o8xxxxxx_winbuiltin", "1SMi2o2xxxxxx"] # Configs for which the winbuiltin driver on Windows is used
     if platform.system() == "Windows":
         if dfuapp == "dfu-util": # On Windows, use only the winbuiltin config when testing with dfu-util. Uncollect everything else
-            if config != "2AMi8o8xxxxxx_winbuiltin":
+            if config not in winbuiltin_configs:
                 return True
-        elif config == "2AMi8o8xxxxxx_winbuiltin": # when testing with Thesycon DFU app, uncollect the winbuiltin config
+        elif config in winbuiltin_configs: # when testing with Thesycon DFU app, uncollect the winbuiltin config
             return True
     else: # not on Windows
-        if config == "2AMi8o8xxxxxx_winbuiltin": # Uncollect the winbuiltin config since it's only built for Windows
+        if config == "2AMi8o8xxxxxx_winbuiltin": # Uncollect the 2AMi8o8xxxxxx_winbuiltin config since it's only built for Windows
             return True
 
     level = pytestconfig.getoption("level")
@@ -97,6 +99,8 @@ def test_dfu(pytestconfig, board, config, dfuapp):
         # perform the first upgrade
         if "winbuiltin" in config:
             dfu_bin1 = create_dfu_bin(board, "winbuiltin_upgrade1")
+        elif "1SM" in config:
+            dfu_bin1 = create_dfu_bin(board, "uac1_upgrade1")
         else:
             dfu_bin1 = create_dfu_bin(board, "upgrade1")
 
@@ -108,6 +112,8 @@ def test_dfu(pytestconfig, board, config, dfuapp):
         # perform the second upgrade
         if "winbuiltin" in config:
             dfu_bin2 = create_dfu_bin(board, "winbuiltin_upgrade2")
+        elif "1SM" in config:
+            dfu_bin2 = create_dfu_bin(board, "uac1_upgrade2")
         else:
             dfu_bin2 = create_dfu_bin(board, "upgrade2")
 

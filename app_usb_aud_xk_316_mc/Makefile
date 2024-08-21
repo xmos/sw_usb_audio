@@ -84,6 +84,10 @@ XCC_FLAGS_2AMi18o18mssaax = $(BUILD_FLAGS)      -DMIDI=1 \
 #
 # Synchronous Mode Configs
 #
+INCLUDE_ONLY_IN_1SMi2o2xxxxxx =
+XCC_FLAGS_1SMi2o2xxxxxx = $(BUILD_FLAGS)    -DAUDIO_CLASS=1 \
+                                            -DXUA_SYNCMODE=XUA_SYNCMODE_SYNC
+
 # Audio Class 2, Sync, I2S Master, 8xInput, 8xOutput
 INCLUDE_ONLY_IN_2SMi8o8xxxxxx =
 XCC_FLAGS_2SMi8o8xxxxxx = $(BUILD_FLAGS)        -DXUA_SYNCMODE=XUA_SYNCMODE_SYNC
