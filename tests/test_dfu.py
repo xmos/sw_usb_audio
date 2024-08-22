@@ -56,6 +56,7 @@ dfu_testcases = [
     ("xk_316_mc", "2AMi8o8xxxxxx_winbuiltin"),
     ("xk_316_mc", "1SMi2o2xxxxxx"),
     ("xk_evk_xu316", "2AMi2o2xxxxxx"),
+    ("xk_316_mc", "1SMi2o2xxxxxx_old_tools"),
 ]
 
 
@@ -65,7 +66,7 @@ def dfu_uncollect(pytestconfig, board, config, dfuapp):
     if not xtag_id:
         return True
 
-    winbuiltin_configs = ["2AMi8o8xxxxxx_winbuiltin", "1SMi2o2xxxxxx"] # Configs for which the winbuiltin driver is used on Windows
+    winbuiltin_configs = ["2AMi8o8xxxxxx_winbuiltin", "1SMi2o2xxxxxx", "1SMi2o2xxxxxx_old_tools"] # Configs for which the winbuiltin driver is used on Windows
     if platform.system() == "Windows":
         if dfuapp == "dfu-util": # On Windows, use only the winbuiltin config when testing with dfu-util. Uncollect everything else
             if config not in winbuiltin_configs:

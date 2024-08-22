@@ -261,6 +261,11 @@ class AppUsbAudDut(UaDut):
         else:
             pytest.fail(f"Unrecognised board {board}")
 
+        if "old_tools" in config:
+            # This is an existing config built with old tools and copied to a new name with _old_tools attached to the original name.
+            # Get the original name
+            config = config.split("_old_tools")[0]
+
         self.features = get_config_features(board, config)
 
         super().__init__(adapter_id, fw_path, self.features["pid"], prod_str, self.features["chan_i"], self.features["chan_o"], winbuiltin=winbuiltin, xflash=xflash)
