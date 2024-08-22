@@ -56,7 +56,7 @@ dfu_testcases = [
     ("xk_316_mc", "2AMi8o8xxxxxx_winbuiltin"),
     ("xk_316_mc", "1SMi2o2xxxxxx"),
     ("xk_evk_xu316", "2AMi2o2xxxxxx"),
-    ("xk_316_mc", "1SMi2o2xxxxxx_old_tools"),
+    ("xk_316_mc", "1SMi2o2xxxxxx_old_tools"), # factory image built with older XTC tools to test that we can upgrade from one XTC version to another
 ]
 
 
