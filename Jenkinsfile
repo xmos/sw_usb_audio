@@ -37,7 +37,7 @@ pipeline {
               withTools("15.2.1") {
                 // Fetch all dependencies using XCommon CMake
                 sh "cmake -G 'Unix Makefiles' -B build_old_tools"
-                sh "xmake -C build -j16 1SMi2o2xxxxxx"
+                sh "xmake -C build_old_tools -j16 1SMi2o2xxxxxx"
                 sh 'mv app_usb_aud_xk_316_mc/bin/1SMi2o2xxxxxx app_usb_aud_xk_316_mc/bin/1SMi2o2xxxxxx_old_tools'
                 sh 'for config in app_usb_aud_xk_316_mc/bin/1SMi2o2xxxxxx_old_tools/*.xe; do mv "$config" "${config/%.xe/_old_tools.xe}"; done'
               }
