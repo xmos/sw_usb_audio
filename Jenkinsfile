@@ -1,9 +1,10 @@
 @Library('xmos_jenkins_shared_library@v0.27.0') _
 
-// Get XCommon CMake and log a record of the git commit
+// Get XCommon CMake.
+// This is required for compiling a factory image for a DFU test using tools 15.2.1
+// to test DFU across XTC tools versions.
 def get_xcommon_cmake() {
   sh "git clone -b v1.3.0 git@github.com:xmos/xcommon_cmake"
-  sh "git -C xcommon_cmake rev-parse HEAD"
 }
 
 getApproval()
@@ -23,6 +24,7 @@ pipeline {
     REPO = 'sw_usb_audio'
     VIEW = getViewName(REPO)
     TOOLS_VERSION = "15.3.0"
+    PREV_TOOLS_VERSION = "15.2.1"
     XTAGCTL_VERSION = "v2.0.0"
   }
   stages {
@@ -41,9 +43,9 @@ pipeline {
             dir("${REPO}") {
               checkout scm
 
-              withTools("15.2.1") {
+              withTools("${env.PREV_TOOLS_VERSION}") {
                 withEnv(["XMOS_CMAKE_PATH=${WORKSPACE}/xcommon_cmake"]) {
-                  // Build one of the configs with old XTC tools (15.2.1) for a DFU test which tests if an older tools factory executable
+                  // Build one of the configs with old XTC tools (15.2.1) for a DFU test which tests if an older tools version factory executable
                   // can download an upgrade image built with the latest tools.
                   dir("app_usb_aud_xk_316_mc") {
                     sh "cmake -G 'Unix Makefiles' -B build_old_tools"
@@ -53,6 +55,7 @@ pipeline {
                     // Move to a different directory so it doesn't get overwritten when the same config is compiled with the latest tools
                     sh 'mv bin/1SMi2o2xxxxxx bin/1SMi2o2xxxxxx_old_tools'
                     sh 'for config in bin/1SMi2o2xxxxxx_old_tools/*.bin; do mv "$config" "${config/%.bin/_old_tools.bin}"; done'
+                    sh 'for config in bin/1SMi2o2xxxxxx_old_tools/*.xe; do mv "$config" "${config/%.xe/_old_tools.xe}"; done'
                     sh 'rm -rf build_old_tools'
                   }
                 }

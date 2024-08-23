@@ -90,8 +90,8 @@ def dfu_uncollect(pytestconfig, board, config, dfuapp):
 def test_dfu(pytestconfig, board, config, dfuapp):
     adapter_dut = get_xtag_dut(pytestconfig, board)
     writeall = False
-    if "old_tools" in config:
-        writeall = True
+    if "old_tools" in config: # For the old_tools test the factory executable has been compiled and coverted to a binary file with an older XTC tools version
+        writeall = True # In the test we only do xflash --write-all to write the binary file to the device and any xflash version would do at this point
 
     with AppUsbAudDut(adapter_dut, board, config, xflash=True, writeall=writeall) as dut:
         dfu_test = UaDfuApp(dut.driver_guid, dut.features["pid"], dfu_app_type=dfuapp)
