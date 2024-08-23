@@ -233,7 +233,7 @@ def get_firmware_path(board, config):
 
 
 class AppUsbAudDut(UaDut):
-    def __init__(self, adapter_id, board, config, xflash=False):
+    def __init__(self, adapter_id, board, config, xflash=False, writeall=False):
         fw_path = get_firmware_path(board, config)
 
         if platform.system() == "Windows" and (config.startswith("1") or "_winbuiltin" in config):
@@ -261,6 +261,11 @@ class AppUsbAudDut(UaDut):
         else:
             pytest.fail(f"Unrecognised board {board}")
 
+        if board == "xk_216_mc":
+            target = "XCORE-200-EXPLORER"
+        else:
+            target = "XCORE-AI-EXPLORER"
+
         if "old_tools" in config:
             # This is an existing config built with old tools and copied to a new name with _old_tools attached to the original name.
             # Get the original name
@@ -268,7 +273,13 @@ class AppUsbAudDut(UaDut):
 
         self.features = get_config_features(board, config)
 
-        super().__init__(adapter_id, fw_path, self.features["pid"], prod_str, self.features["chan_i"], self.features["chan_o"], winbuiltin=winbuiltin, xflash=xflash)
+        if xflash==True and writeall==True:
+            # writeall = True is a special case where we want to write the binary file produced from xflash -o <bin> directly to the device
+            # This is needed if xflash -o <bin> is run with a different tools version before the test and the test is required to write the binary file
+            # directly to the device
+            fw_path = Path(fw_path).with_suffix(".bin") # The output of xflash -o is required to be saved in a file with the same name as the .xe but with a .bin extension
+
+        super().__init__(adapter_id, fw_path, self.features["pid"], prod_str, self.features["chan_i"], self.features["chan_o"], winbuiltin=winbuiltin, xflash=xflash, writeall=writeall, target=target)
 
 
 def get_xtag_dut(pytestconfig, board):

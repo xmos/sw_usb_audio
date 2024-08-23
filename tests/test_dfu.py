@@ -89,8 +89,11 @@ def dfu_uncollect(pytestconfig, board, config, dfuapp):
 @pytest.mark.parametrize("dfuapp", ["custom", "dfu-util"])
 def test_dfu(pytestconfig, board, config, dfuapp):
     adapter_dut = get_xtag_dut(pytestconfig, board)
+    writeall = False
+    if "old_tools" in config:
+        writeall = True
 
-    with AppUsbAudDut(adapter_dut, board, config, xflash=True) as dut:
+    with AppUsbAudDut(adapter_dut, board, config, xflash=True, writeall=writeall) as dut:
         dfu_test = UaDfuApp(dut.driver_guid, dut.features["pid"], dfu_app_type=dfuapp)
 
         initial_version = dfu_test.get_bcd_version()

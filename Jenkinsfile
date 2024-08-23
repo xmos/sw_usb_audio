@@ -48,9 +48,11 @@ pipeline {
                   dir("app_usb_aud_xk_316_mc") {
                     sh "cmake -G 'Unix Makefiles' -B build_old_tools"
                     sh "xmake -C build_old_tools -j16 1SMi2o2xxxxxx"
+                    // Create binary file using the old tools xflash that can be written into the device using xflash --write-all during the test
+                    sh "xflash bin/1SMi2o2xxxxxx/app_usb_aud_xk_316_mc_1SMi2o2xxxxxx.xe -o bin/1SMi2o2xxxxxx/app_usb_aud_xk_316_mc_1SMi2o2xxxxxx.bin"
                     // Move to a different directory so it doesn't get overwritten when the same config is compiled with the latest tools
                     sh 'mv bin/1SMi2o2xxxxxx bin/1SMi2o2xxxxxx_old_tools'
-                    sh 'for config in bin/1SMi2o2xxxxxx_old_tools/*.xe; do mv "$config" "${config/%.xe/_old_tools.xe}"; done'
+                    sh 'for config in bin/1SMi2o2xxxxxx_old_tools/*.bin; do mv "$config" "${config/%.bin/_old_tools.bin}"; done'
                     sh 'rm -rf build_old_tools'
                   }
                 }
@@ -76,7 +78,7 @@ pipeline {
 
                 // Build all other configs for testing and stash for stages on the later agents
                 sh 'xmake -C app_usb_aud_xk_316_mc -j16 BUILD_TEST_CONFIGS=1 TEST_SUPPORT_CONFIGS=1'
-                stash includes: 'app_usb_aud_xk_316_mc/bin/**/*.xe', name: 'xk_316_mc_bin', useDefaultExcludes: false
+                stash includes: 'app_usb_aud_xk_316_mc/bin/**/*.xe, app_usb_aud_xk_316_mc/bin/**/*.bin', name: 'xk_316_mc_bin', useDefaultExcludes: false
 
                 sh 'xmake -C app_usb_aud_xk_216_mc -j16 BUILD_TEST_CONFIGS=1 TEST_SUPPORT_CONFIGS=1'
                 stash includes: 'app_usb_aud_xk_216_mc/bin/**/*.xe', name: 'xk_216_mc_bin', useDefaultExcludes: false
