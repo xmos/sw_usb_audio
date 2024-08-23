@@ -66,9 +66,9 @@ pipeline {
                 sh "cmake -G 'Unix Makefiles' -B build"
 
                 // Build the loopback version of the configs for 316 and rename them to have _i2sloopback
-                sh 'xmake -C app_usb_aud_xk_316_mc -j16 PARTIAL_TEST_CONFIGS=1 TEST_SUPPORT_CONFIGS=1 EXTRA_BUILD_FLAGS=-DI2S_LOOPBACK=1 clean'
-                sh 'for folder in app_usb_aud_xk_316_mc/bin/?*; do if [[ ! "$folder" =~ "old_tools" ]] ; then mv "$folder" "${folder/%/_i2sloopback}"; fi ; done'
-                sh 'for config in app_usb_aud_xk_316_mc/bin/?*/*.xe; do if [[ ! "$config" =~ "old_tools" ]] ; then mv "$config" "${config/%.xe/_i2sloopback.xe}"; fi ; done'
+                sh 'xmake -C app_usb_aud_xk_316_mc -j16 PARTIAL_TEST_CONFIGS=1 TEST_SUPPORT_CONFIGS=1 EXTRA_BUILD_FLAGS=-DI2S_LOOPBACK=1'
+                sh 'for folder in app_usb_aud_xk_316_mc/bin/?*; do if [[ ! $folder == *"old_tools"* ]] ; then mv "$folder" "${folder/%/_i2sloopback}"; fi ; done'
+                sh 'for config in app_usb_aud_xk_316_mc/bin/?*/*.xe; do if [[ ! $config == *"old_tools"* ]] ; then mv "$config" "${config/%.xe/_i2sloopback.xe}"; fi ; done'
 
                 // xmake does not fully rebuild when different build parameters are given, so must be cleaned before building without loopback
                 sh 'xmake -C app_usb_aud_xk_316_mc -j16 PARTIAL_TEST_CONFIGS=1 TEST_SUPPORT_CONFIGS=1 clean'
