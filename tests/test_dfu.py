@@ -56,6 +56,7 @@ dfu_testcases = [
     ("xk_316_mc", "2AMi8o8xxxxxx_winbuiltin"),
     ("xk_316_mc", "1SMi2o2xxxxxx"),
     ("xk_evk_xu316", "2AMi2o2xxxxxx"),
+    ("xk_316_mc", "1SMi2o2xxxxxx_old_tools"), # factory image built with older XTC tools to test that we can upgrade from one XTC version to another
 ]
 
 
@@ -65,7 +66,7 @@ def dfu_uncollect(pytestconfig, board, config, dfuapp):
     if not xtag_id:
         return True
 
-    winbuiltin_configs = ["2AMi8o8xxxxxx_winbuiltin", "1SMi2o2xxxxxx"] # Configs for which the winbuiltin driver is used on Windows
+    winbuiltin_configs = ["2AMi8o8xxxxxx_winbuiltin", "1SMi2o2xxxxxx", "1SMi2o2xxxxxx_old_tools"] # Configs for which the winbuiltin driver is used on Windows
     if platform.system() == "Windows":
         if dfuapp == "dfu-util": # On Windows, use only the winbuiltin config when testing with dfu-util. Uncollect everything else
             if config not in winbuiltin_configs:
@@ -79,7 +80,7 @@ def dfu_uncollect(pytestconfig, board, config, dfuapp):
     level = pytestconfig.getoption("level")
     if level == "smoke":
         # Just run on xk_316_mc at smoke level
-        return board not in ["xk_316_mc"]
+        return (board not in ["xk_316_mc"]) or (config not in ["2AMi10o10xssxxx"])
     return False
 
 
@@ -88,8 +89,11 @@ def dfu_uncollect(pytestconfig, board, config, dfuapp):
 @pytest.mark.parametrize("dfuapp", ["custom", "dfu-util"])
 def test_dfu(pytestconfig, board, config, dfuapp):
     adapter_dut = get_xtag_dut(pytestconfig, board)
+    writeall = False
+    if "old_tools" in config: # For the old_tools test the factory executable has been compiled and coverted to a binary file with an older XTC tools version
+        writeall = True # In the test we only do xflash --write-all to write the binary file to the device and any xflash version would do at this point
 
-    with AppUsbAudDut(adapter_dut, board, config, xflash=True) as dut:
+    with AppUsbAudDut(adapter_dut, board, config, xflash=True, writeall=writeall) as dut:
         dfu_test = UaDfuApp(dut.driver_guid, dut.features["pid"], dfu_app_type=dfuapp)
 
         initial_version = dfu_test.get_bcd_version()
