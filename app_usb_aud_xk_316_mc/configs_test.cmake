@@ -13,14 +13,16 @@ set(APP_COMPILER_FLAGS_upgrade2 ${SW_USB_AUDIO_FLAGS} -DBCD_DEVICE_J=0x99
                                                       -DBCD_DEVICE_N=0x2)
 
 # Windows testing with the built-in driver relies on using product IDs that the Thesycon driver won't bind to
-set(APP_COMPILER_FLAGS_2AMi8o8xxxxxx_winbuiltin ${SW_USB_AUDIO_FLAGS} -DPID_AUDIO_2=0x001a)
+set(APP_COMPILER_FLAGS_2AMi8o8xxxxxx_winbuiltin ${SW_USB_AUDIO_FLAGS} -DPID_AUDIO_2=0x001a -DDFU_PID=0xd01a)
 
 set(APP_COMPILER_FLAGS_winbuiltin_upgrade1 ${SW_USB_AUDIO_FLAGS} -DPID_AUDIO_2=0x001a
+                                                      -DDFU_PID=0xd01a
                                                       -DBCD_DEVICE_J=0x99
                                                       -DBCD_DEVICE_M=0x0
                                                       -DBCD_DEVICE_N=0x1)
 
 set(APP_COMPILER_FLAGS_winbuiltin_upgrade2 ${SW_USB_AUDIO_FLAGS} -DPID_AUDIO_2=0x001a
+                                                      -DDFU_PID=0xd01a
                                                       -DBCD_DEVICE_J=0x99
                                                       -DBCD_DEVICE_M=0x0
                                                       -DBCD_DEVICE_N=0x2)

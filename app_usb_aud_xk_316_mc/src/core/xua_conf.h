@@ -138,6 +138,15 @@
 #ifndef PID_AUDIO_1
 #define PID_AUDIO_1        (0x0017)
 #endif
+
+#ifndef DFU_PID
+#if (AUDIO_CLASS == 2)
+#define DFU_PID             (0xD000 + PID_AUDIO_2)
+#else
+#define DFU_PID             (0xD000 + PID_AUDIO_1)
+#endif
+#endif
+
 #define PRODUCT_STR_A2     "XMOS xCORE.ai MC (UAC2.0)"
 #define PRODUCT_STR_A1     "XMOS xCORE.ai MC (UAC1.0)"
 

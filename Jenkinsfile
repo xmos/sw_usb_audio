@@ -315,7 +315,9 @@ pipeline {
           when {
             expression {
               params.TEST_LEVEL == "nightly" ||
-              params.TEST_LEVEL == "weekend"
+              params.TEST_LEVEL == "weekend" ||
+              params.TEST_LEVEL == "smoke"
+
             }
           }
           agent {
@@ -353,7 +355,7 @@ pipeline {
                       copyArtifacts filter: 'bin-windows-x86/xsig.exe', fingerprintArtifacts: true, projectName: 'xmos-int/xsig/master', flatten: true, selector: lastSuccessful()
                     }
                   }
-                  copyArtifacts filter: 'Win/x64/xmos_mixer.exe', fingerprintArtifacts: true, projectName: 'XMOS/lib_xua/develop', flatten: true, selector: lastSuccessful()
+                  copyArtifacts filter: 'Win/x64/xmos_mixer.exe', fingerprintArtifacts: true, projectName: 'XMOS/lib_xua/PR-424', flatten: true, selector: lastSuccessful()
                 }
 
                 withTools("${env.TOOLS_VERSION}") {
@@ -386,7 +388,9 @@ pipeline {
           when {
             expression {
               params.TEST_LEVEL == "nightly" ||
-              params.TEST_LEVEL == "weekend"
+              params.TEST_LEVEL == "weekend" ||
+              params.TEST_LEVEL == "smoke"
+
             }
           }
           agent {
