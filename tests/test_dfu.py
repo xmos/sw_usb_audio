@@ -94,7 +94,7 @@ def test_dfu(pytestconfig, board, config, dfuapp):
         writeall = True # In the test we only do xflash --write-all to write the binary file to the device and any xflash version would do at this point
 
     with AppUsbAudDut(adapter_dut, board, config, xflash=True, writeall=writeall) as dut:
-        dfu_test = UaDfuApp(dut.driver_guid, dut.features["pid"], dfu_app_type=dfuapp)
+        dfu_test = UaDfuApp(dut.features["pid"], dfu_app_type=dfuapp)
 
         initial_version = dfu_test.get_bcd_version()
         exp_version1 = "99.01"
