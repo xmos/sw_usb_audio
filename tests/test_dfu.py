@@ -68,10 +68,7 @@ def dfu_uncollect(pytestconfig, board, config, dfuapp):
 
     winbuiltin_configs = ["2AMi8o8xxxxxx_winbuiltin", "1SMi2o2xxxxxx", "1SMi2o2xxxxxx_old_tools"] # Configs for which the winbuiltin driver is used on Windows
     if platform.system() == "Windows":
-        if dfuapp == "dfu-util": # On Windows, use only the winbuiltin config when testing with dfu-util. Uncollect everything else
-            if config not in winbuiltin_configs:
-                return True
-        elif config in winbuiltin_configs: # when testing with Thesycon DFU app, uncollect the winbuiltin config
+        if (dfuapp == "custom") and (config in winbuiltin_configs): # when testing with Thesycon DFU app, uncollect the winbuiltin config
             return True
     else: # not on Windows
         if config == "2AMi8o8xxxxxx_winbuiltin": # Uncollect the 2AMi8o8xxxxxx_winbuiltin config since it's only built for Windows
