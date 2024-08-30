@@ -135,6 +135,14 @@
 #define PRODUCT_STR_A2     "XMOS xCORE-200 MC (UAC2.0)"
 #define PRODUCT_STR_A1     "XMOS xCORE-200 MC (UAC1.0)"
 
+#ifndef DFU_PID
+#if (AUDIO_CLASS == 2)
+#define DFU_PID             (0xD000 + PID_AUDIO_2)
+#else
+#define DFU_PID             (0xD000 + PID_AUDIO_1)
+#endif
+#endif
+
 /* Board power source - Default is self-powered */
 #ifndef XUA_POWERMODE
 #define XUA_POWERMODE      XUA_POWERMODE_SELF
