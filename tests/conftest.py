@@ -58,19 +58,19 @@ def parse_features(board, config):
 
     if board == "xk_216_mc":
         if config.startswith("1"):
-            features["pid"] = 0xF
+            features["pid"] = (0xF, 0xD00F) # Runtime mode and DFU mode PIDs
         else:
-            features["pid"] = 0xE
+            features["pid"] = (0xE, 0xD00E)
     elif board == "xk_316_mc":
         if config.startswith("1"):
-            features["pid"] = 0x17
+            features["pid"] = (0x17, 0xD017)
         else:
-            features["pid"] = 0x16 if "_winbuiltin" not in config else 0x1A
+            features["pid"] = (0x16, 0xD016) if "_winbuiltin" not in config else (0x1A, 0xD01A)
     elif board == "xk_evk_xu316":
         if config.startswith("1"):
-            features["pid"] = 0x19
+            features["pid"] = (0x19, 0xD019)
         else:
-            features["pid"] = 0x18
+            features["pid"] = (0x18, 0xD018)
 
     # Set the number of analogue channels
     features["analogue_i"] = min(features["chan_i"], max_analogue_chans)
@@ -279,7 +279,7 @@ class AppUsbAudDut(UaDut):
             # directly to the device
             fw_path = Path(fw_path).with_suffix(".bin") # The output of xflash -o is required to be saved in a file with the same name as the .xe but with a .bin extension
 
-        super().__init__(adapter_id, fw_path, self.features["pid"], prod_str, self.features["chan_i"], self.features["chan_o"], winbuiltin=winbuiltin, xflash=xflash, writeall=writeall, target=target)
+        super().__init__(adapter_id, fw_path, self.features["pid"][0], prod_str, self.features["chan_i"], self.features["chan_o"], winbuiltin=winbuiltin, xflash=xflash, writeall=writeall, target=target)
 
 
 def get_xtag_dut(pytestconfig, board):

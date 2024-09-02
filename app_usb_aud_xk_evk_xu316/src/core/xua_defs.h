@@ -89,6 +89,15 @@
 #define VENDOR_ID          (0x20B1) /* XMOS VID */
 #define PID_AUDIO_2        (0x0018)
 #define PID_AUDIO_1        (0x0019)
+
+#ifndef DFU_PID
+#if (AUDIO_CLASS == 2)
+#define DFU_PID             (0xD000 + PID_AUDIO_2)
+#else
+#define DFU_PID             (0xD000 + PID_AUDIO_1)
+#endif
+#endif
+
 //:
 
 /* Enable/Disable example HID code */
