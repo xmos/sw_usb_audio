@@ -26,6 +26,11 @@
 #define AUDIO_IO_TILE      (1)
 #define XUD_TILE           (0)
 
+/* Audio Class version - Default is 2.0 */
+#ifndef AUDIO_CLASS
+#define AUDIO_CLASS        (2)
+#endif
+
 /* Mixer core disabled by default */
 #ifndef MIXER
 #define MIXER              (0)
