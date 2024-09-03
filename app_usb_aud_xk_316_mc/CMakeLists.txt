@@ -41,8 +41,9 @@ set(APP_COMPILER_FLAGS_2AMi18o18mssaax ${SW_USB_AUDIO_FLAGS} -DMIDI=1
                                                              -DXUA_SPDIF_RX_EN=1
                                                              -DMAX_FREQ=96000)
 
-set(APP_COMPILER_FLAGS_1SMi2o2xxxxxx ${SW_USB_AUDIO_FLAGS} -DAUDIO_CLASS=1
-                                                           -DXUA_SYNCMODE=XUA_SYNCMODE_SYNC)
+set(APP_COMPILER_FLAGS_1SMi2o2mxxxxx ${SW_USB_AUDIO_FLAGS} -DAUDIO_CLASS=1
+                                                           -DXUA_SYNCMODE=XUA_SYNCMODE_SYNC
+                                                           -DMIDI=1)
 
 set(APP_COMPILER_FLAGS_2SMi8o8xxxxxx ${SW_USB_AUDIO_FLAGS} -DXUA_SYNCMODE=XUA_SYNCMODE_SYNC)
 
