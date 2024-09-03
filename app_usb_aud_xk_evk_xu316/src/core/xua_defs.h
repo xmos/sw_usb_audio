@@ -26,11 +26,6 @@
 #define AUDIO_IO_TILE      (1)
 #define XUD_TILE           (0)
 
-/* Audio Class version - Default is 2.0 */
-#ifndef AUDIO_CLASS
-#define AUDIO_CLASS        (2)
-#endif
-
 /* Mixer core disabled by default */
 #ifndef MIXER
 #define MIXER              (0)
@@ -96,10 +91,10 @@
 #define PID_AUDIO_1        (0x0019)
 
 #ifndef DFU_PID
-#if (AUDIO_CLASS == 2)
-#define DFU_PID             (0xD000 + PID_AUDIO_2)
-#else
+#if (AUDIO_CLASS == 1)
 #define DFU_PID             (0xD000 + PID_AUDIO_1)
+#else
+#define DFU_PID             (0xD000 + PID_AUDIO_2)
 #endif
 #endif
 
