@@ -13,6 +13,11 @@ if(PARTIAL_TESTED_CONFIGS)
 # Audio Class 1, Async, I2S Master, 2xInput, 2xOutput
 set(APP_COMPILER_FLAGS_1AMi2o2xxxxxx ${SW_USB_AUDIO_FLAGS} -DAUDIO_CLASS=1)
 
+# Audio Class 1, Sync, I2S Master, 2xInput, 2xOutput, MIDI
+set(APP_COMPILER_FLAGS_1SMi2o2mxxxxx ${SW_USB_AUDIO_FLAGS} -DAUDIO_CLASS=1
+                                                           -DXUA_SYNCMODE=XUA_SYNCMODE_SYNC
+                                                           -DMIDI=1)
+
 # Audio Class 2, Async, I2S Master, 2xInput, 2xOutput
 set(APP_COMPILER_FLAGS_2AMi2o2xxxxxx ${SW_USB_AUDIO_FLAGS} -DI2S_CHANS_DAC=2
                                                            -DI2S_CHANS_ADC=2)
