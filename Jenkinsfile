@@ -234,7 +234,7 @@ pipeline {
           post {
             always {
               archiveArtifacts artifacts: "${REPO}/tests/pytest_result_mac_intel.xml", fingerprint: true, allowEmptyArchive: true
-              archiveArtifacts artifacts: "${REPO}/tests/tools/glitch.*.csv", fingerprint: true, allowEmptyArchive: true
+              archiveArtifacts artifacts: "${REPO}/tests/tools/hardware_test_tools/xsig/glitch.*.csv", fingerprint: true, allowEmptyArchive: true
               junit "${REPO}/tests/pytest_result_mac_intel.xml"
             }
             cleanup {
@@ -302,7 +302,7 @@ pipeline {
           post {
             always {
               archiveArtifacts artifacts: "${REPO}/tests/pytest_result_mac_arm.xml", fingerprint: true, allowEmptyArchive: true
-              archiveArtifacts artifacts: "${REPO}/tests/tools/glitch.*.csv", fingerprint: true, allowEmptyArchive: true
+              archiveArtifacts artifacts: "${REPO}/tests/tools/hardware_test_tools/xsig/glitch.*.csv", fingerprint: true, allowEmptyArchive: true
               junit "${REPO}/tests/pytest_result_mac_arm.xml"
             }
             cleanup {
@@ -373,7 +373,7 @@ pipeline {
           post {
             always {
               archiveArtifacts artifacts: "${REPO}/tests/pytest_result_windows10.xml", fingerprint: true, allowEmptyArchive: true
-              archiveArtifacts artifacts: "${REPO}/tests/tools/glitch.*.csv", fingerprint: true, allowEmptyArchive: true
+              archiveArtifacts artifacts: "${REPO}/tests/tools/hardware_test_tools/xsig/glitch.*.csv", fingerprint: true, allowEmptyArchive: true
               junit "${REPO}/tests/pytest_result_windows10.xml"
             }
             cleanup {
@@ -445,7 +445,7 @@ pipeline {
           post {
             always {
               archiveArtifacts artifacts: "${REPO}/tests/pytest_result_windows11.xml", fingerprint: true, allowEmptyArchive: true
-              archiveArtifacts artifacts: "${REPO}/tests/tools/glitch.*.csv", fingerprint: true, allowEmptyArchive: true
+              archiveArtifacts artifacts: "${REPO}/tests/tools/hardware_test_tools/xsig/glitch.*.csv", fingerprint: true, allowEmptyArchive: true
               junit "${REPO}/tests/pytest_result_windows11.xml"
             }
             cleanup {
