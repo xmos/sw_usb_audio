@@ -104,13 +104,21 @@ def parse_features(board, config):
     features["i2s_loopback"] = False
     return features
 
+def get_configs_from_cmake_output(cmake_cmd, app_dir):
+    ret = subprocess.run(
+            cmake_cmd, capture_output=True, text=True, cwd=app_dir
+        )
+    m = re.search(r'-- Found build configs:\n.*?-- Adding dependency', ret.stdout, re.DOTALL)
+    if m:
+        configs = [r.split()[1] for r in m.group().splitlines()[1:-1]]
+        return configs
+    assert False, f"Failed to find config names from cmake output.\ncmake cmd {cmake_cmd}\ncmake stdout = {ret.stdout}"
+
 
 def pytest_sessionstart(session):
     usb_audio_dir = Path(__file__).parents[1]
     app_prefix = "app_usb_aud_"
     exclude_app = ["app_usb_aud_xk_evk_xu316_extrai2s"]
-
-    test_level = session.config.getoption("level")
 
     for app_dir in usb_audio_dir.iterdir():
         app_name = app_dir.name
@@ -119,35 +127,16 @@ def pytest_sessionstart(session):
 
         board = app_name[len(app_prefix) :]
 
-        cmake_cmd = ["cmake", "-B", "build_test", "-S", app_dir, "-DPARTIAL_TESTED_CONFIGS=1"]
-        ret = subprocess.run(
-            cmake_cmd, capture_output=True, text=True, cwd=app_dir
-        )
+        cmake_cmd = ["cmake", "-B", "build_test", "-S", app_dir, "--fresh"]
+        full_configs = get_configs_from_cmake_output(cmake_cmd, app_dir)
 
-        m = re.search(r'-- Found build configs:\n.*?-- Adding dependency', ret.stdout, re.DOTALL)
-        if m:
-            configs = [r.split()[1] for r in m.group().splitlines()[1:-1]]
-            print(f"APP {app_name}, Configs = {configs}")
+        cmake_cmd = ["cmake", "-B", "build_test", "-S", app_dir, "-DPARTIAL_TESTED_CONFIGS=1", "--fresh"]
+        all_configs = get_configs_from_cmake_output(cmake_cmd, app_dir)
 
         # Get all the configs, and determine which will be fully- or partially-tested
-        allconfigs_cmd = ["xmake", "allconfigs"]
-        ret = subprocess.run(
-            allconfigs_cmd, capture_output=True, text=True, cwd=app_dir
-        )
-        full_configs = ret.stdout.split()
+        partial_configs = [config for config in all_configs if config not in full_configs]
 
-        if test_level in ["nightly", "weekend"]:
-            allconfigs_cmd.append("PARTIAL_TEST_CONFIGS=1")
-            ret = subprocess.run(
-                allconfigs_cmd, capture_output=True, text=True, cwd=app_dir
-            )
-            configs = ret.stdout.split()
-        else:
-            configs = full_configs
-
-        partial_configs = [config for config in configs if config not in full_configs]
-
-        for config in configs:
+        for config in all_configs:
             global board_configs
             features = parse_features(board, config)
             # Mark the relevant configs for partial testing only
@@ -163,14 +152,10 @@ def pytest_sessionstart(session):
 
         # On Windows also collect special configs that will use the built-in driver
         if platform.system() == "Windows":
-            winconfigs_cmd = ["xmake", "TEST_SUPPORT_CONFIGS=1", "allconfigs"]
-            ret = subprocess.run(
-                winconfigs_cmd, capture_output=True, text=True, cwd=app_dir
-            )
-            winbuiltin_configs = [
-                cfg for cfg in ret.stdout.split() if "_winbuiltin" in cfg
-            ]
-
+            cmake_cmd = ["cmake", "-B", "build_test", "-S", app_dir, "-DTEST_SUPPORT_CONFIGS=1", "--fresh"]
+            configs = get_configs_from_cmake_output(cmake_cmd, app_dir)
+            winbuiltin_configs = [cfg for cfg in configs if "_winbuiltin" in cfg]
+            print(f"WINBUILTIN CONFIGS = {winbuiltin_configs}")
             for config in winbuiltin_configs:
                 features = parse_features(board, config)
                 features["partial"] = True
