@@ -119,6 +119,16 @@ def pytest_sessionstart(session):
 
         board = app_name[len(app_prefix) :]
 
+        cmake_cmd = ["cmake", "-B", "build_test", "-S", app_dir, "-DPARTIAL_TESTED_CONFIGS=1"]
+        ret = subprocess.run(
+            cmake_cmd, capture_output=True, text=True, cwd=app_dir
+        )
+
+        m = re.search(r'-- Found build configs:\n.*?-- Adding dependency', ret.stdout, re.DOTALL)
+        if m:
+            configs = [r.split()[1] for r in m.group().splitlines()[1:-1]]
+            print(f"APP {app_name}, Configs = {configs}")
+
         # Get all the configs, and determine which will be fully- or partially-tested
         allconfigs_cmd = ["xmake", "allconfigs"]
         ret = subprocess.run(
