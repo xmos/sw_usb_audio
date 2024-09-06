@@ -30,8 +30,8 @@ pipeline {
   stages {
     stage('Build') {
       parallel {
-        stage('Build applications') {
-          // Use XCommon CMake to fetch dependencies, but then build using legacy XCommon Makefiles
+        stage('(XCommon CMake) Build applications') {
+          // Use XCommon CMake to fetch dependencies and build all application configs
           agent {
            label 'linux && x86_64'
           }
@@ -62,35 +62,22 @@ pipeline {
               }
 
               withTools("${env.TOOLS_VERSION}") {
-                // Fetch all dependencies using XCommon CMake
-                sh "cmake -G 'Unix Makefiles' -B build"
-
                 // Build the loopback version of the configs for 316 and rename them to have _i2sloopback
-                sh 'xmake -C app_usb_aud_xk_316_mc -j16 PARTIAL_TEST_CONFIGS=1 TEST_SUPPORT_CONFIGS=1 EXTRA_BUILD_FLAGS=-DI2S_LOOPBACK=1'
+                sh "cmake -S app_usb_aud_xk_316_mc/ -B build -DBUILD_TESTED_CONFIGS=1 -DTEST_SUPPORT_CONFIGS=1 -DEXTRA_BUILD_FLAGS='-DI2S_LOOPBACK=1' --fresh"
+                sh "xmake -C build -j16"
                 sh 'for folder in app_usb_aud_xk_316_mc/bin/?*; do if [[ ! $folder == *"old_tools"* ]] ; then mv "$folder" "${folder/%/_i2sloopback}"; fi ; done'
                 sh 'for config in app_usb_aud_xk_316_mc/bin/?*/*.xe; do if [[ ! $config == *"old_tools"* ]] ; then mv "$config" "${config/%.xe/_i2sloopback.xe}"; fi ; done'
 
                 // xmake does not fully rebuild when different build parameters are given, so must be cleaned before building without loopback
-                sh 'xmake -C app_usb_aud_xk_316_mc -j16 PARTIAL_TEST_CONFIGS=1 TEST_SUPPORT_CONFIGS=1 clean'
+                sh 'cmake -B build -DBUILD_TESTED_CONFIGS=1 -DTEST_SUPPORT_CONFIGS=1 --fresh'
+                sh 'xmake -C build -j16'
 
-                // Build and archive the main app configs; doing each app separately is faster than xmake in top directory
-                sh 'xmake -C app_usb_aud_xk_316_mc -j16'
-                sh 'xmake -C app_usb_aud_xk_216_mc -j16'
-                sh 'xmake -C app_usb_aud_xk_evk_xu316 -j16'
-                archiveArtifacts artifacts: "app_usb_aud_*/bin/**/*.xe", excludes: "**/*_i2sloopback*" , fingerprint: true, allowEmptyArchive: false
-
-                // Build all other configs for testing and stash for stages on the later agents
-                sh 'xmake -C app_usb_aud_xk_316_mc -j16 BUILD_TEST_CONFIGS=1 TEST_SUPPORT_CONFIGS=1'
                 stash includes: 'app_usb_aud_xk_316_mc/bin/**/*.xe, app_usb_aud_xk_316_mc/bin/**/*.bin', name: 'xk_316_mc_bin', useDefaultExcludes: false
-
-                sh 'xmake -C app_usb_aud_xk_216_mc -j16 BUILD_TEST_CONFIGS=1 TEST_SUPPORT_CONFIGS=1'
                 stash includes: 'app_usb_aud_xk_216_mc/bin/**/*.xe', name: 'xk_216_mc_bin', useDefaultExcludes: false
-
-                sh 'xmake -C app_usb_aud_xk_evk_xu316 -j16 BUILD_TEST_CONFIGS=1 TEST_SUPPORT_CONFIGS=1'
                 stash includes: 'app_usb_aud_xk_evk_xu316/bin/**/*.xe', name: 'xk_evk_xu316_bin', useDefaultExcludes: false
 
-                // Build untested app
-                sh 'xmake -C app_usb_aud_xk_evk_xu316_extrai2s -j16'
+                archiveArtifacts artifacts: "app_usb_aud_*/bin/**/*.xe", excludes: "**/*_i2sloopback*" , fingerprint: true, allowEmptyArchive: false
+                archiveArtifacts artifacts: "build/manifest.txt", fingerprint: true, allowEmptyArchive: false
               }
             }
           }
@@ -99,10 +86,10 @@ pipeline {
               xcoreCleanSandbox()
             }
           }
-        }  // Build applications
+        }  // // (XCommon CMake) Build applications
 
-        stage('(XCommon CMake) Build applications') {
-          // Use XCommon CMake to fetch dependencies and build all application configs
+        stage('xmake Build applications') {
+          // Use XCommon CMake to fetch dependencies, but then build using legacy XCommon Makefiles
           agent {
             label 'linux && x86_64'
           }
@@ -113,9 +100,12 @@ pipeline {
               checkout scm
 
               withTools("${env.TOOLS_VERSION}") {
-                sh "cmake -G 'Unix Makefiles' -B build -D BUILD_TESTED_CONFIGS=TRUE"
-                sh "xmake -C build -j16"
-                archiveArtifacts artifacts: "build/manifest.txt", fingerprint: true, allowEmptyArchive: false
+                // Fetch all dependencies using XCommon CMake
+                sh "cmake -G 'Unix Makefiles' -B build"
+                sh 'xmake -C app_usb_aud_xk_316_mc -j16'
+                sh 'xmake -C app_usb_aud_xk_216_mc -j16'
+                sh 'xmake -C app_usb_aud_xk_evk_xu316 -j16'
+                sh 'xmake -C app_usb_aud_xk_evk_xu316_extrai2s -j16'
               }
             }
           }
@@ -124,7 +114,7 @@ pipeline {
               xcoreCleanSandbox()
             }
           }
-        }  // (XCommon CMake) Build applications
+        }  // xmake Build applications
 
         stage('Build documentation') {
           agent {
