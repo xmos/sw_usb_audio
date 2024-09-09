@@ -64,3 +64,6 @@ XCC_FLAGS_2AMi16o16xxxaax_tdm8 = $(BUILD_FLAGS) -DXUA_ADAT_TX_EN=1 \
                                                 -DXUA_ADAT_RX_EN=1 \
                                                 -DXUA_PCM_FORMAT=XUA_PCM_FORMAT_TDM \
                                                 -DMAX_FREQ=96000
+
+# Windows testing with the built-in driver relies on using product IDs that the Thesycon driver won't bind to
+XCC_FLAGS_2AMi8o8xxxxxx_winbuiltin = $(BUILD_FLAGS) -DPID_AUDIO_2=0x001a

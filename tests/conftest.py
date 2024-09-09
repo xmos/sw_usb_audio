@@ -4,6 +4,7 @@ from pathlib import Path
 import platform
 import re
 import shutil
+import yaml
 
 from hardware_test_tools.UaDut import UaDut
 
@@ -104,21 +105,17 @@ def parse_features(board, config):
     features["i2s_loopback"] = False
     return features
 
-def get_configs_from_cmake_output(cmake_cmd, app_dir):
-    ret = subprocess.run(
-            cmake_cmd, capture_output=True, text=True, cwd=app_dir
-        )
-    m = re.search(r'-- Found build configs:\n.*?-- Adding dependency', ret.stdout, re.DOTALL)
-    if m:
-        configs = [r.split()[1] for r in m.group().splitlines()[1:-1]]
-        return configs
-    assert False, f"Failed to find config names from cmake output.\ncmake cmd {cmake_cmd}\ncmake stdout = {ret.stdout}"
-
-
 def pytest_sessionstart(session):
     usb_audio_dir = Path(__file__).parents[1]
     app_prefix = "app_usb_aud_"
     exclude_app = ["app_usb_aud_xk_evk_xu316_extrai2s"]
+
+    with open(Path(__file__).parent / "app_configs_autogen.yml") as fp:
+        try:
+            config_dict = yaml.safe_load(fp)
+        except yaml.YAMLError as exc:
+            print(exc)
+            assert False
 
     for app_dir in usb_audio_dir.iterdir():
         app_name = app_dir.name
@@ -126,15 +123,11 @@ def pytest_sessionstart(session):
             continue
 
         board = app_name[len(app_prefix) :]
+        assert app_name in config_dict
 
-        cmake_cmd = ["cmake", "-B", "build_test", "-S", app_dir, "--fresh"]
-        full_configs = get_configs_from_cmake_output(cmake_cmd, app_dir)
-
-        cmake_cmd = ["cmake", "-B", "build_test", "-S", app_dir, "-DPARTIAL_TESTED_CONFIGS=1", "--fresh"]
-        all_configs = get_configs_from_cmake_output(cmake_cmd, app_dir)
-
-        # Get all the configs, and determine which will be fully- or partially-tested
-        partial_configs = [config for config in all_configs if config not in full_configs]
+        full_configs = config_dict[app_name]['full_configs']
+        partial_configs = config_dict[app_name]['partial_configs']
+        all_configs = [*full_configs, *partial_configs]
 
         for config in all_configs:
             global board_configs
@@ -149,17 +142,6 @@ def pytest_sessionstart(session):
                 features_i2sloopback["i2s_loopback"] = True
                 features_i2sloopback["analogue_i"] = 0
                 board_configs[f"{board}-{config}_i2sloopback"] = features_i2sloopback
-
-        # On Windows also collect special configs that will use the built-in driver
-        if platform.system() == "Windows":
-            cmake_cmd = ["cmake", "-B", "build_test", "-S", app_dir, "-DTEST_SUPPORT_CONFIGS=1", "--fresh"]
-            configs = get_configs_from_cmake_output(cmake_cmd, app_dir)
-            winbuiltin_configs = [cfg for cfg in configs if "_winbuiltin" in cfg]
-            print(f"WINBUILTIN CONFIGS = {winbuiltin_configs}")
-            for config in winbuiltin_configs:
-                features = parse_features(board, config)
-                features["partial"] = True
-                board_configs[f"{board}-{config}"] = features
 
 
 def list_configs():
