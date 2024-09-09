@@ -75,8 +75,8 @@ pipeline {
                 sh 'for folder in app_usb_aud_xk_316_mc/bin/?*; do if [[ ! $folder == *"old_tools"* ]] ; then mv "$folder" "${folder/%/_i2sloopback}"; fi ; done'
                 sh 'for config in app_usb_aud_xk_316_mc/bin/?*/*.xe; do if [[ ! $config == *"old_tools"* ]] ; then mv "$config" "${config/%.xe/_i2sloopback.xe}"; fi ; done'
 
-                // xmake does not fully rebuild when different build parameters are given, so must be cleaned before building without loopback
-                sh 'cmake build -DBUILD_TESTED_CONFIGS=1 -DTEST_SUPPORT_CONFIGS=1'
+                sh 'rm -rf build'
+                sh 'cmake -B build -DBUILD_TESTED_CONFIGS=1 -DTEST_SUPPORT_CONFIGS=1'
                 sh 'xmake -C build -j16'
 
                 stash includes: 'app_usb_aud_xk_316_mc/bin/**/*.xe, app_usb_aud_xk_316_mc/bin/**/*.bin', name: 'xk_316_mc_bin', useDefaultExcludes: false
