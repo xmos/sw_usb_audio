@@ -39,13 +39,6 @@ INCLUDE_ONLY_IN_1AMi2o2xxxxxx =
 XCC_FLAGS_2AMi2o2xxxxxx = $(BUILD_FLAGS)
 INCLUDE_ONLY_IN_2AMi2o2xxxxxx =
 
-
-TEST_SUPPORT_CONFIGS ?= 0
-ifeq ($(TEST_SUPPORT_CONFIGS),1)
-include configs_test.inc
-endif
-
-
 #=============================================================================
 # The following part of the Makefile includes the common build infrastructure
 # for compiling XMOS applications. You should not need to edit below here.
