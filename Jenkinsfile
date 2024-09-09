@@ -62,14 +62,21 @@ pipeline {
               }
 
               withTools("${env.TOOLS_VERSION}") {
+                sh "git submodule update --init"
+                createVenv("requirements.txt")
+                withVenv() {
+                  sh "pip install -r requirements.txt"
+                  // Check that the app_configs_autogen.yml file is up to date
+                  sh "python tests/tools/app_configs_autogen/collect_configs.py check"
+                }
                 // Build the loopback version of the configs for 316 and rename them to have _i2sloopback
-                sh "cmake -S app_usb_aud_xk_316_mc/ -B build -DBUILD_TESTED_CONFIGS=1 -DTEST_SUPPORT_CONFIGS=1 -DEXTRA_BUILD_FLAGS='-DI2S_LOOPBACK=1' --fresh"
+                sh "cmake -S app_usb_aud_xk_316_mc/ -B build -DBUILD_TESTED_CONFIGS=1 -DTEST_SUPPORT_CONFIGS=1 -DEXTRA_BUILD_FLAGS='-DI2S_LOOPBACK=1'"
                 sh "xmake -C build -j16"
                 sh 'for folder in app_usb_aud_xk_316_mc/bin/?*; do if [[ ! $folder == *"old_tools"* ]] ; then mv "$folder" "${folder/%/_i2sloopback}"; fi ; done'
                 sh 'for config in app_usb_aud_xk_316_mc/bin/?*/*.xe; do if [[ ! $config == *"old_tools"* ]] ; then mv "$config" "${config/%.xe/_i2sloopback.xe}"; fi ; done'
 
                 // xmake does not fully rebuild when different build parameters are given, so must be cleaned before building without loopback
-                sh 'cmake -B build -DBUILD_TESTED_CONFIGS=1 -DTEST_SUPPORT_CONFIGS=1 --fresh'
+                sh 'cmake build -DBUILD_TESTED_CONFIGS=1 -DTEST_SUPPORT_CONFIGS=1'
                 sh 'xmake -C build -j16'
 
                 stash includes: 'app_usb_aud_xk_316_mc/bin/**/*.xe, app_usb_aud_xk_316_mc/bin/**/*.bin', name: 'xk_316_mc_bin', useDefaultExcludes: false
@@ -78,6 +85,7 @@ pipeline {
 
                 archiveArtifacts artifacts: "app_usb_aud_*/bin/**/*.xe", excludes: "**/*_i2sloopback*" , fingerprint: true, allowEmptyArchive: false
                 archiveArtifacts artifacts: "build/manifest.txt", fingerprint: true, allowEmptyArchive: false
+
               }
             }
           }
