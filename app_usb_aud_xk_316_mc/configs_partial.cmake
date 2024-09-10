@@ -59,4 +59,7 @@ set(APP_COMPILER_FLAGS_2AMi16o16xxxaax_tdm8 ${SW_USB_AUDIO_FLAGS} -DXUA_ADAT_RX_
                                                                   -DXUA_PCM_FORMAT=XUA_PCM_FORMAT_TDM
                                                                   -DMAX_FREQ=96000)
 
+# Windows testing with the built-in driver relies on using product IDs that the Thesycon driver won't bind to
+set(APP_COMPILER_FLAGS_2AMi8o8xxxxxx_winbuiltin ${SW_USB_AUDIO_FLAGS} -DPID_AUDIO_2=0x001a)
+
 endif()

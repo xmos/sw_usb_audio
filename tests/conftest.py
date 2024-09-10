@@ -4,6 +4,7 @@ from pathlib import Path
 import platform
 import re
 import shutil
+import yaml
 
 from hardware_test_tools.UaDut import UaDut
 
@@ -104,13 +105,17 @@ def parse_features(board, config):
     features["i2s_loopback"] = False
     return features
 
-
 def pytest_sessionstart(session):
     usb_audio_dir = Path(__file__).parents[1]
     app_prefix = "app_usb_aud_"
     exclude_app = ["app_usb_aud_xk_evk_xu316_extrai2s"]
 
-    test_level = session.config.getoption("level")
+    with open(Path(__file__).parent / "app_configs_autogen.yml") as fp:
+        try:
+            config_dict = yaml.safe_load(fp)
+        except yaml.YAMLError as exc:
+            print(exc)
+            assert False
 
     for app_dir in usb_audio_dir.iterdir():
         app_name = app_dir.name
@@ -118,26 +123,13 @@ def pytest_sessionstart(session):
             continue
 
         board = app_name[len(app_prefix) :]
+        assert app_name in config_dict
 
-        # Get all the configs, and determine which will be fully- or partially-tested
-        allconfigs_cmd = ["xmake", "allconfigs"]
-        ret = subprocess.run(
-            allconfigs_cmd, capture_output=True, text=True, cwd=app_dir
-        )
-        full_configs = ret.stdout.split()
+        full_configs = config_dict[app_name]['full_configs']
+        partial_configs = config_dict[app_name]['partial_configs']
+        all_configs = [*full_configs, *partial_configs]
 
-        if test_level in ["nightly", "weekend"]:
-            allconfigs_cmd.append("PARTIAL_TEST_CONFIGS=1")
-            ret = subprocess.run(
-                allconfigs_cmd, capture_output=True, text=True, cwd=app_dir
-            )
-            configs = ret.stdout.split()
-        else:
-            configs = full_configs
-
-        partial_configs = [config for config in configs if config not in full_configs]
-
-        for config in configs:
+        for config in all_configs:
             global board_configs
             features = parse_features(board, config)
             # Mark the relevant configs for partial testing only
@@ -150,21 +142,6 @@ def pytest_sessionstart(session):
                 features_i2sloopback["i2s_loopback"] = True
                 features_i2sloopback["analogue_i"] = 0
                 board_configs[f"{board}-{config}_i2sloopback"] = features_i2sloopback
-
-        # On Windows also collect special configs that will use the built-in driver
-        if platform.system() == "Windows":
-            winconfigs_cmd = ["xmake", "TEST_SUPPORT_CONFIGS=1", "allconfigs"]
-            ret = subprocess.run(
-                winconfigs_cmd, capture_output=True, text=True, cwd=app_dir
-            )
-            winbuiltin_configs = [
-                cfg for cfg in ret.stdout.split() if "_winbuiltin" in cfg
-            ]
-
-            for config in winbuiltin_configs:
-                features = parse_features(board, config)
-                features["partial"] = True
-                board_configs[f"{board}-{config}"] = features
 
 
 def list_configs():
