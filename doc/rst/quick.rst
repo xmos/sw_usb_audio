@@ -150,17 +150,17 @@ From a command prompt with the XMOS tools available, follow these steps:
 
     #. Unzip the package zip to a known location
 
-    #. From the relevant application directory (e.g. ``app_usb_aud_xk_audio_316_mc``) and execute the commands::
+    #. From the relevant application directory (e.g. ``app_usb_aud_xk_audio_316_mc``), execute the commands::
 
         cmake -G "Unix Makefiles" -B build
         xmake -C build
 
-The proceeding steps will build all of the available and supported build configurations for the application.
+The above steps will configure and build all of the available and supported build configurations for the application.
 
-The applications are compiled using `Xcommon CMake <https://github.com/xmos/xcommon_cmake>`_ which is a `CMake <https://cmake.org/>`_
+The applications are compiled using `Xcommon CMake <https://www.xmos.com/documentation/XM-014363-PC-10/html/tools-guide/tools-ref/xcommon_cmake.html#xcommon-cmake-build-system>`_ which is a `CMake <https://cmake.org/>`_
 based build system.
 The primary configuration file for the application is the CMakeLists.txt. It is present in the application directory (e.g. ``app_usb_aud_xk_audio_316_mc``).
-This file specifies build targets, sources, build options and dependencies.
+This file specifies build configs, sources, build options and dependencies.
 
 .. note::
 

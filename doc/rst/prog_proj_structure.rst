@@ -42,7 +42,7 @@ Applications and there respective hardware platforms are listed in :ref:`proj_ap
 
 The applications depend on several modules (or `libraries`), each of which have their own GIT repository. The immediate
 dependency libraries for the applications are specified by setting the ``APP_DEPENDENT_MODULES`` variable. This is set in the
-``deps.cmake`` `file <https://github.com/xmos/sw_usb_audio/blob/develop/deps.cmake>`_, which is included in the applications'
+``deps.cmake`` `file <https://github.com/xmos/sw_usb_audio/blob/develop/deps.cmake>`_, which is included in each application's
 CMakeLists.txt.
 
 Each library has a ``lib_build_info.cmake`` which lists the library source, compile flags and dependencies. The library dependencies are

@@ -12,17 +12,19 @@ The build configurations are listed in the application CMakeLists.txt file. The 
 the options for the compiler to use when compiling all source files for the given build configuration (APP_COMPILER_FLAGS_<build config>).
 For example::
 
-    set(APP_COMPILER_FLAGS_2AMi10o10xssxxx ${SW_USB_AUDIO_FLAGS} -DXUA_SPDIF_TX_EN=1
-                                                                 -DXUA_SPDIF_RX_EN=1)
+    set(APP_COMPILER_FLAGS_2AMi10o10xssxxx ${SW_USB_AUDIO_FLAGS}
+                                            -DXUA_SPDIF_TX_EN=1
+                                            -DXUA_SPDIF_RX_EN=1)
 
-Specifies the compiler flags when compiling the ``2AMi10o10xssxxx`` build config. In addition to the compiler options specified in the
-``SW_USB_AUDIO_FLAGS`` variable, it specfies extra compiler options for enabling SPDIF TX and RX.
+specifies that the compiler flags used when compiling the ``2AMi10o10xssxxx`` build config are everything defined in the
+``SW_USB_AUDIO_FLAGS`` variable plus two extra compiler options for enabling SPDIF TX and RX.
 
 To configure the build configurations, run the ``cmake`` command from the application (e.g. ``app_usb_aud_xk_audio_316_mc``) directory::
 
     cmake -G "Unix Makefiles" -B build
 
-The output of this command will contain the list of all the build configurations for that application.
+This will create a directory called ``build`` within the application directory and run cmake in it.
+The output displayed on stdout for the ``cmake`` command will contain the list of all the build configurations for that application. For example::
 
 .. code-block:: console
 
@@ -31,17 +33,17 @@ The output of this command will contain the list of all the build configurations
     -- 1AMi2o2xxxxxx
     -- 2AMi2o2xxxxxx
 
-The ``cmake`` command generates the Makefiles for compiling the different build configurations. The Makefiles are created in the ``build`` directory.
+The ``cmake`` command generates the Makefile for compiling the different build configurations. The Makefile is created in the ``build`` directory.
 
-The next step is to run the ``xmake`` command which executes the commands in these Makefiles to build the executables corresponding to
+The next step is to run the ``xmake`` command which executes the commands in the Makefile to build the executables corresponding to
 the build configs. To build all supported configurations for a given application, from the application directory (e.g. ``app_usb_aud_xk_audio_316_mc``),
 run::
 
     xmake -C build
 
-The built executables are stored in the ``<app name>/bin`` directory. Within the ``bin`` directory, each executable is present in a folder,
-with the folder name the same as the build config, ``<app name>/bin/<config name>``. For example, ``app_usb_aud_xk_316_mc/bin/2AMi8o8xxxxxx`` directory contains the ``app_usb_aud_xk_316_mc_2ASi8o8xxxxxx.xe``
-executable. Note how the name of the executable is set to <app_name>_<config_name>.xe::
+This will run the ``xmake`` command in the ``build`` directory.
+The built executables are stored in the ``<app name>/bin/<config name>`` directories. For example, the ``app_usb_aud_xk_316_mc/bin/2AMi8o8xxxxxx``
+directory contains the ``app_usb_aud_xk_316_mc_2ASi8o8xxxxxx.xe`` executable. Note how the name of the executable is set to <app_name>_<config_name>.xe::
 
     <app name>/bin/<config name>/<app_name>_<config_name>.xe
 
