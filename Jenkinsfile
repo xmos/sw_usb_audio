@@ -49,13 +49,13 @@ pipeline {
                   // can download an upgrade image built with the latest tools.
                   dir("app_usb_aud_xk_316_mc") {
                     sh "cmake -G 'Unix Makefiles' -B build_old_tools"
-                    sh "xmake -C build_old_tools -j16 1SMi2o2mxxxxx"
+                    sh "xmake -C build_old_tools -j16 1SMi2o2xxxxxx"
                     // Create binary file using the old tools xflash that can be written into the device using xflash --write-all during the test
-                    sh "xflash bin/1SMi2o2mxxxxx/app_usb_aud_xk_316_mc_1SMi2o2mxxxxx.xe -o bin/1SMi2o2mxxxxx/app_usb_aud_xk_316_mc_1SMi2o2mxxxxx.bin"
+                    sh "xflash bin/1SMi2o2xxxxxx/app_usb_aud_xk_316_mc_1SMi2o2xxxxxx.xe -o bin/1SMi2o2xxxxxx/app_usb_aud_xk_316_mc_1SMi2o2xxxxxx.bin"
                     // Move to a different directory so it doesn't get overwritten when the same config is compiled with the latest tools
-                    sh 'mv bin/1SMi2o2mxxxxx bin/1SMi2o2mxxxxx_old_tools'
-                    sh 'for config in bin/1SMi2o2mxxxxx_old_tools/*.bin; do mv "$config" "${config/%.bin/_old_tools.bin}"; done'
-                    sh 'for config in bin/1SMi2o2mxxxxx_old_tools/*.xe; do mv "$config" "${config/%.xe/_old_tools.xe}"; done'
+                    sh 'mv bin/1SMi2o2xxxxxx bin/1SMi2o2xxxxxx_old_tools'
+                    sh 'for config in bin/1SMi2o2xxxxxx_old_tools/*.bin; do mv "$config" "${config/%.bin/_old_tools.bin}"; done'
+                    sh 'for config in bin/1SMi2o2xxxxxx_old_tools/*.xe; do mv "$config" "${config/%.xe/_old_tools.xe}"; done'
                     sh 'rm -rf build_old_tools'
                   }
                 }
@@ -290,8 +290,8 @@ pipeline {
                       sh "pip install -e ${WORKSPACE}/xtagctl"
 
                       withXTAG(["usb_audio_mc_xcai_dut", "usb_audio_mc_xcai_harness"]) { xtagIds ->
-                        sh "pytest -v --level nightly --junitxml=pytest_result_mac_arm.xml \
-                            -o xk_316_mc_dut=${xtagIds[0]} -o xk_316_mc_harness=${xtagIds[1]} -k '1SM' "
+                        sh "pytest -v --level ${params.TEST_LEVEL} --junitxml=pytest_result_mac_arm.xml \
+                            -o xk_316_mc_dut=${xtagIds[0]} -o xk_316_mc_harness=${xtagIds[1]}"
                       }
                     }
                   }
@@ -315,8 +315,7 @@ pipeline {
           when {
             expression {
               params.TEST_LEVEL == "nightly" ||
-              params.TEST_LEVEL == "weekend" ||
-              params.TEST_LEVEL == "smoke"
+              params.TEST_LEVEL == "weekend"
             }
           }
           agent {
@@ -363,8 +362,8 @@ pipeline {
                       sh "pip install -e ."
                     }
                     withXTAG(["usb_audio_mc_xcai_dut", "usb_audio_mc_xcai_harness"]) { xtagIds ->
-                      sh "pytest -v --level nightly --junitxml=pytest_result_windows10.xml \
-                          -o xk_316_mc_dut=${xtagIds[0]} -o xk_316_mc_harness=${xtagIds[1]} -k '1SM' "
+                      sh "pytest -v --level ${params.TEST_LEVEL} --junitxml=pytest_result_windows10.xml \
+                          -o xk_316_mc_dut=${xtagIds[0]} -o xk_316_mc_harness=${xtagIds[1]}"
                     }
                   }
                 }
@@ -387,8 +386,7 @@ pipeline {
           when {
             expression {
               params.TEST_LEVEL == "nightly" ||
-              params.TEST_LEVEL == "weekend" ||
-              params.TEST_LEVEL == "smoke"
+              params.TEST_LEVEL == "weekend"
             }
           }
           agent {
@@ -436,8 +434,8 @@ pipeline {
                     }
 
                     withXTAG(["usb_audio_mc_xcai_dut", "usb_audio_mc_xcai_harness"]) { xtagIds ->
-                      sh "pytest -v --level nightly --junitxml=pytest_result_windows11.xml \
-                          -o xk_316_mc_dut=${xtagIds[0]} -o xk_316_mc_harness=${xtagIds[1]} -k '1SM' "
+                      sh "pytest -v --level ${params.TEST_LEVEL} --junitxml=pytest_result_windows11.xml \
+                          -o xk_316_mc_dut=${xtagIds[0]} -o xk_316_mc_harness=${xtagIds[1]}"
                     }
                   }
                 }
