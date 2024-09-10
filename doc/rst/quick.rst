@@ -21,7 +21,7 @@ Quick Start
 
    #. Download the **XMOS XTC Tools** from: http://www.xmos.com/software-tools and install.
 
-      The firmware should be compiled using a specific version of the tools. Make sure that you download the correct version of the tools.
+      The minimum required XTC Tools version for compiling USB Audio applications is 15.3.0. Make sure that you download the correct version of the tools.
 
       (Section :ref:`quick_start_tools`)
 
@@ -129,8 +129,9 @@ The tools as delivered are to be used within a command line environment, though 
 
 .. warning::
 
-    The firmware must be compiled using a specific version of the tools. Make sure that you download the correct version of the tools.
-    Older versions of tools are available from the `TOOLS ARCHIVE` section of http://www.xmos.com/software-tools
+    USB Audio applications are compiled using the `XCommon CMake <https://www.xmos.com/documentation/XM-014363-PC-10/html/tools-guide/tools-ref/xcommon_cmake.html#xcommon-cmake-build-system>`_ build system.
+    The minimum XTC tools version that supports XCommon CMake is 15.3.0. Ensure that the firmware is compiled using XTC Tools version 15.3.0 or above.
+    Make sure that you download the correct version of the tools. Older versions of tools are available from the `TOOLS ARCHIVE` section of http://www.xmos.com/software-tools
 
 Information on using the tools, including installation, is provided in the `XTC Tools Guide <https://www.xmos.ai/documentation/XM-014363-PC-7/html/intro.html>`_.
 
@@ -149,21 +150,21 @@ From a command prompt with the XMOS tools available, follow these steps:
 
     #. Unzip the package zip to a known location
 
-    #. Move into the relevant application directory (e.g. ``app_usb_aud_xk_audio_316_mc``) and execute the command::
+    #. From the relevant application directory (e.g. ``app_usb_aud_xk_audio_316_mc``) and execute the commands::
 
-        xmake all
+        cmake -G "Unix Makefiles" -B build
+        xmake -C build
 
 The proceeding steps will build all of the available and supported build configurations for the application.
 
-The main Makefile for the project is in the application directory (e.g. ``app_usb_aud_xk_audio_316_mc``). This file specifies build
-options and dependencies.
-
-This Makefile uses the common build infrastructure supplied with XMOS tools in ``module_xmos_common``. This system includes
-the source files from the relevant modules and is documented within ``module_xmos_common``. See ::ref:`proj_build_system`.
+The applications are compiled using `Xcommon CMake <https://github.com/xmos/xcommon_cmake>`_ which is a `CMake <https://cmake.org/>`_
+based build system.
+The primary configuration file for the application is the CMakeLists.txt. It is present in the application directory (e.g. ``app_usb_aud_xk_audio_316_mc``).
+This file specifies build targets, sources, build options and dependencies.
 
 .. note::
 
-    Support is included for an updated build system, ``xcommon_cmake``. Again, see ::ref:`proj_build_system`.
+    See ::ref:`proj_build_system` for more details.
 
 .. _quick_start_running:
 
