@@ -61,7 +61,7 @@ def main():
                 print(f"{repo_file} is up to date. No action required.")
             except yaml.YAMLError as exc:
                 print(exc)
-                assert False, f"Cannot read "
+                assert False
 
 if __name__ == "__main__":
     main()
