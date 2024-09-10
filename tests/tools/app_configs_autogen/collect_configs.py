@@ -33,8 +33,8 @@ def main():
     if build_dir.exists() and build_dir.is_dir():
         shutil.rmtree(build_dir)
 
-    cmake_cmd = ["cmake", "-B", "build_test", "-S", app_dir]
-    d = get_configs_from_cmake_output(cmake_cmd, app_dir)
+    cmake_cmd = ["cmake", "-B", build_dir, "-S", app_dir]
+    d = get_configs_from_cmake_output(cmake_cmd, build_dir.parent)
     for app, configs in d.items():
         config_dict[app] = {}
         config_dict[app]['full_configs'] = configs
@@ -42,8 +42,8 @@ def main():
     if build_dir.exists() and build_dir.is_dir():
         shutil.rmtree(build_dir)
 
-    cmake_cmd = ["cmake", "-B", "build_test", "-S", app_dir, "-DPARTIAL_TESTED_CONFIGS=1"]
-    d = get_configs_from_cmake_output(cmake_cmd, app_dir)
+    cmake_cmd = ["cmake", "-B", build_dir, "-S", app_dir, "-DPARTIAL_TESTED_CONFIGS=1"]
+    d = get_configs_from_cmake_output(cmake_cmd, build_dir.parent)
     for app, configs in d.items():
         partial_configs = [c for c in configs if c not in config_dict[app]['full_configs']]
         assert app in config_dict
@@ -61,7 +61,7 @@ def main():
                 print(f"{repo_file} is up to date. No action required.")
             except yaml.YAMLError as exc:
                 print(exc)
-                assert False, f"Cannot read "
+                assert False
 
 if __name__ == "__main__":
     main()
