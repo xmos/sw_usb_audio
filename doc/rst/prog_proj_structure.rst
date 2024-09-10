@@ -13,15 +13,13 @@ The XCommon CMake build system uses CMake to configure and generate the build en
 `xmake <https://www.xmos.ai/documentation/XM-014363-PC-7/html/tools-guide/tools-ref/cmd-line-tools/xmake-manual/xmake-manual.html#xmake>`_.
 As part of configuring the build environment, if there are any missing dependencies, XCommon CMake fetches then using ``git``.
 
-Each application has a CMakeLists.txt file that describes the build targets for that application. The format of the CMakeLists.txt is
-described `here <https://www.xmos.com/documentation/XM-015090-PC-2/html/doc/config_files.html>`_
-
 Applications and Libraries
 ++++++++++++++++++++++++++
 
-The ``sw_usb_audio`` `GIT <https://git-scm.com>`_ repository includes multiple application directories.
-Each application directory contains a CMakeLists.txt file which describes the build targets. XCommon CMake uses the
-CMakeLists.txt to generate Makefiles that can be compiled using XMake into executables.
+The ``sw_usb_audio`` `GIT <https://github.com/xmos/sw_usb_audio>`_ repository includes multiple application directories.
+Each application directory contains a ``CMakeLists.txt`` file which describes the build configs for that application.
+The format of the ``CMakeLists.txt`` is described `here <https://www.xmos.com/documentation/XM-015090-PC-2/html/doc/config_files.html>`_
+XCommon CMake uses the ``CMakeLists.txt`` to generate Makefiles that can be compiled using ``xmake`` into executables.
 Typically you can expect to see one application directory per hardware platform.
 Applications and there respective hardware platforms are listed in :ref:`proj_app_boards`.
 
@@ -41,9 +39,13 @@ Applications and there respective hardware platforms are listed in :ref:`proj_ap
      - xcore.ai Evaluation Kit
 
 The applications depend on several modules (or `libraries`), each of which have their own GIT repository. The immediate
-dependency libraries for the applications are specified by setting the ``APP_DEPENDENT_MODULES`` variable. This is set in the
-``deps.cmake`` `file <https://github.com/xmos/sw_usb_audio/blob/develop/deps.cmake>`_, which is included in each application's
-CMakeLists.txt.
+dependency libraries for the applications are specified by setting the ``APP_DEPENDENT_MODULES`` variable in the
+``deps.cmake`` `file <https://github.com/xmos/sw_usb_audio/blob/develop/deps.cmake>`_. ``deps.cmake`` lists the common dependencies for
+all the applications and is included in each application's ``CMakeLists.txt``.
+
+The dependency list specified in the ``deps.cmake`` can be extended to add new dependencies. Refer to the XCommon CMake
+`Dependency Format documentation <https://www.xmos.com/documentation/XM-015090-PC-2/html/doc/api_reference/dependency_format.html#dependency-format>`_
+for more information about adding dependencies.
 
 Each library has a ``lib_build_info.cmake`` which lists the library source, compile flags and dependencies. The library dependencies are
 specified in the ``LIB_DEPENDENT_MODULES`` variable in the ``lib_build_info.cmake``.

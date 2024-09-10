@@ -8,7 +8,7 @@ Due to the flexibility of the reference design software there are a large number
 and output channel counts, Audio Class version, interface types etc. A "build configuration" is a set of build options
 that combine to produce a binary with a certain feature set.
 
-The build configurations are listed in the application CMakeLists.txt file. The build config names are appended to the ``APP_COMPILER_FLAGS`` variable to list
+The build configurations are listed in the application ``CMakeLists.txt`` file. The build config names are appended to the ``APP_COMPILER_FLAGS`` variable to list
 the options for the compiler to use when compiling all source files for the given build configuration (APP_COMPILER_FLAGS_<build config>).
 For example::
 
@@ -24,7 +24,7 @@ To configure the build configurations, run the ``cmake`` command from the applic
     cmake -G "Unix Makefiles" -B build
 
 This will create a directory called ``build`` within the application directory and run cmake in it.
-The output displayed on stdout for the ``cmake`` command will contain the list of all the build configurations for that application. For example::
+The output displayed on stdout for the ``cmake`` command will contain the list of all the build configurations for that application. For example,
 
 .. code-block:: console
 

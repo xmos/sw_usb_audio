@@ -131,7 +131,6 @@ The tools as delivered are to be used within a command line environment, though 
 
     USB Audio applications are compiled using the `XCommon CMake <https://www.xmos.com/documentation/XM-014363-PC-10/html/tools-guide/tools-ref/xcommon_cmake.html#xcommon-cmake-build-system>`_ build system.
     The minimum XTC tools version that supports XCommon CMake is 15.3.0. Ensure that the firmware is compiled using XTC Tools version 15.3.0 or above.
-    Make sure that you download the correct version of the tools. Older versions of tools are available from the `TOOLS ARCHIVE` section of http://www.xmos.com/software-tools
 
 Information on using the tools, including installation, is provided in the `XTC Tools Guide <https://www.xmos.ai/documentation/XM-014363-PC-7/html/intro.html>`_.
 

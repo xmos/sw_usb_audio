@@ -70,7 +70,7 @@ pipeline {
                   sh "python tests/tools/app_configs_autogen/collect_configs.py check"
                 }
                 // Build the loopback version of the configs for 316 and rename them to have _i2sloopback
-                sh "cmake -S app_usb_aud_xk_316_mc/ -B build -DPARTIAL_TESTED_CONFIGS=1 -DTEST_SUPPORT_CONFIGS=1 -DEXTRA_BUILD_FLAGS='-DI2S_LOOPBACK=1'"
+                sh "cmake -S app_usb_aud_xk_316_mc/ -B build -DPARTIAL_TESTED_CONFIGS=1 -DEXTRA_BUILD_FLAGS='-DI2S_LOOPBACK=1'"
                 sh "xmake -C build -j16"
                 sh 'for folder in app_usb_aud_xk_316_mc/bin/?*; do if [[ ! $folder == *"old_tools"* ]] ; then mv "$folder" "${folder/%/_i2sloopback}"; fi ; done'
                 sh 'for config in app_usb_aud_xk_316_mc/bin/?*/*.xe; do if [[ ! $config == *"old_tools"* ]] ; then mv "$config" "${config/%.xe/_i2sloopback.xe}"; fi ; done'
