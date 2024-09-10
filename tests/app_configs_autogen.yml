@@ -33,6 +33,7 @@ app_usb_aud_xk_316_mc:
   - 2SSi8o8xxxxxx
   partial_configs:
   - 1AMi2o2xxxxxx
+  - 1SMi2o2mxxxxx
   - 2AMi10o8xsxxxx
   - 2AMi16o16xxxaax_tdm8
   - 2AMi16o8xxxaxx
