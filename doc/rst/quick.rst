@@ -21,7 +21,7 @@ Quick Start
 
    #. Download the **XMOS XTC Tools** from: http://www.xmos.com/software-tools and install.
 
-      The minimum required XTC Tools version for compiling USB Audio applications is 15.3.0. Make sure that you download the correct version of the tools.
+      The minimum required XTC Tools version for compiling USB Audio applications can be found in the README. Make sure that you download the correct version of the tools.
 
       (Section :ref:`quick_start_tools`)
 
@@ -156,7 +156,7 @@ From a command prompt with the XMOS tools available, follow these steps:
 
 The above steps will configure and build all of the available and supported build configurations for the application.
 
-The applications are compiled using `Xcommon CMake <https://www.xmos.com/documentation/XM-014363-PC-10/html/tools-guide/tools-ref/xcommon_cmake.html#xcommon-cmake-build-system>`_ which is a `CMake <https://cmake.org/>`_
+The applications are compiled using `XCommon CMake <https://www.xmos.com/documentation/XM-014363-PC-10/html/tools-guide/tools-ref/xcommon_cmake.html#xcommon-cmake-build-system>`_ which is a `CMake <https://cmake.org/>`_
 based build system.
 The primary configuration file for the application is the CMakeLists.txt. It is present in the application directory (e.g. ``app_usb_aud_xk_audio_316_mc``).
 This file specifies build configs, sources, build options and dependencies.

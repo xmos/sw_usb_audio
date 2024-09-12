@@ -23,7 +23,7 @@ To configure the build configurations, run the ``cmake`` command from the applic
 
     cmake -G "Unix Makefiles" -B build
 
-This will create a directory called ``build`` within the application directory and run cmake in it.
+This will create a directory called ``build`` within the application directory.
 The output displayed on stdout for the ``cmake`` command will contain the list of all the build configurations for that application. For example,
 
 .. code-block:: console
@@ -105,7 +105,7 @@ Reference Design` software therefore defines three levels of quality:
 .. note::
 
    Typically disabing a function should have no effect on QA. For example, disabling S/PDIF on a fully-tested configuration
-   with it enabled should not effect its quality.
+   with it enabled should not affect its quality.
 
 `XMOS` aims to provide fully tested configurations for popular device configurations and common customer requirements.
 

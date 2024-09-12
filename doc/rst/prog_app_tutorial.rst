@@ -26,7 +26,7 @@ The ``src`` directory is arranged into two directories:
 The ``core`` folder for each application contains:
 
     #. A ``.xn`` file to describe the hardware platform the application will run on
-    #. An (optional) configuration header file to customised the framework provided by ``lib_xua`` named ``xua_conf.h``
+    #. An (optional) configuration header file to customise the framework provided by ``lib_xua`` named ``xua_conf.h``
 
 .. note::
 
