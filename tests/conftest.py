@@ -1,5 +1,4 @@
 import pytest
-import subprocess
 from pathlib import Path
 import platform
 import re
@@ -213,30 +212,7 @@ class AppUsbAudDut(UaDut):
     def __init__(self, adapter_id, board, config, xflash=False, writeall=False):
         fw_path = get_firmware_path(board, config)
 
-        if platform.system() == "Windows" and (config.startswith("1") or "_winbuiltin" in config):
-            winbuiltin = True
-        else:
-            winbuiltin = False
-
-        if platform.system() == "Windows" and not winbuiltin:
-            prod_str = "XMOS USB Audio Device"
-        elif board == "xk_216_mc":
-            if config.startswith("1"):
-                prod_str = "XMOS xCORE-200 MC (UAC1.0)"
-            elif config.startswith("2"):
-                prod_str = "XMOS xCORE-200 MC (UAC2.0)"
-        elif board == "xk_316_mc":
-            if config.startswith("1"):
-                prod_str = "XMOS xCORE.ai MC (UAC1.0)"
-            elif config.startswith("2"):
-                prod_str = "XMOS xCORE.ai MC (UAC2.0)"
-        elif board == "xk_evk_xu316":
-            if config.startswith("1"):
-                prod_str = "XMOS xCORE (UAC1.0)"
-            elif config.startswith("2"):
-                prod_str = "XMOS xCORE (UAC2.0)"
-        else:
-            pytest.fail(f"Unrecognised board {board}")
+        self.winbuiltin = platform.system() == "Windows" and (config.startswith("1") or "_winbuiltin" in config)
 
         if board == "xk_216_mc":
             target = "XCORE-200-EXPLORER"
@@ -250,13 +226,24 @@ class AppUsbAudDut(UaDut):
 
         self.features = get_config_features(board, config)
 
-        if xflash==True and writeall==True:
+        if xflash and writeall:
             # writeall = True is a special case where we want to write the binary file produced from xflash -o <bin> directly to the device
             # This is needed if xflash -o <bin> is run with a different tools version before the test and the test is required to write the binary file
             # directly to the device
             fw_path = Path(fw_path).with_suffix(".bin") # The output of xflash -o is required to be saved in a file with the same name as the .xe but with a .bin extension
 
-        super().__init__(adapter_id, fw_path, self.features["pid"][0], prod_str, self.features["chan_i"], self.features["chan_o"], winbuiltin=winbuiltin, xflash=xflash, writeall=writeall, target=target)
+        super().__init__(adapter_id, fw_path, self.features["pid"][0], self.features["chan_i"], self.features["chan_o"], winbuiltin=self.winbuiltin, xflash=xflash, writeall=writeall, target=target)
+
+    def __enter__(self):
+        super().__enter__()
+
+        # DUT has enumerated, so can now set the required dev_name for xsig
+        if platform.system() == "Darwin":
+            self.dev_name = self.usb_name
+        elif platform.system() == "Windows":
+            self.dev_name = "ASIO4ALL v2" if self.winbuiltin else "XMOS USB Audio Device"
+
+        return self
 
 
 def get_xtag_dut(pytestconfig, board):
