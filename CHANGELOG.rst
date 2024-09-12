@@ -8,6 +8,7 @@ UNRELEASED
     Rx/Tx, TDM master)
   * CHANGED:   Extracted the board setup code from audiohw.xc to a new library: lib_board_support
   * CHANGED:   DFU_PID defined in the xua_conf of the example applications
+  * CHANGED:   User Guide to have xcommon_cmake as the documented build flow
 
 8.1.0
 -----
