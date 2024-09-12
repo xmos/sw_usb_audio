@@ -1,9 +1,9 @@
 import pytest
-import subprocess
 from pathlib import Path
 import platform
 import re
 import shutil
+import yaml
 
 from hardware_test_tools.UaDut import UaDut
 
@@ -104,13 +104,17 @@ def parse_features(board, config):
     features["i2s_loopback"] = False
     return features
 
-
 def pytest_sessionstart(session):
     usb_audio_dir = Path(__file__).parents[1]
     app_prefix = "app_usb_aud_"
     exclude_app = ["app_usb_aud_xk_evk_xu316_extrai2s"]
 
-    test_level = session.config.getoption("level")
+    with open(Path(__file__).parent / "app_configs_autogen.yml") as fp:
+        try:
+            config_dict = yaml.safe_load(fp)
+        except yaml.YAMLError as exc:
+            print(exc)
+            assert False
 
     for app_dir in usb_audio_dir.iterdir():
         app_name = app_dir.name
@@ -118,26 +122,13 @@ def pytest_sessionstart(session):
             continue
 
         board = app_name[len(app_prefix) :]
+        assert app_name in config_dict
 
-        # Get all the configs, and determine which will be fully- or partially-tested
-        allconfigs_cmd = ["xmake", "allconfigs"]
-        ret = subprocess.run(
-            allconfigs_cmd, capture_output=True, text=True, cwd=app_dir
-        )
-        full_configs = ret.stdout.split()
+        full_configs = config_dict[app_name]['full_configs']
+        partial_configs = config_dict[app_name]['partial_configs']
+        all_configs = [*full_configs, *partial_configs]
 
-        if test_level in ["nightly", "weekend"]:
-            allconfigs_cmd.append("PARTIAL_TEST_CONFIGS=1")
-            ret = subprocess.run(
-                allconfigs_cmd, capture_output=True, text=True, cwd=app_dir
-            )
-            configs = ret.stdout.split()
-        else:
-            configs = full_configs
-
-        partial_configs = [config for config in configs if config not in full_configs]
-
-        for config in configs:
+        for config in all_configs:
             global board_configs
             features = parse_features(board, config)
             # Mark the relevant configs for partial testing only
@@ -150,21 +141,6 @@ def pytest_sessionstart(session):
                 features_i2sloopback["i2s_loopback"] = True
                 features_i2sloopback["analogue_i"] = 0
                 board_configs[f"{board}-{config}_i2sloopback"] = features_i2sloopback
-
-        # On Windows also collect special configs that will use the built-in driver
-        if platform.system() == "Windows":
-            winconfigs_cmd = ["xmake", "TEST_SUPPORT_CONFIGS=1", "allconfigs"]
-            ret = subprocess.run(
-                winconfigs_cmd, capture_output=True, text=True, cwd=app_dir
-            )
-            winbuiltin_configs = [
-                cfg for cfg in ret.stdout.split() if "_winbuiltin" in cfg
-            ]
-
-            for config in winbuiltin_configs:
-                features = parse_features(board, config)
-                features["partial"] = True
-                board_configs[f"{board}-{config}"] = features
 
 
 def list_configs():
@@ -236,30 +212,7 @@ class AppUsbAudDut(UaDut):
     def __init__(self, adapter_id, board, config, xflash=False, writeall=False):
         fw_path = get_firmware_path(board, config)
 
-        if platform.system() == "Windows" and (config.startswith("1") or "_winbuiltin" in config):
-            winbuiltin = True
-        else:
-            winbuiltin = False
-
-        if platform.system() == "Windows" and not winbuiltin:
-            prod_str = "XMOS USB Audio Device"
-        elif board == "xk_216_mc":
-            if config.startswith("1"):
-                prod_str = "XMOS xCORE-200 MC (UAC1.0)"
-            elif config.startswith("2"):
-                prod_str = "XMOS xCORE-200 MC (UAC2.0)"
-        elif board == "xk_316_mc":
-            if config.startswith("1"):
-                prod_str = "XMOS xCORE.ai MC (UAC1.0)"
-            elif config.startswith("2"):
-                prod_str = "XMOS xCORE.ai MC (UAC2.0)"
-        elif board == "xk_evk_xu316":
-            if config.startswith("1"):
-                prod_str = "XMOS xCORE (UAC1.0)"
-            elif config.startswith("2"):
-                prod_str = "XMOS xCORE (UAC2.0)"
-        else:
-            pytest.fail(f"Unrecognised board {board}")
+        self.winbuiltin = platform.system() == "Windows" and (config.startswith("1") or "_winbuiltin" in config)
 
         if board == "xk_216_mc":
             target = "XCORE-200-EXPLORER"
@@ -273,13 +226,24 @@ class AppUsbAudDut(UaDut):
 
         self.features = get_config_features(board, config)
 
-        if xflash==True and writeall==True:
+        if xflash and writeall:
             # writeall = True is a special case where we want to write the binary file produced from xflash -o <bin> directly to the device
             # This is needed if xflash -o <bin> is run with a different tools version before the test and the test is required to write the binary file
             # directly to the device
             fw_path = Path(fw_path).with_suffix(".bin") # The output of xflash -o is required to be saved in a file with the same name as the .xe but with a .bin extension
 
-        super().__init__(adapter_id, fw_path, self.features["pid"][0], prod_str, self.features["chan_i"], self.features["chan_o"], winbuiltin=winbuiltin, xflash=xflash, writeall=writeall, target=target)
+        super().__init__(adapter_id, fw_path, self.features["pid"][0], self.features["chan_i"], self.features["chan_o"], winbuiltin=self.winbuiltin, xflash=xflash, writeall=writeall, target=target)
+
+    def __enter__(self):
+        super().__enter__()
+
+        # DUT has enumerated, so can now set the required dev_name for xsig
+        if platform.system() == "Darwin":
+            self.dev_name = self.usb_name
+        elif platform.system() == "Windows":
+            self.dev_name = "ASIO4ALL v2" if self.winbuiltin else "XMOS USB Audio Device"
+
+        return self
 
 
 def get_xtag_dut(pytestconfig, board):

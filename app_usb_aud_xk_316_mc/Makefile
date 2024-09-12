@@ -97,27 +97,6 @@ INCLUDE_ONLY_IN_2SSi8o8xxxxxx =
 XCC_FLAGS_2SSi8o8xxxxxx = $(BUILD_FLAGS)        -DXUA_SYNCMODE=XUA_SYNCMODE_SYNC \
                                                 -DCODEC_MASTER=1
 
-ifneq ($(CONFIG),)
-BUILD_TEST_CONFIGS = 1
-endif
-
-BUILD_TEST_CONFIGS ?= 0
-ifeq ($(BUILD_TEST_CONFIGS),1)
-include configs_build.inc
-PARTIAL_TEST_CONFIGS = 1
-endif
-
-PARTIAL_TEST_CONFIGS ?= 0
-ifeq ($(PARTIAL_TEST_CONFIGS),1)
-include configs_partial.inc
-endif
-
-TEST_SUPPORT_CONFIGS ?= 0
-ifeq ($(TEST_SUPPORT_CONFIGS),1)
-include configs_test.inc
-endif
-
-
 #=============================================================================
 # The following part of the Makefile includes the common build infrastructure
 # for compiling XMOS applications. You should not need to edit below here.

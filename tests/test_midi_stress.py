@@ -64,7 +64,7 @@ def test_midi_loopback_stress(pytestconfig, board, config):
 
     features = get_config_features(board, config)
 
-    xsig_config = 'mc_midi_stress_8ch'
+    xsig_config = f'mc_midi_stress_{features["analogue_i"]}ch'
     xsig_config_path = Path(__file__).parent / "xsig_configs" / f"{xsig_config}.json"
 
     adapter_dut, adapter_harness = get_xtag_dut_and_harness(pytestconfig, board)

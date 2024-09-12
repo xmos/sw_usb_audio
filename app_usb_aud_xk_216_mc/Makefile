@@ -56,27 +56,6 @@ XCC_FLAGS_2AMi16o16xxxaax = $(BUILD_FLAGS)      -DXUA_ADAT_TX_EN=1 -DXUA_ADAT_RX
 INCLUDE_ONLY_IN_2AMi18o18mssaax =
 XCC_FLAGS_2AMi18o18mssaax = $(BUILD_FLAGS)      -DMIDI=1 -DXUA_ADAT_TX_EN=1 -DXUA_ADAT_RX_EN=1 -DXUA_SPDIF_TX_EN=1 -DXUA_SPDIF_RX_EN=1 -DMAX_FREQ=96000
 
-ifneq ($(CONFIG),)
-BUILD_TEST_CONFIGS = 1
-endif
-
-BUILD_TEST_CONFIGS ?= 0
-ifeq ($(BUILD_TEST_CONFIGS),1)
-include configs_build.inc
-PARTIAL_TEST_CONFIGS = 1
-endif
-
-PARTIAL_TEST_CONFIGS ?= 0
-ifeq ($(PARTIAL_TEST_CONFIGS),1)
-include configs_partial.inc
-endif
-
-TEST_SUPPORT_CONFIGS ?= 0
-ifeq ($(TEST_SUPPORT_CONFIGS),1)
-include configs_test.inc
-endif
-
-
 #=============================================================================
 # The following part of the Makefile includes the common build infrastructure
 # for compiling XMOS applications. You should not need to edit below here.
