@@ -130,6 +130,7 @@ pipeline {
             stage('Build Documentation') {
               steps {
                 dir("${REPO}") {
+                  sh 'ls -l ..'
                   warnError("Docs") {
                     buildDocs()
                   }

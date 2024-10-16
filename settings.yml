@@ -11,7 +11,7 @@ documentation:
   linkcheck_ignore_regex: ['']
   cognidox_part_number: XM-008854-UG
   doxygen_projects:
-    lib_xua:
+    sw_usb_audio:
       doxyfile_path: doc/Doxyfile.inc
   pdfs:
     doc/rst/sw_usb_audio.rst:
