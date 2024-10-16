@@ -131,8 +131,13 @@ pipeline {
               steps {
                 dir("${REPO}") {
                   sh 'ls -l ..'
-                  warnError("Docs") {
-                    buildDocs()
+                  createVenv("requirements.txt")
+                  withVenv() {
+                    sh 'pip install git+ssh://git@github.com/xmos/xmosdoc'
+                    sh 'xmosdoc'
+                    //warnError("Docs") {
+                    //  buildDocs()
+                    //}
                   }
                 } // dir("${REPO}")
               } // steps
