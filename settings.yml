@@ -1,0 +1,25 @@
+---
+lib_name: sw_usb_audio
+project: '{{lib_name}}'
+title: '{{lib_name}}: USB Audio reference designs'
+version: 8.1.0
+
+documentation:
+  exclude_patterns_path: doc/exclude_patterns.inc
+  substitutions_path: doc/substitutions.inc
+  root_doc: doc/rst/sw_usb_audio.rst
+  linkcheck_ignore_regex: ['']
+  cognidox_part_number: XM-008854-UG
+  doxygen_projects:
+    lib_xua:
+      doxyfile_path: doc/Doxyfile.inc
+  pdfs:
+    doc/rst/sw_usb_audio.rst:
+      pdf_title: '{{title}}'
+      pdf_filename: '{{lib_name}}_v{{version}}'
+    README.rst:
+      pdf_title: '{{title}} (README)'
+      pdf_filename: '{{lib_name}}_v{{version}}_readme'
+      pdf_short: yes
+software:
+  cognidox_part_number: XM-002775-SM

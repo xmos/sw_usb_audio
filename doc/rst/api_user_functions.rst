@@ -6,36 +6,28 @@ The following functions need to be defined by an application using the XMOS USB 
 External Audio Hardware Configuration Functions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. c:function:: void AudioHwInit(chanend ?c_codec)
+.. c:function:: void AudioHwInit()
 
    This function is called when the audio core starts after the
    device boots up and should initialize the external audio harware e.g. clocking, DAC, ADC etc
 
-   :param c_codec: An optional chanend that was original passed into
-                   :c:func:`audio` that can be used to communicate 
-                   with other cores.
-  
 
-.. c:function:: void AudioHwConfig(unsigned samFreq, unsigned mclk, chanend ?c_codec, unsigned dsdMode, unsigned sampRes_DAC, unsigned sampRes_ADC)
+.. c:function:: void AudioHwConfig(unsigned samFreq, unsigned mclk, unsigned dsdMode, unsigned sampRes_DAC, unsigned sampRes_ADC)
 
    This function is called when the audio core starts or changes
    sample rate. It should configure the extenal audio hardware to run at the specified
    sample rate given the supplied master clock frequency.
 
    :param samFreq: The sample frequency in Hz that the hardware should be configured to (in Hz).
-                   
+
    :param mclk: The master clock frequency that is required in Hz.
-   
-   :param c_codec: An optional chanend that was original passed into
-                   :c:func:`audio` that can be used to communicate 
-                   with other cores.
 
    :param dsdMode: Signifies if the audio hardware should be configured for DSD operation
 
    :param sampRes_DAC: The sample resolution of the DAC stream
-   
+
    :param sampRes_ADC: The sample resolution of the ADC stream
-  
+
 
 Audio Streaming Functions
 ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -45,7 +37,7 @@ The following functions can be optionally used by the design. They can be useful
 .. c:function:: void AudioStreamStart(void)
 
   This function is called when the audio stream from device to host
-  starts. 
+  starts.
 
 .. c:function:: void AudioStreamStop(void)
 

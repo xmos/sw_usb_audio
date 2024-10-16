@@ -1,3 +1,5 @@
+:orphan:
+
 XMOS USB Audio 2.0 Reference Design README
 ##########################################
 

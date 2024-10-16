@@ -1,3 +1,5 @@
+.. _usb_audio_hardware_platforms:
+
 USB Audio Hardware Platforms
 ============================
 

@@ -1,3 +1,5 @@
+:orphan:
+
 .. _usb_audio_sec_custom_defines_api:
 
 Custom Defines
@@ -18,72 +20,72 @@ System Feature Configuration
    * - Define
      - Description
      - Default
-     
-   * - ``INPUT`` 
+
+   * - ``INPUT``
      - Define for enabling audio input, in descriptors, buffering and
        so on.
-     - defined 
+     - defined
 
-   * - ``DFU`` 
+   * - ``DFU``
      - Define to enable DFU interface. Requires a custom driver for
-       Windows. 
-     - defined 
+       Windows.
+     - defined
 
-   * - ``DFU_CUSTOM_FLASH_DEVICE`` 
+   * - ``DFU_CUSTOM_FLASH_DEVICE``
      - Define to enable use of custom
-       flash device for DFU interface.  
-     - not defined 
+       flash device for DFU interface.
+     - not defined
 
-   * - ``MIDI`` 
-     - Define to enable MIDI input and output. 
-     - defined 
+   * - ``MIDI``
+     - Define to enable MIDI input and output.
+     - defined
 
-   * - ``CODEC_SLAVE`` 
+   * - ``CODEC_SLAVE``
      - If defined the CODEC acts as I2S slave
-       (and the XCORE Tile as master) otherwise the CODEC acts as master. 
-     - defined 
+       (and the XCORE Tile as master) otherwise the CODEC acts as master.
+     - defined
 
-   * - ``NUM_USB_CHAN_IN`` 
+   * - ``NUM_USB_CHAN_IN``
      - Number of audio channels the USB audio
-       interface has from host to the device. 
-     - 10 
+       interface has from host to the device.
+     - 10
 
-   * - ``NUM_USB_CHAN_OUT`` 
+   * - ``NUM_USB_CHAN_OUT``
      - Number of audio channels the USB audio
-       interface has from device to host. 
-     - 10 
+       interface has from device to host.
+     - 10
 
    * - ``MAX_FREQ``
      - Maximum frequency device runs at in Hz
      - 96000
 
-   * - ``I2S_CHANS_DAC`` 
+   * - ``I2S_CHANS_DAC``
      - Number of I2S audio channels output to the
-       codec. This must be a multiple of 2. 
-     - 8 
+       codec. This must be a multiple of 2.
+     - 8
 
-   * - ``I2S_CHANS_ADC`` 
+   * - ``I2S_CHANS_ADC``
      - Number of I2S audio channels input from the codec.
-       This must be a multiple of 2.  
-     - 8 
+       This must be a multiple of 2.
+     - 8
 
-   * - ``SPDIF`` 
+   * - ``SPDIF``
      - Define to Enable S/PDIF output.  If OUTPUT is not
        defined, zero-ed samples are emitted. The S/PDIF audio channels will
        be two channels immediately following ``I2S_CHANS_DAC``.
-     - defined 
+     - defined
 
-   * - ``SPDIF_RX`` 
+   * - ``SPDIF_RX``
      - Define to enable S/PDIF input.
-     - not defined 
+     - not defined
 
-   * - ``ADAT_RX`` 
+   * - ``ADAT_RX``
      - Define to enable ADAT input.
-     - not defined 
+     - not defined
 
-   * - ``MIXER`` 
+   * - ``MIXER``
      - Define to enable the MIXER.
-     - not defined 
+     - not defined
 
    * - ``MIN_VOLUME``
      - The minimum volume setting above -inf. This is a signed 8.8 fixed point
@@ -101,21 +103,21 @@ System Feature Configuration
      - 0x100
 
    * - ``MIN_MIXER_VOLUME``
-     - The minimum volume setting for the mixer unit above -inf. 
+     - The minimum volume setting for the mixer unit above -inf.
        This is a signed 8.8 fixed point
-       number that must be strictly greater than -128 (0x8000). 
+       number that must be strictly greater than -128 (0x8000).
      - 0x8080
 
    * - ``MAX_MIXER_VOLUME``
      -  The maximum volume setting for the mixer. This is a
-        signed 8.8 fixed point number. 
+        signed 8.8 fixed point number.
      -  0x0600
 
    * - ``VOLUME_RES_MIXER``
-     - The resolution of the volume control in db as a 8.8 fixed point number. 
+     - The resolution of the volume control in db as a 8.8 fixed point number.
      - 0x080
 
-   
+
 
 USB Device Configuration Options
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -133,25 +135,25 @@ USB Device Configuration Options
 
 
    * - ``VENDOR_ID``
-     - Vendor ID 
-     - (0x20B1) 
+     - Vendor ID
+     - (0x20B1)
 
-   * - ``PID_AUDIO_2`` 
-     - Product ID (Audio Class 2) 
-     - N/A 
+   * - ``PID_AUDIO_2``
+     - Product ID (Audio Class 2)
+     - N/A
 
-   * - ``PID_AUDIO_1`` 
-     - Product ID (Audio Class 1) 
-     - N/A 
+   * - ``PID_AUDIO_1``
+     - Product ID (Audio Class 1)
+     - N/A
 
-   * - ``BCD_DEVICE`` 
-     - Device release number in BCD form 
-     - N/A 
+   * - ``BCD_DEVICE``
+     - Device release number in BCD form
+     - N/A
 
-   * - ``VENDOR_STR`` 
-     - String identifying vendor 
-     - XMOS 
+   * - ``VENDOR_STR``
+     - String identifying vendor
+     - XMOS
 
-   * - ``SERIAL_STR`` 
-     - String identifying serial number 
-     - "0000" 
+   * - ``SERIAL_STR``
+     - String identifying serial number
+     - "0000"

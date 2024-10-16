@@ -5,11 +5,11 @@
 The xcore-200 Multi-Channel Audio Board
 ---------------------------------------
 
-An application of the USB audio framework is provided specifically for the hardware described in
-:ref:`usb_audio_sec_hw_216_mc` and is implemented on an xcore-200-series dual tile device.  The 
+An application of the USB audio framework is provided specifically for the XK_AUDIO_216_MC_AB hardware described in
+:ref:`usb_audio_hardware_platforms` and is implemented on an xcore-200-series dual tile device.  The
 related code can be found in ``app_usb_aud_xk_216_mc``.
 
-The design supports upto 8 channels of analogue audio input/output at sample-rates up to 192kHz 
+The design supports upto 8 channels of analogue audio input/output at sample-rates up to 192kHz
 (assuming the use of I2S). This can be further increased by utilising TDM. It also supports S/PDIF,
 ADAT and MIDI input and output aswell as the mixing functionalty of ``lib_xua``.
 
@@ -30,14 +30,14 @@ The design uses the following tasks:
 The software layout of the USB Audio 2.0 Reference Design running on the
 `xCORE.ai` device is shown in :ref:`usb_audio_x200_threads`.
 
-Each circle depicts a task running in a single core concurrently with the other tasks. The 
-lines show the communication between each task. 
+Each circle depicts a task running in a single core concurrently with the other tasks. The
+lines show the communication between each task.
 
 .. _usb_audio_x200_threads:
 
 .. figure:: images/threads-l2-crop.pdf
      :width: 90%
-     :align: center    
+     :align: center
 
      xcore-200 Multichannel Audio System/Core Diagram
 
@@ -48,7 +48,7 @@ Clocking and Clock Selection
 
 The board includes two options for master clock generation:
 
-    * A single oscillator with a Phaselink PLL to generate fixed 24.576MHz and 22.5792MHz 
+    * A single oscillator with a Phaselink PLL to generate fixed 24.576MHz and 22.5792MHz
       master-clocks
     * A Cirrus Logic CS2100 clock multiplier allowing the master clock to be generated from a
       XCore derived reference.
@@ -58,12 +58,12 @@ The master clock source is controlled by a mux which, in turn, is controlled by 
 .. list-table:: Master Clock Source Selection
    :header-rows: 1
    :widths: 20 80
-  
+
    * - Value
      - Source
-   * - 0 
+   * - 0
      - Master clock is sourced from PhaseLink PLL
-   * - 1     
+   * - 1
      - Master clock is source from Cirrus Clock Multiplier
 
 The clock-select from the phaselink part is controlled via bit 7 of `PORT 8C`:
@@ -71,19 +71,19 @@ The clock-select from the phaselink part is controlled via bit 7 of `PORT 8C`:
 .. list-table:: Master Clock Frequency Select
    :header-rows: 1
    :widths: 20 80
-  
+
    * - Value
      - Frequency
-   * - 0 
+   * - 0
      - 24.576MHz
-   * - 1     
+   * - 1
      - 22.579MHz
 
 DAC and ADC Configuration
 +++++++++++++++++++++++++
 
 The board is equipped with a single multi-channel audio DAC (Cirrus Logic CS4384) and a single
-multi-channel ADC (Cirrus Logic CS5368) giving 8 channels of analogue output and 8 channels of 
+multi-channel ADC (Cirrus Logic CS5368) giving 8 channels of analogue output and 8 channels of
 analogue input.
 
 Configuration of both the DAC and ADC takes place using I2C.  The design uses
@@ -94,7 +94,7 @@ The reset lines of the DAC and ADC are connected to bits 1 and 6 of `PORT 8C` re
 AudioHwInit()
 +++++++++++++
 
-The :c:func:`AudioHwInit()` function is implemented to perform the following: 
+The :c:func:`AudioHwInit()` function is implemented to perform the following:
 
     * Initialise the I2C master software module
     * Puts the audio hardware into reset
@@ -104,7 +104,7 @@ The :c:func:`AudioHwInit()` function is implemented to perform the following:
 AudioHwConfig()
 +++++++++++++++
 
-The :c:func:`AudioHwConfig()` function is called on every sample frequency change. 
+The :c:func:`AudioHwConfig()` function is called on every sample frequency change.
 
 The :c:func:`AudioHwConfig` function first puts the both the DAC and ADC into reset by
 setting *P8C[1]* and *P8C[6]* low. It then selects the required master clock and keeps both the
@@ -136,7 +136,7 @@ The build configuration naming scheme employed in the makefile is shown in :ref:
 .. list-table:: Build config naming scheme
    :header-rows: 1
    :widths: 20 80 80
-  
+
    * - Feature
      - Option 1
      - Option 2
@@ -149,7 +149,7 @@ The build configuration naming scheme employed in the makefile is shown in :ref:
    * - I2S Role
      - slave: S
      - master: M
-   * - Input 
+   * - Input
      - enabled: i (channel count)
      - disabled: x
    * - Output
@@ -174,7 +174,7 @@ The build configuration naming scheme employed in the makefile is shown in :ref:
      - enabled: d
      - disabled: x
 
-e.g. A build configuration named 2AMi10o10xsxxxx would signify: Audio class 2.0 running in asynchronous mode. `xCORE` is 
+e.g. A build configuration named 2AMi10o10xsxxxx would signify: Audio class 2.0 running in asynchronous mode. `xCORE` is
 I2S master. Input and output enabled (10 channels each), no MIDI, S/PDIF input, no S/PDIF output, no ADAT or DSD.
 
 In addition to this some terms may be appended onto a build configuration name to signify additional options. For
