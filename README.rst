@@ -152,7 +152,7 @@ USB Audio Class 2.0
 
 - macOS version 10.6 or later
 - Windows 10 or 11 with built-in USB Audio Class 2.0 driver.
-- Windows 10 or 11 using built-in or Thesycon Audio Class 2.0 driver for Windows (Tested against version 5.5)
+- Windows 10 or 11 using built-in or Thesycon Audio Class 2.0 driver for Windows (Tested against version 5.70.0)
 
 In Field Firmware Upgrade
 =========================

@@ -132,7 +132,6 @@ pipeline {
                 dir("${REPO}") {
                   warnError("Docs") {
                     buildDocs()
-                    }
                   }
                 } // dir("${REPO}")
               } // steps
@@ -144,8 +143,8 @@ pipeline {
             }
           } // post
         }  // stage('legacy xmake build + build documentation')
-      }
-    }  // Build
+      } // parallel
+    }  // stage('Build') 
 
     stage('Regression Test') {
       parallel {
