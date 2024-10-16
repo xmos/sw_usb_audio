@@ -1,4 +1,4 @@
-@Library('xmos_jenkins_shared_library@v0.27.0') _
+@Library('xmos_jenkins_shared_library@v0.34.0') _
 
 // Get XCommon CMake.
 // This is required for compiling a factory image for a DFU test using tools 15.2.1
@@ -144,7 +144,7 @@ pipeline {
           } // post
         }  // stage('legacy xmake build + build documentation')
       } // parallel
-    }  // stage('Build') 
+    }  // stage('Build')
 
     stage('Regression Test') {
       parallel {
