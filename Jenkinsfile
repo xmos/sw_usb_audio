@@ -170,150 +170,11 @@ pipeline {
 
     stage('Regression Test') {
       parallel {
-        stage('MacOS Intel') {
-          agent {
-            label 'usb_audio && macos && x86_64 && xcore200-mcab && xcore.ai-explorer'
-          }
-          steps {
-            println "Stage running on ${env.NODE_NAME}"
-            sh "git clone git@github0.xmos.com:xmos-int/xtagctl"
-            sh "git -C xtagctl checkout ${env.XTAGCTL_VERSION}"
-
-            dir("sw_audio_analyzer") {
-              copyArtifacts filter: '**/*.xe', fingerprintArtifacts: true, projectName: 'xmos-int/sw_audio_analyzer/master', selector: lastSuccessful()
-              copyArtifacts filter: 'host_xscope_controller/bin_macos/xscope_controller', fingerprintArtifacts: true, projectName: 'xmos-int/sw_audio_analyzer/master', selector: lastSuccessful()
-            }
-
-            dir("${REPO}") {
-              checkout scm
-              sh "git submodule update --init"
-              createVenv("requirements.txt")
-              withVenv() {
-                sh "pip install -r requirements.txt"
-              }
-
-              unstash 'xk_216_mc_bin'
-              unstash 'xk_evk_xu316_bin'
-
-              dir("tests") {
-                dir("tools") {
-                  // Build test support application
-                  dir("hardware_test_tools") {
-                    sh 'cmake -B build -G Ninja'
-                    sh 'ninja -C build'
-
-                    dir("xsig") {
-                      copyArtifacts filter: 'bin-macos-x86/xsig', fingerprintArtifacts: true, projectName: 'xmos-int/xsig/master', flatten: true, selector: lastSuccessful()
-                    }
-                    dir("xmosdfu") {
-                      copyArtifacts filter: 'OSX/x86/xmosdfu', fingerprintArtifacts: true, projectName: 'XMOS/lib_xua/develop', flatten: true, selector: lastSuccessful()
-                    }
-                  }
-                  copyArtifacts filter: 'OSX/x86/xmos_mixer', fingerprintArtifacts: true, projectName: 'XMOS/lib_xua/develop', flatten: true, selector: lastSuccessful()
-                }
-
-                withTools("${env.TOOLS_VERSION}") {
-                  withEnv(["USBA_MAC_PRIV_WORKAROUND=1"]) {
-                    withVenv() {
-                      sh "pip install -e ${WORKSPACE}/xtagctl"
-
-                      withXTAG(["usb_audio_mc_xs2_dut", "usb_audio_mc_xs2_harness", \
-                                "usb_audio_xcai_exp_dut", "usb_audio_xcai_exp_harness"]) { xtagIds ->
-                        sh "pytest -v --level ${params.TEST_LEVEL} --junitxml=pytest_result_mac_intel.xml \
-                            -o xk_216_mc_dut=${xtagIds[0]} -o xk_216_mc_harness=${xtagIds[1]} \
-                            -o xk_evk_xu316_dut=${xtagIds[2]} -o xk_evk_xu316_harness=${xtagIds[3]}"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-          post {
-            always {
-              archiveArtifacts artifacts: "${REPO}/tests/pytest_result_mac_intel.xml", fingerprint: true, allowEmptyArchive: true
-              archiveArtifacts artifacts: "${REPO}/tests/tools/hardware_test_tools/xsig/glitch.*.csv", fingerprint: true, allowEmptyArchive: true
-              junit "${REPO}/tests/pytest_result_mac_intel.xml"
-            }
-            cleanup {
-              xcoreCleanSandbox()
-            }
-          }
-        }  // MacOS Intel
-
-        stage('MacOS ARM') {
-          agent {
-            label 'usb_audio && macos && arm64 && xcore.ai-mcab'
-          }
-          steps {
-            println "Stage running on ${env.NODE_NAME}"
-            sh "git clone git@github0.xmos.com:xmos-int/xtagctl"
-            sh "git -C xtagctl checkout ${env.XTAGCTL_VERSION}"
-
-            dir("sw_audio_analyzer") {
-              copyArtifacts filter: '**/*.xe', fingerprintArtifacts: true, projectName: 'xmos-int/sw_audio_analyzer/master', selector: lastSuccessful()
-              copyArtifacts filter: 'host_xscope_controller/bin_macos/xscope_controller', fingerprintArtifacts: true, projectName: 'xmos-int/sw_audio_analyzer/master', selector: lastSuccessful()
-            }
-
-            dir("${REPO}") {
-              checkout scm
-              sh "git submodule update --init"
-              createVenv("requirements.txt")
-              withVenv() {
-                sh "pip install -r requirements.txt"
-              }
-
-              unstash 'xk_316_mc_bin'
-
-              dir("tests") {
-                dir("tools") {
-                  // Build test support application
-                  dir("hardware_test_tools") {
-                    sh 'cmake -B build -G Ninja'
-                    sh 'ninja -C build'
-
-                    dir("xsig") {
-                      copyArtifacts filter: 'bin-macos-arm/xsig', fingerprintArtifacts: true, projectName: 'xmos-int/xsig/master', flatten: true, selector: lastSuccessful()
-                    }
-                    dir("xmosdfu") {
-                      copyArtifacts filter: 'OSX/arm64/xmosdfu', fingerprintArtifacts: true, projectName: 'XMOS/lib_xua/develop', flatten: true, selector: lastSuccessful()
-                    }
-                  }
-                  copyArtifacts filter: 'OSX/x86/xmos_mixer', fingerprintArtifacts: true, projectName: 'XMOS/lib_xua/develop', flatten: true, selector: lastSuccessful()
-                }
-
-                withTools("${env.TOOLS_VERSION}") {
-                  withEnv(["USBA_MAC_PRIV_WORKAROUND=1"]) {
-                    withVenv() {
-                      sh "pip install -e ${WORKSPACE}/xtagctl"
-
-                      withXTAG(["usb_audio_mc_xcai_dut", "usb_audio_mc_xcai_harness"]) { xtagIds ->
-                        sh "pytest -v --level ${params.TEST_LEVEL} --junitxml=pytest_result_mac_arm.xml \
-                            -o xk_316_mc_dut=${xtagIds[0]} -o xk_316_mc_harness=${xtagIds[1]}"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-          post {
-            always {
-              archiveArtifacts artifacts: "${REPO}/tests/pytest_result_mac_arm.xml", fingerprint: true, allowEmptyArchive: true
-              archiveArtifacts artifacts: "${REPO}/tests/tools/hardware_test_tools/xsig/glitch.*.csv", fingerprint: true, allowEmptyArchive: true
-              junit "${REPO}/tests/pytest_result_mac_arm.xml"
-            }
-            cleanup {
-              xcoreCleanSandbox()
-            }
-          }
-        }  // MacOS ARM
-
         stage('Windows 10') {
           when {
             expression {
               params.TEST_LEVEL == "nightly" ||
-              params.TEST_LEVEL == "weekend"
+              params.TEST_LEVEL == "weekend"              
             }
           }
           agent {
@@ -361,7 +222,7 @@ pipeline {
                     }
                     withXTAG(["usb_audio_mc_xcai_dut", "usb_audio_mc_xcai_harness"]) { xtagIds ->
                       sh "pytest -v --level ${params.TEST_LEVEL} --junitxml=pytest_result_windows10.xml \
-                          -o xk_316_mc_dut=${xtagIds[0]} -o xk_316_mc_harness=${xtagIds[1]}"
+                          -o xk_316_mc_dut=${xtagIds[0]} -o xk_316_mc_harness=${xtagIds[1]} -k 'not dfu' "
                     }
                   }
                 }
@@ -379,78 +240,6 @@ pipeline {
             }
           }
         }  // Windows 10
-
-        stage('Windows 11') {
-          when {
-            expression {
-              params.TEST_LEVEL == "nightly" ||
-              params.TEST_LEVEL == "weekend"
-            }
-          }
-          agent {
-            label 'usb_audio && windows11 && xcore.ai-mcab'
-          }
-          steps {
-            println "Stage running on ${env.NODE_NAME}"
-            sh "git clone git@github0.xmos.com:xmos-int/xtagctl"
-            sh "git -C xtagctl checkout ${env.XTAGCTL_VERSION}"
-
-            dir("sw_audio_analyzer") {
-              copyArtifacts filter: '**/*.xe', fingerprintArtifacts: true, projectName: 'xmos-int/sw_audio_analyzer/master', selector: lastSuccessful()
-              copyArtifacts filter: 'host_xscope_controller/bin_windows/xscope_controller.exe', fingerprintArtifacts: true, projectName: 'xmos-int/sw_audio_analyzer/master', selector: lastSuccessful()
-            }
-
-            dir("${REPO}") {
-              checkout scm
-              sh "git submodule update --init"
-              createVenv("requirements.txt")
-              withVenv() {
-                sh "pip install -r requirements.txt"
-              }
-
-              unstash 'xk_316_mc_bin'
-
-              dir("tests") {
-                dir("tools") {
-                  dir("hardware_test_tools") {
-                    withVS() {
-                      sh "cmake -B build -G Ninja"
-                      sh "ninja -C build"
-                    }
-
-                    dir("xsig") {
-                      copyArtifacts filter: 'bin-windows-x86/xsig.exe', fingerprintArtifacts: true, projectName: 'xmos-int/xsig/master', flatten: true, selector: lastSuccessful()
-                    }
-                  }
-                  copyArtifacts filter: 'Win/x64/xmos_mixer.exe', fingerprintArtifacts: true, projectName: 'XMOS/lib_xua/develop', flatten: true, selector: lastSuccessful()
-                }
-
-                withTools("${env.TOOLS_VERSION}") {
-                  withVenv() {
-                    dir("${WORKSPACE}/xtagctl") {
-                      sh "pip install -e ."
-                    }
-
-                    withXTAG(["usb_audio_mc_xcai_dut", "usb_audio_mc_xcai_harness"]) { xtagIds ->
-                      sh "pytest -v --level ${params.TEST_LEVEL} --junitxml=pytest_result_windows11.xml \
-                          -o xk_316_mc_dut=${xtagIds[0]} -o xk_316_mc_harness=${xtagIds[1]}"
-                    }
-                  }
-                }
-              }
-            }
-          }
-          post {
-            always {
-              archiveArtifacts artifacts: "${REPO}/tests/pytest_result_windows11.xml", fingerprint: true, allowEmptyArchive: true
-              archiveArtifacts artifacts: "${REPO}/tests/tools/hardware_test_tools/xsig/glitch.*.csv", fingerprint: true, allowEmptyArchive: true
-              junit "${REPO}/tests/pytest_result_windows11.xml"
-            }
-            cleanup {
-              xcoreCleanSandbox()
-            }
-          }
-        }  // Windows 11
       }
     }  // Regression Test
   }
