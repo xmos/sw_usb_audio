@@ -178,7 +178,7 @@ pipeline {
             }
           }
           agent {
-            label 'usb_audio && windows10 && xcore.ai-mcab'
+            label 'sw-hw-usba-win2'
           }
           steps {
             println "Stage running on ${env.NODE_NAME}"
