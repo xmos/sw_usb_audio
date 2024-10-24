@@ -130,9 +130,11 @@ pipeline {
 
             stage('Library checks') {
               steps {
-                warnError("libchecks") {
-                  runLibraryChecks("${WORKSPACE}/${REPO}", "v2.0.1")
-                } // warnError("libchecks")
+                withTools("${env.TOOLS_VERSION}") {
+                  warnError("libchecks") {
+                    runSwrefChecks("${WORKSPACE}/${REPO}", "v2.0.1")
+                  } // warnError("libchecks")
+                } // withTools("${env.TOOLS_VERSION}")
               } // steps
             } // stage('Library checks')
 
