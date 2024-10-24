@@ -1,4 +1,5 @@
-# Copyright (c) 2024, XMOS Ltd, All rights reserved
+# Copyright 2024 XMOS LIMITED.
+# This Software is subject to the terms of the XMOS Public Licence: Version 1.
 import pytest
 
 from conftest import get_config_features, AppUsbAudDut, get_xtag_dut

@@ -17,7 +17,7 @@ The complete source code, together with the free XMOS XTC development tools and 
 multi-core micro-controller devices, allow the developer to select the exact mix of interfaces
 and processing required.
 
-The XMOS USB Audio solution is deployed as a framework (see ``lib_xua``) with reference design
+The XMOS USB Audio solution is deployed as a framework (see `lib_xua <https://www.xmos.com/file/lib_xua>`_) with reference design
 applications extending and customising this framework. These reference designs have particular
 qualified feature sets and an accompanying reference hardware platform.
 
