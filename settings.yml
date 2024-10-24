@@ -2,7 +2,7 @@
 lib_name: sw_usb_audio
 project: '{{lib_name}}'
 title: '{{lib_name}}: USB Audio reference designs'
-version: 8.1.0
+version: 9.0.0
 
 documentation:
   exclude_patterns_path: doc/exclude_patterns.inc

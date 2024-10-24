@@ -4,7 +4,7 @@ sw_usb_audio: USB Audio reference designs
 #########################################
 
 :vendor: XMOS
-:version: 8.1.0
+:version: 9.0.0
 :scope: General Use
 :description: USB Audio reference designs
 :category: General Purpose
