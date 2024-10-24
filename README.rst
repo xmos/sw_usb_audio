@@ -1,18 +1,41 @@
 :orphan:
 
-XMOS USB Audio 2.0 Reference Design README
-##########################################
+sw_usb_audio: USB Audio reference designs
+#########################################
 
-:Version: 8.1.0
-:Vendor: XMOS
+:vendor: XMOS
+:version: 8.1.0
+:scope: General Use
+:description: USB Audio reference designs
+:category: General Purpose
+:keywords: USB Audio, DFU
+:devices: xcore.ai, xcore-200
 
-Please note, Alpha and Beta releases may not accurately reflect the final release and documentation may not be complete. These early releases are not suitable for a production context, and are provided for evaluation purposes only. See 'Release Quality & QA'.
+********
+Overview
+********
+
+The XMOS USB Audio solution provides *USB Audio Class* compliant devices over USB 2.0 (high-speed
+or full-speed). Based on the XMOS xcore-200 (XS2) and xcore.ai (XS3) architectures, it supports USB
+Audio Class 2.0 and USB Audio Class 1.0, asynchronous mode (synchronous as an option) and sample
+rates up to 384kHz.
+
+The complete source code, together with the free XMOS XTC development tools and xCORE
+multi-core micro-controller devices, allow the developer to select the exact mix of interfaces
+and processing required.
+
+The XMOS USB Audio solution is deployed as a framework (see `lib_xua <https://www.xmos.com/file/lib_xua>`__) with reference design
+applications extending and customising this framework. These reference designs have particular
+qualified feature sets and an accompanying reference hardware platform.
+
+Please note, Alpha and Beta releases may not accurately reflect the final release and documentation may not be complete.
+These early releases are not suitable for a production context, and are provided for evaluation purposes only. See 'Release Quality & QA'.
 
 Please see CHANGELOG.rst for detailed change listing.
 
 For full software documentation please see the USB Audio User Guide document.
 
-This release is built and tested using version 15.2.1 of the XMOS tool set.  Build or functionality issues could be experienced with any other version.
+This release is built and tested using version 15.3.0 of the XMOS tool set.  Build or functionality issues could be experienced with any other version.
 
 This repository contains applications (or instances) of the XMOS USB Audio Reference Design framework.  These applications
 typically relate to a specific hardware platform.  This repository contains the following:
@@ -32,15 +55,16 @@ Please refer to individual README files in these apps for more detailed informat
 Each application contains a "core" folder, this folder contains items that are required to use and run the USB Audio application framework.
 Mandatory files per application include:
 
-- An XN file describing the board including required port defines. The XN file is referenced in the application makefile.
+- An XN file describing the board including required port defines.
 - xua_conf.h header file containing configuration items such as channel count, strings etc.
 
 Each application also contains an "extensions" folder which includes board specific extensions such as CODEC configuration etc.
 
 Additionally some options are contained in Makefiles for building multiple configurations of an application. For example an application may provide configurations with and without MIDI enabled.  See the USB Audio Software User Guide for full details.
 
-Key Features
-============
+********
+Features
+********
 
 Key features of the various applications in this repository are listed below.  Please refer to the application README the specific feature set supported by that application.
 
@@ -75,7 +99,7 @@ Key features of the various applications in this repository are listed below.  P
 Note, not all features may be supported at all sample frequencies, simultaneously or on all devices.  Some features also require specific host driver support.
 
 Release Quality & QA
-====================
+--------------------
 
 +---------------------------+--------------------------+
 | Feature                   | Quality                  |
@@ -108,9 +132,12 @@ Release Quality & QA
 +---------------------------+--------------------------+
 | HID Controls              | Beta                     |
 +---------------------------+--------------------------+
+| DFU                       | Release                  |
++---------------------------+--------------------------+
 
+************
 Known Issues
-============
+************
 
 General known issues with this release are listed below.  For board/application specific known issues please see README in relevant app directory
 
@@ -138,49 +165,66 @@ General known issues with this release are listed below.  For board/application 
 
 -  Compatibility issues exist with the Microsoft built in UAC1.0 driver (usbaudio.sys) and Intel Smart Sound Technology (SST) can result in audible distortions. This can be worked around by disabling the SST driver.
 
+
+****************
+Development repo
+****************
+
+  * `sw_usb_audio <https://www.github.com/xmos/sw_usb_audio>`_
+
+************************
 Host System Requirements
-========================
+************************
 
 USB Audio Class 1.0
--------------------
+===================
 
 - macOS version 10.6 or later
 - Windows 10 or 11 with built-in USB Audio Class 1.0 driver.
 
 USB Audio Class 2.0
--------------------
+===================
 
 - macOS version 10.6 or later
 - Windows 10 or 11 with built-in USB Audio Class 2.0 driver.
-- Windows 10 or 11 using built-in or Thesycon Audio Class 2.0 driver for Windows (Tested against version 5.70.0)
+- Windows 10 or 11 using built-in or Thesycon Audio Class 2.0 driver for Windows (Tested against version Thesycon driver version 5.70.0)
 
-In Field Firmware Upgrade
-=========================
+**************
+Required Tools
+**************
 
-The firmware provides a Device Firmware Upgrade (DFU) interface compliant to the USB DFU Device Class.  An example host application is provided for OSX.  See README in example application for usage.  The Thesycon USB Audio Class 2.0 driver for Windows provides DFU functionality and includes an example application.
+  * XMOS XTC Tools: 15.3.0
 
-Required Software (dependencies)
-================================
 
-  * lib_sw_pll (www.github.com/xmos/lib_sw_pll)
-  * lib_xua (www.github.com/xmos/lib_xua)
-  * lib_adat (www.github.com/xmos/lib_adat)
-  * lib_locks (www.github.com/xmos/lib_locks)
-  * lib_logging (www.github.com/xmos/lib_logging)
-  * lib_mic_array (www.github.com/xmos/lib_mic_array)
-  * lib_xassert (www.github.com/xmos/lib_xassert)
-  * lib_dsp (www.github.com/xmos/lib_dsp)
-  * lib_spdif (www.github.com/xmos/lib_spdif)
-  * lib_xud (www.github.com/xmos/lib_xud)
-  * lib_i2c (www.github.com/xmos/lib_i2c)
-  * lib_i2s (www.github.com/xmos/lib_i2s)
+*********************************
+Required Libraries (dependencies)
+*********************************
 
-Documentation
-=============
+  * `lib_sw_pll <https://www.xmos.com/file/lib_sw_pll>`_
+  * `lib_xua <https://www.xmos.com/file/lib_xua>`_
+  * `lib_adat <https://www.xmos.com/file/lib_adat>`_
+  * `lib_locks <https://www.xmos.com/file/lib_locks>`_
+  * `lib_logging <https://www.xmos.com/file/lib_logging>`_
+  * `lib_mic_array <https://www.xmos.com/file/lib_mic_array>`_
+  * `lib_xassert <https://www.xmos.com/file/lib_xassert>`_
+  * `lib_xcore_math <https://www.xmos.com/file/lib_xcore_math>`_
+  * `lib_spdif <https://www.xmos.com/file/lib_spdif>`_
+  * `lib_xud <https://www.xmos.com/file/lib_xud>`_
+  * `lib_i2c <https://www.xmos.com/file/lib_i2c>`_
+  * `lib_i2s <https://www.xmos.com/file/lib_i2s>`_
 
-You can find the documentation for this software in the /doc directory of the package.
 
+*************************
+Related Application Notes
+*************************
+
+  * AN02019: Using Device Firmware Upgrade (DFU) for USB Audio
+  * AN00136: Example USB Vendor Specific Device
+  * AN02026: Blocked DSP inside USB Audio
+  * AN01009: Optimizing USB Audio for stereo output, battery powered devices
+
+*******
 Support
-=======
+*******
 
-This package is supported by XMOS Ltd. Issues can be raised against the software at: http://www.xmos.com/support
+This package is supported by XMOS Ltd. Issues can be raised against the software at http://www.xmos.com/support
