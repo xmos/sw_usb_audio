@@ -1,3 +1,5 @@
+// Copyright 2014-2024 XMOS LIMITED.
+// This Software is subject to the terms of the XMOS Public Licence: Version 1.
 #include <platform.h>
 #include <xs1_su.h>
 #include "app_usb_aud_xk_216_mc.h"

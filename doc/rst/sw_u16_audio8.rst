@@ -1,11 +1,13 @@
 
+:orphan:
+
 .. _usb_audio_sec_u16_audio8_sw:
 
 The U-Series Multi-Channel USB Audio Kit
 ----------------------------------------
 
 An application of the USB audio framework is provideed specifically for the hardware described in
-:ref:`usb_audio_sec_hw_u16_audio8` and is implemented on the U-Series dual tile device (1000MIPS).  
+:ref:`usb_audio_sec_hw_u16_audio8` and is implemented on the U-Series dual tile device (1000MIPS).
 The application assumes a standard USB B socket (i.e. USB device) is provided as the USB connectivity
 method.  The related code can be found in `app_usb_aud_u16_audio8`.
 
@@ -21,19 +23,19 @@ The design supports 10 channels channels of audio input and output at sample fre
  * S/PDIF Transmitter
  * MIDI
 
-The software layout is the identical to the single tile L-Series Multi-channel Reference Design 
-and therefore the diagram :ref:`usb_audio_l2_threads` shows the software arrangement of the code 
+The software layout is the identical to the single tile L-Series Multi-channel Reference Design
+and therefore the diagram :ref:`usb_audio_l2_threads` shows the software arrangement of the code
 running on the XS1-U chip.
 
-As with the L-Series, each unit runs in a single core concurrently with the others units. The 
-lines show the communication between each functional unit. 
+As with the L-Series, each unit runs in a single core concurrently with the others units. The
+lines show the communication between each functional unit.
 
 Clocking and Clock Selection
 +++++++++++++++++++++++++++++
 
 The XA-SK-AUDIO8 double-slot slice includes two options for master clock generation:
 
-    * A single oscillator with a Phaselink PLL to generate fixed 24.576MHz and 22.5792MHz 
+    * A single oscillator with a Phaselink PLL to generate fixed 24.576MHz and 22.5792MHz
       master-clocks
     * A Cirrus Logic CS2100 clock multiplier allowing the master clock to be generated from a
       XCore derived reference.
@@ -43,12 +45,12 @@ The master clock source is controlled by a mux which, in turn, is controlled by 
 .. list-table:: Master Clock Source Selection
    :header-rows: 1
    :widths: 20 80
-  
+
    * - Value
      - Source
-   * - 0 
+   * - 0
      - Master clock is sourced from PhaseLink PLL
-   * - 1     
+   * - 1
      - Master clock is source from Cirrus Clock Multiplier
 
 The current version of the supplied application only supports the use of the fixed master-clocks
@@ -59,19 +61,19 @@ The clock-select from the phaselink part is controlled via bit 2 of `PORT 4E`:
 .. list-table:: Master Clock Frequency Select
    :header-rows: 1
    :widths: 20 80
-  
+
    * - Value
      - Frequency
-   * - 0 
+   * - 0
      - 24.576MHz
-   * - 1     
+   * - 1
      - 22.579MHz
 
 DAC and ADC Configuration
 +++++++++++++++++++++++++
 
 The board is equipped with a single multi-channel audio DAC (Cirrus Logic CS4384) and a single
-multi-channel ADC (Cirrus Logic CS5368) giving 8 channels of analogue output and 8 channels of 
+multi-channel ADC (Cirrus Logic CS5368) giving 8 channels of analogue output and 8 channels of
 analogue input.
 
 Configuration of both the DAC and ADC takes place using I2C.  The design uses the I2C component `sc_i2c <http://www.github.com/xcore/sc_i2c>`_.
@@ -81,7 +83,7 @@ The reset lines of the DAC and ADC are connected to bits 0 and 1 of `PORT 4E` re
 AudioHwInit()
 +++++++++++++
 
-The :c:func:`AudioHwInit()` function is implemented to perform the following: 
+The :c:func:`AudioHwInit()` function is implemented to perform the following:
 
     * Initialise the I2C master software module
     * Puts the audio hardware into reset
@@ -91,7 +93,7 @@ The :c:func:`AudioHwInit()` function is implemented to perform the following:
 AudioHwConfig()
 +++++++++++++++
 
-The :c:func:`AudioHwConfig()` function is called on every sample frequency change. 
+The :c:func:`AudioHwConfig()` function is called on every sample frequency change.
 
 The :c:func:`AudioHwConfig` function first puts the both the DAC and ADC into reset by
 setting *P4E[0]* and *P4E[1]* low. It then selects the required master clock and keeps both the
@@ -105,12 +107,12 @@ Validated Build Options
 +++++++++++++++++++++++
 
 The reference design can be built in several ways by changing the
-build options.  These are described in :ref:`sec_custom_defines_api`. 
+build options.  These are described in :ref:`sec_xua_conf_api`.
 
 The design has only been fully validated against the build options as set in the
 application as distributed.  See :ref:`usb_audio_sec_valbuild` for details and binary naming scheme.
 
-These fully validated build configurations are listed below. 
+These fully validated build configurations are listed below.
 In practise, due to the similarities between the U-Series and L-Series feature set, it is fully
 expected that all listed U-Series configurations will operate as expected on the L-Series and vice versa.
 

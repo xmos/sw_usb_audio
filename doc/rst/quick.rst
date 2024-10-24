@@ -1,21 +1,20 @@
+***********
 Quick Start
-===========
+***********
 
 .. warning::
 
     XMOS development boards are typically supplied with no firmware installed. The following steps explain how to
     install the latest firmware on the board and use it. Each step is explained in detail in the following sections.
 
-.. steps::
-
-   #. Download the latest **USB Audio 2.0 Device Software** release from :menuitem:`http://xmos.com, Applications, USB & Multi-Channel Audio`
-      and follow the `USB AUDIO SOFTWARE` link. Before you download the software review the licence and click **Accept** to initiate the download.
+   #. To download the latest **USB Audio 2.0 Device Software** release, go to http://www.xmos.com/develop/usb-multichannel-audio
+      and follow the `DOWNLOAD SOFTWARE` link. Before you download the software review the licence and click **Accept** to initiate the download.
 
       (Section :ref:`quick_start_firmware`.)
 
-   #. If using a Windows host computer, download the **USB Audio Class 2.0 Evaluation Driver for Windows** from
-      :menuitem:`http://xmos.com, Applications, USB & Multi-Channel Audio` and follow the `DRIVER SUPPORT` link
-      and click on `Download`. Once downloaded, run the executable and install the driver.
+   #. If using a Windows host computer, download the **USB Audio Class 2.0 Evaluation Driver for Windows**,
+      go to http://www.xmos.com/develop/usb-multichannel-audio, follow the `DRIVER SUPPORT` link, and click on `Download`.
+      Once downloaded, run the executable and install the driver.
 
       (Section :ref:`quick_start_windows_driver`.)
 
@@ -42,7 +41,7 @@ Quick Start
 .. _quick_start_firmware:
 
 USB Audio 2.0 Reference Software
---------------------------------
+================================
 
 The latest USB Audio 2.0 Reference Design software is available free of charge from XMOS.
 
@@ -52,9 +51,7 @@ http://www.xmos.com/
 
 To download the firmware:
 
-.. steps::
-
-   #. Go to :menuitem:`http://xmos.com, Applications, USB & Multi-Channel Audio` and follow the `USB AUDIO SOFTWARE` link.
+   #. Go to http://www.xmos.com/develop/usb-multichannel-audio and follow the `DOWNLOAD SOFTWARE` link
 
    #. Review the licence agreement and click **Accept**.
 
@@ -69,7 +66,7 @@ https://www.xmos.com/find-a-distributor/
 .. _quick_start_windows_driver:
 
 USB Audio Class 2.0 Evaluation Driver for Windows
----------------------------------------------------
+=================================================
 
 .. note::
 
@@ -105,7 +102,7 @@ http://www.xmos.com/published/usb-audio-20-stereo-driver-windows-overview
 .. _quick_start_tools:
 
 XMOS XTC Development Tools
---------------------------
+==========================
 
 The `XMOS XTC Tools` provide everything you need to develop applications for `xcore multicore microcontrollers` and can be downloaded,
 free of charge, from: http://www.xmos.com/software-tools.
@@ -139,7 +136,7 @@ Information on using the tools, including installation, is provided in the `XTC 
 .. _quick_start_building:
 
 Building the Firmware
----------------------
+=====================
 
 .. note::
 
@@ -168,7 +165,7 @@ This file specifies build configs, sources, build options and dependencies.
 .. _quick_start_running:
 
 Running the Firmware
---------------------
+====================
 
 Typically during development the developer wishes to program the device's internal RAM directly via JTAG and run then execute this program.
 
@@ -188,7 +185,7 @@ The device should now present itself as a USB Audio Device on the connected host
 It will continue to operate as a USB Audio Device until the target board is power cycled.
 
 Writing the Application Binary to Flash
----------------------------------------
+=======================================
 
 Optionally a binary can be programmed into the boot flash. To do this:
 
@@ -209,9 +206,7 @@ If subsequently you wish to use ``xrun`` to program the device it is always advi
 .. _quick_start_play_audio:
 
 Playing Audio
--------------
-
-.. steps::
+=============
 
     #. Connect the board to any power supply provided (note, some boards will be USB bus powered)
 
@@ -226,7 +221,7 @@ Playing Audio
     #. Start playing and recording.
 
 Next Steps
-----------
+==========
 
 Further information on using the board and the `XTC Tools` is available from:
 

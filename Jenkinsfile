@@ -1,4 +1,4 @@
-@Library('xmos_jenkins_shared_library@v0.27.0') _
+@Library('xmos_jenkins_shared_library@v0.34.0') _
 
 // Get XCommon CMake.
 // This is required for compiling a factory image for a DFU test using tools 15.2.1
@@ -17,8 +17,13 @@ pipeline {
     buildDiscarder(xmosDiscardBuildSettings(onlyArtifacts=true))
   }
   parameters {
-      choice(name: 'TEST_LEVEL', choices: ['smoke', 'nightly', 'weekend'],
-             description: 'The level of test coverage to run')
+    choice(name: 'TEST_LEVEL', choices: ['smoke', 'nightly', 'weekend'],
+            description: 'The level of test coverage to run')
+
+    string(
+      name: 'XMOSDOC_VERSION',
+      defaultValue: 'v6.1.2',
+      description: 'The xmosdoc version')
   }
   environment {
     REPO = 'sw_usb_audio'
@@ -96,77 +101,67 @@ pipeline {
           }
         }  // // (XCommon CMake) Build applications
 
-        stage('xmake Build applications') {
+        stage('legacy xmake build + build documentation + Library checks') {
           // Use XCommon CMake to fetch dependencies, but then build using legacy XCommon Makefiles
           agent {
             label 'linux && x86_64'
           }
-          steps {
-            println "Stage running on ${env.NODE_NAME}"
+          stages {
+            stage('legacy xmake build')
+            {
+              steps {
+                println "Stage running on ${env.NODE_NAME}"
 
-            dir("${REPO}") {
-              checkout scm
+                dir("${REPO}") {
+                  checkout scm
 
-              withTools("${env.TOOLS_VERSION}") {
-                // Fetch all dependencies using XCommon CMake
-                sh "cmake -G 'Unix Makefiles' -B build"
-                sh 'xmake -C app_usb_aud_xk_316_mc -j16'
-                sh 'xmake -C app_usb_aud_xk_216_mc -j16'
-                sh 'xmake -C app_usb_aud_xk_evk_xu316 -j16'
-                sh 'xmake -C app_usb_aud_xk_evk_xu316_extrai2s -j16'
-              }
-            }
-          }
-          post {
-            cleanup {
-              xcoreCleanSandbox()
-            }
-          }
-        }  // xmake Build applications
-
-        stage('Build documentation') {
-          agent {
-            label 'linux && x86_64'
-          }
-          steps {
-            println "Stage running on ${env.NODE_NAME}"
-
-            // Temporary: get repos for xdoc until this project switches to xmosdoc
-            sh "git clone -b swapps14 git@github.com:xmos/infr_scripts_pl"
-            sh "git clone -b feature/update_xdoc_3_3_0 git@github0.xmos.com:xmos-int/xdoc_released"
-
-            withAgentEnv() {
-              sh """#!/bin/bash
-                cd ${WORKSPACE}/infr_scripts_pl/Build
-                source SetupEnv
-                cd ${WORKSPACE}
-                Build.pl VIEW=apps DOMAINS=xdoc_released
-                """
-            }
-
-            dir("${REPO}") {
-              checkout scm
-
-              viewEnv {
-                withTools("${env.TOOLS_VERSION}") {
-                  sh "cmake -G 'Unix Makefiles' -B build"
-
-                  dir("doc") {
-                    sh 'xdoc xmospdf'
-                    archiveArtifacts artifacts: "pdf/*.pdf", fingerprint: true, allowEmptyArchive: false
+                  withTools("${env.TOOLS_VERSION}") {
+                    // Fetch all dependencies using XCommon CMake
+                    sh "cmake -G 'Unix Makefiles' -B build"
+                    sh 'xmake -C app_usb_aud_xk_316_mc -j16'
+                    sh 'xmake -C app_usb_aud_xk_216_mc -j16'
+                    sh 'xmake -C app_usb_aud_xk_evk_xu316 -j16'
+                    sh 'xmake -C app_usb_aud_xk_evk_xu316_extrai2s -j16'
                   }
+
                 }
-              }
-            }
-          }
+              } // steps
+            } // stage('legacy xmake build')
+
+            stage('Library checks') {
+              steps {
+                withTools("${env.TOOLS_VERSION}") {
+                  warnError("libchecks") {
+                    runSwrefChecks("${WORKSPACE}/${REPO}", "v2.0.1")
+                  } // warnError("libchecks")
+                } // withTools("${env.TOOLS_VERSION}")
+              } // steps
+            } // stage('Library checks')
+
+            stage('Build Documentation') {
+              steps {
+                dir("${REPO}") {
+                  sh 'ls -l ..'
+                  createVenv("requirements.txt")
+                  withVenv() {
+                    //sh 'pip install git+ssh://git@github.com/xmos/xmosdoc'
+                    //sh 'xmosdoc'
+                    warnError("Docs") {
+                      buildDocs(xmosdocVenvPath: "${REPO}")
+                    }
+                  }
+                } // dir("${REPO}")
+              } // steps
+            } // stage('Build Documentation')
+          } // stages
           post {
             cleanup {
               xcoreCleanSandbox()
             }
-          }
-        }  // Build documentations
-      }
-    }  // Build
+          } // post
+        }  // stage('legacy xmake build + build documentation')
+      } // parallel
+    }  // stage('Build')
 
     stage('Regression Test') {
       parallel {

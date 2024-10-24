@@ -1,5 +1,5 @@
 A Typical USB Audio Application
---------------------------------
+===============================
 
 This section provides a walk through of a typical USB Audio application. Where specific examples are required
 code is used from the application for `XK-AUDIO-316-MC` (``app_usb_aud_xk_316_mc``).
@@ -34,7 +34,7 @@ The ``core`` folder for each application contains:
 
 
 Lib_xua Configuration
-~~~~~~~~~~~~~~~~~~~~~
+---------------------
 
 The ``xua_conf.h`` file contains all the build-time ``#defines`` required to tailor framework provided by ``lib_xua``
 to the particular application at hand.  Typically these over-ride default values in ``xua_conf_default.h``
@@ -47,7 +47,7 @@ in this file may be the preferred option.
 
 Note that ``ifndef`` is used to check that the option is not already defined in the ``CMakeLists.txt``.
 
-.. literalinclude:: sw_usb_audio/app_usb_aud_xk_316_mc/src/core/xua_conf.h
+.. literalinclude:: ../../app_usb_aud_xk_316_mc/src/core/xua_conf.h
   :start-after: Defines relating to basic functionality
   :end-before: Defines relating to channel count
 
@@ -58,41 +58,41 @@ The total number of channels exposed to the USB host (set via ``NUM_USB_CHAN_OUT
 based on the audio interfaces enabled. Again, this is due to the multiple build configurations in the application ``CMakeLists.txt``
 and likely to be hard-coded for a product.
 
-.. literalinclude:: sw_usb_audio/app_usb_aud_xk_316_mc/src/core/xua_conf.h
+.. literalinclude:: ../../app_usb_aud_xk_316_mc/src/core/xua_conf.h
   :start-after: Defines relating to channel
   :end-before: Channel index of S/PDIF
 
 Channel indices/offsets are set based on the audio interfaces enabled. Channels are indexed from 0. Setting ``SPDIF_TX_INDEX`` to 0
 would cause the S/PDIF channels to duplicate analogue channels 0 and 1. Note, the offset for analogue channels is always 0.
 
-.. literalinclude:: sw_usb_audio/app_usb_aud_xk_316_mc/src/core/xua_conf.h
+.. literalinclude:: ../../app_usb_aud_xk_316_mc/src/core/xua_conf.h
   :start-after: Defines relating to channel arrangement
   :end-before: Defines relating to audio frequencies
 
 The file then sets some frequency related defines for the audio master clocks and the maximum sample-rate for the device.
 
-.. literalinclude:: sw_usb_audio/app_usb_aud_xk_316_mc/src/core/xua_conf.h
+.. literalinclude:: ../../app_usb_aud_xk_316_mc/src/core/xua_conf.h
   :start-after: Defines relating to audio frequencies
   :end-before: Defines relating to feature
 
 Due to the multi-tile nature of the `xCORE` architecture the framework needs to be informed as to which tile various interfaces
 should be placed on, for example USB, S/PDIF etc.
 
-.. literalinclude:: sw_usb_audio/app_usb_aud_xk_316_mc/src/core/xua_conf.h
+.. literalinclude:: ../../app_usb_aud_xk_316_mc/src/core/xua_conf.h
   :start-after: Defines relating to feature placement
   :end-before: Defines relating to USB descriptor
 
 The file also sets some defines for general USB ID's and strings. These are set for the XMOS reference design but vary per
 manufacturer:
 
-.. literalinclude:: sw_usb_audio/app_usb_aud_xk_316_mc/src/core/xua_conf.h
+.. literalinclude:: ../../app_usb_aud_xk_316_mc/src/core/xua_conf.h
   :start-after: Defines relating to USB descriptor
   :end-before: Board power source
 
 For a full description of all the defines that can be set in ``xua_conf.h`` see :ref:`sec_xua_conf_api`
 
 User Functions
-~~~~~~~~~~~~~~
+--------------
 
 In addition to the ``xua_conf.h`` file, the application needs to provide implementations of some overridable user
 functions in ``lib_xua`` to provide custom functionality.
@@ -112,14 +112,14 @@ The application also overrides ``UserAudioStreamStart()`` and ``UserAudioStreamS
 stream to the device is started or stopped respectively. The applications uses these functions to enable/disable the LEDs on the board
 based on whether an audio stream is present (input or output).
 
-.. literalinclude:: sw_usb_audio/app_usb_aud_xk_316_mc/src/extensions/audiostream.xc
+.. literalinclude:: ../../app_usb_aud_xk_316_mc/src/extensions/audiostream.xc
 
 .. note::
 
     A media player application may choose to keep an audio stream open and simply send zero data when paused.
 
 The Main Program
-~~~~~~~~~~~~~~~~
+----------------
 
 The ``main()`` function is the entry point to an application. In the `XMOS USB Audio Reference Design` software it is shared by all
 applications and is therefore part of the framework.
@@ -136,36 +136,36 @@ Full documentation can be found in ``lib_xua``.
 The first core run is a ``usb_audio_core`` task. This runs cores for the USB interface and buffering tasks for audio
 and endpoint buffering:
 
-.. literalinclude:: lib_xua/lib_xua/src/core/main.xc
+.. literalinclude:: ../../../lib_xua/lib_xua/src/core/main.xc
    :start-after: /* Core USB audio task
    :end-before: XUA_USB_EN
 
 This task runs various cores including one for the USB interfacing core (``XUD_Main()``):
 
-.. literalinclude:: lib_xua/lib_xua/src/core/main.xc
+.. literalinclude:: ../../../lib_xua/lib_xua/src/core/main.xc
    :start-after: /* USB interface core
-   :end-before: XUD_PWR_CFG
+   :end-before: ;
 
-The specification of the channel arrays connecting to this driver are described in :ref:`usb_audio_sec_component_api`.
+The specification of the channel arrays connecting to this driver are described in the documentation for lib_xud.
 
 The channels connected to ``XUD_Main()`` are passed to the ``XUA_Buffer()`` function which implements audio buffering and also
 buffering for other Endpoints.
 
-.. literalinclude:: lib_xua/lib_xua/src/core/main.xc
+.. literalinclude:: ../../../lib_xua/lib_xua/src/core/main.xc
    :start-after: /* Endpoint & audio buffering
    :end-before: //:
 
 A channel connects this buffering task to the audio driver which controls the I2S output. It also forwards and receives
 audio samples from other interfaces e.g. S/PDIF, ADAT, as required:
 
-.. literalinclude:: lib_xua/lib_xua/src/core/main.xc
+.. literalinclude:: ../../../lib_xua/lib_xua/src/core/main.xc
    :start-after: /* Audio I/O task
    :end-before: //:
 
 Finally, other task are create for various interfaces, for example, if MIDI is enabled a core is required to drive the MIDI input
 and output.
 
-.. literalinclude:: lib_xua/lib_xua/src/core/main.xc
+.. literalinclude:: ../../../lib_xua/lib_xua/src/core/main.xc
    :start-after: /* MIDI core */
    :end-before: #endif
 
