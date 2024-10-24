@@ -101,7 +101,7 @@ pipeline {
           }
         }  // // (XCommon CMake) Build applications
 
-        stage('legacy xmake build + build documentation') {
+        stage('legacy xmake build + build documentation + Library checks') {
           // Use XCommon CMake to fetch dependencies, but then build using legacy XCommon Makefiles
           agent {
             label 'linux && x86_64'
@@ -127,6 +127,15 @@ pipeline {
                 }
               } // steps
             } // stage('legacy xmake build')
+
+            stage('Library checks') {
+              steps {
+                warnError("libchecks") {
+                  runLibraryChecks("${WORKSPACE}/${REPO}", "v2.0.1")
+                } // warnError("libchecks")
+              } // steps
+            } // stage('Library checks')
+
             stage('Build Documentation') {
               steps {
                 dir("${REPO}") {
