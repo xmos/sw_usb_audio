@@ -7,6 +7,17 @@ def get_xcommon_cmake() {
   sh "git clone -b v1.3.0 git@github.com:xmos/xcommon_cmake"
 }
 
+def checkout_scm()
+{
+    checkout scm: [
+        $class: 'GitSCM',
+        branches: scm.branches,
+        userRemoteConfigs: scm.userRemoteConfigs,
+        extensions: [[$class: 'CloneOption', depth: 1, shallow: true, noTags: false]]
+    ]
+}
+
+
 getApproval()
 
 pipeline {
@@ -41,7 +52,7 @@ pipeline {
             get_xcommon_cmake()
 
             dir("${REPO}") {
-              checkout scm
+              checkout_scm()
 
               withTools("${env.PREV_TOOLS_VERSION}") {
                 withEnv(["XMOS_CMAKE_PATH=${WORKSPACE}/xcommon_cmake"]) {
@@ -105,7 +116,7 @@ pipeline {
             println "Stage running on ${env.NODE_NAME}"
 
             dir("${REPO}") {
-              checkout scm
+              checkout_scm()
 
               withTools("${env.TOOLS_VERSION}") {
                 // Fetch all dependencies using XCommon CMake
@@ -145,7 +156,7 @@ pipeline {
             }
 
             dir("${REPO}") {
-              checkout scm
+              checkout_scm()
 
               viewEnv {
                 withTools("${env.TOOLS_VERSION}") {
@@ -185,7 +196,7 @@ pipeline {
             }
 
             dir("${REPO}") {
-              checkout scm
+              checkout_scm()
               sh "git submodule update --init"
               createVenv("requirements.txt")
               withVenv() {
@@ -256,7 +267,7 @@ pipeline {
             }
 
             dir("${REPO}") {
-              checkout scm
+              checkout_scm()
               sh "git submodule update --init"
               createVenv("requirements.txt")
               withVenv() {
@@ -330,7 +341,7 @@ pipeline {
             }
 
             dir("${REPO}") {
-              checkout scm
+              checkout_scm()
               sh "git submodule update --init"
               createVenv("requirements.txt")
               withVenv() {
@@ -401,7 +412,7 @@ pipeline {
             }
 
             dir("${REPO}") {
-              checkout scm
+              checkout_scm()
               sh "git submodule update --init"
               createVenv("requirements.txt")
               withVenv() {
