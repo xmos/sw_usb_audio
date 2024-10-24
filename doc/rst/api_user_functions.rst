@@ -1,10 +1,10 @@
 Required User Function Definitions
-----------------------------------
+==================================
 
 The following functions need to be defined by an application using the XMOS USB Audio framework.
 
 External Audio Hardware Configuration Functions
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-----------------------------------------------
 
 .. c:function:: void AudioHwInit()
 
@@ -30,7 +30,7 @@ External Audio Hardware Configuration Functions
 
 
 Audio Streaming Functions
-~~~~~~~~~~~~~~~~~~~~~~~~~
+-------------------------
 
 The following functions can be optionally used by the design. They can be useful for mute lines etc.
 
@@ -44,7 +44,7 @@ The following functions can be optionally used by the design. They can be useful
   This function is called when the audio stream from device to host stops.
 
 Host Active
-~~~~~~~~~~~
+-----------
 
 The following function can be used to signal that the device is connected to a valid host.
 
@@ -56,7 +56,7 @@ This is called on a change in state.
 
 
 HID Controls
-~~~~~~~~~~~~
+------------
 
 The following function is called when the device wishes to read physical user input (buttons etc).
 

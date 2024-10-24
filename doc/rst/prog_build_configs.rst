@@ -2,7 +2,7 @@
 .. _usb_audio_sec_valbuild:
 
 Build Configurations
---------------------
+====================
 
 Due to the flexibility of the reference design software there are a large number of build options. For example input
 and output channel counts, Audio Class version, interface types etc. A "build configuration" is a set of build options
@@ -58,7 +58,7 @@ For example::
 
 
 Configuration Naming
---------------------
+====================
 
 A naming scheme is employed in each application to link features to a build configuration/binary.
 Depending on the hardware interfaces available variations of the same basic scheme are used.
@@ -91,7 +91,7 @@ Some additional letters or numbers may also be used to denote things like channe
 in the application Makefile for details.
 
 Quality & Testing
------------------
+=================
 
 It is not possible for all build option permutations to be exhaustively tested. The `XMOS USB Audio
 Reference Design` software therefore defines three levels of quality:

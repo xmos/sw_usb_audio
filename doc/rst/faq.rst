@@ -1,6 +1,7 @@
 
+**************************
 Frequently Asked Questions
-==========================
+**************************
 
 **Why does the USBView tool from Microsoft show errors in the devices descriptors?**
 

@@ -1,12 +1,12 @@
 |newpage|
 
 Project Structure
------------------
+=================
 
 .. _proj_build_system:
 
 Build System
-++++++++++++
+------------
 
 The `XMOS USB Audio Reference Design` software and associated libraries employ the `XCommon CMake` build system.
 The XCommon CMake build system uses CMake to configure and generate the build environment which can then be built using
@@ -14,7 +14,7 @@ The XCommon CMake build system uses CMake to configure and generate the build en
 As part of configuring the build environment, if there are any missing dependencies, XCommon CMake fetches then using ``git``.
 
 Applications and Libraries
-++++++++++++++++++++++++++
+--------------------------
 
 The ``sw_usb_audio`` `GIT <https://github.com/xmos/sw_usb_audio>`_ repository includes multiple application directories.
 Each application directory contains a ``CMakeLists.txt`` file which describes the build configs for that application.

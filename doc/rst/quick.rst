@@ -1,5 +1,6 @@
+***********
 Quick Start
-===========
+***********
 
 .. warning::
 
@@ -40,7 +41,7 @@ Quick Start
 .. _quick_start_firmware:
 
 USB Audio 2.0 Reference Software
---------------------------------
+================================
 
 The latest USB Audio 2.0 Reference Design software is available free of charge from XMOS.
 
@@ -65,7 +66,7 @@ https://www.xmos.com/find-a-distributor/
 .. _quick_start_windows_driver:
 
 USB Audio Class 2.0 Evaluation Driver for Windows
----------------------------------------------------
+=================================================
 
 .. note::
 
@@ -101,7 +102,7 @@ http://www.xmos.com/published/usb-audio-20-stereo-driver-windows-overview
 .. _quick_start_tools:
 
 XMOS XTC Development Tools
---------------------------
+==========================
 
 The `XMOS XTC Tools` provide everything you need to develop applications for `xcore multicore microcontrollers` and can be downloaded,
 free of charge, from: http://www.xmos.com/software-tools.
@@ -135,7 +136,7 @@ Information on using the tools, including installation, is provided in the `XTC 
 .. _quick_start_building:
 
 Building the Firmware
----------------------
+=====================
 
 .. note::
 
@@ -164,7 +165,7 @@ This file specifies build configs, sources, build options and dependencies.
 .. _quick_start_running:
 
 Running the Firmware
---------------------
+====================
 
 Typically during development the developer wishes to program the device's internal RAM directly via JTAG and run then execute this program.
 
@@ -184,7 +185,7 @@ The device should now present itself as a USB Audio Device on the connected host
 It will continue to operate as a USB Audio Device until the target board is power cycled.
 
 Writing the Application Binary to Flash
----------------------------------------
+=======================================
 
 Optionally a binary can be programmed into the boot flash. To do this:
 
@@ -205,7 +206,7 @@ If subsequently you wish to use ``xrun`` to program the device it is always advi
 .. _quick_start_play_audio:
 
 Playing Audio
--------------
+=============
 
     #. Connect the board to any power supply provided (note, some boards will be USB bus powered)
 
@@ -220,7 +221,7 @@ Playing Audio
     #. Start playing and recording.
 
 Next Steps
-----------
+==========
 
 Further information on using the board and the `XTC Tools` is available from:
 

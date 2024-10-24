@@ -1,7 +1,8 @@
 .. _usb_audio_hardware_platforms:
 
+****************************
 USB Audio Hardware Platforms
-============================
+****************************
 
 This section describes the hardware development platforms supported by the XMOS USB Audio reference design software.
 

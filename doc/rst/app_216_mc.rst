@@ -3,7 +3,7 @@
 
 
 The xcore-200 Multi-Channel Audio Board
----------------------------------------
+=======================================
 
 An application of the USB audio framework is provided specifically for the XK_AUDIO_216_MC_AB hardware described in
 :ref:`usb_audio_hardware_platforms` and is implemented on an xcore-200-series dual tile device.  The
@@ -44,7 +44,7 @@ lines show the communication between each task.
 |newpage|
 
 Clocking and Clock Selection
-+++++++++++++++++++++++++++++
+----------------------------
 
 The board includes two options for master clock generation:
 
@@ -80,7 +80,7 @@ The clock-select from the phaselink part is controlled via bit 7 of `PORT 8C`:
      - 22.579MHz
 
 DAC and ADC Configuration
-+++++++++++++++++++++++++
+-------------------------
 
 The board is equipped with a single multi-channel audio DAC (Cirrus Logic CS4384) and a single
 multi-channel ADC (Cirrus Logic CS5368) giving 8 channels of analogue output and 8 channels of
@@ -92,7 +92,7 @@ Configuration of both the DAC and ADC takes place using I2C.  The design uses
 The reset lines of the DAC and ADC are connected to bits 1 and 6 of `PORT 8C` respectively.
 
 AudioHwInit()
-+++++++++++++
+------------
 
 The :c:func:`AudioHwInit()` function is implemented to perform the following:
 
@@ -102,7 +102,7 @@ The :c:func:`AudioHwInit()` function is implemented to perform the following:
     * Select the PhaseLink PLL as the audio master clock source.
 
 AudioHwConfig()
-+++++++++++++++
+---------------
 
 The :c:func:`AudioHwConfig()` function is called on every sample frequency change.
 
@@ -115,7 +115,7 @@ The DAC and ADC are brought out of reset by setting *P8C[1]* and *P8C[6]* back h
 Various registers are then written to the ADC and DAC as required.
 
 Validated Build Options
-+++++++++++++++++++++++
+-----------------------
 
 The reference design can be built in several ways by changing the
 build options.  These are described in :ref:`sec_xua_conf_api`.

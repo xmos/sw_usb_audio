@@ -3,13 +3,13 @@
 .. _usb_audio_sec_custom_defines_api:
 
 Custom Defines
---------------
+==============
 
 An application using the USB audio framework needs to have a defines
 file called ``customdefines.h``. This file can set the following defines:
 
 System Feature Configuration
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+----------------------------
 
 .. tabularcolumns:: p{0.3\linewidth}p{0.4\linewidth}p{0.2\linewidth}
 
@@ -120,7 +120,7 @@ System Feature Configuration
 
 
 USB Device Configuration Options
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+--------------------------------
 
 
 .. tabularcolumns:: p{0.3\linewidth}p{0.4\linewidth}p{0.2\linewidth}

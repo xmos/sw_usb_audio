@@ -1,5 +1,5 @@
 A Typical USB Audio Application
---------------------------------
+===============================
 
 This section provides a walk through of a typical USB Audio application. Where specific examples are required
 code is used from the application for `XK-AUDIO-316-MC` (``app_usb_aud_xk_316_mc``).
@@ -34,7 +34,7 @@ The ``core`` folder for each application contains:
 
 
 Lib_xua Configuration
-~~~~~~~~~~~~~~~~~~~~~
+---------------------
 
 The ``xua_conf.h`` file contains all the build-time ``#defines`` required to tailor framework provided by ``lib_xua``
 to the particular application at hand.  Typically these over-ride default values in ``xua_conf_default.h``
@@ -92,7 +92,7 @@ manufacturer:
 For a full description of all the defines that can be set in ``xua_conf.h`` see :ref:`sec_xua_conf_api`
 
 User Functions
-~~~~~~~~~~~~~~
+--------------
 
 In addition to the ``xua_conf.h`` file, the application needs to provide implementations of some overridable user
 functions in ``lib_xua`` to provide custom functionality.
@@ -119,7 +119,7 @@ based on whether an audio stream is present (input or output).
     A media player application may choose to keep an audio stream open and simply send zero data when paused.
 
 The Main Program
-~~~~~~~~~~~~~~~~
+----------------
 
 The ``main()`` function is the entry point to an application. In the `XMOS USB Audio Reference Design` software it is shared by all
 applications and is therefore part of the framework.

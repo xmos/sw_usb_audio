@@ -1,5 +1,5 @@
 Adding Custom Code
-------------------
+==================
 
 The flexibility of the `XMOS USB Audio Reference Design` software is such that you can modify
 the reference applications to change the feature set or add extra functionality.
@@ -48,7 +48,7 @@ Once you have made a copy, you need to:
 The following sections show some example changes with a high level overview of how to change the code.
 
 Example: Changing Output Format
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-------------------------------
 
 You may wish to customize the digital output format e.g. for a CODEC that expects sample data right-justified with
 respect to the word clock.
@@ -60,7 +60,7 @@ Hint, a naive approach would simply include right-shifting the audio data by 7 b
 would of course lose LSB data depending on the sample-depth.
 
 Example: Adding DSP to the Output Stream
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+----------------------------------------
 
 To add some DSP requires an extra core of computation. Depending on the `xCORE` device being used you may have to disable some
 existing functionality to free up a core (e.g. disable S/PDIF). There are many ways that DSP processing can be added,
