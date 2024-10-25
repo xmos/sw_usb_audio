@@ -34,55 +34,46 @@ sw_usb_audio change log
       + ADDED: NULL_BOARD default option so library can be included in a project
         without being used.
 
-    - lib_dsp: Removed dependency
+    - lib_i2c: Added dependency 6.2.0
 
-    - lib_mic_array: 4.6.0 -> 5.4.0
+      + ADDED: Support for XCommon CMake build system
+      + REMOVED: Unused dependency lib_logging
+
+    - lib_i2s: Added dependency 5.1.0
+
+      + ADDED: Support for XCommon CMake build system
+      + RESOLVED: Added missing shutdown feature to i2s_frame_slave
+      + FIXED: Allow input and output ports in the 4-bit port implementation to
+        be nullable
+      + FIXED: Behaviour of the restart_check() callback function in the example
+        applications
+      + REMOVED: Unused dependency lib_logging
+      + ADDED: Frame synch error field in i2s_config_t for I2S slave
+
+    - lib_locks: Added dependency 2.2.0
+
+      + ADDED: Tests now run on xcore.ai as well as xcore-200
+      + ADDED: Support for XCommon CMake build system
+
+    - lib_logging: Added dependency 3.2.0
+
+      + ADDED:   Support for XCommon CMake build system
+
+    - lib_mic_array: Added dependency 5.4.0
 
       + CHANGED: All examples now build under XCommon CMake build system
       + ADDED:   Will build without errors for XS2 targets but no API available
       + DEPRECATED: Previously used custom CMake build support. This will be
         removed in future versions. Please use XCommon CMake build system as
         provided in XTC 15.3.0 onwards for new projects.
-      + FIXED:   Vanilla configuration now compiles correctly under XTC 15.3.0
-      + ADDED:   Support for XCommon CMake build system
-      + Added 48 kHz decimator design script
-      + Added documentation to cover 32 kHz and 48 kHz deciamtors
-      + Added 16ch de-interleave to support 16 DDR mics on a single 8b port
-      + Added parallel decimation use example
-      + Fixed documentation generation issues
-      + Improved default audio filter. Reduces noise floor and improves alias
-        attentuation
-      + Changed DCOE filter to increase attenuation below 20 Hz
-      + Documentation improvements.
-      + Updates lib_mic_array to use lib_xcore_math (formerly lib_xs3_math)
-        version 2.0.2
-      + Updates CMake project to use CPM to obtain dependencies (when top level
-        project)
-      + [issue #171] Changes behavior when mic array consumer gets backed up
-        from a quiet deadlock to an ECALL exception
-      + Also adds a way to allow blocks of PDM to be quietly dropped instead 
-        (see AssertOnDroppedBlock())
-      + Mic Array library redesigned from scratch to make efficient use of XMOS
-        XS3 architecture
-      + Many unused features from previous versions have been dropped
-      + Initial v5.0 features:
-      + Supports 1-, 4-, and 8-bit ports
-      + Supports both SDR and DDR microphone configurations
-      + Use 1-16 PDM microphones
-      + Configurable PDM clock frequency
-      + Configurable two-stage decimating FIR
-      + Reference filter with total decimation factor of 192 provided
-      + Optional DC offset elimination filter
-      + Configurable frame size (down to single sample)
-      + Extensible C++ design
 
-    - lib_spdif: 6.1.0 -> 6.2.0
+    - lib_spdif: Added dependency 6.2.0
 
       + CHANGED:   Use XCommon CMake for examples and tests
-      + CHANGED:   Use lib_sw_pll for configuring the application PLL in
-        examples
-      + FIXED:     Supressed warnings regarding taking the address of a resource
-        handle
+
+    - lib_xassert: Added dependency 4.2.0
+
+      + ADDED: Support for XCommon CMake build system
 
     - lib_xcore_math: Added dependency 2.3.0
 
@@ -133,7 +124,7 @@ sw_usb_audio change log
         control tokens. Potentially making mix & match of components more
         tractable in the future
 
-    - lib_xud: 2.3.1 -> 2.3.2
+    - lib_xud: Added dependency 2.3.2
 
       + CHANGE:   RX_RISE_DELAY for XS2A based devices to resolve intermittent
         transmit timing issues
@@ -180,6 +171,10 @@ sw_usb_audio change log
         clockgen
       + FIXED:     Trap when moving to DSD mode on XS3A based devices
 
+
+Legacy release history
+======================
+
 8.0.0
 -----
 
@@ -201,6 +196,8 @@ sw_usb_audio change log
       + ADDED: Support for XCommon CMake build system
 
     - lib_dsp: 6.2.1 -> 6.3.0
+
+      + ADDED:   Support for XCommon CMake build system
 
     - lib_i2c: 6.1.1 -> 6.2.0
 
@@ -229,13 +226,15 @@ sw_usb_audio change log
 
     - lib_mic_array: 4.5.0 -> 4.6.0
 
+      + ADDED: Support for XCommon CMake build system
+
     - lib_spdif: 5.0.1 -> 6.1.0
 
       + ADDED:     Support for XCommon CMake build system
       + ADDED:     Support for transmit at 32kHz
-      + FIXED:     Coding optimisations not properly enabled in receiver
-      + FIXED:     Receiver timing issues for sample rates greater than 96kHz
-      + FIXED:     Failure to select correct receive sample rate when the sample
+      + RESOLVED:  Coding optimisations not properly enabled in receiver
+      + RESOLVED:  Receiver timing issues for sample rates greater than 96kHz
+      + RESOLVED:  Failure to select correct receive sample rate when the sample
         rate of the incoming stream changes
       + ADDED:     Shutdown function for S/PDIF transmitter
       + CHANGED:   Receiver rearchitected for improved performance and jitter
@@ -395,7 +394,7 @@ sw_usb_audio change log
 
     - lib_adat: 1.0.0 -> 1.0.1
 
-      + REMOVED: Duplicate header file
+      + Removed duplicate header file
 
     - lib_i2s: 4.3.0 -> 5.0.0
 
@@ -461,6 +460,8 @@ sw_usb_audio change log
 
     - lib_dsp: Added dependency 6.2.1
 
+      + CHANGED: Jenkinsfile used for CI
+
     - lib_i2c: Added dependency 6.1.1
 
       + RESOLVED: Fixed timing for repeated START condition
@@ -487,6 +488,9 @@ sw_usb_audio change log
 
     - lib_mic_array: 2.0.1 -> 4.5.0
 
+      + REMOVED: Use of Brew for CI
+      + CHANGED: XMOS Jenkins Shared Library version used in CI
+      + CHANGED: XN files to support 15.x.x tools
       + CHANGED: Use XMOS Public Licence Version 1
       + FIXED: Compiler warnings when MIC_DUAL_ENABLED is not defined
       + CHANGED: Pin Python package versions
@@ -602,7 +606,12 @@ sw_usb_audio change log
 
     - lib_device_control: Added dependency 2.0.0
 
+      + Added the ability to select USB interface (Allows control from Windows)
+
     - sc_usb_audio: 6.18.0 -> 6.18.1
+
+      + ADDED:      Vendor Specific control interface added to UAC1 descriptors
+        to allow control of XVSM params from Windows (via lib_usb)
 
 6.18.0
 ------
@@ -616,9 +625,28 @@ sw_usb_audio change log
 
     - lib_voice: 0.0.2 -> 0.0.3
 
+      + Added DOA_NAIVE_DONT_THRESH to disable thresholding code
+
     - sc_usb_audio: 6.16.0 -> 6.18.0
 
+      + ADDED:      Call to VendorRequests() and VendorRequests_Init() to
+        Endpoint 0
+      + ADDED:      VENDOR_REQUESTS_PARAMS define to allow for custom parameters
+        to VendorRequest calls
+      + RESOLVED:   FIR gain compensation set appropriately in lib_mic_array
+        usage
+      + CHANGE:     i_dsp interface renamed i_audManage
+
     - sc_xud: 2.4.1 -> 2.4.2
+
+      + CHANGE:     VBUS connection to xCORE-200 no longer required when using
+        XUD_PWR_BUS i.e. for bus-powered devices. This removes the need to any
+        protection circuitry and allows for a reduced BOM. Note, VBUS should
+        still be present for self powered devices in order to pass USB
+        compliance tests.
+      + RESOLVED:   Device might hang during resume if host follows resume
+        signality with activity after a time close to specified minimum of
+        1.33us (#11813)
 
 6.17.0
 ------
@@ -631,6 +659,8 @@ sw_usb_audio change log
   * Changes to dependencies:
 
     - lib_voice: 0.0.1 -> 0.0.2
+
+      + Simplification/optimisation of Naive DOA
 
 6.16.1
 ------
@@ -657,9 +687,22 @@ sw_usb_audio change log
 
     - lib_voice: Added dependency 0.0.1
 
+      + Initial version
+
     - sc_usb_audio: 6.15.2 -> 6.16.0
 
+      + ADDED:      Call to UserBufferManagement()
+      + ADDED:      PDM_MIC_INDEX in devicedefines.h and usage
+      + CHANGE:     pdm_buffer() task now combinable
+      + CHANGE:     Audio I/O task now takes i_dsp interface as a parameter
+      + CHANGE:     Removed built-in support for A/U series internal ADC
+      + CHANGE:     User PDM Microphone processing now uses an interface
+        (previously function call)
+
     - sc_usb_device: 1.3.8 -> 1.3.9
+
+      + RESOLVED:   Value from HS config descriptor used for FS GET_STATUS
+        request. Causes USB CV test fail.
 
 6.15.2
 ------
@@ -670,6 +713,9 @@ sw_usb_audio change log
   * Changes to dependencies:
 
     - sc_usb_audio: 6.15.1 -> 6.15.2
+
+      + RESOLVED:   interrupt.h (used in audio buffering) now compatible with
+        xCORE-200 ABI
 
 6.15.1
 ------
@@ -692,7 +738,12 @@ sw_usb_audio change log
 
     - sc_usb_audio: 6.15.0 -> 6.15.1
 
+      + RESOLVED:   DAC data mis-alignment issue in TDM/I2S slave mode
+      + CHANGE:     Updates to support API changes in lib_mic_array version 2.0
+
     - sc_xud: 2.4.0 -> 2.4.1
+
+      + RESOLVED:   Initialisation failure on U-series devices
 
 6.15.0
 ------
@@ -723,7 +774,15 @@ sw_usb_audio change log
 
     - sc_usb_audio: 6.14.0 -> 6.15.0
 
+      + RESOLVED:   UAC 1.0 descriptors now support multi-channel volume control
+        (previously were hard-coded as stereo)
+      + CHANGE:     Removed 32kHz sample-rate support when PDM microphones
+        enabled (lib_mic_array currently does not support non-integer decimation
+        factors)
+
     - sc_util: 1.0.5 -> 1.0.6
+
+      + xCORE-200 compatibility fixes to module_trycatch
 
 6.14.0
 ------
@@ -733,6 +792,24 @@ sw_usb_audio change log
   * Changes to dependencies:
 
     - sc_usb_audio: 6.13.0beta2 -> 6.14.0beta2
+
+      + ADDED:      Support for for master-clock/sample-rate divides that are
+        not a power of 2 (i.e. 32kHz from 24.567MHz)
+      + ADDED:      Extended available sample-rate/master-clock ratios. Previous
+        restriction was <= 512x (i.e. could not support 1024x and above e.g.
+        49.152MHz MCLK for Sample Rates below 96kHz) (#13893)
+      + ADDED:      Support for various "low" sample rates (i.e. < 44100) into
+        UAC 2.0 sample rate list and UAC 1.0 descriptors
+      + ADDED:      Support for the use and integration of PDM microphones
+        (including PDM to PCM conversion) via lib_mic_array
+      + RESOLVED:   MIDI data not accepted after "sleep" in OSX 10.11 (El
+        Capitan) - related to sc_xud issue #17092
+      + CHANGE:     Asynchronous feedback system re-implemented to allow for the
+        first two ADDED changelog items
+      + CHANGE:     Hardware divider used to generate bit-clock from master
+        clock (xCORE-200 only). Allows easy support for greater number of
+        master-clock to sample-rate ratios.
+      + CHANGE:     module_queue no longer uses any assert module/lib
 
 6.13.0
 ------
@@ -746,9 +823,42 @@ sw_usb_audio change log
 
     - sc_usb_audio: 6.12.5rc0 -> 6.13.0beta2
 
+      + ADDED:      Device now uses implicit feedback when input stream is
+        available (previously explicit feedback pipe always used). This saves
+        chanend/EP resources and means less processing burden for the host.
+        Previous behaviour available by enabling UAC_FORCE_FEEDBACK_EP
+      + RESOLVED:   Exception when SPDIF_TX and ADAT_TX both enabled due to
+        clock-block being configured after already started. Caused by SPDIF_TX
+        define check typo
+      + RESOLVED:   DFU flag address changed to properly conform to memory
+        address range allocated to apps by tools
+      + RESOLVED:   Build failure when DFU disabled
+      + RESOLVED:   Build issue when I2S_CHANS_ADC/DAC set to 0 and CODEC_MASTER
+        enabled
+      + RESOLVED:   Typo in MCLK_441 checking for MIN_FREQ define
+      + CHANGE:     Mixer and non-mixer channel comms scheme (decouple <-> audio
+        path) now identical
+      + CHANGE:     Input stream buffering modified such that during overflow
+        older samples are removed rather than ignoring most recent samples.
+        Removes any chance of stale input packets being sent to host
+      + CHANGE:     module_queue (in sc_usb_audio) now uses lib_xassert rather
+        than module_xassert
+      + RESOLVED:   Build error when DFU is disabled
+      + RESOLVED:   Build error when I2S_CHANS_ADC or I2S_CHANS_DAC set to 0 and
+        CODEC_MASTER enabled
+
     - sc_usb_device: 1.3.7rc0 -> 1.3.8beta0
 
     - sc_xud: 2.3.2rc0 -> 2.4.0beta0
+
+      + RESOLVED:   Intermittent initialisation issues with xCORE-200
+      + RESOLVED:   SETUP transaction data CRC not properly checked
+      + RESOLVED:   RxError line from phy handled
+      + RESOLVED:   Isochronous IN endpoints now send an 0-length packet if not
+        ready rather than an (invalid) NAK.
+      + RESOLVED:   Receive of short packets sometimes prematurely ended
+      + RESOLVED:   Data PID not reset to DATA0 in ClearStallByAddr() (used on
+        ClearFeature(HALT) request from host) (#17092)
 
 6.12.6
 ------
@@ -756,6 +866,12 @@ sw_usb_audio change log
   * Changes to dependencies:
 
     - sc_usb_audio: 6.12.2rc3 -> 6.12.5rc0
+
+      + RESOLVED:   Stream issue when NUM_USB_CHAN_IN < I2S_CHANS_ADC
+      + RESOLVED:   DFU fail when DSD enabled and USB library not running on
+        tile[0]
+      + RESOLVED:   Method for storing persistent state over a DFU reboot
+        modified to improve resilience against code-base and tools changes
 
 6.12.5
 ------
@@ -769,6 +885,21 @@ sw_usb_audio change log
   * Changes to dependencies:
 
     - sc_usb_audio: 6.12.1alpha0 -> 6.12.3rc0
+
+      + RESOLVED:   Method for storing persistent state over a DFU reboot
+        modified to improve resilience against code-base and tools changes
+      + RESOLVED:   Reboot code (used for DFU) failure in tools versions >
+        14.0.2 (xCORE-200 only)
+      + RESOLVED:   Run-time exception in mixer when MAX_MIX_COUNT > 0
+        (xCORE-200 only)
+      + RESOLVED:   MAX_MIX_COUNT checked properly for mix strings in string
+        table
+      + CHANGE:     DFU code re-written to use an XC interface. The flash-part
+        may now be connected to a separate tile to the tile running USB code
+      + CHANGE:     DFU code can now use quad-SPI flash
+      + CHANGE:     Example xmos_dfu application now uses a list of PIDs to
+        allow adding PIDs easier. --listdevices command also added.
+      + CHANGE:     I2S_CHANS_PER_FRAME and I2S_WIRES_xxx defines tidied
 
 6.12.4
 ------
@@ -785,7 +916,14 @@ sw_usb_audio change log
 
     - sc_spdif: 1.3.3alpha2 -> 1.3.4alpha0
 
+      + Changes to RX codebase to allow running on xCORE-200
+
     - sc_usb_audio: 6.12.0alpha1 -> 6.12.1alpha0
+
+      + RESOLVED:   Fixes to TDM input timing/sample-alignment when BCLK=MCLK
+      + RESOLVED:   Various minor fixes to allow ADAT_RX to run on xCORE 200 MC
+        AUDIO hardware
+      + CHANGE:     Moved from old SPDIF define to SPDIF_TX
 
 6.12.3
 ------
@@ -801,6 +939,10 @@ sw_usb_audio change log
     - sc_usb_device: 1.3.6alpha0 -> 1.3.7alpha0
 
     - sc_xud: 2.3.1alpha0 -> 2.3.2alpha0
+
+      + CHANGE:     Interrupts disabled during any access to usb_tile. Allows
+        greater reliability if user suspend/resume functions enabled interrupts
+        e.g. for role-switch
 
 6.12.2
 ------
@@ -828,15 +970,40 @@ sw_usb_audio change log
 
     - sc_i2c: 2.4.1rc1 -> 3.0.0alpha1
 
+      + Read support added to module_i2c_single_port (xCORE 200 only)
+      + Retry on NACK added to module_i2c_single_port (matches
+        module_i2c_simple)
+      + module_i2c_single_port functions now takes struct for port resources
+        (matches module_i2c_simple)
+      + module_i2c_simple removed from module_i2c_shared dependancies. Allows
+        use with other i2c modules. It is now the applications responsibilty to
+        include the desired i2c module as a depenancy.
+      + Data arrays passed to write_reg functions now marked const
+
     - sc_spdif: 1.3.2rc2 -> 1.3.3alpha2
 
     - sc_usb_audio: 6.11.2rc2 -> 6.12.0alpha1
+
+      + ADDED:      Checks for XUD_200_SERIES define where required
+      + RESOLVED:   Run-time exception due to decouple interrupt not entering
+        correct issue mode (affects XCORE-200 only)
+      + CHANGE:     SPDIF Tx Core may now reside on a different tile from I2S
+      + CHANGE:     I2C ports now in structure to match new
+        module_i2c_singleport/shared API.
+      + RESOLVED:  (Major) Streaming issue when mixer not enabled (introduced in
+        6.11.2)
 
     - sc_usb_device: 1.3.5rc2 -> 1.3.6alpha0
 
     - sc_util: 1.0.4rc0 -> 1.0.5alpha0
 
+      + xCORE-200 compatibility fixes to module_locks
+
     - sc_xud: 2.2.4rc3 -> 2.3.0alpha0
+
+      + ADDED:      Support for XCORE-200 (libxud_x200.a)
+      + CHANGE:     Compatibility fixes for XMOS toolset version 14 (dual-issue
+        support etc)
 
 6.11.2
 ------
@@ -850,6 +1017,25 @@ sw_usb_audio change log
   * Changes to dependencies:
 
     - sc_usb_audio: 6.11.1beta2 -> 6.11.2rc2
+
+      + RESOLVED:   (Major) Enumeration issue when MAX_MIX_COUNT > 0 only.
+        Introduced in mixer optimisations in 6.11.0. Only affects designs using
+        mixer functionality.
+      + RESOLVED:   (Normal) Audio buffering request system modified such that
+        the mixer output is not silent when in underflow case (i.e. host output
+        stream not active) This issue was introduced with the addition of DSD
+        functionality and only affects designs using mixer functionality.
+      + RESOLVED:   (Minor) Potential build issue due to duplicate labels in
+        inline asm in set_interrupt_handler macro
+      + RESOLVED:   (Minor) BCD_DEVICE define in devicedefines.h now guarded by
+        ifndef (caused issues with DFU test build configs.
+      + RESOLVED:   (Minor) String descriptor for Clock Selector unit
+        incorrectly reported
+      + RESOLVED:   (Minor) BCD_DEVICE in devicedefines.h now guarded by #ifndef
+        (Caused issues with default DFU test build configs.
+      + CHANGE:     HID report descriptor defines added to shared user_hid.h
+      + CHANGE:     Now uses module_adat_rx from sc_adat (local
+        module_usb_audio_adat removed)
 
 6.11.1
 ------
@@ -865,6 +1051,15 @@ sw_usb_audio change log
 
     - sc_usb_audio: 6.11.0alpha2 -> 6.11.1beta2
 
+      + ADDED:      ADAT transmit functionality, including SMUX. See ADAT_TX and
+        ADAT_TX_INDEX.
+      + RESOLVED:   (Normal) Build issue with CODEC_MASTER (xCore is I2S slave)
+        enabled
+      + RESOLVED:   (Minor) Channel ordering issue in when TDM and CODEC_MASTER
+        mode enabled
+      + RESOLVED:   (Normal) DFU fails when SPDIF_RX enabled due to clock block
+        being shared between SPDIF core and FlashLib
+
 6.11.0
 ------
 
@@ -875,6 +1070,16 @@ sw_usb_audio change log
   * Changes to dependencies:
 
     - sc_usb_audio: 6.10.0alpha2 -> 6.11.0alpha2
+
+      + ADDED:      Basic TDM I2S functionality added. See I2S_CHANS_PER_FRAME
+        and I2S_MODE_TDM
+      + CHANGE:     Various optimisations in 'mixer' core to improve performance
+        for higher channel counts including the use of XC unsafe pointers
+        instead of inline ASM
+      + CHANGE:     Mixer mapping disabled when MAX_MIX_COUNT is 0 since this is
+        wasted processing.
+      + CHANGE:     Descriptor changes to allow for channel input/output channel
+        count up to 32 (previous limit was 18)
 
 6.10.0
 ------
@@ -891,9 +1096,19 @@ sw_usb_audio change log
 
     - sc_usb_audio: 6.9.0alpha0 -> 6.10.0alpha2
 
+      + CHANGE:     Endpoint management for iAP EA Native Transport now merged
+        into buffer() core. Previously was separate core (as added in 6.8.0).
+      + CHANGE:     Minor optimisation to I2S port code for inputs from ADC
+
     - sc_usb_device: 1.3.4rc0 -> 1.3.5rc2
 
+      + RESOLVED:   (Minor) Design Guide documentation build errors
+
     - sc_xud: 2.2.3rc0 -> 2.2.4rc3
+
+      + RESOLVED:   (Minor) Potential for lock-up when waiting for USB clock on
+        startup. This is is avoided by enabling port buffering on the USB clock
+        port. Affects L/G series only.
 
 6.9.0
 -----
@@ -904,9 +1119,31 @@ sw_usb_audio change log
 
     - sc_usb_audio: 6.8.0alpha2 -> 6.9.0alpha0
 
+      + ADDED:      ADAT S-MUX II functionality (i.e. 2 channels at 192kHz) -
+        Previously only S-MUX supported (4 channels at 96kHz).
+      + ADDED:      Explicit build warnings if sample rate/depth & channel
+        combination exceeds available USB bus bandwidth.
+      + RESOLVED:   (Major) Reinstated ADAT input functionality, including
+        descriptors and clock generation/control and stream configuration
+        defines/tables.
+      + RESOLVED:   (Major) S/PDIF/ADAT sample transfer code in audio() (from
+        ClockGen()) moved to aid timing.
+      + CHANGE:     Modifying mix map now only affects specified mix, previous
+        was applied to all mixes. CS_XU_MIXSEL control selector now takes values
+        0 to MAX_MIX_COUNT + 1 (with 0 affecting all mixes).
+      + CHANGE:     Channel c_dig_rx is no longer nullable, assists with timing
+        due to removal of null checks inserted by compiler.
+      + CHANGE:     ADAT SMUX selection now based on device sample frequency
+        rather than selected stream format - Endpoint 0 now configures
+        clockgen() on a sample-rate change rather than stream start.
+
     - sc_usb_device: 1.3.3alpha0 -> 1.3.4rc0
 
     - sc_xud: 2.2.2alpha0 -> 2.2.3rc0
+
+      + RESOLVED:   (Minor) XUD_ResetEpStateByAddr() could operate on
+        corresponding OUT endpoint instead of the desired IN endpoint address as
+        passed into the function (and vice versa)
 
 6.8.0
 -----
@@ -920,11 +1157,33 @@ sw_usb_audio change log
 
     - sc_usb: 1.0.3rc0 -> 1.0.4alpha0
 
+      + ADDED:      Structs for Audio Class 2.0 Mixer and Extension Units
+
     - sc_usb_audio: 6.7.0alpha0 -> 6.8.0alpha2
+
+      + ADDED:      Evaluation support for iAP EA Native Transport endpoints
+      + RESOLVED:   (Minor) Reverted change in 6.5.1 release where sample rate
+        listing in Audio Class 1.0 descriptors was trimmed (previously 4 rates
+        were always reported). This change appears to highlight a Windows (only)
+        enumeration issue with the Input & Output configs
+      + RESOLVED:   (Major) Mixer functionality re-instated, including
+        descriptors and various required updates compatibility with 13 tools
+      + RESOLVED:   (Major) Endpoint 0 was requesting an out of bounds channel
+        whilst requesting level data
+      + RESOLVED:   (Major) Fast mix code not operates correctly in 13 tools,
+        assembler inserting long jmp instructions
+      + RESOLVED:   (Minor) LED level meter code now compatible with 13 tools
+        (shared mem access)
+      + RESOLVED    (Minor) Ordering of level data from the device now matches
+        channel ordering into mixer (previously the device input data and the
+        stream from host were swapped)
+      + CHANGE:     Level meter buffer naming now resemble functionality
 
     - sc_usb_device: 1.3.2rc0 -> 1.3.3alpha0
 
     - sc_xud: 2.2.1rc0 -> 2.2.2alpha0
+
+      + CHANGE:     Header file comment clarification only
 
 6.7.0
 -----
@@ -957,6 +1216,12 @@ sw_usb_audio change log
 
     - sc_xud: 2.1.1rc0 -> 2.2.1rc0
 
+      + RESOLVED:   Slight optimisations (long jumps replaced with short) to aid
+        inter-packet gaps.
+      + CHANGE:     Timer usage optimisation - usage reduced by one.
+      + CHANGE:     OTG Flags register explicitly cleared at start up - useful
+        if previously running in host mode after a soft-reboot.
+
 6.6.0
 -----
 
@@ -981,7 +1246,16 @@ sw_usb_audio change log
 
     - sc_usb_device: 1.2.2rc4 -> 1.3.0rc0
 
+      + CHANGE:  Required updates for XUD API change relating to USB
+        test-mode-support
+
     - sc_xud: 2.0.1rc3 -> 2.1.1rc0
+
+      + ADDED:      Warning emitted when number of cores is greater than 6
+      + CHANGE:     XUD no longer takes a additional chanend parameter for
+        enabling USB test-modes. Test-modes are now enabled via a
+        XUD_SetTestMode() function using a chanend relating to Endpoint 0. This
+        change was made to reduce chanend usage only.
 
 6.5.1
 -----
@@ -1023,15 +1297,39 @@ sw_usb_audio change log
 
     - sc_i2c: 2.4.0beta1 -> 2.4.1rc1
 
+      + module_i2c_simple header-file comments updated to correctly reflect API
+
     - sc_spdif: 1.3.1beta3 -> 1.3.2rc2
 
     - sc_usb_audio: 6.5.0beta2 -> 6.5.1rc4
 
     - sc_usb_device: 1.1.0beta0 -> 1.2.2rc4
 
+      + RESOLVED:   (Minor) Build issue in Windows host app for bulk demo
+      + CHANGE:     USB_StandardRequests() now returns XUD_Result_t instead of
+        int
+      + CHANGE:     app_hid_mouse_demo now uses XUD_Result_t
+      + CHANGE:     app_custom_bulk_demo now uses XUD_Result_t
+      + CHANGE:     USB_StandardRequests() now takes the string table as an
+        array of char pointers rather than a fixed size 2D array. This allows
+        for a more space efficient string table representation. Please note,
+        requires tools 13 or later for XC pointer support.
+      + CHANGE:     Demo applications now set LangID string at build-time
+        (rather than run-time)
+      + CHANGE:     Test mode support no longer guarded by TEST_MODE_SUPPORT
+
     - sc_util: 1.0.3rc0 -> 1.0.4rc0
 
+      + module_logging now compiled at -Os
+      + debug_printf in module_logging uses a buffer to deliver messages
+        unfragmented
+      + Fix thread local storage calculation bug in libtrycatch
+      + Fix debug_printf itoa to work for unsigned values > 0x80000000
+
     - sc_xud: 2.0.0beta1 -> 2.0.1rc3
+
+      + RESOLVED:   (Minor) Error when building module_xud in xTimeComposer due
+        to invalid project files.
 
 6.5.0
 -----
@@ -1142,9 +1440,33 @@ sw_usb_audio change log
 
     - sc_usb: 1.0.1beta1 -> 1.0.2beta1
 
+      + ADDED:      USB_BMREQ_D2H_VENDOR_DEV and USB_BMREQ_D2H_VENDOR_DEV
+        defines for vendor device requests
+
     - sc_usb_device: 1.0.3beta0 -> 1.0.4beta5
 
+      + CHANGE:     devDesc_hs and cfgDesc_hs params to USB_StandardRequests()
+        now nullable (useful for full-speed only devices)
+      + CHANGE:     Nullable descriptor array parameters to
+        USB_StandardRequests() changed from ?array[] to (?&array)[] due to the
+        compiler warning that future compilers will interpret the former as an
+        array of nullable items (rather than a nullable reference to an array).
+        Note: The NULLABLE_ARRAY_OF macro (from xccompat.h) is used retain
+        compatibility with older tools version (i.e. 12).
+
     - sc_xud: 1.0.2alpha1 -> 1.0.3beta1
+
+      + RESOLVED:   (Minor) ULPI data-lines driven hard low and XMOS pull-up on
+        STP line disabled before taking the USB phy out of reset. Previously the
+        phy could clock in erroneous data before the XMOS ULPI interface was
+        initialised causing potential connection issues on initial startup. This
+        affects L/G series libraries only.
+      + RESOLVED:   (Minor) Fixes to improve memory usage such as adding missing
+        resource usage symbols/elimination blocks to assembly file and inlining
+        support functions where appropriate.
+      + RESOLVED:   (Minor) Moved to using supplied tools support for
+        communicating with the USB tile rather than custom implementation
+        (affects U-series lib only).
 
 6.3.2
 -----
@@ -1163,6 +1485,8 @@ sw_usb_audio change log
     - sc_usb_device: 1.0.2beta0 -> 1.0.3beta0
 
     - sc_xud: 1.0.1beta3 -> 1.0.2alpha1
+
+      + ADDED:      Re-instated support for G devices (xud_g library)
 
 6.3.1
 -----
@@ -1189,7 +1513,18 @@ sw_usb_audio change log
 
     - sc_i2c: 2.2.1rc0 -> 2.3.0beta1
 
+      + module_i2c_simple fixed to ACK correctly during multi-byte reads (all
+        but the final byte will be now be ACKd)
+      + module_i2c_simple can now be built with support to send repeated starts
+        and retry reads and writes NACKd by slave
+      + module_i2c_shared added to allow multiple logical cores to safely share
+        a single I2C bus
+      + Removed readreg() function from single_port module since it was not safe
+
     - sc_spdif: 1.3.0rc4 -> 1.3.1beta2
+
+      + Added .type and .size directives to SpdifReceive. This is required for
+        the function to show up in xTIMEcomposer binary viewer
 
 6.3.0
 -----
@@ -1298,15 +1633,21 @@ sw_usb_audio change log
 
     - sc_adat: Added dependency 1.0.0
 
+      + Initial release
+
     - sc_i2c: Added dependency 1.0.0
 
     - sc_spdif: Added dependency 1.0.0
 
     - sc_usb: Added dependency 1.0.0
 
+      + Initial release
+
     - sc_usb_audio: Added dependency 1.0.0
 
     - sc_xud: Added dependency 1.0.0
+
+      + Initial stand-alone release
 
 
 Legacy release history
