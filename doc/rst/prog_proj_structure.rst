@@ -53,9 +53,12 @@ This allows dependency trees and nesting. XCommon CMake builds up a tree which i
 any missing dependencies by cloning them from github.
 
 Most of the core code is contained in the `XMOS USB Audio Library (lib_xua) <https://www.xmos.com/file/lib_xua>`_. A full list of core dependencies is shown
-in :ref:`proj_core_libs`.
+in :ref:`the table below <proj_core_libs>`.
+
 
 .. _proj_core_libs:
+
+|beginfullwidth|
 
 .. list-table:: Core dependencies of USB Audio
    :header-rows: 1
@@ -75,6 +78,8 @@ in :ref:`proj_core_libs`.
      - PDM microphone interface and decimator
    * - `lib_xassert`
      - Lightweight assertions library
+
+|endfullwidth|
 
 .. note::
 

@@ -1,3 +1,5 @@
+|newpage|
+
 ***************************
 USB Audio Programming Guide
 ***************************

@@ -154,7 +154,7 @@ The build configuration naming scheme employed in the CMakeLists.txt is shown in
 
 .. list-table:: Build config naming scheme
    :header-rows: 1
-   :widths: 20 80 80
+   :widths: 40 60 40
 
    * - Feature
      - Option 1

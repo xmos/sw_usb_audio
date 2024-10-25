@@ -1,3 +1,5 @@
+|newpage|
+
 ***********
 Quick Start
 ***********
@@ -7,18 +9,18 @@ Quick Start
     XMOS development boards are typically supplied with no firmware installed. The following steps explain how to
     install the latest firmware on the board and use it. Each step is explained in detail in the following sections.
 
-   #. To download the latest **USB Audio 2.0 Device Software** release, go to http://www.xmos.com/develop/usb-multichannel-audio
-      and follow the `DOWNLOAD SOFTWARE` link. Before you download the software, review the licence and click **Accept** to initiate the download.
+   #. To download the latest **USB Audio 2.0 Device Software** release, on the `XMOS website USB & Multichannel Audio page <http://www.xmos.com/develop/usb-multichannel-audio>`_,
+      follow the `DOWNLOAD SOFTWARE` link. Before downloading the software, review the licence and click **Accept** to initiate the download.
 
       (Section :ref:`quick_start_firmware`.)
 
-   #. If using a Windows host computer, download the **USB Audio Class 2.0 Evaluation Driver for Windows**,
-      go to http://www.xmos.com/develop/usb-multichannel-audio, follow the `DRIVER SUPPORT` link, and click on `Download`.
+   #. If using a Windows host computer, download the **USB Audio Class 2.0 Evaluation Driver for Windows**.
+      On the `XMOS website USB & Multichannel Audio page <http://www.xmos.com/develop/usb-multichannel-audio>`__, follow the `DRIVER SUPPORT` link, and click on `Download`.
       Once downloaded, run the executable and install the driver.
 
       (Section :ref:`quick_start_windows_driver`.)
 
-   #. Download the **XMOS XTC Tools** from: http://www.xmos.com/software-tools and install.
+   #. Download and install the the `XMOS XTC Tools <http://www.xmos.com/software-tools>`_
 
       The minimum required XTC Tools version for compiling USB Audio applications can be found in the README. Make sure that you download the correct version of the tools.
 
@@ -51,7 +53,7 @@ http://www.xmos.com/
 
 To download the firmware:
 
-   #. Go to http://www.xmos.com/develop/usb-multichannel-audio and follow the `DOWNLOAD SOFTWARE` link
+   #. On the `XMOS website USB & Multichannel Audio page <http://www.xmos.com/develop/usb-multichannel-audio>`__, follow the `DOWNLOAD SOFTWARE` link
 
    #. Review the licence agreement and click **Accept**.
 
@@ -59,9 +61,8 @@ To download the firmware:
 
 The software is distributed as a zip archive containing pre-compiled binaries and source code that can be built using the `XMOS XTC Tools`.
 
-Alternatively you can contact your local sales representative for further details:
+Alternatively, contact your `local sales representative <https://www.xmos.com/find-a-distributor/>`_ for further details:
 
-https://www.xmos.com/find-a-distributor/
 
 .. _quick_start_windows_driver:
 
@@ -91,13 +92,11 @@ Developers may also wish to use a third party driver for reasons including:
 
 `XMOS` therefore provides a free Windows USB Audio driver for evaluation and prototyping and a path to a more feature-rich multichannel production driver from our partner `Thesycon`.
 
-The evaluation driver is available from:
+The evaluation driver is available from the `XMOS website <http://www.xmos.com/published/usb-audio-class-20-evaluation-driver-windows>`__:
 
-http://www.xmos.com/published/usb-audio-class-20-evaluation-driver-windows
+Further information about the evaluation and production drivers is available in the *USB Audio Class 2.0 Windows Driver Overview* document available on the
+`website <http://www.xmos.com/published/usb-audio-20-stereo-driver-windows-overview>`_:
 
-Further information about the evaluation and production drivers is available in the *USB Audio Class 2.0 Windows Driver Overview* document available from:
-
-http://www.xmos.com/published/usb-audio-20-stereo-driver-windows-overview
 
 .. _quick_start_tools:
 
@@ -105,7 +104,7 @@ XMOS XTC Development Tools
 ==========================
 
 The `XMOS XTC tools` provide everything you need to develop applications for `xcore multicore microcontrollers` and can be downloaded,
-free of charge, from `XMOS XTC tools <https://www.xmos.com/software-tools/>`_. Installation instructions can be found `here <https://xmos.com/xtc-install-guide>`_.
+free of charge, from `XMOS XTC tools <https://www.xmos.com/software-tools/>`__. Installation instructions can be found `here <https://xmos.com/xtc-install-guide>`_.
 Be sure to pay attention to the section `Installation of required third-party tools
 <https://www.xmos.com/documentation/XM-014363-PC-10/html/installation/install-configure/install-tools/install_prerequisites.html>`_.
 

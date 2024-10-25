@@ -1,3 +1,5 @@
+|newpage|
+
 .. _usb_audio_hardware_platforms:
 
 ****************************
