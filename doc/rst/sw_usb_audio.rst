@@ -26,8 +26,8 @@ For more information see `XMOS Programming Guide
 <https://www.xmos.com/published/xmos-programming-guide>`_.
 
 The reader should also familiarise themselves with the `XMOS USB Device Library (lib_xud)
-<https://github.com/xmos/lib_xud/releases/latest>`_ and the `XMOS USB Audio Library (lib_xua)
-<https://github.com/xmos/lib_xua/releases/latest>`_
+<https://www.xmos.com/file/lib_xud>`_ and the `XMOS USB Audio Library (lib_xua)
+<https://www.xmos.com/file/lib_xua>`_
 
 .. note::
 

@@ -8,7 +8,7 @@ Quick Start
     install the latest firmware on the board and use it. Each step is explained in detail in the following sections.
 
    #. To download the latest **USB Audio 2.0 Device Software** release, go to http://www.xmos.com/develop/usb-multichannel-audio
-      and follow the `DOWNLOAD SOFTWARE` link. Before you download the software review the licence and click **Accept** to initiate the download.
+      and follow the `DOWNLOAD SOFTWARE` link. Before you download the software, review the licence and click **Accept** to initiate the download.
 
       (Section :ref:`quick_start_firmware`.)
 

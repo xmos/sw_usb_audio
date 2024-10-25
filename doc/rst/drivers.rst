@@ -36,7 +36,6 @@ feature-set/benefits:
     - Supports Windows sound APIs such as WASAPI, DirectSound, MME
     - Supports high-end audio features such as bit-perfect PCM up to 768 kHz sampling rate, native DSD format (through ASIO) up to DSD1024
     - Supports multiple clock sources such as S/PDIF, ADAT or WCLK inputs
-    - Supports MIDI 1.0 class, including MIDI port sharing
     - Supports DFU (Device Firmware Upgrade) and comes with a GUI utility for firmware update
     - Provides a private API for driver control and direct device communication (SDK available)
     - Comes with a control panel application for driver status/control
