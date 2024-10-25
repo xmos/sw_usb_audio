@@ -27,7 +27,7 @@ Applications and there respective hardware platforms are listed in :ref:`proj_ap
 
 .. list-table:: USB Audio Reference Applications
    :header-rows: 1
-   :widths: 20 80
+   :widths: 60 80
 
    * - Application
      - Hardware platform
