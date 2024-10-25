@@ -5,12 +5,12 @@ The xcore.ai Multi-Channel Audio Board
 ======================================
 
 An application of the USB audio framework is provided specifically for the XK_AUDIO_316_MC_AB hardware described in
-:ref:`usb_audio_hardware_platforms` and is implemented on an xcore.ai-series dual tile device.  The
+:ref:`usb_audio_hardware_platforms` and is implemented on an xcore.ai series dual tile device.  The
 related code can be found in ``app_usb_aud_xk_316_mc``.
 
 The design supports upto 8 channels of analogue audio input/output at sample-rates up to 192kHz
 (assuming the use of I2S). This can be further increased by utilising TDM. It also supports S/PDIF,
-ADAT and MIDI input and output aswell as the mixing functionalty of ``lib_xua``.
+ADAT and MIDI input and output as well as the mixing functionalty of ``lib_xua``.
 
 The design uses the following tasks:
 
@@ -22,6 +22,7 @@ The design uses the following tasks:
  * Mixer
  * S/PDIF Transmitter
  * S/PDIF Receiver
+ * ADAT Transmitter
  * ADAT Receiver
  * Clockgen
  * MIDI
@@ -34,7 +35,7 @@ lines show the communication between each task.
 
 .. _usb_audio_ai_threads:
 
-.. figure:: images/xk_316_system.pdf
+.. figure:: images/xk_316_system.png
      :width: 90%
      :align: center
 
@@ -109,7 +110,7 @@ multi-channel ADC (Cirrus Logic CS5368) giving 8 channels of analogue output and
 analogue input.
 
 Configuration of both the DAC and ADC takes place using I2C.  The design uses the I2C lib
-`lib_i2c <http://www.github.com/xmos/lib_i2c>`_.
+`lib_i2c <https://www.xmos.com/file/lib_i2c>`_.
 
 The reset lines of the DAC and ADC are connected to bits 1 and 6 of `PORT 8C` respectively.
 
@@ -128,7 +129,7 @@ AudioHwConfig()
 
 The :c:func:`AudioHwConfig()` function is called on every sample frequency change.
 
-The :c:func:`AudioHwConfig` function first puts the both the DAC and ADC into reset by
+The :c:func:`AudioHwConfig` function first puts both the DAC and ADC into reset by
 setting *P8C[1]* and *P8C[6]* low. It then selects the required master clock and keeps both the
 DAC and ADC in reset for a period in order allow the clocks to stabilize.
 
@@ -143,11 +144,11 @@ The reference design can be built in several ways by changing the
 build options.  These are described in :ref:`sec_xua_conf_api`.
 
 The design has only been fully validated against the build options as set in the application as distributed in the
-Makefile.  See :ref:`usb_audio_sec_valbuild` for details and general information on build configuration naming scheme.
+CMakeLists.txt. See :ref:`usb_audio_sec_valbuild` for details and general information on build configuration naming scheme.
 
-These fully validated build configurations are enumerated in the supplied Makefile
+These fully validated build configurations are enumerated in the supplied CMakeLists.txt.
 
-The build configuration naming scheme employed in the makefile is shown in :ref:`table_316_config_naming`.
+The build configuration naming scheme employed in the CMakeLists.txt is shown in :ref:`table_316_config_naming`.
 
 .. _table_316_config_naming:
 

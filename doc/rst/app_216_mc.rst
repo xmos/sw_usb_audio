@@ -35,7 +35,7 @@ lines show the communication between each task.
 
 .. _usb_audio_x200_threads:
 
-.. figure:: images/threads-l2-crop.pdf
+.. figure:: images/threads-l2-crop.png
      :width: 90%
      :align: center
 
@@ -87,12 +87,12 @@ multi-channel ADC (Cirrus Logic CS5368) giving 8 channels of analogue output and
 analogue input.
 
 Configuration of both the DAC and ADC takes place using I2C.  The design uses
-`lib_i2c <http://www.github.com/xmos/lib_i2c>`_.
+`lib_i2c <https://www.xmos.com/file/lib_i2c>`_.
 
 The reset lines of the DAC and ADC are connected to bits 1 and 6 of `PORT 8C` respectively.
 
 AudioHwInit()
-------------
+-------------
 
 The :c:func:`AudioHwInit()` function is implemented to perform the following:
 
@@ -121,15 +121,15 @@ The reference design can be built in several ways by changing the
 build options.  These are described in :ref:`sec_xua_conf_api`.
 
 The design has only been fully validated against the build options as set in the
-application as distributed in the Makefile.  See :ref:`usb_audio_sec_valbuild` for details and general information on
+application as distributed in the CMakeLists.txt.  See :ref:`usb_audio_sec_valbuild` for details and general information on
 build configuation naming scheme.
 
-These fully validated build configurations are enumerated in the supplied Makefile.
+These fully validated build configurations are enumerated in the supplied CMakeLists.txt.
 
 In practise, due to the similarities between the `xcore-200` and `xCORE.ai` series feature set, it is fully
 expected that all listed `xcore-200` series configurations will operate as expected on the `xCORE.ai` series and vice versa.
 
-The build configuration naming scheme employed in the makefile is shown in :ref:`table_216_config_naming`.
+The build configuration naming scheme employed in the CMakeLists.txt is shown in :ref:`table_216_config_naming`.
 
 .. _table_216_config_naming:
 

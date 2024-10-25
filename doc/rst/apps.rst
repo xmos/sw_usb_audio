@@ -7,8 +7,8 @@ The reference applications supplied in ``sw_usb_audio`` use the framework provid
 provide qualified configurations of the framework which support, and are validated, on an accompanying
 reference hardware platform.
 
-These reference design applications customise and extended this framework to provide the required functionality.
-This document will now go on to detail how each of the provided applications customise and extend the framework
+These reference design applications customise and extend this framework to provide the required functionality.
+This document will now go on to detail how each of the provided applications customise and extend the framework.
 
 The applications contained in this repo use ``lib_xua`` in a "code-less" manner. That it, they use
 the ``main()`` function from ``lib_xua`` and customise the code-base as required using build time defines and by

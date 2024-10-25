@@ -39,7 +39,7 @@ Once you have made a copy, you need to:
 
     Whilst a developer may directly change the code in ``main.xc`` to add custom tasks this may not always
     be desirable. Doing this may make taking updates from `XMOS` non-trivial (the same can be said for any
-    custom modifications to any core libraries). Since adding tasks is considered a reasonably common customisation
+    custom modifications to any core libraries). Since adding tasks is considered reasonably common, customisation
     defines ``USER_MAIN_CORES`` and ``USER_MAIN_DECLARATIONS`` are made available.
 
     An example usage is shown in ``app_usb_aud_xk_316_mc/src/extensions/user_main.h``
@@ -75,5 +75,5 @@ the steps below outline one approach:
    button presses, for example.
 
 #. Implement the DSP on this core. This needs to be synchronous (i.e. for every sample received from the ``XUA_AudioHub()``,
-   a sample needs to be outputted back).
+   a sample needs to be output back).
 

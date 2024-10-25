@@ -104,10 +104,12 @@ http://www.xmos.com/published/usb-audio-20-stereo-driver-windows-overview
 XMOS XTC Development Tools
 ==========================
 
-The `XMOS XTC Tools` provide everything you need to develop applications for `xcore multicore microcontrollers` and can be downloaded,
-free of charge, from: http://www.xmos.com/software-tools.
+The `XMOS XTC tools` provide everything you need to develop applications for `xcore multicore microcontrollers` and can be downloaded,
+free of charge, from `XMOS XTC tools <https://www.xmos.com/software-tools/>`_. Installation instructions can be found `here <https://xmos.com/xtc-install-guide>`_.
+Be sure to pay attention to the section `Installation of required third-party tools
+<https://www.xmos.com/documentation/XM-014363-PC-10/html/installation/install-configure/install-tools/install_prerequisites.html>`_.
 
-The `XMOS XTC Tools` make it easy to define real-time tasks as a parallel system. They come with standards compliant C and C++ compilers,
+The `XMOS XTC tools` make it easy to define real-time tasks as a parallel system. They come with standards compliant C and C++ compilers,
 language libraries, simulator, symbolic debugger, and runtime instrumentation and trace libraries. Multicore support offers features for
 task based parallelism and communication, accurate timing and I/O, and safe memory management. All components work off the real-time multicore
 functionality, giving a fully integrated approach.
@@ -122,14 +124,13 @@ The XTC tools are required by anyone developing or deploying applications on an 
     * Deployment tools
 
 The tools as delivered are to be used within a command line environment, though may also be integrated with
-`your preferred IDE <https://www.xmos.ai/documentation/XM-014363-PC-7/html/tools-guide/install-configure/config-ide/index.html>`_.
+`VS Code graphical code editor <https://www.xmos.com/documentation/XM-014363-PC/html/installation/install-configure/install-tools/install_prerequisites.html#installation-of-the-vs-code-graphical-code-editor>`_.
 
 .. warning::
 
-    USB Audio applications are compiled using the `XCommon CMake <https://www.xmos.com/documentation/XM-014363-PC-10/html/tools-guide/tools-ref/xcommon_cmake.html#xcommon-cmake-build-system>`_ build system.
+    USB Audio applications are compiled using the `XCommon CMake <https://www.xmos.com/file/xcommon-cmake-documentation/?version=latest>`_ build system.
     The minimum XTC tools version that supports XCommon CMake can be found in the README file. Ensure that the firmware is compiled using the correct XTC Tools version.
 
-Information on using the tools, including installation, is provided in the `XTC Tools Guide <https://www.xmos.ai/documentation/XM-014363-PC-7/html/intro.html>`_.
 
 |newpage|
 
@@ -153,7 +154,7 @@ From a command prompt with the XMOS tools available, follow these steps:
 
 The above steps will configure and build all of the available and supported build configurations for the application.
 
-The applications are compiled using `XCommon CMake <https://www.xmos.com/documentation/XM-014363-PC-10/html/tools-guide/tools-ref/xcommon_cmake.html#xcommon-cmake-build-system>`_ which is a `CMake <https://cmake.org/>`_
+The applications are compiled using `XCommon CMake <https://www.xmos.com/file/xcommon-cmake-documentation/?version=latest>`_ which is a `CMake <https://cmake.org/>`_
 based build system.
 The primary configuration file for the application is the CMakeLists.txt. It is present in the application directory (e.g. ``app_usb_aud_xk_audio_316_mc``).
 This file specifies build configs, sources, build options and dependencies.
@@ -167,13 +168,13 @@ This file specifies build configs, sources, build options and dependencies.
 Running the Firmware
 ====================
 
-Typically during development the developer wishes to program the device's internal RAM directly via JTAG and run then execute this program.
+Typically during development the developer wishes to program the device's internal RAM with the application binary directly via JTAG and then execute this application.
 
 To run one of the compiled binaries complete the following steps:
 
     #. Connect the USB Audio board to your host computer.
 
-    #. Connect the xTAG to the USB Audio board and connect the it to your PC or Mac via a separate USB cable
+    #. Connect the xTAG to the USB Audio board and connect it to your PC or Mac via a separate USB cable
 
     #. Ensure any required external power jacks are connected
 
@@ -210,7 +211,7 @@ Playing Audio
 
     #. Connect the board to any power supply provided (note, some boards will be USB bus powered)
 
-    #. Connect the board a host with driver support the USB Audio Class using a USB cable
+    #. Connect the board to a host with driver support for USB Audio Class using a USB cable
 
     #. Install the Windows USB Audio 2.0 demonstration driver, if required.
 
@@ -225,22 +226,17 @@ Next Steps
 
 Further information on using the board and the `XTC Tools` is available from:
 
-**xcore-200 Multichannel Audio Platform 2v0 Hardware Manual**
+`xcore-200 Multichannel Audio Platform 2v0 Hardware Manual <https://www.xmos.com/file/xcore-200-multichannel-audio-platform-hardware-manual/>`_
 
-https://www.xmos.ai/file/xcore-200-multichannel-audio-platform-hardware-manuals?version=latest
 
-**xcore.ai Multichannel Audio Platform 2v0 Hardware Manual**
+`xcore.ai Multichannel Audio Platform 2v0 Hardware Manual <https://www.xmos.com/download/XCORE_AI-Multichannel-Audio-Platform-1V1-Hardware-Manual(1V1).pdf>`_
 
-https://www.xmos.ai/file/xcore-ai-multichannel-audio-platform-hardware-manuals?version=latest
 
-**XMOS USB Device Library (lib_xud)**
+`XMOS USB Device Library (lib_xud) <https://www.xmos.com/file/lib_xud>`_
 
-https://github.com/xmos/lib_xud/releases/latest
 
-**XMOS USB Audio Library (lib_xua)**
+`XMOS USB Audio Library (lib_xua) <https://www.xmos.com/file/lib_xua>`_
 
-https://github.com/xmos/lib_xua/releases/latest
 
-**XTC Tools User Guide**
+`XTC Tools User Guide <https://www.xmos.com/documentation/XM-014363-PC/html/>`_
 
-https://www.xmos.ai/view/Tools-15---Documentation

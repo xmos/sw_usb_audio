@@ -1,7 +1,7 @@
 A Typical USB Audio Application
 ===============================
 
-This section provides a walk through of a typical USB Audio application. Where specific examples are required
+This section provides a walk through of a typical USB Audio application. Where specific examples are required,
 code is used from the application for `XK-AUDIO-316-MC` (``app_usb_aud_xk_316_mc``).
 
 .. note::
@@ -26,18 +26,15 @@ The ``src`` directory is arranged into two directories:
 The ``core`` folder for each application contains:
 
     #. A ``.xn`` file to describe the hardware platform the application will run on
-    #. An (optional) configuration header file to customise the framework provided by ``lib_xua`` named ``xua_conf.h``
-
-.. note::
-
-    The `XCOMMON` build sytem autmatically locates ``_conf.h`` files in the source tree for all used ``lib`` dependencies.
+    #. An optional header file to customise the framework provided by ``lib_xua`` named ``xua_conf.h``
 
 
-Lib_xua Configuration
----------------------
+
+`lib_xua`` Configuration
+------------------------
 
 The ``xua_conf.h`` file contains all the build-time ``#defines`` required to tailor framework provided by ``lib_xua``
-to the particular application at hand.  Typically these over-ride default values in ``xua_conf_default.h``
+to the particular application at hand.  Typically these override default values in ``xua_conf_default.h``
 in ``lib_xua/api``.
 
 Firstly in ``app_usb_aud_xk_316_mc`` the ``xua_conf.h`` file sets defines to determine overall capability. For this application
@@ -82,7 +79,7 @@ should be placed on, for example USB, S/PDIF etc.
   :start-after: Defines relating to feature placement
   :end-before: Defines relating to USB descriptor
 
-The file also sets some defines for general USB ID's and strings. These are set for the XMOS reference design but vary per
+The file also sets some defines for general USB IDs and strings. These are set for the XMOS reference design but vary per
 manufacturer:
 
 .. literalinclude:: ../../app_usb_aud_xk_316_mc/src/core/xua_conf.h
@@ -103,13 +100,13 @@ The two functions it overrides in ``audiohw.xc`` are ``AudioHwInit()`` and ``Aud
 and sample-rate change respectively. Note, the default implementations in ``lib_xua`` are empty. These functions have
 parameters for sample frequency, sample depth, etc.
 
-In the case of ``app_usb_aud_xk_316_mc`` these functions configure the external DAC's and ADC's via an I2C bus and configure
+In the case of ``app_usb_aud_xk_316_mc`` these functions configure the external DACs and ADCs via an I2C bus and configure
 the `xCORE` secondary PLL to generate the required master clock frequencies.
 
 Due to the complexity of the hardware on the `XK-AUDIO-316-MC` the source code is not included here.
 
 The application also overrides ``UserAudioStreamStart()`` and ``UserAudioStreamStop()``. These are called from ``lib_xua`` when the audio
-stream to the device is started or stopped respectively. The applications uses these functions to enable/disable the LEDs on the board
+stream to the device is started or stopped respectively. The applications use these functions to enable/disable the LEDs on the board
 based on whether an audio stream is present (input or output).
 
 .. literalinclude:: ../../app_usb_aud_xk_316_mc/src/extensions/audiostream.xc
@@ -162,7 +159,7 @@ audio samples from other interfaces e.g. S/PDIF, ADAT, as required:
    :start-after: /* Audio I/O task
    :end-before: //:
 
-Finally, other task are create for various interfaces, for example, if MIDI is enabled a core is required to drive the MIDI input
+Finally, other tasks are created for various interfaces, for example, if MIDI is enabled a core is required to drive the MIDI input
 and output.
 
 .. literalinclude:: ../../../lib_xua/lib_xua/src/core/main.xc
