@@ -84,7 +84,7 @@ def test_midi_loopback_stress(pytestconfig, board, config):
         dut.set_stream_format("output", fs_audio, features["chan_o"], 24)
 
         # Ensure firmware is up and enumerated as MIDI
-        ret = dut.wait_for_midi_ports(timeout_s=midi_port_wait_timeout)
+        ret = dut.wait_for_midi_ports(timeout_s=midi_port_wait_timeout, restart_attempts=1)
         if not ret:
             pytest.fail(f"No XMOS MIDI ports found after multiple tries: {mido.get_input_names()}, {mido.get_output_names()}")
 

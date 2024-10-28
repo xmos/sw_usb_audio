@@ -156,7 +156,7 @@ def test_midi_loopback(pytestconfig, board, config):
         midi_port_wait_timeout = 10
 
     with AppUsbAudDut(adapter_dut, board, config) as dut:
-        ret = dut.wait_for_midi_ports(timeout_s=midi_port_wait_timeout)
+        ret = dut.wait_for_midi_ports(timeout_s=midi_port_wait_timeout, restart_attempts=1)
         if not ret:
             pytest.fail(f"No XMOS MIDI ports found after multiple tries: {mido.get_input_names()}, {mido.get_output_names()}")
 
