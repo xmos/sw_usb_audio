@@ -1,10 +1,20 @@
-@Library('xmos_jenkins_shared_library@v0.27.0') _
+@Library('xmos_jenkins_shared_library@v0.34.0') _
 
 // Get XCommon CMake.
 // This is required for compiling a factory image for a DFU test using tools 15.2.1
 // to test DFU across XTC tools versions.
 def get_xcommon_cmake() {
   sh "git clone -b v1.3.0 git@github.com:xmos/xcommon_cmake"
+}
+
+def clone_test_deps() {
+  dir("${WORKSPACE}") {
+    sh "git clone git@github0.xmos.com:xmos-int/xtagctl"
+    sh "git -C xtagctl checkout v2.0.0"
+
+    sh "git clone git@github.com:xmos/hardware_test_tools"
+    sh "git -C hardware_test_tools checkout 2f9919c956f0083cdcecb765b47129d846948ed4"
+  }
 }
 
 getApproval()
@@ -25,7 +35,6 @@ pipeline {
     VIEW = getViewName(REPO)
     TOOLS_VERSION = "15.3.0"
     PREV_TOOLS_VERSION = "15.2.1"
-    XTAGCTL_VERSION = "v2.0.0"
   }
   stages {
     stage('Build') {
@@ -62,13 +71,14 @@ pipeline {
               }
 
               withTools("${env.TOOLS_VERSION}") {
-                sh "git submodule update --init"
-                createVenv("requirements.txt")
-                withVenv() {
-                  sh "pip install -r requirements.txt"
-                  // Check that the app_configs_autogen.yml file is up to date
-                  sh "python tests/tools/app_configs_autogen/collect_configs.py check"
-                }
+                clone_test_deps()
+                dir("tests") {
+                  createVenv(reqFile: "requirements.txt")
+                  withVenv() {
+                    // Check that the app_configs_autogen.yml file is up to date
+                    sh "python tools/app_configs_autogen/collect_configs.py check"
+                  } // withVenv()
+                } // dir("tests")
                 // Build the loopback version of the configs for 316 and rename them to have _i2sloopback
                 sh "cmake -S app_usb_aud_xk_316_mc/ -B build -DPARTIAL_TESTED_CONFIGS=1 -DEXTRA_BUILD_FLAGS='-DI2S_LOOPBACK=1'"
                 sh "xmake -C build -j16"
@@ -176,8 +186,6 @@ pipeline {
           }
           steps {
             println "Stage running on ${env.NODE_NAME}"
-            sh "git clone git@github0.xmos.com:xmos-int/xtagctl"
-            sh "git -C xtagctl checkout ${env.XTAGCTL_VERSION}"
 
             dir("sw_audio_analyzer") {
               copyArtifacts filter: '**/*.xe', fingerprintArtifacts: true, projectName: 'xmos-int/sw_audio_analyzer/master', selector: lastSuccessful()
@@ -186,19 +194,16 @@ pipeline {
 
             dir("${REPO}") {
               checkout scm
-              sh "git submodule update --init"
-              createVenv("requirements.txt")
-              withVenv() {
-                sh "pip install -r requirements.txt"
-              }
+              clone_test_deps()
 
               unstash 'xk_216_mc_bin'
               unstash 'xk_evk_xu316_bin'
 
               dir("tests") {
+                createVenv(reqFile: "requirements.txt")
                 dir("tools") {
                   // Build test support application
-                  dir("hardware_test_tools") {
+                  dir("${WORKSPACE}/hardware_test_tools") {
                     sh 'cmake -B build -G Ninja'
                     sh 'ninja -C build'
 
@@ -232,7 +237,7 @@ pipeline {
           post {
             always {
               archiveArtifacts artifacts: "${REPO}/tests/pytest_result_mac_intel.xml", fingerprint: true, allowEmptyArchive: true
-              archiveArtifacts artifacts: "${REPO}/tests/tools/hardware_test_tools/xsig/glitch.*.csv", fingerprint: true, allowEmptyArchive: true
+              archiveArtifacts artifacts: "${WORKSPACE}/hardware_test_tools/xsig/glitch.*.csv", fingerprint: true, allowEmptyArchive: true
               junit "${REPO}/tests/pytest_result_mac_intel.xml"
             }
             cleanup {
@@ -247,8 +252,6 @@ pipeline {
           }
           steps {
             println "Stage running on ${env.NODE_NAME}"
-            sh "git clone git@github0.xmos.com:xmos-int/xtagctl"
-            sh "git -C xtagctl checkout ${env.XTAGCTL_VERSION}"
 
             dir("sw_audio_analyzer") {
               copyArtifacts filter: '**/*.xe', fingerprintArtifacts: true, projectName: 'xmos-int/sw_audio_analyzer/master', selector: lastSuccessful()
@@ -257,18 +260,15 @@ pipeline {
 
             dir("${REPO}") {
               checkout scm
-              sh "git submodule update --init"
-              createVenv("requirements.txt")
-              withVenv() {
-                sh "pip install -r requirements.txt"
-              }
+              clone_test_deps()
 
               unstash 'xk_316_mc_bin'
 
               dir("tests") {
+                createVenv(reqFile: "requirements.txt")
                 dir("tools") {
                   // Build test support application
-                  dir("hardware_test_tools") {
+                  dir("${WORKSPACE}/hardware_test_tools") {
                     sh 'cmake -B build -G Ninja'
                     sh 'ninja -C build'
 
@@ -300,7 +300,7 @@ pipeline {
           post {
             always {
               archiveArtifacts artifacts: "${REPO}/tests/pytest_result_mac_arm.xml", fingerprint: true, allowEmptyArchive: true
-              archiveArtifacts artifacts: "${REPO}/tests/tools/hardware_test_tools/xsig/glitch.*.csv", fingerprint: true, allowEmptyArchive: true
+              archiveArtifacts artifacts: "${WORKSPACE}/hardware_test_tools/xsig/glitch.*.csv", fingerprint: true, allowEmptyArchive: true
               junit "${REPO}/tests/pytest_result_mac_arm.xml"
             }
             cleanup {
@@ -321,8 +321,6 @@ pipeline {
           }
           steps {
             println "Stage running on ${env.NODE_NAME}"
-            sh "git clone git@github0.xmos.com:xmos-int/xtagctl"
-            sh "git -C xtagctl checkout ${env.XTAGCTL_VERSION}"
 
             dir("sw_audio_analyzer") {
               copyArtifacts filter: '**/*.xe', fingerprintArtifacts: true, projectName: 'xmos-int/sw_audio_analyzer/master', selector: lastSuccessful()
@@ -331,17 +329,14 @@ pipeline {
 
             dir("${REPO}") {
               checkout scm
-              sh "git submodule update --init"
-              createVenv("requirements.txt")
-              withVenv() {
-                sh "pip install -r requirements.txt"
-              }
+              clone_test_deps()
 
               unstash 'xk_316_mc_bin'
 
               dir("tests") {
+                createVenv(reqFile: "requirements.txt")
                 dir("tools") {
-                  dir("hardware_test_tools") {
+                  dir("${WORKSPACE}/hardware_test_tools") {
                     withVS() {
                       sh "cmake -B build -G Ninja"
                       sh "ninja -C build"
@@ -371,7 +366,7 @@ pipeline {
           post {
             always {
               archiveArtifacts artifacts: "${REPO}/tests/pytest_result_windows10.xml", fingerprint: true, allowEmptyArchive: true
-              archiveArtifacts artifacts: "${REPO}/tests/tools/hardware_test_tools/xsig/glitch.*.csv", fingerprint: true, allowEmptyArchive: true
+              archiveArtifacts artifacts: "${WORKSPACE}/hardware_test_tools/xsig/glitch.*.csv", fingerprint: true, allowEmptyArchive: true
               junit "${REPO}/tests/pytest_result_windows10.xml"
             }
             cleanup {
@@ -392,8 +387,6 @@ pipeline {
           }
           steps {
             println "Stage running on ${env.NODE_NAME}"
-            sh "git clone git@github0.xmos.com:xmos-int/xtagctl"
-            sh "git -C xtagctl checkout ${env.XTAGCTL_VERSION}"
 
             dir("sw_audio_analyzer") {
               copyArtifacts filter: '**/*.xe', fingerprintArtifacts: true, projectName: 'xmos-int/sw_audio_analyzer/master', selector: lastSuccessful()
@@ -402,17 +395,14 @@ pipeline {
 
             dir("${REPO}") {
               checkout scm
-              sh "git submodule update --init"
-              createVenv("requirements.txt")
-              withVenv() {
-                sh "pip install -r requirements.txt"
-              }
+              clone_test_deps()
 
               unstash 'xk_316_mc_bin'
 
               dir("tests") {
+                createVenv(reqFile: "requirements.txt")
                 dir("tools") {
-                  dir("hardware_test_tools") {
+                  dir("${WORKSPACE}/hardware_test_tools") {
                     withVS() {
                       sh "cmake -B build -G Ninja"
                       sh "ninja -C build"
@@ -443,7 +433,7 @@ pipeline {
           post {
             always {
               archiveArtifacts artifacts: "${REPO}/tests/pytest_result_windows11.xml", fingerprint: true, allowEmptyArchive: true
-              archiveArtifacts artifacts: "${REPO}/tests/tools/hardware_test_tools/xsig/glitch.*.csv", fingerprint: true, allowEmptyArchive: true
+              archiveArtifacts artifacts: "${WORKSPACE}/hardware_test_tools/xsig/glitch.*.csv", fingerprint: true, allowEmptyArchive: true
               junit "${REPO}/tests/pytest_result_windows11.xml"
             }
             cleanup {
