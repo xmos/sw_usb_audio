@@ -50,14 +50,13 @@ sw_usb_audio change log
       + REMOVED: Unused dependency lib_logging
       + ADDED: Frame synch error field in i2s_config_t for I2S slave
 
-    - lib_locks: Added dependency 2.2.0
+    - lib_locks: Added dependency 2.3.1
 
-      + ADDED: Tests now run on xcore.ai as well as xcore-200
-      + ADDED: Support for XCommon CMake build system
+      + CHANGED: Documentation updates
 
-    - lib_logging: Added dependency 3.2.0
+    - lib_logging: Added dependency 3.3.1
 
-      + ADDED:   Support for XCommon CMake build system
+      + CHANGED: Documentation updates
 
     - lib_mic_array: Added dependency 5.4.0
 
@@ -67,13 +66,24 @@ sw_usb_audio change log
         removed in future versions. Please use XCommon CMake build system as
         provided in XTC 15.3.0 onwards for new projects.
 
-    - lib_spdif: Added dependency 6.2.0
+    - lib_spdif: Added dependency 6.2.1
 
-      + CHANGED:   Use XCommon CMake for examples and tests
+      + CHANGED:   Documentation updated
 
-    - lib_xassert: Added dependency 4.2.0
+    - lib_sw_pll: 2.2.0 -> 2.3.1
 
-      + ADDED: Support for XCommon CMake build system
+      + CHANGED:   Documentation updates
+      + FIXED:     Added missing <xs1.h> include
+      + CHANGED: Updated pll_calc script to separate out integer and fractional
+        divider values for easier user interpretation
+      + CHANGED: Improved PLL solution selection in app_pll_model to ensure
+        sufficient positive and negative range from nominal frequency
+      + CHANGED: Uses Xcommon Cmake instead of custom Cmake
+      + FIXED: Python models and test type error on later numpy versions
+
+    - lib_xassert: Added dependency 4.3.1
+
+      + CHANGED: Documentation updates
 
     - lib_xcore_math: Added dependency 2.3.0
 
