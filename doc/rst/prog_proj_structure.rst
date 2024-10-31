@@ -20,8 +20,8 @@ The `sw_usb_audio GIT repository <https://github.com/xmos/sw_usb_audio>`_ includ
 Each application directory contains a ``CMakeLists.txt`` file which describes the build configs for that application.
 The format of the ``CMakeLists.txt`` is described `here <https://www.xmos.com/documentation/XM-015090-PC-2/html/doc/config_files.html>`_
 XCommon CMake uses the ``CMakeLists.txt`` to generate Makefiles that can be compiled using ``xmake`` into executables.
-Typically you can expect to see one application directory per hardware platform.
-Applications and there respective hardware platforms are listed in :ref:`proj_app_boards`.
+Typically, there's one application directory per hardware platform.
+Applications and their respective hardware platforms are listed in :ref:`proj_app_boards`.
 
 .. _proj_app_boards:
 

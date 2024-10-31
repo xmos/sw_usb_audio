@@ -1,15 +1,14 @@
 Adding Custom Code
 ==================
 
-The flexibility of the `XMOS USB Audio Reference Design` software is such that you can modify
-the reference applications to change the feature set or add extra functionality.
+The flexibility of the `XMOS USB Audio Reference Design` software is such that the reference applications
+can be modified to change the feature set or add extra functionality.
 Any part of the software can be altered since full source code is supplied.
 
 .. note::
 
-   The reference designs have been verified against a variety of host OS types at different samples rates. However,
-   modifications to the code may invalidate the results of this verification and you are strongly encouraged to fully
-   re-test the resulting software.
+   The reference designs have been verified against a variety of host operating systems at different samples rates. However,
+   modifications to the code may invalidate the results of this verification and fully retesting the resulting software is strongly recommended.
 
 .. note::
 
@@ -18,22 +17,20 @@ Any part of the software can be altered since full source code is supplied.
 
 The general steps to producing a custom codebase are as follows:
 
-#. Make a copy of the application directory (e.g. ``app_usb_aud_xk_316_mc`` or ``app_usb_aud_xk_216_mc``)
-   you wish to base your code on, to a separate directory with a different name.
+#. Make a copy of the reference application directory ((e.g. ``app_usb_aud_xk_316_mc`` or ``app_usb_aud_xk_216_mc``)
+   to a separate directory with a different name. Modify the new application to suit the custom requirements. For example:
 
-#. Make a copy of any dependencies you wish to alter (most of the time
-   you probably do not want to do this). Update the Makefile of your
-   new application to use these new custom modules.
+   * Provide the ``.xn`` file for the target hardware platform by setting the ``APP_HW_TARGET`` in the application's ``CMakeLists.txt``.
+   * Update ``xua_conf.h`` with specific defines for the custom application.
+   * Add any other custom code in the files as needed.
+   * Update the ``main.xc`` to add any custom tasks.
 
-#. Make appropriate changes to the code, rebuild and re-flash the
+#. Make a copy of any dependencies that require modification (in most cases, this step is unnecessary).
+   Update the custom application's ``CMakeLists.txt`` to use these new modules.
+
+#. After making appropriate changes to the code, rebuild and re-flash the
    device for testing.
 
-Once you have made a copy, you need to:
-
-#. Provide a ``.xn`` file for your board (updating the ``TARGET`` variable in the Makefile appropriately).
-#. Update ``xua_conf.h`` with the specific defines you wish to set.
-#. Add any custom code in other files you need.
-#. Update ``main.xc`` to add any custom tasks
 
 .. note::
 
@@ -50,11 +47,9 @@ The following sections show some example changes with a high level overview of h
 Example: Changing Output Format
 -------------------------------
 
-You may wish to customize the digital output format e.g. for a CODEC that expects sample data right-justified with
-respect to the word clock.
+Customising the digital output format may be required, for example, to support a CODEC that expects sample data right-justified with respect to the word clock.
 
-To do this you need to alter the main audio driver loop in ``xua_audiohub.xc``. After the alteration you need to re-test
-the functionality.
+To achieve this, alter the main audio driver loop in ``xua_audiohub.xc``. After making the alteration, re-test the functionality to ensure proper operation.
 
 Hint, a naive approach would simply include right-shifting the audio data by 7 bits before it is output to the port. This
 would of course lose LSB data depending on the sample-depth.
@@ -62,8 +57,8 @@ would of course lose LSB data depending on the sample-depth.
 Example: Adding DSP to the Output Stream
 ----------------------------------------
 
-To add some DSP requires an extra core of computation. Depending on the `xCORE` device being used you may have to disable some
-existing functionality to free up a core (e.g. disable S/PDIF). There are many ways that DSP processing can be added,
+To add some DSP requires an extra core of computation. Depending on the `xCORE` device being used, some
+existing functionality might need to be disabled to free up a core (e.g. disable S/PDIF). There are many ways that DSP processing can be added,
 the steps below outline one approach:
 
 #. Remove some functionality using the defines in :ref:`sec_xua_conf_api` to free up a core as required.

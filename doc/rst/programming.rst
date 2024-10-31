@@ -5,7 +5,7 @@ USB Audio Programming Guide
 ***************************
 
 The following sections provide a guide on how to program the USB Audio applications including information on
-project structure, build configurations and creating your own custom USB audio applications.
+project structure, build configurations and creating custom USB audio applications.
 
 .. toctree::
 
