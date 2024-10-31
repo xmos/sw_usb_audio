@@ -120,7 +120,7 @@ def pytest_sessionstart(session):
 
     for app_dir in usb_audio_dir.iterdir():
         app_name = app_dir.name
-        if not app_name.startswith(app_prefix) or app_name in exclude_app:
+        if not app_name.startswith(app_prefix) or (app_name in exclude_app) or ("@" in app_name):
             continue
 
         board = app_name[len(app_prefix) :]
