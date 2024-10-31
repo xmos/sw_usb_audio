@@ -152,11 +152,12 @@ pipeline {
 
             stage('Build Documentation') {
               steps {
+                clone_test_deps()
                 dir("${REPO}") {
                   dir("tests") {
                     createVenv(reqFile: "requirements.txt")
                   } // dir("tests")
-                  withVenv(venv_path="${REPO}/tests") {
+                  withVenv(venv_path="${WORKSPACE}/${REPO}/tests") {
                     warnError("Docs") {
                       buildDocs(xmosdocVenvPath: "${REPO}/tests")
                     }
