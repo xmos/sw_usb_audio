@@ -22,19 +22,19 @@ Quick Start
 
    #. Download and install the the `XMOS XTC Tools <http://www.xmos.com/software-tools>`_
 
-      The minimum required XTC Tools version for compiling USB Audio applications can be found in the README. Make sure that you download the correct version of the tools.
+      The minimum required XTC Tools version for compiling USB Audio applications can be found in the README. Make sure to download the correct version of the tools.
 
       (Section :ref:`quick_start_tools`)
 
-   #. Compile the firmware relavant to the board you have .
+   #. Compile the firmware relavant to the available reference hardware platform .
 
       (Section: :ref:`quick_start_building`)
 
-   #. Connect the board to your development system using the xTAG supplied, and program the firmware onto the board.
+   #. Connect the board to the development system using the xTAG supplied, and program the firmware onto the board.
 
       (Section :ref:`quick_start_running`)
 
-   #. Connect audio input and output devices, and play your audio.
+   #. Connect audio input and output devices, and play audio.
 
       (Section :ref:`quick_start_play_audio`)
 
@@ -47,7 +47,7 @@ USB Audio 2.0 Reference Software
 
 The latest USB Audio 2.0 Reference Design software is available free of charge from XMOS.
 
-The first time you download the software you need to register at:
+When downloading the software for the first time, the user needs to register at:
 
 http://www.xmos.com/
 
@@ -61,7 +61,7 @@ To download the firmware:
 
 The software is distributed as a zip archive containing pre-compiled binaries and source code that can be built using the `XMOS XTC Tools`.
 
-Alternatively, contact your `local sales representative <https://www.xmos.com/find-a-distributor/>`_ for further details:
+Alternatively, contact a `local sales representative <https://www.xmos.com/find-a-distributor/>`_ for further details:
 
 
 .. _quick_start_windows_driver:
@@ -103,7 +103,7 @@ Further information about the evaluation and production drivers is available in 
 XMOS XTC Development Tools
 ==========================
 
-The `XMOS XTC tools` provide everything you need to develop applications for `xcore multicore microcontrollers` and can be downloaded,
+The `XMOS XTC tools` provide everything required to develop applications for `xcore multicore microcontrollers` and can be downloaded,
 free of charge, from `XMOS XTC tools <https://www.xmos.com/software-tools/>`__. Installation instructions can be found `here <https://xmos.com/xtc-install-guide>`_.
 Be sure to pay attention to the section `Installation of required third-party tools
 <https://www.xmos.com/documentation/XM-014363-PC-10/html/installation/install-configure/install-tools/install_prerequisites.html>`_.
@@ -171,9 +171,9 @@ Typically during development the developer wishes to program the device's intern
 
 To run one of the compiled binaries complete the following steps:
 
-    #. Connect the USB Audio board to your host computer.
+    #. Connect the USB Audio board to the host computer.
 
-    #. Connect the xTAG to the USB Audio board and connect it to your PC or Mac via a separate USB cable
+    #. Connect the xTAG to the USB Audio board and connect it to the host machine on which the application binary is present via a separate USB cable
 
     #. Ensure any required external power jacks are connected
 
@@ -189,9 +189,9 @@ Writing the Application Binary to Flash
 
 Optionally a binary can be programmed into the boot flash. To do this:
 
-    #. Connect the USB Audio board to your host computer.
+    #. Connect the USB Audio board to the host computer.
 
-    #. Connect the xTAG to the USB Audio board and connect the it to your PC or Mac via a separate USB cable
+    #. Connect the xTAG to the USB Audio board and connect the it to the host machine on which the application binary is present via a separate USB cable
 
     #. Ensure any required external power jacks are connected
 
@@ -200,8 +200,6 @@ From a command prompt with the XMOS tools available, run the following command::
     xflash path/to/binary.xe
 
 Once flashed the target device will reboot and execute the binary. Power cycling the target board will cause the device to reboot the flashed binary.
-
-If subsequently you wish to use ``xrun`` to program the device it is always advisable to erase the flash contents using the ``erase-all`` option to the ``xflash`` tool.
 
 .. _quick_start_play_audio:
 
@@ -214,9 +212,9 @@ Playing Audio
 
     #. Install the Windows USB Audio 2.0 demonstration driver, if required.
 
-    #. Connect your audio input/output devices to the connectors on the board e.g powered speakers
+    #. Connect audio input/output devices to the connectors on the board e.g powered speakers
 
-    #. In your audio application, select the XMOS USB Audio device.
+    #. In the audio application, select the XMOS USB Audio device.
 
     #. Start playing and recording.
 
