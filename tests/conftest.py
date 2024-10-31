@@ -182,6 +182,8 @@ def pytest_collection_modifyitems(config, items):
                 deselected.append(item)
             else:
                 selected.append(item)
+        else: # If test doesn't define an uncollect function, default behaviour is to collect it
+            selected.append(item)
 
     config.hook.pytest_deselected(items=deselected)
     items[:] = selected

@@ -82,6 +82,8 @@ pipeline {
                   withVenv() {
                     // Check that the app_configs_autogen.yml file is up to date
                     sh "python tools/app_configs_autogen/collect_configs.py check"
+                    // Check that the BCD version in version.h matches the library version in settings.yml
+                    sh "pytest -v test_version.py"
                   } // withVenv()
                 } // dir("tests")
                 // Build the loopback version of the configs for 316 and rename them to have _i2sloopback
