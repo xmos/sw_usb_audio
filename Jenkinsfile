@@ -153,15 +153,14 @@ pipeline {
             stage('Build Documentation') {
               steps {
                 dir("${REPO}") {
-                  sh 'ls -l ..'
-                  createVenv("requirements.txt")
-                  withVenv() {
-                    //sh 'pip install git+ssh://git@github.com/xmos/xmosdoc'
-                    //sh 'xmosdoc'
+                  dir("tests") {
+                    createVenv(reqFile: "requirements.txt")
+                  } // dir("tests")
+                  withVenv(venv_path="${REPO}/tests") {
                     warnError("Docs") {
-                      buildDocs(xmosdocVenvPath: "${REPO}")
+                      buildDocs(xmosdocVenvPath: "${REPO}/tests")
                     }
-                  }
+                  } // withVenv
                 } // dir("${REPO}")
               } // steps
             } // stage('Build Documentation')
