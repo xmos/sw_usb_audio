@@ -11,7 +11,7 @@ related code can be found in ``app_usb_aud_xk_216_mc``.
 
 The design supports upto 8 channels of analogue audio input/output at sample-rates up to 192kHz
 (assuming the use of I2S). This can be further increased by utilising TDM. It also supports S/PDIF,
-ADAT and MIDI input and output aswell as the mixing functionalty of ``lib_xua``.
+ADAT and MIDI input and output as well as the mixing functionalty of ``lib_xua``.
 
 The design uses the following tasks:
 
@@ -40,6 +40,13 @@ lines show the communication between each task.
      :align: center
 
      xcore-200 Multichannel Audio System/Core Diagram
+
+The ``app_usb_aud_xk_216_mc`` application uses the functions provided in ``lib_board_support`` for master clock generation and audio
+hardware configuration. The functions :c:func:`xk_audio_216_mc_ab_AudioHwInit()` and :c:func:`xk_audio_216_mc_ab_AudioHwConfig()` are called at various points during initialisation and
+runtime to initialise and configure the audio hardware.
+
+For further details on the hardware platform and the functions available for configuring it
+please refer to `lib_board_support documentation <https://www.xmos.com/file/lib_board_support>`_.
 
 |newpage|
 
@@ -79,6 +86,11 @@ The clock-select from the phaselink part is controlled via bit 7 of `PORT 8C`:
    * - 1
      - 22.579MHz
 
+Information about the required clocking scheme is programmed in the configuration structure ``xk_audio_216_mc_ab_config_t`` provided
+in ``lib_board_support``, and passed to ``lib_board_support`` functions :c:func:`xk_audio_216_mc_ab_AudioHwInit()`
+and and :c:func:`xk_audio_216_mc_ab_AudioHwConfig()`, which power up, initialise and configure the
+audio hardware.
+
 DAC and ADC Configuration
 -------------------------
 
@@ -86,33 +98,22 @@ The board is equipped with a single multi-channel audio DAC (Cirrus Logic CS4384
 multi-channel ADC (Cirrus Logic CS5368) giving 8 channels of analogue output and 8 channels of
 analogue input.
 
-Configuration of both the DAC and ADC takes place using I2C.  The design uses
-`lib_i2c <https://www.xmos.com/file/lib_i2c>`_.
-
-The reset lines of the DAC and ADC are connected to bits 1 and 6 of `PORT 8C` respectively.
+These are initialised and configured using lib_board_support APIs :c:func:`xk_audio_216_mc_ab_AudioHwInit()` and :c:func:`xk_audio_216_mc_ab_AudioHwConfig()`
 
 AudioHwInit()
 -------------
 
-The :c:func:`AudioHwInit()` function is implemented to perform the following:
-
-    * Initialise the I2C master software module
-    * Puts the audio hardware into reset
-    * Enables the power to the audio hardware
-    * Select the PhaseLink PLL as the audio master clock source.
+The :c:func:`AudioHwInit()` function acts as a wrapper calling ``lib_board_support`` function :c:func:`xk_audio_216_mc_ab_AudioHwInit()` to power up and initialise the
+audio hardware ready for a configuration.
 
 AudioHwConfig()
 ---------------
 
-The :c:func:`AudioHwConfig()` function is called on every sample frequency change.
+The :c:func:`AudioHwConfig()` function configures the audio hardware post initialisation.
+It is typically called each time a sample rate or stream format change occurs.
+It acts as a wrapper function calling :c:func:`xk_audio_216_mc_ab_AudioHwConfig()`.
 
-The :c:func:`AudioHwConfig` function first puts the both the DAC and ADC into reset by
-setting *P8C[1]* and *P8C[6]* low. It then selects the required master clock and keeps both the
-DAC and ADC in reset for a period in order allow the clocks to stabilize.
-
-The DAC and ADC are brought out of reset by setting *P8C[1]* and *P8C[6]* back high.
-
-Various registers are then written to the ADC and DAC as required.
+For more information about the ``lib_board_support`` functions refer to the `library documentation <https://www.xmos.com/file/lib_board_support>`_.
 
 Validated Build Options
 -----------------------
