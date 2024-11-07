@@ -1,5 +1,15 @@
 @Library('xmos_jenkins_shared_library@v0.34.0') _
 
+def checkout_shallow()
+{
+    checkout scm: [
+        $class: 'GitSCM',
+        branches: scm.branches,
+        userRemoteConfigs: scm.userRemoteConfigs,
+        extensions: [[$class: 'CloneOption', depth: 1, shallow: true, noTags: false]]
+    ]
+}
+
 // Get XCommon CMake.
 // This is required for compiling a factory image for a DFU test using tools 15.2.1
 // to test DFU across XTC tools versions.
@@ -50,7 +60,7 @@ pipeline {
             get_xcommon_cmake()
 
             dir("${REPO}") {
-              checkout scm
+              checkout_shallow()
 
               withTools("${env.PREV_TOOLS_VERSION}") {
                 withEnv(["XMOS_CMAKE_PATH=${WORKSPACE}/xcommon_cmake"]) {
@@ -115,7 +125,7 @@ pipeline {
             println "Stage running on ${env.NODE_NAME}"
 
             dir("${REPO}") {
-              checkout scm
+              checkout_shallow()
 
               withTools("${env.TOOLS_VERSION}") {
                 // Fetch all dependencies using XCommon CMake
@@ -155,7 +165,7 @@ pipeline {
             }
 
             dir("${REPO}") {
-              checkout scm
+              checkout_shallow()
 
               viewEnv {
                 withTools("${env.TOOLS_VERSION}") {
@@ -193,7 +203,7 @@ pipeline {
             }
 
             dir("${REPO}") {
-              checkout scm
+              checkout_shallow()
               clone_test_deps()
 
               unstash 'xk_216_mc_bin'
@@ -259,7 +269,7 @@ pipeline {
             }
 
             dir("${REPO}") {
-              checkout scm
+              checkout_shallow()
               clone_test_deps()
 
               unstash 'xk_316_mc_bin'
@@ -328,7 +338,7 @@ pipeline {
             }
 
             dir("${REPO}") {
-              checkout scm
+              checkout_shallow()
               clone_test_deps()
 
               unstash 'xk_316_mc_bin'
@@ -394,7 +404,7 @@ pipeline {
             }
 
             dir("${REPO}") {
-              checkout scm
+              checkout_shallow()
               clone_test_deps()
 
               unstash 'xk_316_mc_bin'
