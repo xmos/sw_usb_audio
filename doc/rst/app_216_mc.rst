@@ -50,8 +50,11 @@ please refer to `lib_board_support documentation <https://www.xmos.com/file/lib_
 
 |newpage|
 
+Audio hardware
+--------------
+
 Clocking and Clock Selection
-----------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The board includes two options for master clock generation:
 
@@ -86,34 +89,44 @@ The clock-select from the phaselink part is controlled via bit 7 of `PORT 8C`:
    * - 1
      - 22.579MHz
 
-Information about the required clocking scheme is programmed in the configuration structure ``xk_audio_216_mc_ab_config_t`` provided
-in ``lib_board_support``, and passed to ``lib_board_support`` functions :c:func:`xk_audio_216_mc_ab_AudioHwInit()`
-and and :c:func:`xk_audio_216_mc_ab_AudioHwConfig()`, which power up, initialise and configure the
-audio hardware.
 
-DAC and ADC Configuration
--------------------------
+DAC and ADC
+^^^^^^^^^^^
 
 The board is equipped with a single multi-channel audio DAC (Cirrus Logic CS4384) and a single
 multi-channel ADC (Cirrus Logic CS5368) giving 8 channels of analogue output and 8 channels of
-analogue input.
+analogue input. Configuration of both the DAC and the ADC takes place over I²C.
 
-These are initialised and configured using lib_board_support APIs :c:func:`xk_audio_216_mc_ab_AudioHwInit()` and :c:func:`xk_audio_216_mc_ab_AudioHwConfig()`
 
-AudioHwInit()
--------------
+Configuring audio hardware
+--------------------------
+
+All of the external audio hardware is configured using ``lib_board_support``.
+
+.. note::
+
+   ``lib_board_support`` has the I²C library (`lib_i2c <www.xmos.com/file/lib_i2c>`_) in its dependency list.
+
+The hardware targeted is the `XMOS XU216 Multichannel Audio board` (`XK-AUDIO-216-MC`).
+The functions :c:func:`xk_audio_216_mc_ab_AudioHwInit()` and :c:func:`xk_audio_216_mc_ab_AudioHwConfig()` are called at various points during initialisation and
+runtime to initialise and configure the audio hardware.
+
+The audio hardware configuration is set in the ``config`` structure of type ``xk_audio_216_mc_ab_config_t`` which is passed to the
+:c:func:`xk_audio_216_mc_ab_AudioHwInit()` and :c:func:`xk_audio_216_mc_ab_AudioHwConfig()` functions.
+
+.. literalinclude:: ../../app_usb_aud_xk_216_mc/src/extensions/audiohw.xc
+  :start-at: static const xk_audio_216_mc_ab_config_t
+  :end-at: };
 
 The :c:func:`AudioHwInit()` function acts as a wrapper calling ``lib_board_support`` function :c:func:`xk_audio_216_mc_ab_AudioHwInit()` to power up and initialise the
 audio hardware ready for a configuration.
 
-AudioHwConfig()
----------------
-
 The :c:func:`AudioHwConfig()` function configures the audio hardware post initialisation.
 It is typically called each time a sample rate or stream format change occurs.
-It acts as a wrapper function calling :c:func:`xk_audio_216_mc_ab_AudioHwConfig()`.
+It acts as a wrapper function calling the :c:func:`xk_audio_216_mc_ab_AudioHwConfig()` function.
 
-For more information about the ``lib_board_support`` functions refer to the `library documentation <https://www.xmos.com/file/lib_board_support>`_.
+For further details on the hardware platform and the functions available for configuring it
+please refer to `lib_board_support documentation <https://www.xmos.com/file/lib_board_support>`_.
 
 Validated Build Options
 -----------------------

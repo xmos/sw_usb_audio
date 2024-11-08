@@ -1,5 +1,15 @@
 @Library('xmos_jenkins_shared_library@v0.34.0') _
 
+def checkout_shallow()
+{
+    checkout scm: [
+        $class: 'GitSCM',
+        branches: scm.branches,
+        userRemoteConfigs: scm.userRemoteConfigs,
+        extensions: [[$class: 'CloneOption', depth: 1, shallow: true, noTags: false]]
+    ]
+}
+
 // Get XCommon CMake.
 // This is required for compiling a factory image for a DFU test using tools 15.2.1
 // to test DFU across XTC tools versions.
@@ -17,6 +27,12 @@ def clone_test_deps() {
   }
 }
 
+def archiveLib(String repoName) {
+    sh "git -C ${repoName} clean -xdf"
+    sh "zip ${repoName}_sw.zip -r ${repoName}"
+    archiveArtifacts artifacts: "${repoName}_sw.zip", allowEmptyArchive: false
+}
+
 getApproval()
 
 pipeline {
@@ -32,8 +48,14 @@ pipeline {
 
     string(
       name: 'XMOSDOC_VERSION',
-      defaultValue: 'v6.1.2',
+      defaultValue: 'v6.1.3',
       description: 'The xmosdoc version')
+
+    string(
+      name: 'INFR_APPS_VERSION',
+      defaultValue: 'v2.0.1',
+      description: 'The infr_apps version'
+    )
   }
   environment {
     REPO = 'sw_usb_audio'
@@ -55,7 +77,7 @@ pipeline {
             get_xcommon_cmake()
 
             dir("${REPO}") {
-              checkout scm
+              checkout_shallow()
 
               withTools("${env.PREV_TOOLS_VERSION}") {
                 withEnv(["XMOS_CMAKE_PATH=${WORKSPACE}/xcommon_cmake"]) {
@@ -125,17 +147,16 @@ pipeline {
                 println "Stage running on ${env.NODE_NAME}"
 
                 dir("${REPO}") {
-                  checkout scm
+                  checkout_shallow()
 
                   withTools("${env.TOOLS_VERSION}") {
                     // Fetch all dependencies using XCommon CMake
-                    sh "cmake -G 'Unix Makefiles' -B build"
+                    sh "cmake -G 'Unix Makefiles' -B build -DDEPS_CLONE_SHALLOW=TRUE"
                     sh 'xmake -C app_usb_aud_xk_316_mc -j16'
                     sh 'xmake -C app_usb_aud_xk_216_mc -j16'
                     sh 'xmake -C app_usb_aud_xk_evk_xu316 -j16'
                     sh 'xmake -C app_usb_aud_xk_evk_xu316_extrai2s -j16'
                   }
-
                 }
               } // steps
             } // stage('legacy xmake build')
@@ -144,11 +165,18 @@ pipeline {
               steps {
                 withTools("${env.TOOLS_VERSION}") {
                   warnError("libchecks") {
-                    runSwrefChecks("${WORKSPACE}/${REPO}", "v2.0.1")
+                    runSwrefChecks("${WORKSPACE}/${REPO}", "${params.INFR_APPS_VERSION}")
                   } // warnError("libchecks")
                 } // withTools("${env.TOOLS_VERSION}")
               } // steps
             } // stage('Library checks')
+
+            stage("Archive lib") {
+              steps
+              {
+                archiveLib(REPO)
+              }
+            } // stage("Archive lib")
 
             stage('Build Documentation') {
               steps {
@@ -190,7 +218,7 @@ pipeline {
             }
 
             dir("${REPO}") {
-              checkout scm
+              checkout_shallow()
               clone_test_deps()
 
               unstash 'xk_216_mc_bin'
@@ -256,7 +284,7 @@ pipeline {
             }
 
             dir("${REPO}") {
-              checkout scm
+              checkout_shallow()
               clone_test_deps()
 
               unstash 'xk_316_mc_bin'
@@ -325,7 +353,7 @@ pipeline {
             }
 
             dir("${REPO}") {
-              checkout scm
+              checkout_shallow()
               clone_test_deps()
 
               unstash 'xk_316_mc_bin'
@@ -391,7 +419,7 @@ pipeline {
             }
 
             dir("${REPO}") {
-              checkout scm
+              checkout_shallow()
               clone_test_deps()
 
               unstash 'xk_316_mc_bin'

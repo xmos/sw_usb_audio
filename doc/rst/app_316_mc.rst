@@ -41,16 +41,12 @@ lines show the communication between each task.
 
      xcore.ai Multichannel Audio System/Core Diagram
 
-The ``app_usb_aud_xk_316_mc`` application uses the functions provided in ``lib_board_support`` for master clock generation and audio
-hardware configuration. The functions :c:func:`xk_audio_316_mc_ab_board_setup()`, :c:func:`xk_audio_316_mc_ab_i2c_master()`,
-:c:func:`xk_audio_316_mc_ab_AudioHwInit()` and :c:func:`xk_audio_316_mc_ab_AudioHwConfig()` are called at various points during initialisation and
-runtime to start the I²C master, initialise and configure the audio hardware.
 
-For further details on the hardware platform and the functions available for configuring it
-please refer to `lib_board_support documentation <https://www.xmos.com/file/lib_board_support>`_.
+Audio hardware
+--------------
 
 Clocking and Clock Selection
-----------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 As well as the secondary (application) PLL of the `xcore.ai` device the board includes two options for master clock generation:
 
@@ -109,39 +105,59 @@ The clock-select from the phaselink part is controlled via bit 7 of `PORT 8C`:
    * - 1
      - 22.579MHz
 
-Information about the required clocking scheme is programmed in the configuration structure ``xk_audio_316_mc_ab_config_t`` provided
-in ``lib_board_support``, and passed to the :c:func:`xk_audio_316_mc_ab_board_setup()`,
-:c:func:`xk_audio_316_mc_ab_AudioHwInit()` and :c:func:`xk_audio_316_mc_ab_AudioHwConfig()` functions.
 
-:c:func:`xk_audio_316_mc_ab_board_setup()` function is called as part of the application's initialisation process.
-It performs the required port operations to enable the audio hardware on the platform.
-:c:func:`xk_audio_316_mc_ab_i2c_master()` function is called after ```xk_audio_316_mc_ab_board_setup()`` during initialisation and it starts
-the I²C master task.
-
-DAC and ADC Configuration
--------------------------
+DAC and ADC
+^^^^^^^^^^^
 
 The board is equipped with four PCM5122 stereo DACs from Texas instruments and two
 quad-channel PCM1865 ADCs from Texas Instruments, giving 8 channels of analogue output and 8 channels of
-analogue input.
+analogue input. Configuration of both the DAC and the ADC takes place over I²C.
 
-These are initialised and configured over I²C using lib_board_support APIs :c:func:`xk_audio_316_mc_ab_AudioHwInit()` and :c:func:`xk_audio_316_mc_ab_AudioHwConfig()`
+Configuring audio hardware
+--------------------------
 
-AudioHwInit()
--------------
+All of the external audio hardware is configured using ``lib_board_support``.
+
+.. note::
+
+   ``lib_board_support`` has the I²C library (`lib_i2c <www.xmos.com/file/lib_i2c>`_) in its dependency list.
+
+The hardware targeted is the `XMOS XU316 Multichannel Audio board` (`XK-AUDIO-316-MC`).
+The functions :c:func:`xk_audio_316_mc_ab_board_setup()`, :c:func:`xk_audio_316_mc_ab_i2c_master()`,
+:c:func:`xk_audio_316_mc_ab_AudioHwInit()` and :c:func:`xk_audio_316_mc_ab_AudioHwConfig()` are called at various points during initialisation and
+runtime to start the I²C master, initialise and configure the audio hardware.
+
+The audio hardware configuration is set in the ``config`` structure of type ``xk_audio_316_mc_ab_config_t`` which is passed to the :c:func:`xk_audio_316_mc_ab_board_setup()`,
+:c:func:`xk_audio_316_mc_ab_AudioHwInit()` and :c:func:`xk_audio_316_mc_ab_AudioHwConfig()` functions.
+
+.. literalinclude:: ../../app_usb_aud_xk_316_mc/src/extensions/audiohw.xc
+  :start-at: static xk_audio_316_mc_ab_config_t
+  :end-at: };
+
+:c:func:`xk_audio_316_mc_ab_board_setup()` function is called from the wrapper function :c:func:`board_setup()` as part of the application's initialisation process.
+It performs the required port operations to enable the audio hardware on the platform.
+
+:c:func:`xk_audio_316_mc_ab_i2c_master()` function is called after ``board_setp()`` during initialisation and it starts
+the I²C master task. This is required to allow the audio hardware to be configured over I²C, remotely from the other tile, due to the IO arrangement of
+the `XK-AUDIO-316-MC` board.
+
+.. literalinclude:: ../../app_usb_aud_xk_316_mc/src/extensions/user_main.h
+  :start-at: on tile[0]: {
+  :end-at: xk_audio_316_mc_ab_i2c_master
 
 The :c:func:`AudioHwInit()` function acts as a wrapper calling ``lib_board_support`` function :c:func:`xk_audio_316_mc_ab_AudioHwInit()` to power up and initialise the
 audio hardware ready for a configuration.
-
-
-AudioHwConfig()
----------------
 
 The :c:func:`AudioHwConfig()` function configures the audio hardware post initialisation.
 It is typically called each time a sample rate or stream format change occurs.
 It acts as a wrapper function calling the :c:func:`xk_audio_316_mc_ab_AudioHwConfig()` function.
 
-For more information about the lib_board_support functions refer to the `library documentation <https://www.xmos.com/file/lib_board_support>`_.
+
+For further details on the hardware platform and the functions available for configuring it
+please refer to `lib_board_support documentation <https://www.xmos.com/file/lib_board_support>`_.
+
+
+
 
 Validated Build Options
 -----------------------

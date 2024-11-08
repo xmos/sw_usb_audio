@@ -1,3 +1,4 @@
+# This file relates to internal XMOS infrastructure and should be ignored by external users
 ---
 lib_name: sw_usb_audio
 project: '{{lib_name}}'

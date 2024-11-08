@@ -12,9 +12,9 @@ sw_usb_audio: USB Audio reference designs
 :keywords: USB Audio, DFU
 :devices: xcore.ai, xcore-200
 
-********
-Overview
-********
+*******
+Summary
+*******
 
 The XMOS USB Audio solution provides *USB Audio Class* compliant devices over USB 2.0 (high-speed
 or full-speed). Based on the XMOS xcore-200 (XS2) and xcore.ai (XS3) architectures, it supports USB
@@ -137,7 +137,7 @@ Release Quality & QA
 +---------------------------+--------------------------+
 
 ************
-Known Issues
+Known issues
 ************
 
 General known issues with this release are listed below.  For board/application specific known issues please see README in relevant app directory
@@ -174,7 +174,7 @@ Development repo
   * `sw_usb_audio <https://www.github.com/xmos/sw_usb_audio>`_
 
 ************************
-Host System Requirements
+Host system requirements
 ************************
 
 USB Audio Class 1.0
@@ -191,14 +191,14 @@ USB Audio Class 2.0
 - Windows 10 or 11 using built-in or Thesycon Audio Class 2.0 driver for Windows (Tested against version Thesycon driver version 5.70.0)
 
 **************
-Required Tools
+Required tools
 **************
 
   * XMOS XTC Tools: 15.3.0
 
 
 *********************************
-Required Libraries (dependencies)
+Required libraries (dependencies)
 *********************************
 
   * `lib_sw_pll <https://www.xmos.com/file/lib_sw_pll>`_
@@ -216,7 +216,7 @@ Required Libraries (dependencies)
 
 
 *************************
-Related Application Notes
+Related application notes
 *************************
 
   * AN02019: Using Device Firmware Upgrade (DFU) for USB Audio
