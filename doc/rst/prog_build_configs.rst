@@ -112,7 +112,7 @@ Some example build options are listed in :ref:`prog_build_configs_naming`.
      - d or x
 
 
-For example, in this scheme, a configuration named ``2AMi8o8msxxax`` would indicate Audio Class 2.0, USB asynchronous mode, xCore is |I2S| master,
+For example, in this scheme, a configuration named ``2AMi8o8msxxax`` would indicate Audio Class 2.0, USB asynchronous mode, xCore is I²S master,
 8 USB IN channels, 8 USB OUT channels, MIDI enabled,
 S/PDIF input enabled, S/PDIF output disabled, ADAT input disabled, ADAT output enabled and DSD disabled.
 

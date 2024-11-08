@@ -1,5 +1,6 @@
 :orphan:
 
+#########################################
 sw_usb_audio: USB Audio reference designs
 #########################################
 
@@ -7,7 +8,7 @@ sw_usb_audio: USB Audio reference designs
 :version: 9.0.0
 :scope: General Use
 :description: USB Audio reference designs
-:category: General Purpose
+:category: Audio
 :keywords: USB Audio, DFU
 :devices: xcore.ai, xcore-200
 
