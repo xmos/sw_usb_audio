@@ -1,3 +1,5 @@
+# Copyright 2020-2024 XMOS LIMITED.
+# This Software is subject to the terms of the XMOS Public Licence: Version 1.
 import pytest
 from pathlib import Path
 import platform
@@ -118,7 +120,7 @@ def pytest_sessionstart(session):
 
     for app_dir in usb_audio_dir.iterdir():
         app_name = app_dir.name
-        if not app_name.startswith(app_prefix) or app_name in exclude_app:
+        if not app_name.startswith(app_prefix) or (app_name in exclude_app) or ("@" in app_name):
             continue
 
         board = app_name[len(app_prefix) :]
@@ -180,6 +182,8 @@ def pytest_collection_modifyitems(config, items):
                 deselected.append(item)
             else:
                 selected.append(item)
+        else: # If test doesn't define an uncollect function, default behaviour is to collect it
+            selected.append(item)
 
     config.hook.pytest_deselected(items=deselected)
     items[:] = selected

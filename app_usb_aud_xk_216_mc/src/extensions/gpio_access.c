@@ -1,3 +1,5 @@
+// Copyright 2015-2024 XMOS LIMITED.
+// This Software is subject to the terms of the XMOS Public Licence: Version 1.
 #include "gpio_access.h"
 #include "swlock.h"
 #include <xs1.h>

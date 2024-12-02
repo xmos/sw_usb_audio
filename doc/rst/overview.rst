@@ -1,5 +1,8 @@
+|newpage|
+
+********
 Overview
-========
+********
 
 
 .. table::
@@ -56,11 +59,11 @@ Overview
  |                       **Requirements**                                                                                        |
  +-------------------------------------------------------------------------------------------------------------------------------+
  +---------------------------------+---------------------------------------------------------------------------------------------+
- | Development Tools               | xTIMEcomposer Development Tools v15.1 or later                                              |
+ | Development Tools               | xTIMEcomposer Development Tools v15.3.0 or later                                            |
  +---------------------------------+---------------------------------------------------------------------------------------------+
  | USB                             | xCORE device with integrated USB phy                                                        |
  +---------------------------------+---------------------------------------------------------------------------------------------+
- | Audio                           | External audio DAC/ADC/CODECs (and required supporting componentry) supporting I2S/TDM      |    
+ | Audio                           | External audio DAC/ADC/CODECs (and required supporting componentry) supporting I2S/TDM      |
  +---------------------------------+---------------------------------------------------------------------------------------------+
  | Boot/Storage                    | Compatible SPI/QSPI Flash device (or xCORE device with internal flash)                      |
  +---------------------------------+---------------------------------------------------------------------------------------------+

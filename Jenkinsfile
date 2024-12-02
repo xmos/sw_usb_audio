@@ -27,6 +27,12 @@ def clone_test_deps() {
   }
 }
 
+def archiveLib(String repoName) {
+    sh "git -C ${repoName} clean -xdf"
+    sh "zip ${repoName}_sw.zip -r ${repoName}"
+    archiveArtifacts artifacts: "${repoName}_sw.zip", allowEmptyArchive: false
+}
+
 getApproval()
 
 pipeline {
@@ -37,8 +43,19 @@ pipeline {
     buildDiscarder(xmosDiscardBuildSettings(onlyArtifacts=true))
   }
   parameters {
-      choice(name: 'TEST_LEVEL', choices: ['smoke', 'nightly', 'weekend'],
-             description: 'The level of test coverage to run')
+    choice(name: 'TEST_LEVEL', choices: ['smoke', 'nightly', 'weekend'],
+            description: 'The level of test coverage to run')
+
+    string(
+      name: 'XMOSDOC_VERSION',
+      defaultValue: 'v6.1.3',
+      description: 'The xmosdoc version')
+
+    string(
+      name: 'INFR_APPS_VERSION',
+      defaultValue: 'v2.0.1',
+      description: 'The infr_apps version'
+    )
   }
   environment {
     REPO = 'sw_usb_audio'
@@ -87,6 +104,8 @@ pipeline {
                   withVenv() {
                     // Check that the app_configs_autogen.yml file is up to date
                     sh "python tools/app_configs_autogen/collect_configs.py check"
+                    // Check that the BCD version in version.h matches the library version in settings.yml
+                    sh "pytest -v test_version.py"
                   } // withVenv()
                 } // dir("tests")
                 // Build the loopback version of the configs for 316 and rename them to have _i2sloopback
@@ -116,77 +135,73 @@ pipeline {
           }
         }  // // (XCommon CMake) Build applications
 
-        stage('xmake Build applications') {
+        stage('legacy xmake build + build documentation + Library checks') {
           // Use XCommon CMake to fetch dependencies, but then build using legacy XCommon Makefiles
           agent {
             label 'linux && x86_64'
           }
-          steps {
-            println "Stage running on ${env.NODE_NAME}"
+          stages {
+            stage('legacy xmake build')
+            {
+              steps {
+                println "Stage running on ${env.NODE_NAME}"
 
-            dir("${REPO}") {
-              checkout_shallow()
+                dir("${REPO}") {
+                  checkout_shallow()
 
-              withTools("${env.TOOLS_VERSION}") {
-                // Fetch all dependencies using XCommon CMake
-                sh "cmake -G 'Unix Makefiles' -B build"
-                sh 'xmake -C app_usb_aud_xk_316_mc -j16'
-                sh 'xmake -C app_usb_aud_xk_216_mc -j16'
-                sh 'xmake -C app_usb_aud_xk_evk_xu316 -j16'
-                sh 'xmake -C app_usb_aud_xk_evk_xu316_extrai2s -j16'
-              }
-            }
-          }
-          post {
-            cleanup {
-              xcoreCleanSandbox()
-            }
-          }
-        }  // xmake Build applications
-
-        stage('Build documentation') {
-          agent {
-            label 'linux && x86_64'
-          }
-          steps {
-            println "Stage running on ${env.NODE_NAME}"
-
-            // Temporary: get repos for xdoc until this project switches to xmosdoc
-            sh "git clone -b swapps14 git@github.com:xmos/infr_scripts_pl"
-            sh "git clone -b feature/update_xdoc_3_3_0 git@github0.xmos.com:xmos-int/xdoc_released"
-
-            withAgentEnv() {
-              sh """#!/bin/bash
-                cd ${WORKSPACE}/infr_scripts_pl/Build
-                source SetupEnv
-                cd ${WORKSPACE}
-                Build.pl VIEW=apps DOMAINS=xdoc_released
-                """
-            }
-
-            dir("${REPO}") {
-              checkout_shallow()
-
-              viewEnv {
-                withTools("${env.TOOLS_VERSION}") {
-                  sh "cmake -G 'Unix Makefiles' -B build"
-
-                  dir("doc") {
-                    sh 'xdoc xmospdf'
-                    archiveArtifacts artifacts: "pdf/*.pdf", fingerprint: true, allowEmptyArchive: false
+                  withTools("${env.TOOLS_VERSION}") {
+                    // Fetch all dependencies using XCommon CMake
+                    sh "cmake -G 'Unix Makefiles' -B build -DDEPS_CLONE_SHALLOW=TRUE"
+                    sh 'xmake -C app_usb_aud_xk_316_mc -j16'
+                    sh 'xmake -C app_usb_aud_xk_216_mc -j16'
+                    sh 'xmake -C app_usb_aud_xk_evk_xu316 -j16'
+                    sh 'xmake -C app_usb_aud_xk_evk_xu316_extrai2s -j16'
                   }
                 }
+              } // steps
+            } // stage('legacy xmake build')
+
+            stage('Library checks') {
+              steps {
+                withTools("${env.TOOLS_VERSION}") {
+                  warnError("libchecks") {
+                    runSwrefChecks("${WORKSPACE}/${REPO}", "${params.INFR_APPS_VERSION}")
+                  } // warnError("libchecks")
+                } // withTools("${env.TOOLS_VERSION}")
+              } // steps
+            } // stage('Library checks')
+
+            stage("Archive lib") {
+              steps
+              {
+                archiveLib(REPO)
               }
-            }
-          }
+            } // stage("Archive lib")
+
+            stage('Build Documentation') {
+              steps {
+                clone_test_deps()
+                dir("${REPO}") {
+                  dir("tests") {
+                    createVenv(reqFile: "requirements.txt")
+                  } // dir("tests")
+                  withVenv(venv_path="${WORKSPACE}/${REPO}/tests") {
+                    warnError("Docs") {
+                      buildDocs(xmosdocVenvPath: "${REPO}/tests")
+                    }
+                  } // withVenv
+                } // dir("${REPO}")
+              } // steps
+            } // stage('Build Documentation')
+          } // stages
           post {
             cleanup {
               xcoreCleanSandbox()
             }
-          }
-        }  // Build documentations
-      }
-    }  // Build
+          } // post
+        }  // stage('legacy xmake build + build documentation')
+      } // parallel
+    }  // stage('Build')
 
     stage('Regression Test') {
       parallel {

@@ -1,3 +1,5 @@
+// Copyright 2014-2024 XMOS LIMITED.
+// This Software is subject to the terms of the XMOS Public Licence: Version 1.
 #ifdef IAP_EA_NATIVE_TRANS
 
 #include "iap.h"

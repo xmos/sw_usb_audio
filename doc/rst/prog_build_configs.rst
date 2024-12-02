@@ -2,7 +2,7 @@
 .. _usb_audio_sec_valbuild:
 
 Build Configurations
---------------------
+====================
 
 Due to the flexibility of the reference design software there are a large number of build options. For example input
 and output channel counts, Audio Class version, interface types etc. A "build configuration" is a set of build options
@@ -58,7 +58,7 @@ For example::
 
 
 Configuration Naming
---------------------
+====================
 
 A naming scheme is employed in each application to link features to a build configuration/binary.
 Depending on the hardware interfaces available variations of the same basic scheme are used.
@@ -70,28 +70,56 @@ Some example build options are listed in :ref:`prog_build_configs_naming`.
 
 .. _prog_build_configs_naming:
 
-.. table::  Example build options and naming
+.. list-table:: Example build options and naming
+   :header-rows: 1
+   :widths: 60 40 40
 
- +---------------------+-------------+-------------+
- | Build Option Name   | Options     | Denoted by  |
- +=====================+=============+=============+
- | Audio Class Version | 1 or 2      | 1 or 2      |
- +---------------------+-------------+-------------+
- | MIDI                | on or off   | m or x      |
- +---------------------+-------------+-------------+
- | S/PDIF Output       | on or off   | s or x      |
- +---------------------+-------------+-------------+
- | S/PDIF Input        | on or off   | s or x      |
- +---------------------+-------------+-------------+
+   * - Build Option Name
+     - Options
+     - Denoted by
+   * - Audio Class Version
+     - 1 or 2
+     - 1 or 2
+   * - USB synchronisation type
+     - Asynchronous or Synchronous
+     - A or S
+   * - Device I2S role
+     - Master or Slave
+     - M or S
+   * - USB IN channels
+     -
+     - i<number>
+   * - USB OUT channels
+     -
+     - i<number>
+   * - MIDI
+     - on or off
+     - m or x
+   * - S/PDIF Output
+     - on or off
+     - s or x
+   * - S/PDIF Input
+     - on or off
+     - s or x
+   * - ADAT Input
+     - on or off
+     - a or x
+   * - ADAT Output
+     - on or off
+     - a or x
+   * - DSD
+     - on or off
+     - d or x
 
-For example, in this scheme, a configuration named ``2xsx`` would indicate Audio Class 2.0, MIDI
-disabled, S/PDIF output enabled and S/PDIF input disabled.
 
-Some additional letters or numbers may also be used to denote things like channel counts etc. See comments
-in the application Makefile for details.
+For example, in this scheme, a configuration named ``2AMi8o8msxxax`` would indicate Audio Class 2.0, USB asynchronous mode, xCore is I²S master,
+8 USB IN channels, 8 USB OUT channels, MIDI enabled,
+S/PDIF input enabled, S/PDIF output disabled, ADAT input disabled, ADAT output enabled and DSD disabled.
+
+See comments in the application CMakeLists.txt for details.
 
 Quality & Testing
------------------
+=================
 
 It is not possible for all build option permutations to be exhaustively tested. The `XMOS USB Audio
 Reference Design` software therefore defines three levels of quality:
@@ -104,7 +132,7 @@ Reference Design` software therefore defines three levels of quality:
 
 .. note::
 
-   Typically disabing a function should have no effect on QA. For example, disabling S/PDIF on a fully-tested configuration
+   Typically disabling a function should have no effect on QA. For example, disabling S/PDIF on a fully-tested configuration
    with it enabled should not affect its quality.
 
 `XMOS` aims to provide fully tested configurations for popular device configurations and common customer requirements.
@@ -137,7 +165,7 @@ of configs.
 .. note::
 
     Pre-release (i.e. alpha, beta or RC) firmware should not be used as basis for a production device and may not be
-    representative of the final release firmware. Additionally, some releases may include feaures of lesser quality level.
+    representative of the final release firmware. Additionally, some releases may include features of lesser quality level.
     For example a beta release may contain a feature still at alpha level quality. See application ``README``
     for details of any such features.
 

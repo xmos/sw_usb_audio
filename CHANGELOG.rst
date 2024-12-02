@@ -1,14 +1,143 @@
-sw_usb_audio Change Log
+sw_usb_audio change log
 =======================
 
-UNRELEASED
-----------
+9.0.0
+-----
 
   * ADDED:     app_usb_aud_xk_316_mc: 2AMi16o16xxxaax_tdm8 build config (ADAT
     Rx/Tx, TDM master)
-  * CHANGED:   Extracted the board setup code from audiohw.xc to a new library: lib_board_support
+  * CHANGED:   Extracted the board setup code from audiohw.xc to a new library:
+    lib_board_support
   * CHANGED:   DFU_PID defined in the xua_conf of the example applications
   * CHANGED:   User Guide to have xcommon_cmake as the documented build flow
+
+  * Changes to dependencies:
+
+    - lib_adat: 1.2.0 -> 2.0.1
+
+      + CHANGED:   Documentation updated
+      + ADDED:     "adat.h" header file provided access to both transmit and
+        receive API
+      + CHANGED:   Receive API now uses streaming chanend (breaking change)
+      + CHANGED:   Documentation updates
+      + CHANGED:   Examples now build using XCommon Cmake build system
+
+    - lib_board_support: Added dependency 1.0.0
+
+      + ADDED: Board documentation
+      + ADDED: Example apps showing use of library
+      + FIXED: Missing lib_sw_pll dependency
+      + ADDED: Callable from C
+      + ADDED: I2C master exit API for XK-AUDIO-316-MC
+      + FIXED: Uninitialised global interface for XK-AUDIO-216-MC setup
+      + ADDED: Explicit xk_evk_xu316_AudioHwChanInit() API
+      + ADDED: NULL_BOARD default option so library can be included in a project
+        without being used.
+
+    - lib_i2c: Added dependency 6.2.0
+
+      + ADDED: Support for XCommon CMake build system
+      + REMOVED: Unused dependency lib_logging
+
+    - lib_i2s: Added dependency 5.1.0
+
+      + ADDED: Support for XCommon CMake build system
+      + RESOLVED: Added missing shutdown feature to i2s_frame_slave
+      + FIXED: Allow input and output ports in the 4-bit port implementation to
+        be nullable
+      + FIXED: Behaviour of the restart_check() callback function in the example
+        applications
+      + REMOVED: Unused dependency lib_logging
+      + ADDED: Frame synch error field in i2s_config_t for I2S slave
+
+    - lib_locks: Added dependency 2.3.1
+
+      + CHANGED: Documentation updates
+
+    - lib_logging: Added dependency 3.3.1
+
+      + CHANGED: Documentation updates
+
+    - lib_mic_array: Added dependency 5.4.0
+
+      + CHANGED: All examples now build under XCommon CMake build system
+      + ADDED:   Will build without errors for XS2 targets but no API available
+      + DEPRECATED: Previously used custom CMake build support. This will be
+        removed in future versions. Please use XCommon CMake build system as
+        provided in XTC 15.3.0 onwards for new projects.
+
+    - lib_spdif: Added dependency 6.2.1
+
+      + CHANGED:   Documentation updated
+
+    - lib_sw_pll: 2.2.0 -> 2.3.1
+
+      + CHANGED:   Documentation updates
+      + FIXED:     Added missing <xs1.h> include
+      + CHANGED: Updated pll_calc script to separate out integer and fractional
+        divider values for easier user interpretation
+      + CHANGED: Improved PLL solution selection in app_pll_model to ensure
+        sufficient positive and negative range from nominal frequency
+      + CHANGED: Uses Xcommon Cmake instead of custom Cmake
+      + FIXED: Python models and test type error on later numpy versions
+
+    - lib_xassert: Added dependency 4.3.1
+
+      + CHANGED: Documentation updates
+
+    - lib_xcore_math: Added dependency 2.3.0
+
+      + Changes examples and tests to build using XCommon CMake
+
+    - lib_xua: 4.1.0 -> 5.0.0
+
+      + ADDED:     Support for DFU 1.1 DFU_DETACH with bitWillDetach set to 1
+      + ADDED:     Enumerate with the DFU interface as WINUSB compatible. This
+        is done by updating the bcdUSB version to 2.01 and providing the BOS and
+        MSOS2.0 descriptors listing WINUSB compatibility the time of enumeration
+      + ADDED:     Support for XMOS_DFU_REVERTFACTORY arriving as a
+        USB_BMREQ_H2D_VENDOR_INT request to work with the latest Thesycon DFU
+        driver on Windows
+      + ADDED:     Support for building the xmosdfu application on MacOS arm64
+      + CHANGED:   By default, enumerate with iSerialNumber set to None(0) in
+        the device descriptor
+      + CHANGED:   xmosdfu app to use DFU_DETACH
+      + CHANGED:   xmosdfu app to send XMOS_DFU_REVERTFACTORY as
+        bmRequestType.Type = Vendor
+      + CHANGED:   xmosdfu app command line for specifying runtime and DFU mode
+        PIDs
+      + CHANGED:   Limit HS_STREAM_FORMAT_OUTPUT_1/2/3_MAXPACKETSIZE to 1024
+        bytes to fix bcdUSB version 2.01 USB device supporting a sampling rate
+        of 192KHz not enumerating on Windows
+      + CHANGED:   Added default value (1) for XUA_QUAD_SPI_FLASH
+      + FIXED:     Build issue when XUA_NUM_PDM_MICS > 0
+      + FIXED:     DFU support with UAC1.0
+      + FIXED:     baInterfaceNr field in MIDI Class-specific AC Interface
+        Descriptor to specify the correct MIDI streaming interface number
+      + CHANGED:   Default value of FLASH_MAX_UPGRADE_SIZE to 512 KB
+      + ADDED:     MIDI support with UAC1.0
+      + CHANGED:   Build examples using XCommon CMake instead of XCommon
+      + CHANGED:   AN00248 now targets XK-EVK-XU316 and uses mic_array version 5
+        (new API)
+      + REMOVED:   Support for PDM mics in XS2 targets (requires xcore.ai). Can
+        use lib_xua version <=4.2.0 for XS2 (xcore-200) targets
+      + CHANGED:   Examples use lib_board_support for XK-AUDIO-316-MC-AB support
+        code
+      + CHANGED:   lsats instruction used for saturation in the mixer
+      + CHANGED:   Mixer task communication scheme simplified, aiding code reuse
+        & performance
+      + CHANGED:   Audio Class Control Interface no longer presented in
+        descriptors if NUM_USB_CHAN_IN and NUM_USB_CHAN_OUT are both zero
+      + CHANGED:   Buffering sub-system no longer spawns if NUM_USB_CHAN_IN and
+        NUM_USB_CHAN_OUT are both zero
+      + CHANGED:   Communication of commands between tasks now uniformly uses
+        control tokens. Potentially making mix & match of components more
+        tractable in the future
+
+    - lib_xud: Added dependency 2.3.2
+
+      + CHANGE:   RX_RISE_DELAY for XS2A based devices to resolve intermittent
+        transmit timing issues
 
 8.1.0
 -----
@@ -24,8 +153,8 @@ UNRELEASED
 
     - lib_adat: 1.1.0 -> 1.2.0
 
-      + CHANGED: example applications now run on xcore.ai hardware
-      + CHANGED: example applications build using XCommon CMake
+      + CHANGED: Example applications now run on xcore.ai hardware
+      + CHANGED: Example applications build using XCommon CMake
 
     - lib_sw_pll: 2.1.0 -> 2.2.0
 
@@ -51,6 +180,10 @@ UNRELEASED
       + FIXED:     S/MUX not initialised to a value based on DEFAULT_FREQ in
         clockgen
       + FIXED:     Trap when moving to DSD mode on XS3A based devices
+
+
+Legacy release history
+======================
 
 8.0.0
 -----

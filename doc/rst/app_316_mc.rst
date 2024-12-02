@@ -2,15 +2,15 @@
 .. _usb_audio_sec_316_audio_sw:
 
 The xcore.ai Multi-Channel Audio Board
----------------------------------------
+======================================
 
-An application of the USB audio framework is provided specifically for the hardware described in
-:ref:`usb_audio_sec_hw_316_mc` and is implemented on an xcore.ai-series dual tile device.  The 
+An application of the USB audio framework is provided specifically for the XK_AUDIO_316_MC_AB hardware described in
+:ref:`usb_audio_hardware_platforms` and is implemented on an xcore.ai series dual tile device.  The
 related code can be found in ``app_usb_aud_xk_316_mc``.
 
-The design supports upto 8 channels of analogue audio input/output at sample-rates up to 192kHz 
+The design supports upto 8 channels of analogue audio input/output at sample-rates up to 192kHz
 (assuming the use of I2S). This can be further increased by utilising TDM. It also supports S/PDIF,
-ADAT and MIDI input and output aswell as the mixing functionalty of ``lib_xua``.
+ADAT and MIDI input and output as well as the mixing functionalty of ``lib_xua``.
 
 The design uses the following tasks:
 
@@ -22,6 +22,7 @@ The design uses the following tasks:
  * Mixer
  * S/PDIF Transmitter
  * S/PDIF Receiver
+ * ADAT Transmitter
  * ADAT Receiver
  * Clockgen
  * MIDI
@@ -29,20 +30,23 @@ The design uses the following tasks:
 The software layout of the USB Audio 2.0 Reference Design running on the
 `xcore.ai` device is shown in :ref:`usb_audio_ai_threads`.
 
-Each circle depicts a task running in a single core concurrently with the other tasks. The 
-lines show the communication between each task. 
+Each circle depicts a task running in a single core concurrently with the other tasks. The
+lines show the communication between each task.
 
 .. _usb_audio_ai_threads:
 
-.. figure:: images/xk_316_system.pdf
+.. figure:: images/xk_316_system.png
      :width: 90%
-     :align: center    
+     :align: center
 
      xcore.ai Multichannel Audio System/Core Diagram
 
 
+Audio hardware
+--------------
+
 Clocking and Clock Selection
-+++++++++++++++++++++++++++++
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 As well as the secondary (application) PLL of the `xcore.ai` device the board includes two options for master clock generation:
 
@@ -80,12 +84,12 @@ The master clock source is controlled by a mux which, in turn, is controlled by 
 .. list-table:: Master Clock Source Selection
    :header-rows: 1
    :widths: 20 80
-  
+
    * - Value
      - Source
-   * - 0 
+   * - 0
      - Master clock is sourced from PhaseLink PLL
-   * - 1     
+   * - 1
      - Master clock is source from Cirrus Clock Multiplier
 
 The clock-select from the phaselink part is controlled via bit 7 of `PORT 8C`:
@@ -93,68 +97,87 @@ The clock-select from the phaselink part is controlled via bit 7 of `PORT 8C`:
 .. list-table:: Master Clock Frequency Select
    :header-rows: 1
    :widths: 20 80
-  
+
    * - Value
      - Frequency
-   * - 0 
+   * - 0
      - 24.576MHz
-   * - 1     
+   * - 1
      - 22.579MHz
 
-DAC and ADC Configuration
-+++++++++++++++++++++++++
 
-The board is equipped with a single multi-channel audio DAC (Cirrus Logic CS4384) and a single
-multi-channel ADC (Cirrus Logic CS5368) giving 8 channels of analogue output and 8 channels of 
-analogue input.
+DAC and ADC
+^^^^^^^^^^^
 
-Configuration of both the DAC and ADC takes place using I2C.  The design uses the I2C lib
-`lib_i2c <http://www.github.com/xmos/lib_i2c>`_.
+The board is equipped with four PCM5122 stereo DACs from Texas instruments and two
+quad-channel PCM1865 ADCs from Texas Instruments, giving 8 channels of analogue output and 8 channels of
+analogue input. Configuration of both the DAC and the ADC takes place over I²C.
 
-The reset lines of the DAC and ADC are connected to bits 1 and 6 of `PORT 8C` respectively.
+Configuring audio hardware
+--------------------------
 
-AudioHwInit()
-+++++++++++++
+All of the external audio hardware is configured using ``lib_board_support``.
 
-The :c:func:`AudioHwInit()` function is implemented to perform the following: 
+.. note::
 
-    * Initialise the I2C master software module
-    * Puts the audio hardware into reset
-    * Enables the power to the audio hardware
-    * Select the PhaseLink PLL as the audio master clock source.
+   ``lib_board_support`` has the I²C library (`lib_i2c <www.xmos.com/file/lib_i2c>`_) in its dependency list.
 
-AudioHwConfig()
-+++++++++++++++
+The hardware targeted is the `XMOS XU316 Multichannel Audio board` (`XK-AUDIO-316-MC`).
+The functions :c:func:`xk_audio_316_mc_ab_board_setup()`, :c:func:`xk_audio_316_mc_ab_i2c_master()`,
+:c:func:`xk_audio_316_mc_ab_AudioHwInit()` and :c:func:`xk_audio_316_mc_ab_AudioHwConfig()` are called at various points during initialisation and
+runtime to start the I²C master, initialise and configure the audio hardware.
 
-The :c:func:`AudioHwConfig()` function is called on every sample frequency change. 
+The audio hardware configuration is set in the ``config`` structure of type ``xk_audio_316_mc_ab_config_t`` which is passed to the :c:func:`xk_audio_316_mc_ab_board_setup()`,
+:c:func:`xk_audio_316_mc_ab_AudioHwInit()` and :c:func:`xk_audio_316_mc_ab_AudioHwConfig()` functions.
 
-The :c:func:`AudioHwConfig` function first puts the both the DAC and ADC into reset by
-setting *P8C[1]* and *P8C[6]* low. It then selects the required master clock and keeps both the
-DAC and ADC in reset for a period in order allow the clocks to stabilize.
+.. literalinclude:: ../../app_usb_aud_xk_316_mc/src/extensions/audiohw.xc
+  :start-at: static xk_audio_316_mc_ab_config_t
+  :end-at: };
 
-The DAC and ADC are brought out of reset by setting *P8C[1]* and *P8C[6]* back high.
+:c:func:`xk_audio_316_mc_ab_board_setup()` function is called from the wrapper function :c:func:`board_setup()` as part of the application's initialisation process.
+It performs the required port operations to enable the audio hardware on the platform.
 
-Various registers are then written to the ADC and DAC as required.
+:c:func:`xk_audio_316_mc_ab_i2c_master()` function is called after ``board_setp()`` during initialisation and it starts
+the I²C master task. This is required to allow the audio hardware to be configured over I²C, remotely from the other tile, due to the IO arrangement of
+the `XK-AUDIO-316-MC` board.
+
+.. literalinclude:: ../../app_usb_aud_xk_316_mc/src/extensions/user_main.h
+  :start-at: on tile[0]: {
+  :end-at: xk_audio_316_mc_ab_i2c_master
+
+The :c:func:`AudioHwInit()` function acts as a wrapper calling ``lib_board_support`` function :c:func:`xk_audio_316_mc_ab_AudioHwInit()` to power up and initialise the
+audio hardware ready for a configuration.
+
+The :c:func:`AudioHwConfig()` function configures the audio hardware post initialisation.
+It is typically called each time a sample rate or stream format change occurs.
+It acts as a wrapper function calling the :c:func:`xk_audio_316_mc_ab_AudioHwConfig()` function.
+
+
+For further details on the hardware platform and the functions available for configuring it
+please refer to `lib_board_support documentation <https://www.xmos.com/file/lib_board_support>`_.
+
+
+
 
 Validated Build Options
-+++++++++++++++++++++++
+-----------------------
 
 The reference design can be built in several ways by changing the
 build options.  These are described in :ref:`sec_xua_conf_api`.
 
-The design has only been fully validated against the build options as set in the application as distributed in the 
-Makefile.  See :ref:`usb_audio_sec_valbuild` for details and general information on build configuration naming scheme.
+The design has only been fully validated against the build options as set in the application as distributed in the
+CMakeLists.txt. See :ref:`usb_audio_sec_valbuild` for details and general information on build configuration naming scheme.
 
-These fully validated build configurations are enumerated in the supplied Makefile
+These fully validated build configurations are enumerated in the supplied CMakeLists.txt.
 
-The build configuration naming scheme employed in the makefile is shown in :ref:`table_316_config_naming`.
+The build configuration naming scheme employed in the CMakeLists.txt is shown in :ref:`table_316_config_naming`.
 
 .. _table_316_config_naming:
 
 .. list-table:: Build config naming scheme
    :header-rows: 1
-   :widths: 20 80 80
-  
+   :widths: 40 60 40
+
    * - Feature
      - Option 1
      - Option 2
@@ -167,7 +190,7 @@ The build configuration naming scheme employed in the makefile is shown in :ref:
    * - I2S Role
      - slave: S
      - master: M
-   * - Input 
+   * - Input
      - enabled: i (channel count)
      - disabled: x
    * - Output
@@ -192,7 +215,7 @@ The build configuration naming scheme employed in the makefile is shown in :ref:
      - enabled: d
      - disabled: x
 
-e.g. A build configuration named 2AMi10o10xsxxxx would signify: Audio class 2.0 running in asynchronous mode. `xCORE` is 
+e.g. A build configuration named 2AMi10o10xsxxxx would signify: Audio class 2.0 running in asynchronous mode. `xCORE` is
 I2S master. Input and output enabled (10 channels each), no MIDI, S/PDIF input, no S/PDIF output, no ADAT or DSD.
 
 In addition to this some terms may be appended onto a build configuration name to signify additional options. For
