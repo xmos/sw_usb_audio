@@ -1,10 +1,13 @@
-Required User Function Definitions
-==================================
+User function definitions
+=========================
 
-The following functions need to be defined by an application using the XMOS USB Audio framework.
+The following functions can be optionally defined by an application to override default (empty)
+implementation in ``lib_xua``.
 
-External Audio Hardware Configuration Functions
------------------------------------------------
+External audio hardware configuration
+-------------------------------------
+
+The functions should be implemented to configure external audio hardware.
 
 .. doxygenfunction:: AudioHwInit
 .. doxygenfunction:: AudioHwConfig
@@ -12,11 +15,10 @@ External Audio Hardware Configuration Functions
 .. doxygenfunction:: AudioHwConfig_UnMute
 
 
-Audio Streaming Functions
--------------------------
+Audio streaming notification
+----------------------------
 
-The following functions can be optionally used by the design by overriding their empty by default implementation in ``lib_xua``.
-They can be useful for mute lines etc.
+They functions can be useful for mute lines, indication LEDs etc.
 
 .. doxygenfunction:: UserAudioStreamStart
 .. doxygenfunction:: UserAudioStreamStop
@@ -26,10 +28,11 @@ They can be useful for mute lines etc.
 .. doxygenfunction:: UserAudioOutputStreamStop
 
 
-HID Controls
+HID controls
 ------------
 
 The following function is called when the device wishes to read physical user input (buttons etc).
-The function should write relevant HID bits into this array. The bit ordering and functionality is defined by the HID report descriptor used.
+The function should write relevant HID bits into this array.
+The bit ordering and functionality is defined by the HID report descriptor used.
 
 .. doxygenfunction:: UserHIDGetData

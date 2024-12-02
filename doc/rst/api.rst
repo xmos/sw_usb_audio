@@ -1,7 +1,7 @@
 |newpage|
 
 ***********************
-USB Audio API Reference
+USB Audio API reference
 ***********************
 
 .. toctree::

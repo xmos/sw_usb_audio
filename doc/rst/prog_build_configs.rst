@@ -1,14 +1,15 @@
 
 .. _usb_audio_sec_valbuild:
 
-Build Configurations
+Build configurations
 ====================
 
-Due to the flexibility of the reference design software there are a large number of build options. For example input
-and output channel counts, Audio Class version, interface types etc. A "build configuration" is a set of build options
-that combine to produce a binary with a certain feature set.
+Due to the flexibility of the reference design software there are a large number of build options.
+For example input and output channel counts, Audio Class version, interface types etc.
+A "build configuration" is a set of build options that combine to produce a binary with a certain feature set.
 
-The build configurations are listed in the application ``CMakeLists.txt`` file. The build config names are appended to the ``APP_COMPILER_FLAGS`` variable to list
+The build configurations are listed in the application ``CMakeLists.txt`` file.
+The build config names are appended to the ``APP_COMPILER_FLAGS`` variable to list
 the options for the compiler to use when compiling all source files for the given build configuration (APP_COMPILER_FLAGS_<build config>).
 For example::
 
@@ -17,7 +18,7 @@ For example::
                                             -DXUA_SPDIF_RX_EN=1)
 
 specifies that the compiler flags used when compiling the ``2AMi10o10xssxxx`` build config are everything defined in the
-``SW_USB_AUDIO_FLAGS`` variable plus two extra compiler options for enabling SPDIF TX and RX.
+``SW_USB_AUDIO_FLAGS`` variable plus two extra compiler options for enabling S/PDIF transmit and receive.
 
 To configure the build configurations, run the ``cmake`` command from the application (e.g. ``app_usb_aud_xk_audio_316_mc``) directory::
 
@@ -33,7 +34,8 @@ The output displayed on stdout for the ``cmake`` command will contain the list o
     -- 1AMi2o2xxxxxx
     -- 2AMi2o2xxxxxx
 
-The ``cmake`` command generates the Makefile for compiling the different build configurations. The Makefile is created in the ``build`` directory.
+The ``cmake`` command generates the `Makefile` for compiling the different build configurations.
+The Makefile is created in the ``build`` directory.
 
 The next step is to run the ``xmake`` command which executes the commands in the Makefile to build the executables corresponding to
 the build configs. To build all supported configurations for a given application, from the application directory (e.g. ``app_usb_aud_xk_audio_316_mc``),
@@ -57,7 +59,7 @@ For example::
     xmake -C build 2AMi10o10xssxxx
 
 
-Configuration Naming
+Configuration naming
 ====================
 
 A naming scheme is employed in each application to link features to a build configuration/binary.
@@ -66,7 +68,7 @@ Depending on the hardware interfaces available variations of the same basic sche
 Each relevant build option is assigned a position in the configuration name, with a character denoting the
 options value (normally 'x' is used to denote "off" or "disabled")
 
-Some example build options are listed in :ref:`prog_build_configs_naming`.
+Some example build options are listed in :numref:`prog_build_configs_naming`.
 
 .. _prog_build_configs_naming:
 
@@ -112,13 +114,14 @@ Some example build options are listed in :ref:`prog_build_configs_naming`.
      - d or x
 
 
-For example, in this scheme, a configuration named ``2AMi8o8msxxax`` would indicate Audio Class 2.0, USB asynchronous mode, xCore is I²S master,
-8 USB IN channels, 8 USB OUT channels, MIDI enabled,
-S/PDIF input enabled, S/PDIF output disabled, ADAT input disabled, ADAT output enabled and DSD disabled.
+For example, in this scheme, a configuration named ``2AMi8o8msxxax`` would indicate Audio Class 2.0,
+USB asynchronous mode, `xcore` is I²S master, 8 USB IN channels, 8 USB OUT channels, MIDI enabled,
+S/PDIF input enabled, S/PDIF output disabled, ADAT input disabled, ADAT output enabled and DSD
+disabled.
 
-See comments in the application CMakeLists.txt for details.
+See comments in the application `CMakeLists.txt` for details.
 
-Quality & Testing
+Quality & testing
 =================
 
 It is not possible for all build option permutations to be exhaustively tested. The `XMOS USB Audio
@@ -135,7 +138,8 @@ Reference Design` software therefore defines three levels of quality:
    Typically disabling a function should have no effect on QA. For example, disabling S/PDIF on a fully-tested configuration
    with it enabled should not affect its quality.
 
-`XMOS` aims to provide fully tested configurations for popular device configurations and common customer requirements.
+`XMOS` aims to provide fully tested configurations for popular device configurations and common
+customer requirements and use cases.
 
 .. note::
 
@@ -161,7 +165,6 @@ Note that setting ``BUILD_TESTED_CONFIGS`` to 1 internally also set the ``PARTIA
 set to 1 will configure the fully tested, partially tested and build-only configs and following this up with an ``xmake -C build`` will build all the 3 types
 of configs.
 
-
 .. note::
 
     Pre-release (i.e. alpha, beta or RC) firmware should not be used as basis for a production device and may not be
@@ -171,10 +174,9 @@ of configs.
 
 .. note::
 
-    Due to the similarities between the `xCORE-200` and `xCORE.ai` series feature sets, it is fully expected that all
-    listed `xCORE-200` series configurations will operate as expected on the `xCORE.ai` series and vice versa. It is therefore
-    expected that a quality level of a configuration will migrate between XMOS device series.
-
+    Due to the similarities between the `xcore-200` and `xcore.ai` series feature sets, it is fully expected that all
+    listed `xcore-200` series configurations will operate as expected on the `xcore.ai` series and vice versa. It is therefore
+    expected that a quality level of a configuration will migrate between `XMOS` device series.
 
 |newpage|
 

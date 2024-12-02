@@ -1,13 +1,12 @@
 
 .. _usb_audio_sec_216_audio_sw:
 
-
 The xcore-200 Multi-Channel Audio Board
 =======================================
 
-An application of the USB audio framework is provided specifically for the XK_AUDIO_216_MC_AB hardware described in
-:ref:`usb_audio_hardware_platforms` and is implemented on an xcore-200-series dual tile device.  The
-related code can be found in ``app_usb_aud_xk_216_mc``.
+An application of the USB audio framework is provided specifically for the `XK_AUDIO_216_MC_AB`
+hardware described in :ref:`usb_audio_hardware_platforms` and is implemented on an `xcore-200`
+series dual tile device. The related code can be found in ``app_usb_aud_xk_216_mc``.
 
 The design supports upto 8 channels of analogue audio input/output at sample-rates up to 192kHz
 (assuming the use of I2S). This can be further increased by utilising TDM. It also supports S/PDIF,
@@ -28,7 +27,7 @@ The design uses the following tasks:
  * MIDI
 
 The software layout of the USB Audio 2.0 Reference Design running on the
-`xCORE.ai` device is shown in :ref:`usb_audio_x200_threads`.
+`xCORE.ai` device is shown in :numref:`usb_audio_x200_threads`.
 
 Each circle depicts a task running in a single core concurrently with the other tasks. The
 lines show the communication between each task.
@@ -39,14 +38,16 @@ lines show the communication between each task.
      :width: 90%
      :align: center
 
-     xcore-200 Multichannel Audio System/Core Diagram
+     `xcore-200` Multichannel Audio system/task diagram
 
-The ``app_usb_aud_xk_216_mc`` application uses the functions provided in ``lib_board_support`` for master clock generation and audio
-hardware configuration. The functions :c:func:`xk_audio_216_mc_ab_AudioHwInit()` and :c:func:`xk_audio_216_mc_ab_AudioHwConfig()` are called at various points during initialisation and
+The ``app_usb_aud_xk_216_mc`` application uses the functions provided in ``lib_board_support``
+for master clock generation and audio hardware configuration.
+The functions :c:func:`xk_audio_216_mc_ab_AudioHwInit()` and
+:c:func:`xk_audio_216_mc_ab_AudioHwConfig()` are called at various points during initialisation and
 runtime to initialise and configure the audio hardware.
 
 For further details on the hardware platform and the functions available for configuring it
-please refer to `lib_board_support documentation <https://www.xmos.com/file/lib_board_support>`_.
+refer to `lib_board_support <https://www.xmos.com/file/lib_board_support>`_ documentation.
 
 |newpage|
 
@@ -59,9 +60,9 @@ Clocking and Clock Selection
 The board includes two options for master clock generation:
 
     * A single oscillator with a Phaselink PLL to generate fixed 24.576MHz and 22.5792MHz
-      master-clocks
+      master-clocks.
     * A Cirrus Logic CS2100 clock multiplier allowing the master clock to be generated from a
-      XCore derived reference.
+      `xcore` derived reference clock.
 
 The master clock source is controlled by a mux which, in turn, is controlled by bit 5 of `PORT 8C`:
 
@@ -89,7 +90,6 @@ The clock-select from the phaselink part is controlled via bit 7 of `PORT 8C`:
    * - 1
      - 22.579MHz
 
-
 DAC and ADC
 ^^^^^^^^^^^
 
@@ -108,42 +108,48 @@ All of the external audio hardware is configured using ``lib_board_support``.
    ``lib_board_support`` has the I²C library (`lib_i2c <www.xmos.com/file/lib_i2c>`_) in its dependency list.
 
 The hardware targeted is the `XMOS XU216 Multichannel Audio board` (`XK-AUDIO-216-MC`).
-The functions :c:func:`xk_audio_216_mc_ab_AudioHwInit()` and :c:func:`xk_audio_216_mc_ab_AudioHwConfig()` are called at various points during initialisation and
+The functions :c:func:`xk_audio_216_mc_ab_AudioHwInit()` and
+:c:func:`xk_audio_216_mc_ab_AudioHwConfig()` are called at various points during initialisation and
 runtime to initialise and configure the audio hardware.
 
-The audio hardware configuration is set in the ``config`` structure of type ``xk_audio_216_mc_ab_config_t`` which is passed to the
+The audio hardware configuration is set in the ``config`` structure of type
+``xk_audio_216_mc_ab_config_t`` which is passed to the
 :c:func:`xk_audio_216_mc_ab_AudioHwInit()` and :c:func:`xk_audio_216_mc_ab_AudioHwConfig()` functions.
 
 .. literalinclude:: ../../app_usb_aud_xk_216_mc/src/extensions/audiohw.xc
   :start-at: static const xk_audio_216_mc_ab_config_t
   :end-at: };
 
-The :c:func:`AudioHwInit()` function acts as a wrapper calling ``lib_board_support`` function :c:func:`xk_audio_216_mc_ab_AudioHwInit()` to power up and initialise the
-audio hardware ready for a configuration.
+The :c:func:`AudioHwInit()` function is implemented to make a call to the ``lib_board_support``
+function :c:func:`xk_audio_216_mc_ab_AudioHwInit()` to power up and initialise the audio hardware
+ready for a configuration.
 
 The :c:func:`AudioHwConfig()` function configures the audio hardware post initialisation.
-It is typically called each time a sample rate or stream format change occurs.
-It acts as a wrapper function calling the :c:func:`xk_audio_216_mc_ab_AudioHwConfig()` function.
+It is called each time a sample rate or stream format change occurs.
+It is implemented to make a call to the ``lib_board_support`` function
+:c:func:`xk_audio_216_mc_ab_AudioHwConfig()`.
 
 For further details on the hardware platform and the functions available for configuring it
-please refer to `lib_board_support documentation <https://www.xmos.com/file/lib_board_support>`_.
+refer to `lib_board_support <https://www.xmos.com/file/lib_board_support>`_ documentation.
 
-Validated Build Options
+Validated build options
 -----------------------
 
-The reference design can be built in several ways by changing the
-build options.  These are described in :ref:`sec_xua_conf_api`.
+The reference design can be built in several ways by changing the build options.
+These are described in :numref:`sec_xua_conf_api`.
 
 The design has only been fully validated against the build options as set in the
-application as distributed in the CMakeLists.txt.  See :ref:`usb_audio_sec_valbuild` for details and general information on
-build configuation naming scheme.
+application as distributed in the CMakeLists.txt.  See :ref:`usb_audio_sec_valbuild` for details
+and general information on build configuation naming scheme.
 
 These fully validated build configurations are enumerated in the supplied CMakeLists.txt.
 
-In practise, due to the similarities between the `xcore-200` and `xCORE.ai` series feature set, it is fully
-expected that all listed `xcore-200` series configurations will operate as expected on the `xCORE.ai` series and vice versa.
+In practise, due to the similarities between the `xcore-200` and `xcore.ai` series feature set,
+it is fully expected that all listed `xcore-200` series configurations will operate as expected on
+the `xcore.ai` series and vice versa.
 
-The build configuration naming scheme employed in the CMakeLists.txt is shown in :ref:`table_216_config_naming`.
+The build configuration naming scheme employed in the CMakeLists.txt is shown in
+:numref:`table_216_config_naming`.
 
 .. _table_216_config_naming:
 
@@ -188,8 +194,10 @@ The build configuration naming scheme employed in the CMakeLists.txt is shown in
      - enabled: d
      - disabled: x
 
-e.g. A build configuration named 2AMi10o10xsxxxx would signify: Audio class 2.0 running in asynchronous mode. `xCORE` is
-I2S master. Input and output enabled (10 channels each), no MIDI, S/PDIF input, no S/PDIF output, no ADAT or DSD.
+e.g. A build configuration named `2AMi10o10xsxxxx` would signify: Audio class 2.0 running in
+asynchronous mode. The `xcore` is I2S master.
+Input and output enabled (10 channels each), no MIDI, S/PDIF input, no S/PDIF output, no ADAT or DSD.
 
-In addition to this some terms may be appended onto a build configuration name to signify additional options. For
-example, `tdm` may be appended to the build configuration name to indicate the I2S mode employed.
+In addition to this some terms may be appended onto a build configuration name to signify additional
+options. For example, `tdm` may be appended to the build configuration name to indicate the I²S
+mode employed.

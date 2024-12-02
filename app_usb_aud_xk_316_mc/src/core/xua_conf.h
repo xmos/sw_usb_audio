@@ -27,7 +27,7 @@
 
 /* Enable/Disable S/PDIF output - Default is S/PDIF off */
 #ifndef XUA_SPDIF_TX_EN
-#define XUA_SPDIF_TX_EN	   (0)
+#define XUA_SPDIF_TX_EN    (0)
 #endif
 
 /* Enable/Disable S/PDIF input - Default is S/PDIF off */
