@@ -22,33 +22,19 @@ sw_usb_audio change log
       + CHANGED:   Documentation updates
       + CHANGED:   Examples now build using XCommon Cmake build system
 
-    - lib_board_support: Added dependency 1.0.0
+    - lib_board_support: Added dependency 1.1.1
 
-      + ADDED: Board documentation
-      + ADDED: Example apps showing use of library
-      + FIXED: Missing lib_sw_pll dependency
-      + ADDED: Callable from C
-      + ADDED: I2C master exit API for XK-AUDIO-316-MC
-      + FIXED: Uninitialised global interface for XK-AUDIO-216-MC setup
-      + ADDED: Explicit xk_evk_xu316_AudioHwChanInit() API
-      + ADDED: NULL_BOARD default option so library can be included in a project
-        without being used.
+      + CHANGED: Documentation improvements
+      + REMOVED: Dependency of examples on lib_i2s
 
     - lib_i2c: Added dependency 6.2.0
 
       + ADDED: Support for XCommon CMake build system
       + REMOVED: Unused dependency lib_logging
 
-    - lib_i2s: Added dependency 5.1.0
+    - lib_i2s: Added dependency 6.0.1
 
-      + ADDED: Support for XCommon CMake build system
-      + RESOLVED: Added missing shutdown feature to i2s_frame_slave
-      + FIXED: Allow input and output ports in the 4-bit port implementation to
-        be nullable
-      + FIXED: Behaviour of the restart_check() callback function in the example
-        applications
-      + REMOVED: Unused dependency lib_logging
-      + ADDED: Frame synch error field in i2s_config_t for I2S slave
+      + CHANGED: Documentation updated
 
     - lib_locks: Added dependency 2.3.1
 
@@ -94,11 +80,13 @@ sw_usb_audio change log
       + ADDED:     Support for DFU 1.1 DFU_DETACH with bitWillDetach set to 1
       + ADDED:     Enumerate with the DFU interface as WINUSB compatible. This
         is done by updating the bcdUSB version to 2.01 and providing the BOS and
-        MSOS2.0 descriptors listing WINUSB compatibility the time of enumeration
+        MSOS2.0 descriptors listing WINUSB compatibility at enumeration
       + ADDED:     Support for XMOS_DFU_REVERTFACTORY arriving as a
         USB_BMREQ_H2D_VENDOR_INT request to work with the latest Thesycon DFU
         driver on Windows
       + ADDED:     Support for building the xmosdfu application on MacOS arm64
+      + ADDED:     MIDI support with UAC1.0
+      + ADDED:     DFU support with UAC1.0
       + CHANGED:   By default, enumerate with iSerialNumber set to None(0) in
         the device descriptor
       + CHANGED:   xmosdfu app to use DFU_DETACH
@@ -110,19 +98,18 @@ sw_usb_audio change log
         bytes to fix bcdUSB version 2.01 USB device supporting a sampling rate
         of 192KHz not enumerating on Windows
       + CHANGED:   Added default value (1) for XUA_QUAD_SPI_FLASH
-      + FIXED:     Build issue when XUA_NUM_PDM_MICS > 0
-      + FIXED:     DFU support with UAC1.0
-      + FIXED:     baInterfaceNr field in MIDI Class-specific AC Interface
-        Descriptor to specify the correct MIDI streaming interface number
       + CHANGED:   Default value of FLASH_MAX_UPGRADE_SIZE to 512 KB
-      + ADDED:     MIDI support with UAC1.0
       + CHANGED:   Build examples using XCommon CMake instead of XCommon
       + CHANGED:   AN00248 now targets XK-EVK-XU316 and uses mic_array version 5
         (new API)
-      + REMOVED:   Support for PDM mics in XS2 targets (requires xcore.ai). Can
-        use lib_xua version <=4.2.0 for XS2 (xcore-200) targets
       + CHANGED:   Examples use lib_board_support for XK-AUDIO-316-MC-AB support
         code
+      + CHANGED:   Master clock port no longer used if not required, for example
+        when using I2S slave with USB disabled
+      + FIXED:     Build issue when XUA_NUM_PDM_MICS > 0
+      + FIXED:     baInterfaceNr field in MIDI Class-specific AC Interface
+        Descriptor to specify the correct MIDI streaming interface number
+      + REMOVED:   Support for PDM mics for xcore-200 targets
       + CHANGED:   lsats instruction used for saturation in the mixer
       + CHANGED:   Mixer task communication scheme simplified, aiding code reuse
         & performance
@@ -134,10 +121,21 @@ sw_usb_audio change log
         control tokens. Potentially making mix & match of components more
         tractable in the future
 
-    - lib_xud: Added dependency 2.3.2
+    - lib_xud: Added dependency 2.4.0
 
-      + CHANGE:   RX_RISE_DELAY for XS2A based devices to resolve intermittent
-        transmit timing issues
+      + CHANGE:   Documentation updates
+      + CHANGE:   Examples now build using xcommon-cmake build system (was
+        xcommon)
+      + CHANGE:   AN00129 is now the main library usage example - renamed
+        app_hid_mouse
+      + REMOVED:  AN00124 - now maintained as a separate application note
+      + REMOVED:  AN00125 - now maintained as a separate application note
+      + REMOVED:  AN00126 - now maintained as a separate application note
+      + REMOVED:  AN00127 - now maintained as a separate application note
+      + REMOVED:  AN00131 - now maintained as a separate application note
+      + REMOVED:  AN00132 - now maintained as a separate application note
+      + REMOVED:  AN00135 - now maintained as a separate application note
+      + REMOVED:  AN00136 - now maintained as a separate application note
 
 8.1.0
 -----
