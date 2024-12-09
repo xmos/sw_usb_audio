@@ -25,49 +25,60 @@ The complete source code, together with the free XMOS XTC development tools and 
 multi-core micro-controller devices, allow the developer to select the exact mix of interfaces
 and processing required.
 
-The XMOS USB Audio solution is deployed as a framework (see `lib_xua <https://www.xmos.com/file/lib_xua>`__) with reference design
-applications extending and customising this framework. These reference designs have particular
-qualified feature sets and an accompanying reference hardware platform.
+The XMOS USB Audio solution is deployed as a framework (see `lib_xua <https://www.xmos.com/file/lib_xua>`__)
+with reference design applications extending and customising this framework.
+These reference designs have particular qualified feature sets and an accompanying reference
+hardware platform.
 
-Please note, Alpha and Beta releases may not accurately reflect the final release and documentation may not be complete.
-These early releases are not suitable for a production context, and are provided for evaluation purposes only. See 'Release Quality & QA'.
+Please note, Alpha and Beta releases may not accurately reflect the final release and documentation
+may not be complete.
+These early releases are not suitable for a production context, and are provided for evaluation
+purposes only. See 'Release Quality & QA'.
 
-Please see CHANGELOG.rst for detailed change listing.
+Refere to CHANGELOG.rst for detailed change listing.
 
 For full software documentation please see the USB Audio User Guide document.
 
-This release is built and tested using version 15.3.0 of the XMOS tool set.  Build or functionality issues could be experienced with any other version.
+This release is built and tested using version 15.3.0 of the XMOS tool set.
+Build or functionality issues could be experienced with any other version.
 
-This repository contains applications (or instances) of the XMOS USB Audio Reference Design framework.  These applications
-typically relate to a specific hardware platform.  This repository contains the following:
+This repository contains applications (or instances) of the XMOS USB Audio Reference Design framework.
+These applications typically relate to a specific hardware platform.
+This repository contains the following:
 
-+--------------------------+--------------------------+------------------------------------------------------------+
-|    App Name              |     Relevant Board(s)    | Description                                                |
-+==========================+==========================+============================================================+
-| app_usb_aud_xk_216_mc    | xk-audio-216-mc          | xcore-200 Multi-channel Audio Board                        |
-+--------------------------+--------------------------+------------------------------------------------------------+
-| app_usb_aud_xk_316_mc    | xk-audio-316-mc          | xcore.ai Multi-channel Audio Board                         |
-+--------------------------+--------------------------+------------------------------------------------------------+
-| app_usb_aud_xk_evk_xu316 | xk-evk-xu316             | xcore.ai Explorer Board                                    |
-+--------------------------+--------------------------+------------------------------------------------------------+
++--------------------------+--------------------------+--------------------------------------------+
+|    App Name              |     Relevant Board(s)    | Description                                |
++==========================+==========================+============================================+
+| app_usb_aud_xk_216_mc    | xk-audio-216-mc          | xcore-200 Multi-channel Audio Board        |
++--------------------------+--------------------------+--------------------------------------------+
+| app_usb_aud_xk_316_mc    | xk-audio-316-mc          | xcore.ai Multi-channel Audio Board         |
++--------------------------+--------------------------+--------------------------------------------+
+| app_usb_aud_xk_evk_xu316 | xk-evk-xu316             | xcore.ai Evaluation Kit                    |
++--------------------------+--------------------------+--------------------------------------------+
 
 Please refer to individual README files in these apps for more detailed information.
 
-Each application contains a "core" folder, this folder contains items that are required to use and run the USB Audio application framework.
+Each application contains a "core" folder, this folder contains items that are required to use and
+run the USB Audio application framework.
 Mandatory files per application include:
 
 - An XN file describing the board including required port defines.
 - xua_conf.h header file containing configuration items such as channel count, strings etc.
 
-Each application also contains an "extensions" folder which includes board specific extensions such as CODEC configuration etc.
+Each application also contains an "extensions" folder which includes board specific extensions such
+as CODEC configuration etc.
 
-Additionally some options are contained in Makefiles for building multiple configurations of an application. For example an application may provide configurations with and without MIDI enabled.  See the USB Audio Software User Guide for full details.
+Additionally some options are contained in application `CMakeLists.txt` files for building multiple
+configurations of an application.
+For example an application may provide configurations with and without MIDI enabled.
+See the USB Audio Software User Guide for full details.
 
 ********
 Features
 ********
 
-Key features of the various applications in this repository are listed below.  Please refer to the application README the specific feature set supported by that application.
+Key features of the various applications in this repository are listed below.
+Refer to the application README the specific feature set supported by that application.
 
 - USB Audio Class 1.0/2.0 Compliant
 
@@ -97,7 +108,8 @@ Key features of the various applications in this repository are listed below.  P
 
 - Simple playback controls via Human Interface Device (HID)
 
-Note, not all features may be supported at all sample frequencies, simultaneously or on all devices.  Some features also require specific host driver support.
+Note, not all features may be supported at all sample frequencies, simultaneously or on all devices.
+Some features also require specific host driver support.
 
 Release quality & QA
 ====================
@@ -140,7 +152,8 @@ Release quality & QA
 Known issues
 ************
 
-General known issues with this release are listed below.  For board/application specific known issues please see README in relevant app directory
+General known issues with this release are listed below.
+For board/application specific known issues please see README in relevant app directory
 
 - (xmos/sw_usb_audio#54) When DFU flash access fails the xcore sends NAKs to the USB host forever, rather than a STALL
 
@@ -217,10 +230,10 @@ Required libraries (dependencies)
 Related application notes
 *************************
 
- * AN02019: Using Device Firmware Upgrade (DFU) for USB Audio
- * AN00136: Example USB Vendor Specific Device
- * AN02026: Blocked DSP inside USB Audio
- * AN01009: Optimizing USB Audio for stereo output, battery powered devices
+ * `AN02019: Using Device Firmware Upgrade (DFU) for USB Audio <https://www.xmos.com/file/an02019>`_
+ * `AN00136: Example USB Vendor Specific Device <https://www.xmos.com/file/an00136>`_
+ * `AN02026: Blocked DSP inside USB Audio <https://www.xmos.com/file/an02026>`_
+ * `AN01009: Optimizing USB Audio for stereo output, battery powered device <https://www.xmos.com/file/an01009>`_
 
 *******
 Support

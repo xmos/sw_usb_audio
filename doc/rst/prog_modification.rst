@@ -40,7 +40,7 @@ The general steps to producing a custom codebase are as follows:
 
     An example usage is shown in ``app_usb_aud_xk_316_mc/src/extensions/user_main.h``
     In reality the developer must weigh up the inconvenience of using these defines versus the
-    inconvenience of merging updates from `XMOS`.
+    inconvenience of merging updates from `XMOS` into a modified codebase.
 
 The following sections show some example changes with a high level overview of how to change the code.
 

@@ -2,12 +2,12 @@ User function definitions
 =========================
 
 The following functions can be optionally defined by an application to override default (empty)
-implementation in ``lib_xua``.
+implementations in ``lib_xua``.
 
 External audio hardware configuration
 -------------------------------------
 
-The functions should be implemented to configure external audio hardware.
+The functions listed below should be implemented to configure external audio hardware.
 
 .. doxygenfunction:: AudioHwInit
 .. doxygenfunction:: AudioHwConfig
@@ -18,7 +18,7 @@ The functions should be implemented to configure external audio hardware.
 Audio streaming notification
 ----------------------------
 
-They functions can be useful for mute lines, indication LEDs etc.
+The functions listed below can be useful for mute lines, indication LEDs etc.
 
 .. doxygenfunction:: UserAudioStreamStart
 .. doxygenfunction:: UserAudioStreamStop

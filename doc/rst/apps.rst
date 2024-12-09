@@ -16,7 +16,7 @@ The applications contained in this repo use ``lib_xua`` in a "code-less" manner.
 the ``main()`` function from ``lib_xua`` and customise the code-base as required using build time defines and by
 providing implementations to the various required functions in order to support their hardware.
 
-Please see `lib_xua` <https://www.xmos.com/file/lib_xua>`_ documentation for full details.
+Refer to `lib_xua` <https://www.xmos.com/file/lib_xua>`_ documentation for full details.
 
 .. toctree::
 
