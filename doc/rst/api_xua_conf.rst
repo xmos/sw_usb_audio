@@ -4,8 +4,8 @@
 Configuration defines
 =====================
 
-An application using the USB audio framework provided by ``lib_xua``  needs to have defines set
-for configuration. Defaults for these defines are found in ``lib_xua`` in ``xua_conf_default.h``.
+An application using the USB audio framework provided by ``lib_xua``  needs to be configured via
+defines. Defaults for these defines are found in ``lib_xua`` in ``xua_conf_default.h``.
 
 An application should override these defines in an optional ``xua_conf.h`` file or in the
 ``CMakeLists.txt`` for the relevant build configuration.

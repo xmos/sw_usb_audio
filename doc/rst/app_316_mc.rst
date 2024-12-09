@@ -51,7 +51,7 @@ Clocking and clock selection
 As well as the secondary (application) PLL of the `xcore.ai` device the board includes two options for master clock generation:
 
     * A Cirrus Logic CS2100 fractional-N clock multiplier allowing the master clock to be generated from a
-      `xcore` derived reference.
+      `xcore` derived reference clock.
     * A Skyworks Si5351A-B-GT CMOS clock generator.
 
 The master clock source is chosen by driving two control signals as shown below:
@@ -116,7 +116,7 @@ analogue input. Configuration of both the DAC and the ADC takes place over I²C.
 Configuring audio hardware
 --------------------------
 
-All of the external audio hardware is configured using `lib_board_support <http://www.xmos.com/file/`.
+All of the external audio hardware is configured using `lib_board_support <https://www.xmos.com/file/lib_board_support>`_.
 
 .. note::
 
@@ -186,7 +186,7 @@ The build configuration naming scheme employed in the CMakeLists.txt is shown in
    * - USB Sync Mode
      - async: A
      - sync: S
-   * - I2S Role
+   * - I²S Role
      - slave: S
      - master: M
    * - Input
@@ -214,8 +214,11 @@ The build configuration naming scheme employed in the CMakeLists.txt is shown in
      - enabled: d
      - disabled: x
 
-e.g. A build configuration named `2AMi10o10xsxxxx` would signify: Audio Class 2.0 running in asynchronous mode.
-The `xcore` is I²S master. Input and output enabled (10 channels each), no MIDI, S/PDIF input, no S/PDIF output, no ADAT or DSD.
+e.g. A build configuration named `2AMi10o10xsxxxx` would signify: Audio Class 2.0 running in
+asynchronous mode.
+The `xcore` is I²S master. Input and output enabled (10 channels each), no MIDI, S/PDIF input, no
+S/PDIF output, no ADAT or DSD.
 
-In addition to this some terms may be appended onto a build configuration name to signify additional options. For
-example, `tdm` may be appended to the build configuration name to indicate the I²S mode employed.
+In addition to this some terms may be appended onto a build configuration name to signify additional
+options.
+For example, `tdm` may be appended to the build configuration name to indicate the I²S mode employed.

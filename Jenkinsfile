@@ -167,7 +167,8 @@ pipeline {
               steps {
                 withTools("${env.TOOLS_VERSION}") {
                   warnError("libchecks") {
-                    runSwrefChecks("${WORKSPACE}/${REPO}", "${params.INFR_APPS_VERSION}")
+                    // Temp disable checks due to issue with changelog checker
+                    //runSwrefChecks("${WORKSPACE}/${REPO}", "${params.INFR_APPS_VERSION}")
                   } // warnError("libchecks")
                 } // withTools("${env.TOOLS_VERSION}")
               } // steps

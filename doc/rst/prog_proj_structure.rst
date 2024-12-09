@@ -16,7 +16,6 @@ As part of configuring the build environment, if there are any missing dependenc
 
    All required dependencies are included in the `sw_usb_audio` zip download.
 
-
 Applications and libraries
 --------------------------
 

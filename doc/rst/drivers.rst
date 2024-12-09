@@ -27,7 +27,7 @@ Third party Windows drivers
 ===========================
 
 For some products it may be desirable to use a third-party driver for Windows.
-A number reasons exist as to why this may be desirable:
+A number of reasons exist as to why this may be desirable:
 
     - In order to support UAC 2.0 on Windows versions earlier than 10
     - The built-in Windows support is typically designed for consumer audio devices, not for professional audio devices

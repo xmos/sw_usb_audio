@@ -35,7 +35,7 @@ The output displayed on stdout for the ``cmake`` command will contain the list o
     -- 2AMi2o2xxxxxx
 
 The ``cmake`` command generates the `Makefile` for compiling the different build configurations.
-The Makefile is created in the ``build`` directory.
+The `Makefile` is created in the ``build`` directory.
 
 The next step is to run the ``xmake`` command which executes the commands in the Makefile to build the executables corresponding to
 the build configs. To build all supported configurations for a given application, from the application directory (e.g. ``app_usb_aud_xk_audio_316_mc``),
@@ -124,7 +124,7 @@ See comments in the application `CMakeLists.txt` for details.
 Quality & testing
 =================
 
-It is not possible for all build option permutations to be exhaustively tested. The `XMOS USB Audio
+It is not practical for all build option permutations to be exhaustively tested. The `XMOS USB Audio
 Reference Design` software therefore defines three levels of quality:
 
     * **Fully Tested** - the configuration is fully supported. A product based on it can be immediately put into to a

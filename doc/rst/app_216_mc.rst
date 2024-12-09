@@ -9,7 +9,7 @@ hardware described in :ref:`usb_audio_hardware_platforms` and is implemented on 
 series dual tile device. The related code can be found in ``app_usb_aud_xk_216_mc``.
 
 The design supports upto 8 channels of analogue audio input/output at sample-rates up to 192kHz
-(assuming the use of I2S). This can be further increased by utilising TDM. It also supports S/PDIF,
+(assuming the use of I²S). This can be further increased by utilising TDM. It also supports S/PDIF,
 ADAT and MIDI input and output as well as the mixing functionalty of ``lib_xua``.
 
 The design uses the following tasks:
@@ -27,7 +27,7 @@ The design uses the following tasks:
  * MIDI
 
 The software layout of the USB Audio 2.0 Reference Design running on the
-`xCORE.ai` device is shown in :numref:`usb_audio_x200_threads`.
+`xcore.ai` device is shown in :numref:`usb_audio_x200_threads`.
 
 Each circle depicts a task running in a single core concurrently with the other tasks. The
 lines show the communication between each task.
@@ -166,7 +166,7 @@ The build configuration naming scheme employed in the CMakeLists.txt is shown in
    * - USB Sync Mode
      - async: A
      - sync: S
-   * - I2S Role
+   * - I²S Role
      - slave: S
      - master: M
    * - Input
@@ -195,7 +195,7 @@ The build configuration naming scheme employed in the CMakeLists.txt is shown in
      - disabled: x
 
 e.g. A build configuration named `2AMi10o10xsxxxx` would signify: Audio class 2.0 running in
-asynchronous mode. The `xcore` is I2S master.
+asynchronous mode. The `xcore` is I²S master.
 Input and output enabled (10 channels each), no MIDI, S/PDIF input, no S/PDIF output, no ADAT or DSD.
 
 In addition to this some terms may be appended onto a build configuration name to signify additional
