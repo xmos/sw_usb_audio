@@ -29,8 +29,8 @@ def clone_test_deps() {
   }
 }
 
-def archiveLib(String repoName) {
-    sh "git -C ${repoName} clean -xdf"
+def archiveSw(String repoName) {
+    sh "git -C ${repoName} clean -xdf -e '*.xe'"
     sh "zip ${repoName}_sw.zip -r ${repoName}"
     archiveArtifacts artifacts: "${repoName}_sw.zip", allowEmptyArchive: false
 }
@@ -174,10 +174,10 @@ pipeline {
               } // steps
             } // stage('Library checks')
 
-            stage("Archive lib") {
+            stage("Archive Sw") {
               steps
               {
-                archiveLib(REPO)
+                archiveSw(REPO)
               }
             } // stage("Archive lib")
 
