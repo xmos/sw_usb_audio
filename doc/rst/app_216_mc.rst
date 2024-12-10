@@ -136,7 +136,7 @@ Validated build options
 -----------------------
 
 The reference design can be built in several ways by changing the build options.
-These are described in :numref:`sec_xua_conf_api`.
+These are described in :ref:`sec_xua_conf_api`.
 
 The design has only been fully validated against the build options as set in the
 application as distributed in the CMakeLists.txt.  See :ref:`usb_audio_sec_valbuild` for details
