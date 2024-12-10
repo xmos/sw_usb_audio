@@ -1,55 +1,56 @@
 |newpage|
 
 ***********
-Quick Start
+Quick start
 ***********
 
 .. warning::
 
-    XMOS development boards are typically supplied with no firmware installed. The following steps explain how to
-    install the latest firmware on the board and use it. Each step is explained in detail in the following sections.
+    XMOS development boards are typically supplied with no firmware pre-programmed.
 
-   #. To download the latest **USB Audio 2.0 Device Software** release, on the `XMOS website USB & Multichannel Audio page <http://www.xmos.com/develop/usb-multichannel-audio>`_,
-      follow the `DOWNLOAD SOFTWARE` link. Before downloading the software, review the licence and click **Accept** to initiate the download.
+The following steps explain how to programmed the latest firmware on the board and use it.
+Each step is explained in detail in the following sections.
 
-      (Section :ref:`quick_start_firmware`.)
+#. Download the latest USB Audio 2.0 Device software release from the `XMOS website USB & Multichannel Audio page <http://www.xmos.com/develop/usb-multichannel-audio>`_, using the `DOWNLOAD SOFTWARE` link.
 
-   #. If using a Windows host computer, download the **USB Audio Class 2.0 Evaluation Driver for Windows**.
-      On the `XMOS website USB & Multichannel Audio page <http://www.xmos.com/develop/usb-multichannel-audio>`__, follow the `DRIVER SUPPORT` link, and click on `Download`.
-      Once downloaded, run the executable and install the driver.
+   * Before downloading the software, review the licence and click **Accept** to initiate the download.
 
-      (Section :ref:`quick_start_windows_driver`.)
+   (Section :ref:`quick_start_firmware`.)
 
-   #. Download and install the the `XMOS XTC Tools <http://www.xmos.com/software-tools>`_
+#. If using a Windows host computer, download the `USB Audio Class 2.0 Evaluation Driver for Windows`.
 
-      The minimum required XTC Tools version for compiling USB Audio applications can be found in the README. Make sure to download the correct version of the tools.
+   * On the `XMOS website USB & Multichannel Audio page <http://www.xmos.com/develop/usb-multichannel-audio>`__, follow the `DRIVER SUPPORT` link, and click on `Download`. Once downloaded, run the executable and install the driver.
 
-      (Section :ref:`quick_start_tools`)
+   (Section :ref:`quick_start_windows_driver`.)
 
-   #. Compile the firmware relavant to the available reference hardware platform .
+#. Download and install the the `XMOS XTC Tools <http://www.xmos.com/software-tools>`_
 
-      (Section: :ref:`quick_start_building`)
+   * The minimum required XTC Tools version for compiling USB Audio applications can be found in the README. Make sure to download the correct version of the tools.
 
-   #. Connect the board to the development system using the xTAG supplied, and program the firmware onto the board.
+   (Section :ref:`quick_start_tools`)
 
-      (Section :ref:`quick_start_running`)
+#. Compile the firmware relavant to the available reference hardware platform .
 
-   #. Connect audio input and output devices, and play audio.
+   (Section: :ref:`quick_start_building`)
 
-      (Section :ref:`quick_start_play_audio`)
+#. Connect the board to the development system using (using the supplied xTAG if required), and program the firmware onto the board.
+
+   (Section :ref:`quick_start_running`)
+
+#. Connect audio input and output devices, and play audio.
+
+   (Section :ref:`quick_start_play_audio`)
 
 |newpage|
 
 .. _quick_start_firmware:
 
-USB Audio 2.0 Reference Software
+USB Audio 2.0 reference software
 ================================
 
 The latest USB Audio 2.0 Reference Design software is available free of charge from XMOS.
 
-When downloading the software for the first time, the user needs to register at:
-
-http://www.xmos.com/
+When downloading the software for the first time, the user needs to register at http://www.xmos.com/.
 
 To download the firmware:
 
@@ -63,10 +64,9 @@ The software is distributed as a zip archive containing pre-compiled binaries an
 
 Alternatively, contact a `local sales representative <https://www.xmos.com/find-a-distributor/>`_ for further details:
 
-
 .. _quick_start_windows_driver:
 
-USB Audio Class 2.0 Evaluation Driver for Windows
+USB Audio Class 2.0 evaluation driver for Windows
 =================================================
 
 .. note::
@@ -90,7 +90,8 @@ Developers may also wish to use a third party driver for reasons including:
     * Large channel count devices
     * Etc
 
-`XMOS` therefore provides a free Windows USB Audio driver for evaluation and prototyping and a path to a more feature-rich multichannel production driver from our partner `Thesycon`.
+`XMOS` therefore provides a free Windows USB Audio driver for evaluation and prototyping and a path
+to a more feature-rich multichannel production driver from our partner `Thesycon`.
 
 The evaluation driver is available from the `XMOS website <http://www.xmos.com/published/usb-audio-class-20-evaluation-driver-windows>`__:
 
@@ -100,7 +101,7 @@ Further information about the evaluation and production drivers is available in 
 
 .. _quick_start_tools:
 
-XMOS XTC Development Tools
+XMOS XTC development tools
 ==========================
 
 The `XMOS XTC tools` provide everything required to develop applications for `xcore multicore microcontrollers` and can be downloaded,
@@ -135,7 +136,7 @@ The tools as delivered are to be used within a command line environment, though 
 
 .. _quick_start_building:
 
-Building the Firmware
+Building the firmware
 =====================
 
 .. note::
@@ -160,11 +161,11 @@ This file specifies build configs, sources, build options and dependencies.
 
 .. note::
 
-    See ::ref:`proj_build_system` for more details.
+    See :ref:`proj_build_system` for more details.
 
 .. _quick_start_running:
 
-Running the Firmware
+Running the firmware
 ====================
 
 Typically during development the developer wishes to program the device's internal RAM with the application binary directly via JTAG and then execute this application.
@@ -173,7 +174,8 @@ To run one of the compiled binaries complete the following steps:
 
     #. Connect the USB Audio board to the host computer.
 
-    #. Connect the xTAG to the USB Audio board and connect it to the host machine on which the application binary is present via a separate USB cable
+    #. Connect the xTAG to the USB Audio board and connect it to the host machine on which the application binary is present via a separate USB cable.
+           note, some boards have integrated xTAGs.
 
     #. Ensure any required external power jacks are connected
 
@@ -184,7 +186,7 @@ Finally, to run the binary on the target, execute a command similar to the follo
 The device should now present itself as a USB Audio Device on the connected host computer.
 It will continue to operate as a USB Audio Device until the target board is power cycled.
 
-Writing the Application Binary to Flash
+Writing the application binary to flash
 =======================================
 
 Optionally a binary can be programmed into the boot flash. To do this:
@@ -203,7 +205,7 @@ Once flashed the target device will reboot and execute the binary. Power cycling
 
 .. _quick_start_play_audio:
 
-Playing Audio
+Playing audio
 =============
 
     #. Connect the board to any power supply provided (note, some boards will be USB bus powered)
@@ -214,26 +216,8 @@ Playing Audio
 
     #. Connect audio input/output devices to the connectors on the board e.g powered speakers
 
-    #. In the audio application, select the XMOS USB Audio device.
+    #. In the audio application, select the `XMOS` USB Audio device.
 
     #. Start playing and recording.
 
-Next Steps
-==========
-
-Further information on using the board and the `XTC Tools` is available from:
-
-`xcore-200 Multichannel Audio Platform 2v0 Hardware Manual <https://www.xmos.com/file/xcore-200-multichannel-audio-platform-hardware-manual/>`_
-
-
-`xcore.ai Multichannel Audio Platform 2v0 Hardware Manual <https://www.xmos.com/download/XCORE_AI-Multichannel-Audio-Platform-1V1-Hardware-Manual(1V1).pdf>`_
-
-
-`XMOS USB Device Library (lib_xud) <https://www.xmos.com/file/lib_xud>`_
-
-
-`XMOS USB Audio Library (lib_xua) <https://www.xmos.com/file/lib_xua>`_
-
-
-`XTC Tools User Guide <https://www.xmos.com/documentation/XM-014363-PC/html/>`_
 

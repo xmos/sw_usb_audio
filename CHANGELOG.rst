@@ -22,53 +22,81 @@ sw_usb_audio change log
       + CHANGED:   Documentation updates
       + CHANGED:   Examples now build using XCommon Cmake build system
 
-    - lib_board_support: Added dependency 1.0.0
+    - lib_board_support: Added dependency 1.1.1
 
-      + ADDED: Board documentation
-      + ADDED: Example apps showing use of library
-      + FIXED: Missing lib_sw_pll dependency
-      + ADDED: Callable from C
-      + ADDED: I2C master exit API for XK-AUDIO-316-MC
-      + FIXED: Uninitialised global interface for XK-AUDIO-216-MC setup
-      + ADDED: Explicit xk_evk_xu316_AudioHwChanInit() API
-      + ADDED: NULL_BOARD default option so library can be included in a project
-        without being used.
+      + CHANGED: Documentation improvements
+      + REMOVED: Dependency of examples on lib_i2s
 
-    - lib_i2c: Added dependency 6.2.0
+    - lib_dsp: Removed dependency
 
-      + ADDED: Support for XCommon CMake build system
-      + REMOVED: Unused dependency lib_logging
+    - lib_i2s: 5.1.0 -> 6.0.1
 
-    - lib_i2s: Added dependency 5.1.0
+      + CHANGED: Documentation updated
+      + REMOVED: Support for XS1 - Please design with xcore.ai for new projects
+      + REMOVED: I²S non "frame" API (superseded by more efficient frame
+        versions)
+      + CHANGED: Use XCommon-CMake and use in examples/tests
+      + CHANGED: Examples ported to XK-AUDIO-316-MC board (was XK-AUDIO-216-MC)
+      + CHANGED: Examples use lib_board_support instead of custom hardware setup
 
-      + ADDED: Support for XCommon CMake build system
-      + RESOLVED: Added missing shutdown feature to i2s_frame_slave
-      + FIXED: Allow input and output ports in the 4-bit port implementation to
-        be nullable
-      + FIXED: Behaviour of the restart_check() callback function in the example
-        applications
-      + REMOVED: Unused dependency lib_logging
-      + ADDED: Frame synch error field in i2s_config_t for I2S slave
-
-    - lib_locks: Added dependency 2.3.1
+    - lib_locks: 2.2.0 -> 2.3.1
 
       + CHANGED: Documentation updates
+      + CHANGED: Build using XCommon CMake instead of xcommon
 
-    - lib_logging: Added dependency 3.3.1
+    - lib_logging: 3.2.0 -> 3.3.1
 
       + CHANGED: Documentation updates
+      + CHANGED: Build applications using XCommon CMake instead of XCommon
 
-    - lib_mic_array: Added dependency 5.4.0
+    - lib_mic_array: 4.6.0 -> 5.4.0
 
       + CHANGED: All examples now build under XCommon CMake build system
       + ADDED:   Will build without errors for XS2 targets but no API available
       + DEPRECATED: Previously used custom CMake build support. This will be
         removed in future versions. Please use XCommon CMake build system as
         provided in XTC 15.3.0 onwards for new projects.
+      + FIXED:   Vanilla configuration now compiles correctly under XTC 15.3.0
+      + ADDED:   Support for XCommon CMake build system
+      + Added 48 kHz decimator design script
+      + Added documentation to cover 32 kHz and 48 kHz deciamtors
+      + Added 16ch de-interleave to support 16 DDR mics on a single 8b port
+      + Added parallel decimation use example
+      + Fixed documentation generation issues
+      + Improved default audio filter. Reduces noise floor and improves alias
+        attentuation
+      + Changed DCOE filter to increase attenuation below 20 Hz
+      + Documentation improvements.
+      + Updates lib_mic_array to use lib_xcore_math (formerly lib_xs3_math)
+        version 2.0.2
+      + Updates CMake project to use CPM to obtain dependencies (when top level
+        project)
+      + [issue #171] Changes behavior when mic array consumer gets backed up
+        from a quiet deadlock to an ECALL exception
+      + Also adds a way to allow blocks of PDM to be quietly dropped instead 
+        (see AssertOnDroppedBlock())
+      + Mic Array library redesigned from scratch to make efficient use of XMOS
+        XS3 architecture
+      + Many unused features from previous versions have been dropped
+      + Initial v5.0 features:
+      + Supports 1-, 4-, and 8-bit ports
+      + Supports both SDR and DDR microphone configurations
+      + Use 1-16 PDM microphones
+      + Configurable PDM clock frequency
+      + Configurable two-stage decimating FIR
+      + Reference filter with total decimation factor of 192 provided
+      + Optional DC offset elimination filter
+      + Configurable frame size (down to single sample)
+      + Extensible C++ design
 
-    - lib_spdif: Added dependency 6.2.1
+    - lib_spdif: 6.1.0 -> 6.2.1
 
       + CHANGED:   Documentation updated
+      + CHANGED:   Use XCommon CMake for examples and tests
+      + CHANGED:   Use lib_sw_pll for configuring the application PLL in
+        examples
+      + FIXED:     Supressed warnings regarding taking the address of a resource
+        handle
 
     - lib_sw_pll: 2.2.0 -> 2.3.1
 
@@ -81,9 +109,11 @@ sw_usb_audio change log
       + CHANGED: Uses Xcommon Cmake instead of custom Cmake
       + FIXED: Python models and test type error on later numpy versions
 
-    - lib_xassert: Added dependency 4.3.1
+    - lib_xassert: 4.2.0 -> 4.3.1
 
       + CHANGED: Documentation updates
+      + CHANGED: Build examples and tests using XCommon CMake instead of XCommon
+      + CHANGED: Run tests using pytest
 
     - lib_xcore_math: Added dependency 2.3.0
 
@@ -94,11 +124,13 @@ sw_usb_audio change log
       + ADDED:     Support for DFU 1.1 DFU_DETACH with bitWillDetach set to 1
       + ADDED:     Enumerate with the DFU interface as WINUSB compatible. This
         is done by updating the bcdUSB version to 2.01 and providing the BOS and
-        MSOS2.0 descriptors listing WINUSB compatibility the time of enumeration
+        MSOS2.0 descriptors listing WINUSB compatibility at enumeration
       + ADDED:     Support for XMOS_DFU_REVERTFACTORY arriving as a
         USB_BMREQ_H2D_VENDOR_INT request to work with the latest Thesycon DFU
         driver on Windows
       + ADDED:     Support for building the xmosdfu application on MacOS arm64
+      + ADDED:     MIDI support with UAC1.0
+      + ADDED:     DFU support with UAC1.0
       + CHANGED:   By default, enumerate with iSerialNumber set to None(0) in
         the device descriptor
       + CHANGED:   xmosdfu app to use DFU_DETACH
@@ -110,19 +142,18 @@ sw_usb_audio change log
         bytes to fix bcdUSB version 2.01 USB device supporting a sampling rate
         of 192KHz not enumerating on Windows
       + CHANGED:   Added default value (1) for XUA_QUAD_SPI_FLASH
-      + FIXED:     Build issue when XUA_NUM_PDM_MICS > 0
-      + FIXED:     DFU support with UAC1.0
-      + FIXED:     baInterfaceNr field in MIDI Class-specific AC Interface
-        Descriptor to specify the correct MIDI streaming interface number
       + CHANGED:   Default value of FLASH_MAX_UPGRADE_SIZE to 512 KB
-      + ADDED:     MIDI support with UAC1.0
       + CHANGED:   Build examples using XCommon CMake instead of XCommon
       + CHANGED:   AN00248 now targets XK-EVK-XU316 and uses mic_array version 5
         (new API)
-      + REMOVED:   Support for PDM mics in XS2 targets (requires xcore.ai). Can
-        use lib_xua version <=4.2.0 for XS2 (xcore-200) targets
       + CHANGED:   Examples use lib_board_support for XK-AUDIO-316-MC-AB support
         code
+      + CHANGED:   Master clock port no longer used if not required, for example
+        when using I2S slave with USB disabled
+      + FIXED:     Build issue when XUA_NUM_PDM_MICS > 0
+      + FIXED:     baInterfaceNr field in MIDI Class-specific AC Interface
+        Descriptor to specify the correct MIDI streaming interface number
+      + REMOVED:   Support for PDM mics for xcore-200 targets
       + CHANGED:   lsats instruction used for saturation in the mixer
       + CHANGED:   Mixer task communication scheme simplified, aiding code reuse
         & performance
@@ -134,8 +165,21 @@ sw_usb_audio change log
         control tokens. Potentially making mix & match of components more
         tractable in the future
 
-    - lib_xud: Added dependency 2.3.2
+    - lib_xud: 2.3.1 -> 2.4.0
 
+      + CHANGE:   Documentation updates
+      + CHANGE:   Examples now build using xcommon-cmake build system (was
+        xcommon)
+      + CHANGE:   AN00129 is now the main library usage example - renamed
+        app_hid_mouse
+      + REMOVED:  AN00124 - now maintained as a separate application note
+      + REMOVED:  AN00125 - now maintained as a separate application note
+      + REMOVED:  AN00126 - now maintained as a separate application note
+      + REMOVED:  AN00127 - now maintained as a separate application note
+      + REMOVED:  AN00131 - now maintained as a separate application note
+      + REMOVED:  AN00132 - now maintained as a separate application note
+      + REMOVED:  AN00135 - now maintained as a separate application note
+      + REMOVED:  AN00136 - now maintained as a separate application note
       + CHANGE:   RX_RISE_DELAY for XS2A based devices to resolve intermittent
         transmit timing issues
 
@@ -180,10 +224,6 @@ sw_usb_audio change log
       + FIXED:     S/MUX not initialised to a value based on DEFAULT_FREQ in
         clockgen
       + FIXED:     Trap when moving to DSD mode on XS3A based devices
-
-
-Legacy release history
-======================
 
 8.0.0
 -----
@@ -242,9 +282,9 @@ Legacy release history
 
       + ADDED:     Support for XCommon CMake build system
       + ADDED:     Support for transmit at 32kHz
-      + RESOLVED:  Coding optimisations not properly enabled in receiver
-      + RESOLVED:  Receiver timing issues for sample rates greater than 96kHz
-      + RESOLVED:  Failure to select correct receive sample rate when the sample
+      + FIXED:     Coding optimisations not properly enabled in receiver
+      + FIXED:     Receiver timing issues for sample rates greater than 96kHz
+      + FIXED:     Failure to select correct receive sample rate when the sample
         rate of the incoming stream changes
       + ADDED:     Shutdown function for S/PDIF transmitter
       + CHANGED:   Receiver rearchitected for improved performance and jitter
@@ -259,7 +299,7 @@ Legacy release history
       + FIXED: Init resets PI controller state
       + FIXED: Now compiles from XC using XCommon
       + ADDED: Guard source code with __XS3A__ to allow library inclusion in
-        non- xcore-ai projects
+        non- xcore.ai projects
       + CHANGED: Reduce PLL initialisation stabilisation delay from 10 ms to 500
         us
       + ADDED: Split SDM init function to allow separation across tiles
@@ -404,7 +444,7 @@ Legacy release history
 
     - lib_adat: 1.0.0 -> 1.0.1
 
-      + Removed duplicate header file
+      + REMOVED: Duplicate header file
 
     - lib_i2s: 4.3.0 -> 5.0.0
 

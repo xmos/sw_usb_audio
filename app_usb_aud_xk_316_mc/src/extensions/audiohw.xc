@@ -19,16 +19,17 @@
     #endif
 #endif
 
-static xk_audio_316_mc_ab_config_t config = {
+static xk_audio_316_mc_ab_config_t config =
+{
     // clk_mode
     (XUA_SYNCMODE == XUA_SYNCMODE_SYNC || XUA_SPDIF_RX_EN || XUA_ADAT_RX_EN)
     ? ( XUA_USE_SW_PLL
         ? CLK_PLL : CLK_CS2100 )
     : CLK_FIXED,
-    
+
     // dac_is_clk_master
     CODEC_MASTER,
-    
+
     // default_mclk
     (DEFAULT_FREQ % 22050 == 0) ? MCLK_441 : MCLK_48,
 
@@ -56,10 +57,11 @@ void board_setup()
 /* Configures the external audio hardware at startup */
 void AudioHwInit()
 {
-    unsafe{ 
+    unsafe
+    {
         /* Wait until global is set */
         while(!(unsigned) i_i2c_client);
-        xk_audio_316_mc_ab_AudioHwInit((client interface i2c_master_if)i_i2c_client, config); 
+        xk_audio_316_mc_ab_AudioHwInit((client interface i2c_master_if)i_i2c_client, config);
     }
 }
 

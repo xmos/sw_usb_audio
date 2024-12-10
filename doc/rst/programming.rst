@@ -1,7 +1,7 @@
 |newpage|
 
 ***************************
-USB Audio Programming Guide
+USB Audio programming guide
 ***************************
 
 The following sections provide a guide on how to program the USB Audio applications including information on

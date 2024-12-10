@@ -1,17 +1,16 @@
 
 .. _sec_xua_conf_api:
 
-Configuration Defines
+Configuration defines
 =====================
 
-An application using the USB audio framework provided by ``lib_xua``  needs to have defines set for configuration.
-Defaults for these defines are found in ``lib_xua`` in ``xua_conf_default.h``.
+An application using the USB audio framework provided by ``lib_xua``  needs to be configured via
+defines. Defaults for these defines are found in ``lib_xua`` in ``xua_conf_default.h``.
 
-An application should override these defines in an optional ``xua_conf.h`` file or in the ``CMakeLists.txt``
-for the relevant build configuration.
+An application should override these defines in an optional ``xua_conf.h`` file or in the
+``CMakeLists.txt`` for the relevant build configuration.
 
 This section documents commonly used defines, for full listings and documentation see the ``lib_xua``.
-
 
 Code location (tile)
 --------------------
@@ -22,7 +21,7 @@ Code location (tile)
 .. doxygendefine:: PLL_REF_TILE
 .. doxygendefine:: SPDIF_TX_TILE
 
-Channel Counts
+Channel counts
 --------------
 
 .. doxygendefine:: NUM_USB_CHAN_OUT
@@ -31,7 +30,7 @@ Channel Counts
 .. doxygendefine:: I2S_CHANS_ADC
 .. doxygendefine:: DSD_CHANS_DAC
 
-Frequencies and Clocks
+Frequencies and clocks
 ----------------------
 
 .. doxygendefine:: MAX_FREQ
@@ -44,7 +43,7 @@ Audio Class
 
 .. doxygendefine:: AUDIO_CLASS
 
-System Feature Configuration
+System feature configuration
 ----------------------------
 
 MIDI
@@ -64,6 +63,8 @@ S/PDIF
 ADAT
 ^^^^
 
+.. doxygendefine:: XUA_ADAT_TX_EN
+.. doxygendefine:: ADAT_TX_INDEX
 .. doxygendefine:: XUA_ADAT_RX_EN
 .. doxygendefine:: ADAT_RX_INDEX
 
@@ -89,7 +90,7 @@ CODEC Interface
 .. doxygendefine:: CODEC_MASTER
 
 
-USB Device Configuration
+USB device configuration
 ------------------------
 
 .. doxygendefine:: VENDOR_STR
@@ -101,13 +102,13 @@ USB Device Configuration
 .. doxygendefine:: PID_AUDIO_2
 .. doxygendefine:: BCD_DEVICE
 
-Volume Control
+Volume control
 --------------
 
 .. doxygendefine:: OUTPUT_VOLUME_CONTROL
 .. doxygendefine:: INPUT_VOLUME_CONTROL
 
-Mixing Parameters
+Mixing parameters
 -----------------
 
 .. doxygendefine:: MIXER

@@ -1,27 +1,30 @@
-|newpage|
 
-Project Structure
+Project structure
 =================
 
 .. _proj_build_system:
 
-Build System
+Build system
 ------------
 
 The `XMOS USB Audio Reference Design` software and associated libraries employ the `XCommon CMake` build system.
 The XCommon CMake build system uses CMake to configure and generate the build environment which can then be built using
 `xmake <https://www.xmos.ai/documentation/XM-014363-PC-7/html/tools-guide/tools-ref/cmd-line-tools/xmake-manual/xmake-manual.html#xmake>`_.
-As part of configuring the build environment, if there are any missing dependencies, XCommon CMake fetches them using ``git``.
+As part of configuring the build environment, if there are any missing dependencies, `XCommon CMake` fetches them using ``git``.
 
-Applications and Libraries
+.. note::
+
+   All required dependencies are included in the `sw_usb_audio` zip download.
+
+Applications and libraries
 --------------------------
 
 The `sw_usb_audio GIT repository <https://github.com/xmos/sw_usb_audio>`_ includes multiple application directories.
 Each application directory contains a ``CMakeLists.txt`` file which describes the build configs for that application.
 The format of the ``CMakeLists.txt`` is described `here <https://www.xmos.com/documentation/XM-015090-PC-2/html/doc/config_files.html>`_
-XCommon CMake uses the ``CMakeLists.txt`` to generate Makefiles that can be compiled using ``xmake`` into executables.
+`XCommon CMake` uses the ``CMakeLists.txt`` to generate Makefiles that can be compiled using ``xmake`` into executables.
 Typically, there's one application directory per hardware platform.
-Applications and their respective hardware platforms are listed in :ref:`proj_app_boards`.
+Applications and their respective hardware platforms are listed in :numref:`proj_app_boards`.
 
 .. _proj_app_boards:
 
@@ -43,22 +46,21 @@ dependency libraries for the applications are specified by setting the ``APP_DEP
 `deps.cmake file <https://github.com/xmos/sw_usb_audio/blob/develop/deps.cmake>`_. ``deps.cmake`` lists the common dependencies for
 all the applications and is included in each application's ``CMakeLists.txt``.
 
-The dependency list specified in the ``deps.cmake`` can be extended to add new dependencies. Refer to the XCommon CMake
-`Dependency Format documentation <https://www.xmos.com/documentation/XM-015090-PC-2/html/doc/api_reference/dependency_format.html#dependency-format>`_
-for more information about adding dependencies.
+The dependency list specified in the ``deps.cmake`` can be extended to add new dependencies.
+Refer to the `XCommon CMake` `Dependency Format documentation <https://www.xmos.com/documentation/XM-015090-PC-2/html/doc/api_reference/dependency_format.html#dependency-format>`_ for more information about adding dependencies.
 
-Each library has a ``lib_build_info.cmake`` which lists the library source, compile flags and dependencies. The library dependencies are
-specified in the ``LIB_DEPENDENT_MODULES`` variable in the ``lib_build_info.cmake``.
-This allows dependency trees and nesting. XCommon CMake builds up a tree which is traversed depth-first, and populates the sandbox, fetching
-any missing dependencies by cloning them from github.
+A shared file containing common dependencies ensures a consistent set of dependencies between all
+of the applications.
 
-Most of the core code is contained in the `XMOS USB Audio Library (lib_xua) <https://www.xmos.com/file/lib_xua>`_. A full list of core dependencies is shown
-in :ref:`the table below <proj_core_libs>`.
+Each library has a ``lib_build_info.cmake`` which lists the library source, compile flags and dependencies.
+The library dependencies are specified in the ``LIB_DEPENDENT_MODULES`` variable in the ``lib_build_info.cmake``.
+This allows dependency trees and nesting. `XCommon CMake` builds up a tree which is traversed depth-first,
+and populates the sandbox, fetching any missing dependencies by cloning them from github.
 
+Most of the core code is contained in the `XMOS USB Audio Library (lib_xua) <https://www.xmos.com/file/lib_xua>`_.
+A full list of core dependencies is shown in :numref:`proj_core_libs`.
 
 .. _proj_core_libs:
-
-|beginfullwidth|
 
 .. list-table:: Core dependencies of USB Audio
    :header-rows: 1
@@ -78,8 +80,6 @@ in :ref:`the table below <proj_core_libs>`.
      - PDM microphone interface and decimator
    * - `lib_xassert`
      - Lightweight assertions library
-
-|endfullwidth|
 
 .. note::
 

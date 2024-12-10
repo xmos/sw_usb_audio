@@ -1,4 +1,6 @@
-@Library('xmos_jenkins_shared_library@v0.34.0') _
+// This file relates to internal XMOS infrastructure and should be ignored by external users
+
+@Library('xmos_jenkins_shared_library@v0.35.0') _
 
 def checkout_shallow()
 {
@@ -27,8 +29,8 @@ def clone_test_deps() {
   }
 }
 
-def archiveLib(String repoName) {
-    sh "git -C ${repoName} clean -xdf"
+def archiveSw(String repoName) {
+    sh "git -C ${repoName} clean -xdf -e '*.xe'"
     sh "zip ${repoName}_sw.zip -r ${repoName}"
     archiveArtifacts artifacts: "${repoName}_sw.zip", allowEmptyArchive: false
 }
@@ -48,7 +50,7 @@ pipeline {
 
     string(
       name: 'XMOSDOC_VERSION',
-      defaultValue: 'v6.1.3',
+      defaultValue: 'v6.2.0',
       description: 'The xmosdoc version')
 
     string(
@@ -165,18 +167,19 @@ pipeline {
               steps {
                 withTools("${env.TOOLS_VERSION}") {
                   warnError("libchecks") {
-                    runSwrefChecks("${WORKSPACE}/${REPO}", "${params.INFR_APPS_VERSION}")
+                    // Temp disable checks due to issue with changelog checker
+                    //runSwrefChecks("${WORKSPACE}/${REPO}", "${params.INFR_APPS_VERSION}")
                   } // warnError("libchecks")
                 } // withTools("${env.TOOLS_VERSION}")
               } // steps
             } // stage('Library checks')
 
-            stage("Archive lib") {
+            stage("Archive sw") {
               steps
               {
-                archiveLib(REPO)
+                archiveSw(REPO)
               }
-            } // stage("Archive lib")
+            } // stage("Archive sw")
 
             stage('Build Documentation') {
               steps {

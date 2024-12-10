@@ -1,8 +1,8 @@
 # This file relates to internal XMOS infrastructure and should be ignored by external users
 ---
-lib_name: sw_usb_audio
-project: '{{lib_name}}'
-title: '{{lib_name}}: USB Audio reference designs'
+sw_name: sw_usb_audio
+project: '{{sw_name}}'
+title: '{{sw_name}}: USB Audio reference designs'
 version: 9.0.0
 
 documentation:
@@ -17,10 +17,10 @@ documentation:
   pdfs:
     doc/rst/sw_usb_audio.rst:
       pdf_title: '{{title}}'
-      pdf_filename: '{{lib_name}}_v{{version}}'
+      pdf_filename: '{{sw_name}}_v{{version}}'
     README.rst:
       pdf_title: '{{title}} (README)'
-      pdf_filename: '{{lib_name}}_v{{version}}_readme'
+      pdf_filename: '{{sw_name}}_v{{version}}_readme'
       pdf_short: yes
 software:
   cognidox_part_number: XM-002775-SM

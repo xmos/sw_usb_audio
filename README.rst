@@ -9,8 +9,8 @@ sw_usb_audio: USB Audio reference designs
 :scope: General Use
 :description: USB Audio reference designs
 :category: Audio
-:keywords: USB Audio, DFU
-:devices: xcore.ai, xcore-200
+:keywords: USB Audio, DFU, USB, I2S, ADAT, SPDIF, TDM
+:hardware: XK-AUDIO-216-MC, XK-AUDIO-316-MC, XK-EVK-XU316
 
 *******
 Summary
@@ -25,49 +25,60 @@ The complete source code, together with the free XMOS XTC development tools and 
 multi-core micro-controller devices, allow the developer to select the exact mix of interfaces
 and processing required.
 
-The XMOS USB Audio solution is deployed as a framework (see `lib_xua <https://www.xmos.com/file/lib_xua>`__) with reference design
-applications extending and customising this framework. These reference designs have particular
-qualified feature sets and an accompanying reference hardware platform.
+The XMOS USB Audio solution is deployed as a framework (see `lib_xua <https://www.xmos.com/file/lib_xua>`__)
+with reference design applications extending and customising this framework.
+These reference designs have particular qualified feature sets and an accompanying reference
+hardware platform.
 
-Please note, Alpha and Beta releases may not accurately reflect the final release and documentation may not be complete.
-These early releases are not suitable for a production context, and are provided for evaluation purposes only. See 'Release Quality & QA'.
+Please note, Alpha and Beta releases may not accurately reflect the final release and documentation
+may not be complete.
+These early releases are not suitable for a production context, and are provided for evaluation
+purposes only. See 'Release Quality & QA'.
 
-Please see CHANGELOG.rst for detailed change listing.
+Refere to CHANGELOG.rst for detailed change listing.
 
 For full software documentation please see the USB Audio User Guide document.
 
-This release is built and tested using version 15.3.0 of the XMOS tool set.  Build or functionality issues could be experienced with any other version.
+This release is built and tested using version 15.3.0 of the XMOS tool set.
+Build or functionality issues could be experienced with any other version.
 
-This repository contains applications (or instances) of the XMOS USB Audio Reference Design framework.  These applications
-typically relate to a specific hardware platform.  This repository contains the following:
+This repository contains applications (or instances) of the XMOS USB Audio Reference Design framework.
+These applications typically relate to a specific hardware platform.
+This repository contains the following:
 
-+--------------------------+--------------------------+------------------------------------------------------------+
-|    App Name              |     Relevant Board(s)    | Description                                                |
-+==========================+==========================+============================================================+
-| app_usb_aud_xk_216_mc    | xk-audio-216-mc          | xcore-200 Multi-channel Audio Board                        |
-+--------------------------+--------------------------+------------------------------------------------------------+
-| app_usb_aud_xk_316_mc    | xk-audio-316-mc          | xcore.ai Multi-channel Audio Board                         |
-+--------------------------+--------------------------+------------------------------------------------------------+
-| app_usb_aud_xk_evk_xu316 | xk-evk-xu316             | xcore.ai Explorer Board                                    |
-+--------------------------+--------------------------+------------------------------------------------------------+
++--------------------------+--------------------------+--------------------------------------------+
+|    App Name              |     Relevant Board(s)    | Description                                |
++==========================+==========================+============================================+
+| app_usb_aud_xk_216_mc    | xk-audio-216-mc          | xcore-200 Multi-channel Audio Board        |
++--------------------------+--------------------------+--------------------------------------------+
+| app_usb_aud_xk_316_mc    | xk-audio-316-mc          | xcore.ai Multi-channel Audio Board         |
++--------------------------+--------------------------+--------------------------------------------+
+| app_usb_aud_xk_evk_xu316 | xk-evk-xu316             | xcore.ai Evaluation Kit                    |
++--------------------------+--------------------------+--------------------------------------------+
 
 Please refer to individual README files in these apps for more detailed information.
 
-Each application contains a "core" folder, this folder contains items that are required to use and run the USB Audio application framework.
+Each application contains a "core" folder, this folder contains items that are required to use and
+run the USB Audio application framework.
 Mandatory files per application include:
 
 - An XN file describing the board including required port defines.
 - xua_conf.h header file containing configuration items such as channel count, strings etc.
 
-Each application also contains an "extensions" folder which includes board specific extensions such as CODEC configuration etc.
+Each application also contains an "extensions" folder which includes board specific extensions such
+as CODEC configuration etc.
 
-Additionally some options are contained in Makefiles for building multiple configurations of an application. For example an application may provide configurations with and without MIDI enabled.  See the USB Audio Software User Guide for full details.
+Additionally some options are contained in application `CMakeLists.txt` files for building multiple
+configurations of an application.
+For example an application may provide configurations with and without MIDI enabled.
+See the USB Audio Software User Guide for full details.
 
 ********
 Features
 ********
 
-Key features of the various applications in this repository are listed below.  Please refer to the application README the specific feature set supported by that application.
+Key features of the various applications in this repository are listed below.
+Refer to the application README the specific feature set supported by that application.
 
 - USB Audio Class 1.0/2.0 Compliant
 
@@ -97,10 +108,11 @@ Key features of the various applications in this repository are listed below.  P
 
 - Simple playback controls via Human Interface Device (HID)
 
-Note, not all features may be supported at all sample frequencies, simultaneously or on all devices.  Some features also require specific host driver support.
+Note, not all features may be supported at all sample frequencies, simultaneously or on all devices.
+Some features also require specific host driver support.
 
-Release Quality & QA
---------------------
+Release quality & QA
+====================
 
 +---------------------------+--------------------------+
 | Feature                   | Quality                  |
@@ -140,7 +152,8 @@ Release Quality & QA
 Known issues
 ************
 
-General known issues with this release are listed below.  For board/application specific known issues please see README in relevant app directory
+General known issues with this release are listed below.
+For board/application specific known issues please see README in relevant app directory
 
 - (xmos/sw_usb_audio#54) When DFU flash access fails the xcore sends NAKs to the USB host forever, rather than a STALL
 
@@ -166,7 +179,6 @@ General known issues with this release are listed below.  For board/application 
 
 -  Compatibility issues exist with the Microsoft built in UAC1.0 driver (usbaudio.sys) and Intel Smart Sound Technology (SST) can result in audible distortions. This can be worked around by disabling the SST driver.
 
-
 ****************
 Development repo
 ****************
@@ -178,54 +190,54 @@ Host system requirements
 ************************
 
 USB Audio Class 1.0
--------------------
+===================
 
-- macOS version 10.6 or later
-- Windows 10 or 11 with built-in USB Audio Class 1.0 driver.
+ * macOS version 10.6 or later
+ * Windows 10 or 11 with built-in USB Audio Class 1.0 driver.
 
 USB Audio Class 2.0
--------------------
+===================
 
-- macOS version 10.6 or later
-- Windows 10 or 11 with built-in USB Audio Class 2.0 driver.
-- Windows 10 or 11 using built-in or Thesycon Audio Class 2.0 driver for Windows (Tested against version Thesycon driver version 5.70.0)
+ * macOS version 10.6 or later
+ * Windows 10 or 11 with built-in USB Audio Class 2.0 driver.
+ * Windows 10 or 11 using built-in or Thesycon Audio Class 2.0 driver for Windows (Tested against version Thesycon driver version 5.70.0)
 
 **************
 Required tools
 **************
 
-  * XMOS XTC Tools: 15.3.0
-
+ * XMOS XTC Tools: 15.3.0
 
 *********************************
 Required libraries (dependencies)
 *********************************
 
-  * `lib_sw_pll <https://www.xmos.com/file/lib_sw_pll>`_
-  * `lib_xua <https://www.xmos.com/file/lib_xua>`_
-  * `lib_adat <https://www.xmos.com/file/lib_adat>`_
-  * `lib_locks <https://www.xmos.com/file/lib_locks>`_
-  * `lib_logging <https://www.xmos.com/file/lib_logging>`_
-  * `lib_mic_array <https://www.xmos.com/file/lib_mic_array>`_
-  * `lib_xassert <https://www.xmos.com/file/lib_xassert>`_
-  * `lib_xcore_math <https://www.xmos.com/file/lib_xcore_math>`_
-  * `lib_spdif <https://www.xmos.com/file/lib_spdif>`_
-  * `lib_xud <https://www.xmos.com/file/lib_xud>`_
-  * `lib_i2c <https://www.xmos.com/file/lib_i2c>`_
-  * `lib_i2s <https://www.xmos.com/file/lib_i2s>`_
+ * `lib_sw_pll <https://www.xmos.com/file/lib_sw_pll>`_
+ * `lib_xua <https://www.xmos.com/file/lib_xua>`_
+ * `lib_adat <https://www.xmos.com/file/lib_adat>`_
+ * `lib_locks <https://www.xmos.com/file/lib_locks>`_
+ * `lib_logging <https://www.xmos.com/file/lib_logging>`_
+ * `lib_mic_array <https://www.xmos.com/file/lib_mic_array>`_
+ * `lib_xassert <https://www.xmos.com/file/lib_xassert>`_
+ * `lib_xcore_math <https://www.xmos.com/file/lib_xcore_math>`_
+ * `lib_spdif <https://www.xmos.com/file/lib_spdif>`_
+ * `lib_xud <https://www.xmos.com/file/lib_xud>`_
+ * `lib_i2c <https://www.xmos.com/file/lib_i2c>`_
+ * `lib_i2s <https://www.xmos.com/file/lib_i2s>`_
 
 
 *************************
 Related application notes
 *************************
 
-  * AN02019: Using Device Firmware Upgrade (DFU) for USB Audio
-  * AN00136: Example USB Vendor Specific Device
-  * AN02026: Blocked DSP inside USB Audio
-  * AN01009: Optimizing USB Audio for stereo output, battery powered devices
+ * `AN02019: Using Device Firmware Upgrade (DFU) for USB Audio <https://www.xmos.com/file/an02019>`_
+ * `AN00136: Example USB Vendor Specific Device <https://www.xmos.com/file/an00136>`_
+ * `AN02026: Blocked DSP inside USB Audio <https://www.xmos.com/file/an02026>`_
+ * `AN01009: Optimizing USB Audio for stereo output, battery powered device <https://www.xmos.com/file/an01009>`_
 
 *******
 Support
 *******
 
-This package is supported by XMOS Ltd. Issues can be raised against the software at http://www.xmos.com/support
+This package is supported by XMOS Ltd. Issues can be raised against the software at
+`http://www.xmos.com/support <http://www.xmos.com/support>`_
