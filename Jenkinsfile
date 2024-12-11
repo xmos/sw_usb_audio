@@ -29,10 +29,11 @@ def clone_test_deps() {
   }
 }
 
-def archiveSw(String repoName) {
+def archiveSandbox(String repoName) {
+    sh "cp ${WORKSPACE}/${repoName}/build/manifest.txt ${WORKSPACE}"
+    sh "rm -rf .get_tools .venv"
     sh "git -C ${repoName} clean -xdf -e '*.xe'"
-    sh "zip ${repoName}_sw.zip -r ${repoName}"
-    archiveArtifacts artifacts: "${repoName}_sw.zip", allowEmptyArchive: false
+    zip zipFile: "${repoName}_sw.zip", archive: true, defaultExcludes: false
 }
 
 getApproval()
@@ -174,10 +175,10 @@ pipeline {
               } // steps
             } // stage('Library checks')
 
-            stage("Archive sw") {
+            stage("Archive sandbox") {
               steps
               {
-                archiveSw(REPO)
+                archiveSandbox(REPO)
               }
             } // stage("Archive sw")
 
