@@ -1,16 +1,6 @@
 // This file relates to internal XMOS infrastructure and should be ignored by external users
 
-@Library('xmos_jenkins_shared_library@v0.35.0') _
-
-def checkout_shallow()
-{
-    checkout scm: [
-        $class: 'GitSCM',
-        branches: scm.branches,
-        userRemoteConfigs: scm.userRemoteConfigs,
-        extensions: [[$class: 'CloneOption', depth: 1, shallow: true, noTags: false]]
-    ]
-}
+@Library('xmos_jenkins_shared_library@v0.38.0') _
 
 // Get XCommon CMake.
 // This is required for compiling a factory image for a DFU test using tools 15.2.1
@@ -29,13 +19,6 @@ def clone_test_deps() {
   }
 }
 
-def archiveSandbox(String repoName) {
-    sh "cp ${WORKSPACE}/${repoName}/build/manifest.txt ${WORKSPACE}"
-    sh "rm -rf .get_tools .venv"
-    sh "git -C ${repoName} clean -xdf -e '*.xe'"
-    zip zipFile: "${repoName}_sw.zip", archive: true, defaultExcludes: false
-}
-
 getApproval()
 
 pipeline {
@@ -51,7 +34,7 @@ pipeline {
 
     string(
       name: 'XMOSDOC_VERSION',
-      defaultValue: 'v6.2.0',
+      defaultValue: 'v6.2.0', // Not updated due to https://github.com/xmos/xmosdoc/issues/174
       description: 'The xmosdoc version')
 
     string(
@@ -80,7 +63,7 @@ pipeline {
             get_xcommon_cmake()
 
             dir("${REPO}") {
-              checkout_shallow()
+              checkoutScmShallow()
 
               withTools("${env.PREV_TOOLS_VERSION}") {
                 withEnv(["XMOS_CMAKE_PATH=${WORKSPACE}/xcommon_cmake"]) {
@@ -150,7 +133,7 @@ pipeline {
                 println "Stage running on ${env.NODE_NAME}"
 
                 dir("${REPO}") {
-                  checkout_shallow()
+                  checkoutScmShallow()
 
                   withTools("${env.TOOLS_VERSION}") {
                     // Fetch all dependencies using XCommon CMake
@@ -169,19 +152,11 @@ pipeline {
                 withTools("${env.TOOLS_VERSION}") {
                   warnError("libchecks") {
                     // Temp disable checks due to issue with changelog checker
-                    //runSwrefChecks("${WORKSPACE}/${REPO}", "${params.INFR_APPS_VERSION}")
+                    // runSwrefChecks("${WORKSPACE}/${REPO}", "${params.INFR_APPS_VERSION}")
                   } // warnError("libchecks")
                 } // withTools("${env.TOOLS_VERSION}")
               } // steps
             } // stage('Library checks')
-
-            stage("Archive sandbox") {
-              steps
-              {
-                archiveSandbox(REPO)
-              }
-            } // stage("Archive sw")
-
             stage('Build Documentation') {
               steps {
                 clone_test_deps()
@@ -197,6 +172,12 @@ pipeline {
                 } // dir("${REPO}")
               } // steps
             } // stage('Build Documentation')
+            stage("Archive sandbox") {
+              steps
+              {
+                archiveSandbox(REPO)
+              }
+            } // stage("Archive sandbox")
           } // stages
           post {
             cleanup {
@@ -222,7 +203,7 @@ pipeline {
             }
 
             dir("${REPO}") {
-              checkout_shallow()
+              checkoutScmShallow()
               clone_test_deps()
 
               unstash 'xk_216_mc_bin'
@@ -288,7 +269,7 @@ pipeline {
             }
 
             dir("${REPO}") {
-              checkout_shallow()
+              checkoutScmShallow()
               clone_test_deps()
 
               unstash 'xk_316_mc_bin'
@@ -357,7 +338,7 @@ pipeline {
             }
 
             dir("${REPO}") {
-              checkout_shallow()
+              checkoutScmShallow()
               clone_test_deps()
 
               unstash 'xk_316_mc_bin'
@@ -423,7 +404,7 @@ pipeline {
             }
 
             dir("${REPO}") {
-              checkout_shallow()
+              checkoutScmShallow()
               clone_test_deps()
 
               unstash 'xk_316_mc_bin'

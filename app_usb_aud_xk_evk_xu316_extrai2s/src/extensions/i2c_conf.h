@@ -1,4 +1,4 @@
-// Copyright 2013-2024 XMOS LIMITED.
+// Copyright 2013-2025 XMOS LIMITED.
 // This Software is subject to the terms of the XMOS Public Licence: Version 1.
 #ifndef _I2C_CONF_H_
 #define _I2C_CONF_H_
