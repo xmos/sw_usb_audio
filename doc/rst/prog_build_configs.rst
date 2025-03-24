@@ -93,7 +93,7 @@ Some example build options are listed in :numref:`prog_build_configs_naming`.
      - i<number>
    * - USB OUT channels
      -
-     - i<number>
+     - o<number>
    * - MIDI
      - on or off
      - m or x
