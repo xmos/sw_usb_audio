@@ -30,6 +30,8 @@ It uses the XMOS USB Audio framework to implement a USB Audio device with the fo
 
 - Supports for the following sample frequencies: 44.1, 48, 88.2, 96, 176.4, 192kHz
 
+- Option for low power operation
+
 Known Issues
 ............
 

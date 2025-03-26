@@ -89,7 +89,6 @@ CODEC Interface
 
 .. doxygendefine:: CODEC_MASTER
 
-
 USB device configuration
 ------------------------
 
@@ -119,4 +118,5 @@ Power
 -----
 
 .. doxygendefine:: XUA_POWERMODE
-
+.. doxygendefine:: CHAN_BUFF_CTRL
+.. doxygendefine:: XUA_LOW_POWER_NON_STREAMING
