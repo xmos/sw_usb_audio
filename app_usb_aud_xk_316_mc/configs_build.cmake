@@ -27,4 +27,11 @@ set(APP_COMPILER_FLAGS_2AMi8o8xxxxxx_mix8_vol_before ${SW_USB_AUDIO_FLAGS} -DMAX
                                                                            -DIN_VOLUME_IN_MIXER=1
                                                                            -DOUT_VOLUME_AFTER_MIX=0
                                                                            -DIN_VOLUME_AFTER_MIX=0)
+
+# Audio Class 2, Async, I2S Master, 0xInput, 0xOutput, HID enabled
+set(APP_COMPILER_FLAGS_2AMi0o0xxxxxx_hid ${SW_USB_AUDIO_FLAGS} -DHID_CONTROLS=1 -DNUM_USB_CHAN_OUT=0 -DNUM_USB_CHAN_IN=0)
+
+# Audio Class 2, Async, I2S Master, 0xInput, 8xOutput, HID enabled
+set(APP_COMPILER_FLAGS_2AMi0o8xxxxxx_hid ${SW_USB_AUDIO_FLAGS} -DHID_CONTROLS=1 -DNUM_USB_CHAN_IN=0)
+
 endif()

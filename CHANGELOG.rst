@@ -1,6 +1,11 @@
 sw_usb_audio change log
 =======================
 
+UNRELEASED
+----------
+
+  * ADDED: HID support to app_usb_aud_xk_316_mc
+
 9.0.0
 -----
 
@@ -73,7 +78,7 @@ sw_usb_audio change log
         project)
       + [issue #171] Changes behavior when mic array consumer gets backed up
         from a quiet deadlock to an ECALL exception
-      + Also adds a way to allow blocks of PDM to be quietly dropped instead 
+      + Also adds a way to allow blocks of PDM to be quietly dropped instead
         (see AssertOnDroppedBlock())
       + Mic Array library redesigned from scratch to make efficient use of XMOS
         XS3 architecture
