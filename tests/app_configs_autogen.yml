@@ -49,6 +49,7 @@ app_usb_aud_xk_evk_xu316:
   full_configs:
   - 1AMi2o2xxxxxx
   - 2AMi2o2xxxxxx
+  - 2AMi2o2xxxxxx_lp
   partial_configs: []
 app_usb_aud_xk_evk_xu316_extrai2s:
   full_configs:

@@ -39,6 +39,10 @@ INCLUDE_ONLY_IN_1AMi2o2xxxxxx =
 XCC_FLAGS_2AMi2o2xxxxxx = $(BUILD_FLAGS)
 INCLUDE_ONLY_IN_2AMi2o2xxxxxx =
 
+# Audio Class 2, Async, I2S Master, 2xInput, 2xOutput, low power buffer mode and XUD non fast mode
+XCC_FLAGS_2AMi2o2xxxxxx_lp = $(BUILD_FLAGS) -DCHAN_BUFF_CTRL=1 -DLOW_POWER_ENABLE=1 -DXUD_PRIORITY_HIGH=1
+INCLUDE_ONLY_IN_2AMi2o2xxxxxx_lp =
+
 #=============================================================================
 # The following part of the Makefile includes the common build infrastructure
 # for compiling XMOS applications. You should not need to edit below here.
