@@ -17,6 +17,7 @@ analogue_smoke_configs = [
     ("xk_216_mc", "2AMi18o18mssaax"),
     ("xk_216_mc", "2ASi10o10xssxxx"),
     ("xk_evk_xu316", "1AMi2o2xxxxxx"),
+    ("xk_evk_xu316", "2AMi2o2xxxxxx_lp"),
 ]
 
 def analogue_require_dut_and_harness(features, board, config, pytestconfig):
