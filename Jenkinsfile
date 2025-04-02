@@ -323,7 +323,8 @@ pipeline {
           when {
             expression {
               params.TEST_LEVEL == "nightly" ||
-              params.TEST_LEVEL == "weekend"
+              params.TEST_LEVEL == "weekend" ||
+              params.TEST_LEVEL == "smoke" 
             }
           }
           agent {
@@ -389,7 +390,8 @@ pipeline {
           when {
             expression {
               params.TEST_LEVEL == "nightly" ||
-              params.TEST_LEVEL == "weekend"
+              params.TEST_LEVEL == "weekend" ||
+              params.TEST_LEVEL == "smoke"
             }
           }
           agent {
