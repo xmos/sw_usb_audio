@@ -34,12 +34,12 @@ pipeline {
 
     string(
       name: 'XMOSDOC_VERSION',
-      defaultValue: 'v6.2.0', // Not updated due to https://github.com/xmos/xmosdoc/issues/174
+      defaultValue: 'v7.0.0',
       description: 'The xmosdoc version')
 
     string(
       name: 'INFR_APPS_VERSION',
-      defaultValue: 'v2.0.1',
+      defaultValue: 'develop',
       description: 'The infr_apps version'
     )
   }
@@ -151,8 +151,7 @@ pipeline {
               steps {
                 withTools("${env.TOOLS_VERSION}") {
                   warnError("libchecks") {
-                    // Temp disable checks due to issue with changelog checker
-                    // runSwrefChecks("${WORKSPACE}/${REPO}", "${params.INFR_APPS_VERSION}")
+                    runSwrefChecks("${WORKSPACE}/${REPO}", "${params.INFR_APPS_VERSION}")
                   } // warnError("libchecks")
                 } // withTools("${env.TOOLS_VERSION}")
               } // steps
