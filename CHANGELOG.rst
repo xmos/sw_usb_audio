@@ -122,7 +122,7 @@ UNRELEASED
 
     - lib_xcore_math: Added dependency 2.3.0
 
-      + Changes examples and tests to build using XCommon CMake
+      + CHANGED: Examples and tests to build using XCommon CMake
 
     - lib_xua: 4.1.0 -> 5.0.0
 
