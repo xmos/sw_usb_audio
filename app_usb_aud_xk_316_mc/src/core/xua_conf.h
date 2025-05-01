@@ -162,6 +162,10 @@
 #define HID_CONTROLS       (0)
 #endif
 
+#ifndef SAMPLE_LOOPBACK
+#define SAMPLE_LOOPBACK (0)
+#endif
+
 #include "user_main.h"
 
 #endif
