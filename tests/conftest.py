@@ -43,7 +43,7 @@ def samp_freqs_upto(max):
 def parse_features(board, config):
     max_analogue_chans = 8
 
-    config_re = r"^(?P<uac>[12])(?P<sync_mode>[ADS])(?P<i2s>[MSX])i(?P<chan_i>\d+)o(?P<chan_o>\d+)(?P<midi>[mx])(?P<spdif_i>[sx])(?P<spdif_o>[sx])(?P<adat_i>[ax])(?P<adat_o>[ax])(?P<dsd>[dx])(?P<tdm8>(_tdm8)?)"
+    config_re = r"^(?P<uac>[12])(?P<sync_mode>[ADS])(?P<i2s>[MSX])i(?P<chan_i>\d+)o(?P<chan_o>\d+)(?P<midi>[mx])(?P<spdif_i>[sx])(?P<spdif_o>[sx])(?P<adat_i>[ax])(?P<adat_o>[ax])(?P<dsd>[dx])(?P<tdm8>(_tdm8)?)(?P<hibw>(_hibw)?)"
     match = re.search(config_re, config)
     if not match:
         pytest.exit(f"Error: Unable to parse features from {config}")
@@ -52,7 +52,7 @@ def parse_features(board, config):
     features = match.groupdict()
     for k in ["uac", "chan_i", "chan_o"]:
         features[k] = int(features[k])
-    for k in ["midi", "spdif_i", "spdif_o", "adat_i", "adat_o", "dsd", "tdm8"]:
+    for k in ["midi", "spdif_i", "spdif_o", "adat_i", "adat_o", "dsd", "tdm8", "hibw"]:
         features[k] = features[k] not in ["", "x"]
 
     if features["uac"] not in [1, 2]:
@@ -82,26 +82,48 @@ def parse_features(board, config):
         features["analogue_i"] = 0
         features["analogue_o"] = 0
 
-    # Create list of supported sample frequencies
-    if config == "1AMi8o2xxxxxx":
-        features["samp_freqs"] = samp_freqs_upto(44100)
-    elif features["uac"] == 1:
-        if features["chan_i"] and features["chan_o"]:
+    # Handle HiBW configs
+    if(features["hibw"]):
+        '''
+        Note: HiBW can technically be enabled for any config (as long as it is compiled with -DXUD_USB_ISO_MAX_TXNS_PER_MICROFRAME=2) but since
+        we don't have a _hibw in the config name, we can only detect it by the number of input channels.
+        However, nothing stops something like 2AMi18o18xssaax to also be HiBW even though the condition above would detect otherwise, but this is beyond the scope of this check.
+        To make this fully generalised, the config name should have a _hibw to reflect that it supports HiBW.
+        '''
+        # This must be a HiBW config. Figure out the max samp freq it can support
+        max_txns_per_microframe = 2
+        max_txn_length = 1024
+        max_transfer_length = max_txns_per_microframe * max_txn_length
+        if((192000/8000) * features["chan_i"] * 4 < max_transfer_length):
+            features["samp_freqs"] = samp_freqs_upto(192000)
+        elif ((96000/8000) * features["chan_i"] * 4 < max_transfer_length):
+            features["samp_freqs"] = samp_freqs_upto(96000)
+        elif ((48000/8000) * features["chan_i"] * 4 < max_transfer_length):
             features["samp_freqs"] = samp_freqs_upto(48000)
         else:
-            features["samp_freqs"] = samp_freqs_upto(96000)
-    elif features["chan_i"] >= 32 or features["chan_o"] >= 32:
-        features["samp_freqs"] = samp_freqs_upto(48000)
-    elif (not features["adat_i"] and features["chan_i"] >= 16) or (
-        not features["adat_o"] and features["chan_o"] >= 16
-    ):
-        features["samp_freqs"] = samp_freqs_upto(96000)
-    elif (features["adat_i"] and features["chan_i"] > 16) or (features["adat_o"] and features["chan_i"] > 16): #i18o18 build
-        features["samp_freqs"] = samp_freqs_upto(96000)
-    elif features["tdm8"]:
-        features["samp_freqs"] = samp_freqs_upto(96000)
+            assert False, f"{features['chan_i']} cannot be supported by the HiBW implementation supporting a max transfer size of {max_transfer_length}"
+        #print(f"HiBW config {config} with {features['chan_i']} input channels, supporting sample frequencies {features['samp_freqs']}")
     else:
-        features["samp_freqs"] = samp_freqs_upto(192000)
+        features["hibw"] = False
+        if config == "1AMi8o2xxxxxx":
+            features["samp_freqs"] = samp_freqs_upto(44100)
+        elif features["uac"] == 1:
+            if features["chan_i"] and features["chan_o"]:
+                features["samp_freqs"] = samp_freqs_upto(48000)
+            else:
+                features["samp_freqs"] = samp_freqs_upto(96000)
+        elif features["chan_i"] >= 32 or features["chan_o"] >= 32:
+            features["samp_freqs"] = samp_freqs_upto(48000)
+        elif (not features["adat_i"] and features["chan_i"] >= 16) or (
+            not features["adat_o"] and features["chan_o"] >= 16
+        ):
+            features["samp_freqs"] = samp_freqs_upto(96000)
+        elif (features["adat_i"] and features["chan_i"] > 16) or (features["adat_o"] and features["chan_i"] > 16): #i18o18 build
+            features["samp_freqs"] = samp_freqs_upto(96000)
+        elif features["tdm8"]:
+            features["samp_freqs"] = samp_freqs_upto(96000)
+        else:
+            features["samp_freqs"] = samp_freqs_upto(192000)
 
     features["i2s_loopback"] = False
     return features

@@ -7,6 +7,8 @@ UNRELEASED
   * CHANGED:   app_usb_aud_xk_316_mc and app_usb_aud_xk_evk_xu316 now use
     lib_xua optional header files to add custom functionalty rather than defines
     such as USER_MAIN_TASKS and USER_MAIN_DECLARATIONS
+  * ADDED: high bandwidth ISO endpoints build configurations (2AMi20o20xxxaax_hibw,
+    2AMi30o30xxxxxx_hibw and 2AMi30o30xxxaax_hibw) to app_usb_aud_xk_316_mc
 
 9.1.0
 -----
