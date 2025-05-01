@@ -91,11 +91,14 @@ def test_analogue_input(pytestconfig, board, config):
 
         for fs in features["samp_freqs"]:
             print(f"analogue_input: config {config}, fs {fs}")
-            if fs > 96000:
-                max_num_channels = 10
-                dut.set_stream_format("input", fs, min(max_num_channels, features["chan_i"]), 24)
+            if not features["hibw"]:
+                if fs > 96000:
+                    max_num_channels = 10
+                    dut.set_stream_format("input", fs, min(max_num_channels, features["chan_i"]), 24)
+                else:
+                    dut.set_stream_format("input", fs, features["chan_i"], 24)
             else:
-                dut.set_stream_format("input", fs, features["chan_i"], 24)
+                dut._set_full_stream_format(fs, features["chan_i"], 24, features["chan_i"], 24, True) # call low-level function to bypass the 10 channel limit check for 176.4, 192kHz
 
             with XsigInput(fs, duration, xsig_config_path, dut.dev_name, ident=f"analogue_input-{board}-{config}-{fs}", blocking=True) as xsig_proc:
                 pass # Nothing to do here. XsigInput is run in blocking mode
@@ -143,11 +146,14 @@ def test_analogue_output(pytestconfig, board, config):
             ):
                 continue
 
-            if fs > 96000:
-                max_num_channels = 10
-                dut.set_stream_format("output", fs, min(max_num_channels, features["chan_o"]), 24)
+            if not features["hibw"]:
+                if fs > 96000:
+                    max_num_channels = 10
+                    dut.set_stream_format("output", fs, min(max_num_channels, features["chan_o"]), 24)
+                else:
+                    dut.set_stream_format("output", fs, features["chan_o"], 24)
             else:
-                dut.set_stream_format("output", fs, features["chan_o"], 24)
+                dut._set_full_stream_format(fs, features["chan_i"], 24, features["chan_i"], 24, True) # call low-level function to bypass the 10 channel limit check for 176.4, 192kHz
 
             print(f"analogue_output: config {config}, fs {fs}")
 

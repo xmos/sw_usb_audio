@@ -1,0 +1,25 @@
+{
+    "out" : [ ],
+    "in" : [
+      ["zero"],
+      ["zero"],
+      ["zero"],
+      ["zero"],
+      ["zero"],
+      ["zero"],
+      ["zero"],
+      ["zero"],
+      ["ramp", 5],
+      ["ramp", -7],
+      ["zero"],
+      ["zero"],
+      ["zero"],
+      ["zero"],
+      ["zero"],
+      ["zero"],
+      ["zero"],
+      ["zero"],
+      ["zero"],
+      ["zero"]
+    ]
+  }
