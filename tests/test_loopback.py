@@ -15,10 +15,14 @@ if platform.system() == "Darwin":
         ("xk_316_mc", "2AMi18o18mssaax_i2sloopback"),
         ("xk_316_mc", "2AMi8o8xxxxxx_mix8_i2sloopback"),
         ("xk_316_mc", "2SSi8o8xxxxxx_i2sloopback"),
+        ("xk_316_mc", "2AMi30o30xxxxxx_hibw_i2sloopback"),
+        ("xk_316_mc", "2AMi20o20xxxaax_hibw_i2sloopback"),
     ]
 else:
     loopback_smoke_configs = [
-        ("xk_316_mc", "2AMi18o18mssaax_i2sloopback")
+        ("xk_316_mc", "2AMi18o18mssaax_i2sloopback"),
+        ("xk_316_mc", "2AMi20o20xxxaax_hibw_i2sloopback"),
+        ("xk_316_mc", "2AMi30o30xxxxxx_hibw_i2sloopback"),
     ]
 
 
@@ -70,13 +74,16 @@ def test_loopback_dac(pytestconfig, board, config):
                 and fs in [44100, 48000]
             ):
                 continue
-            if fs > 96000:
-                max_num_channels = 10
-                dut.set_stream_format("input", fs, min(max_num_channels, features["chan_i"]), 24)
-                dut.set_stream_format("output", fs, min(max_num_channels, features["chan_o"]), 24)
+            if not features["hibw"]:
+                if fs > 96000:
+                    max_num_channels = 10
+                    dut.set_stream_format("input", fs, min(max_num_channels, features["chan_i"]), 24)
+                    dut.set_stream_format("output", fs, min(max_num_channels, features["chan_o"]), 24)
+                else:
+                    dut.set_stream_format("input", fs, features["chan_i"], 24)
+                    dut.set_stream_format("output", fs, features["chan_o"], 24)
             else:
-                dut.set_stream_format("input", fs, features["chan_i"], 24)
-                dut.set_stream_format("output", fs, features["chan_o"], 24)
+                dut._set_full_stream_format(fs, features["chan_i"], 24, features["chan_o"], 24, True) # call low-level function to bypass the 10 channel limit check for 176.4, 192kHz
 
             print(f"test_loopback_dac: config {config}, fs {fs}")
 

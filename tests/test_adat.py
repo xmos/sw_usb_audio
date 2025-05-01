@@ -13,6 +13,8 @@ from conftest import list_configs, get_config_features, AppUsbAudDut, get_xtag_d
 adat_smoke_configs = [
     ("xk_216_mc", "2AMi18o18mssaax"),
     ("xk_316_mc", "2AMi16o16xxxaax"),
+    ("xk_316_mc", "2AMi30o30xxxaax_hibw"),
+    ("xk_316_mc", "2AMi20o20xxxaax_hibw"),
 ]
 
 def adat_common_uncollect(features, board, config, pytestconfig):
@@ -73,30 +75,51 @@ def test_adat_input(pytestconfig, board, config):
     adapter_dut, adapter_harness = get_xtag_dut_and_harness(pytestconfig, board)
     duration = adat_duration(pytestconfig.getoption("level"), features["partial"])
     fail_str = ""
-    with AppUsbAudDut(adapter_dut, board, config) as dut:
-        for fs in features["samp_freqs"]:
-            assert features["analogue_i"] == 8
 
+    print("samp_freqs = ", features["samp_freqs"])
+
+    # Swapped the order of the for and the with to workaround weird MacOS issue where it seems to hang after changing the clock source between ADAT and Internal after about 4 iterations.
+    # Restarting the DUT after each fs iteration seems to fix the issue.
+    for fs in features["samp_freqs"]:
+        with AppUsbAudDut(adapter_dut, board, config) as dut:
+            assert features["analogue_i"] == 8
             if fs <= 48000:
                 num_in_channels = features["analogue_i"] + (2 * features["spdif_i"]) + 8
-                assert(num_in_channels == features["chan_i"])
+                smux = 1
             elif fs <= 96000:
                 num_in_channels = features["analogue_i"] + (2 * features["spdif_i"]) + 4
+                smux = 2
             else:
                 num_in_channels = features["analogue_i"] + (2 * features["spdif_i"]) + 2
+                smux = 4
 
-            num_dig_in_channels = num_in_channels - features["analogue_i"]
+            if features["hibw"]:
+                # This must be a HiBW config. Keep num_in_channels, same as NUM_USB_CHAN_IN (so 30 for i30o30 config)
+                num_in_channels = features["chan_i"]
+                if smux == 1:
+                    num_dig_in_channels = 8
+                elif smux == 2:
+                    num_dig_in_channels = 4
+                else:
+                    num_dig_in_channels = 2
+                dont_care_channels = num_in_channels - features["analogue_i"] - (2 * features["spdif_i"]) - num_dig_in_channels
+                xsig_config = f'mc_digital_input_analog_{features["analogue_i"]}ch_dig_{num_dig_in_channels}ch_dont_care_{dont_care_channels}ch'
+                # Choose always the format with all the channels (instead of channels - 4 or channels -6) since with HiBW enabled, there's enough BW to support the highest sample rate at features["chan_i"]
+                dut._set_full_stream_format(fs, num_in_channels, 24, num_in_channels, 24, True) # call low-level function to bypass the 10 channel limit check for 176.4, 192kHz
+            else:
+                num_dig_in_channels = num_in_channels - features["analogue_i"]
+                xsig_config = f'mc_digital_input_analog_{features["analogue_i"]}ch_dig_{num_dig_in_channels}ch'
+                if(features["spdif_i"]): # If SPDIF is also enabled use the _adat version of the xsig config which checks for ramps only on the ADAT channels
+                    xsig_config = xsig_config + "_adat"
+                dut.set_stream_format("input", fs, num_in_channels, 24)
+                if features["chan_o"] > num_in_channels:
+                    dut.set_stream_format("output", fs, num_in_channels, 24)
 
-            print(f"adat_input: config {config}, fs {fs}, num_in_ch {num_in_channels}")
+            print(f"adat_input: config {config}, fs {fs}, num_in_ch {num_in_channels}, smux = {smux}")
 
-            xsig_config = f'mc_digital_input_analog_{features["analogue_i"]}ch_dig_{num_dig_in_channels}ch'
-            if(features["spdif_i"]): # If SPDIF is also enabled use the _adat version of the xsig config which checks for ramps only on the ADAT channels
-                xsig_config = xsig_config + "_adat"
             xsig_config_path = Path(__file__).parent / "xsig_configs" / f"{xsig_config}.json"
 
-            dut.set_stream_format("input", fs, num_in_channels, 24)
-            if features["chan_o"] > num_in_channels:
-                dut.set_stream_format("output", fs, num_in_channels, 24)
+
             with AudioAnalyzerHarness(
                 adapter_harness, Path(__file__).parents[2] / "sw_audio_analyzer", config="adat_test", attach="xscope_app"
             ) as harness:
@@ -147,7 +170,6 @@ def test_adat_output(pytestconfig, board, config):
             assert features["analogue_i"] == 8
             if fs <= 48000:
                 num_adat_out_channels = 8
-                assert((features["analogue_o"] + (2 * features["spdif_o"]) + num_adat_out_channels) == features["chan_o"])
                 smux = 1
             elif fs <= 96000:
                 num_adat_out_channels = 4
@@ -156,19 +178,28 @@ def test_adat_output(pytestconfig, board, config):
                 num_adat_out_channels = 2
                 smux = 4
 
-            num_dig_out_channels = (2 * features["spdif_o"]) + num_adat_out_channels
-            num_out_channels = features["analogue_o"] + num_dig_out_channels
+            if features["hibw"]:
+                # This must be a HiBW config. Keep num_out_channels, same as NUM_USB_CHAN_OUT (so 30 for i30o30 config)
+                num_out_channels = features["chan_o"]
+                dont_care_channels = num_out_channels - features["analogue_o"] - (2 * features["spdif_o"]) - num_adat_out_channels
+                xsig_config = f'mc_digital_output_analog_{features["analogue_o"]}ch_dig_{num_adat_out_channels}ch_dont_care_{dont_care_channels}ch'
+                # Choose always the format with all the channels (instead of (channels - 4) or (channels - 6)) since with HiBW enabled, there's enough BW to support the highest sample rate at features["chan_i"]
+                dut._set_full_stream_format(fs, num_out_channels, 24, num_out_channels, 24, True) # call low-level function to bypass the 10 channel limit check for 176.4, 192kHz
+            else:
+                num_dig_out_channels = (2 * features["spdif_o"]) + num_adat_out_channels
+                num_out_channels = features["analogue_o"] + num_dig_out_channels
+                dont_care_channels = 0
+                xsig_config = f'mc_digital_output_analog_{features["analogue_o"]}ch_dig_{num_dig_out_channels}ch'
+                if features["chan_i"] > num_out_channels:
+                    dut.set_stream_format("input", fs, num_out_channels, 24)
+                dut.set_stream_format("output", fs, num_out_channels, 24)
 
-            print(f"adat_output: config {config}, fs {fs}, num_out_ch {num_out_channels}")
+            print(f"adat_output: config {config}, fs {fs}, num_out_ch {num_out_channels}, smux = {smux}")
 
-            xsig_config = f'mc_digital_output_analog_{features["analogue_o"]}ch_dig_{num_dig_out_channels}ch'
             if features["spdif_o"]:
                 xsig_config = xsig_config + "_adat" # If SPDIF is also enabled use the _adat version of the xsig config which checks for ramps only on the ADAT channels
             xsig_config_path = Path(__file__).parent / "xsig_configs" / f"{xsig_config}.json"
 
-            if features["chan_i"] > num_out_channels:
-                dut.set_stream_format("input", fs, num_out_channels, 24)
-            dut.set_stream_format("output", fs, num_out_channels, 24)
 
             with AudioAnalyzerHarness(
                 adapter_harness, Path(__file__).parents[2] / "sw_audio_analyzer", config="adat_test", attach="xscope_app"
