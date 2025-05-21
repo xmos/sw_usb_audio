@@ -15,6 +15,7 @@ loopback_smoke_configs = [
     ("xk_316_mc", "2AMi18o18mssaax_i2sloopback"),
     ("xk_316_mc", "2AMi8o8xxxxxx_mix8_i2sloopback"),
     ("xk_316_mc", "2SSi8o8xxxxxx_i2sloopback"),
+    ("xk_316_mc", "2AMi30o30xxxxxx_i2sloopback")
 ]
 
 def loopback_dac_uncollect(pytestconfig, board, config):
