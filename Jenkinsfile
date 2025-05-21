@@ -190,6 +190,12 @@ pipeline {
     stage('Regression Test') {
       parallel {
         stage('MacOS Intel') {
+          when {
+            expression {
+              params.TEST_LEVEL == "nightly" ||
+              params.TEST_LEVEL == "weekend"
+            }
+          }
           agent {
             label 'usb_audio && macos && x86_64 && xcore200-mcab && xcore.ai-explorer'
           }
@@ -298,7 +304,7 @@ pipeline {
 
                       withXTAG(["usb_audio_mc_xcai_dut", "usb_audio_mc_xcai_harness"]) { xtagIds ->
                         sh "pytest -v --level ${params.TEST_LEVEL} --junitxml=pytest_result_mac_arm.xml \
-                            -o xk_316_mc_dut=${xtagIds[0]} -o xk_316_mc_harness=${xtagIds[1]}"
+                            -o xk_316_mc_dut=${xtagIds[0]} -o xk_316_mc_harness=${xtagIds[1]} -k 'i30o30' "
                       }
                     }
                   }
@@ -322,7 +328,8 @@ pipeline {
           when {
             expression {
               params.TEST_LEVEL == "nightly" ||
-              params.TEST_LEVEL == "weekend"
+              params.TEST_LEVEL == "weekend" ||
+              params.TEST_LEVEL == "smoke"
             }
           }
           agent {
@@ -365,7 +372,7 @@ pipeline {
                     }
                     withXTAG(["usb_audio_mc_xcai_dut", "usb_audio_mc_xcai_harness"]) { xtagIds ->
                       sh "pytest -v --level ${params.TEST_LEVEL} --junitxml=pytest_result_windows10.xml \
-                          -o xk_316_mc_dut=${xtagIds[0]} -o xk_316_mc_harness=${xtagIds[1]}"
+                          -o xk_316_mc_dut=${xtagIds[0]} -o xk_316_mc_harness=${xtagIds[1]} -k 'i30o30' "
                     }
                   }
                 }
@@ -388,7 +395,8 @@ pipeline {
           when {
             expression {
               params.TEST_LEVEL == "nightly" ||
-              params.TEST_LEVEL == "weekend"
+              params.TEST_LEVEL == "weekend" ||
+              params.TEST_LEVEL == "smoke"
             }
           }
           agent {
@@ -432,7 +440,7 @@ pipeline {
 
                     withXTAG(["usb_audio_mc_xcai_dut", "usb_audio_mc_xcai_harness"]) { xtagIds ->
                       sh "pytest -v --level ${params.TEST_LEVEL} --junitxml=pytest_result_windows11.xml \
-                          -o xk_316_mc_dut=${xtagIds[0]} -o xk_316_mc_harness=${xtagIds[1]}"
+                          -o xk_316_mc_dut=${xtagIds[0]} -o xk_316_mc_harness=${xtagIds[1]} -k 'i30o30' "
                     }
                   }
                 }

@@ -39,7 +39,7 @@ def loopback_dac_duration(level, partial):
     elif level == "nightly":
         duration = 15 if partial else 180
     else:
-        duration = 5
+        duration = 60
     return duration
 
 @pytest.mark.uncollect_if(func=loopback_dac_uncollect)
