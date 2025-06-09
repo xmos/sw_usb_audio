@@ -5,6 +5,7 @@ UNRELEASED
 ----------
 
   * ADDED: HID support to app_usb_aud_xk_316_mc
+  * REMOVED: Example code for using iAP EA Native Transport endpoints from app_usb_aud_xk_216_mc
 
 9.0.0
 -----
