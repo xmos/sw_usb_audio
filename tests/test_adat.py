@@ -14,6 +14,7 @@ from conftest import list_configs, get_config_features, AppUsbAudDut, get_xtag_d
 adat_smoke_configs = [
     ("xk_216_mc", "2AMi18o18mssaax"),
     ("xk_316_mc", "2AMi16o16xxxaax"),
+    ("xk_316_mc", "2AMi30o30xxxaax"),
 ]
 
 
@@ -64,23 +65,39 @@ def test_adat_input(pytestconfig, board, config):
     duration = adat_duration(pytestconfig.getoption("level"), features["partial"])
     fail_str = ""
 
+    print("samp_freqs = ", features["samp_freqs"])
+
     with AppUsbAudDut(adapter_dut, board, config) as dut:
         for fs in features["samp_freqs"]:
             assert features["analogue_i"] == 8
 
             if fs <= 48000:
                 num_in_channels = features["analogue_i"] + (2 * features["spdif_i"]) + 8
-                assert(num_in_channels == features["chan_i"])
+                smux = 1
             elif fs <= 96000:
                 num_in_channels = features["analogue_i"] + (2 * features["spdif_i"]) + 4
+                smux = 2
             else:
                 num_in_channels = features["analogue_i"] + (2 * features["spdif_i"]) + 2
+                smux = 4
 
-            num_dig_in_channels = num_in_channels - features["analogue_i"]
+            if features["chan_i"] > (features["analogue_i"] + (2 * features["spdif_i"]) + 8):
+                # This must be a HiBW config. Keep num_in_channels, same as NUM_USB_CHAN_IN (so 30 for i30o30 config)
+                num_in_channels = features["chan_i"]
+                if smux == 1:
+                    num_dig_in_channels = 8
+                elif smux == 2:
+                    num_dig_in_channels = 4
+                else:
+                    num_dig_in_channels = 2
+                dont_care_channels = num_in_channels - features["analogue_i"] - (2 * features["spdif_i"]) - num_dig_in_channels
+                xsig_config = f'mc_digital_input_analog_{features["analogue_i"]}ch_dig_{num_dig_in_channels}ch_dont_care_{dont_care_channels}ch'
+            else:
+                num_dig_in_channels = num_in_channels - features["analogue_i"]
+                xsig_config = f'mc_digital_input_analog_{features["analogue_i"]}ch_dig_{num_dig_in_channels}ch'
 
-            print(f"adat_input: config {config}, fs {fs}, num_in_ch {num_in_channels}")
+            print(f"adat_input: config {config}, fs {fs}, num_in_ch {num_in_channels}, smux = {smux}")
 
-            xsig_config = f'mc_digital_input_analog_{features["analogue_i"]}ch_dig_{num_dig_in_channels}ch'
             if(features["spdif_i"]): # If SPDIF is also enabled use the _adat version of the xsig config which checks for ramps only on the ADAT channels
                 xsig_config = xsig_config + "_adat"
             xsig_config_path = Path(__file__).parent / "xsig_configs" / f"{xsig_config}.json"
@@ -138,7 +155,6 @@ def test_adat_output(pytestconfig, board, config):
             assert features["analogue_i"] == 8
             if fs <= 48000:
                 num_out_channels = features["analogue_o"] + (2 * features["spdif_o"]) + 8
-                assert(num_out_channels == features["chan_o"])
                 smux = 1
             elif fs <= 96000:
                 num_out_channels = features["analogue_o"] + (2 * features["spdif_o"]) + 4
@@ -147,11 +163,24 @@ def test_adat_output(pytestconfig, board, config):
                 num_out_channels = features["analogue_o"] + (2 * features["spdif_o"]) + 2
                 smux = 4
 
-            num_dig_out_channels = num_out_channels - features["analogue_o"]
+            if features["chan_o"] > (features["analogue_o"] + (2 * features["spdif_o"]) + 8):
+                # This must be a HiBW config. Keep num_out_channels, same as NUM_USB_CHAN_OUT (so 30 for i30o30 config)
+                num_out_channels = features["chan_o"]
+                if smux == 1:
+                    num_dig_out_channels = 8
+                elif smux == 2:
+                    num_dig_out_channels = 4
+                else:
+                    num_dig_out_channels = 2
+                dont_care_channels = num_out_channels - features["analogue_o"] - (2 * features["spdif_o"]) - num_dig_out_channels
+                xsig_config = f'mc_digital_output_analog_{features["analogue_o"]}ch_dig_{num_dig_out_channels}ch_dont_care_{dont_care_channels}ch'
+            else:
+                num_dig_out_channels = num_out_channels - features["analogue_o"]
+                dont_care_channels = 0
+                xsig_config = f'mc_digital_output_analog_{features["analogue_o"]}ch_dig_{num_dig_out_channels}ch'
 
-            print(f"adat_output: config {config}, fs {fs}, num_out_ch {num_out_channels}")
+            print(f"adat_output: config {config}, fs {fs}, num_out_ch {num_out_channels}, smux = {smux}")
 
-            xsig_config = f'mc_digital_output_analog_{features["analogue_o"]}ch_dig_{num_dig_out_channels}ch'
             if features["spdif_o"]:
                 xsig_config = xsig_config + "_adat" # If SPDIF is also enabled use the _adat version of the xsig config which checks for ramps only on the ADAT channels
             xsig_config_path = Path(__file__).parent / "xsig_configs" / f"{xsig_config}.json"

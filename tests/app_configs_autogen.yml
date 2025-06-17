@@ -20,6 +20,7 @@ app_usb_aud_xk_216_mc:
   - 2SMi8o8xxxxxx
 app_usb_aud_xk_316_mc:
   full_configs:
+  - 2AMi30o30xxxaax
   - 2AMi30o30xxxxxx
   - 1SMi2o2xxxxxx
   - 2AMi10o10xssxxx
