@@ -7,7 +7,7 @@ APP_NAME =
 
 # The flags passed to xcc when building the application
 # The EXTRA_BUILD_FLAGS variable can be used on the xmake command line to add options
-BUILD_FLAGS    = $(EXTRA_BUILD_FLAGS) -fcomment-asm -Xmapper --map -Xmapper MAPFILE -Wall -O3 -report -lquadflash -g -fxscope -DXSCOPE -DBOARD_SUPPORT_BOARD=XK_EVK_XU316 -DUSB_TILE=tile[0] -DXUA_QUAD_SPI_FLASH=1 -DADAT_TX_USE_SHARED_BUFF=1
+BUILD_FLAGS    = $(EXTRA_BUILD_FLAGS) -fcomment-asm -Xmapper --map -Xmapper MAPFILE -Wall -O3 -report -lquadflash -g -fxscope -DXSCOPE -DBOARD_SUPPORT_BOARD=XK_EVK_XU316 -DXUA_QUAD_SPI_FLASH=1 -DADAT_TX_USE_SHARED_BUFF=1
 
 # The USED_MODULES variable lists other module used by the application. These
 # modules will extend the SOURCE_DIRS, INCLUDE_DIRS and LIB_DIRS variables.

@@ -13,11 +13,9 @@ set(SW_USB_AUDIO_FLAGS ${EXTRA_BUILD_FLAGS} -fcomment-asm
                                             -g
                                             -fxscope
                                             -DBOARD_SUPPORT_BOARD=XK_EVK_XU316
-                                            -DUSB_TILE=tile[0]
                                             -DADAT_TX_USE_SHARED_BUFF=1
                                             -DXUA_QUAD_SPI_FLASH=1
-                                            -DXSCOPE
-                                            -DUAC_FORCE_FEEDBACK=1)
+                                            -DXSCOPE)
 
 set(APP_COMPILER_FLAGS_1AMi2o2xxxxxx ${SW_USB_AUDIO_FLAGS} -DAUDIO_CLASS=1)
 
