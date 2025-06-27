@@ -5,7 +5,8 @@ UNRELEASED
 ----------
 
   * ADDED: HID support to app_usb_aud_xk_316_mc
-  * REMOVED: Example code for using iAP EA Native Transport endpoints from app_usb_aud_xk_216_mc
+  * REMOVED: Example code for using iAP EA Native Transport endpoints from
+    app_usb_aud_xk_216_mc
 
 9.0.0
 -----
@@ -630,11 +631,11 @@ UNRELEASED
 
     - lib_xud: Added dependency 2.1.0
 
-      + CHANGE:    Various optimisations to aid corner-case timings on XS3 based
+      + CHANGED:   Various optimisations to aid corner-case timings on XS3 based
         devices
-      + CHANGE:    Some API functions re-authored in C (were Assembly)
-      + CHANGE:    Testbench now more accurately models XS3 based devices
-      + CHANGE:    Endpoint functions called on a halted endpoint will block
+      + CHANGED:   Some API functions re-authored in C (were Assembly)
+      + CHANGED:   Testbench now more accurately models XS3 based devices
+      + CHANGED:   Endpoint functions called on a halted endpoint will block
         until the halt condition is cleared
 
     - sc_adat: Removed dependency
