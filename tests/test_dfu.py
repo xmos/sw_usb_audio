@@ -77,8 +77,12 @@ def dfu_uncollect(pytestconfig, board, config, dfuapp):
 
     level = pytestconfig.getoption("level")
     if level == "smoke":
-        # Just run on xk_316_mc at smoke level
-        return (board not in ["xk_316_mc"]) or (config not in ["2AMi10o10xssxxx"])
+        if platform.system() == "Darwin":
+            # Just run on xk_316_mc at smoke level
+            return (board not in ["xk_316_mc"]) or (config not in ["2AMi10o10xssxxx"])
+        else:
+            # Skip DFU for smoke on Windows as tested enough in lib_xua
+            return True
     return False
 
 

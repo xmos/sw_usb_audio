@@ -14,10 +14,12 @@ from conftest import list_configs, get_config_features, AppUsbAudDut, get_xtag_d
 input_midi_file_name = 'tools/midifiles/Bach.mid'
 output_midi_file_name = 'tools/midifiles/Bach_loopback.mid'
 
-
-midi_loopback_smoke_configs = [
-    ("xk_316_mc", "2AMi18o18mssaax"),
-]
+if platform.system() == "Darwin":
+    midi_loopback_smoke_configs = [
+        ("xk_316_mc", "2AMi18o18mssaax"),
+    ]
+else:
+    midi_loopback_smoke_configs = []
 
 def midi_loopback_uncollect(pytestconfig, board, config):
     features = get_config_features(board, config)

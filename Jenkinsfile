@@ -15,7 +15,7 @@ def clone_test_deps() {
     sh "git -C xtagctl checkout v2.0.0"
 
     sh "git clone git@github.com:xmos/hardware_test_tools"
-    sh "git -C hardware_test_tools checkout 2f9919c956f0083cdcecb765b47129d846948ed4"
+    sh "git -C hardware_test_tools checkout 06fc5691a97eff169d6664d5b46ab3cad3e8d980"
   }
 }
 
@@ -319,12 +319,6 @@ pipeline {
         }  // MacOS ARM
 
         stage('Windows 10') {
-          when {
-            expression {
-              params.TEST_LEVEL == "nightly" ||
-              params.TEST_LEVEL == "weekend"
-            }
-          }
           agent {
             label 'usb_audio && windows10 && xcore.ai-mcab'
           }
@@ -385,12 +379,6 @@ pipeline {
         }  // Windows 10
 
         stage('Windows 11') {
-          when {
-            expression {
-              params.TEST_LEVEL == "nightly" ||
-              params.TEST_LEVEL == "weekend"
-            }
-          }
           agent {
             label 'usb_audio && windows11 && xcore.ai-mcab'
           }
