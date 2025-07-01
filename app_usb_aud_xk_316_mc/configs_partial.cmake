@@ -22,6 +22,13 @@ set(APP_COMPILER_FLAGS_1SMi2o2mxxxxx ${SW_USB_AUDIO_FLAGS} -DAUDIO_CLASS=1
 set(APP_COMPILER_FLAGS_2AMi2o2xxxxxx ${SW_USB_AUDIO_FLAGS} -DI2S_CHANS_DAC=2
                                                            -DI2S_CHANS_ADC=2)
 
+# Audio Class 2, Async, I2S Master, 2xInput, 2xOutput, with selected AN01009 streaming and non-streaming power reductions applied
+set(APP_COMPILER_FLAGS_2AMi2o2xxxxxx_lp ${SW_USB_AUDIO_FLAGS} -DI2S_CHANS_DAC=2
+                                                              -DI2S_CHANS_ADC=2
+                                                              -DMIXER=0
+                                                              -DCHAN_BUFF_CTRL=1
+                                                              -DXUA_LOW_POWER_NON_STREAMING=1)
+
 # Audio Class 2, Async, I2S Slave, 8xInput, 8xOutput
 set(APP_COMPILER_FLAGS_2ASi8o8xxxxxx ${SW_USB_AUDIO_FLAGS} -DCODEC_MASTER=1)
 

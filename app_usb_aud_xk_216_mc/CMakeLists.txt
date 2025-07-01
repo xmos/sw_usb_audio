@@ -11,8 +11,7 @@ set(SW_USB_AUDIO_FLAGS ${EXTRA_BUILD_FLAGS} -O3
                                             -g
                                             -fxscope
                                             -DBOARD_SUPPORT_BOARD=XK_AUDIO_216_MC_AB
-                                            -DADAT_TX_USE_SHARED_BUFF=1
-                                            -DXUA_QUAD_SPI_FLASH=1)
+                                            -DADAT_TX_USE_SHARED_BUFF=1)
 
 set(APP_COMPILER_FLAGS_2AMi10o10xssxxx ${SW_USB_AUDIO_FLAGS} -DXUA_SPDIF_TX_EN=1
                                                              -DXUA_SPDIF_RX_EN=1)

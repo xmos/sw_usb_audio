@@ -4,9 +4,10 @@ sw_usb_audio change log
 UNRELEASED
 ----------
 
-  * ADDED: HID support to app_usb_aud_xk_316_mc
-  * REMOVED: Example code for using iAP EA Native Transport endpoints from
-    app_usb_aud_xk_216_mc
+  * ADDED:     Low power build configurations for app_usb_aud_xk_316_mc and
+    app_usb_aud_evk_xu316
+  * ADDED:     HID support to app_usb_aud_xk_316_mc
+  * REMOVED:   Example code for using iAP EA Native Transport endpoints from
 
 9.0.0
 -----
