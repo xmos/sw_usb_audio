@@ -53,6 +53,18 @@ def adat_duration(level, partial):
         duration = 5
     return duration
 
+def set_clock(dut, clk_src):
+    assert clk_src in ["Internal", "ADAT"], f"Invalid clock source {clk_src}, must be Internal or ADAT"
+    clk_src_retry_count = 0
+    num_clk_src_retries = 2
+    while clk_src_retry_count < num_clk_src_retries:
+        ret = dut.set_clock_src(clk_src)
+        if ret == 0:
+            break
+        clk_src_retry_count += 1
+        time.sleep(4)
+    assert clk_src_retry_count < num_clk_src_retries, f"Failed to set clock source to {clk_src} after {num_clk_src_retries} retries"
+
 @pytest.mark.uncollect_if(func=adat_input_uncollect)
 @pytest.mark.parametrize(["board", "config"], list_configs())
 def test_adat_input(pytestconfig, board, config):
@@ -61,7 +73,6 @@ def test_adat_input(pytestconfig, board, config):
     adapter_dut, adapter_harness = get_xtag_dut_and_harness(pytestconfig, board)
     duration = adat_duration(pytestconfig.getoption("level"), features["partial"])
     fail_str = ""
-
     with AppUsbAudDut(adapter_dut, board, config) as dut:
         for fs in features["samp_freqs"]:
             assert features["analogue_i"] == 8
@@ -91,7 +102,7 @@ def test_adat_input(pytestconfig, board, config):
             ) as harness:
                 ctrl_out, ctrl_err = harness.xscope_controller_cmd([f"f {fs}"])
 
-                dut.set_clock_src("ADAT")
+                set_clock(dut, "ADAT")
 
                 with (
                     XsigInput(
@@ -100,7 +111,7 @@ def test_adat_input(pytestconfig, board, config):
                 ):
                     pass # Nothing to do here. XsigInput is run in blocking mode
 
-                dut.set_clock_src("Internal")
+                set_clock(dut, "Internal")
 
             xsig_lines = xsig_proc.proc_output
 
