@@ -8,10 +8,11 @@ Quick start
 
     XMOS development boards are typically supplied with no firmware pre-programmed.
 
-The following steps explain how to programmed the latest firmware on the board and use it.
+The following steps explain how to program the USB Audio software onto a development board and use
+it as a USB Audio device.
 Each step is explained in detail in the following sections.
 
-#. Download the latest USB Audio 2.0 Device software release from the `XMOS website USB & Multichannel Audio page <http://www.xmos.com/develop/usb-multichannel-audio>`_, using the `DOWNLOAD SOFTWARE` link.
+#. Download the latest USB Audio 2.0 Device software release from the `XMOS USB & Multichannel Audio webpage <http://www.xmos.com/develop/usb-multichannel-audio>`_, using the `DOWNLOAD SOFTWARE` link.
 
    * Before downloading the software, review the licence and click **Accept** to initiate the download.
 
@@ -19,21 +20,22 @@ Each step is explained in detail in the following sections.
 
 #. If using a Windows host computer, download the `USB Audio Class 2.0 Evaluation Driver for Windows`.
 
-   * On the `XMOS website USB & Multichannel Audio page <http://www.xmos.com/develop/usb-multichannel-audio>`__, follow the `DRIVER SUPPORT` link, and click on `Download`. Once downloaded, run the executable and install the driver.
+   * On the `XMOS USB & Multichannel Audio developer webpage <http://www.xmos.com/develop/usb-multichannel-audio>`_, follow the `DRIVER SUPPORT` link, and click on `DOWNLOAD EVALUATION DRIVER`. Once downloaded, run the executable and install the driver.
 
    (Section :ref:`quick_start_windows_driver`.)
 
-#. Download and install the the `XMOS XTC Tools <http://www.xmos.com/software-tools>`_
+#. Download and install the `XMOS XTC Tools <http://www.xmos.com/software-tools>`_
 
-   * The minimum required XTC Tools version for compiling USB Audio applications can be found in the README. Make sure to download the correct version of the tools.
+   * The required XTC Tools version for compiling USB Audio applications can be found in the README file supplied in the software package.
+     Be sure to download the correct version of the tools.
 
    (Section :ref:`quick_start_tools`)
 
-#. Compile the firmware relavant to the available reference hardware platform .
+#. Compile the software relevant to the available board.
 
    (Section: :ref:`quick_start_building`)
 
-#. Connect the board to the development system using (using the supplied xTAG if required), and program the firmware onto the board.
+#. Connect the board to the host machine using two connections: one for the USB Audio device and another for the debug/programming interface, and program the compiled binary onto the board.
 
    (Section :ref:`quick_start_running`)
 
@@ -45,29 +47,27 @@ Each step is explained in detail in the following sections.
 
 .. _quick_start_firmware:
 
-USB Audio 2.0 reference software
-================================
+USB Audio reference software
+============================
 
-The latest USB Audio 2.0 Reference Design software is available free of charge from XMOS.
+The USB Audio Reference Design software is available free of charge from `XMOS`.
 
 When downloading the software for the first time, the user needs to register at http://www.xmos.com/.
 
-To download the firmware:
+To download the software:
 
-   #. On the `XMOS website USB & Multichannel Audio page <http://www.xmos.com/develop/usb-multichannel-audio>`__, follow the `DOWNLOAD SOFTWARE` link
+#. On the `XMOS USB & Multichannel Audio webpage <http://www.xmos.com/develop/usb-multichannel-audio>`__, follow the `DOWNLOAD SOFTWARE` link
 
-   #. Review the licence agreement and click **Accept**.
+#. Review the licence agreement and click **Accept**.
 
-   #. Download and save the software when prompted.
+#. Download and save the software when prompted.
 
 The software is distributed as a zip archive containing pre-compiled binaries and source code that can be built using the `XMOS XTC Tools`.
 
-Alternatively, contact a `local sales representative <https://www.xmos.com/find-a-distributor/>`_ for further details:
-
 .. _quick_start_windows_driver:
 
-USB Audio Class 2.0 evaluation driver for Windows
-=================================================
+USB Audio Class (UAC) 2.0 evaluation driver for Windows
+=======================================================
 
 .. note::
 
@@ -77,27 +77,23 @@ USB Audio Class 2.0 evaluation driver for Windows
 
     Since version 10, release 1703, Windows natively supports USB Audio Class 2.0 – no driver install is required.
 
-Earlier Window versions only provides support for USB Audio Class 1.0. To use a USB Audio Class 2.0 device under these
-Windows versions requires a third party driver.
+Earlier Window versions only provides support for USB Audio Class (UAC) 1.0. To use a UAC 2.0
+device under these Windows versions requires a third party driver.
 
 Developers may also wish to use a third party driver for reasons including:
 
-    * ASIO support
-    * Advanced clocking options and controls
-    * Improved latency
-    * Native DSD (via ASIO)
-    * Branding customisation and custom control panels
-    * Large channel count devices
-    * Etc
+* ASIO support
+* Advanced clocking options and controls - such as synchronisation to an external S/PDIF or ADAT clock
+* Improved latency
+* Native DSD (via ASIO)
+* Branding customisation and custom control panels
+* Large channel count devices
+* Etc
 
 `XMOS` therefore provides a free Windows USB Audio driver for evaluation and prototyping and a path
-to a more feature-rich multichannel production driver from our partner `Thesycon`.
+to a more feature-rich multichannel production driver from partner `Thesycon`.
 
-The evaluation driver is available from the `XMOS website <http://www.xmos.com/published/usb-audio-class-20-evaluation-driver-windows>`__:
-
-Further information about the evaluation and production drivers is available in the *USB Audio Class 2.0 Windows Driver Overview* document available on the
-`website <http://www.xmos.com/published/usb-audio-20-stereo-driver-windows-overview>`_:
-
+The evaluation driver is available via the `USB Audio Driver Support webpage <https://www.xmos.com/software/usb-audio/driver-support/>`_.
 
 .. _quick_start_tools:
 
@@ -114,23 +110,18 @@ language libraries, simulator, symbolic debugger, and runtime instrumentation an
 task based parallelism and communication, accurate timing and I/O, and safe memory management. All components work off the real-time multicore
 functionality, giving a fully integrated approach.
 
-The XTC tools are required by anyone developing or deploying applications on an `xcore` processor. The tools include:
+The XTC tools are required by anyone developing or deploying applications on an `xcore` device.
+The tools include:
 
-    * “Tile-level” toolchain (Compiler, assembler, etc)
-    * System libraries
-    * “Network-level” tools (Multi-tile mapper etc)
-    * XSIM simulator
-    * XGDB debugger
-    * Deployment tools
+* “Tile-level” toolchain (Compiler, assembler, etc)
+* System libraries
+* “Network-level” tools (Multi-tile mapper etc)
+* XSIM simulator
+* XGDB debugger
+* Deployment tools
 
 The tools as delivered are to be used within a command line environment, though may also be integrated with
 `VS Code graphical code editor <https://www.xmos.com/documentation/XM-014363-PC/html/installation/install-configure/install-tools/install_prerequisites.html#installation-of-the-vs-code-graphical-code-editor>`_.
-
-.. warning::
-
-    USB Audio applications are compiled using the `XCommon CMake <https://www.xmos.com/file/xcommon-cmake-documentation/?version=latest>`_ build system.
-    The minimum XTC tools version that supports XCommon CMake can be found in the README file. Ensure that the firmware is compiled using the correct XTC Tools version.
-
 
 |newpage|
 
@@ -143,81 +134,131 @@ Building the firmware
 
     For convenience the release zips provided from XMOS contain precompiled binary (xe) files.
 
-From a command prompt with the XMOS tools available, follow these steps:
-
-    #. Unzip the package zip to a known location
-
-    #. From the relevant application directory (e.g. ``app_usb_aud_xk_audio_316_mc``), execute the commands::
-
-        cmake -G "Unix Makefiles" -B build
-        xmake -C build
-
-The above steps will configure and build all of the available and supported build configurations for the application.
-
-The applications are compiled using `XCommon CMake <https://www.xmos.com/file/xcommon-cmake-documentation/?version=latest>`_ which is a `CMake <https://cmake.org/>`_
+Applications are compiled using `XCommon CMake <https://www.xmos.com/file/xcommon-cmake-documentation/?version=latest>`_ which is a `CMake <https://cmake.org/>`_
 based build system.
-The primary configuration file for the application is the CMakeLists.txt. It is present in the application directory (e.g. ``app_usb_aud_xk_audio_316_mc``).
-This file specifies build configs, sources, build options and dependencies.
 
 .. note::
 
     See :ref:`proj_build_system` for more details.
+
+Each board is supported by a dedicated application located in its own directory. The boards and
+their corresponding applications are listed in :numref:`table_quick_start_boards`.
+
+.. _table_quick_start_boards:
+
+================  ============================
+Board             Application
+================  ============================
+XK-EVK-XU316      app_usb_aud_xk_evk_xu316
+XK-AUDIO-216-MC   app_usb_aud_xk_audio_216_mc
+XK-AUDIO-316-MC   app_usb_aud_xk_audio_316_mc
+================  ============================
+
+The primary configuration for applications is in  `CMakeLists.txt`. It is present in each
+application directory (e.g. ``app_usb_aud_xk_audio_316_mc``).
+This file specifies build configs, sources, build options and dependencies.
+
+From a command prompt with the `XMOS` tools available, follow these steps:
+
+#. Unzip the package zip to a known location
+
+#. From the relevant application directory (e.g. ``app_usb_aud_xk_audio_316_mc``), execute the commands::
+
+    cmake -G "Unix Makefiles" -B build
+    xmake -j -C build
+
+These steps will configure and build all of the available and supported build configurations for the
+application.
 
 .. _quick_start_running:
 
 Running the firmware
 ====================
 
-Typically during development the developer wishes to program the device's internal RAM with the application binary directly via JTAG and then execute this application.
+To support different feature sets and products, multiple build configurations are provided.
+Each configuration produces a distinct binary.
+:numref:`table_quick_start_configs` lists the recommended build configurations for initial
+evaluation.
 
-To run one of the compiled binaries complete the following steps:
+.. _table_quick_start_configs:
 
-    #. Connect the USB Audio board to the host computer.
+|beginfullwidth|
 
-    #. Connect the xTAG to the USB Audio board and connect it to the host machine on which the application binary is present via a separate USB cable.
-           note, some boards have integrated xTAGs.
+============================  ============================  =================================================================
+Application                   Suggested build config        Description
+============================  ============================  =================================================================
+app_usb_aud_xk_evk_xu316      2AMi10o10xssxxx               UAC 2.0, 10 ch in/out, 8 analogue channels in/out, S/PDIF in/out
+app_usb_aud_xk_audio_216_mc   2AMi10o10xssxxx               UAC 2.0, 10 ch in/out, 8 analogue channels in/out, S/PDIF in/out
+app_usb_aud_xk_audio_316_mc   2AMi2o2xxxxxx                 UAC 2.0, 2 ch in/out, 2 analogue channels in/out
+============================  ============================  =================================================================
 
-    #. Ensure any required external power jacks are connected
+|endfullwidth|
 
-Finally, to run the binary on the target, execute a command similar to the following::
+During development, it is common to load the application binary directly into the device's internal
+RAM via JTAG and execute it immediately.
 
-    xrun path/to/binary.xe
+Boards require two USB connections, one for the USB Audio device and another for a debug interface.
+Depending on the board being used, the debug interface will either use an integrated or xTAG.
 
-The device should now present itself as a USB Audio Device on the connected host computer.
-It will continue to operate as a USB Audio Device until the target board is power cycled.
+To run one of the compiled binaries, follow these steps:
+
+#. Connect the USB Audio board to the host computer with a USB cable (typically labelled ``USB``
+   or ``USB DEVICE``)
+
+#. Connect the xTAG to the USB Audio board, and then connect the xTAG to the host computer using a
+   separate USB cable. *Note: Some boards have an integrated xTAG.*
+
+#. Ensure that any required external power supplies are connected.
+
+Once everything is connected, run the binary on the target device using a command like the
+following::
+
+    xrun ./bin/2AMi10o10xssxxx/app_usb_aud_xk_316_mc_2AMi10o10xssxxx.xe
+
+The device should now appear as a USB Audio Device on the host computer. It will continue to
+function as such until the board is power cycled.
 
 Writing the application binary to flash
 =======================================
 
-Optionally a binary can be programmed into the boot flash. To do this:
+If desired, the application binary can be programmed into the device’s boot flash. To do so:
 
-    #. Connect the USB Audio board to the host computer.
+#. Connect the USB Audio board to the host computer with a USB cable (typically labelled ``USB``
+   or ``USB DEVICE``)
 
-    #. Connect the xTAG to the USB Audio board and connect the it to the host machine on which the application binary is present via a separate USB cable
+#. Connect the xTAG to the USB Audio board, then connect the xTAG to the host computer using a
+   separate USB cable. *Note: Some boards include an integrated xTAG.*
 
-    #. Ensure any required external power jacks are connected
+#. Ensure any required external power supplies are connected.
 
-From a command prompt with the XMOS tools available, run the following command::
+Once everything is connected, flash the binary on the target device using a command like the
+following::
 
-    xflash path/to/binary.xe
+    xflash ./bin/2AMi10o10xssxxx/app_usb_aud_xk_316_mc_2AMi10o10xssxxx.xe
 
-Once flashed the target device will reboot and execute the binary. Power cycling the target board will cause the device to reboot the flashed binary.
+After flashing, the device will automatically reboot and begin executing the application.
+Subsequent power cycles will cause the device to boot and run the flashed binary.
 
 .. _quick_start_play_audio:
 
-Playing audio
-=============
+Playing/recording audio
+=======================
 
-    #. Connect the board to any power supply provided (note, some boards will be USB bus powered)
+To play and record audio using the USB Audio board, follow these steps:
 
-    #. Connect the board to a host with driver support for USB Audio Class using a USB cable
+#. Connect the board to a power supply, if required.
+   *Note: Some boards are powered via USB and do not require an external supply.*
 
-    #. Install the Windows USB Audio 2.0 demonstration driver, if required.
+#. Connect the board to a host system using a USB cable.
+   Ensure the host supports USB Audio Class.
 
-    #. Connect audio input/output devices to the connectors on the board e.g powered speakers
+#. Install the Windows USB Audio 2.0 demonstration driver, if required.
 
-    #. In the audio application, select the `XMOS` USB Audio device.
+#. Connect audio input/output devices to the appropriate connectors on the board (e.g.,
+   powered speakers, MP3 player). For multichannel boards use input/output 1/2.
 
-    #. Start playing and recording.
+#. In your audio application, select the `XMOS` USB Audio device.
+
+#. Begin audio playback and/or recording.
 
 
