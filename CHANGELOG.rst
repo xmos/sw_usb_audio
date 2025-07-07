@@ -1,13 +1,133 @@
 sw_usb_audio change log
 =======================
 
-UNRELEASED
-----------
+9.1.0
+-----
 
   * ADDED:     Low power build configurations for app_usb_aud_xk_316_mc and
     app_usb_aud_evk_xu316
   * ADDED:     HID support to app_usb_aud_xk_316_mc
   * REMOVED:   Example code for using iAP EA Native Transport endpoints from
+
+  * Changes to dependencies:
+
+    - lib_board_support: 1.1.1 -> 1.3.0
+
+      + ADDED: Support for PHY address being either 0x1 or 0x4 for XK-EVK-XE216
+      + ADDED: Power-down support for xk-audio-316-mc audio hardware
+      + ADDED: xcore core voltage control API for xk-audio-316-mc
+      + CHANGED: replaced phy_idx paramter in get_port_timings() with enum,
+        port_timing_index_t
+      + ADDED: Note in documentation about XK_ETH_XU316_DUAL_100M being
+        currently unreleased
+      + FIXED: Second PHY index for get_timings() in xk_eth_xu316_dual_100m
+      + ADDED: Support for xk_evk_xe216 board ethernet PHY setup
+      + ADDED: Initial support for xk_eth_xu316_dual_100m board ethernet PHY
+        setup
+      + FIXED: Long delay in xk_evk_xu316_AudioHwInit() causing USB issues
+
+    - lib_i2c: 6.2.0 -> 6.4.0
+
+      + FIXED: In case of clock stretching, ensure that the required delay
+        happens between the slave releasing SCL and the master driving data on
+        SDA.
+      + FIXED: Drive data on SDA in open drain mode.
+      + CHANGED: Documentation updated
+      + REMOVED: Support for XS1 - Please design with xcore.ai for new projects
+      + CHANGED: Build examples and tests using XCommon CMake instead of XCommon
+
+    - lib_mic_array: 5.4.0 -> 5.5.0
+
+      + CHANGED: Documentation updated
+      + CHANGED: Renamed examples to app_
+      + CHANGED: Renamed the scripts/ directory to python/
+
+    - lib_sw_pll: 2.3.1 -> 2.4.0
+
+      + ADDED: Fixed frequency API may be passed zero to disable PLL
+
+    - lib_xcore_math: 2.3.0 -> 2.4.0
+
+      + CHANGED: Documentation updated
+      + CHANGED: Renamed examples to app_
+      + FIXED:   Added missing xcore_math.h
+      + REMOVED: xmos_cmake_toolchain submodule
+
+    - lib_xua: 5.0.0 -> 5.1.0
+
+      + ADDED:     Enumeration of vendor specific control interface as WinUSB
+        compatible on Windows. Can be disabled by defining
+        ENUMERATE_CONTROL_INTF_AS_WINUSB to 0
+      + ADDED:     Optional user_main_declarations.h and user_main_cores.h
+        headers to allow insertion of declarations and tasks for extending
+        main()
+      + ADDED:     XUA_LOW_POWER_NON_STREAMING define allowing low-power state
+        when not streaming which stops I2S and provides additional user callback
+      + ADDED:     Calls to user functions XUA_UserSuspendPowerDown() and
+        XUA_UserResumePowerUp() to allow user code to run when the device is
+        suspended or resumed (default implementations are empty)
+      + ADDED:     Documentation of XUA_CHAN_BUFF_CTRL
+      + CHANGED:   Suspend/resume notification from lib_xud (added in v3.0.0)
+        used rather than overriding XUD_UserSuspend() and XUD_UserResume()
+      + CHANGED:   Made `p_off_mclk` nullable for XUA_Buffer; this port is now
+        only required either in configurations using Synchronous mode and using
+        the application PLL to clock the USB buffers, or for configurations
+        using Asynchronous mode and using the reference clock to clock the USB
+        buffers
+      + CHANGED:   Renamed USB_CONTROL_DESCS define to XUA_USB_CONTROL_DESCS
+      + CHANGED:   AN00248 updated so that it uses lib_xua main() instead of
+        custom main()
+      + CHANGED:   UserAudioStreamStart and UserAudioStreamStop replaced by
+        single UserAudioStreamState(in, out) API with arguments indicating
+        whether input or output streams are active
+      + CHANGED:   Functionality associated with AUDIO_CLASS_FALLBACK and
+        FULL_SPEED_AUDIO_2 moved to XUA_AUDIO_CLASS_FS and XUA_AUDIO_CLASS_HS
+      + CHANGED:   Simplification of USB string table handling
+      + CHANGED:   lib_xud's USB_TILE define derived from lib_xua's XUD_TILE
+        define (using xud_conf.h)
+      + FIXED:     wMaxPacketSize for MIDI bulk IN and OUT endpoints incorrectly
+        set when running at full-speed
+      + FIXED:     `p_mclk_in` and `clk_audio_bclk` not correctly nullable when
+        I2S not in use.
+      + FIXED:     Incorrect `clk_audio_mclk` nullability for XUA_AudioHub; this
+        clock block is only required for configurations with ADAT or SPDIF TX
+      + FIXED:     Compilation error with NUM_USB_CHAN_IN=0, NUM_USB_CHAN_OUT=0
+        and HID_CONTROLS=1
+      + FIXED:     HID functionality with AUDIO_CLASS = 1
+      + FIXED:     Alignment issue with HID_Descriptor memory that was causing
+        USB_GET_DESCRIPTOR for the HID interface to fail leading to failing
+        USB3CV HID Descriptor test
+      + FIXED:     Device enumeration error when both XUA_DFU_EN and
+        XUA_USB_CONTROL_DESCS enabled
+      + FIXED:     UAC2 descriptors during full-speed operation
+      + FIXED:     Compiler error when PDM mics used and EXCLUDE_USB_AUDIO_MAIN
+        is not defined.
+      + FIXED:     Guard on epTypeTableOut[] declaration where incorrect EP type
+        for audio out endpoint occurred if additional custom endpoints are added
+      + FIXED:     String descriptors not updated when using runtime API (#406)
+      + FIXED:     Strings relating to items such as Clock Selector, Clock, DFU,
+        etc not updated when using run time API function setVendorString()
+      + REMOVED:   Support for iAP EA Native Transport endpoints
+
+    - lib_xud: 2.4.0 -> 3.0.1
+
+      + ADDED:     XUD_THREAD_MODE_FAST_EN option to enable/disable XUD thread
+        fast mode
+      + ADDED:    Option XUD_SUSPEND_PHY to place USB phy in low power mode
+        during USB suspend
+      + ADDED:    Notification system for suspend and resume bus states, this
+        should replace the use of callbacks XUD_UserSuspend() and
+        XUD_UserResume()
+      + ADDED:    XUD_GetBusState() and XUD_AckBusState() API functions
+      + CHANGED   Endpoint API functions now return XUD_RES_UPDATE on a bus
+        state change (suspend/resume/reset). XUD_GetBusState() should then be
+        called to ascertain the new state. XUD_AckBusState() must be used to
+        acknowledge suspend or resume states. XUD_ResetEndpoint() should be used
+        to handle reset states (similar to previous behaviour).
+      + CHANGED:  Optimised port timings for XS3A to use non-inverted clock
+      + CHANGED:  Instruction-level (speed) optimisations
+      + FIXED:    Incorrect references to XUD_TILE replaced by USB_TILE in
+        documentation
 
 9.0.0
 -----
@@ -175,10 +295,10 @@ UNRELEASED
 
     - lib_xud: 2.3.1 -> 2.4.0
 
-      + CHANGE:   Documentation updates
-      + CHANGE:   Examples now build using xcommon-cmake build system (was
+      + CHANGED:  Documentation updates
+      + CHANGED:  Examples now build using xcommon-cmake build system (was
         xcommon)
-      + CHANGE:   AN00129 is now the main library usage example - renamed
+      + CHANGED:  AN00129 is now the main library usage example - renamed
         app_hid_mouse
       + REMOVED:  AN00124 - now maintained as a separate application note
       + REMOVED:  AN00125 - now maintained as a separate application note
@@ -188,7 +308,7 @@ UNRELEASED
       + REMOVED:  AN00132 - now maintained as a separate application note
       + REMOVED:  AN00135 - now maintained as a separate application note
       + REMOVED:  AN00136 - now maintained as a separate application note
-      + CHANGE:   RX_RISE_DELAY for XS2A based devices to resolve intermittent
+      + CHANGED:  RX_RISE_DELAY for XS2A based devices to resolve intermittent
         transmit timing issues
 
 8.1.0
@@ -344,7 +464,7 @@ UNRELEASED
         test mode
       + ADDED:     XMOS proprietary test mode XMOS_IN_ADDR1
       + ADDED:     Support for XCommon CMake build system
-      + CHANGE:    Removed definition and use of REF_CLK_FREQ in favour of
+      + CHANGED:   Removed definition and use of REF_CLK_FREQ in favour of
         PLATFORM_REFERENCE_MHZ from platform.h
       + FIXED:     Do not include implementations of inline functions when
         XUD_WEAK_API is set
@@ -435,7 +555,7 @@ UNRELEASED
     - lib_xud: 2.2.1 -> 2.2.2
 
       + FIXED:     Syntax error when including xud.h from C
-      + CHANGE:    Various API functions optionally marked as a weak symbol
+      + CHANGED:   Various API functions optionally marked as a weak symbol
         based on XUD_WEAK_API
 
 7.1.0
@@ -485,8 +605,8 @@ UNRELEASED
 
       + FIXED:     Control endpoint ready flag not properly cleared on receipt
         of SETUP transaction (#356)
-      + CHANGE:    Further API functions re-authored in C (were Assembly)
-      + CHANGE:    Endpoints marked as Disabled now reply with STALL if the host
+      + CHANGED:   Further API functions re-authored in C (were Assembly)
+      + CHANGED:   Endpoints marked as Disabled now reply with STALL if the host
         attempts to access them, previously they would NAK (#342)
       + FIXED:     Exception if host accesses an endpoint that XUD believes to
         be not in use

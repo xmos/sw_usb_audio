@@ -3,7 +3,7 @@
 sw_name: sw_usb_audio
 project: '{{sw_name}}'
 title: '{{sw_name}}: USB Audio reference designs'
-version: 9.0.0
+version: 9.1.0
 
 documentation:
   exclude_patterns_path: doc/exclude_patterns.inc
