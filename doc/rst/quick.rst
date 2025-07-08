@@ -146,15 +146,20 @@ their corresponding applications are listed in :numref:`table_quick_start_boards
 
 .. _table_quick_start_boards:
 
-================  ============================
-Board             Application
-================  ============================
-XK-EVK-XU316      app_usb_aud_xk_evk_xu316
-XK-AUDIO-216-MC   app_usb_aud_xk_audio_216_mc
-XK-AUDIO-316-MC   app_usb_aud_xk_audio_316_mc
-================  ============================
+.. table:: Boards and their applications
+   :align: left
 
-The primary configuration for applications is in  `CMakeLists.txt`. It is present in each
+   +---------------------+-------------------------------+
+   | Board               | Application                   |
+   +=====================+===============================+
+   | XK-EVK-XU316        | app_usb_aud_xk_evk_xu316      |
+   +---------------------+-------------------------------+
+   | XK-AUDIO-216-MC     | app_usb_aud_xk_audio_216_mc   |
+   +---------------------+-------------------------------+
+   | XK-AUDIO-316-MC     | app_usb_aud_xk_audio_316_mc   |
+   +---------------------+-------------------------------+
+
+The primary configuration for applications is in `CMakeLists.txt`. It is present in each
 application directory (e.g. ``app_usb_aud_xk_audio_316_mc``).
 This file specifies build configs, sources, build options and dependencies.
 
@@ -180,17 +185,22 @@ Each configuration produces a distinct binary.
 :numref:`table_quick_start_configs` lists the recommended build configurations for initial
 evaluation.
 
-.. _table_quick_start_configs:
-
 |beginfullwidth|
 
-============================  ============================  =================================================================
-Application                   Suggested build config        Description
-============================  ============================  =================================================================
-app_usb_aud_xk_evk_xu316      2AMi10o10xssxxx               UAC 2.0, 10 ch in/out, 8 analogue channels in/out, S/PDIF in/out
-app_usb_aud_xk_audio_216_mc   2AMi10o10xssxxx               UAC 2.0, 10 ch in/out, 8 analogue channels in/out, S/PDIF in/out
-app_usb_aud_xk_audio_316_mc   2AMi2o2xxxxxx                 UAC 2.0, 2 ch in/out, 2 analogue channels in/out
-============================  ============================  =================================================================
+.. _table_quick_start_configs:
+
+.. table:: Applications and suggested build configuration for quick start
+   :align: left
+
+   +-------------------------------+---------------------------+-------------------------------------------------------------------+
+   | Application                   | Suggested build config    | Description                                                       |
+   +===============================+===========================+===================================================================+
+   | app_usb_aud_xk_evk_xu316      | 2AMi10o10xssxxx           | UAC 2.0, 10 ch in/out, 8 analogue channels in/out, S/PDIF in/out  |
+   +-------------------------------+---------------------------+-------------------------------------------------------------------+
+   | app_usb_aud_xk_audio_216_mc   | 2AMi10o10xssxxx           | UAC 2.0, 10 ch in/out, 8 analogue channels in/out, S/PDIF in/out  |
+   +-------------------------------+---------------------------+-------------------------------------------------------------------+
+   | app_usb_aud_xk_audio_316_mc   | 2AMi2o2xxxxxx             | UAC 2.0, 2 ch in/out, 2 analogue channels in/out                  |
+   +-------------------------------+---------------------------+-------------------------------------------------------------------+
 
 |endfullwidth|
 

@@ -13,20 +13,14 @@ The functions listed below should be implemented to configure external audio har
 .. doxygenfunction:: AudioHwConfig
 .. doxygenfunction:: AudioHwConfig_Mute
 .. doxygenfunction:: AudioHwConfig_UnMute
-
+.. doxygenfunction:: AudioHwShutdown
 
 Audio streaming notification
 ----------------------------
 
 The functions listed below can be useful for mute lines, indication LEDs etc.
 
-.. doxygenfunction:: UserAudioStreamStart
-.. doxygenfunction:: UserAudioStreamStop
-.. doxygenfunction:: UserAudioInputStreamStart
-.. doxygenfunction:: UserAudioInputStreamStop
-.. doxygenfunction:: UserAudioOutputStreamStart
-.. doxygenfunction:: UserAudioOutputStreamStop
-
+.. doxygenfunction:: UserAudioStreamState
 
 HID controls
 ------------
