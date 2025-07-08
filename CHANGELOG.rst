@@ -4,10 +4,11 @@ sw_usb_audio change log
 9.1.0
 -----
 
-  * ADDED:     Low power build configurations for app_usb_aud_xk_316_mc and
-    app_usb_aud_evk_xu316
+  * ADDED:     Low power build configuration (2AMi2o2xxxxxx_lp) to
+    app_usb_aud_xk_316_mc
   * ADDED:     HID support to app_usb_aud_xk_316_mc
   * REMOVED:   Example code for using iAP EA Native Transport endpoints from
+    app_usb_aud_xk_216_mc
 
   * Changes to dependencies:
 

@@ -104,10 +104,10 @@ the `xcore` secondary PLL to generate the required master clock frequencies.
 
 Due to the complexity of the hardware on the `XK-AUDIO-316-MC` the source code is not included here.
 
-The application also overrides ``UserAudioStreamStart()`` and ``UserAudioStreamStop()``.
-These are called from ``lib_xua`` when the audio
-stream to the device is started or stopped respectively.
-The application uses these functions to enable/disable the on board LEDs based on whether an audio
+The application also overrides ``UserAudioStreamState()``.
+This function is called from ``lib_xua`` when the audio stream to the device is started or stopped.
+
+The application uses this function to enable/disable the on board LEDs based on whether an audio
 stream is active (input or output).
 
 .. literalinclude:: ../../app_usb_aud_xk_316_mc/src/extensions/audiostream.xc
