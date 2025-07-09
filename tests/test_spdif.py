@@ -10,7 +10,6 @@ from hardware_test_tools.AudioAnalyzerHarness import AudioAnalyzerHarness
 from hardware_test_tools.Xsig import XsigInput, XsigOutput
 from conftest import list_configs, get_config_features, AppUsbAudDut, get_xtag_dut_and_harness
 
-
 spdif_smoke_configs = [
     ("xk_216_mc", "2AMi18o18mssaax"),
     ("xk_316_mc", "2AMi10o10xssxxx"),
@@ -92,6 +91,8 @@ def test_spdif_input(pytestconfig, board, config):
                 Path(__file__).parent / "xsig_configs" / f"{xsig_config}.json"
             )
 
+            print(f"spdif_input: config {config}, fs {fs}, num_out_ch {num_in_channels}")
+
             dut.set_stream_format("input", fs, num_in_channels, 24)
 
             if features["chan_o"] > num_in_channels:
@@ -106,10 +107,10 @@ def test_spdif_input(pytestconfig, board, config):
 
                 with (
                     XsigInput(
-                        fs, duration, xsig_config_path, dut.dev_name
+                        fs, duration, xsig_config_path, dut.dev_name, blocking=True
                     ) as xsig_proc,
                 ):
-                    time.sleep(duration + 6)
+                    pass # Nothing to do here. XsigInput is run in blocking mode
 
                 dut.set_clock_src("Internal")
 
@@ -145,15 +146,17 @@ def test_spdif_output(pytestconfig, board, config):
     with AppUsbAudDut(adapter_dut, board, config) as dut:
         for fs in features["samp_freqs"]:
             assert features["analogue_o"] == 8
+            num_spdif_out_channels = 2
             if fs <= 48000:
-                num_out_channels = features["analogue_o"] + 2 + (8 * features["adat_o"])
-                assert num_out_channels == features["chan_o"]
+                num_adat_out_channels = 8 * features["adat_o"]
+                assert (features["analogue_o"] + num_adat_out_channels + num_spdif_out_channels) == features["chan_o"]
             elif fs <= 96000:
-                num_out_channels = features["analogue_o"] + 2 + (4 * features["adat_o"])
+                num_adat_out_channels = 4 * features["adat_o"]
             elif fs <= 192000:
-                num_out_channels = features["analogue_o"] + 2 + (2 * features["adat_o"])
+                num_adat_out_channels = 2 * features["adat_o"]
 
-            num_dig_out_channels = num_out_channels - features["analogue_o"]
+            num_dig_out_channels = num_spdif_out_channels + num_adat_out_channels
+            num_out_channels = features["analogue_o"] + num_dig_out_channels
             xsig_config = f'mc_digital_output_analog_{features["analogue_o"]}ch_dig_{num_dig_out_channels}ch'
             if features["adat_o"]:
                 xsig_config = (
@@ -163,6 +166,8 @@ def test_spdif_output(pytestconfig, board, config):
                 Path(__file__).parent / "xsig_configs" / f"{xsig_config}.json"
             )
 
+            print(f"spdif_output: config {config}, fs {fs}, num_out_ch {num_out_channels}")
+
             if features["chan_i"] > num_out_channels:
                 dut.set_stream_format("input", fs, num_out_channels, 24)
 
@@ -170,13 +175,16 @@ def test_spdif_output(pytestconfig, board, config):
 
             with (
                 AudioAnalyzerHarness(
-                    adapter_harness, Path(__file__).parents[2] / "sw_audio_analyzer", config="spdif_test", attach="xscope"
-                ) as harness,
-                XsigOutput(fs, None, xsig_config_path, dut.dev_name),
+                    adapter_harness, Path(__file__).parents[2] / "sw_audio_analyzer", config="spdif_test", attach="xscope_app"
+                ) as harness
             ):
-                time.sleep(duration)
-                harness.terminate()
-                xscope_lines = harness.proc_stdout + harness.proc_stderr
+                # Run the analyser using `xrun --xscope-port`, and override the smux command from the host
+                # to synchronize startup — this ensures the analyser is running before we proceed.
+                ctrl_out, ctrl_err = harness.xscope_controller_cmd([f"x 1"])
+                with(XsigOutput(fs, 0, xsig_config_path, dut.dev_name) as xsig_proc):
+                    time.sleep(duration)
+                    harness.terminate()
+                    xscope_lines = harness.proc_stdout + harness.proc_stderr
 
             with open(xsig_config_path) as file:
                 xsig_json = json.load(file)
@@ -185,7 +193,9 @@ def test_spdif_output(pytestconfig, board, config):
                 fail_str += f"Failure at sample rate {fs}\n"
                 fail_str += "\n".join(failures) + "\n\n"
                 fail_str += f"xscope stdout at sample rate {fs}\n"
-                fail_str += xscope_lines + "\n"
+                fail_str += ctrl_out + ctrl_err + xscope_lines + "\n"
+                fail_str += f"xsig stdout at sample rate {fs}\n"
+                fail_str += xsig_proc.proc_output + "\n"
 
     if len(fail_str) > 0:
         pytest.fail(fail_str)

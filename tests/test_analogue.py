@@ -11,8 +11,6 @@ from hardware_test_tools.AudioAnalyzerHarness import AudioAnalyzerHarness
 from hardware_test_tools.Xsig import XsigInput, XsigOutput
 from conftest import list_configs, get_config_features, AppUsbAudDut, get_xtag_dut_and_harness
 
-xsig_completion_time_s = 6
-
 analogue_smoke_configs = [
     ("xk_216_mc", "2AMi18o18mssaax"),
     ("xk_216_mc", "2ASi10o10xssxxx"),
@@ -66,7 +64,6 @@ def analogue_duration(level, partial):
         duration = 5
     return duration
 
-
 @pytest.mark.uncollect_if(func=analogue_input_uncollect)
 @pytest.mark.parametrize(["board", "config"], list_configs())
 def test_analogue_input(pytestconfig, board, config):
@@ -86,18 +83,22 @@ def test_analogue_input(pytestconfig, board, config):
 
     with (
         AppUsbAudDut(adapter_dut, board, config) as dut,
-        AudioAnalyzerHarness(adapter_harness, Path(__file__).parents[2] / "sw_audio_analyzer"),
+        AudioAnalyzerHarness(adapter_harness, Path(__file__).parents[2] / "sw_audio_analyzer", attach="xscope_app") as harness,
     ):
+        # Run the analyser using `xrun --xscope-port`, and re-purpose the smux command from the host
+        # to synchronize startup — this ensures the analyser is running before we proceed.
+        ctrl_out, ctrl_err = harness.xscope_controller_cmd([f"x 1"])
+
         for fs in features["samp_freqs"]:
+            print(f"analogue_input: config {config}, fs {fs}")
             if fs > 96000:
                 max_num_channels = 10
                 dut.set_stream_format("input", fs, min(max_num_channels, features["chan_i"]), 24)
             else:
                 dut.set_stream_format("input", fs, features["chan_i"], 24)
 
-            with XsigInput(fs, duration, xsig_config_path, dut.dev_name, ident=f"analogue_input-{board}-{config}-{fs}") as xsig_proc:
-                # Sleep for a few extra seconds so that xsig will have completed
-                time.sleep(duration + xsig_completion_time_s)
+            with XsigInput(fs, duration, xsig_config_path, dut.dev_name, ident=f"analogue_input-{board}-{config}-{fs}", blocking=True) as xsig_proc:
+                pass # Nothing to do here. XsigInput is run in blocking mode
 
             xsig_lines = xsig_proc.proc_output
             with open(xsig_config_path) as file:
@@ -148,13 +149,19 @@ def test_analogue_output(pytestconfig, board, config):
             else:
                 dut.set_stream_format("output", fs, features["chan_o"], 24)
 
+            print(f"analogue_output: config {config}, fs {fs}")
+
             with (
-                AudioAnalyzerHarness(adapter_harness, Path(__file__).parents[2] / "sw_audio_analyzer", attach="xscope") as harness,
-                XsigOutput(fs, None, xsig_config_path, dut.dev_name),
+                AudioAnalyzerHarness(adapter_harness, Path(__file__).parents[2] / "sw_audio_analyzer", attach="xscope_app") as harness,
             ):
-                time.sleep(duration)
-                harness.terminate()
-                xscope_lines = harness.proc_stdout + harness.proc_stderr
+                # Run the analyser using `xrun --xscope-port`, and override the smux command from the host
+                # to synchronize startup — this ensures the analyser is running before we proceed.
+                ctrl_out, ctrl_err = harness.xscope_controller_cmd([f"x 1"])
+
+                with(XsigOutput(fs, 0, xsig_config_path, dut.dev_name) as xsig_proc):
+                    time.sleep(duration)
+                    harness.terminate()
+                    xscope_lines = harness.proc_stdout + harness.proc_stderr
 
             with open(xsig_config_path) as file:
                 xsig_json = json.load(file)
@@ -163,7 +170,9 @@ def test_analogue_output(pytestconfig, board, config):
                 fail_str += f"Failure at sample rate {fs}\n"
                 fail_str += "\n".join(failures) + "\n\n"
                 fail_str += f"xscope stdout at sample rate {fs}\n"
-                fail_str += xscope_lines + "\n"
+                fail_str += ctrl_out + ctrl_err + xscope_lines + "\n"
+                fail_str += f"xsig stdout at sample rate {fs}\n"
+                fail_str += xsig_proc.proc_output + "\n"
 
     if len(fail_str) > 0:
         pytest.fail(fail_str)

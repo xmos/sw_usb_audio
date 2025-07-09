@@ -10,12 +10,17 @@ from hardware_test_tools.check_analyzer_output import check_analyzer_output
 from hardware_test_tools.Xsig import XsigInput
 from conftest import list_configs, get_config_features, AppUsbAudDut, get_xtag_dut
 
+if platform.system() == "Darwin":
+    loopback_smoke_configs = [
+        ("xk_316_mc", "2AMi18o18mssaax_i2sloopback"),
+        ("xk_316_mc", "2AMi8o8xxxxxx_mix8_i2sloopback"),
+        ("xk_316_mc", "2SSi8o8xxxxxx_i2sloopback"),
+    ]
+else:
+    loopback_smoke_configs = [
+        ("xk_316_mc", "2AMi18o18mssaax_i2sloopback")
+    ]
 
-loopback_smoke_configs = [
-    ("xk_316_mc", "2AMi18o18mssaax_i2sloopback"),
-    ("xk_316_mc", "2AMi8o8xxxxxx_mix8_i2sloopback"),
-    ("xk_316_mc", "2SSi8o8xxxxxx_i2sloopback"),
-]
 
 def loopback_dac_uncollect(pytestconfig, board, config):
     features = get_config_features(board, config)
@@ -73,8 +78,10 @@ def test_loopback_dac(pytestconfig, board, config):
                 dut.set_stream_format("input", fs, features["chan_i"], 24)
                 dut.set_stream_format("output", fs, features["chan_o"], 24)
 
-            with XsigInput(fs, duration, xsig_config_path, dut.dev_name) as xsig_proc:
-                time.sleep(duration + 6)
+            print(f"test_loopback_dac: config {config}, fs {fs}")
+
+            with XsigInput(fs, duration, xsig_config_path, dut.dev_name, blocking=True) as xsig_proc:
+                pass
 
             xsig_lines = xsig_proc.proc_output
 

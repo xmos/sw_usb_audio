@@ -10,12 +10,10 @@ from hardware_test_tools.AudioAnalyzerHarness import AudioAnalyzerHarness
 from hardware_test_tools.Xsig import XsigInput, XsigOutput
 from conftest import list_configs, get_config_features, AppUsbAudDut, get_xtag_dut_and_harness
 
-
 adat_smoke_configs = [
     ("xk_216_mc", "2AMi18o18mssaax"),
     ("xk_316_mc", "2AMi16o16xxxaax"),
 ]
-
 
 def adat_common_uncollect(features, board, config, pytestconfig):
     xtag_ids = get_xtag_dut_and_harness(pytestconfig, board)
@@ -55,6 +53,18 @@ def adat_duration(level, partial):
         duration = 5
     return duration
 
+def set_clock(dut, clk_src):
+    assert clk_src in ["Internal", "ADAT"], f"Invalid clock source {clk_src}, must be Internal or ADAT"
+    clk_src_retry_count = 0
+    num_clk_src_retries = 2
+    while clk_src_retry_count < num_clk_src_retries:
+        ret = dut.set_clock_src(clk_src)
+        if ret == 0:
+            break
+        clk_src_retry_count += 1
+        time.sleep(4)
+    assert clk_src_retry_count < num_clk_src_retries, f"Failed to set clock source to {clk_src} after {num_clk_src_retries} retries"
+
 @pytest.mark.uncollect_if(func=adat_input_uncollect)
 @pytest.mark.parametrize(["board", "config"], list_configs())
 def test_adat_input(pytestconfig, board, config):
@@ -63,7 +73,6 @@ def test_adat_input(pytestconfig, board, config):
     adapter_dut, adapter_harness = get_xtag_dut_and_harness(pytestconfig, board)
     duration = adat_duration(pytestconfig.getoption("level"), features["partial"])
     fail_str = ""
-
     with AppUsbAudDut(adapter_dut, board, config) as dut:
         for fs in features["samp_freqs"]:
             assert features["analogue_i"] == 8
@@ -93,16 +102,16 @@ def test_adat_input(pytestconfig, board, config):
             ) as harness:
                 ctrl_out, ctrl_err = harness.xscope_controller_cmd([f"f {fs}"])
 
-                dut.set_clock_src("ADAT")
+                set_clock(dut, "ADAT")
 
                 with (
                     XsigInput(
-                        fs, duration, xsig_config_path, dut.dev_name
+                        fs, duration, xsig_config_path, dut.dev_name, blocking=True
                     ) as xsig_proc,
                 ):
-                    time.sleep(duration + 6)
+                    pass # Nothing to do here. XsigInput is run in blocking mode
 
-                dut.set_clock_src("Internal")
+                set_clock(dut, "Internal")
 
             xsig_lines = xsig_proc.proc_output
 
@@ -137,17 +146,18 @@ def test_adat_output(pytestconfig, board, config):
         for fs in features["samp_freqs"]:
             assert features["analogue_i"] == 8
             if fs <= 48000:
-                num_out_channels = features["analogue_o"] + (2 * features["spdif_o"]) + 8
-                assert(num_out_channels == features["chan_o"])
+                num_adat_out_channels = 8
+                assert((features["analogue_o"] + (2 * features["spdif_o"]) + num_adat_out_channels) == features["chan_o"])
                 smux = 1
             elif fs <= 96000:
-                num_out_channels = features["analogue_o"] + (2 * features["spdif_o"]) + 4
+                num_adat_out_channels = 4
                 smux = 2
             else:
-                num_out_channels = features["analogue_o"] + (2 * features["spdif_o"]) + 2
+                num_adat_out_channels = 2
                 smux = 4
 
-            num_dig_out_channels = num_out_channels - features["analogue_o"]
+            num_dig_out_channels = (2 * features["spdif_o"]) + num_adat_out_channels
+            num_out_channels = features["analogue_o"] + num_dig_out_channels
 
             print(f"adat_output: config {config}, fs {fs}, num_out_ch {num_out_channels}")
 
@@ -165,7 +175,7 @@ def test_adat_output(pytestconfig, board, config):
             ) as harness:
                 ctrl_out, ctrl_err = harness.xscope_controller_cmd([f"x {smux}"])
 
-                with(XsigOutput(fs, None, xsig_config_path, dut.dev_name)):
+                with(XsigOutput(fs, 0, xsig_config_path, dut.dev_name) as xsig_proc):
                     time.sleep(duration)
                     harness.terminate()
                     xscope_lines = harness.proc_stdout + harness.proc_stderr
@@ -183,6 +193,8 @@ def test_adat_output(pytestconfig, board, config):
                 fail_str += "\n".join(failures) + "\n\n"
                 fail_str += f"xscope stdout at sample rate {fs}\n"
                 fail_str += ctrl_out + ctrl_err + xscope_lines + "\n"
+                fail_str += f"xsig stdout at sample rate {fs}\n"
+                fail_str += xsig_proc.proc_output + "\n"
 
     if len(fail_str) > 0:
         pytest.fail(fail_str)
