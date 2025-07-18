@@ -1,0 +1,4 @@
+<xSCOPEconfig ioMode="basic" enabled="true">
+  <Probe name="ferror_probe" type="CONTINUOUS" datatype="UINT" units="Value" enabled="true"/>
+  <Probe name="dco_probe" type="CONTINUOUS" datatype="UINT" units="Value" enabled="true"/>
+</xSCOPEconfig>
