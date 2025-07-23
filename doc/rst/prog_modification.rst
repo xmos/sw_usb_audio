@@ -30,17 +30,20 @@ The general steps to producing a custom codebase are as follows:
 
 #. After making appropriate changes to the code, rebuild and re-flash the device for testing.
 
-
 .. note::
 
     Whilst a developer may directly change the code in ``main.xc`` to add custom tasks this may not always
     be desirable. Doing this may make taking updates from `XMOS` non-trivial (the same can be said for any
     custom modifications to any core libraries). Since adding tasks is considered reasonably common, customisation
-    defines ``USER_MAIN_CORES`` and ``USER_MAIN_DECLARATIONS`` are made available.
+    defines ``USER_MAIN_TASKS``, ``USER_MAIN_DECLARATIONS`` and ``USER_MAIN_GLOBALS`` are made
+    available. Alternatively "optional" headers file can be used to add custom tasks and declarations,
+    these should be named as follows and placed in the application source tree:
+    ``xua_conf_tasks.h``, ``xua_conf_globals.h`` and ``xua_conf_declarations.h``
 
-    An example usage is shown in ``app_usb_aud_xk_316_mc/src/extensions/user_main.h``
-    In reality the developer must weigh up the inconvenience of using these defines versus the
-    inconvenience of merging updates from `XMOS` into a modified codebase.
+    An example usage is shown in ``app_usb_aud_xk_316_mc/src/core/xua_conf_tasks.h`` and
+    ``app_usb_aud_xk_316_mc/src/core/xua_conf_globals.h``
+    In reality the developer must weigh up the inconvenience of using these defines or header files
+    versus the inconvenience of merging updates from `XMOS` into a modified codebase.
 
 The following sections show some example changes with a high level overview of how to change the code.
 
