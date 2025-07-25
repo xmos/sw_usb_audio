@@ -12,6 +12,7 @@ def get_configs_from_cmake_output(cmake_cmd, app_dir):
     ret = subprocess.run(
             cmake_cmd, capture_output=True, text=True, cwd=app_dir
         )
+
     m = re.findall(r'-- Configuring application:.*?-- Adding dependency', ret.stdout, re.DOTALL)
 
     assert len(m) > 0, f"Couldn't parse cmake output for configs\n{ret.stdout}"
@@ -19,7 +20,7 @@ def get_configs_from_cmake_output(cmake_cmd, app_dir):
     for app in m:
         app_name = app.splitlines()[0].split(':')[1].strip()
         configs = [f.split()[1].strip() for f in app.splitlines()[2:-1]]
-        output_dict[app_name] = configs
+        output_dict.setdefault(app_name, []).extend(configs)
     return output_dict
 
 

@@ -42,11 +42,15 @@ pipeline {
       defaultValue: 'v2.2.0',
       description: 'The infr_apps version'
     )
+    string(
+      name: 'TOOLS_VERSION',
+      defaultValue: '15.3.1',
+      description: 'The XTC tools version'
+    )
   }
   environment {
     REPO = 'sw_usb_audio'
     VIEW = getViewName(REPO)
-    TOOLS_VERSION = "15.3.1"
     PREV_TOOLS_VERSION = "15.2.1"
   }
   stages {
@@ -83,7 +87,7 @@ pipeline {
                 }
               }
 
-              withTools("${env.TOOLS_VERSION}") {
+              withTools(params.TOOLS_VERSION) {
                 clone_test_deps()
                 dir("tests") {
                   createVenv(reqFile: "requirements.txt")
@@ -135,7 +139,7 @@ pipeline {
                 dir("${REPO}") {
                   checkoutScmShallow()
 
-                  withTools("${env.TOOLS_VERSION}") {
+                  withTools(params.TOOLS_VERSION) {
                     // Fetch all dependencies using XCommon CMake
                     sh "cmake -G 'Unix Makefiles' -B build -DDEPS_CLONE_SHALLOW=TRUE"
                     sh 'xmake -C app_usb_aud_xk_316_mc -j16'
@@ -149,11 +153,11 @@ pipeline {
 
             stage('Library checks') {
               steps {
-                withTools("${env.TOOLS_VERSION}") {
+                withTools(params.TOOLS_VERSION) {
                   warnError("libchecks") {
                     runSwrefChecks("${WORKSPACE}/${REPO}", "${params.INFR_APPS_VERSION}")
                   } // warnError("libchecks")
-                } // withTools("${env.TOOLS_VERSION}")
+                } // withTools(params.TOOLS_VERSION)
               } // steps
             } // stage('Library checks')
             stage('Build Documentation') {
@@ -226,7 +230,7 @@ pipeline {
                   copyArtifacts filter: 'OSX/x86/xmos_mixer', fingerprintArtifacts: true, projectName: 'XMOS/lib_xua/develop', flatten: true, selector: lastSuccessful()
                 }
 
-                withTools("${env.TOOLS_VERSION}") {
+                withTools(params.TOOLS_VERSION) {
                   withEnv(["USBA_MAC_PRIV_WORKAROUND=1"]) {
                     withVenv() {
                       sh "pip install -e ${WORKSPACE}/xtagctl"
@@ -291,14 +295,14 @@ pipeline {
                   copyArtifacts filter: 'OSX/x86/xmos_mixer', fingerprintArtifacts: true, projectName: 'XMOS/lib_xua/develop', flatten: true, selector: lastSuccessful()
                 }
 
-                withTools("${env.TOOLS_VERSION}") {
+                withTools(params.TOOLS_VERSION) {
                   withEnv(["USBA_MAC_PRIV_WORKAROUND=1"]) {
                     withVenv() {
                       sh "pip install -e ${WORKSPACE}/xtagctl"
 
                       withXTAG(["usb_audio_mc_xcai_dut", "usb_audio_mc_xcai_harness"]) { xtagIds ->
                         sh "pytest -v --level ${params.TEST_LEVEL} --junitxml=pytest_result_mac_arm.xml \
-                            -o xk_316_mc_dut=${xtagIds[0]} -o xk_316_mc_harness=${xtagIds[1]}"
+                            -o xk_316_mc_dut=${xtagIds[0]} -o xk_316_mc_harness=${xtagIds[1]} "
                       }
                     }
                   }
@@ -352,14 +356,14 @@ pipeline {
                   copyArtifacts filter: 'Win/x64/xmos_mixer.exe', fingerprintArtifacts: true, projectName: 'XMOS/lib_xua/develop', flatten: true, selector: lastSuccessful()
                 }
 
-                withTools("${env.TOOLS_VERSION}") {
+                withTools(params.TOOLS_VERSION) {
                   withVenv() {
                     dir("${WORKSPACE}/xtagctl") {
                       sh "pip install -e ."
                     }
                     withXTAG(["usb_audio_mc_xcai_dut", "usb_audio_mc_xcai_harness"]) { xtagIds ->
                       sh "pytest -v --level ${params.TEST_LEVEL} --junitxml=pytest_result_windows10.xml \
-                          -o xk_316_mc_dut=${xtagIds[0]} -o xk_316_mc_harness=${xtagIds[1]}"
+                          -o xk_316_mc_dut=${xtagIds[0]} -o xk_316_mc_harness=${xtagIds[1]} "
                     }
                   }
                 }
@@ -412,7 +416,7 @@ pipeline {
                   copyArtifacts filter: 'Win/x64/xmos_mixer.exe', fingerprintArtifacts: true, projectName: 'XMOS/lib_xua/develop', flatten: true, selector: lastSuccessful()
                 }
 
-                withTools("${env.TOOLS_VERSION}") {
+                withTools(params.TOOLS_VERSION) {
                   withVenv() {
                     dir("${WORKSPACE}/xtagctl") {
                       sh "pip install -e ."
@@ -420,7 +424,7 @@ pipeline {
 
                     withXTAG(["usb_audio_mc_xcai_dut", "usb_audio_mc_xcai_harness"]) { xtagIds ->
                       sh "pytest -v --level ${params.TEST_LEVEL} --junitxml=pytest_result_windows11.xml \
-                          -o xk_316_mc_dut=${xtagIds[0]} -o xk_316_mc_harness=${xtagIds[1]}"
+                          -o xk_316_mc_dut=${xtagIds[0]} -o xk_316_mc_harness=${xtagIds[1]} "
                     }
                   }
                 }
