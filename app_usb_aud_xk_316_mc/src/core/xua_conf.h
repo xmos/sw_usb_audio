@@ -162,8 +162,4 @@
 #define HID_CONTROLS       (0)
 #endif
 
-#ifndef USB_LOOPBACK
-#define USB_LOOPBACK (0)
-#endif
-
 #endif

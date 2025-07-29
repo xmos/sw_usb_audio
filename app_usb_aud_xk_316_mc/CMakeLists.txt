@@ -36,9 +36,10 @@ XMOS_REGISTER_APP()
 if(PARTIAL_TESTED_CONFIGS)
 unset(APP_COMPILER_FLAGS_2AMi30o30xxxxxx_hibw)
 unset(APP_COMPILER_FLAGS_2AMi30o30xxxaax_hibw)
+#unset(APP_COMPILER_FLAGS_2AMi30o30xxxxxx_usb_loopback_hibw)
 endif()
 unset(APP_COMPILER_FLAGS_2AMi20o20xxxaax_hibw)
-#unset(APP_COMPILER_FLAGS_2AMi30o30xxxxxx_usb_loopback_hibw)
+
 
 
 project(app_usb_aud_xk_316_mc)
