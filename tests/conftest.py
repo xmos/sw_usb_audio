@@ -85,12 +85,6 @@ def parse_features(board, config):
 
     # Handle HiBW configs
     if(features["hibw"]):
-        '''
-        Note: HiBW can technically be enabled for any config (as long as it is compiled with -DXUD_USB_ISO_MAX_TXNS_PER_MICROFRAME=2) but since
-        we don't have a _hibw in the config name, we can only detect it by the number of input channels.
-        However, nothing stops something like 2AMi18o18xssaax to also be HiBW even though the condition above would detect otherwise, but this is beyond the scope of this check.
-        To make this fully generalised, the config name should have a _hibw to reflect that it supports HiBW.
-        '''
         # This must be a HiBW config. Figure out the max samp freq it can support
         max_txns_per_microframe = 2
         max_txn_length = 1024

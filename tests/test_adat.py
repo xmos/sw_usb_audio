@@ -13,7 +13,6 @@ from conftest import list_configs, get_config_features, AppUsbAudDut, get_xtag_d
 
 adat_smoke_configs = [
     ("xk_216_mc", "2AMi18o18mssaax"),
-    ("xk_316_mc", "2AMi16o16xxxaax"),
     ("xk_316_mc", "2AMi20o20xxxaax_hibw"),
 ]
 

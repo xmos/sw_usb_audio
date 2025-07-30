@@ -15,12 +15,12 @@ if platform.system() == "Darwin":
         ("xk_316_mc", "2AMi18o18mssaax_i2sloopback"),
         ("xk_316_mc", "2AMi8o8xxxxxx_mix8_i2sloopback"),
         ("xk_316_mc", "2SSi8o8xxxxxx_i2sloopback"),
-        ("xk_316_mc", "2AMi20o20xxxaax_hibw_i2sloopback"),
+        ("xk_316_mc", "2AMi32o32xxxxxx_tdm8_mix8_hibw_i2sloopback"),
     ]
 else:
     loopback_smoke_configs = [
         ("xk_316_mc", "2AMi18o18mssaax_i2sloopback"),
-        ("xk_316_mc", "2AMi20o20xxxaax_hibw_i2sloopback"),
+        ("xk_316_mc", "2AMi32o32xxxxxx_tdm8_mix8_hibw_i2sloopback"),
     ]
 
 

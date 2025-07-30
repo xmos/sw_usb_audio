@@ -40,6 +40,15 @@ set(APP_COMPILER_FLAGS_2AMi32o32xxxxxx_tdm8 ${SW_USB_AUDIO_FLAGS} -DXUA_PCM_FORM
                                                                   -DI2S_CHANS_ADC=32
                                                                   -DMAX_FREQ=48000)
 
+# Audio Class 2, Async, I2S Master, 32xInput, 32xOutput, TDM, Mixer enabled
+set(APP_COMPILER_FLAGS_2AMi32o32xxxxxx_tdm8_mix8 ${SW_USB_AUDIO_FLAGS} -DXUA_PCM_FORMAT=XUA_PCM_FORMAT_TDM
+                                                                -DMAX_MIX_COUNT=8
+                                                                -DNUM_USB_CHAN_OUT=32
+                                                                -DI2S_CHANS_DAC=32
+                                                                -DNUM_USB_CHAN_IN=32
+                                                                -DI2S_CHANS_ADC=32
+                                                                -DMAX_FREQ=48000)
+
 # Audio Class 2, Async, I2S Master, 8xInput, 10xOutput, S/PDIF Tx
 set(APP_COMPILER_FLAGS_2AMi8o10xxsxxx ${SW_USB_AUDIO_FLAGS} -DXUA_SPDIF_TX_EN=1)
 
