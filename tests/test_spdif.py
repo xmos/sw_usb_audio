@@ -4,6 +4,7 @@ from pathlib import Path
 import pytest
 import time
 import json
+import platform
 
 from hardware_test_tools.check_analyzer_output import check_analyzer_output
 from hardware_test_tools.AudioAnalyzerHarness import AudioAnalyzerHarness
@@ -60,7 +61,16 @@ def spdif_duration(level, partial):
         duration = 5
     return duration
 
+def get_fs(pytestconfig, features):
+    if (pytestconfig.getoption("level") == "smoke") and (platform.system() == "Windows"):
+        # On Windows smoke run test only the min and max frequencies
+        for f in [min(features["samp_freqs"]), max(features["samp_freqs"])]:
+            yield f
+    else:
+        for f in features["samp_freqs"]:
+            yield f
 
+@pytest.mark.order(1)
 @pytest.mark.uncollect_if(func=spdif_input_uncollect)
 @pytest.mark.parametrize(["board", "config"], list_configs())
 def test_spdif_input(pytestconfig, board, config):
@@ -71,7 +81,7 @@ def test_spdif_input(pytestconfig, board, config):
     fail_str = ""
 
     with AppUsbAudDut(adapter_dut, board, config) as dut:
-        for fs in features["samp_freqs"]:
+        for fs in get_fs(pytestconfig, features):
             assert features["analogue_i"] == 8
             if fs <= 48000:
                 num_in_channels = features["analogue_i"] + 2 + (8 * features["adat_i"])
@@ -134,6 +144,7 @@ def test_spdif_input(pytestconfig, board, config):
         pytest.fail(fail_str)
 
 
+@pytest.mark.order(2)
 @pytest.mark.uncollect_if(func=spdif_output_uncollect)
 @pytest.mark.parametrize(["board", "config"], list_configs())
 def test_spdif_output(pytestconfig, board, config):
@@ -144,7 +155,7 @@ def test_spdif_output(pytestconfig, board, config):
     fail_str = ""
 
     with AppUsbAudDut(adapter_dut, board, config) as dut:
-        for fs in features["samp_freqs"]:
+        for fs in get_fs(pytestconfig, features):
             assert features["analogue_o"] == 8
             num_spdif_out_channels = 2
             if fs <= 48000:

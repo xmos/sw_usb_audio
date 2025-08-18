@@ -5,6 +5,7 @@ pytest==8.3.2
 python-rtmidi==1.5.8
 mido==1.3.2
 pyyaml==6.0.2
+pytest-order==1.3.0
 
 -e git+ssh://git@github.com/xmos/hardware_test_tools.git@71d06ee6d113d2954b3279345f71ba5aaf204be8#egg=hardware_test_tools
 -e git+ssh://git@github0.xmos.com/xmos-int/xtagctl.git@v2.0.0#egg=xtagctl
