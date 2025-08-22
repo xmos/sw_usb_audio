@@ -8,6 +8,7 @@ import shutil
 import yaml
 
 from hardware_test_tools.UaDut import UaDut
+from hardware_test_tools.pnputil_remove_device import remove_xmos_device_nodes
 
 
 def pytest_addoption(parser):
@@ -129,6 +130,10 @@ def parse_features(board, config):
     return features
 
 def pytest_sessionstart(session):
+    if platform.system() == "Windows":
+        print("Deleting any existing device nodes before running tests...")
+        remove_xmos_device_nodes(0x20b1) # remove any existing nodes of previously disconnected devices before running tests
+
     usb_audio_dir = Path(__file__).parents[1]
     app_prefix = "app_usb_aud_"
     exclude_app = ["app_usb_aud_xk_evk_xu316_extrai2s"]

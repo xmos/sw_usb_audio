@@ -9,16 +9,6 @@ def get_xcommon_cmake() {
   sh "git clone -b v1.3.0 git@github.com:xmos/xcommon_cmake"
 }
 
-def clone_test_deps() {
-  dir("${WORKSPACE}") {
-    sh "git clone git@github0.xmos.com:xmos-int/xtagctl"
-    sh "git -C xtagctl checkout v2.0.0"
-
-    sh "git clone git@github.com:xmos/hardware_test_tools"
-    sh "git -C hardware_test_tools checkout 06fc5691a97eff169d6664d5b46ab3cad3e8d980"
-  }
-}
-
 getApproval()
 
 pipeline {
@@ -88,7 +78,6 @@ pipeline {
               }
 
               withTools(params.TOOLS_VERSION) {
-                clone_test_deps()
                 dir("tests") {
                   createVenv(reqFile: "requirements.txt")
                   withVenv() {
@@ -162,7 +151,6 @@ pipeline {
             } // stage('Library checks')
             stage('Build Documentation') {
               steps {
-                clone_test_deps()
                 dir("${REPO}") {
                   dir("tests") {
                     createVenv(reqFile: "requirements.txt")
@@ -207,7 +195,6 @@ pipeline {
 
             dir("${REPO}") {
               checkoutScmShallow()
-              clone_test_deps()
 
               unstash 'xk_216_mc_bin'
               unstash 'xk_evk_xu316_bin'
@@ -215,25 +202,23 @@ pipeline {
               dir("tests") {
                 createVenv(reqFile: "requirements.txt")
                 dir("tools") {
-                  // Build test support application
-                  dir("${WORKSPACE}/hardware_test_tools") {
-                    sh 'cmake -B build -G Ninja'
-                    sh 'ninja -C build'
-
-                    dir("xsig") {
-                      copyArtifacts filter: 'bin-macos-x86/xsig', fingerprintArtifacts: true, projectName: 'xmos-int/xsig/master', flatten: true, selector: lastSuccessful()
-                    }
-                    dir("xmosdfu") {
-                      copyArtifacts filter: 'OSX/x86/xmosdfu', fingerprintArtifacts: true, projectName: 'XMOS/lib_xua/develop', flatten: true, selector: lastSuccessful()
-                    }
-                  }
                   copyArtifacts filter: 'OSX/x86/xmos_mixer', fingerprintArtifacts: true, projectName: 'XMOS/lib_xua/develop', flatten: true, selector: lastSuccessful()
                 }
 
                 withTools(params.TOOLS_VERSION) {
                   withEnv(["USBA_MAC_PRIV_WORKAROUND=1"]) {
                     withVenv() {
-                      sh "pip install -e ${WORKSPACE}/xtagctl"
+                      dir("${env.VIRTUAL_ENV}/src/hardware-test-tools") {
+                        sh 'cmake -B build -G Ninja'
+                        sh 'ninja -C build'
+
+                        dir("xsig") {
+                          copyArtifacts filter: 'bin-macos-x86/xsig', fingerprintArtifacts: true, projectName: 'xmos-int/xsig/master', flatten: true, selector: lastSuccessful()
+                        }
+                        dir("xmosdfu") {
+                          copyArtifacts filter: 'OSX/x86/xmosdfu', fingerprintArtifacts: true, projectName: 'XMOS/lib_xua/develop', flatten: true, selector: lastSuccessful()
+                        }
+                      } // dir("${env.VIRTUAL_ENV}/src/hardware-test-tools")
 
                       withXTAG(["usb_audio_mc_xs2_dut", "usb_audio_mc_xs2_harness", \
                                 "usb_audio_xcai_exp_dut", "usb_audio_xcai_exp_harness"]) { xtagIds ->
@@ -241,6 +226,7 @@ pipeline {
                             -o xk_216_mc_dut=${xtagIds[0]} -o xk_216_mc_harness=${xtagIds[1]} \
                             -o xk_evk_xu316_dut=${xtagIds[2]} -o xk_evk_xu316_harness=${xtagIds[3]}"
                       }
+                      archiveArtifacts artifacts: "${env.VIRTUAL_ENV}/src/hardware-test-tools/xsig/glitch.*.csv", fingerprint: true, allowEmptyArchive: true
                     }
                   }
                 }
@@ -250,7 +236,6 @@ pipeline {
           post {
             always {
               archiveArtifacts artifacts: "${REPO}/tests/pytest_result_mac_intel.xml", fingerprint: true, allowEmptyArchive: true
-              archiveArtifacts artifacts: "${WORKSPACE}/hardware_test_tools/xsig/glitch.*.csv", fingerprint: true, allowEmptyArchive: true
               junit "${REPO}/tests/pytest_result_mac_intel.xml"
             }
             cleanup {
@@ -273,37 +258,35 @@ pipeline {
 
             dir("${REPO}") {
               checkoutScmShallow()
-              clone_test_deps()
 
               unstash 'xk_316_mc_bin'
 
               dir("tests") {
                 createVenv(reqFile: "requirements.txt")
                 dir("tools") {
-                  // Build test support application
-                  dir("${WORKSPACE}/hardware_test_tools") {
-                    sh 'cmake -B build -G Ninja'
-                    sh 'ninja -C build'
-
-                    dir("xsig") {
-                      copyArtifacts filter: 'bin-macos-arm/xsig', fingerprintArtifacts: true, projectName: 'xmos-int/xsig/master', flatten: true, selector: lastSuccessful()
-                    }
-                    dir("xmosdfu") {
-                      copyArtifacts filter: 'OSX/arm64/xmosdfu', fingerprintArtifacts: true, projectName: 'XMOS/lib_xua/develop', flatten: true, selector: lastSuccessful()
-                    }
-                  }
                   copyArtifacts filter: 'OSX/x86/xmos_mixer', fingerprintArtifacts: true, projectName: 'XMOS/lib_xua/develop', flatten: true, selector: lastSuccessful()
                 }
 
                 withTools(params.TOOLS_VERSION) {
                   withEnv(["USBA_MAC_PRIV_WORKAROUND=1"]) {
                     withVenv() {
-                      sh "pip install -e ${WORKSPACE}/xtagctl"
+                      dir("${env.VIRTUAL_ENV}/src/hardware-test-tools") {
+                        sh 'cmake -B build -G Ninja'
+                        sh 'ninja -C build'
+
+                        dir("xsig") {
+                          copyArtifacts filter: 'bin-macos-arm/xsig', fingerprintArtifacts: true, projectName: 'xmos-int/xsig/master', flatten: true, selector: lastSuccessful()
+                        }
+                        dir("xmosdfu") {
+                          copyArtifacts filter: 'OSX/arm64/xmosdfu', fingerprintArtifacts: true, projectName: 'XMOS/lib_xua/develop', flatten: true, selector: lastSuccessful()
+                        }
+                      } // dir("${env.VIRTUAL_ENV}/src/hardware-test-tools")
 
                       withXTAG(["usb_audio_mc_xcai_dut", "usb_audio_mc_xcai_harness"]) { xtagIds ->
                         sh "pytest -v --level ${params.TEST_LEVEL} --junitxml=pytest_result_mac_arm.xml \
                             -o xk_316_mc_dut=${xtagIds[0]} -o xk_316_mc_harness=${xtagIds[1]} "
                       }
+                      archiveArtifacts artifacts: "${env.VIRTUAL_ENV}/src/hardware-test-tools/xsig/glitch.*.csv", fingerprint: true, allowEmptyArchive: true
                     }
                   }
                 }
@@ -313,7 +296,6 @@ pipeline {
           post {
             always {
               archiveArtifacts artifacts: "${REPO}/tests/pytest_result_mac_arm.xml", fingerprint: true, allowEmptyArchive: true
-              archiveArtifacts artifacts: "${WORKSPACE}/hardware_test_tools/xsig/glitch.*.csv", fingerprint: true, allowEmptyArchive: true
               junit "${REPO}/tests/pytest_result_mac_arm.xml"
             }
             cleanup {
@@ -336,35 +318,32 @@ pipeline {
 
             dir("${REPO}") {
               checkoutScmShallow()
-              clone_test_deps()
 
               unstash 'xk_316_mc_bin'
 
               dir("tests") {
                 createVenv(reqFile: "requirements.txt")
                 dir("tools") {
-                  dir("${WORKSPACE}/hardware_test_tools") {
-                    withVS() {
-                      sh "cmake -B build -G Ninja"
-                      sh "ninja -C build"
-                    }
-
-                    dir("xsig") {
-                      copyArtifacts filter: 'bin-windows-x86/xsig.exe', fingerprintArtifacts: true, projectName: 'xmos-int/xsig/master', flatten: true, selector: lastSuccessful()
-                    }
-                  }
                   copyArtifacts filter: 'Win/x64/xmos_mixer.exe', fingerprintArtifacts: true, projectName: 'XMOS/lib_xua/develop', flatten: true, selector: lastSuccessful()
                 }
 
                 withTools(params.TOOLS_VERSION) {
                   withVenv() {
-                    dir("${WORKSPACE}/xtagctl") {
-                      sh "pip install -e ."
-                    }
+                    dir("${env.VIRTUAL_ENV}/src/hardware-test-tools") {
+                      withVS() {
+                        sh "cmake -B build -G Ninja"
+                        sh "ninja -C build"
+                      }
+
+                      dir("xsig") {
+                        copyArtifacts filter: 'bin-windows-x86/xsig.exe', fingerprintArtifacts: true, projectName: 'xmos-int/xsig/master', flatten: true, selector: lastSuccessful()
+                      }
+                    } // dir("${env.VIRTUAL_ENV}/src/hardware-test-tools")
                     withXTAG(["usb_audio_mc_xcai_dut", "usb_audio_mc_xcai_harness"]) { xtagIds ->
                       sh "pytest -v --level ${params.TEST_LEVEL} --junitxml=pytest_result_windows10.xml \
                           -o xk_316_mc_dut=${xtagIds[0]} -o xk_316_mc_harness=${xtagIds[1]} "
                     }
+                    archiveArtifacts artifacts: "${env.VIRTUAL_ENV}/src/hardware-test-tools/xsig/glitch.*.csv", fingerprint: true, allowEmptyArchive: true
                   }
                 }
               }
@@ -373,7 +352,6 @@ pipeline {
           post {
             always {
               archiveArtifacts artifacts: "${REPO}/tests/pytest_result_windows10.xml", fingerprint: true, allowEmptyArchive: true
-              archiveArtifacts artifacts: "${WORKSPACE}/hardware_test_tools/xsig/glitch.*.csv", fingerprint: true, allowEmptyArchive: true
               junit "${REPO}/tests/pytest_result_windows10.xml"
             }
             cleanup {
@@ -396,36 +374,33 @@ pipeline {
 
             dir("${REPO}") {
               checkoutScmShallow()
-              clone_test_deps()
 
               unstash 'xk_316_mc_bin'
 
               dir("tests") {
                 createVenv(reqFile: "requirements.txt")
                 dir("tools") {
-                  dir("${WORKSPACE}/hardware_test_tools") {
-                    withVS() {
-                      sh "cmake -B build -G Ninja"
-                      sh "ninja -C build"
-                    }
-
-                    dir("xsig") {
-                      copyArtifacts filter: 'bin-windows-x86/xsig.exe', fingerprintArtifacts: true, projectName: 'xmos-int/xsig/master', flatten: true, selector: lastSuccessful()
-                    }
-                  }
                   copyArtifacts filter: 'Win/x64/xmos_mixer.exe', fingerprintArtifacts: true, projectName: 'XMOS/lib_xua/develop', flatten: true, selector: lastSuccessful()
                 }
 
                 withTools(params.TOOLS_VERSION) {
                   withVenv() {
-                    dir("${WORKSPACE}/xtagctl") {
-                      sh "pip install -e ."
-                    }
+                    dir("${env.VIRTUAL_ENV}/src/hardware-test-tools") {
+                      withVS() {
+                        sh "cmake -B build -G Ninja"
+                        sh "ninja -C build"
+                      }
+
+                      dir("xsig") {
+                        copyArtifacts filter: 'bin-windows-x86/xsig.exe', fingerprintArtifacts: true, projectName: 'xmos-int/xsig/master', flatten: true, selector: lastSuccessful()
+                      }
+                    } // dir("${env.VIRTUAL_ENV}/src/hardware-test-tools")
 
                     withXTAG(["usb_audio_mc_xcai_dut", "usb_audio_mc_xcai_harness"]) { xtagIds ->
                       sh "pytest -v --level ${params.TEST_LEVEL} --junitxml=pytest_result_windows11.xml \
                           -o xk_316_mc_dut=${xtagIds[0]} -o xk_316_mc_harness=${xtagIds[1]} "
                     }
+                    archiveArtifacts artifacts: "${REPO}/tests/pytest_result_windows11.xml", fingerprint: true, allowEmptyArchive: true
                   }
                 }
               }
@@ -433,8 +408,7 @@ pipeline {
           }
           post {
             always {
-              archiveArtifacts artifacts: "${REPO}/tests/pytest_result_windows11.xml", fingerprint: true, allowEmptyArchive: true
-              archiveArtifacts artifacts: "${WORKSPACE}/hardware_test_tools/xsig/glitch.*.csv", fingerprint: true, allowEmptyArchive: true
+              archiveArtifacts artifacts: "${env.VIRTUAL_ENV}/src/hardware-test-tools/xsig/glitch.*.csv", fingerprint: true, allowEmptyArchive: true
               junit "${REPO}/tests/pytest_result_windows11.xml"
             }
             cleanup {
