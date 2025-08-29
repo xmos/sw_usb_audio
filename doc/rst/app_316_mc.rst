@@ -125,7 +125,7 @@ All of the external audio hardware is configured using `lib_board_support <https
 The hardware targeted is the `XMOS XU316 Multichannel Audio board` (`XK-AUDIO-316-MC`).
 The `lib_board_support` functions :c:func:`xk_audio_316_mc_ab_board_setup()`, :c:func:`xk_audio_316_mc_ab_i2c_master()`,
 :c:func:`xk_audio_316_mc_ab_AudioHwInit()` and :c:func:`xk_audio_316_mc_ab_AudioHwConfig()` are called at various points during initialisation and
-runtime to start the I²C master, initialise and configure the audio hardware.
+runtime to start the I²C master, to initialise and configure the audio hardware.
 
 The audio hardware configuration is set in the ``config`` structure of type ``xk_audio_316_mc_ab_config_t`` which is passed to the :c:func:`xk_audio_316_mc_ab_board_setup()`,
 :c:func:`xk_audio_316_mc_ab_AudioHwInit()` and :c:func:`xk_audio_316_mc_ab_AudioHwConfig()` functions.
@@ -143,9 +143,8 @@ initialisation and it starts the I²C master task. This is required to allow the
 be configured over I²C, remotely from the other tile, due to the IO arrangement of the
 `XK-AUDIO-316-MC` board.
 
-.. literalinclude:: ../../app_usb_aud_xk_316_mc/src/extensions/user_main.h
-  :start-at: on tile[0]: {
-  :end-at: xk_audio_316_mc_ab_i2c_master
+.. literalinclude:: ../../app_usb_aud_xk_316_mc/src/core/xua_conf_tasks.h
+  :start-at: on tile[0]
 
 The :c:func:`AudioHwInit()` function is implemented to make a call to the ``lib_board_support``
 function :c:func:`xk_audio_316_mc_ab_AudioHwInit()` to power up and initialise the audio hardware

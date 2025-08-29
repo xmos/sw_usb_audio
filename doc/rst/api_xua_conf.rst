@@ -15,11 +15,11 @@ This section documents commonly used defines, for full listings and documentatio
 Code location (tile)
 --------------------
 
-.. doxygendefine:: AUDIO_IO_TILE
-.. doxygendefine:: XUD_TILE
-.. doxygendefine:: MIDI_TILE
-.. doxygendefine:: PLL_REF_TILE
-.. doxygendefine:: SPDIF_TX_TILE
+.. doxygendefine:: XUA_AUDIO_IO_TILE_NUM
+.. doxygendefine:: XUA_XUD_TILE_NUM
+.. doxygendefine:: XUA_MIDI_TILE_NUM
+.. doxygendefine:: XUA_PLL_REF_TILE_NUM
+.. doxygendefine:: XUA_SPDIF_TX_TILE_NUM
 
 Channel counts
 --------------
