@@ -13,7 +13,7 @@ set(SW_USB_AUDIO_FLAGS ${EXTRA_BUILD_FLAGS} -O3
                                             -g
                                             -fxscope
                                             -DBOARD_SUPPORT_BOARD=XK_AUDIO_316_MC_AB
-                                            -DXUA_DESC_INPUT_TYPE_LINE_IN
+                                            -DXUA_DESC_INPUT_TYPE_LINE_IN=1
                                             -DADAT_TX_USE_SHARED_BUFF=1)
 
 ## HiBW configs
