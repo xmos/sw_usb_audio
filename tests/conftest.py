@@ -19,7 +19,18 @@ def pytest_addoption(parser):
         choices=["smoke", "nightly", "weekend"],
         help="Test coverage level",
     )
-
+    parser.addoption(
+        "--use-sendmidi",
+        action="store_true",
+        help="Use sendmidi tool for MIDI tests on MacOS",
+    )
+    parser.addoption(
+        "--midi-send-delay",
+        action="store",
+        type=float,
+        default=0,
+        help="Delay (in seconds) to introduce between consecutive MIDI messages (default: 0)",
+    )
     parser.addini("xk_216_mc_dut", help="XTAG ID for xk_216_mc DUT")
     parser.addini("xk_216_mc_harness", help="XTAG ID for xk_216_mc harness")
     parser.addini("xk_316_mc_dut", help="XTAG ID for xk_316_mc DUT")

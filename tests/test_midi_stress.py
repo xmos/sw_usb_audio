@@ -9,9 +9,7 @@ import platform
 
 
 from test_midi import (
-    input_midi_file_name,
-    output_midi_file_name,
-    run_midi_test_file
+    run_midi_seq_id
     )
 
 from hardware_test_tools.check_analyzer_output import check_analyzer_output
@@ -61,7 +59,13 @@ def test_midi_loopback_stress(pytestconfig, board, config):
     (not the harness xscope output) because as soon as you stop either the harness or xsig the
     other will throw an error due to real-time checking.
     """
+    if config.startswith("1") and platform.system() == "Windows":
+        pytest.xfail("UAC1.0 when running with Windows builtin MIDI driver has issues.")
+
     print(f"*** starting test_midi_loopback_stress:  {board} {config}")
+
+    send_delay = pytestconfig.getoption("midi_send_delay")
+    print(f"midi_send_delay = {send_delay} seconds")
 
     features = get_config_features(board, config)
 
@@ -80,6 +84,7 @@ def test_midi_loopback_stress(pytestconfig, board, config):
         midi_port_wait_timeout = 10
         num_restarts = 3
 
+    log_file_name = f"midi_stress_{board}_{config}"
     with AppUsbAudDut(adapter_dut, board, config) as dut:
 
         dut.set_stream_format("input", fs_audio, features["chan_i"], 24)
@@ -104,7 +109,7 @@ def test_midi_loopback_stress(pytestconfig, board, config):
 
                 # Keep looping midi_test until time up
                 while time.time() < time_start + duration + xsig_completion_time_s + 10:
-                    run_midi_test_file(input_midi_file_name, output_midi_file_name, in_port, out_port)
+                    run_midi_seq_id(in_port, out_port, send_delay_s=send_delay, log_file_name=log_file_name)
 
         xsig_lines = xsig_proc_in.proc_output
 
