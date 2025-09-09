@@ -19,7 +19,7 @@ def get_configs_from_cmake_output(cmake_cmd, app_dir):
     output_dict = {}
     for app in m:
         app_name = app.splitlines()[0].split(':')[1].strip()
-        configs = [f.split()[1].strip() for f in app.splitlines()[2:-1]]
+        configs = [f.split()[1].strip() for f in app.splitlines()[2:-1] if "Fetching" not in f]
         output_dict.setdefault(app_name, []).extend(configs)
     return output_dict
 
@@ -60,7 +60,7 @@ def main():
         with open(repo_file) as fp:
             try:
                 current_dict = yaml.safe_load(fp) # currently committed dictionary
-                assert config_dict == current_dict, f"{repo_file} is out of date. Run <python tests/tools/app_configs_autogen/collect_configs.py update> from the sw_usb_audio directory to update"
+                assert config_dict == current_dict, f"{repo_file} is out of date. Run <python tests/tools/app_configs_autogen/collect_configs.py update> from the sw_usb_audio directory to update.\n{config_dict}\n{current_dict}"
                 print(f"{repo_file} is up to date. No action required.")
             except yaml.YAMLError as exc:
                 print(exc)

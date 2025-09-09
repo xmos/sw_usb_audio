@@ -9,6 +9,7 @@ set(SW_USB_AUDIO_FLAGS ${EXTRA_BUILD_FLAGS} -O3
                                             -report
                                             -lquadflash
                                             -g
+                                            -Wall
                                             -fxscope
                                             -DBOARD_SUPPORT_BOARD=XK_AUDIO_216_MC_AB
                                             -DADAT_TX_USE_SHARED_BUFF=1)
