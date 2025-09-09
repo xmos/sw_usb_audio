@@ -79,7 +79,12 @@ def parse_features(board, config):
         if config.startswith("1"):
             features["pid"] = (0x17, 0xD017)
         else:
-            features["pid"] = (0x16, 0xD016) if "_winbuiltin" not in config else (0x1A, 0xD01A)
+            if "_winbuiltin" in config:
+                features["pid"] = (0x1A, 0xD01A)
+            elif features["midi"]:
+                features["pid"] = (0x20, 0xD020)
+            else:
+                features["pid"] = (0x16, 0xD016)
     elif board == "xk_evk_xu316":
         if config.startswith("1"):
             features["pid"] = (0x19, 0xD019)

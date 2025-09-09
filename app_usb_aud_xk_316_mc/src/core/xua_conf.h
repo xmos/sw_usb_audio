@@ -135,7 +135,14 @@
 /*** Defines relating to USB descriptor strings and ID's ***/
 #define VENDOR_ID          (0x20B1) /* XMOS VID */
 #ifndef PID_AUDIO_2
-#define PID_AUDIO_2        (0x0016)
+#if MIDI
+    #define PID_AUDIO_2        (0x0020) /* Enumerate with a different PID since the
+                                         * interface numbering is different between MIDI
+                                         * enabled vs disabled and the Thesycon driver doesnt
+                                         * support different interfae layouts with the same PID */
+#else
+    #define PID_AUDIO_2        (0x0016)
+#endif
 #endif
 #ifndef PID_AUDIO_1
 #define PID_AUDIO_1        (0x0017)
