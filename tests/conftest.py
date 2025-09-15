@@ -19,7 +19,18 @@ def pytest_addoption(parser):
         choices=["smoke", "nightly", "weekend"],
         help="Test coverage level",
     )
-
+    parser.addoption(
+        "--use-sendmidi",
+        action="store_true",
+        help="Use sendmidi tool for MIDI tests on MacOS",
+    )
+    parser.addoption(
+        "--midi-send-delay",
+        action="store",
+        type=float,
+        default=0,
+        help="Delay (in seconds) to introduce between consecutive MIDI messages (default: 0)",
+    )
     parser.addini("xk_216_mc_dut", help="XTAG ID for xk_216_mc DUT")
     parser.addini("xk_216_mc_harness", help="XTAG ID for xk_216_mc harness")
     parser.addini("xk_316_mc_dut", help="XTAG ID for xk_316_mc DUT")
@@ -68,7 +79,12 @@ def parse_features(board, config):
         if config.startswith("1"):
             features["pid"] = (0x17, 0xD017)
         else:
-            features["pid"] = (0x16, 0xD016) if "_winbuiltin" not in config else (0x1A, 0xD01A)
+            if "_winbuiltin" in config:
+                features["pid"] = (0x1A, 0xD01A)
+            elif features["midi"]:
+                features["pid"] = (0x20, 0xD020)
+            else:
+                features["pid"] = (0x16, 0xD016)
     elif board == "xk_evk_xu316":
         if config.startswith("1"):
             features["pid"] = (0x19, 0xD019)

@@ -4,6 +4,8 @@ sw_usb_audio change log
 UNRELEASED
 ----------
 
+  * CHANGED: app_usb_aud_xk_316_mc, UAC2.0, MIDI enabled configurations enumerate with a
+    a different PID (0x0020)
   * CHANGED:   app_usb_aud_xk_316_mc and app_usb_aud_xk_evk_xu316 now use
     lib_xua optional header files to add custom functionalty rather than defines
     such as USER_MAIN_TASKS and USER_MAIN_DECLARATIONS

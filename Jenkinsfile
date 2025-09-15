@@ -231,7 +231,7 @@ pipeline {
                                 "usb_audio_xcai_exp_dut", "usb_audio_xcai_exp_harness"]) { xtagIds ->
                         sh "pytest -v --level ${params.TEST_LEVEL} --junitxml=pytest_result_mac_intel.xml \
                             -o xk_216_mc_dut=${xtagIds[0]} -o xk_216_mc_harness=${xtagIds[1]} \
-                            -o xk_evk_xu316_dut=${xtagIds[2]} -o xk_evk_xu316_harness=${xtagIds[3]}"
+                            -o xk_evk_xu316_dut=${xtagIds[2]} -o xk_evk_xu316_harness=${xtagIds[3]} --midi-send-delay 0.001"
                       }
                       archiveArtifacts artifacts: "${env.VIRTUAL_ENV}/src/hardware-test-tools/xsig/glitch.*.csv", fingerprint: true, allowEmptyArchive: true
                     }
@@ -242,6 +242,7 @@ pipeline {
           }
           post {
             always {
+              archiveArtifacts artifacts: "${REPO_NAME}/tests/*.log", fingerprint: true, allowEmptyArchive: true
               archiveArtifacts artifacts: "${REPO_NAME}/tests/pytest_result_mac_intel.xml", fingerprint: true, allowEmptyArchive: true
               junit "${REPO_NAME}/tests/pytest_result_mac_intel.xml"
             }
@@ -302,6 +303,7 @@ pipeline {
           }
           post {
             always {
+              archiveArtifacts artifacts: "${REPO_NAME}/tests/*.log", fingerprint: true, allowEmptyArchive: true
               archiveArtifacts artifacts: "${REPO_NAME}/tests/pytest_result_mac_arm.xml", fingerprint: true, allowEmptyArchive: true
               junit "${REPO_NAME}/tests/pytest_result_mac_arm.xml"
             }
@@ -358,6 +360,7 @@ pipeline {
           }
           post {
             always {
+              archiveArtifacts artifacts: "${REPO_NAME}/tests/*.log", fingerprint: true, allowEmptyArchive: true
               archiveArtifacts artifacts: "${REPO_NAME}/tests/pytest_result_windows10.xml", fingerprint: true, allowEmptyArchive: true
               junit "${REPO_NAME}/tests/pytest_result_windows10.xml"
             }
@@ -406,7 +409,7 @@ pipeline {
                       sh "pytest -v --level ${params.TEST_LEVEL} --junitxml=pytest_result_windows11.xml \
                           -o xk_316_mc_dut=${xtagIds[0]} -o xk_316_mc_harness=${xtagIds[1]}"
                     }
-                    archiveArtifacts artifacts: "${REPO_NAME}/tests/pytest_result_windows11.xml", fingerprint: true, allowEmptyArchive: true
+                    archiveArtifacts artifacts: "${env.VIRTUAL_ENV}/src/hardware-test-tools/xsig/glitch.*.csv", fingerprint: true, allowEmptyArchive: true
                   }
                 }
               }
@@ -414,7 +417,8 @@ pipeline {
           }
           post {
             always {
-              archiveArtifacts artifacts: "${env.VIRTUAL_ENV}/src/hardware-test-tools/xsig/glitch.*.csv", fingerprint: true, allowEmptyArchive: true
+              archiveArtifacts artifacts: "${REPO_NAME}/tests/*.log", fingerprint: true, allowEmptyArchive: true
+              archiveArtifacts artifacts: "${REPO_NAME}/tests/pytest_result_windows11.xml", fingerprint: true, allowEmptyArchive: true
               junit "${REPO_NAME}/tests/pytest_result_windows11.xml"
             }
             cleanup {
