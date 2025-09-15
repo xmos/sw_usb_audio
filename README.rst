@@ -9,7 +9,7 @@ sw_usb_audio: USB Audio reference designs
 :scope: General Use
 :description: USB Audio reference designs
 :category: Audio
-:keywords: USB Audio, DFU, USB, I2S, ADAT, SPDIF, TDM
+:keywords: USB Audio, DFU, USB, I2S, ADAT, SPDIF
 :hardware: XK-AUDIO-216-MC, XK-AUDIO-316-MC, XK-EVK-XU316
 
 *******
@@ -35,7 +35,7 @@ may not be complete.
 These early releases are not suitable for a production context, and are provided for evaluation
 purposes only. See 'Release Quality & QA'.
 
-Refere to CHANGELOG.rst for detailed change listing.
+Refer to CHANGELOG.rst for detailed change listing.
 
 For full software documentation please see the USB Audio User Guide document.
 
@@ -183,7 +183,7 @@ For board/application specific known issues please see README in relevant app di
 Development repo
 ****************
 
-  * `sw_usb_audio <https://www.github.com/xmos/sw_usb_audio>`_
+ * `sw_usb_audio <https://www.github.com/xmos/sw_usb_audio>`_ (https://www.github.com/xmos/sw_usb_audio)
 
 ************************
 Host system requirements
@@ -192,52 +192,52 @@ Host system requirements
 USB Audio Class 1.0
 ===================
 
- * macOS version 10.6 or later
- * Windows 10 or 11 with built-in USB Audio Class 1.0 driver.
+* macOS version 10.6 or later
+* Windows 10 or 11 with built-in USB Audio Class 1.0 driver.
 
 USB Audio Class 2.0
 ===================
 
- * macOS version 10.6 or later
- * Windows 10 or 11 with built-in USB Audio Class 2.0 driver.
- * Windows 10 or 11 using built-in or Thesycon Audio Class 2.0 driver for Windows (Tested against version Thesycon driver version 5.70.0)
+* macOS version 10.6 or later
+* Windows 10 or 11 with built-in USB Audio Class 2.0 driver.
+* Windows 10 or 11 using built-in or Thesycon Audio Class 2.0 driver for Windows (Tested against version Thesycon driver version 5.70.0)
 
 **************
 Required tools
 **************
 
- * XMOS XTC Tools: 15.3.0
+* XMOS XTC Tools: 15.3.1
 
 *********************************
 Required libraries (dependencies)
 *********************************
 
- * `lib_sw_pll <https://www.xmos.com/file/lib_sw_pll>`_
- * `lib_xua <https://www.xmos.com/file/lib_xua>`_
- * `lib_adat <https://www.xmos.com/file/lib_adat>`_
- * `lib_locks <https://www.xmos.com/file/lib_locks>`_
- * `lib_logging <https://www.xmos.com/file/lib_logging>`_
- * `lib_mic_array <https://www.xmos.com/file/lib_mic_array>`_
- * `lib_xassert <https://www.xmos.com/file/lib_xassert>`_
- * `lib_xcore_math <https://www.xmos.com/file/lib_xcore_math>`_
- * `lib_spdif <https://www.xmos.com/file/lib_spdif>`_
- * `lib_xud <https://www.xmos.com/file/lib_xud>`_
- * `lib_i2c <https://www.xmos.com/file/lib_i2c>`_
- * `lib_i2s <https://www.xmos.com/file/lib_i2s>`_
+* `lib_sw_pll <https://www.xmos.com/file/lib_sw_pll>`_ (https://www.xmos.com/libraries/lib_sw_pll)
+* `lib_xua <https://www.xmos.com/file/lib_xua>`_ (https://www.xmos.com/libraries/lib_xua)
+* `lib_adat <https://www.xmos.com/file/lib_adat>`_ (https://www.xmos.com/libraries/lib_adat)
+* `lib_locks <https://www.xmos.com/file/lib_locks>`_ (https://www.xmos.com/libraries/lib_locks)
+* `lib_logging <https://www.xmos.com/file/lib_logging>`_ (https://www.xmos.com/libraries/lib_logging)
+* `lib_mic_array <https://www.xmos.com/file/lib_mic_array>`_ (https://www.xmos.com/libraries/lib_mic_array)
+* `lib_xassert <https://www.xmos.com/file/lib_xassert>`_ (https://www.xmos.com/libraries/lib_xassert)
+* `lib_xcore_math <https://www.xmos.com/file/lib_xcore_math>`_ (https://www.xmos.com/libraries/lib_xcore_math)
+* `lib_spdif <https://www.xmos.com/file/lib_spdif>`_ (https://www.xmos.com/libraries/lib_spdif)
+* `lib_xud <https://www.xmos.com/file/lib_xud>`_ (https://www.xmos.com/libraries/lib_xud)
+* `lib_i2c <https://www.xmos.com/file/lib_i2c>`_ (https://www.xmos.com/libraries/lib_i2c)
+* `lib_i2s <https://www.xmos.com/file/lib_i2s>`_ (https://www.xmos.com/libraries/lib_i2s)
 
 
 *************************
 Related application notes
 *************************
 
- * `AN02019: Using Device Firmware Upgrade (DFU) for USB Audio <https://www.xmos.com/file/an02019>`_
- * `AN00136: Example USB Vendor Specific Device <https://www.xmos.com/file/an00136>`_
- * `AN02026: Blocked DSP inside USB Audio <https://www.xmos.com/file/an02026>`_
- * `AN01009: Optimizing USB Audio for stereo output, battery powered device <https://www.xmos.com/file/an01009>`_
+* `AN02019: Using Device Firmware Upgrade (DFU) for USB Audio <https://www.xmos.com/file/an02019>`_
+* `AN00136: Example USB Vendor Specific Device <https://www.xmos.com/file/an00136>`_
+* `AN02026: Blocked DSP inside USB Audio <https://www.xmos.com/file/an02026>`_
+* `AN01009: Optimizing USB Audio for stereo output, battery powered device <https://www.xmos.com/file/an01009>`_
 
 *******
 Support
 *******
 
 This package is supported by XMOS Ltd. Issues can be raised against the software at
-`http://www.xmos.com/support <http://www.xmos.com/support>`_
+`www.xmos.com/support <https://www.xmos.com/support>`_ or using GitHub `issues <https://github.com/xmos/sw_usb_audio/issues>`_.
