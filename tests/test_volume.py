@@ -16,6 +16,8 @@ from conftest import get_config_features, AppUsbAudDut, get_xtag_dut_and_harness
 volume_configs = [
     ("xk_316_mc", "2AMi10o10xssxxx"),
     ("xk_evk_xu316", "2AMi2o2xxxxxx"),
+    ("xk_316_mc", "2AMi32o32xxxxxx_tdm8_mix8_hibw"),
+    ("xk_316_mc", "2AMi32o32xxxxxx_tdm8_hibw"),
 ]
 
 
@@ -36,6 +38,8 @@ def test_volume_input(pytestconfig, board, config):
     features = get_config_features(board, config)
     fs = max(features["samp_freqs"])
     num_chans = features["analogue_i"]
+    if board == "xk_316_mc" and features["tdm8"]:
+        num_chans = 4 # Can only test 4 analogue input channels in tdm without jumper change
     test_chans = ["m", *range(num_chans)]
 
     duration = 30
@@ -114,6 +118,8 @@ def test_volume_output(pytestconfig, board, config):
     features = get_config_features(board, config)
     fs = max(features["samp_freqs"])
     num_chans = features["analogue_o"]
+    if board == "xk_316_mc" and features["tdm8"]:
+        num_chans = 2 # Can only test 2 analogue output channels in tdm without jumper change
     test_chans = ["m", *range(num_chans)]
 
     xsig_config = f"mc_analogue_output_{num_chans}ch.json"

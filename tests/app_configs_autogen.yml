@@ -21,6 +21,7 @@ app_usb_aud_xk_216_mc:
 app_usb_aud_xk_316_mc:
   full_configs:
   - 2AMi20o20xxxaax_hibw
+  - 2AMi32o32xxxxxx_tdm8_mix8_hibw
   - 1SMi2o2xxxxxx
   - 2AMi10o10xssxxx
   - 2AMi16o16xxxaax
@@ -33,8 +34,10 @@ app_usb_aud_xk_316_mc:
   - 2SMi8o8xxxxxx
   - 2SSi8o8xxxxxx
   partial_configs:
+  - 2AMi24o24xxxxxx_tdm8_mix8_hibw
   - 2AMi30o30xxxaax_hibw
   - 2AMi30o30xxxxxx_hibw
+  - 2AMi32o32xxxxxx_tdm8_hibw
   - 1AMi2o2xxxxxx
   - 1SMi2o2mxxxxx
   - 2AMi10o8xsxxxx
@@ -43,6 +46,7 @@ app_usb_aud_xk_316_mc:
   - 2AMi2o2xxxxxx
   - 2AMi2o2xxxxxx_lp
   - 2AMi32o32xxxxxx_tdm8
+  - 2AMi32o32xxxxxx_tdm8_mix8
   - 2AMi8o10xxsxxx
   - 2AMi8o10xxsxxx_mix8
   - 2AMi8o16xxxxax
