@@ -10,7 +10,7 @@
 #include "xua_conf_full.h"
 
 #if HID_CONTROLS > 0
-in port p_sw = on tile[XUD_TILE] : XS1_PORT_4B;
+in port p_sw = on tile[XUA_XUD_TILE_NUM] : XS1_PORT_4B;
 
 #define P_GPI_BUTA_SHIFT        0x00
 #define P_GPI_BUTA_MASK         (1<<P_GPI_BUTA_SHIFT)

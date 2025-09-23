@@ -14,18 +14,18 @@ ADAT and MIDI input and output as well as the mixing functionalty of ``lib_xua``
 
 The design uses the following tasks:
 
- * XMOS USB Device Driver (XUD)
- * Endpoint 0
- * Endpoint Buffer
- * Decoupler
- * AudioHub Driver
- * Mixer
- * S/PDIF Transmitter
- * S/PDIF Receiver
- * ADAT Transmitter
- * ADAT Receiver
- * Clockgen
- * MIDI
+* XMOS USB Device Driver (XUD)
+* Endpoint 0
+* Endpoint Buffer
+* Decoupler
+* AudioHub Driver
+* Mixer
+* S/PDIF Transmitter
+* S/PDIF Receiver
+* ADAT Transmitter
+* ADAT Receiver
+* Clockgen
+* MIDI
 
 The software layout of the USB Audio 2.0 Reference Design running on the
 `xcore.ai` device is shown in :numref:`usb_audio_ai_threads`.

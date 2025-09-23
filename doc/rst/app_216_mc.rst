@@ -14,17 +14,17 @@ ADAT and MIDI input and output as well as the mixing functionalty of ``lib_xua``
 
 The design uses the following tasks:
 
- * XMOS USB Device Driver (XUD)
- * Endpoint 0
- * Endpoint Buffer
- * Decoupler
- * AudioHub Driver
- * Mixer
- * S/PDIF Transmitter
- * S/PDIF Receiver
- * ADAT Receiver
- * Clockgen
- * MIDI
+* XMOS USB Device Driver (XUD)
+* Endpoint 0
+* Endpoint Buffer
+* Decoupler
+* AudioHub Driver
+* Mixer
+* S/PDIF Transmitter
+* S/PDIF Receiver
+* ADAT Receiver
+* Clockgen
+* MIDI
 
 The software layout of the USB Audio 2.0 Reference Design running on the
 `xcore.ai` device is shown in :numref:`usb_audio_x200_threads`.
@@ -59,10 +59,10 @@ Clocking and Clock Selection
 
 The board includes two options for master clock generation:
 
-    * A single oscillator with a Phaselink PLL to generate fixed 24.576MHz and 22.5792MHz
-      master-clocks.
-    * A Cirrus Logic CS2100 clock multiplier allowing the master clock to be generated from a
-      `xcore` derived reference clock.
+* A single oscillator with a Phaselink PLL to generate fixed 24.576MHz and 22.5792MHz
+  master-clocks.
+* A Cirrus Logic CS2100 clock multiplier allowing the master clock to be generated from a
+  `xcore` derived reference clock.
 
 The master clock source is controlled by a mux which, in turn, is controlled by bit 5 of `PORT 8C`:
 

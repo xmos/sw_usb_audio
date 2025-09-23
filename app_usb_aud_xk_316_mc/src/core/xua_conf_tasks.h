@@ -2,7 +2,7 @@
 // This Software is subject to the terms of the XMOS Public Licence: Version 1.
 
 #if HID_CONTROLS > 0
-on tile[XUD_TILE]: UserHIDPoll();
+on tile[XUA_XUD_TILE_NUM]: UserHIDPoll();
 #endif
 
 on tile[0]: {

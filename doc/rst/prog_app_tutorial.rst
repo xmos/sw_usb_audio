@@ -13,20 +13,20 @@ code is used from the application for `XK-AUDIO-316-MC` (``app_usb_aud_xk_316_mc
 
 Each application directory contains:
 
-    #. A ``CMakeLists.txt``
+* A ``CMakeLists.txt``
 
-    #. A ``src`` directory
+* A ``src`` directory
 
 The ``src`` directory is arranged into two directories:
 
-    #. A ``core`` directory containing source items that must be made available to the USB Audio framework i.e. ``lib_xua``.
+* A ``core`` directory containing source items that must be made available to the USB Audio framework i.e. ``lib_xua``.
 
-    #. An ``extensions`` directory that includes extensions to the framework such as external device configuration etc
+* An ``extensions`` directory that includes extensions to the framework such as external device configuration etc
 
 The ``core`` folder for each application contains:
 
-    #. A ``.xn`` file to describe the hardware platform the application will run on
-    #. An optional header file to customise the framework provided by ``lib_xua`` named ``xua_conf.h``
+* A ``.xn`` file to describe the hardware platform the application will run on
+* An optional header file to customise the framework provided by ``lib_xua`` named ``xua_conf.h``
 
 ``lib_xua`` configuration
 -------------------------
