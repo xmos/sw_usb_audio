@@ -126,11 +126,11 @@
 #endif
 
 /*** Defines relating to feature placement regarding tiles ***/
-#define XUD_TILE           (0)
-#define PLL_REF_TILE       (0)
+#define XUA_XUD_TILE_NUM           (0)
+#define XUA_PLL_REF_TILE_NUM       (0)
 
-#define AUDIO_IO_TILE      (1)
-#define MIDI_TILE          (1)
+#define XUA_AUDIO_IO_TILE_NUM      (1)
+#define XUA_MIDI_TILE_NUM          (1)
 
 /*** Defines relating to USB descriptor strings and ID's ***/
 #define VENDOR_ID          (0x20B1) /* XMOS VID */

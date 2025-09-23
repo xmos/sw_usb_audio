@@ -9,7 +9,7 @@
 #if HID_CONTROLS > 0
 void UserHIDPoll();
 
-#define USER_MAIN_CORES on tile[XUD_TILE]: {\
+#define USER_MAIN_CORES on tile[XUA_XUD_TILE_NUM]: {\
                                         UserHIDPoll();\
                                     }
 #endif  // HID_CONTROLS > 0

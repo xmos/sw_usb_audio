@@ -25,8 +25,8 @@
 #define PORT_MCLK_COUNT    XS1_PORT_16B
 
 /* Tile defines */
-#define AUDIO_IO_TILE      (1)
-#define XUD_TILE           (0)
+#define XUA_AUDIO_IO_TILE_NUM      (1)
+#define XUA_XUD_TILE_NUM           (0)
 
 /* Mixer core disabled by default */
 #ifndef MIXER
