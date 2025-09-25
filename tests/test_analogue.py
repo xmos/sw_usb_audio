@@ -163,6 +163,7 @@ def test_analogue_output(pytestconfig, board, config):
                 # Run the analyser using `xrun --xscope-port`, and override the smux command from the host
                 # to synchronize startup — this ensures the analyser is running before we proceed.
                 ctrl_out, ctrl_err = harness.xscope_controller_cmd([f"x 1"])
+                time.sleep(2)
 
                 with(XsigOutput(fs, 0, xsig_config_path, dut.dev_name) as xsig_proc):
                     time.sleep(duration)
