@@ -1,16 +1,95 @@
 sw_usb_audio change log
 =======================
 
-UNRELEASED
-----------
+9.2.0
+-----
 
-  * CHANGED: app_usb_aud_xk_316_mc, UAC2.0, MIDI enabled configurations enumerate with a
-    a different PID (0x0020)
+  * CHANGED: app_usb_aud_xk_316_mc, UAC2.0, MIDI enabled configurations
+    enumerate with a a different PID (0x0020)
   * CHANGED:   app_usb_aud_xk_316_mc and app_usb_aud_xk_evk_xu316 now use
     lib_xua optional header files to add custom functionalty rather than defines
     such as USER_MAIN_TASKS and USER_MAIN_DECLARATIONS
-  * ADDED: high bandwidth ISO endpoints build configurations (2AMi20o20xxxaax_hibw,
-    2AMi30o30xxxxxx_hibw and 2AMi30o30xxxaax_hibw) to app_usb_aud_xk_316_mc
+  * ADDED: high bandwidth ISO endpoints build configurations
+    (2AMi20o20xxxaax_hibw, 2AMi30o30xxxxxx_hibw and 2AMi30o30xxxaax_hibw) to
+    app_usb_aud_xk_316_mc
+
+  * Changes to dependencies:
+
+    - lib_locks: 2.3.1 -> 2.3.2
+
+      + ADDED:     locks.h which includes all lock functions
+      + CHANGED:   Minor documentation updates
+
+    - lib_logging: 3.3.1 -> 3.4.0
+
+      + CHANGED: Renamed application note "AN00239" to example "app_debug_unit",
+        merged app-note documentation into library documentation.
+      + FIXED:     Fixed type conversion warnings
+
+    - lib_spdif: 6.2.1 -> 7.0.0
+
+      + ADDED: Support for transmitting IEC 60958-4 professional applications
+        channel status block
+      + ADDED: Support for transmitting 16, 20 or 24 bit data with the word
+        length being configurable at run-time
+      + CHANGED: Pre-fill the SPDIF TX port buffers before starting actual data
+        transfer
+      + CHANGED: Channel protocol when communicating with the transmitter to
+        include audio sample word length
+
+    - lib_xua: 5.1.0 -> 5.2.0
+
+      + ADDED:     Support for optional include header ``xua_conf_tasks.h`` with
+        the same functionality as ``xua_conf_cores.h`` i.e. to allow insertion
+        of tasks into the ``main()`` function (``xua_conf_cores.h`` to be
+        deprecated in a future release) ADDED:     Support for define
+        ``USER_MAIN_TASKS`` with the same functionalty as ``USER_MAIN_CORES``
+        i.e. to allow insertion of tasks into the `main()` function
+        (``USER_MAIN_CORES`` to be deprecated in a future release)
+      + ADDED:     Support for high bandwidth ISO endpoints
+      + ADDED:     Delay in ``AudioHub()`` to allow time for the audio PLL to 
+        lock and master clock stabilise
+      + ADDED:     Change to reset `Software` PLL DCO setting to midpoint when
+        there's a change in clock source
+      + ADDED:     Where possible ``_TILE_NUM`` defines are now derived from
+        ``PORT_`` defines in the application XN file
+      + ADDED:    Check for I2S timing violation. Can be enabled by running
+        cmake with -DENABLE_I2S_TIMING_CHECK=ON
+      + CHANGED:   When `Software PLL` is enabled, report external clock as
+        invalid when the USB sampling frequency doesn't match the digital input
+        sampling frequency
+      + CHANGED:   ``AUDIO_IO_TILE`` renamed to ``XUA_AUDIO_IO_TILE_NUM``
+      + CHANGED:   ``XUA_TILE`` renamed to ``XUA_XUD_TILE_NUM``
+      + CHANGED:   ``MIDI_TILE`` renamed to ``XUA_MIDI_TILE_NUM``
+      + CHANGED:   ``SPDIF_TX_TILE`` renamed to ``XUA_SPDIF_TX_TILE_NUM``
+      + CHANGED:   ``PDM_TILE`` renamed to ``XUA_MIC_PDM_TILE_NUM``
+      + CHANGED:   ``PLL_REF_TILE`` renamed to ``XUA_PLL_REF_TILE_NUM``
+      + CHANGED:   Supported optional configuration header files
+        ``user_main_cores.h``, ``user_main_declarations.h`` and
+        ``user_main_globals.h`` should now be named ``xua_conf_cores.h``,
+        ``xua_conf_declarations.h`` and ``xua_conf_globals.h`` respectively
+      + CHANGED:   Renamed AN00246 example to app_xua
+      + CHANGED:   Mixer optimisation to do output volume control after mixing,
+        instead of in GiveSamplesToDevice()
+      + CHANGED:   Mixer optimisation to speed up sample exchange between mixer
+        and audiohub, to fix I2S timing violation causing intermittent test
+        failures
+      + CHANGED:  Channel protocol between audiohub and SDFIF TX extended to
+        communicate SPDIF audio sample length
+      + FIXED:     Issue with master clock not present for digital receive
+        (only) configs when using the `Software PLL`
+      + FIXED:     Reset `Software PLL` phase/frequency detector when digital
+        clock becomes invalid to prevent incorrect error input to sigma-delta
+        modulator
+      + FIXED:     Incorrect values of bLockDelayUnits and bLockDelay in async
+        mode
+      + REMOVED:   Application notes AN00247 and AN00248 from examples folder.
+        Instead see https://www.xmos.com/application-notes/
+
+    - lib_xud: 3.0.1 -> 4.0.0
+
+      + ADDED: Support for high bandwidth ISO endpoints
+      + REMOVED: Support for legacy API XUD_Manager()
 
 9.1.0
 -----
@@ -186,8 +265,8 @@ UNRELEASED
 
     - lib_logging: 3.2.0 -> 3.3.1
 
-      + CHANGED: Documentation updates
-      + CHANGED: Build applications using XCommon CMake instead of XCommon
+      + CHANGED:   Documentation updates
+      + CHANGED:   Build applications using XCommon CMake instead of XCommon
 
     - lib_mic_array: 4.6.0 -> 5.4.0
 
@@ -412,7 +491,7 @@ UNRELEASED
 
     - lib_logging: 3.1.1 -> 3.2.0
 
-      + ADDED:   Support for XCommon CMake build system
+      + ADDED:     Support for XCommon CMake build system
 
     - lib_mic_array: 4.5.0 -> 4.6.0
 
@@ -666,15 +745,16 @@ UNRELEASED
 
     - lib_logging: 2.0.1 -> 3.1.1
 
-      + CHANGED: Jenkinsfile used for CI
-      + CHANGED: Use XMOS Public Licence Version 1
-      + REMOVED: not necessary cpanfile
-      + CHANGED: Pin Python package versions
-      + CHANGED: Build files updated to support new "xcommon" behaviour in xwaf.
-      + CHANGE:   Test runner script now terminates correctly on Windows
-      + ADDED:    Now supports the %p format specifier
-      + CHANGE:   Ignore the case of the format specifiers
-      + CHANGE:   Ignore padding and alignment characters
+      + CHANGED:   Jenkinsfile used for CI
+      + CHANGED:   Use XMOS Public Licence Version 1
+      + REMOVED:   Not necessary cpanfile
+      + CHANGED:   Pin Python package versions
+      + CHANGED:   Build files updated to support new "xcommon" behaviour in
+        xwaf.
+      + CHANGED:   Test runner script now terminates correctly on Windows
+      + ADDED:     Now supports the %p format specifier
+      + CHANGED:   Ignore the case of the format specifiers
+      + CHANGED:   Ignore padding and alignment characters
 
     - lib_mic_array: 2.0.1 -> 4.5.0
 
@@ -945,7 +1025,7 @@ UNRELEASED
 
     - lib_logging: Added dependency 2.0.1
 
-      + CHANGE:   Update to source code license and copyright
+      + CHANGED:   Update to source code license and copyright
 
     - lib_mic_array: Added dependency 1.0.1
 

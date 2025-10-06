@@ -1,6 +1,6 @@
 // This file relates to internal XMOS infrastructure and should be ignored by external users
 
-@Library('xmos_jenkins_shared_library@v0.42.0') _
+@Library('xmos_jenkins_shared_library@v0.43.1') _
 
 // Get XCommon CMake.
 // This is required for compiling a factory image for a DFU test using tools 15.2.1
@@ -14,7 +14,7 @@ def get_xcommon_cmake() {
 def build_dfu_test_config() {
   dir("app_usb_aud_xk_316_mc") {
     get_xcommon_cmake()
-    sh "cmake -G 'Unix Makefiles' -B build_old_tools"
+    sh "cmake -G 'Unix Makefiles' -B build_old_tools -DPARTIAL_TESTED_CONFIGS=1"
     sh "xmake -C build_old_tools -j16 1SMi2o2xxxxxx"
     // Create binary file using the old tools xflash that can be written into the device using xflash --write-all during the test
     sh "xflash bin/1SMi2o2xxxxxx/app_usb_aud_xk_316_mc_1SMi2o2xxxxxx.xe -o bin/1SMi2o2xxxxxx/app_usb_aud_xk_316_mc_1SMi2o2xxxxxx.bin"
@@ -39,7 +39,7 @@ pipeline {
     )
     string(
       name: 'XMOSDOC_VERSION',
-      defaultValue: 'v7.4.0',
+      defaultValue: 'v8.0.0',
       description: 'The xmosdoc version')
 
     string(
@@ -98,12 +98,12 @@ pipeline {
                   }
 
                   dir("app_usb_aud_xk_316_mc") {
-                    xcoreBuild(buildDir: "build_loopback", archive_bins: false, cmakeOpts: "-DPARTIAL_TESTED_CONFIGS=1 -DEXTRA_BUILD_FLAGS='-DI2S_LOOPBACK=1'")
+                    xcoreBuild(buildDir: "build_loopback", archive_bins: false, cmakeOpts: "-DPARTIAL_TESTED_CONFIGS=1 -DEXTRA_BUILD_FLAGS='-DI2S_LOOPBACK=1' -DENABLE_I2S_TIMING_CHECK=ON")
                     sh 'for folder in bin/?*; do if [[ ! $folder == *"old_tools"* ]] ; then mv "$folder" "${folder/%/_i2sloopback}"; fi ; done'
                     sh 'for config in bin/?*/*.xe; do if [[ ! $config == *"old_tools"* ]] ; then mv "$config" "${config/%.xe/_i2sloopback.xe}"; fi ; done'
                   }
 
-                  xcoreBuild(cmakeOpts: "-DBUILD_TESTED_CONFIGS=1 -DTEST_SUPPORT_CONFIGS=1")
+                  xcoreBuild(cmakeOpts: "-DBUILD_TESTED_CONFIGS=1 -DTEST_SUPPORT_CONFIGS=1 -DENABLE_I2S_TIMING_CHECK=ON")
                   stash includes: 'app_usb_aud_xk_316_mc/bin/**/*.xe, app_usb_aud_xk_316_mc/bin/**/*.bin', name: 'xk_316_mc_bin', useDefaultExcludes: false
                   stash includes: 'app_usb_aud_xk_216_mc/bin/**/*.xe', name: 'xk_216_mc_bin', useDefaultExcludes: false
                   stash includes: 'app_usb_aud_xk_evk_xu316/bin/**/*.xe', name: 'xk_evk_xu316_bin', useDefaultExcludes: false
