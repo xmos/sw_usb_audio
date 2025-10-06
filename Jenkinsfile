@@ -98,12 +98,12 @@ pipeline {
                   }
 
                   dir("app_usb_aud_xk_316_mc") {
-                    xcoreBuild(buildDir: "build_loopback", archive_bins: false, cmakeOpts: "-DPARTIAL_TESTED_CONFIGS=1 -DEXTRA_BUILD_FLAGS='-DI2S_LOOPBACK=1'")
+                    xcoreBuild(buildDir: "build_loopback", archive_bins: false, cmakeOpts: "-DPARTIAL_TESTED_CONFIGS=1 -DEXTRA_BUILD_FLAGS='-DI2S_LOOPBACK=1' -DENABLE_I2S_TIMING_CHECK=ON")
                     sh 'for folder in bin/?*; do if [[ ! $folder == *"old_tools"* ]] ; then mv "$folder" "${folder/%/_i2sloopback}"; fi ; done'
                     sh 'for config in bin/?*/*.xe; do if [[ ! $config == *"old_tools"* ]] ; then mv "$config" "${config/%.xe/_i2sloopback.xe}"; fi ; done'
                   }
 
-                  xcoreBuild(cmakeOpts: "-DBUILD_TESTED_CONFIGS=1 -DTEST_SUPPORT_CONFIGS=1")
+                  xcoreBuild(cmakeOpts: "-DBUILD_TESTED_CONFIGS=1 -DTEST_SUPPORT_CONFIGS=1 -DENABLE_I2S_TIMING_CHECK=ON")
                   stash includes: 'app_usb_aud_xk_316_mc/bin/**/*.xe, app_usb_aud_xk_316_mc/bin/**/*.bin', name: 'xk_316_mc_bin', useDefaultExcludes: false
                   stash includes: 'app_usb_aud_xk_216_mc/bin/**/*.xe', name: 'xk_216_mc_bin', useDefaultExcludes: false
                   stash includes: 'app_usb_aud_xk_evk_xu316/bin/**/*.xe', name: 'xk_evk_xu316_bin', useDefaultExcludes: false

@@ -186,8 +186,8 @@ UNRELEASED
 
     - lib_logging: 3.2.0 -> 3.3.1
 
-      + CHANGED: Documentation updates
-      + CHANGED: Build applications using XCommon CMake instead of XCommon
+      + CHANGED:   Documentation updates
+      + CHANGED:   Build applications using XCommon CMake instead of XCommon
 
     - lib_mic_array: 4.6.0 -> 5.4.0
 
@@ -412,7 +412,7 @@ UNRELEASED
 
     - lib_logging: 3.1.1 -> 3.2.0
 
-      + ADDED:   Support for XCommon CMake build system
+      + ADDED:     Support for XCommon CMake build system
 
     - lib_mic_array: 4.5.0 -> 4.6.0
 
@@ -666,15 +666,16 @@ UNRELEASED
 
     - lib_logging: 2.0.1 -> 3.1.1
 
-      + CHANGED: Jenkinsfile used for CI
-      + CHANGED: Use XMOS Public Licence Version 1
-      + REMOVED: not necessary cpanfile
-      + CHANGED: Pin Python package versions
-      + CHANGED: Build files updated to support new "xcommon" behaviour in xwaf.
-      + CHANGE:   Test runner script now terminates correctly on Windows
-      + ADDED:    Now supports the %p format specifier
-      + CHANGE:   Ignore the case of the format specifiers
-      + CHANGE:   Ignore padding and alignment characters
+      + CHANGED:   Jenkinsfile used for CI
+      + CHANGED:   Use XMOS Public Licence Version 1
+      + REMOVED:   Not necessary cpanfile
+      + CHANGED:   Pin Python package versions
+      + CHANGED:   Build files updated to support new "xcommon" behaviour in
+        xwaf.
+      + CHANGED:   Test runner script now terminates correctly on Windows
+      + ADDED:     Now supports the %p format specifier
+      + CHANGED:   Ignore the case of the format specifiers
+      + CHANGED:   Ignore padding and alignment characters
 
     - lib_mic_array: 2.0.1 -> 4.5.0
 
@@ -945,7 +946,7 @@ UNRELEASED
 
     - lib_logging: Added dependency 2.0.1
 
-      + CHANGE:   Update to source code license and copyright
+      + CHANGED:   Update to source code license and copyright
 
     - lib_mic_array: Added dependency 1.0.1
 
