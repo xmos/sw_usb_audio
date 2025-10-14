@@ -273,6 +273,8 @@ class AppUsbAudDut(UaDut):
             # directly to the device
             fw_path = Path(fw_path).with_suffix(".bin") # The output of xflash -o is required to be saved in a file with the same name as the .xe but with a .bin extension
 
+        # To run DUT as 'xrun --xscope', run cmd below with attach='xscope'. This should be used for instance to check if the dut crashes when running a test.
+        # It's not set by default since running with xrun --xscope seems to cause test failures on Win11 (seen on the nightly run)
         super().__init__(adapter_id, fw_path, self.features["pid"][0], self.features["chan_i"], self.features["chan_o"], winbuiltin=self.winbuiltin, xflash=xflash, writeall=writeall, target=target)
 
     def __enter__(self):

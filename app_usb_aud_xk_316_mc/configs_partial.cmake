@@ -78,4 +78,31 @@ set(APP_COMPILER_FLAGS_2AMi16o16xxxaax_tdm8 ${SW_USB_AUDIO_FLAGS} -DXUA_ADAT_RX_
 # Windows testing with the built-in driver relies on using product IDs that the Thesycon driver won't bind to
 set(APP_COMPILER_FLAGS_2AMi8o8xxxxxx_winbuiltin ${SW_USB_AUDIO_FLAGS} -DPID_AUDIO_2=0x001a)
 
+# Audio Class 2, Async, I2S Master, 8xInput, 8xOutput, Mixer
+set(APP_COMPILER_FLAGS_2AMi8o8xxxxxx_mix8 ${SW_USB_AUDIO_FLAGS}     -DMAX_MIX_COUNT=8)
+
+# Audio Class 2, Async, I2S Master, 8xInput, 8xOutput, TDM
+# Note, limited to 96kHz sample rate due to TDM limitations
+set(APP_COMPILER_FLAGS_2AMi8o8xxxxxx_tdm8 ${SW_USB_AUDIO_FLAGS}     -DXUA_PCM_FORMAT=XUA_PCM_FORMAT_TDM
+                                                                    -DMAX_FREQ=96000)
+# Audio Class 2, Async, I2S Slave, 8xInput, 8xOutput, TDM
+# Note, limited to 96kHz sample rate due to TDM limitations
+set(APP_COMPILER_FLAGS_2ASi8o8xxxxxx_tdm8 ${SW_USB_AUDIO_FLAGS} -DCODEC_MASTER=1
+                                                                -DXUA_PCM_FORMAT=XUA_PCM_FORMAT_TDM
+                                                                -DMAX_FREQ=96000)
+# Audio Class 2, Async, I2S Master, 8xInput, 8xOutput, MIDI
+set(APP_COMPILER_FLAGS_2AMi8o8mxxxxx ${SW_USB_AUDIO_FLAGS}      -DMIDI=1)
+
+# Audio Class 2, Sync, I2S Master, 8xInput, 8xOutput
+set(APP_COMPILER_FLAGS_2SMi8o8xxxxxx ${SW_USB_AUDIO_FLAGS}     -DXUA_SYNCMODE=XUA_SYNCMODE_SYNC)
+
+# Audio Class 2, Sync, I2S Slave, 8xInput, 8xOutput
+set(APP_COMPILER_FLAGS_2SSi8o8xxxxxx ${SW_USB_AUDIO_FLAGS}     -DXUA_SYNCMODE=XUA_SYNCMODE_SYNC
+                                                               -DCODEC_MASTER=1)
+
+# Audio Class 1, Sync, I2S Master, 2xInput, 2xOutput
+set(APP_COMPILER_FLAGS_1SMi2o2xxxxxx ${SW_USB_AUDIO_FLAGS}     -DAUDIO_CLASS=1
+                                                               -DXUA_SYNCMODE=XUA_SYNCMODE_SYNC)
+
+
 endif()
