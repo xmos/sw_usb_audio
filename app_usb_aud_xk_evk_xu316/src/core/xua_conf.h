@@ -38,8 +38,10 @@
 #define MAX_MIX_COUNT      (0)
 #endif
 
-/* Board is self-powered i.e. not USB bus-powered */
-#define SELF_POWERED       (0)
+/* Board power source - Default is bus-powered */
+#ifndef XUA_POWERMODE
+#define XUA_POWERMODE      XUA_POWERMODE_BUS
+#endif
 
 /* Enable/Disable MIDI - Default is MIDI off */
 #ifndef MIDI
