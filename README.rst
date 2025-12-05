@@ -55,6 +55,8 @@ This repository contains the following:
 +--------------------------+--------------------------+--------------------------------------------+
 | app_usb_aud_xk_evk_xu316 | xk-evk-xu316             | xcore.ai Evaluation Kit                    |
 +--------------------------+--------------------------+--------------------------------------------+
+| app_usb_aud_template     |                          | Template/blank application                 |
++--------------------------+--------------------------+--------------------------------------------+
 
 Please refer to individual README files in these apps for more detailed information.
 

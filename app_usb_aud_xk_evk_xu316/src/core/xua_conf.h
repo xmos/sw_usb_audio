@@ -13,7 +13,7 @@
 /*
  * Device configuration option defines to override default defines found in lib_xua/api/xua_conf_default.h
  *
- * Build can be customised but changing and adding defines here
+ * Build can be customised by changing and adding defines here
  *
  * Note, we check if they are already defined in Makefile
  */
