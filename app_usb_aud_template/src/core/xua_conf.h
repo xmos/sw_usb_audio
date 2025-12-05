@@ -1,11 +1,8 @@
 // Copyright 2012-2025 XMOS LIMITED.
 // This Software is subject to the terms of the XMOS Public Licence: Version 1.
-/**
- * @file       xua_conf.h
- * @brief      Defines relating to device configuration and customisation.
- *             For xCORE.ai Audio MC Board
- * @author     Ross Owen, XMOS Limited
- */
+
+// Defines relating to device configuration and customisation.
+
 #ifndef _XUA_CONF_H_
 #define _XUA_CONF_H_
 
@@ -63,12 +60,12 @@
 /*** Defines relating to channel counts ***/
 /* Number of I2S channels to DACs*/
 #ifndef I2S_CHANS_DAC
-#define I2S_CHANS_DAC      (8)
+#define I2S_CHANS_DAC      (2)
 #endif
 
 /* Number of I2S channels from ADCs */
 #ifndef I2S_CHANS_ADC
-#define I2S_CHANS_ADC      (8)
+#define I2S_CHANS_ADC      (2)
 #endif
 
 /* Number of USB streaming channels - by default calculate by counting audio interfaces */
@@ -139,7 +136,7 @@
     #define PID_AUDIO_2        (0x0020) /* Enumerate with a different PID since the
                                          * interface numbering is different between MIDI
                                          * enabled vs disabled and the Thesycon driver doesn't
-                                         * support different interfae layouts with the same PID */
+                                         * support different interface layouts with the same PID */
 #else
     #define PID_AUDIO_2        (0x0016)
 #endif
@@ -156,8 +153,8 @@
 #endif
 #endif
 
-#define PRODUCT_STR_A2     "XMOS xCORE.ai MC (UAC2.0)"
-#define PRODUCT_STR_A1     "XMOS xCORE.ai MC (UAC1.0)"
+#define PRODUCT_STR_A2     "XMOS (UAC2.0)"
+#define PRODUCT_STR_A1     "XMOS (UAC1.0)"
 
 /* Board power source - Default is bus-powered */
 #ifndef XUA_POWERMODE

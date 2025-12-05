@@ -1,12 +1,11 @@
-
-#######################
-XMOS xcore.ai USB Audio
-#######################
+##############################
+Template USB Audio application
+##############################
 
 :scope: Example
-:description: USB Audio application for xcore.ai MC Audio
+:description: Template USB Audio application
 :keywords: USB, UAC
-:boards: XK-AUDIO-316-MC
+:boards:
 
 *******
 Summary
@@ -19,23 +18,22 @@ USB Audio Class Specification based on the xcore.ai device.
 Features
 ********
 
-The app_usb_aud_xk_316_mc application is designed to run on the xcore.ai Multichannel Audio Board.
-It uses the XMOS USB Audio framework to implement a USB Audio device with the following key features:
+The app_usb_aud_template application is a template application provided as a good starting point for
+porting to custom hardware.
+
+It uses the XMOS USB Audio framework to implement a USB Audio device with the following default
+key features:
 
 - USB Audio Class 1.0/2.0 Compliant
 
 - Fully Asynchronous operation
 
-- 8 channels analogue input and 8 channels analogue output (Via I²S to 4 x Stereo DACs and 2 x Quad-channel ADCs)
-
-- S/PDIF output (via COAX connector)
+- 2 channels analogue input and 2 channels analogue output
 
 - Support for the following sample frequencies: 44.1, 48, 88.2, 96, 176.4, 192kHz
 
-- MIDI input and output
-
 ************
-Known issues
+Known Issues
 ************
 
 - None
