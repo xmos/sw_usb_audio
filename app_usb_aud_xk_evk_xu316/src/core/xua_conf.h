@@ -8,6 +8,9 @@
 #ifndef _XUA_CONF_H_
 #define _XUA_CONF_H_
 
+/* Define max power at 200mA */
+#define XUA_BMAX_POWER      (10)
+
 #include "../../../shared/version.h"
 
 /*
@@ -25,7 +28,7 @@
 #define PORT_MCLK_COUNT    XS1_PORT_16B
 
 /* Tile defines */
-#define XUA_AUDIO_IO_TILE_NUM      (1)
+#define XUA_AUDIO_IO_TILE_NUM      (0)
 #define XUA_XUD_TILE_NUM           (0)
 
 /* Mixer core disabled by default */

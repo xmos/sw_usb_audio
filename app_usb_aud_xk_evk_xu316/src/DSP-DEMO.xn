@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Network xmlns="http://www.xmos.com"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://www.xmos.com http://www.xmos.com">
+  <Type>Board</Type>
+  <Name>xcore.ai DSP Demo</Name>
+
+  <Declarations>
+    <Declaration>tileref tile[2]</Declaration>
+  </Declarations>
+
+  <Packages>
+    <Package id="0" Type="XS3-UnA-1024-QF60B">
+      <Nodes>
+        <Node Id="0" InPackageId="0" Type="XS3-L16A-1024" Oscillator="24MHz" SystemFrequency="600MHz" ReferenceFrequency="100MHz">
+          <Boot>
+            <Source Location="bootFlash"/>
+          </Boot>
+          <Tile Number="0" Reference="tile[0]">
+            <!-- QSPI Flash -->
+            <Port Location="XS1_PORT_1B" Name="PORT_SQI_CS"/>
+            <Port Location="XS1_PORT_1C" Name="PORT_SQI_SCLK"/>
+            <Port Location="XS1_PORT_4B" Name="PORT_SQI_SIO"/>
+
+            <!-- I2S Master -->
+            <Port Location="XS1_PORT_1P"  Name="PORT_I2S_LRCLK"/>
+            <Port Location="XS1_PORT_1N"  Name="PORT_I2S_BCLK"/>
+            <Port Location="XS1_PORT_1L"  Name="PORT_I2S_DAC0"/>
+            <Port Location="XS1_PORT_1M"  Name="PORT_I2S_ADC0"/>
+
+            <!-- MCLK Input -->
+            <Port Location="XS1_PORT_1O"  Name="PORT_MCLK_IN"/>
+
+            <!-- Button Input -->
+            <Port Location="XS1_PORT_4F"  Name="PORT_BUTTON"/> <!-- P4F3 = BUTTON_1, P4F2 = BUTTON_0 -->
+
+            <!-- I2C -->
+            <Port Location="XS1_PORT_4E"  Name="PORT_I2C"/> <!-- P4E3 = SDA, P4E2 = SCL -->
+
+            <!-- General purporse output port -->
+            <Port Location="XS1_PORT_8D"  Name="PORT_GP_OUT"/> <!-- P8D7 = LED2, P8D6 = LED1, P8D5 = LED0, P8D4 = CODEC_RST_N -->
+
+          </Tile>
+          <Tile Number="1" Reference="tile[1]">
+          </Tile>
+        </Node>
+      </Nodes>
+    </Package>
+  </Packages>
+
+  <!-- XTAG4 -->
+  <Nodes>
+    <Node Id="1" Type="device:" RoutingId="0x8000">
+      <Service Id="0" Proto="xscope_host_data(chanend c);">
+        <Chanend Identifier="c" end="3"/>
+      </Service>
+    </Node>
+  </Nodes>
+
+  <!-- XSCOPE LINK -->
+  <Links>
+    <Link Encoding="2wire" Delays="5clk" Flags="XSCOPE">
+      <LinkEndpoint NodeId="0" Link="XL0"/>
+      <LinkEndpoint NodeId="1" Chanend="1"/>
+    </Link>
+  </Links>
+
+  <ExternalDevices>
+    <Device NodeId="0" Tile="0" Class="SQIFlash" Name="bootFlash" Type="W25Q16JV">
+      <Attribute Name="PORT_SQI_CS"   Value="PORT_SQI_CS"/>
+      <Attribute Name="PORT_SQI_SCLK" Value="PORT_SQI_SCLK"/>
+      <Attribute Name="PORT_SQI_SIO"  Value="PORT_SQI_SIO"/>
+    </Device>
+  </ExternalDevices>
+
+  <JTAGChain>
+    <JTAGDevice NodeId="0"/>
+  </JTAGChain>
+
+</Network>

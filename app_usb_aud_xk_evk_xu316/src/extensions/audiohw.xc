@@ -20,6 +20,11 @@ void AudioHwRemote(chanend c)
     xk_evk_xu316_AudioHwRemote(c);
 }
 
+void UserBufferManagement(unsigned sampsFromUsbToAudio[], unsigned sampsFromAudioToUsb[])
+{
+   sampsFromAudioToUsb[1] = sampsFromAudioToUsb[0];
+}
+
 /* Note this is called from tile[1] but the I2C lines to the CODEC are on tile[0]
  * use a channel to communicate CODEC reg read/writes to a remote core */
 void AudioHwInit()
