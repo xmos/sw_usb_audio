@@ -14,24 +14,27 @@ static const xk_evk_xu316_config_t config = {
 };
 
 
-void AudioHwRemote(chanend c)
-{
-    xk_evk_xu316_AudioHwRemote(c);
-}
+unsafe client interface i2c_master_if i_i2c_client;
 
-/* Note this is called from tile[1] but the I2C lines to the CODEC are on tile[0]
- * use a channel to communicate CODEC reg read/writes to a remote core */
+/* Note this is called from tile[1] but the I2C lines to the CODEC are on tile[0].
+ * The i2c_master_if connection spans the two tiles. */
 void AudioHwInit()
 {
-    xk_evk_xu316_AudioHwInit(config);
+    unsafe
+    {
+        /* Wait until global is set */
+        while(!(unsigned) i_i2c_client);
+        xk_evk_xu316_AudioHwInit((client interface i2c_master_if)i_i2c_client, config);
+    }
 }
 
-/* Configures the external audio hardware for the required sample frequency.
- * See gpio.h for I2C helper functions and gpio access
- */
+/* Configures the external audio hardware for the required sample frequency. */
 void AudioHwConfig(unsigned samFreq, unsigned mClk, unsigned dsdMode,
     unsigned sampRes_DAC, unsigned sampRes_ADC)
 {
-    xk_evk_xu316_AudioHwConfig(samFreq, 0, dsdMode, sampRes_DAC, sampRes_ADC);
+    unsafe
+    {
+        xk_evk_xu316_AudioHwConfig((client interface i2c_master_if)i_i2c_client,
+                                   samFreq, 0, dsdMode, sampRes_DAC, sampRes_ADC);
+    }
 }
-
