@@ -157,23 +157,23 @@ Known issues
 General known issues with this release are listed below.
 For board/application specific known issues please see README in relevant app directory
 
-- (xmos/sw_usb_audio#54) When DFU flash access fails the xcore sends NAKs to the USB host forever, rather than a STALL
+- When DFU flash access fails the xcore sends NAKs to the USB host forever, rather than a STALL (xmos/sw_usb_audio#54)
 
-- (xmos/sw_usb_audio#97) Documentation missing for XK-EVK-316
+- Documentation missing for XK-EVK-316 (xmos/sw_usb_audio#97)
 
-- (xmos/sw_usb_audio#99) Input via TDM master unreliable due to low-level timing issues (xcore-200 only)
+- Input via TDM master unreliable due to low-level timing issues (xcore-200 only) (xmos/sw_usb_audio#99)
 
-- (xmos/sw_usb_audio#120) Playback glitches experienced at 44.1/48kHz when using ASIO4ALL (v2.15) with built-in windows drivers. USB bus traces prove that these originate from the host driver.
+- Playback glitches experienced at 44.1/48kHz when using ASIO4ALL (v2.15) with built-in windows drivers. USB bus traces prove that these originate from the host driver (xmos/sw_usb_audio#120).
 
-- (#14762) When in DSD mode with S/PDIF output enabled, DSD samples are transmitted over S/PDIF if the DSD and S/PDIF channels are shared, this may or may not be desired
+- When in DSD mode with S/PDIF output enabled, DSD samples are transmitted over S/PDIF if the DSD and S/PDIF channels are shared, this may or may not be desired (#14762)
 
-- (#14173) I2S input is completely disabled when DSD output is active - any input stream to the host will contain 0 samples
+- I2S input is completely disabled when DSD output is active - any input stream to the host will contain 0 samples (#14173)
 
-- (#14780) Operating the design at a sample rate of less than or equal to the SOF rate (i.e. 8kHz at HS, 1kHz at FS) may expose a corner case relating to 0 length packet handling in both the driver and device and should be considered unsupported at this time.
+- Operating the design at a sample rate of less than or equal to the SOF rate (i.e. 8kHz at HS, 1kHz at FS) may expose a corner case relating to 0 length packet handling in both the driver and device and should be considered unsupported at this time (#14780).
 
-- (#14883) Before DoP mode is detected a small number of DSD samples will be played out as PCM via I2S
+- Before DoP mode is detected a small number of DSD samples will be played out as PCM via I2S (#14883)
 
-- (#14887) Volume control settings currently affect samples in both DSD and PCM modes. This results in invalid DSD output if volume control not set to 0
+- Volume control settings currently affect samples in both DSD and PCM modes. This results in invalid DSD output if volume control not set to 0 (#14887)
 
 -  Windows XP volume control very sensitive.  The Audio 1.0 driver built into Windows XP (usbaudio.sys) does not properly support master volume AND channel volume controls, leading to a very sensitive control.  Descriptors can be easily modified to disable master volume control if required (one byte - bmaControls(0) in Feature Unit descriptors)
 
