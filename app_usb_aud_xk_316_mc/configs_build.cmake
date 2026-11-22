@@ -4,11 +4,13 @@
 if(BUILD_TESTED_CONFIGS)
 
 # Audio Class 2, Sync, I2S Master, 10xInput, 10xOutput, TDM
-# (1024x Mclk required for 192/176 TDM)
+# (1024x Mclk required for 192/176 TDM, so uses the CS2100: lib_xua does not yet support 1024x
+# Mclk with the secondary PLL (xmos/sw_usb_audio#362))
 set(APP_COMPILER_FLAGS_2SMi10o10xxxxxx_tdm8 ${SW_USB_AUDIO_FLAGS} -DXUA_PCM_FORMAT=XUA_PCM_FORMAT_TDM
                                                                   -DXUA_SYNCMODE=XUA_SYNCMODE_SYNC
                                                                   -DMCLK_48=1024*48000
-                                                                  -DMCLK_441=1024*44100)
+                                                                  -DMCLK_441=1024*44100
+                                                                  -DXUA_USE_SW_PLL=0)
 
 # Audio Class 1, Adaptive, I2S Master, 8xInput, 8xOutput, TDM
 set(APP_COMPILER_FLAGS_1DMi8o8xxxxxx ${SW_USB_AUDIO_FLAGS} -DXUA_PCM_FORMAT=XUA_PCM_FORMAT_TDM
